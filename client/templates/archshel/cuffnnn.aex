@@ -92,6 +92,7 @@ AEXFWD( CmnArchExitInitialize );
 AEXFWD( ExitParentFound );
 AEXFWD( ExitAcceptMessage );
 
+AEXFWD( ExitCtiEvent );
 
 /***************************************************************************/
 /* ArchExitTable - This table is used by the architecture functions to     */
@@ -157,6 +158,8 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
     REGISTERARCHEXIT( ExitHlpInit ),
 	REGISTERARCHEXIT( ExitParentFound ),
 	REGISTERARCHEXIT( ExitAcceptMessage ),
+
+	REGISTERARCHEXIT( ExitCtiEvent ),
     "",0
 };
 
@@ -3405,3 +3408,87 @@ AEXPROC( ExitAcceptMessage )
   //  return CMN_SUCCESS;
 
 //}  /* End of CUFFnnnAexApplicationDefined */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitCtiEvent
+**
+**  DESCRIPTION      : This exit allows the dialog to respond to Computer
+**                     Telephony Integration ( CTI ) Events.
+**
+**                     The following macros are relevant for this exit:
+**                         EAB_WmCopydataSrcWindow
+**                             window handle of message source
+**                         EAB_WmCopydataApplHdr
+**                             CTI event type
+**                         EAB_WmCopydataDataLen  
+**                             length of data passed with message
+**                         EAB_WmCopydatapData
+**                             pointer to data passed with message
+**
+**                     When coding this exit, do not assume the input data 
+**                     is valid.  Take the necessary steps to do some 
+**                     simple validation before using any of the  
+**                     EAB_WmCopydata macros.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+AEXPROC( ExitCtiEvent )
+{
+//
+//  /* switch on CTI event type */
+//	switch(( SHORT ) EAB_WmCopydataApplHdr )
+//	{
+//		case < cti event type >:
+//			{	
+//				SHORT             FndGenRC = CMN_SUCCESS;
+//			    _FND_ERROR_BLOCK  FndErrorBlock;
+//
+//  			/* check if data has been passed */
+//				if( EAB_WmCopydatapData )
+//				{
+//					/* map local pointer to window message data */
+//					< your structure >  *< variable > = 
+//	                                       ( VOID * ) EAB_WmCopydatapData;
+//
+//					/* perform initialization logic if necessary */
+//
+//					/* simple validation */
+//					if( strlen( < variable > ) == ( < variable >_LEN ))
+//					{
+//						FndFieldSetValue ( CBI_hwnd,
+//		 								   < widget name >,
+//										   < variable >_LEN,
+//										   < variable >,
+//										   &FndErrorBlock );
+//					}
+//				}
+//
+//				break;
+//			}
+//
+//		default:			
+//			break;
+//	}
+//
+//	return CMN_SUCCESS;
+}
+
