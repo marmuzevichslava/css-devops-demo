@@ -45,7 +45,8 @@
 /***************************************************************************/
 #define ENTITY_ID_LEN   9
 #define ENTITY_TYPE_LEN 9
-#define LONG_DESC_LEN   641
+#define NUM_BLANKS_IN_BLANK_STRING   2
+#define LONG_DESC_LEN   651
 #define LINE_LEN        80
 #define SUB_STR_LEN     120
 #define NUM_SUBS        10
@@ -60,6 +61,12 @@
 #define PRINTPORT       "LPT1"
 #endif
 #define PAD_LEN         32
+/*mdc 05/10/96 define entity types */
+#define ENTITY_TYPE_1     "TABLE"
+#define ENTITY_TYPE_2     "COPYBOOK"
+#define ENTITY_TYPE_3     "RECORD"
+#define ENTITY_TYPE_4     "GROUP"
+#define ENTITY_TYPE_5     "ELEMENT"
 
 /*             FMT    LEN   PREC  US    OCCUR BYTES OTHER */
 #define SEG_RPT_DTL_FMT \
@@ -129,4 +136,6 @@ USHORT StrPad(char *,
 
 USHORT StrAssemble(char *,
 				   char *[]);
+
+USHORT GetEntityType(char *);
 

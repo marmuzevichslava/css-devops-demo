@@ -342,12 +342,23 @@ WCBPROC( AZRP001BusFindpbClk )
   FndGenRC = SegRptRetrieveLayout( &WCD_RequestHdr, &WCD_ReplyHdr,
                                    WCD_EntityData, CMN_ARCH_PARMS );
 
-  if( FndGenRC == MSGIO_SUCCESS )
+  if( FndGenRC == MSGIO_SUCCESS  /*&& WCD_ReplyHdr.RowsReturned <= NUMREPOSDATALBROWS */)
   {
     FndGenRC = AZRP001PopulateWindow( WCD_EntityData,
                                       &(WCD_ReplyHdr),
                                       CMN_ARCH_PARMS );
-  }
+  }/*
+  else if (	WCD_ReplyHdr.RowsReturned > NUMREPOSDATALBROWS )
+  {
+	FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nThe number of rows retrieved exceeds the number of displayable rows.",
+                                   NULL,
+                                   CBI_hwnd,
+                                   FND_MSGBOX_OK,
+                                   FND_MSGBOX_WARNING,
+                                   FND_MSGBOX_IDOK,
+                                   CMN_CSS_APPL_NAME,
+                                   &FndGenErrorBlock);
+   } */
 
   return CMN_SUCCESS;
 }/*end of AZRP001BusFindpbClk */
@@ -387,6 +398,9 @@ WCBPROC( AZRP001BusFindpbClk )
 **                                    line ends in a blank words will bleed
 **                                    together.  Added test for blank lines
 **                                    making them NULL.
+**
+**   05/09/96  mconner                Added logic to cope with more rows being
+**                                    returned than can be displayed in the list box.
 ***************************************************************************/
 
 SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
@@ -398,6 +412,7 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
   USHORT i,j;
   _FND_ERROR_BLOCK  FndGenErrorBlock;
   USHORT FndGenRC = 0;
+  USHORT usLBRows;
   SHORT TextLen;
   SHORT sCtr = 0;
   char *psLongDesc;
@@ -412,7 +427,7 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
                            CMN_ARCH_PARMS );
 	 */
 
-	/*mdc 04/26/96 set any blank line to NULL*/
+	/*mdc 04/26/96 set any blank line to NULL
 	sCtr = 0;
 	pszStr = pReplyHdr->EntityText[i];
 	while(isspace(*pszStr) )
@@ -420,33 +435,58 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
 		++sCtr;
 		++pszStr;
 	}
-	if (sCtr > 2 )
+	if (sCtr > NUM_BLANKS_IN_BLANK_STRING )
 	{
 		*pReplyHdr->EntityText[i] = '\0';
-	}
+	}*/
     /* Trim CR/LF from text */
-    CmnDdeTrimCRLF( pReplyHdr->EntityText[i],
+	/*mdc 05/07/96 This function also trims the trialing spaces so we can't 
+	use it.
+   CmnDdeTrimCRLF( pReplyHdr->EntityText[i],
                     sizeof( pReplyHdr->EntityText[i] ));
+	*/
+	/*mdc 05/07/96 Change CRLF to spaces */
+	pszStr = pReplyHdr->EntityText[i];
+
+	while (*pszStr)
+	{
+		if(*pszStr == '\r' || *pszStr == '\n')
+			*pszStr = ' ';
+		++pszStr;
+	}
 
     TextLen = strlen(pReplyHdr->EntityText[i]);
 
 	/*mdc 04/11/96 Can't insert characters in array of text*/
     /*pReplyHdr->EntityText[i][TextLen] = '\n';
     pReplyHdr->EntityText[i][TextLen+1] = '\0';
-	*/
-  }
+	*/ 
+   }
 
   /*mdc Allocate memory for long description string*/
   psLongDesc = (char *)calloc(LONG_DESC_LEN, sizeof(char));
   if(!psLongDesc) return CMN_FAIL;
 
   /* Copy long description to string */
-  CmnStrCat( CMN_ARCH_PARMS, psLongDesc, LONG_DESC_LEN,
+ CmnStrCat( CMN_ARCH_PARMS, psLongDesc, LONG_DESC_LEN,
              8,
              pReplyHdr->EntityText[0], pReplyHdr->EntityText[1],
              pReplyHdr->EntityText[2], pReplyHdr->EntityText[3],
              pReplyHdr->EntityText[4], pReplyHdr->EntityText[5],
              pReplyHdr->EntityText[6], pReplyHdr->EntityText[7] );
+
+/*mdc remove extra spaces */
+pszStr = psLongDesc;
+++pszStr;
+
+while (*pszStr)
+{
+	while (*(pszStr - 1) == ' ' && *pszStr == ' ')
+		strcpy(pszStr, pszStr + 1);
+	++pszStr;
+}
+
+
 
   /*mdc populate window with long description*/
   FndGenRC = FndFieldSetValue(CBI_hwnd,
@@ -455,8 +495,13 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
 							  psLongDesc,
 							  &FndGenErrorBlock);
 
+  /*mdc 05/09/96 Added this logic to prevent the error caused by the 
+  number of rows returned exceeding the number of rows that the list
+  box can hold */
 
-  for( i=0; i<pReplyHdr->RowsReturned; i++ )
+  usLBRows = min(pReplyHdr->RowsReturned, NUMREPOSDATALBROWS );
+
+  for( i=0; i<usLBRows; i++ )
   {
     memset( Indent, 0, sizeof(Indent ));
 
@@ -492,26 +537,31 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
                            sizeof( pEntityDataTable[i].EntityType),
                            CMN_ARCH_PARMS );
 
-    if( !strcmp( pEntityDataTable[i].EntityType, "DEDTABLE" ))
+
+
+	FndGenRC = GetEntityType(pEntityDataTable[i].EntityType);
+
+   /*mdc 05/10/96 removed to funtion  above
+    if( strcmp( pEntityDataTable[i].EntityType, "DEDTABLE" ) == 0)
     {
-      strcpy( pEntityDataTable[i].EntityType, "TABLE" );
+      strcpy( pEntityDataTable[i].EntityType, ENTITY_TYPE_1);
     }
-    else if( !strcmp( pEntityDataTable[i].EntityType, "DECOPYBK" ))
+    else if( strcmp( pEntityDataTable[i].EntityType, "DECOPYBK") == 0)
     {
-      strcpy( pEntityDataTable[i].EntityType, "COPYBOOK" );
+      strcpy( pEntityDataTable[i].EntityType, ENTITY_TYPE_2);
     }
-    else if( !strcmp( pEntityDataTable[i].EntityType, "DERECORD" ))
+    else if( strcmp( pEntityDataTable[i].EntityType, "DERECORD") == 0)
     {
-      strcpy( pEntityDataTable[i].EntityType, "RECORD" );
+      strcpy( pEntityDataTable[i].EntityType, ENTITY_TYPE_3);
     }
-    else if( !strcmp( pEntityDataTable[i].EntityType, "DEGROUP" ))
+    else if( strcmp( pEntityDataTable[i].EntityType, "DEGROUP") == 0)
     {
-      strcpy( pEntityDataTable[i].EntityType, "GROUP" );
+      strcpy( pEntityDataTable[i].EntityType, ENTITY_TYPE_4);
     }
-    else if( !strcmp( pEntityDataTable[i].EntityType, "DEDTELEM" ))
+    else if( strcmp( pEntityDataTable[i].EntityType, "DEDTELEM") == 0)
     {
-      strcpy( pEntityDataTable[i].EntityType, "ELEMENT" );
-    }
+      strcpy( pEntityDataTable[i].EntityType, ENTITY_TYPE_5);
+    } */
 
     CmnStrCat( CMN_ARCH_PARMS, ReposDataLBRow._ReposDataLBEntityTypeData,
                sizeof( ReposDataLBRow._ReposDataLBEntityTypeData ),
@@ -605,9 +655,76 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
                                 &FndGenErrorBlock );
   }
 
+  /*mdc 05/09/96 Let the user know if all the rows are not displayedin the LB */
+  if (pReplyHdr->RowsReturned > NUMREPOSDATALBROWS)
+  {
+	FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nThe number of rows retrieved exceeds the number of displayable rows.",
+                                   NULL,
+                                   CBI_hwnd,
+                                   FND_MSGBOX_OK,
+                                   FND_MSGBOX_WARNING,
+                                   FND_MSGBOX_IDOK,
+                                   CMN_CSS_APPL_NAME,
+                                   &FndGenErrorBlock);
+    }  	
+
   return CMN_SUCCESS;
 }  /*end of AZRP001PopulateWindow*/
 
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : GetEntityType
+**
+**  DESCRIPTION      : This function decodes the entity type 
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    05/10/96  mconner              Original code.
+**
+***************************************************************************/
+/*mdc 05/09/96 Added == 0 logic this was not working*/
+
+USHORT GetEntityType(char *pszStr)
+{
+    if( strcmp( pszStr, "DEDTABLE" ) == 0)
+    {
+      strcpy(pszStr, ENTITY_TYPE_1);
+    }
+    else if( strcmp( pszStr, "DECOPYBK") == 0)
+    {
+      strcpy( pszStr, ENTITY_TYPE_2);
+    }
+    else if( strcmp( pszStr, "DERECORD") == 0)
+    {
+      strcpy( pszStr, ENTITY_TYPE_3);
+    }
+    else if( strcmp( pszStr, "DEGROUP") == 0)
+    {
+      strcpy( pszStr, ENTITY_TYPE_4);
+    }
+    else if( strcmp( pszStr, "DEDTELEM") == 0)
+    {
+      strcpy( pszStr, ENTITY_TYPE_5);
+    }
+
+	return CMN_SUCCESS;
+ 
+}/*end of GetEntityType */
 
 /***************************************************************************
 **
@@ -808,10 +925,12 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
                    SHORT CurrPage, SHORT *pCurrLine, CMN_ARCH_PARM_TYPES )
 {
   CHAR CurrDate[ 9 ];
-  /*USHORT i;*/
+  /*mdc 05/07/96 unreferenced local variable
+  USHORT i;
+  */
   USHORT usNumLongDescRows = 0;
   char *psLongDesc;
-
+  char *pszStr;
   fprintf( pfPrinter, "\n" );
   fprintf( pfPrinter, SEG_RPT_HDR1, CurrPage );
   _strdate( CurrDate );
@@ -851,6 +970,17 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
 		             pReplyHdr->EntityText[2], pReplyHdr->EntityText[3],
 		             pReplyHdr->EntityText[4], pReplyHdr->EntityText[5],
 		             pReplyHdr->EntityText[6], pReplyHdr->EntityText[7] );
+		 
+		/*mdc remove extra spaces*/
+		pszStr = psLongDesc;
+		++pszStr;
+		while (*pszStr)
+		{
+			while (*(pszStr - 1) == ' ' && *pszStr == ' ')
+				strcpy(pszStr, pszStr + 1);
+			++pszStr;
+		}
+
 
 		 /*mdc format the long description*/
 		 FormatLongDesc(psLongDesc, &usNumLongDescRows);
@@ -989,6 +1119,7 @@ USHORT FormatLongDesc(char *psStr,
     return(CMN_SUCCESS);
 
 }/*end of FormatLongDesc*/
+
 
 /***************************************************************************
 **
