@@ -43,12 +43,12 @@ char GlobalMode[3];
 #define LT_Prem_P         "P"
 #define LT_Bldg_B         "B"
 
-#define Like_Str		 "%"
+#define Like_Str		 ""
 #define NULL_STR         ""
 #define EMPTY_STR        ""
 
-#define Begin_Qt         "\'"
-#define End_Qt           "\'"
+#define Begin_Qt         ""
+#define End_Qt           ""
 
 
 /* Reference for Window Data - malloc in predisplay */
