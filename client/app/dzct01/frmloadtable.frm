@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "Comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "COMCTL32.OCX"
 Begin VB.Form frmTableLoad 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Table Load Process"
@@ -335,7 +335,7 @@ Private Sub mnuLoad_Click()
     pBar.Value = pBar.Value + 1
     sbStatusBar.Panels(1).Text = "Archiving dat's and xlt's"
     sbStatusBar.Refresh
-    If Not Archive Then
+    If Not Archive(bNoDat, bNoXlt) Then
         Unload Me
         Exit Sub
     End If
@@ -473,7 +473,7 @@ Function RemoveRemoteXlt() As Boolean
     
 End Function
 '***************************************************************************************************************
-Function Archive() As Boolean
+Function Archive(ByVal bNoDat As Boolean, ByVal bNoXlt As Boolean) As Boolean
 '***************************************************************************************************************
     Dim sFile As String
     Dim msg As String
@@ -481,20 +481,24 @@ Function Archive() As Boolean
     
     On Error GoTo ErrorHandler
     
-    sFile = Dir(sDatPath & "\*")
-    Do While sFile <> ""
-        FileCopy sDatPath & "\" & sFile, sDatArchivePath & "\" & sFile
-        Kill sDatPath & "\" & sFile
-        sFile = Dir
-    Loop
+    If Not bNoDat Then
+        sFile = Dir(sDatPath & "\*")
+        Do While sFile <> ""
+            FileCopy sDatPath & "\" & sFile, sDatArchivePath & "\" & sFile
+            Kill sDatPath & "\" & sFile
+            sFile = Dir
+        Loop
+    End If
     
-    sFile = Dir(sXltPath & "\*")
-    Do While sFile <> ""
-        FileCopy sXltPath & "\" & sFile, sXltArchivePath & "\" & sFile
-        Kill sXltPath & "\" & sFile
-        sFile = Dir
-    Loop
-
+    If Not bNoXlt Then
+        sFile = Dir(sXltPath & "\*")
+        Do While sFile <> ""
+            FileCopy sXltPath & "\" & sFile, sXltArchivePath & "\" & sFile
+            Kill sXltPath & "\" & sFile
+            sFile = Dir
+        Loop
+    End If
+    
     Archive = True
     Exit Function
     
@@ -531,7 +535,7 @@ Function LoadCodesTables() As Boolean
         Do While sFile <> ""
             sKcodTime1 = FileDateTime(KCOD_PATH & "\" & KCOD_NAME)
             
-            Sleep 1000
+            Sleep 2000
             
             'Load dat files
             With mywdj
@@ -599,6 +603,8 @@ Function InitializeSettings() As Boolean
     sRemoteKcodFile = "/sw/c1/" & cboProject.Text & "/client/" & cboEnvironment.Text & "/runtime/nt/codestbl/" & KCOD_NAME
     sLocalKcodFile = KCOD_PATH & "\" & KCOD_NAME
     sArchiveKcodFile = BASE_PATH & "\" & cboProject.Text & "\" & KCOD_NAME & "." _
+                    & cboEnvironment.Text _
+                    & "." _
                     & ParseString(sDate, "/", 1) _
                     & ParseString(sDate, "/", 2) _
                     & ParseString(sDate, "/", 3)
@@ -808,6 +814,12 @@ Function GetTblFile() As Boolean
 '***************************************************************************************************************
     Dim msg As String
     Dim RC As Integer
+    Dim iCtr As Integer
+    Dim sFile As String
+    Dim bCheckFlag As Boolean
+    
+    iCtr = 1
+    bCheckFlag = True
     
     On Error GoTo ErrorHandler
     
@@ -827,12 +839,21 @@ Function GetTblFile() As Boolean
         Err.Raise 1, , "FTP ERROR.  Could not get file"
     End If
     
+    While (bCheckFlag)
+        sFile = Dir(sArchiveKcodFile & "." & iCtr)
+        If (Len(sFile) = 0) Then
+            bCheckFlag = False
+        Else
+            iCtr = iCtr + 1
+        End If
+    Wend
+    
     With myftp
         .HostName = sServer
         .UserName = USER
         .Password = PWD
         .RemoteFile = sRemoteKcodFile
-        .LocalFile = sArchiveKcodFile
+        .LocalFile = sArchiveKcodFile & "." & iCtr
         .ErrorMessageBox = True
         .GetFile
     End With

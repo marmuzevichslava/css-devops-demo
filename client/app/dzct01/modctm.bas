@@ -156,7 +156,284 @@ Public Function LongDirFix(Incomming As String, _
     
 End Function
                                                                
-                                                               
+'***************************************************************************************************************
+Public Sub PopulateCodesTableListView()
+'***************************************************************************************************************
+
+    Dim itmX As ListItem, cnt As Integer
+    Dim x As Integer
+
+    On Error GoTo ODBCError
+    
+    strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.HostOccurs, tblEntries.ClientOccurs, tblEntries.Comments, tblEntries.Description" _
+           & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
+           & " WHERE (((tblEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
+           & " ORDER BY tblEntries.Key;"
+
+    frmMain.lvListView.ColumnHeaders.Clear
+
+    'Add the column headings.
+        frmMain.lvListView.ColumnHeaders.Add , , "Key", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Drives Host Logic", 1400, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Drives Client Logic", 1400, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
+    
+    'UnHide Check boxes
+        frmMain.chkStatic.Visible = True
+        frmMain.txtStatic.Visible = True
+
+    frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
+    frmMain.Refresh
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+        If Not DaoRS.EOF Then
+            While Not DaoRS.EOF
+                Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
+
+                If (DaoRS(1).Value = Null) Then
+                    itmX.SubItems(1) = " "
+                Else
+                    itmX.SubItems(1) = RTrim(DaoRS(1).Value)
+                End If
+
+                itmX.SubItems(2) = RTrim(DaoRS(2).Value)
+                itmX.SubItems(3) = DaoRS(3).Value
+                itmX.SubItems(4) = DaoRS(4).Value
+                itmX.SubItems(5) = DaoRS(5).Value
+                
+                If ((Not DaoRS(6).Value = vbNullChar) And (Not DaoRS(6).Value = "Null")) Then
+                    itmX.SubItems(6) = CStr(DaoRS(6).Value)
+                Else
+                    itmX.SubItems(6) = " "
+                End If
+                
+                If ((Not DaoRS(7).Value = vbNullChar) And (Not DaoRS(7).Value = "Null")) Then
+                    itmX.SubItems(7) = CStr(DaoRS(7).Value)
+                Else
+                    itmX.SubItems(7) = " "
+                End If
+
+                If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
+                    itmX.SubItems(8) = CStr(DaoRS(8).Value)
+                Else
+                    itmX.SubItems(8) = " "
+                End If
+                
+                If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
+                    itmX.SubItems(9) = CStr(DaoRS(9).Value)
+                Else
+                    itmX.SubItems(9) = " "
+                End If
+                
+                frmMain.sbStatusBar.Refresh
+
+                KeyCntr = KeyCntr + 1
+                DaoRS.MoveNext
+            Wend
+        End If
+        
+        frmMain.sbStatusBar.Panels(1).Text = " "
+        frmMain.txtTotalKeys.Text = KeyCntr
+
+    DaoRS.Close
+        
+Exit Sub
+
+ODBCError:
+    Dim msg As String, RC As Integer
+    
+    msg = "An error has occured while trying to populate the Codes Table List View." & vbCrLf & _
+          "Error number = " & Err.Number & vbCrLf & _
+          "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
+          "Contact " & AUTHOR & " for assistance."
+    
+    RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
+    Err.Clear
+    
+    Unload frmMain
+
+End Sub
+
+'***************************************************************************************************************
+Public Sub PopulateMessageBoxListView()
+'***************************************************************************************************************
+    Dim itmX As ListItem, cnt As Integer
+    Dim x As Integer
+    
+    On Error GoTo ODBCError
+    
+    strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
+           & " FROM ((((((tblMsgBoxEntries INNER JOIN tblMsgBoxButtons ON tblMsgBoxEntries.Buttons = tblMsgBoxButtons.[Button ID]) INNER JOIN tblMsgBoxDefaultButtons ON tblMsgBoxEntries.DefaultButton = tblMsgBoxDefaultButtons.[Default Button ID]) INNER JOIN tblMsgBoxIcons ON tblMsgBoxEntries.Icon = tblMsgBoxIcons.[Icon ID]) INNER JOIN tblReleases ON tblMsgBoxEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblMsgBoxEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblMsgBoxEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblMsgBoxEntries.Application = tblApplications.Code" _
+           & " Where (((tblMsgBoxEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
+           & " ORDER BY tblMsgBoxEntries.Code;"
+
+    frmMain.lvListView.ColumnHeaders.Clear
+
+    'Add the column headings.
+        frmMain.lvListView.ColumnHeaders.Add , , "Msg Key", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Message Box Decode", 4000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Icon", 2500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Default Button", 2500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Buttons", 2500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+
+    'Hide Check boxes
+        frmMain.chkStatic.Visible = False
+        frmMain.txtStatic.Visible = False
+
+    frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
+    frmMain.Refresh
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+        If Not DaoRS.EOF Then
+            While Not DaoRS.EOF
+                Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
+
+                If (DaoRS(1).Value = Null) Then
+                    itmX.SubItems(1) = " "
+                Else
+                    itmX.SubItems(1) = RTrim(DaoRS(1).Value)
+                End If
+
+                itmX.SubItems(2) = RTrim(DaoRS(2).Value)
+                itmX.SubItems(3) = DaoRS(3).Value
+                itmX.SubItems(4) = DaoRS(4).Value
+                itmX.SubItems(5) = DaoRS(5).Value
+                itmX.SubItems(6) = DaoRS(6).Value
+                itmX.SubItems(7) = DaoRS(7).Value
+                itmX.SubItems(8) = DaoRS(8).Value
+
+                If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
+                    itmX.SubItems(9) = CStr(DaoRS(9).Value)
+                Else
+                    itmX.SubItems(9) = " "
+                End If
+
+                frmMain.sbStatusBar.Refresh
+
+                KeyCntr = KeyCntr + 1
+                DaoRS.MoveNext
+            Wend
+        End If
+        
+        frmMain.sbStatusBar.Panels(1).Text = " "
+        frmMain.txtTotalKeys.Text = KeyCntr
+
+    DaoRS.Close
+        
+Exit Sub
+
+ODBCError:
+    Dim msg As String, RC As Integer
+    
+    msg = "An error has occured while trying to populate the Message Box List View." & vbCrLf & _
+          "Error number = " & Err.Number & vbCrLf & _
+          "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
+          "Contact " & AUTHOR & " for assistance."
+    
+    RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
+    Err.Clear
+    
+    Unload frmMain
+
+End Sub
+
+'***************************************************************************************************************
+Public Sub PopulateUerrMessagesListView()
+'***************************************************************************************************************
+
+    Dim itmX As ListItem, cnt As Integer
+    Dim x As Integer
+    
+    On Error GoTo ODBCError
+    
+    strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
+           & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code" _
+           & " Where (((tblUserErrorMsgEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
+           & " ORDER BY tblUserErrorMsgEntries.ErrorNumber;"
+
+    frmMain.lvListView.ColumnHeaders.Clear
+
+    'Add the column headings.
+        frmMain.lvListView.ColumnHeaders.Add , , "Error Key", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Error Message Decode", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Seq. No.", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Language", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+
+    'Hide Check boxes
+        frmMain.chkStatic.Visible = False
+        frmMain.txtStatic.Visible = False
+
+    frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
+    frmMain.Refresh
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+        If Not DaoRS.EOF Then
+            While Not DaoRS.EOF
+                Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
+
+                If (DaoRS(1).Value = Null) Then
+                    itmX.SubItems(1) = " "
+                Else
+                    itmX.SubItems(1) = RTrim(DaoRS(1).Value)
+                End If
+
+                itmX.SubItems(2) = RTrim(DaoRS(2).Value)
+                itmX.SubItems(3) = DaoRS(3).Value
+                itmX.SubItems(4) = DaoRS(4).Value
+                itmX.SubItems(5) = DaoRS(5).Value
+                itmX.SubItems(6) = DaoRS(6).Value
+                itmX.SubItems(7) = DaoRS(7).Value
+
+                If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
+                    itmX.SubItems(8) = CStr(DaoRS(8).Value)
+                Else
+                    itmX.SubItems(8) = " "
+                End If
+
+                frmMain.sbStatusBar.Refresh
+
+                KeyCntr = KeyCntr + 1
+                DaoRS.MoveNext
+            Wend
+        End If
+    
+        frmMain.sbStatusBar.Panels(1).Text = " "
+        frmMain.txtTotalKeys.Text = KeyCntr
+
+    DaoRS.Close
+    
+Exit Sub
+
+ODBCError:
+    Dim msg As String, RC As Integer
+    
+    msg = "An error has occured while trying to populate the Uerror Messages List View." & vbCrLf & _
+          "Error number = " & Err.Number & vbCrLf & _
+          "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
+          "Contact " & AUTHOR & " for assistance."
+    
+    RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
+    Err.Clear
+    
+    Unload frmMain
+    
+End Sub
 
 '***************************************************************************************************************
 Public Sub MainTreeViewNodeClick(ByVal Node As Node)
@@ -452,153 +729,16 @@ Public Sub RefreshCodeDecodeLB()
     On Error GoTo ODBCError
     
     If (CurTableType = CODES_TABLE) Then
-        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.SystemUse, tblEntries.Comments, tblEntries.Description" _
-                 & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
-                 & " WHERE (((tblEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
-                 & " ORDER BY tblEntries.Key;"
-                 
-        frmMain.lvListView.ColumnHeaders.Clear
+        PopulateCodesTableListView
         
-        'Add the column headings.
-        frmMain.lvListView.ColumnHeaders.Add , , "Key", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Drives System Logic", 1400, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
-
-        'UnHide Check boxes
-        frmMain.chkStatic.Visible = True
-        frmMain.txtStatic.Visible = True
-
     ElseIf (CurTableType = MSG_BOX) Then
-        strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
-                 & " FROM ((((((tblMsgBoxEntries INNER JOIN tblMsgBoxButtons ON tblMsgBoxEntries.Buttons = tblMsgBoxButtons.[Button ID]) INNER JOIN tblMsgBoxDefaultButtons ON tblMsgBoxEntries.DefaultButton = tblMsgBoxDefaultButtons.[Default Button ID]) INNER JOIN tblMsgBoxIcons ON tblMsgBoxEntries.Icon = tblMsgBoxIcons.[Icon ID]) INNER JOIN tblReleases ON tblMsgBoxEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblMsgBoxEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblMsgBoxEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblMsgBoxEntries.Application = tblApplications.Code" _
-                 & " Where (((tblMsgBoxEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
-                 & " ORDER BY tblMsgBoxEntries.Code;"
-                 
-        frmMain.lvListView.ColumnHeaders.Clear
-        
-        'Add the column headings.
-        frmMain.lvListView.ColumnHeaders.Add , , "Msg Key", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Message Box Decode", 4000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Icon", 2500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Default Button", 2500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Buttons", 2500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
-        
-        'Hide Check boxes
-        frmMain.chkStatic.Visible = False
-        frmMain.txtStatic.Visible = False
+        PopulateMessageBoxListView
 
     Else
-        strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
-                 & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code" _
-                 & " Where (((tblUserErrorMsgEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
-                 & " ORDER BY tblUserErrorMsgEntries.ErrorNumber;"
+        PopulateUerrMessagesListView
 
-        frmMain.lvListView.ColumnHeaders.Clear
-        
-        'Add the column headings.
-        frmMain.lvListView.ColumnHeaders.Add , , "Error Key", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Error Message Decode", 3000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Seq. No.", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Language", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
-
-        'Hide Check boxes
-        frmMain.chkStatic.Visible = False
-        frmMain.txtStatic.Visible = False
-        
     End If
-    
-    frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
-    frmMain.Refresh
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-    If Not DaoRS.EOF Then
-    
-        While Not DaoRS.EOF
         
-                Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
-                
-                If (DaoRS(1).Value = Null) Then
-                    itmX.SubItems(1) = " "
-                Else
-                    itmX.SubItems(1) = RTrim(DaoRS(1).Value)
-                End If
-                
-                itmX.SubItems(2) = RTrim(DaoRS(2).Value)
-                itmX.SubItems(3) = DaoRS(3).Value
-                itmX.SubItems(4) = DaoRS(4).Value
-                itmX.SubItems(5) = DaoRS(5).Value
-                itmX.SubItems(6) = DaoRS(6).Value
-                
-                If (CurTableType = CODES_TABLE) Then
-                
-                    If ((Not DaoRS(7).Value = vbNullChar) And (Not DaoRS(7).Value = "Null")) Then
-                        itmX.SubItems(7) = CStr(DaoRS(7).Value)
-                    Else
-                        itmX.SubItems(7) = " "
-                    End If
-                    
-                    If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
-                        itmX.SubItems(8) = CStr(DaoRS(8).Value)
-                    Else
-                        itmX.SubItems(8) = " "
-                    End If
-                
-                End If
-                
-                If (CurTableType = MSG_BOX) Then
-                
-                    itmX.SubItems(7) = DaoRS(7).Value
-                    itmX.SubItems(8) = DaoRS(8).Value
-                    
-                    If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
-                        itmX.SubItems(9) = CStr(DaoRS(9).Value)
-                    Else
-                        itmX.SubItems(9) = " "
-                    End If
-                
-                End If
-                
-                If (CurTableType = WES_CODE) Then
-                
-                    itmX.SubItems(7) = DaoRS(7).Value
-                    
-                    If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
-                        itmX.SubItems(8) = CStr(DaoRS(8).Value)
-                    Else
-                        itmX.SubItems(8) = " "
-                    End If
-                
-                End If
-                
-                frmMain.sbStatusBar.Refresh
-                
-                KeyCntr = KeyCntr + 1
-                DaoRS.MoveNext
-        Wend
-        
-    End If
-    
-    frmMain.sbStatusBar.Panels(1).Text = " "
-    frmMain.txtTotalKeys.Text = KeyCntr
-    
-    DaoRS.Close
-    
     'Reset the status bar and current table group box with current table information
     
     strsql = "select Description, DecodeLen, DecodeDisplacement, " & _

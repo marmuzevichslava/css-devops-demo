@@ -1,20 +1,83 @@
 VERSION 5.00
 Begin VB.Form frmAddModKey 
    BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   3480
+   ClientHeight    =   3975
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7545
    FillStyle       =   6  'Cross
    Icon            =   "frmaddmodkey.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3480
+   ScaleHeight     =   3975
    ScaleWidth      =   7545
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CheckBox chkSystem 
+   Begin VB.CheckBox chkClientUse 
+      Caption         =   "Check1"
+      Enabled         =   0   'False
+      Height          =   255
+      Left            =   1350
+      TabIndex        =   21
+      Top             =   2185
+      Width           =   255
+   End
+   Begin VB.TextBox txtDecode 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   1
+      ToolTipText     =   "Decode for the current Key"
+      Top             =   653
+      Width           =   5970
+   End
+   Begin VB.ComboBox cbxApplication 
+      Height          =   315
+      Left            =   1350
+      Style           =   2  'Dropdown List
+      TabIndex        =   4
+      Top             =   1449
+      Width           =   2415
+   End
+   Begin VB.TextBox txtKey 
+      BackColor       =   &H0000FFFF&
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   0
+      ToolTipText     =   "Key Code to Add/Modify"
+      Top             =   255
+      Width           =   2295
+   End
+   Begin VB.ComboBox cbxClients 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   1350
+      Style           =   2  'Dropdown List
+      TabIndex        =   2
+      ToolTipText     =   "Client this entry applies to"
+      Top             =   1051
+      Width           =   2415
+   End
+   Begin VB.TextBox txtComments 
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   7
+      ToolTipText     =   "Comments for current Key"
+      Top             =   2925
+      Width           =   5925
+   End
+   Begin VB.TextBox txtDesc 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   6
+      ToolTipText     =   "Decription of the current Key"
+      Top             =   2523
+      Width           =   5925
+   End
+   Begin VB.CheckBox chkHostUse 
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -26,31 +89,14 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   1365
+      Left            =   1350
       MaskColor       =   &H00000000&
-      TabIndex        =   18
+      TabIndex        =   20
       TabStop         =   0   'False
       ToolTipText     =   "Indicates the current Key is used to drive system logic"
-      Top             =   1845
+      Top             =   1847
       UseMaskColor    =   -1  'True
-      Width           =   240
-   End
-   Begin VB.TextBox txtDesc 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   6
-      ToolTipText     =   "Decription of the current Key"
-      Top             =   2205
-      Width           =   5925
-   End
-   Begin VB.TextBox txtComments 
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   7
-      ToolTipText     =   "Comments for current Key"
-      Top             =   2565
-      Width           =   5925
+      Width           =   255
    End
    Begin VB.CommandButton cmdProcess 
       Caption         =   "&Add"
@@ -69,7 +115,7 @@ Begin VB.Form frmAddModKey
       Left            =   2392
       TabIndex        =   8
       ToolTipText     =   "Add/Modify Key"
-      Top             =   3015
+      Top             =   3375
       Width           =   1215
    End
    Begin VB.CommandButton cmdCancel 
@@ -87,35 +133,8 @@ Begin VB.Form frmAddModKey
       Left            =   3937
       TabIndex        =   9
       ToolTipText     =   "Return to main"
-      Top             =   3015
+      Top             =   3375
       Width           =   1215
-   End
-   Begin VB.ComboBox cbxClients 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1350
-      Style           =   2  'Dropdown List
-      TabIndex        =   2
-      ToolTipText     =   "Client this entry applies to"
-      Top             =   1005
-      Width           =   2415
-   End
-   Begin VB.TextBox txtKey 
-      BackColor       =   &H0000FFFF&
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   0
-      ToolTipText     =   "Key Code to Add/Modify"
-      Top             =   255
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxApplication 
-      Height          =   315
-      Left            =   1350
-      Style           =   2  'Dropdown List
-      TabIndex        =   4
-      Top             =   1410
-      Width           =   2415
    End
    Begin VB.ComboBox cbxRelease 
       Height          =   315
@@ -133,17 +152,8 @@ Begin VB.Form frmAddModKey
       Top             =   1005
       Width           =   2415
    End
-   Begin VB.TextBox txtDecode 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   1
-      ToolTipText     =   "Decode for the current Key"
-      Top             =   612
-      Width           =   5970
-   End
-   Begin VB.Label Label5 
-      Caption         =   "Drives System Logic"
+   Begin VB.Label lblClientLogic 
+      Caption         =   "Drives Client Logic"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -154,10 +164,27 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   1620
+      Left            =   1680
       TabIndex        =   19
-      Top             =   1860
-      Width           =   1830
+      Top             =   2220
+      Width           =   2295
+   End
+   Begin VB.Label lblHostLogic 
+      Caption         =   "Drives Host Logic"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Left            =   1680
+      TabIndex        =   18
+      Top             =   1875
+      Width           =   2295
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -264,7 +291,7 @@ Begin VB.Form frmAddModKey
       Height          =   240
       Left            =   180
       TabIndex        =   12
-      Top             =   2610
+      Top             =   2970
       Width           =   1080
    End
    Begin VB.Label Label4 
@@ -282,7 +309,7 @@ Begin VB.Form frmAddModKey
       Height          =   240
       Left            =   165
       TabIndex        =   11
-      Top             =   2235
+      Top             =   2595
       Width           =   1095
    End
    Begin VB.Label Label1 
@@ -501,7 +528,7 @@ Private Sub Form_Load()
         cmdProcess.Caption = "&Add"
         txtKey.Text = "E"
         txtKey.SelStart = Len(txtKey.Text) + 1
-    
+                
     'We are modifying a current Key.
     Else
         
@@ -511,9 +538,9 @@ Private Sub Form_Load()
         
         myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
                  
-        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblEntries.Comments, tblEntries.Description, tblEntries.SystemUse" _
-                 & " FROM (((tblEntries INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code" _
-                 & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & CurKey & Chr(34) & " and tblEntries.Client = " & myClient.Displaycode
+        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblEntries.Comments, tblEntries.Description, tblEntries.HostSystemUse, tblEntries.HostOccurs, tblEntries.ClientSystemUse, tblEntries.ClientOccurs" _
+               & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
+               & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & CurKey & Chr(34) & " and tblEntries.Client = " & myClient.Displaycode
         
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
@@ -579,16 +606,28 @@ Private Sub Form_Load()
                 Me.txtDesc.Text = ""
             End If
              
+            'Update the check boxes.
             If (Len(DaoRS(8).Value) > 0) Then
                 If (DaoRS(8).Value = False) Then
-                    Me.chkSystem.Value = 0
+                    Me.chkHostUse.Value = 0
                 Else
-                    Me.chkSystem.Value = 1
+                    Me.chkHostUse.Value = 1
+                    lblHostLogic.Caption = "Drives Host Logic (" & DaoRS(9).Value & ")"
                 End If
             Else
-                Me.chkSystem.Value = 0
+                Me.chkHostUse.Value = 0
             End If
             
+            If (Len(DaoRS(10).Value) > 0) Then
+                If (DaoRS(10).Value = False) Then
+                    Me.chkClientUse.Value = 0
+                Else
+                    Me.chkClientUse.Value = 1
+                    lblClientLogic.Caption = "Drives Client Logic (" & DaoRS(11).Value & ")"
+                End If
+            Else
+                Me.chkClientUse.Value = 0
+            End If
             DaoRS.Close
         
         End If
@@ -623,6 +662,10 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
 End Sub
 
 
+
+Private Sub Label6_Click()
+
+End Sub
 
 '***************************************************************************************************************
 Private Sub txtComments_Change()
@@ -756,7 +799,13 @@ Public Function AddNewRecord() As Boolean
 
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
-   
+    
+    'Initialize checkboxes and values for driving logic.
+    Me.chkHostUse.Value = 0
+    Me.lblHostLogic = "Drives Host Logic"
+    Me.chkClientUse.Value = 0
+    Me.lblClientLogic = "Drives Client Logic"
+    
     'Make sure that there is at least a space within each text field.
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     
@@ -820,16 +869,53 @@ Public Function ModifyRecord() As Boolean
     Dim myRelease As New Release
     Dim myComment As New Comment
     Dim hDecode As String
-    
+        
     myClient.Decode = Me.cbxClients.Text
     myApplication.Decode = Me.cbxApplication.Text
     myPlatform.Decode = Me.cbxPlatform.Text
     myRelease.Decode = Me.cbxRelease.Text
-    myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
-    
-    'Figure out what the comment should be
+      
+    'Figure out what the comment should be.
     myComment.Text = Me.txtComments.Text
     
+    'Update check boxes and captions for driving logic.
+    strsql = "SELECT DISTINCTROW tblEntries.HostSystemUse, tblEntries.HostOccurs, tblEntries.ClientSystemUse, tblEntries.ClientOccurs" _
+               & " FROM tblEntries" _
+               & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & txtKey.Text & Chr(34) & " And tblEntries.Client = " & myClient.Displaycode
+        
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    If Not DaoRS.EOF Then
+        'Update the check boxes.
+            If (Len(DaoRS(0).Value) > 0) Then
+                If (DaoRS(0).Value = False) Then
+                    Me.chkHostUse.Value = 0
+                    lblHostLogic.Caption = "Drives Host Logic"
+                Else
+                    Me.chkHostUse.Value = 1
+                    lblHostLogic.Caption = "Drives Host Logic (" & DaoRS(1).Value & ")"
+                End If
+            Else
+                Me.chkHostUse.Value = 0
+                lblHostLogic.Caption = "Drives Host Logic"
+            End If
+            
+            If (Len(DaoRS(2).Value) > 0) Then
+                If (DaoRS(2).Value = False) Then
+                    Me.chkClientUse.Value = 0
+                    lblClientLogic.Caption = "Drives Client Logic"
+                Else
+                    Me.chkClientUse.Value = 1
+                    lblClientLogic.Caption = "Drives Client Logic (" & DaoRS(3).Value & ")"
+                End If
+            Else
+                Me.chkClientUse.Value = 0
+                lblClientLogic.Caption = "Drives Client Logic"
+            End If
+            DaoRS.Close
+        
+    End If
+        
     'Make sure that there is at least a space within each text field.
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     

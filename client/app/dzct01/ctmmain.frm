@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "Comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
 Begin VB.Form frmMain 
    Caption         =   "Codestable Explorer"
    ClientHeight    =   6000
@@ -326,7 +326,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":030A
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -347,7 +346,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0326
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -368,11 +366,9 @@ Begin VB.Form frmMain
             Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "ctmmain.frx":0342
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
