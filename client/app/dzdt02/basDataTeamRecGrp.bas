@@ -59,28 +59,3 @@ notfound:
 
 End Function
 
-
-Public Function ResetProperties()
-
-    'clear out any data in fields after file has been written
-    frmRecGrp.cboOriging.Text = ""
-    frmRecGrp.txtSirNo.Text = ""
-    frmRecGrp.cboDestination.Text = ""
-    frmRecGrp.txtLongDesc.Text = ""
-    frmRecGrp.txtShortDesc.Text = ""
-    frmRecGrp.txtCOBOLNm.Text = ""
-    frmRecGrp.txtCName = ""
-    frmRecGrp.txtAlias.Text = ""
-    frmRecGrp.txtPrefix.Text = ""
-    
-    'Set required fields back to yellow
-    frmRecGrp.cboOriging.BackColor = &HFFFF&
-    frmRecGrp.cboDestination.BackColor = &HFFFF&
-    frmRecGrp.txtSirNo.BackColor = &HFFFF&
-    frmRecGrp.txtLongDesc.BackColor = &HFFFF&
-    frmRecGrp.txtShortDesc.BackColor = &HFFFF&
-    frmRecGrp.txtCOBOLNm.BackColor = &HFFFF&
-    frmRecGrp.txtCName.BackColor = &HFFFF&
-  
- 
-End Function

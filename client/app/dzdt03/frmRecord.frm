@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin VB.Form frmRecord 
    Caption         =   "Request Record Template"
-   ClientHeight    =   3960
+   ClientHeight    =   3735
    ClientLeft      =   165
    ClientTop       =   735
    ClientWidth     =   6840
    LinkTopic       =   "Form7"
-   ScaleHeight     =   3960
+   ScaleHeight     =   3735
    ScaleWidth      =   6840
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtAlias 
@@ -475,7 +475,7 @@ On Error GoTo Err_Form_Load
     bAdded = False
     
     'Load required data
-    Call DataLoad
+''    Call DataLoad
     
 Exit_Form_Load:
     Exit Sub
@@ -620,10 +620,10 @@ On Error GoTo Err_DataLoad
 
     Dim myDatabase As String
          
-    'load data
-    myDatabase = "o:\tools\DataTeamTool\codestbl\Codesdat.mdb"
-    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
+'    'load data
+'    myDatabase = "o:\tools\DataTeamTool\codestbl\Codesdat.mdb"
+'    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
+'    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
    
 Exit_DataLoad:
     Exit Sub

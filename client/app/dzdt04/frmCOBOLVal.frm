@@ -436,12 +436,6 @@ Err_cmdOK_Click:
     
 End Sub
 
-Private Sub Form_Load()
-    
-    Call DataLoad
-    
-End Sub
-
 Private Sub txtAliasDE_Change()
 On Error GoTo Err_txtAliasDE_Change
 
@@ -587,7 +581,7 @@ On Error GoTo Err_txtCobolNam_LostFocus
     
     iDash = 45
     
-    sString = txtCOBOLNam.Text
+    sString = txtCobolNam.Text
     
     If sString = "" Then
         'do nothing
@@ -595,22 +589,22 @@ On Error GoTo Err_txtCobolNam_LostFocus
     End If
     
         
-    If Len(txtCOBOLNam.Text) < 4 Then
+    If Len(txtCobolNam.Text) < 4 Then
     
         MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters or spaces.", vbOKOnly, "Enter COBOL Values"
-        txtCOBOLNam.SetFocus
-        txtCOBOLNam.SelStart = 0
-        txtCOBOLNam.SelLength = Len(sString)
+        txtCobolNam.SetFocus
+        txtCobolNam.SelStart = 0
+        txtCobolNam.SelLength = Len(sString)
         
     ElseIf Len(sString) > 3 And SpecialCharsChk(sString, iDash, True) Then
         
         MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters or spaces.", vbOKOnly, "Enter COBOL Values"
-        txtCOBOLNam.SetFocus
-        txtCOBOLNam.SelStart = 0
-        txtCOBOLNam.SelLength = Len(sString)
+        txtCobolNam.SetFocus
+        txtCobolNam.SelStart = 0
+        txtCobolNam.SelLength = Len(sString)
         
     Else
-        txtCOBOLNam.Text = UCase(sString)
+        txtCobolNam.Text = UCase(sString)
 
     End If
     
@@ -625,24 +619,7 @@ Err_txtCobolNam_LostFocus:
     
 End Sub
 
-Public Sub DataLoad()
-On Error GoTo Err_DataLoad
-    
-    
-    'Load combo boxes
-    Dim myDatabase As String
-    
-    
-    
-    
-Exit_DataLoad:
-    Exit Sub
 
-Err_DataLoad:
-    MsgBox Error$
-    GoTo Exit_DataLoad
-       
-End Sub
 
 Private Sub txtDecodesTbl_Change()
 On Error GoTo Err_txtDecodesTbl_Change

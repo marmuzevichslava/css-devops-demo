@@ -738,6 +738,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Dim gblsComp As String
+
 Dim sSpace1 As String, sSpace2 As String, sSpace3 As String, sSpace4 As String, sSpace5 As String, sSpace6 As String
 Dim sSixspc As String
 Dim sSpaceB1 As String, sSpaceB2 As String, sSpaceB3 As String, sSpaceB4 As String, sSpaceB5 As String, sSpaceB6 As String
@@ -1073,27 +1075,28 @@ End Sub
 
 Private Sub cboDestination_Click()
 On Error GoTo Err_cboDestination_Click
-    
-    Dim strTemp As String
-       
-    strTemp = cboDestination.Text
-    strTemp = Mid(strTemp, 2, 2)
-    
-    zSir = strTemp
-    
-    With cboDestination
-        .BackColor = &HFFFFFF
-    End With
-    
-    
-    
-    'update global string compare item
-    gblsComp = ""
-    
-    strTemp = Left(strTemp, 3)
-    
-    zSir = strTemp
-    
+
+'''''''''''''''''''TOSIRWB    Christina Mitchell''''''''''''''''''
+'    Dim strTemp As String
+'
+'    strTemp = cboDestination.Text
+'    strTemp = Mid(strTemp, 2, 2)
+'
+'    zSir = strTemp
+'
+'    With cboDestination
+'        .BackColor = &HFFFFFF
+'    End With
+'
+'
+'
+'    'update global string compare item
+'    gblsComp = ""
+'
+'    strTemp = Left(strTemp, 3)
+'
+'    zSir = strTemp
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         
 Exit_cboDestination_Click:
     Exit Sub
@@ -1131,17 +1134,17 @@ Public Sub DataLoad()
 On Error GoTo Err_DataLoad
 
     Dim strDatabase As String
+    Dim dllFindPath As New DataTeamToolDLL.PathtoCodes     'added 10/30/97 CMitchell
+    Dim myCodestable As New CodesTable
+
+    'strDatabase = dllFindPath.glrGetRegistryValueFromPath(PATH_TO_CODESDAT_MDB)
     
-    strDatabase = "o:\Tools\DataTeamTool\codestbl\Codesdat.mdb"
-    Call LoadProc(strDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-    
-    Call LoadProc(strDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-   
-    strDatabase = "o:\tools\DataTeamTool\codestbl\DataTeam.mdb"
+    'Finds the path to where the database DataTeam.mdb is located on users machine
+    'which contains the info for the combo boxes.   Added 10/30/97 by Christina Mitchell
+    strDatabase = dllFindPath.glrGetRegistryValueFromPath(PATH_TO_DATATEAM_MDB)
+
     Call LoadProc(strDatabase, cboDataType, "tblDataType", "DataTypeCd", "DataTypeDcd", "", , True)
     Call LoadProc(strDatabase, cboWidgetType, "tblWidgetType", "WidgetTypeCd", "WidgetTypeDcd", "", , True)
-    
-    strDatabase = "O:\tools\DataTeamTool\codestbl\DataTeam.mdb"
     Call LoadProc(strDatabase, cboUsage, "tblFormats", "FormatsCd", "FormatsDcd", "", , True)
     
 Exit_DataLoad:
@@ -1466,11 +1469,9 @@ On Error GoTo Err_txtColumnnam
     
     Dim strTemp As String
     Dim intThree As Integer
-    Dim iTwo As Integer
     
     strTemp = txtColumnNam.Text
     intThree = 3
-    iTwo = 2
     
     'check tempString for nothing
     If strTemp = "" Then
@@ -1483,19 +1484,14 @@ On Error GoTo Err_txtColumnnam
     If Len(strTemp) < intThree Then
     
         'length does not meet requirements display error message
-        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
+        MsgBox "Please enter a Column Name between 3 and 18 characters.", vbOKOnly, "Data Element Template"
         txtColumnNam.SetFocus
         txtColumnNam.SelStart = 0
         txtColumnNam.SelLength = Len(strTemp)
-        
-    ElseIf Len(strTemp) > iTwo And SpecialCharsChk(strTemp) Then
-        
-        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
-        txtColumnNam.SetFocus
-        txtColumnNam.SelStart = 0
-        txtColumnNam.SelLength = Len(strTemp)
-         
+              
     End If
+    
+    txtColumnNam.Text = UCase(strTemp)
     
 Exit_txtColumnNam:
     Exit Sub
@@ -2816,7 +2812,7 @@ On Error GoTo Err_WriteSirInfo
         
     Close #1
 
-    strMsg = "Request CopyBook Template successfully written. Do you want to create " & _
+    strMsg = "Request Data Element Template successfully written. Do you want to create " & _
     "another Template?"
     strTitle = "Data Element Template"
     

@@ -279,6 +279,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+
 '****************************************************************************
 ' Name: cboDestination_Change
 ' Purpose: Changes the background color of the field yellow if the field is
@@ -508,7 +509,7 @@ On Error GoTo Err_Form_Load
     bAdded = False
 
     'Load required data
-    Call DataLoad
+''    Call DataLoad
 
 Exit_Form_Load:
     Exit Sub
@@ -652,12 +653,14 @@ Public Sub DataLoad()
 On Error GoTo Err_DataLoad
 
     Dim myDatabase As String
-         
-    'load data
-    myDatabase = "o:\tools\DataTeamTool\codestbl\Codesdat.mdb"
-    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-   
+
+''''''''''''''''''''''''''TOSIRWB  CMitchell'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'    load data
+'    myDatabase = "o:\tools\DataTeamTool\codestbl\Codesdat.mdb"
+'    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
+'    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Exit_DataLoad:
     Exit Sub
 Err_DataLoad:
@@ -1290,3 +1293,29 @@ Err_txtSirNo_LostFocus:
     Resume Exit_txtSirNo_LostFocus
 
 End Sub
+
+Public Function ResetProperties()
+
+    'clear out any data in fields after file has been written
+    frmRecGrp.cboOriging.Text = ""
+    frmRecGrp.txtSirNo.Text = ""
+    frmRecGrp.cboDestination.Text = ""
+    frmRecGrp.txtLongDesc.Text = ""
+    frmRecGrp.txtShortDesc.Text = ""
+    frmRecGrp.txtCOBOLNm.Text = ""
+    frmRecGrp.txtCName = ""
+    frmRecGrp.txtAlias.Text = ""
+    frmRecGrp.txtPrefix.Text = ""
+    
+    'Set required fields back to yellow
+    frmRecGrp.cboOriging.BackColor = &HFFFF&
+    frmRecGrp.cboDestination.BackColor = &HFFFF&
+    frmRecGrp.txtSirNo.BackColor = &HFFFF&
+    frmRecGrp.txtLongDesc.BackColor = &HFFFF&
+    frmRecGrp.txtShortDesc.BackColor = &HFFFF&
+    frmRecGrp.txtCOBOLNm.BackColor = &HFFFF&
+    frmRecGrp.txtCName.BackColor = &HFFFF&
+  
+ 
+End Function
+

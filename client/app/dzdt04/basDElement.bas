@@ -1,5 +1,8 @@
 Attribute VB_Name = "modDE"
 Option Explicit
+
+Public Const PATH_TO_DATATEAM_MDB = "\HKEY_LOCAL_MACHINE\SOFTWARE\DTT\DataTeamTable"
+
 Public bRequired As Boolean
 Public SirTemplate As String
 Public xSir As String
@@ -13,16 +16,15 @@ Public sCobolNam As String
 Public orgArray() As String
 
 
-Public Sub LoadProc(strDatabase As String, mControl As Control, strTable As String, strCode As String, strDecode As String, strObjectValue As String, Optional strObjectColumn As String, Optional bSpace As Boolean)
-
+Public Function LoadProc(strDatabase As String, mControl As Control, strTable As String, strCode As String, strDecode As String, strObjectValue As String, Optional strObjectColumn As String, Optional bSpace As Boolean)
     Dim myCodestable As New CodesTable
     Dim counter As Integer
     Dim i As Integer
-    Dim TempString As String
+    Dim tempString As String
     Dim sString As String
-    
+
     i = 0
-    
+
      With myCodestable
         .Connection = strDatabase
         .Table = strTable
@@ -31,28 +33,28 @@ Public Sub LoadProc(strDatabase As String, mControl As Control, strTable As Stri
         .ObjectColumn = strObjectColumn
         .ObjectValue = strObjectValue
     End With
-    
+
     myCodestable.Retrieve
-    
-    
+
+
     'Load the cboOriging and cboDestination with data from Codesdat.mdb file
     Do
         If (myCodestable.Decode(counter) = vbNullChar) Or (myCodestable.Decode(counter) = "") Then Exit Do
-        
+
             'found a value and adding to the combo boxes
-            TempString = myCodestable.Code(counter)
-            TempString = Right(TempString, Len(TempString) - 1)
+            tempString = myCodestable.Code(counter)
+            tempString = Right(tempString, Len(tempString) - 1)
             If bSpace = True Then
-                mControl.AddItem TempString & myCodestable.Decode(counter)
+                mControl.AddItem tempString & myCodestable.Decode(counter)
             Else
-                mControl.AddItem TempString & "  " & myCodestable.Decode(counter)
+                mControl.AddItem tempString & "  " & myCodestable.Decode(counter)
             End If
             counter = counter + 1
     Loop
-    
-    
-    
-End Sub
+
+
+
+End Function
 
 Public Function FileExists(strFilename As String) As Boolean
 On Error GoTo notfound
@@ -114,7 +116,7 @@ Public Function SpecialCharsChk(sString As String, Optional iChar As Integer, Op
 On Error GoTo Err_specialcharschk
 
     Dim intAscii As Integer
-    Dim TempString As String
+    Dim tempString As String
     Dim index As Integer
     Dim i As Integer
     
@@ -125,11 +127,11 @@ On Error GoTo Err_specialcharschk
     'Loop through the string that was passed
     For i = 1 To Len(sString)
     
-        TempString = Mid(sString, index, 1)
+        tempString = Mid(sString, index, 1)
         index = index + 1
         
         'convert single string to ascii code value
-        intAscii = Asc(TempString)
+        intAscii = Asc(tempString)
         
         'check to see if you need to consider a special character is ok
         If bDash = True Then
@@ -234,3 +236,4 @@ Err_NoSpace:
     
     
 End Function
+
