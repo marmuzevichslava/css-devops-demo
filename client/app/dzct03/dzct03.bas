@@ -26,7 +26,7 @@ Const fErrorLogFile As String = "c:\temp\error.log"
 Const EXTRACT_FUNC As String = "E"
 Const UPDATE_FUNC As String = "U"
 Const USER As String = "pvcs"
-Const PWD As String = "frog42"
+Public sFTPParameter As String
 
 '***********************************************************
 '**                        SubMain                        **
@@ -45,6 +45,71 @@ Private Sub Main()
     WrapUp
         
 End Sub
+
+'************************************************************
+'**                       GetFTPParameters                 **
+'************************************************************
+Public Function GetFTPParameters()
+
+    Dim strsql As String
+    Dim DaoRS As Recordset
+  
+    On Error GoTo SQLError
+    
+    'Find out what server the project resides on.
+    strsql = "Select Value " _
+           & "From tblFTPParameter"
+             
+    On Error GoTo RecordsetError
+    
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    On Error GoTo GetParameterError
+    
+    If Not DaoRS.EOF Then
+        sFTPParameter = DaoRS(0).Value
+    Else
+        Err.Raise 15, PutTblFile, "No more records in recordset."
+    End If
+    
+    DaoRS.Close
+    
+    GetFTPParameters = True
+    
+    Exit Function
+    
+SQLError:
+    GetFTPParameters = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQL query in the GetFTPParameters function." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+RecordsetError:
+    GetFTPParameters = False
+    ErrorFound = True
+    msg = "An error occurred while trying to open the recordset during when getting the FTP parameter." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+GetParameterError:
+    GetFTPParameters = False
+    ErrorFound = True
+    msg = "An error occurred while trying to get the FTP parameter." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+End Function
 
 Private Sub WriteToErrorLog()
     
@@ -308,7 +373,7 @@ Public Function PutTblFile() As Boolean
         .ErrorMessageBox = False
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = fFTPOutFile
         .LocalFile = fCTempOutFile
         .PutFile
@@ -399,7 +464,7 @@ Public Function GetTblFile() As Boolean
         .ErrorMessageBox = False
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = fFTPInFile
         .LocalFile = fCTempInFile
         .GetFile
@@ -710,6 +775,12 @@ Public Function Process() As Boolean
     
     On Error GoTo InvalidFunction
     
+    If Not GetFTPParameters Then
+        Process = False
+    Else
+        Process = True
+    End If
+    
     'Perform either Extract or Update.
     Select Case sFunction
         Case EXTRACT_FUNC
@@ -795,7 +866,7 @@ Public Function WrapUp() As Boolean
                      .ErrorMessageBox = False
                      .HostName = sServer
                      .UserName = USER
-                     .Password = PWD
+                     .Password = sFTPParameter
                      .RemoteDirectory = fUNIXPath
                      .RemoteFile = fWorkFile & "*"
                      .DeleteDirectory
