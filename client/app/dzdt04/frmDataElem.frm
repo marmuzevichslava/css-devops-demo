@@ -3,8 +3,8 @@ Begin VB.Form frmDataElem
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Data Element Template"
    ClientHeight    =   7320
-   ClientLeft      =   150
-   ClientTop       =   720
+   ClientLeft      =   990
+   ClientTop       =   1080
    ClientWidth     =   10095
    ControlBox      =   0   'False
    LinkTopic       =   "Form8"
@@ -12,12 +12,11 @@ Begin VB.Form frmDataElem
    MinButton       =   0   'False
    ScaleHeight     =   7320
    ScaleWidth      =   10095
-   StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtPointsToCOBOLNm 
       Height          =   315
       Left            =   8040
       MaxLength       =   18
-      TabIndex        =   50
+      TabIndex        =   23
       Top             =   6480
       Width           =   1575
    End
@@ -25,7 +24,7 @@ Begin VB.Form frmDataElem
       Height          =   315
       Left            =   4560
       MaxLength       =   8
-      TabIndex        =   49
+      TabIndex        =   22
       Top             =   6480
       Width           =   1575
    End
@@ -33,7 +32,7 @@ Begin VB.Form frmDataElem
       BackColor       =   &H0000FFFF&
       Height          =   315
       Left            =   1200
-      TabIndex        =   44
+      TabIndex        =   21
       Top             =   6480
       Width           =   1620
    End
@@ -221,7 +220,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   735
       Left            =   8640
-      TabIndex        =   40
+      TabIndex        =   25
       Top             =   3840
       Width           =   975
    End
@@ -238,7 +237,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   735
       Left            =   8640
-      TabIndex        =   39
+      TabIndex        =   24
       Top             =   3000
       Width           =   975
    End
@@ -255,7 +254,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   615
       Left            =   2760
-      TabIndex        =   38
+      TabIndex        =   43
       Top             =   8880
       Width           =   1575
    End
@@ -272,7 +271,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   615
       Left            =   5040
-      TabIndex        =   37
+      TabIndex        =   42
       Top             =   8880
       Width           =   1575
    End
@@ -313,7 +312,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   375
       Left            =   6480
-      TabIndex        =   48
+      TabIndex        =   50
       Top             =   6480
       Width           =   1575
    End
@@ -330,7 +329,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   495
       Left            =   3120
-      TabIndex        =   47
+      TabIndex        =   49
       Top             =   6480
       Width           =   1335
    End
@@ -347,7 +346,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   480
-      TabIndex        =   46
+      TabIndex        =   48
       Top             =   6480
       Width           =   615
    End
@@ -364,7 +363,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   45
+      TabIndex        =   47
       Top             =   6000
       Width           =   735
    End
@@ -387,7 +386,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   135
       Left            =   7080
-      TabIndex        =   43
+      TabIndex        =   46
       Top             =   240
       Width           =   135
    End
@@ -404,7 +403,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   135
       Left            =   5040
-      TabIndex        =   42
+      TabIndex        =   45
       Top             =   240
       Width           =   135
    End
@@ -421,7 +420,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   1080
-      TabIndex        =   41
+      TabIndex        =   44
       Top             =   240
       Width           =   1815
    End
@@ -439,7 +438,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   8
       Left            =   1320
-      TabIndex        =   36
+      TabIndex        =   41
       Top             =   3000
       Width           =   3135
    End
@@ -464,7 +463,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   7
       Left            =   1320
-      TabIndex        =   35
+      TabIndex        =   40
       Top             =   3840
       Width           =   735
    End
@@ -482,7 +481,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   6
       Left            =   1320
-      TabIndex        =   34
+      TabIndex        =   39
       Top             =   3480
       Width           =   1455
    End
@@ -500,7 +499,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   5
       Left            =   1320
-      TabIndex        =   33
+      TabIndex        =   38
       Top             =   4200
       Width           =   735
    End
@@ -518,7 +517,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   3
       Left            =   6360
-      TabIndex        =   32
+      TabIndex        =   37
       Top             =   3240
       Width           =   855
    End
@@ -536,7 +535,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   2
       Left            =   4680
-      TabIndex        =   31
+      TabIndex        =   36
       Top             =   3240
       Width           =   855
    End
@@ -554,7 +553,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   1
       Left            =   3000
-      TabIndex        =   30
+      TabIndex        =   35
       Top             =   3240
       Width           =   735
    End
@@ -571,7 +570,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   29
+      TabIndex        =   34
       Top             =   5520
       Width           =   1575
    End
@@ -588,7 +587,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   28
+      TabIndex        =   33
       Top             =   5160
       Width           =   1695
    End
@@ -605,7 +604,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   5160
-      TabIndex        =   27
+      TabIndex        =   32
       Top             =   5160
       Width           =   1575
    End
@@ -622,7 +621,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   26
+      TabIndex        =   31
       Top             =   4800
       Width           =   975
    End
@@ -639,7 +638,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   5160
-      TabIndex        =   25
+      TabIndex        =   30
       Top             =   4800
       Width           =   1575
    End
@@ -656,7 +655,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   24
+      TabIndex        =   29
       Top             =   840
       Width           =   1815
    End
@@ -673,7 +672,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   240
-      TabIndex        =   23
+      TabIndex        =   28
       Top             =   2040
       Width           =   1815
    End
@@ -691,7 +690,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Index           =   0
       Left            =   240
-      TabIndex        =   22
+      TabIndex        =   27
       Top             =   2520
       Width           =   855
    End
@@ -708,7 +707,7 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Left            =   5160
-      TabIndex        =   21
+      TabIndex        =   26
       Top             =   2520
       Width           =   1215
    End
@@ -880,7 +879,7 @@ On Error GoTo Err_cboUsage_Change
      If cboUsage.Text = "" Then
         cboUsage.BackColor = &HFFFF&
     Else
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Enter COBOL Values"
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Data Element Template"
         'set global string compare item
         gblsComp = cboUsage.Text
         cboUsage.BackColor = &HFF&
@@ -923,7 +922,7 @@ On Error GoTo Err_cboUsage_LostFocus
     If cboUsage.Text = "" Then
         cboUsage.BackColor = &HFFFF&
     ElseIf (gblsComp = cboUsage.Text) Then
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Enter COBOL Values"
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Data Element Template"
         cboUsage.BackColor = &HFF&
         cboUsage.SetFocus
         cboUsage.Refresh
@@ -1187,8 +1186,8 @@ On Error GoTo Err_mnExit_Click
         
     Else
     
-        strMsg = "The form contains required fields that do not contain entries. Click " & _
-        "the  'Yes' to exit the form or 'No' to return to form."
+        strMsg = "The form contains required fields that do not contain entries. Click" & _
+        " 'Yes' to exit the form or 'No' to return to form."
         intResponse = MsgBox(strMsg, intStyle, strTitle)
         
         If intResponse = vbYes Then
@@ -1216,13 +1215,34 @@ On Error GoTo Err_mnProcess_Click
 
     Screen.MousePointer = vbHourglass
 
+    Dim strTemp As String
+    Dim intI As Integer
+    
+    strTemp = txtSirNo.Text
+    
+    If Len(txtSirNo.Text) <= 5 And Len(txtSirNo.Text) > 0 And IsNumeric(strTemp) Then
+        
+        For intI = Len(strTemp) + 1 To 5
+            strTemp = "0" & strTemp
+        Next intI
+                    
+        'display 5 digit number
+        txtSirNo.Text = strTemp
+            
+        'assign the YYYYY portion of the SIR number
+        ySir = txtSirNo.Text
+    
+    End If
+    
+
     'perform check on all required fields
     CheckFields
 
     If CheckFields = True Then
 
         'if checks pass, the write file information
-        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
         Call WriteSirInfo
                   
     Else
@@ -1298,7 +1318,7 @@ On Error GoTo Err_txtCName
         
     ElseIf Len(strTemp) < intThree And SpecialCharsChk(strTemp) = False Then
                  
-         MsgBox "Please enter a C Name between 3 and 18 characters.", vbOKOnly, "Data Element Template"
+         MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
          'set focus and highlight text
          txtCName.SetFocus
          txtCName.SelStart = intZero
@@ -1319,10 +1339,10 @@ End Sub
 Private Sub txtCobolNam_Change()
 On Error GoTo Err_txtCOBOLNam_Change
 
-    If txtCobolNam.Text = "" Then
-        txtCobolNam.BackColor = &HFFFF& ' set color to yellow
+    If txtCOBOLNam.Text = "" Then
+        txtCOBOLNam.BackColor = &HFFFF& ' set color to yellow
     Else
-        txtCobolNam.BackColor = &HFFFFFF 'set color to white
+        txtCOBOLNam.BackColor = &HFFFFFF 'set color to white
     End If
     
 Exit_txtCOBOLNam_Change:
@@ -1344,35 +1364,34 @@ On Error GoTo Err_txtCOBOLNam
     'set iDash to ascii value of character that is ok to be found in the String
     intDash = 45
     intFour = 4
-    intFive = 5
-    
-    strTemp = txtCobolNam.Text
+        
+    strTemp = txtCOBOLNam.Text
     
     
     If strTemp = "" Then
-        txtCobolNam.BackColor = &HFFFF&
+        txtCOBOLNam.BackColor = &HFFFF&
         Exit Sub
     End If
     
     
     If Len(strTemp) < intFour Then
          MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
-         txtCobolNam.SetFocus
-         txtCobolNam.SelStart = 0
-         txtCobolNam.SelLength = Len(strTemp)
+         txtCOBOLNam.SetFocus
+         txtCOBOLNam.SelStart = 0
+         txtCOBOLNam.SelLength = Len(strTemp)
          Exit Sub
          
-    ElseIf Len(strTemp) > intFive And SpecialCharsChk(strTemp, intDash, True) Then
+    ElseIf Len(strTemp) >= intFour And SpecialCharsChk(strTemp, intDash, True) Then
     
          MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
-         txtCobolNam.SetFocus
-         txtCobolNam.SelStart = 0
-         txtCobolNam.SelLength = Len(strTemp)
+         txtCOBOLNam.SetFocus
+         txtCOBOLNam.SelStart = 0
+         txtCOBOLNam.SelLength = Len(strTemp)
          Exit Sub
        
    End If
         
-   txtCobolNam.Text = UCase(strTemp)
+   txtCOBOLNam.Text = UCase(strTemp)
         
                
 Exit_txtCOBOLNam:
@@ -1423,7 +1442,7 @@ On Error GoTo Err_txtColumnnam
     If Len(strTemp) < intThree Then
     
         'length does not meet requirements display error message
-        MsgBox "Please enter a Column Name between 3 and 18 characters.", vbOKOnly, "Data Element Template"
+        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
         txtColumnNam.SetFocus
         txtColumnNam.SelStart = 0
         txtColumnNam.SelLength = Len(strTemp)
@@ -1531,7 +1550,7 @@ On Error GoTo Err_txtIntPrecision_Change
     
          If Not IsNumeric(strString) Then
             txtIntPrecision.BackColor = &HFF&
-            MsgBox "Please enter a numeric value no greater than three digits", vbOKOnly, "Data Element Template"
+            MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtIntPrecision.SetFocus
             txtIntPrecision.SelStart = intZero
             txtIntPrecision.SelLength = Len(strString)
@@ -1598,7 +1617,6 @@ On Error GoTo Err_txtIntStructure_Change
     
         txtIntStructure.BackColor = &HFFFFFF
         If SpecialCharsChk(strString) Then
-            txtIntStructure.BackColor = &HFF&
             MsgBox "Please enter an alphanumeric value no greater than two characters.", vbOKOnly, "Data Element Template"
             txtIntStructure.SetFocus
             txtIntStructure.SelStart = 0
@@ -1632,7 +1650,6 @@ On Error GoTo Err_txtIntStructure_LostFocus
     
         txtIntStructure.BackColor = &HFFFFFF
         If SpecialCharsChk(strString) Then
-            txtIntStructure.BackColor = &HFF&
             MsgBox "Please enter an alphanumeric value no greater than two characters.", vbOKOnly, "Data Element Template"
             txtIntStructure.SetFocus
             txtIntStructure.SelStart = 0
@@ -1653,11 +1670,26 @@ End Sub
 
 Private Sub txtLiteral_Change()
 On Error GoTo Err_txtLiteral_Change
-
+    
+    Dim strTemp As String
+    Dim intZero As Integer
+    
+    strTemp = txtLiteral.Text
+    intZero = 0
+    
     If txtLiteral.Text = "" Then
          txtLiteral.BackColor = &HFFFF&
     Else
         txtLiteral.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strTemp) = True Then
+         MsgBox "Please enter a literal that does not contain special characters.", vbOKOnly, "Data Element Template"
+         'set focus and highlight text
+         txtLiteral.SetFocus
+         txtLiteral.SelStart = intZero
+         txtLiteral.SelLength = Len(strTemp)
+        
     End If
     
 Exit_txtLiteral_Change:
@@ -1669,13 +1701,38 @@ Err_txtLiteral_Change:
     
 End Sub
 
+Private Sub txtLiteral_LostFocus()
+On Error GoTo Err_txtLiteral_LostFocus
+
+    Dim strTemp As String
+    Dim intZero As Integer
+    
+    strTemp = txtLiteral.Text
+    intZero = 0
+    
+    If SpecialCharsChk(strTemp) = True Then
+         MsgBox "Please enter a literal that does not contain special characters.", vbOKOnly, "Data Element Template"
+         'set focus and highlight text
+         txtLiteral.SetFocus
+         txtLiteral.SelStart = intZero
+         txtLiteral.SelLength = Len(strTemp)
+        
+    End If
+
+Exit_txtLiteral_LostFocus:
+    Exit Sub
+
+Err_txtLiteral_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral_LostFocus
+    
+End Sub
+
 Private Sub txtPointsToCOBOLNm_Change()
 On Error GoTo Err_txtCOBOLNam_Change
 
-    If txtCobolNam.Text = "" Then
-        txtCobolNam.BackColor = &HFFFF& ' set color to yellow
-    Else
-        txtCobolNam.BackColor = &HFFFFFF 'set color to white
+    If txtCOBOLNam.Text = "" Then
+        txtCOBOLNam.BackColor = &HFFFFFF 'set color to white
     End If
     
 Exit_txtCOBOLNam_Change:
@@ -1703,7 +1760,7 @@ On Error GoTo Err_txtPointsToCOBOLNm_LostFocus
     
     
     If strTemp = "" Then
-        txtPointsToCOBOLNm.BackColor = &HFFFF&
+        txtPointsToCOBOLNm.BackColor = &HFFFFFF
         Exit Sub
     End If
     
@@ -1715,7 +1772,7 @@ On Error GoTo Err_txtPointsToCOBOLNm_LostFocus
          txtPointsToCOBOLNm.SelLength = Len(strTemp)
          Exit Sub
          
-    ElseIf Len(strTemp) > intFive And SpecialCharsChk(strTemp, intDash, True) Then
+    ElseIf Len(strTemp) >= intFour And SpecialCharsChk(strTemp, intDash, True) Then
     
          MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
          txtPointsToCOBOLNm.SetFocus
@@ -1723,7 +1780,7 @@ On Error GoTo Err_txtPointsToCOBOLNm_LostFocus
          txtPointsToCOBOLNm.SelLength = Len(strTemp)
          Exit Sub
        
-   End If
+    End If
         
     txtPointsToCOBOLNm.Text = UCase(strTemp)
         
@@ -1741,12 +1798,19 @@ Private Sub txtPointsToRecIDNo_Change()
 On Error GoTo Err_txtPointsToRecIDNo_Change
     
     Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtPointsToRecIDNo.Text
+    intZero = 0
+    
+    If txtPointsToRecIDNo.Text = "" Then
+        txtPointsToRecIDNo.BackColor = &HFFFFFF
+    End If
     
     If SpecialCharsChk(strString) Then
-            txtPointsToRecIDNo.BackColor = &HFF&
-            MsgBox "Please enter an alphanumeric value no greater than 8 characters.", vbOKOnly, "Data Element Template"
+            MsgBox "Please enter a value no greater than 8 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
             txtPointsToRecIDNo.SetFocus
-            txtPointsToRecIDNo.SelStart = 0
+            txtPointsToRecIDNo.SelStart = intZero
             txtPointsToRecIDNo.SelLength = Len(strString)
     End If
 
@@ -1763,12 +1827,19 @@ Private Sub txtPointsToRecIDNo_LostFocus()
 On Error GoTo Err_txtPointsToRecIDNo_LostFocus
     
     Dim strString As String
+    Dim intZero As Integer
     
+    strString = txtPointsToRecIDNo.Text
+    intZero = 0
+    
+    If txtPointsToRecIDNo.Text = "" Then
+        txtPointsToRecIDNo.BackColor = &HFFFFFF
+    End If
+        
     If SpecialCharsChk(strString) Then
-            txtPointsToRecIDNo.BackColor = &HFF&
-            MsgBox "Please enter an alphanumeric value no greater than 8 characters.", vbOKOnly, "Data Element Template"
+            MsgBox "Please enter a value no greater than 8 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
             txtPointsToRecIDNo.SetFocus
-            txtPointsToRecIDNo.SelStart = 0
+            txtPointsToRecIDNo.SelStart = intZero
             txtPointsToRecIDNo.SelLength = Len(strString)
     End If
 
@@ -1801,7 +1872,6 @@ On Error GoTo Err_txtRptLength_Change
     Else
         'check for numeric value while entering
         If Not IsNumeric(strTemp) Then
-            txtRptLength.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtRptLength.SetFocus
             txtRptLength.SelStart = intZero
@@ -1837,7 +1907,6 @@ On Error GoTo Err_txtRptLength_LostFocus
         
         'check for numeric value while entering
         If Not IsNumeric(strTemp) Then
-            txtRptLength.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtRptLength.SetFocus
             txtRptLength.SelStart = intZero
@@ -1868,7 +1937,6 @@ On Error GoTo Err_txtRptPrecision_Change
     Else
     
         If Not IsNumeric(strString) Then
-            txtRptPrecision.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than five digits.", vbOKOnly, "Data Element Template"
             txtRptPrecision.SetFocus
             txtRptPrecision.SelStart = 0
@@ -1906,7 +1974,6 @@ On Error GoTo Err_txtRptPrecision_LostFocus
         
         'check for numeric value while entering
         If Not IsNumeric(strTemp) Then
-            txtRptPrecision.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than five digits.", vbOKOnly, "Data Element Template"
             txtRptPrecision.SetFocus
             txtRptPrecision.SelStart = intZero
@@ -1939,7 +2006,6 @@ On Error GoTo Err_txtRptStructure_Change
     Else
         
         If SpecialCharsChk(strString) Then
-            txtRptStructure.BackColor = &HFF&
             MsgBox "Please enter an alphanumeric value no greater than two characters.", vbOKOnly, "Data Element Template"
             txtRptStructure.SetFocus
             txtRptStructure.SelStart = 0
@@ -1972,7 +2038,6 @@ On Error GoTo Err_txtRptStructure_LostFocus
     Else
         
         If SpecialCharsChk(strString) Then
-            txtRptStructure.BackColor = &HFF&
             MsgBox "Please enter an alphanumeric value no greater than two characters.", vbOKOnly, "Data Element Template"
             txtRptStructure.SetFocus
             txtRptStructure.SelStart = 0
@@ -2206,7 +2271,6 @@ On Error GoTo Err_txtWsLength_Change
     Else
         'check for numeric value while entering
         If Not IsNumeric(strTemp) Then
-            txtWsLength.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtWsLength.SetFocus
             txtWsLength.SelStart = 0
@@ -2239,7 +2303,6 @@ On Error GoTo Err_txtWsLength_LostFocus
     Else
         'check for numeric value while entering
         If Not IsNumeric(strTemp) Then
-            txtWsLength.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtWsLength.SetFocus
             txtWsLength.SelStart = 0
@@ -2275,7 +2338,6 @@ On Error GoTo Err_txtWsPrecision_Change
         txtWsPrecision.BackColor = &HFFFFFF
         
         If Not IsNumeric(strString) Then
-            txtWsPrecision.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtWsPrecision.SetFocus
             txtWsPrecision.SelStart = intZero
@@ -2307,7 +2369,6 @@ On Error GoTo Err_txtWsPrecision_LostFocus
     Else
         'check for numeric value while entering
         If Not IsNumeric(strTemp) Then
-            txtWsPrecision.BackColor = &HFF&
             MsgBox "Please enter a numeric value no greater than three digits.", vbOKOnly, "Data Element Template"
             txtWsPrecision.SetFocus
             txtWsPrecision.SelStart = 0
@@ -2340,7 +2401,6 @@ On Error GoTo Err_txtWsStructure_Change
         txtWsStructure.BackColor = &HFFFFFF
          
         If SpecialCharsChk(strString) Then
-            txtWsStructure.BackColor = &HFF&
             MsgBox "Please enter an alphanumeric value no greater than two characters.", vbOKOnly, "Data Element Template"
             txtWsStructure.SetFocus
             txtWsStructure.SelStart = 0
@@ -2375,11 +2435,11 @@ On Error GoTo Err_checkfields
     
     If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
         Or (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (cboDataType.Text = "") _
-        Or (cboWidgetType.Text = "") Or (txtCName.Text = "") Or (txtCobolNam.Text = "") _
+        Or (cboWidgetType.Text = "") Or (txtCName.Text = "") Or (txtCOBOLNam.Text = "") _
         Or (txtColumnNam.Text = "") Or (txtIntLength.Text = "") Or (txtIntPrecision.Text = "") _
         Or (txtIntStructure.Text = "") Or (txtLiteral.Text = "") Or (txtRptLength.Text = "") _
         Or (txtRptPrecision.Text = "") Or (txtRptStructure.Text = "") Or (txtWidgetNam.Text = "") _
-        Or (txtWsLength.Text = "") Or (txtWsPrecision.Text = "") Or (txtWsStructure.Text = "") Then
+        Or (txtWsLength.Text = "") Or (txtWsPrecision.Text = "") Or (txtWsStructure.Text = "") Or (cboUsage.Text = "") Then
             
             'not all fields were filled in
             CheckFields = False
@@ -2621,7 +2681,7 @@ On Error GoTo Err_WriteSirInfo
     Print #1, ""
     Print #1, "________________________________________________________________"
     Print #1, ""
-    Print #1, txtCobolNam.Text
+    Print #1, txtCOBOLNam.Text
     Print #1, ""
     Print #1, "________________________________________________________________"
     Print #1, ""
@@ -2663,7 +2723,7 @@ On Error GoTo Err_WriteSirInfo
     Print #1, "    COBOL Name                   Text"
     Print #1, ""
     Print #1, ""
-    Print #1, "              " & frmCOBOLVal.txtCobolNam.Text & "                         " & frmCOBOLVal.txtAliasDE.Text
+    Print #1, "              " & frmCOBOLVal.txtCOBOLNam.Text & "                         " & frmCOBOLVal.txtAliasDE.Text
     Print #1, ""
     Print #1, ""
     Print #1, ""
@@ -2697,7 +2757,7 @@ On Error GoTo Err_WriteSirInfo
     Print #1, "COBOL Name        Lower Bound        Operand 1        Operand 2        Upper Bound"
     Print #1, ""
     Print #1, ""
-    Print #1, frmCOBOLVal.txtCobolNam.Text & "          " & frmCOBOLVal.txtLB.Text & "          " & frmCOBOLVal.txtOper1.Text & "          " & frmCOBOLVal.txtOper2.Text & "          " & frmCOBOLVal.txtUB.Text
+    Print #1, frmCOBOLVal.txtCOBOLNam.Text & "          " & frmCOBOLVal.txtLB.Text & "          " & frmCOBOLVal.txtOper1.Text & "          " & frmCOBOLVal.txtOper2.Text & "          " & frmCOBOLVal.txtUB.Text
     Print #1, ""
     Print #1, ""
     Print #1, ""
@@ -2754,7 +2814,7 @@ Exit_WriteSirInfo:
         
 Err_WriteSirInfo:
     'Display error message to user
-    MsgBox "Error in attempting to write file.", vbOKOnly, "Data Element Template"
+    MsgBox Error$
     GoTo Exit_WriteSirInfo
         
 End Sub

@@ -2,14 +2,13 @@ VERSION 5.00
 Begin VB.Form frmCOBOLVal 
    Caption         =   "Enter COBOL Values"
    ClientHeight    =   4695
-   ClientLeft      =   60
-   ClientTop       =   345
+   ClientLeft      =   1005
+   ClientTop       =   1965
    ClientWidth     =   10095
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    ScaleHeight     =   4695
    ScaleWidth      =   10095
-   StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtDEName2 
       Height          =   315
       Left            =   7320
@@ -350,8 +349,8 @@ On Error GoTo Err_cmdCancel_Click
     
     msg = "Would you like to save your changes to the Template?"
     Style = vbYesNoCancel
+    Title = "Enter COBOL Values"
     
-    Beep
     Response = MsgBox(msg, Style, Title)
     
     If Response = vbNo Then
@@ -588,7 +587,7 @@ On Error GoTo Err_txtCobolNam_LostFocus
     
     iDash = 45
     
-    sString = txtCobolNam.Text
+    sString = txtCOBOLNam.Text
     
     If sString = "" Then
         'do nothing
@@ -596,22 +595,22 @@ On Error GoTo Err_txtCobolNam_LostFocus
     End If
     
         
-    If Len(txtCobolNam.Text) < 4 Then
+    If Len(txtCOBOLNam.Text) < 4 Then
     
-        MsgBox "Please enter a COBOL Name between 4 and 18 characters with no special characters.", vbOKOnly, "Enter COBOL Values"
-        txtCobolNam.SetFocus
-        txtCobolNam.SelStart = 0
-        txtCobolNam.SelLength = Len(sString)
+        MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Enter COBOL Values"
+        txtCOBOLNam.SetFocus
+        txtCOBOLNam.SelStart = 0
+        txtCOBOLNam.SelLength = Len(sString)
         
     ElseIf Len(sString) > 3 And SpecialCharsChk(sString, iDash, True) Then
         
         MsgBox "Please enter a COBOL Name between 4 and 18 characters with no special characters.", vbOKOnly, "Enter COBOL Values"
-        txtCobolNam.SetFocus
-        txtCobolNam.SelStart = 0
-        txtCobolNam.SelLength = Len(sString)
+        txtCOBOLNam.SetFocus
+        txtCOBOLNam.SelStart = 0
+        txtCOBOLNam.SelLength = Len(sString)
         
     Else
-        txtCobolNam.Text = UCase(sString)
+        txtCOBOLNam.Text = UCase(sString)
 
     End If
     

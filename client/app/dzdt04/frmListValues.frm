@@ -2,14 +2,13 @@ VERSION 5.00
 Begin VB.Form frmListValues 
    Caption         =   "Enter List Values"
    ClientHeight    =   4080
-   ClientLeft      =   60
-   ClientTop       =   345
+   ClientLeft      =   300
+   ClientTop       =   1500
    ClientWidth     =   11265
    ControlBox      =   0   'False
    LinkTopic       =   "Form2"
    ScaleHeight     =   4080
    ScaleWidth      =   11265
-   StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtCNm6 
       Height          =   285
       Left            =   4440
@@ -1402,7 +1401,7 @@ On Error GoTo Err_cboReport1_Change
     If cboReport1.Text = "" Then
         cboReport1.BackColor = &HFFFFFF
     Else
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Enter List Values"""
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Enter List Values"
         'set global string compare item
         gblsComp = cboReport1.Text
         cboReport1.BackColor = &HFF&
@@ -2676,10 +2675,9 @@ On Error GoTo Err_txtCNm1_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
-            'set focus back to txtwidget1 and highlight entry
+            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
+            'set focus back to txtCNm1 and highlight entry
             txtCNm1.SetFocus
             txtCNm1.SelStart = 0
             txtCNm1.SelLength = Len(TempString)
@@ -2690,7 +2688,7 @@ On Error GoTo Err_txtCNm1_LostFocus
              If SpecialCharsChk(TempString) Then
                 
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtCNm1.SetFocus
                 txtCNm1.SelStart = 0
                 txtCNm1.SelLength = Len(TempString)
@@ -2728,9 +2726,8 @@ On Error GoTo Err_txtCNm2_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
             'set focus back to txtwidget1 and highlight entry
             txtCNm2.SetFocus
             txtCNm2.SelStart = 0
@@ -2742,7 +2739,7 @@ On Error GoTo Err_txtCNm2_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtCNm2.SetFocus
                 txtCNm2.SelStart = 0
                 txtCNm2.SelLength = Len(TempString)
@@ -2777,9 +2774,8 @@ On Error GoTo Err_txtCNm3_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
             'set focus back to txtwidget1 and highlight entry
             txtCNm3.SetFocus
             txtCNm3.SelStart = 0
@@ -2791,7 +2787,7 @@ On Error GoTo Err_txtCNm3_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Special Character Warning"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtCNm3.SetFocus
                 txtCNm3.SelStart = 0
                 txtCNm3.SelLength = Len(TempString)
@@ -2826,9 +2822,8 @@ On Error GoTo Err_txtCNm4_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+            
             'set focus back to txtwidget1 and highlight entry
             txtCNm4.SetFocus
             txtCNm4.SelStart = 0
@@ -2840,7 +2835,7 @@ On Error GoTo Err_txtCNm4_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtCNm4.SetFocus
                 txtCNm4.SelStart = 0
                 txtCNm4.SelLength = Len(TempString)
@@ -2875,9 +2870,8 @@ On Error GoTo Err_txtCNm5_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+            
             'set focus back to txtwidget1 and highlight entry
             txtCNm5.SetFocus
             txtCNm5.SelStart = 0
@@ -2889,7 +2883,7 @@ On Error GoTo Err_txtCNm5_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtCNm5.SetFocus
                 txtCNm5.SelStart = 0
                 txtCNm5.SelLength = Len(TempString)
@@ -2924,9 +2918,8 @@ On Error GoTo Err_txtCNm6_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
             'set focus back to txtwidget1 and highlight entry
             txtCNm6.SetFocus
             txtCNm6.SelStart = 0
@@ -2938,7 +2931,7 @@ On Error GoTo Err_txtCNm6_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtCNm6.SetFocus
                 txtCNm6.SelStart = 0
                 txtCNm6.SelLength = Len(TempString)
@@ -2960,6 +2953,725 @@ Err_txtCNm6_LostFocus:
     
 End Sub
 
+Private Sub txtLiteral1_Change()
+On Error GoTo Err_txtLiteral1_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral1.Text
+    intZero = 0
+    
+    If txtLiteral1.Text = "" Then
+        txtLiteral1.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral1.SetFocus
+            txtLiteral1.SelStart = intZero
+            txtLiteral1.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral1_Change:
+    Exit Sub
+
+Err_txtLiteral1_Change:
+    MsgBox Error$
+    Resume Exit_txtLiteral1_Change
+    
+End Sub
+
+Private Sub txtLiteral1_LostFocus()
+On Error GoTo Err_txtLiteral1_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral1.Text
+    intZero = 0
+    
+    If txtLiteral1.Text = "" Then
+        txtLiteral1.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral1.SetFocus
+            txtLiteral1.SelStart = intZero
+            txtLiteral1.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral1_LostFocus:
+    Exit Sub
+
+Err_txtLiteral1_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral1_LostFocus
+    
+
+End Sub
+
+Private Sub txtLiteral2_Change()
+On Error GoTo Err_txtLiteral2_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral2.Text
+    intZero = 0
+    
+    If txtLiteral2.Text = "" Then
+        txtLiteral2.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral2.SetFocus
+            txtLiteral2.SelStart = intZero
+            txtLiteral2.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral2_Change:
+    Exit Sub
+
+Err_txtLiteral2_Change:
+    MsgBox Error$
+    Resume Exit_txtLiteral2_Change
+    
+
+End Sub
+
+Private Sub txtLiteral2_LostFocus()
+On Error GoTo Err_txtLiteral2_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral2.Text
+    intZero = 0
+    
+    If txtLiteral2.Text = "" Then
+        txtLiteral2.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral2.SetFocus
+            txtLiteral2.SelStart = intZero
+            txtLiteral2.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral2_LostFocus:
+    Exit Sub
+
+Err_txtLiteral2_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral2_LostFocus
+    
+
+End Sub
+
+Private Sub txtLiteral3_Change()
+On Error GoTo Err_txtLiteral3_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral3.Text
+    intZero = 0
+    
+    If txtLiteral3.Text = "" Then
+        txtLiteral3.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral3.SetFocus
+            txtLiteral3.SelStart = intZero
+            txtLiteral3.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral3_Change:
+    Exit Sub
+
+Err_txtLiteral3_Change:
+    MsgBox Error$
+    Resume Exit_txtLiteral3_Change
+    
+
+End Sub
+
+Private Sub txtLiteral3_LostFocus()
+On Error GoTo Err_txtLiteral3_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral3.Text
+    intZero = 0
+    
+    If txtLiteral3.Text = "" Then
+        txtLiteral3.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral3.SetFocus
+            txtLiteral3.SelStart = intZero
+            txtLiteral3.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral3_LostFocus:
+    Exit Sub
+
+Err_txtLiteral3_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral3_LostFocus
+    
+
+End Sub
+
+Private Sub txtLiteral4_Change()
+On Error GoTo Err_txtLiteral4_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral4.Text
+    intZero = 0
+    
+    If txtLiteral4.Text = "" Then
+        txtLiteral4.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral4.SetFocus
+            txtLiteral4.SelStart = intZero
+            txtLiteral4.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral4_Change:
+    Exit Sub
+
+Err_txtLiteral4_Change:
+    MsgBox Error$
+    Resume Exit_txtLiteral4_Change
+    
+
+End Sub
+
+Private Sub txtLiteral4_LostFocus()
+On Error GoTo Err_txtLiteral4_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral4.Text
+    intZero = 0
+    
+    If txtLiteral4.Text = "" Then
+        txtLiteral4.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral4.SetFocus
+            txtLiteral4.SelStart = intZero
+            txtLiteral4.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral4_LostFocus:
+    Exit Sub
+
+Err_txtLiteral4_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral4_LostFocus
+    
+
+End Sub
+
+Private Sub txtLiteral5_Change()
+On Error GoTo Err_txtLiteral5_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral5.Text
+    intZero = 0
+    
+    If txtLiteral5.Text = "" Then
+        txtLiteral5.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral5.SetFocus
+            txtLiteral5.SelStart = intZero
+            txtLiteral5.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral5_Change:
+    Exit Sub
+
+Err_txtLiteral5_Change:
+    MsgBox Error$
+    Resume Exit_txtLiteral5_Change
+    
+
+End Sub
+
+Private Sub txtLiteral5_LostFocus()
+On Error GoTo Err_txtLiteral5_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral5.Text
+    intZero = 0
+    
+    If txtLiteral5.Text = "" Then
+        txtLiteral5.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral5.SetFocus
+            txtLiteral5.SelStart = intZero
+            txtLiteral5.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral5_LostFocus:
+    Exit Sub
+
+Err_txtLiteral5_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral5_LostFocus
+    
+
+End Sub
+
+Private Sub txtLiteral6_Change()
+On Error GoTo Err_txtLiteral6_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral6.Text
+    intZero = 0
+    
+    If txtLiteral6.Text = "" Then
+        txtLiteral6.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral6.SetFocus
+            txtLiteral6.SelStart = intZero
+            txtLiteral6.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral6_Change:
+    Exit Sub
+
+Err_txtLiteral6_Change:
+    MsgBox Error$
+    Resume Exit_txtLiteral6_Change
+    
+
+End Sub
+
+Private Sub txtLiteral6_LostFocus()
+On Error GoTo Err_txtLiteral6_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtLiteral6.Text
+    intZero = 0
+    
+    If txtLiteral6.Text = "" Then
+        txtLiteral6.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 40 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtLiteral6.SetFocus
+            txtLiteral6.SelStart = intZero
+            txtLiteral6.SelLength = Len(strString)
+    End If
+
+Exit_txtLiteral6_LostFocus:
+    Exit Sub
+
+Err_txtLiteral6_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtLiteral6_LostFocus
+    
+
+End Sub
+
+Private Sub txtValue1_Change()
+On Error GoTo Err_txtValue1_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue1.Text
+    intZero = 0
+    
+    If txtValue1.Text = "" Then
+        txtValue1.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue1.SetFocus
+            txtValue1.SelStart = intZero
+            txtValue1.SelLength = Len(strString)
+    End If
+
+Exit_txtValue1_Change:
+    Exit Sub
+
+Err_txtValue1_Change:
+    MsgBox Error$
+    Resume Exit_txtValue1_Change
+    
+
+End Sub
+
+Private Sub txtValue1_LostFocus()
+On Error GoTo Err_txtValue1_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue1.Text
+    intZero = 0
+    
+    If txtValue1.Text = "" Then
+        txtValue1.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue1.SetFocus
+            txtValue1.SelStart = intZero
+            txtValue1.SelLength = Len(strString)
+    End If
+
+Exit_txtValue1_LostFocus:
+    Exit Sub
+
+Err_txtValue1_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtValue1_LostFocus
+    
+
+End Sub
+
+Private Sub txtValue2_Change()
+On Error GoTo Err_txtValue2_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue2.Text
+    intZero = 0
+    
+    If txtValue2.Text = "" Then
+        txtValue2.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue2.SetFocus
+            txtValue2.SelStart = intZero
+            txtValue2.SelLength = Len(strString)
+    End If
+
+Exit_txtValue2_Change:
+    Exit Sub
+
+Err_txtValue2_Change:
+    MsgBox Error$
+    Resume Exit_txtValue2_Change
+    
+
+End Sub
+
+Private Sub txtValue2_LostFocus()
+On Error GoTo Err_txtValue2_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue2.Text
+    intZero = 0
+    
+    If txtValue2.Text = "" Then
+        txtValue2.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue2.SetFocus
+            txtValue2.SelStart = intZero
+            txtValue2.SelLength = Len(strString)
+    End If
+
+Exit_txtValue2_LostFocus:
+    Exit Sub
+
+Err_txtValue2_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtValue2_LostFocus
+    
+
+End Sub
+
+Private Sub txtValue3_Change()
+On Error GoTo Err_txtValue3_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue3.Text
+    intZero = 0
+    
+    If txtValue3.Text = "" Then
+        txtValue3.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 8 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue3.SetFocus
+            txtValue3.SelStart = intZero
+            txtValue3.SelLength = Len(strString)
+    End If
+
+Exit_txtValue3_Change:
+    Exit Sub
+
+Err_txtValue3_Change:
+    MsgBox Error$
+    Resume Exit_txtValue3_Change
+    
+
+End Sub
+
+Private Sub txtValue3_LostFocus()
+On Error GoTo Err_txtValue3_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue3.Text
+    intZero = 0
+    
+    If txtValue3.Text = "" Then
+        txtValue3.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue3.SetFocus
+            txtValue3.SelStart = intZero
+            txtValue3.SelLength = Len(strString)
+    End If
+
+Exit_txtValue3_LostFocus:
+    Exit Sub
+
+Err_txtValue3_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtValue3_LostFocus
+    
+
+End Sub
+
+Private Sub txtValue4_Change()
+On Error GoTo Err_txtValue4_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue4.Text
+    intZero = 0
+    
+    If txtValue4.Text = "" Then
+        txtValue4.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue4.SetFocus
+            txtValue4.SelStart = intZero
+            txtValue4.SelLength = Len(strString)
+    End If
+
+Exit_txtValue4_Change:
+    Exit Sub
+
+Err_txtValue4_Change:
+    MsgBox Error$
+    Resume Exit_txtValue4_Change
+    
+
+End Sub
+
+Private Sub txtValue4_LostFocus()
+On Error GoTo Err_txtValue4_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue4.Text
+    intZero = 0
+    
+    If txtValue4.Text = "" Then
+        txtValue4.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue4.SetFocus
+            txtValue4.SelStart = intZero
+            txtValue4.SelLength = Len(strString)
+    End If
+
+Exit_txtValue4_LostFocus:
+    Exit Sub
+
+Err_txtValue4_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtValue4_LostFocus
+    
+
+End Sub
+
+Private Sub txtValue5_Change()
+On Error GoTo Err_txtValue5_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue5.Text
+    intZero = 0
+    
+    If txtValue5.Text = "" Then
+        txtValue5.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue5.SetFocus
+            txtValue5.SelStart = intZero
+            txtValue5.SelLength = Len(strString)
+    End If
+
+Exit_txtValue5_Change:
+    Exit Sub
+
+Err_txtValue5_Change:
+    MsgBox Error$
+    Resume Exit_txtValue5_Change
+    
+
+End Sub
+
+Private Sub txtValue5_LostFocus()
+On Error GoTo Err_txtValue5_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue5.Text
+    intZero = 0
+    
+    If txtValue5.Text = "" Then
+        txtValue5.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue1.SetFocus
+            txtValue1.SelStart = intZero
+            txtValue1.SelLength = Len(strString)
+    End If
+
+Exit_txtValue5_LostFocus:
+    Exit Sub
+
+Err_txtValue5_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtValue5_LostFocus
+    
+
+End Sub
+
+Private Sub txtValue6_Change()
+On Error GoTo Err_txtValue6_Change
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue6.Text
+    intZero = 0
+    
+    If txtValue6.Text = "" Then
+        txtValue6.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue6.SetFocus
+            txtValue6.SelStart = intZero
+            txtValue6.SelLength = Len(strString)
+    End If
+
+Exit_txtValue6_Change:
+    Exit Sub
+
+Err_txtValue6_Change:
+    MsgBox Error$
+    Resume Exit_txtValue6_Change
+    
+
+End Sub
+
+Private Sub txtValue6_LostFocus()
+On Error GoTo Err_txtValue6_LostFocus
+    
+    Dim strString As String
+    Dim intZero As Integer
+    
+    strString = txtValue6.Text
+    intZero = 0
+    
+    If txtValue6.Text = "" Then
+        txtValue6.BackColor = &HFFFFFF
+    End If
+    
+    If SpecialCharsChk(strString) Then
+            MsgBox "Please enter a value no greater than 2 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+            txtValue6.SetFocus
+            txtValue6.SelStart = intZero
+            txtValue6.SelLength = Len(strString)
+    End If
+
+Exit_txtValue6_LostFocus:
+    Exit Sub
+
+Err_txtValue6_LostFocus:
+    MsgBox Error$
+    Resume Exit_txtValue6_LostFocus
+    
+
+End Sub
+
 Private Sub txtWidget1_LostFocus()
 On Error GoTo Err_txtWidget1
 
@@ -2973,7 +3685,7 @@ On Error GoTo Err_txtWidget1
         'found something, evaluate it
         If Len(sString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
+             MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters." & _
             "Widget Name.", vbOKOnly, "Enter List Values"
          
             'set focus back to txtwidget1 and highlight entry
@@ -2987,7 +3699,7 @@ On Error GoTo Err_txtWidget1
              If SpecialCharsChk(sString) Or NoSpace(sString) Then
                 
                 'special character found flag as error
-                MsgBox "There are no special characters allowed or spaces, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtWidget1.SetFocus
                 txtWidget1.SelStart = 0
                 txtWidget1.SelLength = Len(sString)
@@ -3020,9 +3732,8 @@ On Error GoTo Err_txtWidget2_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
             'set focus back to txtwidget1 and highlight entry
             txtWidget2.SetFocus
             txtWidget2.SelStart = 0
@@ -3031,10 +3742,10 @@ On Error GoTo Err_txtWidget2_LostFocus
         Else
             
             'entry is long enough, check for special characters
-             If SpecialCharsChk(TempString) Then
+             If SpecialCharsChk(TempString) Or NoSpace(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtWidget2.SetFocus
                 txtWidget2.SelStart = 0
                 txtWidget2.SelLength = Len(TempString)
@@ -3067,8 +3778,7 @@ On Error GoTo Err_txtWidget3_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
+             MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
          
             'set focus back to txtwidget1 and highlight entry
             txtWidget3.SetFocus
@@ -3078,10 +3788,10 @@ On Error GoTo Err_txtWidget3_LostFocus
         Else
             
             'entry is long enough, check for special characters
-             If SpecialCharsChk(TempString) Then
+             If SpecialCharsChk(TempString) Or NoSpace(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtWidget3.SetFocus
                 txtWidget3.SelStart = 0
                 txtWidget3.SelLength = Len(TempString)
@@ -3115,9 +3825,8 @@ On Error GoTo Err_txtWidget4_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
             'set focus back to txtwidget1 and highlight entry
             txtWidget4.SetFocus
             txtWidget4.SelStart = 0
@@ -3126,10 +3835,10 @@ On Error GoTo Err_txtWidget4_LostFocus
         Else
             
             'entry is long enough, check for special characters
-             If SpecialCharsChk(TempString) Then
+             If SpecialCharsChk(TempString) Or NoSpace(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtWidget4.SetFocus
                 txtWidget4.SelStart = 0
                 txtWidget4.SelLength = Len(TempString)
@@ -3161,9 +3870,8 @@ On Error GoTo Err_txtWidget5_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+            
             'set focus back to txtwidget1 and highlight entry
             txtWidget5.SetFocus
             txtWidget5.SelStart = 0
@@ -3172,10 +3880,10 @@ On Error GoTo Err_txtWidget5_LostFocus
         Else
             
             'entry is long enough, check for special characters
-             If SpecialCharsChk(TempString) Then
+             If SpecialCharsChk(TempString) Or NoSpace(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtWidget5.SetFocus
                 txtWidget5.SelStart = 0
                 txtWidget5.SelLength = Len(TempString)
@@ -3208,9 +3916,8 @@ On Error GoTo Err_txtWidget6_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Widget Name must be between 3 and 18 characters. Please re-enter " & _
-            "Widget Name.", vbOKOnly, "Enter List Values"
-         
+             MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                     
             'set focus back to txtwidget1 and highlight entry
             txtWidget6.SetFocus
             txtWidget6.SelStart = 0
@@ -3219,10 +3926,10 @@ On Error GoTo Err_txtWidget6_LostFocus
         Else
             
             'entry is long enough, check for special characters
-             If SpecialCharsChk(TempString) Then
+             If SpecialCharsChk(TempString) Or NoSpace(TempString) Then
              
                 'special character found flag as error
-                MsgBox "There are no special characters allowed, please re-enter.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a widget name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
                 txtWidget6.SetFocus
                 txtWidget6.SelStart = 0
                 txtWidget6.SelLength = Len(TempString)
