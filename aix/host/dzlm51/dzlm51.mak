@@ -16,7 +16,7 @@
 #	Global variable definitions
 #
 #**************************************************************************
-include $(BASE_TOOL)/arch/source/makedefs.mak
+include $(HOST_ARCH)/runtime/hpux/scripts/makedefs.mak
 
 #**************************************************************************
 #
@@ -136,4 +136,4 @@ dzlockfuncs.o : ./dzerr01.h
 #	Common Instructions
 #
 #**************************************************************************
-include $(BASE_TOOL)/arch/source/makeinst.mak
+include $(HOST_ARCH)/runtime/hpux/scripts/makeinst.mak
