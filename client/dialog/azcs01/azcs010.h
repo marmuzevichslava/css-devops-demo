@@ -56,4 +56,5 @@
 /***************************************************************************/
 WCBFWD(AZCS010BUSUserPredisplay);
 WCBFWD(LdAZCS010O);
-
+WCBFWD(AZCS010BUSInitLB);
+WCBFWD(LdAZCS010O);

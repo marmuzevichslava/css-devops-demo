@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS008                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:28:41 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -41,7 +41,7 @@ unsigned char _grpFiller;
     char _MapLBSelIndData[50];
 #define MapLBSelIndData    pWesMap->_MapLBSelIndData
 
-    short _MapLBCdStatusIconicData[50];
+    unsigned short _MapLBCdStatusIconicData[50];
 #define MapLBCdStatusIconicData    pWesMap->_MapLBCdStatusIconicData
 
     short _MapLBNmRowIndxData[50];
@@ -49,6 +49,9 @@ unsigned char _grpFiller;
 
     char _MapLBRequestIDData[50][10];
 #define MapLBRequestIDData    pWesMap->_MapLBRequestIDData
+
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
 
 
     WESFLDCTL _MapLBCtl;
@@ -70,11 +73,18 @@ unsigned char _grpFiller;
     WESFLDCTL _MapLBRequestIDCtl[50];
 #define MapLBRequestIDCtl      pWesMap->_MapLBRequestIDCtl
 
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 };
 
 typedef struct
 {
-    short  _MapLBCdStatusIconicData;
+    unsigned short  _MapLBCdStatusIconicData;
     short  _MapLBNmRowIndxData;
     char  _MapLBRequestIDData[10];
 }_MapLBRow;

@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS013                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:29:28 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,295,177
+AZCS013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,339,177
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
@@ -25,17 +25,17 @@ Begin  /* controls */
               WS_VISIBLE  | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,131,152,32,12
+              ,150,152,37,12
 
    CONTROL "",100,
               FND_LISTBOX,
               WS_VISIBLE
-              ,5,10,281,136
+              ,5,10,323,136
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,91,154,0,0
+              ,104,154,0,0
 
 End /* controls */
 

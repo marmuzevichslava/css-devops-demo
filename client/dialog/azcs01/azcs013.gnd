@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: AZCS013                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:29:28 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -91,7 +91,7 @@ WCTHEADER  AZCS013WCTHeader =
     sizeof(struct _AZCS013WesMap),
     offsetof(struct _AZCS013WesMap, _MsgLBSelIndData),
     offsetof(struct _AZCS013WesMap, _MsgLBCtl),
-    WLT_C, 0, 0, 0
+    WLT_C, 0, 15, 0
 }; 
 
 
@@ -156,7 +156,7 @@ WCTCOMMAND AZCS013WCTCommandTbl[] =
 {
 
     { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_MENU, "AMNACTION", AMNACTION_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},

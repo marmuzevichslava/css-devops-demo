@@ -390,7 +390,7 @@ if (CellData == CMN_LBROW_STATUS_COMPLETED)  /* Checked */
                                  pABHI);
    }
 else
-   {
+   { 
      FndGenRC = CellDataNotCompleteClient(pEventInfo,
                                     pEAIA,
                                     pBFCD,
@@ -1260,7 +1260,10 @@ static WCBPROC(CellDataNotCompleteClient)
 {
 USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
+/*mdc 09/23/96 Changed initialize of rownumto 0 -1 doesn't work 
 SHORT                    RowNum = -1;
+*/
+SHORT                    RowNum = 0;
 SHORT                      CellData;
 SHORT                     *pCellData;
 /*mdc 04/18/96 added ix and changed data type of ServiceIndex to USHORT*/
@@ -1309,7 +1312,7 @@ USHORT                      ServiceIndex;
                           pABHI );
           }
        else
-           {
+           { 
             FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
@@ -1324,7 +1327,7 @@ USHORT                      ServiceIndex;
                                  "RemovePB",
                                  &FndGenErrorBlock);
 
-           }
+             }
 
 
        }

@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS008                           *
- *                         Generated on: Mon Jul 15 06:51:10 1996          *
+ *                         Generated on: Wed Sep 25 13:28:41 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -95,18 +95,17 @@ return 0;
  *
  *   Window-Level Event
  *
- *   Callback Name: Liucusfr8348_Redisplay
+ *   Callback Name: Liucusfr1391_Window_Close
  * 
  *
  *
- *   Event Name:    REDISPLAY
+ *   Event Name:    WINDOW_CLOSE
  *
  *
  ***************************************************************************/
-static WCBPROC(Liucusfr8348_Redisplay)
+static WCBPROC(Liucusfr1391_Window_Close)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
 
 CMN_ARCH_EXIT_INITIALIZE
 
@@ -117,9 +116,41 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
-                            "OKPB",
-                            &FndGenErrorBlock);
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1387_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1387_Msg_Notification)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
 
 FndGenRC = CmnArchTerm( pEventInfo,
                            pEAIA,
@@ -208,17 +239,18 @@ return 0;
  *
  *   Window-Level Event
  *
- *   Callback Name: Liucusfr1387_Msg_Notification
+ *   Callback Name: Liucusfr8348_Redisplay
  * 
  *
  *
- *   Event Name:    MSG_NOTIFICATION
+ *   Event Name:    REDISPLAY
  *
  *
  ***************************************************************************/
-static WCBPROC(Liucusfr1387_Msg_Notification)
+static WCBPROC(Liucusfr8348_Redisplay)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
 
 CMN_ARCH_EXIT_INITIALIZE
 
@@ -229,41 +261,9 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Liucusfr1391_Window_Close
- * 
- *
- *
- *   Event Name:    WINDOW_CLOSE
- *
- *
- ***************************************************************************/
-static WCBPROC(Liucusfr1391_Window_Close)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                            "OKPB",
+                            &FndGenErrorBlock);
 
 FndGenRC = CmnArchTerm( pEventInfo,
                            pEAIA,

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: AZCS008                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:28:41 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -69,6 +69,7 @@ WDGDISPTBL AZCS008WidgDisp[] =
 FLDDEFTBLENTRY AZCS008FieldDefTbl[] =
 {
     { "MapLB", MapLB_FID },
+    { "FlWindowMod", FlWindowMod_FID },
     { "", 0}
 };
 
@@ -94,11 +95,11 @@ CMDDEFTBLENTRY AZCS008CommandDefTbl[] =
 
 WCTHEADER  AZCS008WCTHeader =
 { 
-    "30", 5, 1, 5,
+    "30", 6, 2, 5,
     sizeof(struct _AZCS008WesMap),
     offsetof(struct _AZCS008WesMap, _MapLBSelIndData),
     offsetof(struct _AZCS008WesMap, _MapLBCtl),
-    WLT_C, 0, 0, 0
+    WLT_C, 0, 15, 0
 }; 
 
 
@@ -129,9 +130,9 @@ WCTFIELD AZCS008WCTFieldTbl[] =
       RGT_STANDARD},
   
     { WTP_LISTBOXCOLDEFN, "CdStatusIconic", MapLBCdStatusIconic_FID,
-      0, FND_IT_SHORT,
+      0, FND_IT_USHORT,
       SIZEOF(struct _AZCS008WesMap, _MapLBCdStatusIconicData[0]),
-      4, 0, offsetof(struct _AZCS008WesMap, _MapLBCdStatusIconicData),
+      2, 0, offsetof(struct _AZCS008WesMap, _MapLBCdStatusIconicData),
       offsetof(struct _AZCS008WesMap, _MapLBCdStatusIconicCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
@@ -151,6 +152,14 @@ WCTFIELD AZCS008WCTFieldTbl[] =
       offsetof(struct _AZCS008WesMap, _MapLBRequestIDCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "FlWindowMod", FlWindowMod_FID,
+      FlWindowMod_WID, FND_IT_CHAR,
+      SIZEOF(struct _AZCS008WesMap, _FlWindowModData),
+      1, 0, offsetof(struct _AZCS008WesMap, _FlWindowModData),
+      offsetof(struct _AZCS008WesMap, _FlWindowModCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
@@ -164,7 +173,7 @@ WCTCOMMAND AZCS008WCTCommandTbl[] =
 {
 
     { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "AddPB", AddPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},

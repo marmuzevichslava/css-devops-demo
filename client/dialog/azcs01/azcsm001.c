@@ -193,6 +193,9 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
   pMessageInput  = malloc( sizeof( _MESSAGEINPUT ));
   pMessageOutput = malloc( sizeof( _MESSAGEOUTPUT ));
 
+  memset(pMessageInput,0,sizeof(_MESSAGEINPUT));
+  memset(pMessageOutput,0,sizeof(_MESSAGEOUTPUT));
+
   memcpy( FndStandardPB.ver, FND_MSG_VER, _VER_LEN );
 
   /* Set up Request Header */
@@ -228,7 +231,7 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
   ParmBlock.commarea.function_code = MSGIO_CONVERSE;
   ParmBlock.buffer_size = sizeof( _MESSAGEOUTPUT );
   ParmBlock.actual_length_send = sizeof( _REQUESTHDR );
-  ParmBlock.timeout_interval = 30;
+  ParmBlock.timeout_interval = 99;
 
   memcpy( ParmBlock.translation.map_name, "AZCR001O", _FND_MAP_NAME_LEN );
   memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );

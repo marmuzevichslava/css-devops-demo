@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS010                           *
- *                         Generated on: Mon Jul 15 06:51:10 1996          *
+ *                         Generated on: Wed Sep 25 13:29:00 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -68,6 +68,78 @@ return 0;
  *
  ***************************************************************************/
 static WCBPROC(Ltxsfmtl8215_Other_Gui_Event)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ltxsfmtl8212_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ltxsfmtl8212_Window_Close)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ltxsfmtl8207_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ltxsfmtl8207_Msg_Notification)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -165,89 +237,17 @@ return 0;
 }
 /***************************************************************************
  *
- *   Window-Level Event
- *
- *   Callback Name: Ltxsfmtl8207_Msg_Notification
- * 
- *
- *
- *   Event Name:    MSG_NOTIFICATION
- *
- *
- ***************************************************************************/
-static WCBPROC(Ltxsfmtl8207_Msg_Notification)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Ltxsfmtl8212_Window_Close
- * 
- *
- *
- *   Event Name:    WINDOW_CLOSE
- *
- *
- ***************************************************************************/
-static WCBPROC(Ltxsfmtl8212_Window_Close)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
  *   Widget-Level Event
  *
- *   Callback Name: Ltxsfmtl8218_Click
+ *   Callback Name: Ltxsfmtl5241_List_Select
  * 
- *   WidgetName:    OKPB
+ *   WidgetName:    MapLB
  *
- *   Event Name:    BUTTON_CLICK
+ *   Event Name:    LIST_SELECT
  *
  *
  ***************************************************************************/
-static WCBPROC(Ltxsfmtl8218_Click)
+static WCBPROC(Ltxsfmtl5241_List_Select)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -260,7 +260,7 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = LdAZCS010O( pEventInfo,
+FndGenRC = AZCS010BUSInitLB( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -318,15 +318,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Ltxsfmtl5241_List_Select
+ *   Callback Name: Ltxsfmtl7482_Click
  * 
- *   WidgetName:    MapLB
+ *   WidgetName:    OKPB
  *
- *   Event Name:    LIST_SELECT
+ *   Event Name:    BUTTON_CLICK
  *
  *
  ***************************************************************************/
-static WCBPROC(Ltxsfmtl5241_List_Select)
+static WCBPROC(Ltxsfmtl7482_Click)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -339,7 +339,7 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = AZCS010BUSInitLB( pEventInfo,
+FndGenRC = LdAZCS010O( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,

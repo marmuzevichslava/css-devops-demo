@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS008                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:28:41 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS008ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,155,123
+AZCS008ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,178,123
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
@@ -24,36 +24,41 @@ Begin  /* controls */
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,10,105,32,12
+              ,11,105,37,12
 
    CONTROL "",100,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,10,9,95,88
+              ,11,9,109,88
 
    CONTROL "&Add...",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,110,9,36,12
+              ,126,9,41,12
 
    CONTROL "&Delete",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,110,27,36,12
+              ,126,27,41,12
 
    CONTROL "&Undelete",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,110,45,36,12
+              ,126,45,41,12
 
    CONTROL "Cancel",1004,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,50,105,32,12
+              ,57,105,37,12
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,147,92,0,0
 
 End /* controls */
 
@@ -87,7 +92,7 @@ Begin
    FP_CAPTION,                          "\0"
    FP_SCREEN_LENGTH,                    "2\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
-   FP_COLUMN_TYPE,                      FPV_IMAGE_COLUMN, "\0"
+   FP_COLUMN_TYPE,                      FPV_IMAGEVAL_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
@@ -95,6 +100,16 @@ Begin
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_IMAGE_SOURCE,                     "1,BMP,EXE,1\0"
+   FP_IMAGE_SOURCE,                     "2,BMP,EXE,2\0"
+   FP_IMAGE_SOURCE,                     "7,BMP,EXE,7\0"
+   FP_IMAGE_SOURCE,                     "8,BMP,EXE,8\0"
+   FP_IMAGE_SOURCE,                     "9,BMP,EXE,9\0"
+   FP_IMAGE_SOURCE,                     "10,BMP,EXE,10\0"
+   FP_IMAGE_SOURCE,                     "11,BMP,EXE,11\0"
+   FP_IMAGE_SOURCE,                     "13,BMP,EXE,13\0"
+   FP_IMAGE_SOURCE,                     "14,BMP,EXE,14\0"
+   FP_IMAGE_SOURCE,                     "15,BMP,EXE,15\0"
    FP_SIZE_IMAGE,                       FPV_TRUE, "\0"
 
    /*  Control Data for List Box Column NmRowIndx  */
@@ -131,7 +146,7 @@ Begin
    FP_SCREEN_LENGTH,                    "8\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "60\0"
+   FP_COLUMN_FCUS,                      "69\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_FONT_CODE,                  "System Proportional\0"
@@ -144,6 +159,24 @@ Begin
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    FP_END
 End
@@ -187,3 +220,53 @@ End
 *           Listbox Column Bitmaps            *
 **********************************************/
 
+
+#ifndef BITMAP_RID_1
+#define BITMAP_RID_1
+1 BITMAP ARCB0001.BMP
+#endif
+
+#ifndef BITMAP_RID_2
+#define BITMAP_RID_2
+2 BITMAP ARCB0002.BMP
+#endif
+
+#ifndef BITMAP_RID_7
+#define BITMAP_RID_7
+7 BITMAP ARCB0007.BMP
+#endif
+
+#ifndef BITMAP_RID_8
+#define BITMAP_RID_8
+8 BITMAP ARCB0008.BMP
+#endif
+
+#ifndef BITMAP_RID_9
+#define BITMAP_RID_9
+9 BITMAP ARCB0009.BMP
+#endif
+
+#ifndef BITMAP_RID_10
+#define BITMAP_RID_10
+10 BITMAP ARCB0010.BMP
+#endif
+
+#ifndef BITMAP_RID_11
+#define BITMAP_RID_11
+11 BITMAP ARCB0011.BMP
+#endif
+
+#ifndef BITMAP_RID_13
+#define BITMAP_RID_13
+13 BITMAP ARCB0013.BMP
+#endif
+
+#ifndef BITMAP_RID_14
+#define BITMAP_RID_14
+14 BITMAP ARCB0014.BMP
+#endif
+
+#ifndef BITMAP_RID_15
+#define BITMAP_RID_15
+15 BITMAP ARCB0015.BMP
+#endif

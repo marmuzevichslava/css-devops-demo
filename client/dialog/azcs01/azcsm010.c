@@ -67,6 +67,9 @@
 **                                  to the map file.  This removes the calls
 **                                  to "system" from the program.
 **
+** 08/20/96   jlooney				Modified if statements for FND 3.0 INT3
+**								    date issue (internally now stored as N).
+**									WriteCK, WriteLK, and WriteLD
 ******************************************************************/
 
 /**************************************************************************
@@ -583,6 +586,10 @@ USHORT GenerateService(_LAYOUT_REC  ServiceLayout[],
 **
 **  07/19/94      C. Crampton              Added logic for high values with Date, Time and
 **                                           Timestamp
+**
+**  08/20/96	  J. Looney				   Added to if stmt to check
+**										   for numeric date due to 
+**										   FND 3.0 upgrade.
 ******************************************************************/
 
 #define CK_LINE_1 "********  C O M P A R E  K E Y S  ********\n"
@@ -646,8 +653,16 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                 ** which would case truncation. But if the literal is High or
                 ** Low values use the field length because the CSR will fill
                 ** the field with high or low values not the literal string.
+				**
+				** JLOONEY 08/20/96:  Modified the if statement to check for 
+				** a numeric DT that we are treating as a string due to the 
+				** change in how FND internally stores DT since the FND 3.0
+				** upgrade.  We now need to check for the numeric date in 
+				** order to properly copy high and low values for a date.
                 */
-                if (toupper(ServiceLayout[Index].Format) == 'A')
+                if ((toupper(ServiceLayout[Index].Format) == 'A') ||
+					((toupper(ServiceLayout[Index].Format) == 'N') &&
+					 (strcmp(ServiceLayout[Index].Usage, "DT") == 0)))
                 {
                     if ((strcmp(CK[Index].LiteralValue, CMN_HIGH_VALUES_STR) == 0)
                        ||
@@ -950,6 +965,10 @@ USHORT WriteRD( _LAYOUT_REC  ClientLayout[],
 **
 **  07/19/94      C. Crampton              Added logic for Data, Time and Timestamp
 **                                           with high and low values.
+**
+**  08/20/96	  J. Looney				   Added to if stmt to check
+**										   for numeric date due to 
+**										   FND 3.0 upgrade.
 ******************************************************************/
 
 #define LK_LINE_1 "********  L O A D  K E Y S  ********\n"
@@ -1012,8 +1031,16 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
                 ** which would case truncation. But if the literal is High or
                 ** Low values use the field length because the CSR will fill
                 ** the field with high or low values not the literal string.
+				**
+				** JLOONEY 08/20/96:  Modified the if statement to check for 
+				** a numeric DT that we are treating as a string due to the 
+				** change in how FND internally stores DT since the FND 3.0
+				** upgrade.  We now need to check for the numeric date in 
+				** order to properly copy high and low values for a date.
                 */
-                if (toupper(ServiceLayout[Index].Format) == 'A')
+                if ((toupper(ServiceLayout[Index].Format) == 'A') ||
+					((toupper(ServiceLayout[Index].Format) == 'N') &&
+					 (strcmp(ServiceLayout[Index].Usage, "DT") == 0)))
                 {
                     if ((strcmp(LK[Index].LiteralValue, CMN_HIGH_VALUES_STR) == 0)
                        ||
@@ -1212,6 +1239,10 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
 **
 **  07/19/94      C. Crampton              Added logic for Date, Time and Timestamp
 **                                          with low and high values.
+**
+**  08/20/96	  J. Looney				   Added to if stmt to check
+**										   for numeric date due to 
+**										   FND 3.0 upgrade.
 ******************************************************************/
 
 #define LD_LINE_1 "********  L O A D  D A T A  ********\n"
@@ -1276,8 +1307,16 @@ USHORT WriteLD( _LAYOUT_REC  ClientLayout[],
                 ** which would case truncation. But if the literal is High or
                 ** Low values use the field length because the CSR will fill
                 ** the field with high or low values not the literal string.
+				**
+				** JLOONEY 08/20/96:  Modified the if statement to check for 
+				** a numeric DT that we are treating as a string due to the 
+				** change in how FND internally stores DT since the FND 3.0
+				** upgrade.  We now need to check for the numeric date in 
+				** order to properly copy high and low values for a date.
                 */
-                if (toupper(ServiceLayout[Index].Format) == 'A')
+                if ((toupper(ServiceLayout[Index].Format) == 'A') ||
+					((toupper(ServiceLayout[Index].Format) == 'N') &&
+					 (strcmp(ServiceLayout[Index].Usage, "DT") == 0)))
                 {
                     if ((strcmp(LD[Index].LiteralValue, CMN_HIGH_VALUES_STR) == 0)
                        ||

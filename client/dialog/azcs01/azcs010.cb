@@ -1,6 +1,10 @@
 /***************************************************************************
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
+**
+** REVISIONS:
+** 09/16/96 mconner Added call to CmnWindowSetApplInvalid so user could not
+**                  OK window without choosing a row.
 ****************************************************************************/
 static WCBPROC(AZCS010BUSUserPredisplay)
 {
@@ -36,7 +40,7 @@ _MapLBRow LBox;
     CHAR sFileName[CMN_FILENAME_MAXLEN];
     USHORT usFileNameLen = CMN_FILENAME_MAXLEN;
     char *pchTemp;
-    USHORT usRc = 0;
+    SHORT sRc = 0;
     LONG lOsRc = 0;
     BOOL bRc;
 #endif
@@ -90,7 +94,7 @@ while (Continue)
       sRc = DosFindFirst(pszFiles, &hdir, FILE_NORMAL, &FindBuf,
                          sizeof(FILEFINDBUF), &usFileCount, 0L);
 	  */
-	  usRc = CmnOsFindFirst(pszFiles, &hdir, (CHAR *)&sFileName, usFileNameLen, &lOsRc,
+	  sRc = CmnOsFindFirst(pszFiles, &hdir, (CHAR *)&sFileName, usFileNameLen, &lOsRc,
                          CMN_ARCH_PARMS);
 
 
@@ -101,7 +105,7 @@ while (Continue)
                          sizeof(FILEFINDBUF), &usSearchCount, 0l);
 	  */
 	  /*mdc 03/22/96 sRC chnaged to usRC */
-      if (usRc == 0)
+      if (sRc == 0)
          {
           while (!lOsRc /*&& usSearchCount*/) /*mdc 03/22/96 chnged sRc to lOsRc*/
                 {
@@ -142,7 +146,9 @@ while (Continue)
                  if (sRc == ERROR_NO_MORE_FILES)
                      Continue = FALSE;
                 } */
-			    usRc = CmnOsFindFirst(pszFiles, &hdir, (CHAR *)&sFileName, usFileNameLen, &lOsRc,
+                 /*mdc 09/16/96 Changed from CmnOsFindFirst
+                 */
+			    sRc = CmnOsFindNext(hdir, (CHAR *)&sFileName, usFileNameLen, &lOsRc,
                          CMN_ARCH_PARMS);
 
                  if (lOsRc == CMN_ERR_OS_NO_MORE_FILES)
@@ -153,6 +159,8 @@ while (Continue)
          return(CMN_FAIL);
      } /* end of while (Continue) loop */
 #endif /*mdc 03/25/96 end of WIN32 inclusions */
+
+
 #ifdef FND_OS2
 /* Get the drive letter for the Generation Path directory */
 
@@ -335,11 +343,12 @@ static WCBPROC(AZCS010BUSInitLB)
     USHORT FndGenRC = CMN_SUCCESS;
     _FND_ERROR_BLOCK FndGenErrorBlock;
 
-	FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
+	FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS ); 
 
 	FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
-                                                      "OKPB",
-                                                       &FndGenErrorBlock);
+                                           "OKPB",
+                                           &FndGenErrorBlock);
+
 
 	return (CMN_SUCCESS);
 

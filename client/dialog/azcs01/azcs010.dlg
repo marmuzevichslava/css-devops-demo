@@ -7,40 +7,40 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS010                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:29:00 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS010ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,142,154
+AZCS010ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,163,154
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
     CAPTION "CSR Maps"
     
 Begin  /* controls */
-   CONTROL "OK",1000,
-              FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
-              | BS_PUSHBUTTON
-              ,8,131,32,12
-
-   CONTROL "Cancel",1001,
-              FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
-              | BS_PUSHBUTTON
-              ,50,131,32,12
-
    CONTROL "CSR Maps",100,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,7,130,116
+              ,3,7,149,116
+
+   CONTROL "Cancel",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,57,132,37,12
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,105,133,0,0
+              ,118,133,0,0
+
+   CONTROL "OK",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,12,132,37,12
 
 End /* controls */
 
@@ -103,7 +103,7 @@ Begin
    FP_SCREEN_LENGTH,                    "8\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "60\0"
+   FP_COLUMN_FCUS,                      "69\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_FONT_CODE,                  "System Proportional\0"
@@ -151,7 +151,7 @@ End
 
 AZCS010AccelID ACCELERATORS PRELOAD
 Begin
-VK_ESCAPE,1001,VIRTKEY
+VK_ESCAPE,1000,VIRTKEY
 End
 
 

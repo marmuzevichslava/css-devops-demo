@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: AZCS010                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:29:00 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -23,9 +23,9 @@ WCBFWD (Ltxsfmtl8207_Msg_Notification)
 WCBFWD (Ltxsfmtl8209_Interwindow_Msg)
 WCBFWD (Ltxsfmtl8212_Window_Close)
 WCBFWD (Ltxsfmtl8215_Other_Gui_Event)
-WCBFWD (Ltxsfmtl8218_Click)
-WCBFWD (Ltxsfmtl8221_Click)
 WCBFWD (Ltxsfmtl5241_List_Select)
+WCBFWD (Ltxsfmtl8221_Click)
+WCBFWD (Ltxsfmtl7482_Click)
 
 /****************************************************************************
  Window Dispatch Table
@@ -48,9 +48,9 @@ WNDDISPTBL AZCS010WindDisp[] =
 
 WDGDISPTBL AZCS010WidgDisp[] =
 {
-    {OKPB_CMD, BUTTON_CLICK, Ltxsfmtl8218_Click},
-    {CancelPB_CMD, BUTTON_CLICK, Ltxsfmtl8221_Click},
     {MapLB_FID, LIST_SELECT, Ltxsfmtl5241_List_Select},
+    {CancelPB_CMD, BUTTON_CLICK, Ltxsfmtl8221_Click},
+    {OKPB_CMD, BUTTON_CLICK, Ltxsfmtl7482_Click},
     {0,0,0}
 };
 
@@ -72,8 +72,8 @@ FLDDEFTBLENTRY AZCS010FieldDefTbl[] =
 
 CMDDEFTBLENTRY AZCS010CommandDefTbl[] =
 {
-    { "OKPB", OKPB_CMD },
     { "CancelPB", CancelPB_CMD },
+    { "OKPB", OKPB_CMD },
     { "", 0}
 };
 
@@ -88,7 +88,7 @@ WCTHEADER  AZCS010WCTHeader =
     sizeof(struct _AZCS010WesMap),
     offsetof(struct _AZCS010WesMap, _MapLBSelIndData),
     offsetof(struct _AZCS010WesMap, _MapLBCtl),
-    WLT_C, 0, 0, 0
+    WLT_C, 0, 15, 0
 }; 
 
 
@@ -152,11 +152,11 @@ WCTFIELD AZCS010WCTFieldTbl[] =
 WCTCOMMAND AZCS010WCTCommandTbl[] =
 {
 
-    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
-
     { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
 };

@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS005                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:27:45 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS005X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZCS005ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,303,216
+AZCS005ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,349,216
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
@@ -23,91 +23,91 @@ Begin  /* controls */
    CONTROL "Service:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,164,5,25,8
+              ,189,5,28,8
 
    CONTROL "",100,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,191,2,60,11
+              ,220,2,69,11
 
    CONTROL "",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,8,16,143,132
+              ,9,16,164,132
 
    CONTROL "",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,155,16,140,132
+              ,178,16,160,132
 
    CONTROL "&Apply",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,133,157,36,12
+              ,153,157,41,12
 
    CONTROL "&Remove",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,133,173,35,12
+              ,153,173,40,12
 
    CONTROL "OK",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,8,188,32,12
+              ,9,188,37,12
 
    CONTROL "Cancel",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,55,188,32,12
+              ,63,188,37,12
 
    CONTROL "Element:",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,12,166,26,8
+              ,14,166,30,8
 
    CONTROL "",103,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,41,162,75,0
+              ,47,162,86,0
 
    CONTROL "Client:",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,26,5,20,8
+              ,29,5,22,8
 
    CONTROL "",104,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,48,1,60,0
+              ,55,1,69,0
 
    CONTROL "Element:",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,188,168,26,8
+              ,216,168,30,8
 
    CONTROL "",105,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,216,164,75,0
+              ,248,164,86,0
 
    CONTROL "Client Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,8,152,114,26
+              ,9,152,131,26
 
    CONTROL "Service Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,180,152,114,29
+              ,207,152,131,29
 
    CONTROL "",106,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,125,190,0,0
+              ,143,190,0,0
 
 End /* controls */
 
@@ -149,8 +149,8 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "191,13\0"
-   FP_LIST_WIDTH,                       "68\0"
+   FP_LIST_POSITION,                    "220,13\0"
+   FP_LIST_WIDTH,                       "78\0"
    FP_LIST_HEIGHT,                      "48\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"

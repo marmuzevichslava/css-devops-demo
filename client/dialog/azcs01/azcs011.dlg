@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS011                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:29:14 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS011ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,316,211
+AZCS011ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,364,211
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
@@ -23,128 +23,128 @@ Begin  /* controls */
    CONTROL "Service:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,170,6,25,8
+              ,196,6,28,8
 
    CONTROL "",100,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,198,2,60,0
+              ,228,2,69,0
 
    CONTROL "",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,18,150,108
+              ,3,18,173,108
 
    CONTROL "",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,156,18,150,108
+              ,179,18,173,108
 
    CONTROL "&Apply",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,146,136,36,12
+              ,168,136,41,12
 
    CONTROL "&Remove",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,146,154,36,12
+              ,167,154,41,12
 
    CONTROL "Occurs:",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,5,164,23,8
+              ,5,164,26,8
 
    CONTROL "",103,
               FND_NUMERICFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,30,160,21,0
+              ,34,160,24,0
 
    CONTROL "Client Information",8004,
               FND_RADIO_GROUP,
               WS_VISIBLE | WS_GROUP | BS_GROUPBOX
-              ,59,156,0,0
+              ,68,156,0,0
 
    CONTROL "&Multiple Occurrence",110,
               FND_RADIO_BUTTON,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,59,156,0,0
+              ,68,156,0,0
 
    CONTROL "&Single Occurrence",111,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,59,156,0,0
+              ,68,156,0,0
 
    CONTROL "OK",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,11,186,32,12
+              ,12,186,37,12
 
    CONTROL "Cancel",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,56,186,32,12
+              ,65,186,37,12
 
    CONTROL "Service Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,196,132,109,46
+              ,225,132,125,46
 
    CONTROL "Client Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,3,132,128,49
+              ,3,132,147,49
 
    CONTROL "Occurs:",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,200,163,23,8
+              ,229,163,26,8
 
    CONTROL "",105,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,225,159,0,0
+              ,259,159,0,0
 
    CONTROL "Client:",506,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,23,6,20,8
+              ,27,6,22,8
 
    CONTROL "",106,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,45,2,60,0
+              ,52,2,69,0
 
    CONTROL "Group:",507,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,8,147,20,8
+              ,9,147,22,8
 
    CONTROL "",107,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,30,143,75,0
+              ,34,143,86,0
 
    CONTROL "Group:",508,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,203,147,20,8
+              ,233,147,22,8
 
    CONTROL "",108,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,225,143,75,0
+              ,259,143,86,0
 
    CONTROL "",109,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,135,186,0,0
+              ,155,186,0,0
 
 End /* controls */
 
@@ -186,8 +186,8 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "198,2\0"
-   FP_LIST_WIDTH,                       "68\0"
+   FP_LIST_POSITION,                    "228,2\0"
+   FP_LIST_WIDTH,                       "78\0"
    FP_LIST_HEIGHT,                      "0\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
@@ -557,7 +557,7 @@ Begin
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
    FP_TOP_MARGIN,                       "10\0"
    FP_LEFT_MARGIN,                      "5\0"
-   FP_HORIZONTAL_SPACING,               "8\0"
+   FP_HORIZONTAL_SPACING,               "9\0"
    FP_VERTICAL_SPACING,                 "1\0"
    FP_DIRECTION,                        FPV_VERTICAL, "\0"
    FP_BUTTONS_PER_ROW,                  "2\0"

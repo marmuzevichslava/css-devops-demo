@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS009                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:28:52 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -41,6 +41,9 @@ unsigned char _grpFiller;
    char _GenDirData[256];
 #define GenDirData              pWesMap->_GenDirData
 
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
+
 
     WESFLDCTL _SaveDirCtl;
 #define SaveDirAttr                       pWesMap->_SaveDirCtl.Attr
@@ -55,5 +58,12 @@ unsigned char _grpFiller;
 #define GenDirRights                     pWesMap->_GenDirCtl.Rights
 #define GenDirMsg                        pWesMap->_GenDirCtl.Msg
 #define GenDirCursor                     pWesMap->_GenDirCtl.Cursor
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 };
 

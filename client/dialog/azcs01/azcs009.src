@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS009                           *
- *                         Generated on: Mon Jul 15 06:51:10 1996          *
+ *                         Generated on: Wed Sep 25 13:28:52 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -100,51 +100,15 @@ return 0;
  *
  *   Window-Level Event
  *
- *   Callback Name: Lapzivat9533_Predestroy
+ *   Callback Name: Lapzivat9540_Window_Close
  * 
  *
  *
- *   Event Name:    PREDESTROY
+ *   Event Name:    WINDOW_CLOSE
  *
  *
  ***************************************************************************/
-static WCBPROC(Lapzivat9533_Predestroy)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Lapzivat9538_Interwindow_Msg
- * 
- *
- *
- *   Event Name:    INTERWINDOW_MSG
- *
- *
- ***************************************************************************/
-static WCBPROC(Lapzivat9538_Interwindow_Msg)
+static WCBPROC(Lapzivat9540_Window_Close)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -208,15 +172,51 @@ return 0;
  *
  *   Window-Level Event
  *
- *   Callback Name: Lapzivat9540_Window_Close
+ *   Callback Name: Lapzivat9533_Predestroy
  * 
  *
  *
- *   Event Name:    WINDOW_CLOSE
+ *   Event Name:    PREDESTROY
  *
  *
  ***************************************************************************/
-static WCBPROC(Lapzivat9540_Window_Close)
+static WCBPROC(Lapzivat9533_Predestroy)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Lapzivat9538_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Lapzivat9538_Interwindow_Msg)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 

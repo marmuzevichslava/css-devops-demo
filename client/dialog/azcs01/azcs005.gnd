@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: AZCS005                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:27:45 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS005X                          *
 *                                                                          *
@@ -149,7 +149,7 @@ WCTHEADER  AZCS005WCTHeader =
     sizeof(struct _AZCS005WesMap),
     offsetof(struct _AZCS005WesMap, _ServiceLayoutNameData),
     offsetof(struct _AZCS005WesMap, _ServiceLayoutNameCtl),
-    WLT_C, 0, 0, 0
+    WLT_C, 0, 15, 0
 }; 
 
 
@@ -340,7 +340,7 @@ WCTCOMMAND AZCS005WCTCommandTbl[] =
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},

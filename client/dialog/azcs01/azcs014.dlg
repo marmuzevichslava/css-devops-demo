@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS014                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:29:36 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,143,158
+AZCS014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,164,158
     STYLE 0 
      | WS_POPUP
      | DS_MODALFRAME
@@ -22,49 +22,49 @@ Begin  /* controls */
    CONTROL "CSR Map Generator Program",10000,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,7,40,126,12
+              ,8,40,145,12
 
    CONTROL "Copyright 1993",10001,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,45,104,50,8
+              ,52,104,57,8
 
    CONTROL "Andersen Consulting, LLP",10002,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,29,114,80,8
+              ,33,114,92,8
 
    CONTROL "Release:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,31,64,26,8
+              ,35,64,30,8
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,60,60,35,0
+              ,69,60,40,0
 
    CONTROL "Date:",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,30,82,26,8
+              ,34,82,29,8
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,59,78,55,0
+              ,67,78,63,0
 
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,5,138,32,12
+              ,5,138,37,12
 
    CONTROL "#134",11000,
               FND_STATICIMAGE,
               WS_VISIBLE
-              ,15,12,111,18
+              ,17,12,128,18
 
 End /* controls */
 
