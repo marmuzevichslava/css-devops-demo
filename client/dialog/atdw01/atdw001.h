@@ -54,6 +54,8 @@
 #define ATDW001_SERVER_LEN 9
 #define ATDW001_PRINTER_LEN 9
 
+#define ATDW001_TEMP_CONFIG_PATH_LEN  3
+
 /***************************************************************************/
 /* Application typedefs                                                    */
 /***************************************************************************/

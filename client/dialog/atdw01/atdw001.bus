@@ -72,6 +72,7 @@ OPENFILENAME OpenFileName;
 **                     ATDW001BusOpenPipe
 **                     ATDW001BusReadPipe
 **                     ATDW001BusFillMsgBox
+**                     CmnOsGetProfileValue
 **
 **  AUTHOR           : C. Crampton
 **
@@ -89,6 +90,11 @@ OPENFILENAME OpenFileName;
 **
 **    08/04/95  CWoods                Hide menu option 'Print to Printer'.
 **									  This option is no longer valid.
+**
+**    12/09/98  J. Runyan			  Added CmnOsGetProfileValue to get the registry key
+**									  terminal server configuration drive, and concatenate
+**									  it with the path of the log files.
+**
 ***************************************************************************/
 
 WCBPROC( ATDW001BusPredisplay )
@@ -97,6 +103,13 @@ WCBPROC( ATDW001BusPredisplay )
    _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT FndGenRC = 0;
     USHORT usSelectedButton;
+
+
+  /* JHR: 12/07/98  added for temporary storage of configuration path registry key  */
+
+ CHAR               TempConfigPath[ATDW001_TEMP_CONFIG_PATH_LEN]; 
+ USHORT             rc;  
+
 
   /*
   ** Set this window to not modifiable
@@ -147,11 +160,34 @@ WCBPROC( ATDW001BusPredisplay )
      return( CMN_FAIL );
    }
 
-   /*
-   ** Default the directory name for the log files
-   */
-   strcpy( BFCD_AZCD01->szLogDirName,"C:\\DATA\\MAPS" );
 
+	/* 12/2/98 J RUNYAN obtain the WTS (windows terminal server) configuration drive  
+	** from the registry and set the path appropriately */
+    rc = 0;
+    rc = CmnOsGetProfileValue
+            (CMN_PROFILE_NAME_CSS,
+			 CMN_PROFILE_SECTION_MISC_FILES,             
+             CMN_PROFILE_KEY_CONFIG_PATH,
+             CMN_PROFILE_KEY_CONFIG_PATH_LEN,
+             CMN_PRF_FAIL_ON_ERROR,
+             TempConfigPath,
+             &rc,
+             CMN_NULL_ARCH_PARMS);
+
+ 			
+	/* Pass the configuration path to the log files */
+	
+	if (TempConfigPath != NULL)
+	{
+		strcat(BFCD_AZCD01->szLogDirName,TempConfigPath); 
+		strcat(BFCD_AZCD01->szLogDirName,"\\Data\\Maps");
+	}
+   	else /* if registry key is null default to c drive */
+	{
+		strcat(BFCD_AZCD01->szLogDirName,CMN_C_DRIVE); 
+		strcat(BFCD_AZCD01->szLogDirName,"\\Data\\Maps");
+
+	}
 
    return CMN_SUCCESS;
  }  /* end of function ATDW001BusPredisplay */
