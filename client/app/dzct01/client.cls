@@ -30,7 +30,6 @@ Property Let Code(C)
 
 End Property
 
-
 Property Let Decode(D)
     sDecode = D
     
