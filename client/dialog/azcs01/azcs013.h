@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 #include <process.h>
 #include <stddef.h>
 #define CMN_MAPGEN_MSG_BASE 25000

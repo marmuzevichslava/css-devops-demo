@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 #define CMN_HIGH_VALUES_STR "HIGH-VALUES"
 #define CMN_LOW_VALUES_STR  "LOW-VALUES"
 #define CMN_MAPGEN_NAME "CSR Map Generator"

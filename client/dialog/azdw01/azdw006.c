@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -22,6 +26,7 @@
 
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define WINDOWNAME AZDW006
+#define INCL_DOS /* CWOODS 1/15/96 */
 #define INCL_WIN
 #define WINDOWMOD
 

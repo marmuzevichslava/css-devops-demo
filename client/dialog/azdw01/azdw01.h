@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 #include <PMF.H>
 #include <CSR.H>
 #include "CSRDIAG.HH"  /* Help topic header file */

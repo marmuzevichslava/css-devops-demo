@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 WCBFWD (UnLdAZCS5I);
 WCBFWD (MoveLB1);
 WCBFWD (MoveLB2);
