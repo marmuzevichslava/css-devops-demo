@@ -1,0 +1,9 @@
+LIBRARY			CUG< ff >< nn >.DLL
+DESCRIPTION		'CUG< ff >< nn >'
+CODE           	MOVEABLE READ SHARED EXECUTE
+DATA           	MOVEABLE READ WRITE SHARED
+
+EXPORTS	        CUG< ff >< desc >< version >
+				CUG< ff >< desc >< version >
+
+			
