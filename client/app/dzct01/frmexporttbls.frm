@@ -458,7 +458,7 @@ Public Sub LoadClients()
     cbClient.Enabled = False
     cbClient.Clear
     
-    strsql = "select Client, Code from tblClients order by Code"
+    strsql = "select Client, Code from tblClients order by Counter"
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
