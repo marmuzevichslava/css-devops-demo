@@ -228,13 +228,15 @@ SHORT DZIO007RetrieveLayout( _REQUESTHDR *pRequestHdr,
   #define DEST_SRVC_VER  "00"
 
   USHORT FndGenRC = 0;
+  USHORT NumberOfRows = 1;
+
   _FND_STANDARD_PB  FndStandardPB;
   _FND_ERROR_BLOCK  FndGenErrorBlock;
   _MSG_PARM_BLOCK   ParmBlock;
 
 
   /* JSH: 07/24/93 MODIFIED */
-  _MESSAGEOUTPUT  *pMessageInput;
+  _MESSAGEINPUT  *pMessageInput;
   _MESSAGEOUTPUT *pMessageOutput;
 
   SHORT ReturnCode = 0;
@@ -280,6 +282,16 @@ SHORT DZIO007RetrieveLayout( _REQUESTHDR *pRequestHdr,
 
   memcpy( ParmBlock.translation.map_name, "AZCR001O", _FND_MAP_NAME_LEN );
   memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );
+
+//  CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+//                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+//			            "R",
+//			            sizeof("R"),
+//			            pMessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+//			            sizeof(pMessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+//			            &NumberOfRows,			   /* # of rows   */
+//			            CMN_ARCH_PARMS );
+//
 
   FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
                       (_MSG_RECV_AREA) pMessageOutput, pABHI );

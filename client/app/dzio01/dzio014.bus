@@ -775,6 +775,7 @@ WCBPROC(DZIO014xPrimTblFldChg )
     memcpy( ParmBlock.translation.map_name, "AZCR001O", _FND_MAP_NAME_LEN );
     memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );
 
+
     FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
                       (_MSG_RECV_AREA) pMessageOutput, pABHI );
 

@@ -190,9 +190,11 @@ AEXPROC( ExitWktCloseAfterSave )
 {
 
 
-   USHORT	      FndGenRC = 0;
+   USHORT	      FndGenRC = 0,
+                  NumberOfRows = 1;
    int		      i = 0;
-   CHAR           szErrorMessage[200];
+   CHAR           szErrorMessage[200],
+                  szRepository[9];
 
    _FND_ERROR_BLOCK FndGenErrorBlock;
 
@@ -281,7 +283,14 @@ AEXPROC( ExitWktCloseAfterSave )
 				   BOX_TITLE3,
 				   &FndGenErrorBlock);
 
-
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
 
 
     FndGenRC = DZIO01FieldQueryValue(PRIMTAB,
@@ -447,6 +456,16 @@ AEXPROC( ExitWktCloseAfterSave )
     memcpy(ParmBlock.translation.map_version,SRVC_VER, _VER_LEN);
 
 
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
+
+
     FndGenRC = MSGConvUI(&ParmBlock,
 			(_MSG_SEND_AREA) MessageInput,
 			(_MSG_RECV_AREA) MessageOutput,
@@ -491,7 +510,24 @@ AEXPROC( ExitWktCloseAfterSave )
 	  {
 
 
-          FndGenRC = FndMsgBoxDisplayMdlssText( TITLE7,
+    memset(szRepository, 0, sizeof(szRepository));
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            szRepository,	   /* Decode	  */
+			            sizeof(szRepository),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
+
+
+   CmnStrCopy(MessageInput->StandardHeader.KyUserid2,
+              szRepository,
+              sizeof(MessageInput->StandardHeader.KyUserid2),
+              CMN_ARCH_PARMS);
+
+   FndGenRC = FndMsgBoxDisplayMdlssText( TITLE7,
 				   BOX_TITLE3,
 				   CBI_hwnd,
 				   FND_MSGBOX_NOBUTTONS,
@@ -903,6 +939,16 @@ AEXPROC( ExitWktCloseAfterSave )
 
    else if (strcmp(pBFCD->DZIO01Hdr.FuncNm,NEWMOD) == 0)
    {
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
+
 
 	FndGenRC = DZIO01ServiceCall(CMN_ARCH_PARMS,
 				     (void *) NEWMOD,

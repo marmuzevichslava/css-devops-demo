@@ -60,13 +60,38 @@
 WCBPROC( DZIO001BusPrdis )
 {
 
-    USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+	CHAR   szWinTitle[50],
+	       CdReposOrg[9];
+    USHORT FndGenRC = 0, 
+           NumberOfRows = 1;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
 
 
     memset(pBFCD,  0,sizeof(_BFCD) );
 
     memset(&(pBFCD->DZIO014Luw), 0, sizeof(pBFCD->DZIO014Luw) );
+
+	memset(CdReposOrg, 0, sizeof(CdReposOrg) );
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            CdReposOrg,	   /* Decode	  */
+			            sizeof(CdReposOrg),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
+
+	memset(szWinTitle, 0, sizeof(szWinTitle) );
+
+    sprintf(szWinTitle,"I/O Module Generator (%s)", CdReposOrg);
+
+	FndWindowSetText( CBI_hwnd,
+	                  szWinTitle,
+					  &FndGenErrorBlock);
+
+
+
 
     return FndGenRC;
 }
@@ -313,7 +338,8 @@ WCBPROC( DZIO001BusMnGenClk )
 
     _FND_ERROR_BLOCK FndGenErrorBlock;
 
-    USHORT FndGenRC = 0;
+    USHORT FndGenRC = 0,
+           NumberOfRows = 1;
 
     memset(&(MessageOutReturn) , 0, sizeof(MessageOutReturn) );
     memset(&(MessageInReturn) , 0, sizeof(MessageInReturn) );
@@ -322,17 +348,6 @@ WCBPROC( DZIO001BusMnGenClk )
     MessageInput = (_DZCR001INPUT *) calloc (1, sizeof(_DZCR001INPUT));
     MessageOutput = (_DZCR001OUTPUT *) calloc (1, sizeof(_DZCR001OUTPUT));
 
-
-
-//    FndGenRC = DZIO01MsgBoxDisplay(TITLE8,
-//				   BOX_TITLE4,
-//				   CBI_hwnd,
-//				   FND_MSGBOX_NOBUTTONS,
-//				   FND_MSGBOX_INFORMATION,
-//				   FND_MSGBOX_IDNOBUTTON,
-//				   BOX_TITLE4,
-//				   CMN_ARCH_PARMS);
-//
 
     FndGenRC = FndMsgBoxDisplayMdlssText( TITLE8,
 				   BOX_TITLE4,
@@ -345,6 +360,15 @@ WCBPROC( DZIO001BusMnGenClk )
 
 
 	MessageOutput->StandardHeader.StndrdHeadSubgrp.KySpt	= 10;
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
 
 
     FndGenRC = DZIO01ServiceCall(CMN_ARCH_PARMS,
@@ -595,7 +619,8 @@ WCBPROC( DZIO001BusSumButClk  )
 WCBPROC( DZIO001BusSaveMnClk )
 {
 
-    USHORT FndGenRC = 0;
+    USHORT FndGenRC = 0, 
+           NumberOfRows = 1;
     USHORT i = 0;
     _FND_ERROR_BLOCK FndGenErrorBlock;
 
@@ -622,6 +647,15 @@ WCBPROC( DZIO001BusSaveMnClk )
 				   BOX_TITLE3,
 				   &FndGenErrorBlock);
 
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
 
 
 
@@ -816,6 +850,15 @@ WCBPROC( DZIO001BusSaveMnClk )
 
     memcpy(ParmBlock.translation.map_name, LUW_SRVC_MAP, _FND_MAP_NAME_LEN);
     memcpy(ParmBlock.translation.map_version,SRVC_VER, _VER_LEN);
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
 
 
     FndGenRC = MSGConvUI(&ParmBlock,
@@ -1031,59 +1074,6 @@ WCBPROC( DZIO001BusAlrViewPbClk )
 
 
 
-/***************************************************************************
-**
-**               Customer Service System Business Logic Function
-**
-**  FUNCTION	     : DZIO001BusTskLstDblClk
-**
-**  DESCRIPTION      : This function is invoked when the task list is double
-**		       clicked.
-**
-**  INPUTS	     : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR	     : Andersen Consulting - Solutionworks
-**
-**  DATE CREATED     : 07/23/95
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-** 07/13/95    IPEREZAR		  Creation
-**
-***************************************************************************/
-
-//WCBPROC( DZIO001BusTskLstDblClk )
-//{
-//
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
-//    USHORT FndGenRC = 0;
-//    LONG FldStatus = 0;
-//
-//
-//    FndGenRC = FndFieldQueryValue(CBI_hwnd,
-//				   ALRCBOOK,
-//				   sizeof(pBFCD->DZIO01Hdr.Alrcbook),
-//				   pBFCD->DZIO01Hdr.Alrcbook,
-//				   &FndGenErrorBlock);
-//
-//
-//    FndGenRC = CmnWindowCreate(DZIO007X,
-//			       INST1,
-//			       NULL,
-//			       NULL,
-//			       CMN_ARCH_PARMS);
-//
-//
-//    return FndGenRC;
-//}
 
 
 /***************************************************************************

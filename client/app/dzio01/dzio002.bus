@@ -51,7 +51,8 @@ WCBPROC( DZIO002BusPrdis )
 {
 
     _FND_ERROR_BLOCK FndGenErrorBlock;
-    USHORT FndGenRC = 0;
+    USHORT FndGenRC = 0, 
+           NumberOfRows = 1;
     USHORT i = 0;
     USHORT j = 0;
     ULONG size = 0;
@@ -75,11 +76,20 @@ WCBPROC( DZIO002BusPrdis )
 		       sizeof(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode),
                CMN_ARCH_PARMS );
 
-    CmnStrCopy( WCD_Rqst.Dzsr002xKeys.CdReposOrg,
-              "FNDREPOS",
-              sizeof(WCD_Rqst.Dzsr002xKeys.CdReposOrg),
-              CMN_ARCH_PARMS );
+//    CmnStrCopy( WCD_Rqst.Dzsr002xKeys.CdReposOrg,
+//              "FNDREPOS",
+//              sizeof(WCD_Rqst.Dzsr002xKeys.CdReposOrg),
+//              CMN_ARCH_PARMS );
 
+
+    CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            WCD_Rqst.Dzsr002xKeys.CdReposOrg,	   /* Decode	  */
+			            sizeof(WCD_Rqst.Dzsr002xKeys.CdReposOrg),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
 
 
     if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0)

@@ -52,15 +52,29 @@ SHORT DZIO01ServiceCall(CMN_ARCH_PARM_TYPES,
 {
 
    int		        i = 0;
-   USHORT			FndGenRC = 0;
+   USHORT           FndGenRC = 0,
+                    NumberOfRows = 1;
    CHAR			    szErrorMessage[200];
 
    _FND_STANDARD_PB	FndStandardPB;
    _MSG_PARM_BLOCK	ParmBlock;
 
 
+
+
    memset(MessageInput, '\0',sizeof(_DZCR001INPUT));
    memset(MessageOutput, '\0',sizeof(_DZCR001OUTPUT));
+
+
+   CmnCodesGetDecodes( "DEV00707",			   /* Table name  */
+                        CMN_CTB_LANGUAGE_DEFAULT,	   /* Language	  */
+			            "R",
+			            sizeof("R"),
+			            MessageInput->StandardHeader.KyUserid2,	   /* Decode	  */
+			            sizeof(MessageInput->StandardHeader.KyUserid2),	   /* Decode size */
+			            &NumberOfRows,			   /* # of rows   */
+			            CMN_ARCH_PARMS );
+
 
    strncpy(MessageInput->Hdr_DZ0101.Iomodnm,module_name,
 	   sizeof(MessageInput->Hdr_DZ0101.Iomodnm) );
