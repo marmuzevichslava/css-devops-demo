@@ -25,6 +25,7 @@ Begin VB.Form frmExportSS
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
+      MouseIcon       =   "frmexportss.frx":030A
    End
    Begin ComctlLib.StatusBar sbStatusBar 
       Align           =   2  'Align Bottom
@@ -41,13 +42,16 @@ Begin VB.Form frmExportSS
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frmexportss.frx":0326
    End
    Begin VB.Frame Frame1 
       Caption         =   "Export Path"
@@ -158,7 +162,9 @@ Private Sub Form_Load()
     'Get the list of valid codes tables and add them to the combo box.
     Screen.MousePointer = vbHourglass
     
-    strsql = "select TableName From tblTables"
+    strsql = "select TableName From tblTables " _
+           & "where TableType <> 4;"
+           
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then

@@ -348,7 +348,9 @@ Private Sub Form_Load()
     Screen.MousePointer = vbHourglass
     
     'Get the list of valid codes tables and add them to the combo box.
-    strsql = "select TableName From tblTables"
+    strsql = "select TableName From tblTables " _
+           & "where TableType <> 4;"
+           
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then

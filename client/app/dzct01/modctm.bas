@@ -606,7 +606,8 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.mnuDeleteTable.Enabled = False
     frmMain.mnuModifyTable.Enabled = False
     frmMain.mnuGenerate.Enabled = False
-        
+    frmMain.mnuRequest.Enabled = True
+                
     frmMain.lvListView.Height = frmMain.tvTreeView.Height
     frmMain.lvListView1.Visible = False
     
@@ -667,6 +668,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         frmMain.lvListView.Height = frmMain.tvTreeView.Height / 2
         frmMain.lvListView1.Visible = True
         frmMain.mnuPopup.Visible = False
+        frmMain.mnuRequest.Enabled = False
     End If
     
     'refresh the screen.
