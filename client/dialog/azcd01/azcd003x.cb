@@ -1,0 +1,1051 @@
+/****************************************************************************
+	 Module Name :  AZCD003X.CB
+	 Author      :  Florida Power Corporation and Andersen Consulting
+	 Date Written:  06-19-92
+
+	 Description :  Enter Window Description for AZCD003X
+
+
+	 Revision History :
+	 DATE      Programmer   Modification
+	 --------  -----------  --------------------------------
+	 06-19-92  ???          Original Code
+
+*****************************************************************************/
+
+/****************************************************************************
+	Application Include Files, Typedefs, Macros, Constants Prototypes and
+	Global Data Declarations
+*****************************************************************************/
+
+
+#define DLG_BOX
+#define INCL_AGRWN01
+#define INCL_C1CBASE
+#define INCL_C1CCALLBACK
+
+#include <C1C.H>     /*  CUSTOMER/1-Cooperative standard header file  */
+
+#define _STANDARDHEADER void
+
+typedef struct __ERR_MSG_TABLE
+{
+   _ERR_CODE_KEY CodeKey;
+   _CMN_ERROR_DECODE ErrorDecode;
+} _ERR_MSG_TABLE;
+
+typedef struct __ERR_MSG_INIT_DATA
+{
+	_AWHINITIALDATA WinHndlTrkInfo;
+			  short ErrMsgPassed;
+			   char ErrMsgAction;
+} _ERR_MSG_INIT_DATA;
+
+void CmnRemNull(char *string, int strlngth);
+
+
+/*  Begin Source Code Section ***********************************************
+						 Window Level Event Callbacks                       *
+*****************************************************************************/
+
+static WCBPROC (WINPRDIS)
+/****************************************************************************
+
+		Control/Events which call this callback:
+
+					 WINDOW - PREDISPLAY
+
+
+	 Description: Enter description for WINPRDIS
+
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+    */
+    CMN_WDT_VARS
+
+	_ERR_MSG_INIT_DATA *pErrMsgInitData;
+	_ERR_CODE_KEY       StrtKey;
+	_ERR_MSG_TABLE      ErrMsgTbl;
+	_CODE_PARM_BLOCK    CodeParmBlock;
+	short               rc=0, i=0;
+	char                Msg[100], Value[3];
+	BYTE                ByteValue;
+
+	/*
+		Initialize Window Context Data Architecture variables.
+	*/
+	memset(&(WCD_ArchData), 0, sizeof(_ARCHDATA));
+
+	/*
+		Initialize CmnErrBlock
+	*/
+	CMN_INIT_ERR_BLK
+
+	CMN_FORMAT_ERR_BLK("WINPRDIS", "AZCD003X")
+
+	/*
+		Initialize the Architecture Window Handle Tracking Array.
+	*/
+    CMN_INIT_WIN_HWND_TRACK(CMN_NO)
+    CMN_INIT_WIN_DATA_TRACK(CMN_NO)
+	WCD_ArchData.WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
+
+	/*
+		Callback Logic
+	*/
+
+	pErrMsgInitData = (_ERR_MSG_INIT_DATA *) CBI_pInitData;
+
+	if (pErrMsgInitData->ErrMsgAction == 'A')
+	{
+		sprintf(WindowTitle,
+				"Add Error Message Number: %u",
+				pErrMsgInitData->ErrMsgPassed);
+	}
+	else
+	{
+	   if (pErrMsgInitData->ErrMsgAction == 'U')
+	   {
+		  sprintf(WindowTitle,
+				  "Update Error Message Number: %u",
+				  pErrMsgInitData->ErrMsgPassed);
+	   }
+	   else
+	   {
+		  sprintf(WindowTitle,
+				  "Delete Error Message Number: %u",
+				  pErrMsgInitData->ErrMsgPassed);
+	   }
+	}
+
+	/*
+		  initialize window fields
+	*/
+	memset(TxErrorMsgTitleData,0,30);
+	memset(TxErrorMsgData,0,123);
+	memset(CdErrorSeverityData,0,3);
+	strcpy(CdErrorSeverityData,"0 ");
+	CdPushbuttonTypeData=(BYTE) 0;
+	CdIconTypeData=(BYTE) 2;
+	CdDefaultPushbuttonData =(BYTE) 0;
+
+	/*
+		  Retrieve error message data from the Error Codes Table
+	*/
+
+	StrtKey.ErrMsgNum = pErrMsgInitData->ErrMsgPassed;
+	StrtKey.Lang='E';
+	strncpy(StrtKey.SeqNum,"001",_SEQ_NUM_LEN);
+
+	memset(&CodeParmBlock,0,sizeof(_CODE_PARM_BLOCK));
+	memset(&ErrMsgTbl,0,sizeof(_ERR_MSG_TABLE));
+
+	memcpy(&CodeParmBlock.Code_Parm_Block_Version,
+		   FND_CTS_VER,
+		   _VER_LEN);
+
+	memcpy(&CodeParmBlock.Code_Function_Code,
+		   _CTIO_GET_UNIQUE,
+		   _CTS_FUNCTION_LEN);
+
+	memcpy(&CodeParmBlock.Code_Detail_Parms.Code_Ctb_Id,
+		   ERROR_CODE_TABLE,
+		   _CTB_TABLE_LEN);
+
+	memcpy(&CodeParmBlock.Code_Detail_Parms.Code_Ctb_User_Key,
+		   &StrtKey,
+		   sizeof(_ERR_CODE_KEY));
+
+	CodeParmBlock.Code_Detail_Parms.Code_Num_Rec_Requested=1;
+
+/*
+	  Retrieve the error message from the codes table
+*/
+
+	WFNDCODE(&CodeParmBlock, pABHI, &ErrMsgTbl);
+
+/*
+	  Check explanation code for a successful retrieval
+*/
+	 if (CodeParmBlock.Code_Explanation_Code == FND_SUCCESS)
+	 {
+		/*
+			  if in add mode and error message found, display message
+			  box indicating this and allow to update message.
+		*/
+		if (pErrMsgInitData->ErrMsgAction == 'A')
+		{
+		   pErrMsgInitData->ErrMsgAction = 'U';
+		   sprintf(WindowTitle,
+				  "Update Error Message Number: %u",
+				  pErrMsgInitData->ErrMsgPassed);
+		   rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+									  "The requested error message already"
+									  " exists, you will be allowed to "
+									  " update the existing error...",
+									  "WARNING!",
+									  FPS_OK|FPS_WARNING,
+									  FPS_DEFBUTTON1);
+		}
+		/*
+			  move data to the window fields
+		*/
+		memcpy (TxErrorMsgTitleData,ErrMsgTbl.ErrorDecode.TxErrorMsgTitle,29);
+		memcpy (TxErrorMsgData,ErrMsgTbl.ErrorDecode.TxErrorMsg,122);
+		memcpy (CdErrorSeverityData, ErrMsgTbl.ErrorDecode.CdErrorSeverity,2);
+		CdPushbuttonTypeData = ErrMsgTbl.ErrorDecode.CdPushbuttonType;
+		CdIconTypeData = ErrMsgTbl.ErrorDecode.CdIconType;
+		CdDefaultPushbuttonData = ErrMsgTbl.ErrorDecode.CdDefaultPushbutton;
+		/*
+			  if in delete mode protect all fields
+		*/
+		if (pErrMsgInitData->ErrMsgAction == 'D')
+		{
+		   TxErrorMsgTitleRights= RGT_PROTECTED;
+		   TxErrorMsgRights = RGT_PROTECTED;
+		   strcpy(Value,LT_RBG_SEVERITY_OK);
+		   rc=WesInvalidValue(CBI_hwnd,
+							  CdErrorSeverity_FID,
+							  Value);
+		   strcpy(Value,LT_RBG_SEVERITY_WA);
+		   rc=WesInvalidValue(CBI_hwnd,
+							  CdErrorSeverity_FID,
+							  Value);
+		   strcpy(Value,LT_RBG_SEVERITY_CR);
+		   rc=WesInvalidValue(CBI_hwnd,
+							  CdErrorSeverity_FID,
+							  Value);
+		   strcpy(Value,LT_RBG_SEVERITY_FA);
+		   rc=WesInvalidValue(CBI_hwnd,
+							  CdErrorSeverity_FID,
+							  Value);
+		   rc=WesValidValue(CBI_hwnd,
+							CdErrorSeverity_FID,
+							CdErrorSeverityData);
+		   for(i=0;i<9;i++)
+		   {
+			  ByteValue = (BYTE) i;
+			  rc=WesInvalidValue(CBI_hwnd,
+								 CdPushbuttonType_FID,
+								 &ByteValue);
+		   }
+		   for(i=0;i<5;i++)
+		   {
+			  ByteValue = (BYTE) i;
+			  rc=WesInvalidValue(CBI_hwnd,
+								 CdIconType_FID,
+								 &ByteValue);
+		   }
+		   for(i=0;i<3;i++)
+		   {
+			  ByteValue = (BYTE) i;
+			  rc=WesInvalidValue(CBI_hwnd,
+								 CdDefaultPushbutton_FID,
+								 &ByteValue);
+		   }
+		   rc=WesValidValue(CBI_hwnd,
+							CdPushbuttonType_FID,
+							&CdPushbuttonTypeData);
+		   rc=WesValidValue(CBI_hwnd,
+							CdIconType_FID,
+							&CdIconTypeData);
+		   rc=WesValidValue(CBI_hwnd,
+							CdDefaultPushbutton_FID,
+							&CdDefaultPushbuttonData);
+		}
+	 }
+	 else
+	 {
+		if ((CodeParmBlock.Code_Explanation_Code==CTS_KEY_NOT_FOUND)
+			&&
+		   (pErrMsgInitData->ErrMsgAction != 'A'))
+		{
+		   rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+			   "Requested message was not found, please refresh message list",
+			   "SORRY!",
+			   FPS_OK|FPS_WARNING,
+			   FPS_DEFBUTTON1);
+		   rc=CmnCloseWindow(CMN_WIN_KEY_SELF,pCmnErrBlock);
+		}
+		else
+		{
+		   if (CodeParmBlock.Code_Explanation_Code !=CTS_KEY_NOT_FOUND)
+		   {
+			  sprintf(Msg,
+				  "Unknown error from retrieval: %u",
+				  CodeParmBlock.Code_Explanation_Code);
+			  rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+									 Msg,
+									 "ERROR!",
+									 FPS_OK|FPS_WARNING,
+									 FPS_DEFBUTTON1);
+			  rc=CmnCloseWindow(CMN_WIN_KEY_SELF,pCmnErrBlock);
+		   }
+		}
+	 }
+
+	for (i=0;i<3;i++)
+	{
+	   rc=WesValidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+	}
+
+	switch(CdPushbuttonTypeData)
+	{
+		case LT_OK_PBTYPE:
+		case LT_CANCEL_PBTYPE:
+		case LT_ENTER_PBTYPE:
+		   i = LT_DEF_PB2;
+		   rc=WesInvalidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+		   i = LT_DEF_PB3;
+		   rc=WesInvalidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+		   CdDefaultPushbuttonData = LT_DEF_PB1;
+		   break;
+
+		case LT_OKCANCEL_PBTYPE:
+		case LT_RETRYCANCEL_PBTYPE:
+		case LT_YESNO_PBTYPE:
+		case LT_ENTERCANCEL_PBTYPE:
+			i=LT_DEF_PB3;
+			rc=WesInvalidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+			if (CdDefaultPushbuttonData > LT_DEF_PB2)
+			{
+			   CdDefaultPushbuttonData = LT_DEF_PB1;
+			}
+			break;
+	}
+	WCD_KyErrorMessage = pErrMsgInitData->ErrMsgPassed;
+	WCD_CdProcMode = pErrMsgInitData->ErrMsgAction;
+
+
+return (CMN_CALLBACK_RC);
+
+}   /*  End WINPRDIS */
+
+
+static WCBPROC (WINREDIS)
+/****************************************************************************
+
+		Control/Events which call this callback:
+
+					 WINDOW - REDISPLAY
+
+
+	 Description: Enter description for WINREDIS
+
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/
+
+	/*
+		Initialize CmnErrBlock with WINREDIS
+	*/ 
+	CMN_UPDATE_CB_IN_ERR_BLK("WINREDIS")
+
+
+	/* 
+		Callback Logic
+	*/ 
+
+	return (CMN_CALLBACK_RC);
+
+} /* End WINREDIS */
+
+
+static WCBPROC (WINOPMEV)
+/**************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 WINDOW - OTHER_GUI_EVENT
+   
+   
+	 Description: Enter description for WINOPMEV
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/ 
+	RETINFO RetInfo;
+	short rc1 = 0;
+	short rc2 = 0;
+
+
+	CMN_VARDECL_MSG_RECV
+	void      *pSendData;
+
+	/*
+		Initialize CmnErrBlock with WINOPMEV if within CMN Message ID range
+	*/ 
+	if ((CBI_PMmsg > CMN_MSG_MIN) &&
+		(CBI_PMmsg < CMN_MSG_MAX))
+	{
+
+		CMN_UPDATE_CB_IN_ERR_BLK("WINOPMEV")
+	}
+
+	/*
+		Initialize the FOUNDATION Macros used in this callback
+	*/ 
+	CBI_Proc  = 0;
+	CBI_PMret = 0;
+
+
+	/*
+		Process the Message Sent to the Callback
+	*/ 
+	switch (CBI_PMmsg)
+	{
+		case CMN_MSG_CONV_FAIL:
+			pSendData = (_STANDARDHEADER *) (CMN_PVOIDFROMMP(CBI_PMmp1));
+			pMsgPB = (_MSG_PARM_BLOCK *) (CMN_PVOIDFROMMP(CBI_PMmp2));
+
+			CmnMsgConvFail(pMsgPB,
+						   pSendData,
+						   pEAIA,
+						   pCmnErrBlock);
+
+			CBI_Proc = 1;
+			break;
+
+
+		case CMN_MSG_CANCEL:
+			pSendData = (_STANDARDHEADER *) (CMN_PVOIDFROMMP(CBI_PMmp1));
+			pMsgPB = (_MSG_PARM_BLOCK *) (CMN_PVOIDFROMMP(CBI_PMmp2));
+
+			/* 
+				 Process cancel for specific service call
+			*/ 
+			switch(pMsgPB->dest.service_id.srvc)
+			{
+/*                case YOUR_SERVICE_ID(S):
+					  break;
+*/
+				default:
+					break;
+			}
+
+			MEMFree(pMsgPB);
+			MEMFree(pSendData);
+
+			CBI_Proc = 1;
+			break;
+
+
+		case CMN_MSG_WIN_CREATED:
+			CMN_UPDATE_WIN_HWND_TRACK
+			CBI_Proc = 1;
+			break;
+
+		case CMN_MSG_WIN_CLOSE_AFTER_SAVE:
+            CMN_DEL_WIN_FROM_WIN_HWND_TRACK(CMN_NO)
+			CBI_Proc = 1;
+			break;
+
+		case CMN_MSG_WIN_CLOSE_AFTER_CANCEL:
+            CMN_DEL_WIN_FROM_WIN_HWND_TRACK(CMN_CHAR1FROMMP (CBI_PMmp2))
+			CBI_Proc = 1;
+			break;
+
+		case CMN_MSG_WIN_CLOSE_EXIT_PENDING:
+            CMN_DEL_WIN_FROM_WIN_HWND_TRACK(CMN_CHAR1FROMMP (CBI_PMmp2))
+			CBI_Proc = 1;
+			break;
+
+		case CMN_MSG_ACTIVATE_YOURSELF:
+			/*
+				Activate this window.
+				If activation is unsuccessful, call the error handler.
+				If the error handler logs the error, close this window.
+			*/ 
+			rc1 = FpsActivateWindow(CBI_WindowID,
+									CBI_InstanceID,
+									CBI_hwnd,
+									NULL,
+									NULL,
+									&RetInfo);
+			if (rc1 == 0)   /* 0 is unsuccessful. */
+			{
+				rc2 = CmnErrorHandler(CMN_FND_ERR_TYPE,
+									  pCmnErrBlock,
+									  rc1,
+									  "FpsActivateWindow");
+				CMN_HANDLE_BAD_RC(rc1, CMN_RC_CLOSE_WINDOW)
+			}
+			CBI_Proc = 1;
+			break;
+
+		default:
+			CBI_Proc  = 0;
+			CBI_PMret = 0;
+			break;
+	}
+
+	return (CMN_CALLBACK_RC);
+
+} /* End WINOPMEV */
+
+
+static WCBPROC (WINMSGNT)
+/****************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 WINDOW - MSG_NOTIFICATION
+   
+   
+	 Description: Enter description for WINMSGNT
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/ 
+	CMN_VARDECL_MSG_RECV
+
+
+	/*
+		Dereference CBI_pMSGParmBlock
+	*/ 
+	pMsgPB = (_MSG_PARM_BLOCK *) CBI_pMSGParmBlock;
+
+
+	/*
+		Initialize CmnErrBlock with WINMSGNT
+	*/ 
+	CMN_UPDATE_MSGNOTF_IN_ERR_BLK("WINMSGNT", pMsgPB)
+
+
+
+	/* 
+		Callback Logic
+	*/
+
+	return (CMN_CALLBACK_RC);
+
+} /* End WINMSGNT */
+
+
+static WCBPROC (WINPRDES)
+/****************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 WINDOW - PREDESTROY
+   
+   
+	 Description: Enter description for WINPRDES
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/
+
+	/*
+		Initialize CmnErrBlock with WINPRDES
+	*/ 
+	CMN_UPDATE_CB_IN_ERR_BLK("WINPRDES")
+
+	/*
+		Cleanup the Window Handle Tracking List
+	*/  
+	CMN_FREE_WIN_HWND_TRACK(CMN_NO)
+
+
+	/*
+		Callback Logic
+	*/ 
+
+
+	/*
+		Free memory allocated for this window's error block.
+	*/
+	free(pCmnErrBlock);
+	return (CMN_CALLBACK_RC);
+
+} /* End WINPRDES */
+
+
+
+/*  Begin Source Code Section ***********************************************
+					 Pushbutton and Menu Event Callbacks                    *
+*****************************************************************************/
+
+static WCBPROC (SPBPROCE)
+/****************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 PROCESS_CMD - CLICK
+   
+   
+	 Description: Enter description for SPBPROCE
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/ 
+	_CMN_ERROR_DECODE ErrDecode;
+	_CODE_PARM_BLOCK  CodeParmBlock;
+	_ERR_CODE_KEY     StrtKey;
+	short rc=0;
+	char Msg[100], MsgTitle[30];
+
+	/* 
+		Initialize CmnErrBlock with SPBPROCE
+	*/ 
+	CMN_UPDATE_CB_IN_ERR_BLK("SPBPROCE")
+
+
+	/* 
+		Callback Logic
+	*/ 
+
+	WCD_ArchData.WnMsgType =  CMN_MSG_WIN_CLOSE_AFTER_SAVE;
+
+	StrtKey.ErrMsgNum = WCD_KyErrorMessage;
+	StrtKey.Lang='E';
+	strncpy(StrtKey.SeqNum,"001",_SEQ_NUM_LEN);
+
+	memset(&CodeParmBlock,0,sizeof(_CODE_PARM_BLOCK));
+	memset(&ErrDecode,0,sizeof(_CMN_ERROR_DECODE));
+
+	memcpy(&CodeParmBlock.Code_Parm_Block_Version,
+		   FND_CTS_VER,
+		   _VER_LEN);
+
+	if (WCD_CdProcMode == 'A')
+	{
+	   memcpy(&CodeParmBlock.Code_Function_Code,
+			  _CTIO_WRITE,
+			  _CTS_FUNCTION_LEN);
+	}
+	else
+	{
+	   if (WCD_CdProcMode == 'U')
+	   {
+		  memcpy(&CodeParmBlock.Code_Function_Code,
+				 _CTIO_REWRITE,
+				 _CTS_FUNCTION_LEN);
+	   }
+	   else
+	   {
+		  if (WCD_CdProcMode == 'D')
+		  {
+			 memcpy(&CodeParmBlock.Code_Function_Code,
+				   _CTIO_DELETE,
+				   _CTS_FUNCTION_LEN);
+		  }
+	   }
+	}
+
+	memcpy(&CodeParmBlock.Code_Detail_Parms.Code_Ctb_Id,
+		   ERROR_CODE_TABLE,
+		   _CTB_TABLE_LEN);
+
+	memcpy(&CodeParmBlock.Code_Detail_Parms.Code_Ctb_User_Key,
+		   &StrtKey,
+		   sizeof(_ERR_CODE_KEY));
+
+	CodeParmBlock.Code_Detail_Parms.Code_Num_Rec_Requested=1;
+
+	if (WCD_CdProcMode != 'D')
+	{
+	   memcpy(&ErrDecode.CdErrorSeverity,&CdErrorSeverityData,2);
+	   CmnRemNull(ErrDecode.CdErrorSeverity,3);
+	   memcpy(&ErrDecode.TxErrorMsg,&TxErrorMsgData,122);
+	   CmnRemNull(ErrDecode.TxErrorMsg,123);
+	   memcpy(&ErrDecode.TxErrorMsgTitle,&TxErrorMsgTitleData,29);
+	   CmnRemNull(ErrDecode.TxErrorMsgTitle,30);
+	   ErrDecode.CdPushbuttonType = CdPushbuttonTypeData;
+	   ErrDecode.CdIconType = CdIconTypeData;
+	   ErrDecode.CdDefaultPushbutton = CdDefaultPushbuttonData;
+	   WFNDCODE(&CodeParmBlock, pABHI, &ErrDecode);
+	   if (CodeParmBlock.Code_Explanation_Code == FND_SUCCESS)
+	   {
+		   if (WCD_CdProcMode == 'A')
+		   {
+			  sprintf(Msg,
+				 "Error Message %u was successfully added "
+				 "to the Error Codes Table",
+				 WCD_KyErrorMessage);
+			  strcpy(MsgTitle,"ADD SUCCESSFUL");
+		   }
+		   else
+		   {
+			  sprintf(Msg,
+				 "Error Message %u was successfully updated "
+				 "in the Error Codes Table",
+				 WCD_KyErrorMessage);
+			  strcpy(MsgTitle,"UPDATE SUCCESSFUL");
+		   }
+		   rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+									  Msg,
+									  MsgTitle,
+									  FPS_OK|FPS_INFORMATION,
+									  FPS_DEFBUTTON1);
+		   rc=CmnCloseWindow(CMN_WIN_KEY_SELF,pCmnErrBlock);
+	   }
+	   else
+	   {
+		   if (WCD_CdProcMode == 'A')
+		   {
+			  sprintf(Msg,
+				 "An error occurred while adding error message %u."
+				 "  The return code error message was: %u."
+				 "  Please refer to the FCP TRG for details.",
+				 WCD_KyErrorMessage,
+				 CodeParmBlock.Code_Explanation_Code);
+			  strcpy(MsgTitle,"ADD UNSUCCESSFUL!!!");
+		   }
+		   else
+		   {
+			  sprintf(Msg,
+				 "An error occurred while updating error message %u."
+				 "  The return code error message was: %u."
+				 "  Please refer to the FCP TRG for details.",
+				 WCD_KyErrorMessage,
+				 CodeParmBlock.Code_Explanation_Code);
+			  strcpy(MsgTitle,"UPDATE UNSUCCESSFUL!!!");
+		   }
+		   rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+									  Msg,
+									  MsgTitle,
+									  FPS_OK|FPS_WARNING,
+									  FPS_DEFBUTTON1);
+	   }
+	}
+	else
+	{
+	   sprintf(Msg,
+		  "Are you sure you want to DELETE error message %u?",
+		  WCD_KyErrorMessage);
+	   rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+			  Msg,
+			  "DELETE?",
+			  FPS_YESNOCANCEL|FPS_QUERY,
+			  FPS_DEFBUTTON2);
+	   if (rc==FPSID_YES)
+	   {
+		  WFNDCODE(&CodeParmBlock, pABHI, NULL);
+		  if (CodeParmBlock.Code_Explanation_Code == FND_SUCCESS)
+		  {
+			  sprintf(Msg,
+				 "Error Message %u was successfully deleted "
+				 "from the Error Codes Table",
+				 WCD_KyErrorMessage);
+			  strcpy(MsgTitle,"DELETE SUCCESSFUL");
+			  rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+										 Msg,
+										 MsgTitle,
+										 FPS_OK|FPS_INFORMATION,
+										 FPS_DEFBUTTON1);
+			  rc=CmnCloseWindow(CMN_WIN_KEY_SELF,pCmnErrBlock);
+		  }
+		  else
+		  {
+			  sprintf(Msg,
+				 "An error occurred while deleting error message %u."
+				 "  The return code error message was: %u."
+				 "   Please refer to the FCP TRG for details.",
+				 WCD_KyErrorMessage,
+				 CodeParmBlock.Code_Explanation_Code);
+			  strcpy(MsgTitle,"DELETE UNSUCCESSFUL!!!");
+			  rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+										 Msg,
+										 MsgTitle,
+										 FPS_OK|FPS_WARNING,
+										 FPS_DEFBUTTON1);
+		  }
+	   }
+	}
+
+
+	return (CMN_CALLBACK_RC);
+
+} /* End SPBPROCE */
+
+
+static WCBPROC (APBCANCL)
+/****************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 CancelPB_CMD - CLICK
+   
+   
+	 Description: Enter description for APBCANCL
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/ 
+	short rc=0;
+	char Msg[100],MsgTitle[30];
+
+	/* 
+		Initialize CmnErrBlock with APBCANCL
+	*/ 
+	CMN_UPDATE_CB_IN_ERR_BLK("APBCANCL")
+
+
+	/*
+		Callback Logic
+	*/ 
+	WCD_ArchData.WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
+	if (WCD_CdProcMode == 'A')
+	{
+	   sprintf(Msg,
+			"Are you sure you wish to CANCEL adding error message %u?",
+			WCD_KyErrorMessage);
+	   strcpy(MsgTitle,"CANCEL ADD?");
+	}
+	else
+	{
+		if (WCD_CdProcMode == 'U')
+		{
+			sprintf(Msg,
+				"Are you sure you wish to CANCEL updating error message %u?",
+				WCD_KyErrorMessage);
+			strcpy(MsgTitle,"CANCEL UPDATE?");
+		}
+		else
+		{
+			sprintf(Msg,
+				"Are you sure you wish to CANCEL deleting error message %u?",
+				WCD_KyErrorMessage);
+			strcpy(MsgTitle,"CANCEL DELETE?");
+		}
+	}
+	rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+							   Msg,
+							   MsgTitle,
+							   FPS_YESNO|FPS_QUERY,
+							   FPS_DEFBUTTON2);
+	if (rc==FPSID_YES)
+	   rc=CmnCloseWindow(CMN_WIN_KEY_SELF,pCmnErrBlock);
+
+	return (CMN_CALLBACK_RC);
+
+} /* End APBCANCL */
+
+
+static WCBPROC (SPBVIEW)
+/****************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 VIEW_CMD - CLICK
+   
+   
+	 Description: Enter description for SPBVIEW
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/ 
+	short rc=0, PBtype=0, IconType=0, ChoiceTypes=0, DefPB=0;
+
+
+	/* 
+		Initialize CmnErrBlock with SPBVIEW
+	*/ 
+	CMN_UPDATE_CB_IN_ERR_BLK("SPBVIEW")
+
+
+	/* 
+		Callback Logic
+	*/
+	switch (CdPushbuttonTypeData)
+	{
+		case LT_OK_PBTYPE:
+		   PBtype = FPS_OK;
+		   break;
+
+		case LT_OKCANCEL_PBTYPE:
+		   PBtype = FPS_OKCANCEL;
+		   break;
+
+		case LT_RETRYCANCEL_PBTYPE:
+		   PBtype = FPS_RETRYCANCEL;
+		   break;
+
+		case LT_ABORTRETRYIGNORE_PBTYPE:
+		   PBtype = FPS_ABORTRETRYIGNORE;
+		   break;
+
+		case LT_YESNO_PBTYPE:
+		   PBtype = FPS_YESNO;
+		   break;
+
+		case LT_YESNOCANCEL_PBTYPE:
+		   PBtype = FPS_YESNOCANCEL;
+		   break;
+
+		case LT_CANCEL_PBTYPE:
+		   PBtype = FPS_CANCEL;
+		   break;
+
+		case LT_ENTER_PBTYPE:
+		   PBtype = FPS_ENTER;
+		   break;
+
+		case LT_ENTERCANCEL_PBTYPE:
+		   PBtype = FPS_ENTERCANCEL;
+		   break;
+
+	}
+
+	switch (CdIconTypeData)
+	{
+		case LT_QUERY_ICTYPE:
+		   IconType = FPS_QUERY;
+		   break;
+
+		case LT_WARNING_ICTYPE:
+		   IconType = FPS_WARNING;
+		   break;
+
+		case LT_INFO_ICTYPE:
+		   IconType = FPS_INFORMATION;
+		   break;
+
+		case LT_CRITICAL_ICTYPE:
+		   IconType = FPS_CRITICAL;
+		   break;
+
+		case LT_ERROR_ICTYPE:
+		   IconType = FPS_ERROR;
+		   break;
+	}
+
+	switch (CdDefaultPushbuttonData)
+	{
+		case LT_DEF_PB1:
+		   DefPB = FPS_DEFBUTTON1;
+		   break;
+
+		case LT_DEF_PB2:
+		   DefPB = FPS_DEFBUTTON2;
+		   break;
+
+		case LT_DEF_PB3:
+		   DefPB = FPS_DEFBUTTON3;
+		   break;
+	}
+
+	ChoiceTypes = PBtype | IconType;
+	rc=FpsDisplayChoiceBoxText(CBI_hwnd,
+							   TxErrorMsgData,
+							   TxErrorMsgTitleData,
+							   ChoiceTypes,
+							   DefPB);
+
+
+	return (CMN_CALLBACK_RC);
+
+} /* End SPBVIEW */
+
+
+
+/*  Begin Source Code Section ***********************************************
+						  List Box Event Callbacks                          *
+*****************************************************************************/
+
+
+/*  Begin Source Code Section ***********************************************
+		Field Event Callbacks - includes Radio Buttons and Check Boxes      *
+*****************************************************************************/
+
+static WCBPROC (E00003FC)
+/****************************************************************************
+   
+		Control/Events which call this callback:
+   
+					 CdPushbuttonType_FID - FIELD_CHANGE
+   
+   
+	 Description: Enter description for E00003FC
+   
+*****************************************************************************/
+{
+	/*
+		Local Variable Declarations
+	*/ 
+	short rc=0, i=0;
+
+	/*
+		Initialize CmnErrBlock with E00003FC
+	*/ 
+	CMN_UPDATE_CB_IN_ERR_BLK("E00003FC")
+
+
+	/* 
+		Callback Logic
+	*/ 
+	for (i=0;i<3;i++)
+	{
+	   rc=WesValidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+	}
+
+	switch(CdPushbuttonTypeData)
+	{
+		case LT_OK_PBTYPE:
+		case LT_CANCEL_PBTYPE:
+		case LT_ENTER_PBTYPE:
+		   i = LT_DEF_PB2;
+		   rc=WesInvalidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+		   i = LT_DEF_PB3;
+		   rc=WesInvalidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+		   CdDefaultPushbuttonData = LT_DEF_PB1;
+		   break;
+
+		case LT_OKCANCEL_PBTYPE:
+		case LT_RETRYCANCEL_PBTYPE:
+		case LT_YESNO_PBTYPE:
+		case LT_ENTERCANCEL_PBTYPE:
+			i=LT_DEF_PB3;
+			rc=WesInvalidValue(CBI_hwnd, CdDefaultPushbutton_FID, (BYTE *) &i);
+			if (CdDefaultPushbuttonData > LT_DEF_PB2)
+			{
+			   CdDefaultPushbuttonData = LT_DEF_PB1;
+			}
+			break;
+	}
+
+	return (CMN_CALLBACK_RC);
+
+} /* End E00003FC */
+
+
+
+/*  Begin Source Code Section ***********************************************
+						  Module Common Functions                           *
+*****************************************************************************/
+
+void CmnRemNull(char *string, int strlngth)
+{
+   int i;
+
+   for (i=0; ((i<strlngth) && (string[i]!='\0')); i++);
+
+   for (;i<strlngth; i++)
+	string[i]=' ';
+   return;
+}
+
+
+
+
+
+/**************************************************************************
+  * End Module:  AZCD003X.CB
+*****************************************************************************/

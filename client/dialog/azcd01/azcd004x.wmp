@@ -1,0 +1,65 @@
+
+/****************************************************************************
+*                                                                           *
+*         AZCD004X WES map definitions                                      *
+*         Generated on: Jul  2, 1992                                        *
+*                   at: 13:53:54                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+/****************************************************************************
+*   Record: CCO9999C
+*   Description:
+*    This represents the standard layout of WCD (Working Context Data)
+*    The standard layout is broken into the common arch layout and the
+*    window-specific layout.  Client programs should use this D610 as 
+*    template for their WCD D610. The Window D610 ref should be update
+****************************************************************************/
+#ifndef _ARCHDATA_z
+typedef struct __ArchData
+{
+  void far * pErrorBlock;
+  char   FlWnMod;
+  unsigned short WnMsgType;
+  void far * pData;
+} _ARCHDATA;
+#define _ARCHDATA_z
+#endif
+#ifndef _WCDSTANDARD_z
+typedef struct __WCDStandard
+{
+  _ARCHDATA ArchData;
+} _WCDSTANDARD;
+#define _WCDSTANDARD_z
+#endif
+#define WCD_ArchData           pWindContextData->ArchData
+#define WINCONTEXTNAME         _WCDSTANDARD
+
+struct _AZCD004XWesMap {
+
+WESMAPHDR _WesMapHeader;
+/*Header*/
+#define WindowTitle                     pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX                   pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY                   pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth                     pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight                    pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer                   pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode               pWesMap->_WesMapHeader._WindowPointerMode
+/*Group Status Indicators*/
+BYTE _GrpStatus;
+BYTE _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+   unsigned short _KyErrorMessageData;
+#define KyErrorMessageData               pWesMap->_KyErrorMessageData
+
+     WESFLDCTL  _KyErrorMessageCtl;
+#define KyErrorMessageAttr               pWesMap->_KyErrorMessageCtl.Attr
+#define KyErrorMessageStatus             pWesMap->_KyErrorMessageCtl.Status
+#define KyErrorMessageRights             pWesMap->_KyErrorMessageCtl.Rights
+#define KyErrorMessageMsg                pWesMap->_KyErrorMessageCtl.Msg
+#define KyErrorMessageCursor             pWesMap->_KyErrorMessageCtl.Cursor
+};

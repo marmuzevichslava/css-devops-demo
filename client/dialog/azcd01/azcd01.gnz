@@ -1,0 +1,29 @@
+/****************************************************************************
+*                                                                           *
+*         Window IDs for: AZCD01                                            *
+*         Generated on: Jul 15, 1992                                        *
+*                   at: 15:37:26                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+#define AZCD001XID                      1
+#define AZCD001XMenuID                  1
+#define AZCD001XIconID                  1
+#define AZCD001XAccelID                 1
+#define AZCD001XWctID                   1
+#define AZCD002XID                      2
+#define AZCD002XMenuID                  2
+#define AZCD002XIconID                  2
+#define AZCD002XAccelID                 2
+#define AZCD002XWctID                   2
+#define AZCD003XID                      3
+#define AZCD003XMenuID                  3
+#define AZCD003XIconID                  3
+#define AZCD003XAccelID                 3
+#define AZCD003XWctID                   3
+#define AZCD004XID                      4
+#define AZCD004XMenuID                  4
+#define AZCD004XIconID                  4
+#define AZCD004XAccelID                 4
+#define AZCD004XWctID                   4

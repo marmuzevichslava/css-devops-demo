@@ -1,0 +1,21 @@
+/***************************************************************************
+ *                                                                         *
+ *             C   O S /2    W I N D O W   I D E N T I F I E R S           *
+ *                                                                         *
+ *                 Copyright (C) 1994 Andersen Consulting.                 *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *               Window Identifiers for: AZDI01                            *
+ *                         Generated on: Mon Feb 20 10:11:24 1995          *
+ *                                   by: FGANTER                           *
+ *                                                                         *
+ ***************************************************************************/
+#define AZDI001ID                501
+#define AZDI001MenuID                501
+#define AZDI001IconID                501
+#define AZDI001AccelID               501
+#define AZDI001WctID                 501
+
+

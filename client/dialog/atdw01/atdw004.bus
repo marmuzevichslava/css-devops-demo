@@ -1,0 +1,250 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  ATDW004.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window ATDW004,
+**                     includes:
+**
+**                     ATDW004BusPredisplay
+**                     ATDW004BusFillLB
+
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+#include <time.h>
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ATDW004BusPredisplay
+**
+**  DESCRIPTION      : This function handles any preprocessing before the window
+**                        is painted.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( ATDW004BusPredisplay )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock; 
+  USHORT FndGenRC = 0; 
+
+  SHORT sRC=0;
+
+  /*
+  ** Clear out the List box
+  */
+  sRC = FndLstBoxRowDeleteAll(CBI_hwnd, "ServicesLB", &FndGenErrorBlock);
+
+  /*
+  ** Tell the CSR you want the resident data
+  */
+  sRC = ATDW001BusOpenPipe(CSR_RESIDENT_DATA, CMN_ARCH_PARMS);
+
+
+    return CMN_SUCCESS;
+ }
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ATDW004BusFillLB
+**
+**  DESCRIPTION      : This function fills the listbox
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/12/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+SHORT ATDW004BusFillLB(CMN_ARCH_PARM_TYPES)
+{
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+  _ServicesLBRow Row;
+  char tmpbuf[10];
+  struct tm *ptmTmpBuf;
+
+  CMN_HMEM hmemData;
+  _CSR_RESIDENT_DATA *pData;
+  LONG lSize;
+
+
+/*
+** Take the handle passed in via InterWindow Msg and convert it to a pointer to the shared memory.
+*/
+  hmemData = (CMN_HMEM ) (CBI_ApplParm1);
+
+  FndGenRC = CmnMemGetPointer( hmemData, &pData, CMN_ARCH_PARMS);
+
+  FndGenRC = CmnMemQuerySize( hmemData, &lSize, CMN_ARCH_PARMS);
+
+ while(lSize > 0)
+  {
+   LONG CreationTimeLong=0;
+   LONG ExpirationTimeLong = 0;
+
+   Row._ServicesLBServerData = pData->Server;
+   Row._ServicesLBServiceIDData = pData->ServiceId;
+   strcpy(Row._ServicesLBTranMapData,pData->TransMap);
+   strcpy(Row._ServicesLBRequestTypeData,pData->RequestType);
+
+   strcpy(Row._ServicesLBStatusData, pData->Status );
+
+   CreationTimeLong = atol ( pData->CreationTime );
+   ptmTmpBuf = localtime((time_t *) &CreationTimeLong );
+
+   if (ptmTmpBuf)   /* not-null means good time value */
+   {
+       strftime(tmpbuf,
+                sizeof(tmpbuf)-1,
+                "%H:%M:%S",
+                ptmTmpBuf);
+   }
+   else
+   {
+       strcpy(tmpbuf, "N/A");
+   }
+
+   strcpy(Row._ServicesLBCreationTimeData, tmpbuf);
+
+
+   ExpirationTimeLong = atol ( pData->ExpirationTime );
+   ptmTmpBuf = localtime((time_t *) &ExpirationTimeLong );
+   if (ptmTmpBuf)   /* not-null means good time value */
+   {
+       strftime(tmpbuf,
+                sizeof(tmpbuf)-1,
+                "%H:%M:%S",
+                ptmTmpBuf);
+   }
+   else
+   {
+       strcpy(tmpbuf, "N/A");
+   }
+   
+
+   strcpy(Row._ServicesLBExpirationTimeData,tmpbuf);
+
+   Row._ServicesLBSizeData = pData->Size;
+
+   FndGenRC = FndLstBoxRowAdd (CBI_hwnd,
+                               "ServicesLB",
+                               FND_LSTBOX_END,
+                               sizeof(Row),
+                               &Row,
+                               &FndGenErrorBlock);
+
+  lSize -= sizeof(_CSR_RESIDENT_DATA);
+
+  } /* end of While lSize Loop */
+
+/*
+** Free the allocated memory
+*/
+  FndGenRC = CmnMemFree(hmemData, CMN_ARCH_PARMS);
+
+  return CMN_SUCCESS;
+
+} /* end of function ATDW004BusFillLB() */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ATDW00BusInterWindow
+**
+**  DESCRIPTION      : This function handles the Interwindow messages 
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/12/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC (ATDW004BusInterWindow)
+{
+//  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+
+  /*
+  ** Check the message type and if it is from the CSR call the
+  **  appropriate function to process the message.
+  */
+  switch( CBI_IWApplMsg )
+      { /* Start of swithc on Application Message number */
+
+       case CMN_MSG_CSR_RESIDENT_DATA:      /* Resident Data */
+
+            FndGenRC = ATDW004BusFillLB( CMN_ARCH_PARMS ); 
+            if ( FndGenRC != CMN_SUCCESS )
+            {
+                return( CMN_FAIL );
+            }
+            break;
+
+       default:
+            break;
+
+      } /* End of switch on Applicaiton Message Number */
+
+
+
+} /* End of ATDW004BusInterWindow */
+

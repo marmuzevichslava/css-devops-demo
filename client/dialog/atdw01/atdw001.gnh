@@ -1,0 +1,71 @@
+/***************************************************************************
+*                                                                          *
+*           O S / 2    S Y M B O L I C   D E F I N I T I O N S             *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: ATDW001                           *
+*                          Generated on: Sun Aug 27 14:55:12 1995          *
+*                                    by: CWOODS                            *
+*                                                                          *
+****************************************************************************/
+
+/***************************************************************************
+*  Field IDs                                                               *
+****************************************************************************/
+
+#define MsgLevel_FID                                   0
+#define ServicesLB_FID                                 1
+#define TranscriptLB_FID                               2
+#define RequestID_FID                                  3
+#define ServicesLBSelInd_FID                           4
+#define ServicesLBServer_FID                           5
+#define ServicesLBServiceID_FID                        6
+#define ServicesLBTranMap_FID                          7
+#define TranscriptLBSelInd_FID                         8
+#define TranscriptLBDataBuffer_FID                     9
+
+/***************************************************************************
+*  Widget IDs                                                              *
+****************************************************************************/
+
+#define groupBoxWidget_WID                             9000
+#define MsgLevel_WID                                   8000
+#define ServicesLB_WID                                 101
+#define TranscriptLB_WID                               102
+#define RequestID_WID                                  103
+
+/***************************************************************************
+*  Command IDs                                                             *
+****************************************************************************/
+
+#define AMNATDW001CDOPT_CMD                            200
+#define AMNSTAT_CMD                                    1000
+#define AMNMAPS_CMD                                    1001
+#define AMNDATA_CMD                                    1002
+#define AMNPRNTF_CMD                                   1003
+#define HelpMN_CMD                                     201
+#define HelpforHelpMN_CMD                              1004
+#define ExtendedHelpMN_CMD                             1005
+#define KeysHelpMN_CMD                                 1006
+#define HelpIndexMN_CMD                                1007
+#define AboutMN_CMD                                    1008
+
+/***************************************************************************
+*  Radio Button Literals                                                   *
+****************************************************************************/
+#ifndef LT_Service                         
+#define LT_Service                          2
+#endif
+#ifndef LT_Request                         
+#define LT_Request                          1
+#endif
+
+
+/***************************************************************************
+*  List Box Column Literals                                                *
+****************************************************************************/
+

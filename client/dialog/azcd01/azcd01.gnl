@@ -1,0 +1,75 @@
+{T215.AZCD01} (O)  No parent def.              azcd01.c     client                                                         
+{T215.AZCD01} (O)  No parent def.              azcd01.c     server                                                         
+{T215.AZCD01} (O)  No parent def.              azcd01.gnv   pgm msg tbl COBOL                                              
+{T215.AZCD01} (O)  No parent def.              azcd01.gnt   pgm msg tbl C                                                  
+{T215.AZCD01} (O)  No parent def.              azcd01.gno   pgm msg tbl sym C                                              
+{T215.AZCD01} (O)  No parent def.              azcd01.gna   pgm msg tbl sym COBOL                                          
+{T525.AZCD01} (O)  {T215.AZCD01} (O)  CLIENT                No generated files                                             
+{T235.AZCD001X} (O){T215.AZCD01} (O)  CLIENT   azcd001x.c   window                                                         
+{T235.AZCD001X} (O){T215.AZCD01} (O)  CLIENT   azcd001x.cws C working storage                                              
+{T235.AZCD001X} (O){T215.AZCD01} (O)  CLIENT   azcd001x.bws COBOL working storage                                          
+{T235.AZCD001X} (O){T215.AZCD01} (O)  CLIENT   azcd001x.gnb Default C BFCD header                                          
+{T235.AZCD001X} (O){T215.AZCD01} (O)  CLIENT   azcd001x.cpy Default COBOL BFCD header                                      
+{T235.AZCD001X} (O){T215.AZCD01} (O)  CLIENT   azcd001x.gzv spec gen z vars                                                
+{T240.AZCD001X} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D325.AZCD001X} (O){T235.AZCD001X} (O)WINDOW   azcd001x.wmp WES map                                                        
+{D325.AZCD001X} (O){T235.AZCD001X} (O)WINDOW   azcd001x.wct WCT                                                            
+{D325.AZCD001X} (O){T235.AZCD001X} (O)WINDOW   azcd001x.dlg PM resource file                                               
+{D325.AZCD001X} (O){T235.AZCD001X} (O)WINDOW   azcd001x.gnd wes disp tbl                                                   
+{D325.AZCD001X} (O){T235.AZCD001X} (O)WINDOW   azcd001x.gnh WES IDs                                                        
+{D710.ARC00001} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D710.ARC00011} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D710.ARC00069} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D710.ARC00185} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D710.ARC00001} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D710.ARC00011} (O){T235.AZCD001X} (O)WINDOW                No generated files                                             
+{D725.ARCI0001} (O){T235.AZCD001X} (O)WINDOW   errtbl.bmp   No generated files           130                               
+{T235.AZCD002X} (O){T215.AZCD01} (O)  CLIENT   azcd002x.c   window                                                         
+{T235.AZCD002X} (O){T215.AZCD01} (O)  CLIENT   azcd002x.cws C working storage                                              
+{T235.AZCD002X} (O){T215.AZCD01} (O)  CLIENT   azcd002x.bws COBOL working storage                                          
+{T235.AZCD002X} (O){T215.AZCD01} (O)  CLIENT   azcd002x.gnb Default C BFCD header                                          
+{T235.AZCD002X} (O){T215.AZCD01} (O)  CLIENT   azcd002x.cpy Default COBOL BFCD header                                      
+{T235.AZCD002X} (O){T215.AZCD01} (O)  CLIENT   azcd002x.gzv spec gen z vars                                                
+{T240.AZCD002X} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{D325.AZCD002X} (O){T235.AZCD002X} (O)WINDOW   azcd002x.wmp WES map                                                        
+{D325.AZCD002X} (O){T235.AZCD002X} (O)WINDOW   azcd002x.wct WCT                                                            
+{D325.AZCD002X} (O){T235.AZCD002X} (O)WINDOW   azcd002x.dlg PM resource file                                               
+{D325.AZCD002X} (O){T235.AZCD002X} (O)WINDOW   azcd002x.gnd wes disp tbl                                                   
+{D325.AZCD002X} (O){T235.AZCD002X} (O)WINDOW   azcd002x.gnh WES IDs                                                        
+{D710.ARC00001} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{D710.ARC00002} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{D710.ARC00043} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{D710.ARC00220} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{D710.ARC00221} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{D710.ARC00222} (O){T235.AZCD002X} (O)WINDOW                No generated files                                             
+{T235.AZCD003X} (O){T215.AZCD01} (O)  CLIENT   azcd003x.c   window                                                         
+{T235.AZCD003X} (O){T215.AZCD01} (O)  CLIENT   azcd003x.cws C working storage                                              
+{T235.AZCD003X} (O){T215.AZCD01} (O)  CLIENT   azcd003x.bws COBOL working storage                                          
+{T235.AZCD003X} (O){T215.AZCD01} (O)  CLIENT   azcd003x.gnb Default C BFCD header                                          
+{T235.AZCD003X} (O){T215.AZCD01} (O)  CLIENT   azcd003x.cpy Default COBOL BFCD header                                      
+{T235.AZCD003X} (O){T215.AZCD01} (O)  CLIENT   azcd003x.gzv spec gen z vars                                                
+{T240.AZCD003X} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{D325.AZCD003X} (O){T235.AZCD003X} (O)WINDOW   azcd003x.wmp WES map                                                        
+{D325.AZCD003X} (O){T235.AZCD003X} (O)WINDOW   azcd003x.wct WCT                                                            
+{D325.AZCD003X} (O){T235.AZCD003X} (O)WINDOW   azcd003x.dlg PM resource file                                               
+{D325.AZCD003X} (O){T235.AZCD003X} (O)WINDOW   azcd003x.gnd wes disp tbl                                                   
+{D325.AZCD003X} (O){T235.AZCD003X} (O)WINDOW   azcd003x.gnh WES IDs                                                        
+{D710.ARC00001} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{D710.ARC00002} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{D710.ARC00003} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{D710.ARC00004} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{D710.ARC00005} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{D710.ARC00043} (O){T235.AZCD003X} (O)WINDOW                No generated files                                             
+{T235.AZCD004X} (O){T215.AZCD01} (O)  CLIENT   azcd004x.c   window                                                         
+{T235.AZCD004X} (O){T215.AZCD01} (O)  CLIENT   azcd004x.cws C working storage                                              
+{T235.AZCD004X} (O){T215.AZCD01} (O)  CLIENT   azcd004x.bws COBOL working storage                                          
+{T235.AZCD004X} (O){T215.AZCD01} (O)  CLIENT   azcd004x.gnb Default C BFCD header                                          
+{T235.AZCD004X} (O){T215.AZCD01} (O)  CLIENT   azcd004x.cpy Default COBOL BFCD header                                      
+{T235.AZCD004X} (O){T215.AZCD01} (O)  CLIENT   azcd004x.gzv spec gen z vars                                                
+{T240.AZCD004X} (O){T235.AZCD004X} (O)WINDOW                No generated files                                             
+{D325.AZCD004X} (O){T235.AZCD004X} (O)WINDOW   azcd004x.wmp WES map                                                        
+{D325.AZCD004X} (O){T235.AZCD004X} (O)WINDOW   azcd004x.wct WCT                                                            
+{D325.AZCD004X} (O){T235.AZCD004X} (O)WINDOW   azcd004x.dlg PM resource file                                               
+{D325.AZCD004X} (O){T235.AZCD004X} (O)WINDOW   azcd004x.gnd wes disp tbl                                                   
+{D325.AZCD004X} (O){T235.AZCD004X} (O)WINDOW   azcd004x.gnh WES IDs                                                        
+{D710.ARC00011} (O){T235.AZCD004X} (O)WINDOW                No generated files                                             

@@ -1,0 +1,212 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  ATDW002.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window ATDW002.BUS,
+**                     includes:
+**
+**                     ATDW002BusPredisplay
+**                     ATDW002BusRefreshClick
+**                     ATDW002BusUpdateWES
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ATDW002BusPredisplay
+**
+**  DESCRIPTION      : This function is invoked to control any preprocessing
+**                      that needs to be done before the window is displayed.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( ATDW002BusPredisplay )
+ {
+
+  /*  _FND_ERROR_BLOCK FndGenErrorBlock; */
+  /*  USHORT FndGenRC = 0; */
+
+   short sRC=CMN_SUCCESS;
+
+   /*
+   ** Call module to call the CSR and update the  WES fields.
+   */
+   sRC = ATDW002BusUpdateWES(pEventInfo,
+                             pEAIA,
+                             pBFCD,
+                             pWesMap,
+                             pWindContextData,
+                             pABHI);
+
+    return CMN_SUCCESS;
+ }
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ATDW002BusRefreshClick
+**
+**  DESCRIPTION      : This function is invoked when the user Clicks on the
+**                      refresh pushbutton.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( ATDW002BusRefreshClick )
+ {
+
+  /*  _FND_ERROR_BLOCK FndGenErrorBlock; */
+  /*  USHORT FndGenRC = 0; */
+
+
+   short sRC=CMN_SUCCESS;
+
+   /*
+   ** Call module to copy data from CSR Profile to WES fields.
+   */
+   sRC = ATDW002BusUpdateWES(pEventInfo,
+                             pEAIA,
+                             pBFCD,
+                             pWesMap,
+                             pWindContextData,
+                             pABHI);
+
+
+    return CMN_SUCCESS;
+ }
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ATDW002BusUpdateWES
+**
+**  DESCRIPTION      : This function handles the loading of data from the CSR
+**                     Profile data structure into the WES fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton           Original code.
+**    05/06/94  C. Crampton           Changed for new CmnOs version  
+***************************************************************************/
+
+WCBPROC( ATDW002BusUpdateWES)
+ {
+#include <time.h>
+
+  /*  _FND_ERROR_BLOCK FndGenErrorBlock; */
+  /*  USHORT FndGenRC = 0; */
+
+    char tmpbuf[10];
+    struct tm *ptmTmpBuf;
+    _CSR_STATISTICS Statistics;
+    _CSR_PIPE_PACKAGE Request;
+    LONG lBytesRead;
+	LONG MemAlarmLong=0;
+    BOOL bRC;
+
+    Request.Transaction = CSR_STATS;
+    Request.SourceProcessId = 0;
+    Request.hFile = NULL;
+    Request.hwnd = CBI_hwnd;
+
+    bRC = CmnOsCallNamedPipe (CSR_PIPE_NAME,
+                              &Request,
+                              sizeof(_CSR_PIPE_PACKAGE),
+                              &Statistics,
+                              sizeof(_CSR_STATISTICS),
+                              &lBytesRead,
+                              CSR_PIPE_TIMEOUT,
+                              CMN_ARCH_PARMS);
+
+
+	/* convert MemAlarm to a long, format time_t structure, and set WES Map field */
+    MemAlarmLong = atol ( Statistics.MemAlarm );
+    ptmTmpBuf = localtime((time_t *) &MemAlarmLong);
+    if (ptmTmpBuf)   /* not-null means good time value */
+    {
+        strftime(tmpbuf,
+                 sizeof(tmpbuf)-1,
+                 "%H:%M:%S",
+                 ptmTmpBuf);
+    }
+    else
+    {
+        strcpy(tmpbuf, "N/A");
+    }
+    strcpy(MemAlarmData, tmpbuf);
+
+    MapBytesData = Statistics.MapBytes;
+    ServiceBytesData = Statistics.ServiceBytes;
+    NodeBytesData = Statistics.NodeBytes;
+
+	FreeBytesData = Statistics.FreeBytes;
+    MemNodeOverheadBytesData = Statistics.MemNodeOverheadBytes;
+
+	DeadBytesData = Statistics.DeadBytes;
+    ThreadCountData = Statistics.ThreadCount;
+    ServiceThreadCountData = Statistics.ServiceThreadCount;
+
+    return CMN_SUCCESS;
+ }

@@ -1,0 +1,288 @@
+
+/****************************************************************************
+*                                                                           *
+*         AZCD002X Resource Definition                                      *
+*         Generated on: Jul  3, 1992                                        *
+*                   at: 11:37:19                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+DLGTEMPLATE AZCD002XID  LOADONCALL MOVEABLE DISCARDABLE
+Begin  /* dialog */
+DIALOG "Inquiry for Error Message:",AZCD002XID,
+     0,0,247,164,
+     WS_VISIBLE | WS_SAVEBITS 
+     , FCF_NOBYTEALIGN
+     | FCF_TITLEBAR
+     | FCF_DLGBORDER
+Begin  /* controls */
+
+CONTROL "Error Message Title:",-100,
+     2,149,92,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      20,
+     FLDJUST     EFJ_RIGHTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",100,
+     93,150,144,12,"WIDEntry",
+     WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      29,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Severity:",-101,
+     54,129,40,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      9,
+     FLDJUST     EFJ_RIGHTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",101,
+     93,130,144,12,"WIDEntry",
+     WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      2,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Error Message Text:",-102,
+     7,114,92,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      19,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",102,
+     7,85,232,30,"WIDMLEntry",
+     WS_VISIBLE 
+     | MLS_VSCROLL 
+     | MLS_WORDWRAP 
+     | MLS_READONLY 
+  CTLDATA EFVERSION   2,
+     FLDLEN      122,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "OK",1000,
+     7,6,40,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | BS_DEFAULT
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "View Sample...",1001,
+     55,6,72,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "Pushbutton Type:",-103,
+     15,66,78,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      16,
+     FLDJUST     EFJ_RIGHTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",103,
+     93,67,145,12,"WIDEntry",
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA EFVERSION   2,
+     FLDLEN      50,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Icon Type:",-104,
+     46,46,47,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      10,
+     FLDJUST     EFJ_RIGHTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",104,
+     93,47,145,12,"WIDEntry",
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA EFVERSION   2,
+     FLDLEN      50,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Default Pushbutton:",-105,
+     5,26,89,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      19,
+     FLDJUST     EFJ_RIGHTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",105,
+     93,27,145,12,"WIDEntry",
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA EFVERSION   2,
+     FLDLEN      50,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+End  /* controls */
+End  /* dialog template */
+
+MENU AZCD002XMenuID PRELOAD 
+Begin /* menus */
+End  /* menus */
+
+RESOURCE 927  AZCD002XID  AZCD002X.wct
+/* Icons */
+

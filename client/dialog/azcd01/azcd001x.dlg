@@ -1,0 +1,299 @@
+
+/****************************************************************************
+*                                                                           *
+*         AZCD001X Resource Definition                                      *
+*         Generated on: Jul 15, 1992                                        *
+*                   at: 15:36:53                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+ICON AZCD001XIconID errtbl.ico
+DLGTEMPLATE AZCD001XID  LOADONCALL MOVEABLE DISCARDABLE
+Begin  /* dialog */
+DIALOG "Error Codes Table Maintenance",AZCD001XID,
+     0,0,290,187,
+     WS_VISIBLE | WS_SAVEBITS 
+     , FCF_NOBYTEALIGN
+     | FCF_TITLEBAR
+     | FCF_MINBUTTON
+     | FCF_MAXBUTTON
+     | FCF_SYSMENU
+     | FCF_MENU
+     | FCF_BORDER
+Begin  /* controls */
+
+CONTROL "Search Criteria",8000,
+     5,108,281,66,WC_STATIC,
+     SS_GROUPBOX | WS_GROUP | WS_VISIBLE 
+
+CONTROL "Message Number:",-100,
+     9,150,87,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      15,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",100,
+     95,151,40,12,"WIDNumFld",
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA EFVERSION   2,
+     FLDLEN      5,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  TRUE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+/* Struct: US-ST-27 */
+     ,NUMEFVERSION   1,
+     INTEGERDIGITS 5,
+     PRECISION     0,
+     LEADINGZEROS  FALSE,
+     TRAILINGZEROS FALSE,
+     DISPWHENZERO  TRUE,
+     SIGNOPTION    SGN_UNSIGNED,
+     DECCHAR       1,0,
+     THOUCHAR      1,44,
+     CURRENCY      1,0
+
+CONTROL "Message Text Contains:",-101,
+     9,122,109,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      22,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",101,
+     9,111,176,12,"WIDEntry",
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA EFVERSION   2,
+     FLDLEN      122,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  TRUE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Match Case",102,
+     191,112,86,10,WC_BUTTON,
+     WS_VISIBLE 
+     | WS_GROUP
+     | BS_AUTOCHECKBOX
+     | WS_TABSTOP
+
+CONTROL "~Find",1000,
+     209,133,51,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | BS_DEFAULT
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "Error Message List:",10000,
+     5,91,90,11,"WIDStatic",
+     SS_TEXT |WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      19,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",103,
+     5,25,220,65,"WIDLBox",
+      WS_VISIBLE 
+     | WS_GROUP
+     | WS_TABSTOP
+     | LS_NOADJUSTPOS
+     CTLDATA LBVERSION 1,
+     MULTSEL       FALSE,
+     MAXROWS       25,
+     NUMCOLS       2,
+     HLINES        TRUE,
+     VLINES        TRUE,
+     SHOWTITLE     FALSE,
+     SHOWCOLTITLES TRUE,
+     KEYCOL        0,
+     LINESPERROW   1,
+     COLSPERLINE   2,
+     TITLE         0,
+     TITLECOLOR    CLR_FOREGROUND
+     ,COLTITLE     5,"Msg #",
+     COLWIDTH      7,
+     TEXTCOLOR     CLR_FOREGROUND,
+     BGCOLOR       CLR_BACKGROUND,
+     FONTSIZE      10,
+     FONTSTYLE     FST_NORMAL,
+     FONT          19,"System Proportional",
+     COLTYPE       TYPE_NUM,
+     COLJUST       EFJ_LEFTJUST
+     ,COLTITLE     12,"Message Text",
+     COLWIDTH      123,
+     TEXTCOLOR     CLR_FOREGROUND,
+     BGCOLOR       CLR_BACKGROUND,
+     FONTSIZE      10,
+     FONTSTYLE     FST_NORMAL,
+     FONT          19,"System Proportional",
+     COLTYPE       TYPE_CHAR,
+     COLJUST       EFJ_LEFTJUST
+     ,INTEGERDIGITS 5,
+     PRECISION     0,
+     LEADINGZEROS  FALSE,
+     TRAILINGZEROS TRUE,
+     DISPWHENZERO  FALSE,
+     SIGNOPTION    SGN_LDGMINUS,
+     DECCHAR       "\001",
+     THOUCHAR      ",",
+     CURRENCY      0
+
+CONTROL "",104,
+     5,7,274,12,"WIDEntry",
+     WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      50,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Page Up",1001,
+     231,66,56,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "Page Down",1002,
+     231,33,56,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "(greater than or equal to)",10000,
+     141,150,110,11,"WIDStatic",
+     SS_TEXT |WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      26,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "AND",10000,
+     23,135,51,11,"WIDStatic",
+     SS_TEXT |WS_VISIBLE 
+  CTLDATA EFVERSION   2,
+     FLDLEN      3,
+     FLDJUST     EFJ_CENTERED,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+End  /* controls */
+End  /* dialog template */
+
+MENU AZCD001XMenuID PRELOAD 
+Begin /* menus */
+     SUBMENU "~Message",200,MIS_TEXT 
+Begin
+     MENUITEM "~Inquire...\tCtrl+I",1012,MIS_TEXT 
+     MENUITEM "~Add...\tCtrl+A",1013,MIS_TEXT 
+     MENUITEM "~Update...\tCtrl+U",1014,MIS_TEXT 
+     MENUITEM "~Delete...\tCtrl+D",1015,MIS_TEXT 
+     MENUITEM "E~xit",1016,MIS_TEXT 
+End
+End  /* menus */
+
+RESOURCE 927  AZCD001XID  AZCD001X.wct
+/* Icons */
+
+ACCELTABLE AZCD001XAccelID PRELOAD
+Begin
+"I",1012,CHAR,CONTROL
+"A",1013,CHAR,CONTROL
+"U",1014,CHAR,CONTROL
+"D",1015,CHAR,CONTROL
+End

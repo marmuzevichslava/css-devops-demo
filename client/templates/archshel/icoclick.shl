@@ -1,0 +1,119 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  ICOCLICK.SHL
+**
+** DESCRIPTION      :  Business Logic functions for the typical Iconic 
+**                     Pushbutton CLick.
+**
+**     (not available) <CUffnnn>Bus<IcoPB> - Iconic Pushbutton Click
+**
+**    //---------------------------------------------------
+**    //  S H E L L   I N S T R U C T I O N S
+**    //
+**    //  This is a shell Application Business logic
+**    //  file.  Copy/paste the function
+**    //  into your source file <CUffnnn>.BUS.
+**    //
+**    //---------------------------------------------------
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 01/04/94    FGANTER             Creation
+** 02/07/94    FGANTER             Modified for CssFormatInstName
+**
+***************************************************************************/
+
+
+    //===========================================================
+    //===========================================================
+    //===         S H E L L   I N S T R U C T I O N S         ===
+    //===                                                     ===
+    //===    <CUffnnn>Bus<IcoPB> - Iconic Pushbutton Click    ===
+    //===                                                     ===
+    //===========================================================
+    //===========================================================
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : <CUffnnn>Bus<IcoPB>
+**
+**  DESCRIPTION      : This function starts (or re-activates) a dialog by:
+**                       1.  Setting up initial data for the dialog
+**                       2.  Calling a function to set up the instance name
+**                           for the dialog.
+**                       3.  Calling a function to start (or re-activate)
+**                           the dialog.
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( <CUffnnn>Bus<IcoPB> )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Business logic
+  //  function.  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUffnnn>Bus<IcoPB>
+  //
+  //  Then, add/modify business logic as required.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    USHORT                    FndGenRC = 0;
+    CHAR                      InstName[CSS_INST_STR_LEN];
+    <_CUffnnINPUT>            <CUffnnInput>;
+
+
+    /* Initialize the instance and input structures. */
+    memset(&InstName, 0, sizeof(InstName) );
+    memset(&<CUffnnInput>, 0, sizeof(<_CUffnnINPUT>) );
+
+    /* Fill in the initial data. */
+    <CUffnnInput>.InitData = value;
+
+    /* Format the instance name. */
+    CssFormatInstName ( CSS_DLG_<dialog>_<input copybook>,
+                        InstName,
+                        &<CUffnnInput>,
+                        CMN_ARCH_PARMS );
+
+    /* Start the dialog (older shells use CmnSibStartDialog, a synonym). */
+    CmnWindowCreateExe( "<CUffnn>",
+                       InstName,
+                       sizeof(<_CUffnnINPUT>),
+                       &<CUffnnInput>,
+                       NULL,
+                       CMN_ARCH_PARMS );
+
+
+    return CMN_SUCCESS;
+
+} /* End: Function <CUffnnn>Bus<IcoPB> */

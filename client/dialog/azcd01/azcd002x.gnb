@@ -1,0 +1,18 @@
+/****************************************************************************
+*   
+*   BFCD for: {T235.AZCD002X} (O)
+*   Generated on: Jul  2, 1992
+*             at: 16:03:56
+*             by: LMISFELD
+*   
+*   Copyright (C) Andersen Consulting, 1992.
+*   All rights reserved.
+*   
+*   Record: AZCD002X
+*   Description:
+*    This window is a dialog window to display information about an   
+*    error message from the error codes table.                        
+*   
+****************************************************************************/
+
+#define _BFCD     void

@@ -1,0 +1,17 @@
+;-------------------------------------------------------------------------
+;
+;   OS/2 Module Definition File
+;
+;   Filename:  AZSS01.DEF
+;
+;   Author:  Lou Misfeldt, Florida Power Corporation
+;
+;   Date Created:  August 12, 1994
+;
+;-------------------------------------------------------------------------
+
+NAME        AZSS01     WINDOWAPI
+DESCRIPTION 'Session Data Load, Shared Memory Owner'
+PROTMODE
+HEAPSIZE    4096
+STACKSIZE   8192

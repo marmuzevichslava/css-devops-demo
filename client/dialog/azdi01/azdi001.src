@@ -1,0 +1,75 @@
+/***************************************************************************
+ *                                                                         *
+ *       C   O S / 2   W I N D O W   A P P L I C A T I O N   L O G I C     *
+ *                                                                         *
+ *              Copyright (C) 1994, Andersen Consulting.                   *
+ *                        All rights reserved.                             *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: AZDI001                           *
+ *                         Generated on: Tue Feb 21 11:36:41 1995          *
+ *                                   by: SNIX                              *
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Hqyvkmyi6458_Predisplay
+ * 
+ *
+ *
+ *   Event Name:    PREDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hqyvkmyi6458_Predisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+unsigned short           FndGenSelectedButton = 0;
+ULONG FndGenAsyncProcessId;
+ULONG FndGenSyncReturnCode;
+
+//CMN_ARCH_EXIT_INITIALIZE
+										   
+FndGenRC = FndProcessStartAppl( "azdi02.exe", FND_PROCESS_ASYNC,
+                                  &FndGenAsyncProcessId, &FndGenSyncReturnCode,
+                                  &FndGenErrorBlock, "", NULL );
+Sleep( 4000 );
+if( FndGenRC == FND_SUCCESS )
+  {
+  FndGenRC = FndMsgBoxDisplayText( "CSS Diagnostics has been completed.",
+                            NULL,
+                            CBI_hwnd,
+                            FND_MSGBOX_OK,
+                            FND_MSGBOX_INFORMATION,
+                            FND_MSGBOX_IDOK,
+                            "CSS Diagnostics",
+                            &FndGenSelectedButton,
+                            &FndGenErrorBlock);
+
+  FndGenRC = FndWindowDestroy( CBI_hwnd,
+                             &FndGenErrorBlock);
+  }
+else
+  {
+  FndGenRC = FndMsgBoxDisplayText( "CSS Diagnostics has not been completed.  Please call the help desk.",
+                            NULL,
+                            CBI_hwnd,
+                            FND_MSGBOX_OK,
+                            FND_MSGBOX_INFORMATION,
+                            FND_MSGBOX_IDOK,
+                            "CSS Diagnostics",
+                            &FndGenSelectedButton,
+                            &FndGenErrorBlock);
+
+  FndGenRC = FndWindowDestroy( CBI_hwnd,
+                             &FndGenErrorBlock);
+  }
+
+return 0;
+}
+

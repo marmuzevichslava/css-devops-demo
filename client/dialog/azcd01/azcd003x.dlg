@@ -1,0 +1,262 @@
+
+/****************************************************************************
+*                                                                           *
+*         AZCD003X Resource Definition                                      *
+*         Generated on: Jul 10, 1992                                        *
+*                   at: 11:28:12                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+DLGTEMPLATE AZCD003XID  LOADONCALL MOVEABLE DISCARDABLE
+Begin  /* dialog */
+DIALOG "Update for Error Message Number:",AZCD003XID,
+     0,0,295,214,
+     WS_VISIBLE | WS_SAVEBITS 
+     , FCF_NOBYTEALIGN
+     | FCF_TITLEBAR
+     | FCF_DLGBORDER
+Begin  /* controls */
+
+CONTROL "Error Message Title:",-100,
+     12,200,92,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      20,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",100,
+     12,189,159,12,"WIDEntry",
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA EFVERSION   2,
+     FLDLEN      29,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  TRUE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    TRUE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY TRUE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Error Message Text:",-101,
+     92,172,92,11,"WIDStatic",
+     SS_TEXT | WS_VISIBLE 
+     | WS_GROUP
+  CTLDATA EFVERSION   2,
+     FLDLEN      19,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  FALSE,
+     BORDERCOLOR CLR_BACKGROUND,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    FALSE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE   10,
+     FONTSTYLE  FST_NORMAL,
+     FONT       19,"System Proportional",
+     LOWRANGE   0,
+     HIGHRANGE  0,
+     SYMRANGE   RNG_NONE
+
+CONTROL "",101,
+     92,131,193,42,"WIDMLEntry",
+     WS_VISIBLE | WS_TABSTOP
+     | MLS_VSCROLL 
+     | MLS_WORDWRAP 
+     | MLS_BORDER 
+  CTLDATA EFVERSION   2,
+     FLDLEN      122,
+     FLDJUST     EFJ_LEFTJUST,
+     TEXTCOLOR   CLR_FOREGROUND,
+     DRAWBORDER  TRUE,
+     BORDERCOLOR CLR_BLUE,
+     BGCOLOR     CLR_BACKGROUND,
+     REQUIRED    TRUE,
+     ALPHAONLY   FALSE,
+     UPPERCASEONLY FALSE,
+     FONTSIZE    10,
+     FONTSTYLE   FST_NORMAL,
+     FONT        19,"System Proportional",
+     LOWRANGE    0,
+     HIGHRANGE   0,
+     SYMRANGE    RNG_NONE
+
+CONTROL "Process",1000,
+     13,8,51,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | BS_DEFAULT
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "Cancel",1001,
+     73,8,43,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "~View Sample...",1002,
+     125,8,79,12,WC_BUTTON,
+     BS_PUSHBUTTON | WS_VISIBLE
+     | WS_GROUP
+     | WS_TABSTOP
+
+CONTROL "Severity",8002,
+     12,131,74,53,WC_STATIC,
+     SS_GROUPBOX | WS_GROUP | WS_VISIBLE 
+
+
+CONTROL "OK",106,
+     16,165,33,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+     | WS_GROUP | WS_TABSTOP
+
+CONTROL "WARNING",107,
+     16,155,58,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "CRITICAL",108,
+     16,145,54,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "FATAL",109,
+     16,135,41,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "Pushbutton Type",8003,
+     13,27,144,101,WC_STATIC,
+     SS_GROUPBOX | WS_GROUP | WS_VISIBLE 
+
+
+CONTROL "OK",110,
+     16,109,33,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+     | WS_GROUP | WS_TABSTOP
+
+CONTROL "OK & CANCEL",111,
+     16,100,73,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "RETRY & CANCEL",112,
+     16,90,92,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "ABORT & RETRY & IGNORE",113,
+     16,80,134,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "YES & NO",114,
+     16,70,57,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "YES & NO  & CANCEL",115,
+     16,60,107,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "CANCEL",116,
+     16,50,49,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "ENTER",117,
+     16,40,45,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "ENTER & CANCEL",118,
+     16,30,91,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "Icon Type",8004,
+     165,68,119,60,WC_STATIC,
+     SS_GROUPBOX | WS_GROUP | WS_VISIBLE 
+
+
+CONTROL "QUERY (?)",119,
+     169,110,60,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+     | WS_GROUP | WS_TABSTOP
+
+CONTROL "WARNING (!)",120,
+     169,100,69,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "INFORMATION (i)",121,
+     169,90,88,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "CRITICAL (Stop Sign)",122,
+     169,80,104,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "ERROR (No Icon)",123,
+     169,70,88,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "Default Button",8005,
+     165,27,119,39,WC_STATIC,
+     SS_GROUPBOX | WS_GROUP | WS_VISIBLE 
+
+
+CONTROL "1st Pushbutton",124,
+     169,48,79,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+     | WS_GROUP | WS_TABSTOP
+
+CONTROL "2nd Pushbutton",125,
+     169,38,82,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+
+CONTROL "3rd Pushbutton",126,
+     169,28,80,10,WC_BUTTON,
+     WS_VISIBLE 
+     | BS_AUTORADIOBUTTON
+End  /* controls */
+End  /* dialog template */
+
+MENU AZCD003XMenuID PRELOAD 
+Begin /* menus */
+End  /* menus */
+
+RESOURCE 927  AZCD003XID  AZCD003X.wct
+/* Icons */
+

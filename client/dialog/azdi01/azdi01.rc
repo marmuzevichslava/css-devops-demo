@@ -1,0 +1,35 @@
+/***************************************************************************
+ *                                                                         *
+ *          C   W I N D O W S   N T   R E S O U R C E   F I L E            *
+ *                                                                         *
+ *                Copyright (C) 1994 Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                    Resource file for: AZDI01                            *
+ *                         Generated on: Mon Feb 20 10:11:24 1995          *
+ *                                   by: FGANTER                           *
+ *                                                                         *
+ ***************************************************************************/
+#include <windows.h>
+#include <kwdxk010.h>
+
+/***************************************************************************
+ * Window Identifier File                                                  * 
+ ***************************************************************************/
+#include "AZDI01.gnz"
+
+/* CWOODS 09/13/95 : Hand modified - 
+   Driver files will be modified due to the new directory structure */
+//#define FND_USER_RESOURCE_PATH  s:\bitmaps  
+
+/***************************************************************************
+ * Window Resource Files                                                   * 
+ ***************************************************************************/
+ /* CWOODS 09/13/95: Hand Modified s:\archinc to n:\archinc due to
+  directory structure.  Driver files will be modified. */
+rcinclude n:\archinc\c1cptrs.rch
+
+rcinclude azdi001.dlg
+

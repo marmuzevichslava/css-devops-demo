@@ -1,0 +1,55 @@
+
+/****************************************************************************
+*                                                                           *
+*         AZCD003X Symbolic Definitions                                     *
+*         Generated on: Jul 10, 1992                                        *
+*                   at: 11:28:33                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+
+/****************************************************************************
+Field IDs
+****************************************************************************/
+
+#define TxErrorMsgTitle_FID             0
+#define TxErrorMsg_FID                  1
+#define CdErrorSeverity_FID             2
+#define CdPushbuttonType_FID            3
+#define CdIconType_FID                  4
+#define CdDefaultPushbutton_FID         5
+
+/****************************************************************************
+Command IDs
+****************************************************************************/
+
+#define PROCESS_CMD                     1000
+#define CancelPB_CMD                    1001
+#define VIEW_CMD                        1002
+
+/****************************************************************************
+Radio Button Literals
+****************************************************************************/
+
+#define LT_RBG_SEVERITY_OK              "0 "
+#define LT_RBG_SEVERITY_WA              "4 "
+#define LT_RBG_SEVERITY_CR              "8 "
+#define LT_RBG_SEVERITY_FA              "16"
+#define LT_OK_PBTYPE                    ( BYTE ) 0
+#define LT_OKCANCEL_PBTYPE              ( BYTE ) 1
+#define LT_RETRYCANCEL_PBTYPE           ( BYTE ) 2
+#define LT_ABORTRETRYIGNORE_PBTYPE      ( BYTE ) 3
+#define LT_YESNO_PBTYPE                 ( BYTE ) 4
+#define LT_YESNOCANCEL_PBTYPE           ( BYTE ) 5
+#define LT_CANCEL_PBTYPE                ( BYTE ) 6
+#define LT_ENTER_PBTYPE                 ( BYTE ) 7
+#define LT_ENTERCANCEL_PBTYPE           ( BYTE ) 8
+#define LT_QUERY_ICTYPE                 ( BYTE ) 0
+#define LT_WARNING_ICTYPE               ( BYTE ) 1
+#define LT_INFO_ICTYPE                  ( BYTE ) 2
+#define LT_CRITICAL_ICTYPE              ( BYTE ) 3
+#define LT_ERROR_ICTYPE                 ( BYTE ) 4
+#define LT_DEF_PB1                      ( BYTE ) 0
+#define LT_DEF_PB2                      ( BYTE ) 1
+#define LT_DEF_PB3                      ( BYTE ) 2

@@ -1,0 +1,523 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  PREDISP.SHL
+**
+** DESCRIPTION      :  Business Logic functions for the typical flavors of
+**                     Predisplay.
+**
+**                     <CUFFnnn>BusPrdis - Normal Top Window
+**                     <CUFFnnn>BusPrdis - Normal Child Window
+**                     <CUFFnnn>BusPrdis - Enterable Listbox Child Window
+**
+**    //---------------------------------------------------
+**    //  S H E L L   I N S T R U C T I O N S
+**    //
+**    //  This is a shell Application Business logic
+**    //  file.  Pick the function that most closely 
+**    //  resembles your requirements and copy/paste it 
+**    //  into your source file <CUFFnnn>.BUS.
+**    //
+**    //  Only pick ONE of the functions below.
+**    //
+**    //---------------------------------------------------
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** XX/XX/XX    XXXXXXXXXX          Original code
+**
+***************************************************************************/
+
+
+    //===================================================
+    //===================================================
+    //===    S H E L L   I N S T R U C T I O N S      ===
+    //===                                             ===
+    //===    <CUFFnnn>BusPrdis - Normal Top Window    ===
+    //===                                             ===
+    //===================================================
+    //===================================================
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : <CUFFnnn>BusPrdis
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( <CUFFnnn>BusPrdis )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Business logic
+  //  function.  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUFFnnn>BusPrdis
+  //
+  //  Then, add/modify business logic as required.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT           FndGenRC = 0;
+
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Warning - this shell is for a top window only.
+  //  Do NOT initialize BFCD in non-top windows.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+    /*
+    ** Initialize application area(s) of BFCD - TOP WINDOW ONLY!!
+    **/
+    memset( &BFCD_<CUFFnnLUW> , 0, sizeof(BFCD_<CUFFnnLUW> ) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+
+    /*
+    ** Initialize all application data areas (but not the architecture
+    ** area) of WCD.
+    **/
+    memset( &WCD_CU<FFnnn>Rqst, 0, sizeof(WCD_CU<FFnnn>Rqst) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+
+    /*
+    **  Set up a pointer to the IN layout <CUFFnnnInput>
+    **/
+    <_CUFFnnnINPUT> *<pCUFFnnnInput>;
+
+    /*
+    **  Set the pointer to the value of CBI_pInitData
+    **/
+    <pCUFFnnnInput> = CBI_pInitData;
+
+    /*
+    **  Use the fields from <CUFFnnnInput> to populate the CSR Request Layout
+    **/
+    CmnStrCopy(<Target>,
+               <pCUFFnnnInput->FieldName>,
+               <Target Size>,
+               CMN_ARCH_PARMS);
+
+    CmnStrCopy(<Target>,
+               <pCUFFnnnInput->FieldName>,
+               <Target Size>,
+               CMN_ARCH_PARMS);
+
+    /*
+    **  Call the CSR
+    **/
+    CmnCsrCall(<WCD_Req.CUFFnnnR>,
+               sizeof(<_CUFFnnnR>),
+               CMN_FORCECALL_NO,
+               "<CUFFnnnR>",
+               CMN_ARCH_PARMS);
+
+    /*
+    **  Use fields from <CUFFnnnInput> to populate the following window fields
+    **/
+    FndFieldSetValue(CBI_hwnd,
+                     "<WES FieldName>",
+                     <input FieldName Length>,
+                     <pCUFFnnnInput->FieldName>,
+                     &FndGenErrorBlock);
+
+    FndFieldSetValue(CBI_hwnd,
+                     "<WES FieldName>",
+                     <input FieldName Length>,
+                     <pCUFFnnnInput->FieldName>,
+                     &FndGenErrorBlock);
+
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Perform the following for the TOP window of a
+  //  dialog, IF this dialog supports browse mode.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //  Use this "if" statement for a dialog containing
+  //  CdMode in its input layout:
+  //  if (<pCUffddI->CdMode == CDMODE_VIEW)
+  //
+  //  Use this "if" statement for a WFM Completion dialog:
+  //  if (WFM_CdWfmMode == WFM_BROWSE)
+  //
+  //  Call this function if the "if" statement is true:
+  //  {
+  //      CmnSecWindowSecure(CMN_ARCH_PARMS);
+  //  }
+
+
+    return CMN_SUCCESS;
+}
+
+    //===================================================
+    //===================================================
+    //===   S H E L L   I N S T R U C T I O N S       ===
+    //===                                             ===
+    //===   <CUFFnnn>BusPrdis - Normal Child Window   ===
+    //===                                             ===
+    //===================================================
+    //===================================================
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : <CUFFnnn>BusPrdis
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( <CUFFnnn>BusPrdis )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Business logic
+  //  function.  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUFFnnn>BusPrdis
+  //
+  //  Then, add/modify business logic as required.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT           FndGenRC = 0;
+
+    /*
+    ** Initialize all application data areas (but not the architecture
+    ** area) of WCD.
+    **/
+    memset( &WCD_CU<FFnnn>Rqst, 0, sizeof(WCD_CU<FFnnn>Rqst) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+
+    /*
+    **  Set up a pointer to the IN layout <CUFFnnnI>
+    **/
+    <CUFFnnnINPUT> * <pCUFFnnnInput>;
+
+    /*
+    **  Set the pointer to the value of CBI_pInitData
+    **/
+    <pCUFFnnnInput> = CBI_pInitData;
+
+
+    /*
+    **  Use the fields from <CUFFnnnInput> to populate the following
+    **  window fields
+    **/
+    FndFieldSetValue(CBI_hwnd,
+                     "<WES FieldName>",
+                     <input FieldName Length>,
+                     <pCUFFnnnInput->FieldName>,
+                     &FndGenErrorBlock);
+
+    FndFieldSetValue(CBI_hwnd,
+                     "<WES FieldName>",
+                     <input FieldName Length>,
+                     <pCUFFnnnInput->FieldName>,
+                     &FndGenErrorBlock);
+
+
+    /*
+    **  Use the fields from <CUFFnnnInput> to populate the CSR Request Layout
+    **/
+    CmnStrCopy(<Target>,
+               <pCUFFnnnInput->FieldName>,
+               <Target Size>,
+               CMN_ARCH_PARMS);
+
+    CmnStrCopy(<Target>,
+               <pCUFFnnnInput->FieldName>,
+               <Target Size>,
+               CMN_ARCH_PARMS);
+
+
+    /*
+    **  Call the CSR
+    **/
+    CmnCsrCall(<WCD_Req.CUFFnnnR>,
+               sizeof(<_CUFFnnnR>),
+               CMN_FORCECALL_NO,
+               "CUFFnnnR",
+               CMN_ARCH_PARMS);
+
+
+    return CMN_SUCCESS;
+}
+
+
+    //===================================================
+    //===================================================
+    //===   S H E L L   I N S T R U C T I O N S       ===
+    //===                                             ===
+    //===   <CUFFnnn>BusPrdis - Enterable List Box    ===
+    //===                       Child Window          ===
+    //===                                             ===
+    //===================================================
+    //===================================================
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : <CUFFnnn>BusPrdis
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( <CUFFnnn>BusPrdis )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Business logic
+  //  function.  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUFFnnn>BusPrdis
+  //
+  //  Then, add/modify business logic as required.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT           FndGenRC = 0;
+
+    /*
+    ** Initialize all application data areas (but not the architecture
+    ** area) of WCD.
+    **/
+    memset( &WCD_CU<FFnnn>Rqst, 0, sizeof(WCD_CU<FFnnn>Rqst) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+    memset( &<OtherApplArea>  , 0, sizeof(<OtherApplArea>  ) );
+
+    /*
+    **  Set up a pointer to the IN layout <CUFFnnnInput>
+    **/
+    <_CUFFnnnINPUT> *<pCUFFnnnInput>;
+
+    /*
+    **  Set up a pointer to the OUT layout <CUFFnnnOutput>
+    */
+    <_CUFFnnnOUTPUT> *<pCUFFnnnOutput>;
+
+    /*
+    **  Determine whether there is simply initial data, or window data
+    **      tracking data or neither.
+    */
+    if (CBI_pInitData == NULL)
+    {
+        /*
+        **  Initialize window fields
+        */
+        FndFieldSetValue(CBI_hwnd,
+                         "<WES FieldName>",
+                         <initial value variable length>,
+                         &<initial value variable>,
+                         &FndGenErrorBlock);
+
+        FndFieldSetValue(CBI_hwnd,
+                         "<WES FieldName>",
+                         <initial value variable length>,
+                         &<initial value variable>,
+                         &FndGenErrorBlock);
+
+        /*
+        **  Populate CSR Request layout (if necessary)
+        */
+        CmnStrCopy(<Target>,
+                   <Source>,
+                   <Target Size>,
+                   CMN_ARCH_PARMS);
+
+        CmnStrCopy(<Target>,
+                   <Source>,
+                   <Target Size>,
+                   CMN_ARCH_PARMS);
+
+        /*
+        **  Call the CSR (if necessary)
+        */
+        CmnCsrCall(<WCD_Req.CUFFnnnR>,
+                   sizeof(<_CUFFnnnR>),
+                   CMN_FORCECALL_NO,
+                   "CUFFnnnR",
+                   CMN_ARCH_PARMS);
+
+    } /* end of if (CBI_pInitData == NULL) */
+
+    else
+    {
+        if (EAB_pWdtOutData == NULL)
+        {
+            /*
+            **  Establish addressability to the input data layout
+            */
+            <pCUFFnnnInput> = CBI_pInitData;
+
+            /*
+            **  Populate the window fields with the input data
+            */
+            FndFieldSetValue(CBI_hwnd,
+                             "<WES FieldName>",
+                             sizeof(<pCUFFnnnInput->member>),
+                             &<pCUFFnnnI->member>,
+                             &FndGenErrorBlock);
+
+            FndFieldSetValue(CBI_hwnd,
+                             "<WES FieldName>",
+                             sizeof(<pCUFFnnnInput->member>),
+                             &<pCUFFnnnI->member>,
+                             &FndGenErrorBlock);
+
+            /*
+            **  Populate CSR Request layout (if necessary)
+            */
+            CmnStrCopy(<Target>,
+                       <Source>,
+                       <Target Size>,
+                       CMN_ARCH_PARMS);
+
+            CmnStrCopy(<Target>,
+                       <Source>,
+                       <Target Size>,
+                       CMN_ARCH_PARMS);
+
+            /*
+            **  Call CSR (if necessary)
+            */
+            CmnCsrCall(<WCD_Req.CUFFnnnR>,
+                       sizeof(<_CUFFnnnR>),
+                       CMN_FORCECALL_NO,
+                       "CUFFnnnR",
+                       CMN_ARCH_PARMS);
+
+        } /* end of if (EAB_pWdtOutData == NULL) */
+
+        else
+        {
+            /*
+            **  Establish addressability to the window data tracking data
+            */
+            <pCUFFnnnOutput> = EAB_pWdtOutData;
+
+            /*
+            **  Populate the window fields with the WDT data
+            */
+            FndFieldSetValue(CBI_hwnd,
+                             "<WES FieldName>",
+                             sizeof(<pCUFFnnnOutput->member>),
+                             &<pCUFFnnnInput->member>,
+                             &FndGenErrorBlock);
+
+            FndFieldSetValue(CBI_hwnd,
+                             "<WES FieldName>",
+                             sizeof(<pCUFFnnnOutput->member>),
+                             &<pCUFFnnnInput->member>,
+                             &FndGenErrorBlock);
+
+            /*
+            **  Populate CSR Request layout (if necessary)
+            */
+            CmnStrCopy(<Target>,
+                       <Source>,
+                       <Target Size>,
+                       CMN_ARCH_PARMS);
+
+            CmnStrCopy(<Target>,
+                       <Source>,
+                       <Target Size>,
+                       CMN_ARCH_PARMS);
+
+            /*
+            **  Call CSR (if necessary)
+            */
+           CmnCsrCall(<WCD_Req.CUFFnnnR>,
+                      sizeof(<_CUFFnnnR>),
+                      CMN_FORCECALL_NO,
+                      "CUFFnnnR",
+                      CMN_ARCH_PARMS);
+
+        } /* end of else (non-NULL EAB_pWdtOutData) */
+
+    } /* end of else (non-NULL CBI_pInitData) */
+
+    return CMN_SUCCESS;
+}

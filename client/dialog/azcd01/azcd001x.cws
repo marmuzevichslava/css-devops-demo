@@ -1,0 +1,21 @@
+/****************************************************************************
+*   
+*   Working Storage for: {T235.AZCD001X} (O)
+*   Generated on: Jul 15, 1992
+*             at: 15:36:31
+*             by: LMISFELD
+*   
+*   Copyright (C) Andersen Consulting, 1992.
+*   All rights reserved.
+*   
+*   Record: AZCD001X
+*   Description:
+*    This window is the top window to search for the error message tha
+*    can be inquired, updated, added or deleted from the Codes Table. 
+*   
+****************************************************************************/
+
+
+
+#define FND_BFCD_SIZE sizeof(_BFCD) 
+

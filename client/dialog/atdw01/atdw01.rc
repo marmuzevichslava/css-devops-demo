@@ -1,0 +1,39 @@
+/***************************************************************************
+ *                                                                         *
+ *          C   W I N D O W S   N T   R E S O U R C E   F I L E            *
+ *                                                                         *
+ *                Copyright (C) 1994 Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                    Resource file for: ATDW01                            *
+ *                         Generated on: Sun Aug 27 15:58:18 1995          *
+ *                                   by: CWOODS                            *
+ *                                                                         *
+ ***************************************************************************/
+#include <windows.h>
+#include <kwdxk010.h>
+
+/***************************************************************************
+ * Window Identifier File                                                  * 
+ ***************************************************************************/
+#include "ATDW01.gnz"
+
+/* CWOODS: Handmodified - due to new directory structure, drivers need
+   to be modified to remove s:\bitmaps */
+//#define FND_USER_RESOURCE_PATH  s:\bitmaps
+
+/***************************************************************************
+ * Window Resource Files                                                   * 
+ ***************************************************************************/
+ /* CWOODS: Hand modified - will change driver files to reflect change.
+    s:\archinc\c1cprts.rch change to n:\archinc\c1cptrs.rch */
+rcinclude n:\archinc\c1cptrs.rch
+
+rcinclude atdw001.dlg
+rcinclude atdw002.dlg
+rcinclude atdw003.dlg
+rcinclude atdw004.dlg
+rcinclude atdw006.dlg
+

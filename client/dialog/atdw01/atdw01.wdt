@@ -1,0 +1,80 @@
+/***************************************************************************
+ *                                                                         *
+ *      C   O S / 2    W I N D O W   D E F I N I T I O N   T A B L E S     *
+ *                                                                         *
+ *                  Copyright (C) 1994 Andersen Consulting.                *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *            Window Dispatch Table for: ATDW01                            *
+ *                         Generated on: Sun Aug 27 15:58:18 1995          *
+ *                                   by: CWOODS                            *
+ *                                                                         *
+ ***************************************************************************
+
+/***************************************************************************
+ * GUI Queue Size Definition                                               *
+ ***************************************************************************/
+#define   MAX_GUI_Q_SIZE                50
+
+/***************************************************************************
+ * Custom Initialization And Termination Declarations                      *
+ ***************************************************************************/
+#define   FND_INTERFACE_INIT_ROUTINE    NULL
+#define   FND_INTERFACE_TERM_ROUTINE    NULL
+
+/***************************************************************************
+ * Window Identifiers                                                      *
+ ***************************************************************************/
+#include "ATDW01.gnz"
+
+/***************************************************************************
+ * Window Forward Declarations                                             *
+ ***************************************************************************/
+extern WINDEFTBLENTRY ATDW001IDWindowDefn;
+extern WINDEFTBLENTRY ATDW002IDWindowDefn;
+extern WINDEFTBLENTRY ATDW003IDWindowDefn;
+extern WINDEFTBLENTRY ATDW004IDWindowDefn;
+extern WINDEFTBLENTRY ATDW006IDWindowDefn;
+
+
+/***************************************************************************
+ * Windows accessible from the EXE                                         *
+ ***************************************************************************/
+EXEWINDOWLIST ExeWindowTable[] =
+{
+    FND_MAIN_WINDOW, "ATDW001", &ATDW001IDWindowDefn,
+    FND_NO, "ATDW002", &ATDW002IDWindowDefn,
+    FND_NO, "ATDW003", &ATDW003IDWindowDefn,
+    FND_NO, "ATDW004", &ATDW004IDWindowDefn,
+    FND_NO, "ATDW006", &ATDW006IDWindowDefn,
+    FND_NO,           "",   NULL
+};
+
+/***************************************************************************
+ * COBOL window references from the EXE                                    *
+ ***************************************************************************/
+
+
+/***************************************************************************
+ * Window references for COBOL client EXE                                  *
+ ***************************************************************************/
+CBLWINSETUPENTRY CBLwindowSetupTable[] =
+{
+    FND_NO,       "", 0, 0
+};
+
+/***************************************************************************
+ * External references to DLLs                                             *
+ ***************************************************************************/
+
+
+/***************************************************************************
+ * Table of DLLs referenced in this EXE                                    *
+ ***************************************************************************/
+DLLWINDOWINFO *pWindowsInDLLs[] =
+{
+
+        0
+};

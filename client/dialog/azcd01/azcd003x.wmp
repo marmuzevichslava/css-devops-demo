@@ -1,0 +1,112 @@
+
+/****************************************************************************
+*                                                                           *
+*         AZCD003X WES map definitions                                      *
+*         Generated on: Jul 10, 1992                                        *
+*                   at: 11:28:15                                            *
+*                   by: LMISFELD                                            *
+*                                                                           *
+****************************************************************************/
+
+/****************************************************************************
+*   Record: AZCD002C
+*   Description:
+*    This record layout describes the Window Context Data for the     
+*    Error Codes Table Maintenance Window AZCD003X.                   
+****************************************************************************/
+#ifndef _ARCHDATA_z
+typedef struct __ArchData
+{
+  void far * pErrorBlock;
+  char   FlWnMod;
+  unsigned short WnMsgType;
+  void far * pData;
+} _ARCHDATA;
+#define _ARCHDATA_z
+#endif
+#ifndef _WCDSTANDARD_z
+typedef struct __WCDStandard
+{
+  _ARCHDATA ArchData;
+  unsigned short KyErrorMessage;
+  char   CdProcMode;
+} _WCDSTANDARD;
+#define _WCDSTANDARD_z
+#endif
+#define WCD_ArchData           pWindContextData->ArchData
+#define WCD_KyErrorMessage     pWindContextData->KyErrorMessage
+#define WCD_CdProcMode         pWindContextData->CdProcMode
+#define WINCONTEXTNAME         _WCDSTANDARD
+
+struct _AZCD003XWesMap {
+
+WESMAPHDR _WesMapHeader;
+/*Header*/
+#define WindowTitle                     pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX                   pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY                   pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth                     pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight                    pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer                   pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode               pWesMap->_WesMapHeader._WindowPointerMode
+/*Group Status Indicators*/
+BYTE _GrpStatus;
+BYTE _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+   char _TxErrorMsgTitleData[30];
+#define TxErrorMsgTitleData              pWesMap->_TxErrorMsgTitleData
+   char _TxErrorMsgData[123];
+#define TxErrorMsgData                   pWesMap->_TxErrorMsgData
+   char _CdErrorSeverityData[3];
+#define CdErrorSeverityData              pWesMap->_CdErrorSeverityData
+   BYTE _CdPushbuttonTypeData;
+#define CdPushbuttonTypeData             pWesMap->_CdPushbuttonTypeData
+   BYTE _CdIconTypeData;
+#define CdIconTypeData                   pWesMap->_CdIconTypeData
+   BYTE _CdDefaultPushbuttonData;
+#define CdDefaultPushbuttonData          pWesMap->_CdDefaultPushbuttonData
+
+     WESFLDCTL  _TxErrorMsgTitleCtl;
+#define TxErrorMsgTitleAttr              pWesMap->_TxErrorMsgTitleCtl.Attr
+#define TxErrorMsgTitleStatus            pWesMap->_TxErrorMsgTitleCtl.Status
+#define TxErrorMsgTitleRights            pWesMap->_TxErrorMsgTitleCtl.Rights
+#define TxErrorMsgTitleMsg               pWesMap->_TxErrorMsgTitleCtl.Msg
+#define TxErrorMsgTitleCursor            pWesMap->_TxErrorMsgTitleCtl.Cursor
+
+     WESFLDCTL  _TxErrorMsgCtl;
+#define TxErrorMsgAttr                   pWesMap->_TxErrorMsgCtl.Attr
+#define TxErrorMsgStatus                 pWesMap->_TxErrorMsgCtl.Status
+#define TxErrorMsgRights                 pWesMap->_TxErrorMsgCtl.Rights
+#define TxErrorMsgMsg                    pWesMap->_TxErrorMsgCtl.Msg
+#define TxErrorMsgCursor                 pWesMap->_TxErrorMsgCtl.Cursor
+
+     WESFLDCTL  _CdErrorSeverityCtl;
+#define CdErrorSeverityAttr              pWesMap->_CdErrorSeverityCtl.Attr
+#define CdErrorSeverityStatus            pWesMap->_CdErrorSeverityCtl.Status
+#define CdErrorSeverityRights            pWesMap->_CdErrorSeverityCtl.Rights
+#define CdErrorSeverityMsg               pWesMap->_CdErrorSeverityCtl.Msg
+#define CdErrorSeverityCursor            pWesMap->_CdErrorSeverityCtl.Cursor
+
+     WESFLDCTL  _CdPushbuttonTypeCtl;
+#define CdPushbuttonTypeAttr             pWesMap->_CdPushbuttonTypeCtl.Attr
+#define CdPushbuttonTypeStatus           pWesMap->_CdPushbuttonTypeCtl.Status
+#define CdPushbuttonTypeRights           pWesMap->_CdPushbuttonTypeCtl.Rights
+#define CdPushbuttonTypeMsg              pWesMap->_CdPushbuttonTypeCtl.Msg
+#define CdPushbuttonTypeCursor           pWesMap->_CdPushbuttonTypeCtl.Cursor
+
+     WESFLDCTL  _CdIconTypeCtl;
+#define CdIconTypeAttr                   pWesMap->_CdIconTypeCtl.Attr
+#define CdIconTypeStatus                 pWesMap->_CdIconTypeCtl.Status
+#define CdIconTypeRights                 pWesMap->_CdIconTypeCtl.Rights
+#define CdIconTypeMsg                    pWesMap->_CdIconTypeCtl.Msg
+#define CdIconTypeCursor                 pWesMap->_CdIconTypeCtl.Cursor
+
+     WESFLDCTL  _CdDefaultPushbuttonCtl;
+#define CdDefaultPushbuttonAttr          pWesMap->_CdDefaultPushbuttonCtl.Attr
+#define CdDefaultPushbuttonStatus        pWesMap->_CdDefaultPushbuttonCtl.Status
+#define CdDefaultPushbuttonRights        pWesMap->_CdDefaultPushbuttonCtl.Rights
+#define CdDefaultPushbuttonMsg           pWesMap->_CdDefaultPushbuttonCtl.Msg
+#define CdDefaultPushbuttonCursor        pWesMap->_CdDefaultPushbuttonCtl.Cursor
+};
