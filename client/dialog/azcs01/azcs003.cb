@@ -47,6 +47,10 @@ static WCBPROC (UnLdAZCS3I)
   /* CSC: ADDED 06/18/93 */
   HEAP_CHECK
 
+  /*mdc 09/27/96 Added to set FlWindowMod*/
+  FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
+
+
 /*
 **  Add a new service
 */
