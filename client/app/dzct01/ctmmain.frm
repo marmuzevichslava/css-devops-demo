@@ -326,6 +326,7 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
+      MouseIcon       =   "ctmmain.frx":030A
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -346,6 +347,7 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      MouseIcon       =   "ctmmain.frx":0326
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -363,12 +365,14 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   17886
+            Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "ctmmain.frx":0342
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -1256,7 +1260,7 @@ Private Sub mnuRequest_Click()
 
     Set xlApp = CreateObject("Excel.Application")
 
-    Set xlTemplate = xlApp.Workbooks.Open(App.Path & "\CTRequest.xlt", , True, , "c1admin", "c1admin", True)
+    'Set xlTemplate = xlApp.Workbooks.Open(App.Path & "\CTRequest.xlt", , True, , "c1admin", "c1admin", True)
     Set xlTemplate = xlApp.Workbooks.Open("n:\dzct01\CTRequest.xlt", , True, , "c1admin", "c1admin", True)
     xlApp.ActiveWorkbook.RunAutoMacros xlAutoOpen
 
