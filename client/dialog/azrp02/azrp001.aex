@@ -168,6 +168,10 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
 **    99/99/99  XXXXXXXX              Original code.
 **	  04/16/96  mconner               Changed LPT1 to PRINTPORT defined in
 **                                    azrp001.h 
+**
+**   04/25/96   mconner               Added call to CmnOsNetGetPrintConn
+**                                    for NT default printer description
+**
 ***************************************************************************/
 
 AEXPROC( ExitWktCloseAfterSave )
@@ -175,6 +179,10 @@ AEXPROC( ExitWktCloseAfterSave )
   USHORT FndGenRC = 0;
   _FND_ERROR_BLOCK FndGenErrorBlock;
   CHAR PrintFile[ 255 ];
+  #ifdef FND_WIN32
+  CHAR Printer[255];
+  CHAR Server[255];
+  #endif
 
   /* Handle window AZRP002X */
   if( strcmp( EAB_ChildWindowName, "AZRP002X" ) == 0 )
@@ -185,9 +193,27 @@ AEXPROC( ExitWktCloseAfterSave )
     /* Set the pointer to EAB_pChildData */
     pAZRP002Output = EAB_pChildData;
 
+	/*mdc 04/25/96 if NT get the default printer*/
+	#ifdef FND_WIN32
+	CmnOsNetGetPrintConn(Server, 
+	                     255, 
+	                     Printer, 
+	                     255,
+	                     CMN_ARCH_PARMS);
+
+	#endif
+
     if( pAZRP002Output->PrintDest[0] == 'P' )
     {
+	  #ifdef FND_WIN32
+	  strcpy( PrintFile, "\\\\" );
+	  strcat(PrintFile, Server );
+	  strcat(PrintFile, "\\");
+	  strcat(PrintFile, Printer );
+	  #endif
+	  #ifdef FND_OS2
       strcpy( PrintFile, PRINTPORT );
+	  #endif
     }
     else
     {
