@@ -2098,6 +2098,14 @@ WCBPROC( ATDW001BusAboutMNClick )
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
 **    10/06/93  C. Crampton              Original code.
+**    09/28/95  CWOODS                   If invoked due to rights in 
+**										 CmnInitPredisplay, Predisplay was
+**										 never called to malloc
+**										 pBFCD->pCSRDiagBFCD which caused
+**										 fatal error.  Added condition to
+**										 check if (pBFCD->pCSRDiagBFCD != NULL).
+**										 
+**                                    
 **
 ***************************************************************************/
 
@@ -2112,30 +2120,35 @@ WCBPROC (ATDW001BusWindowClose)
 /*
 ** Tell the CSR to get out of debug mode. Do not send any more messages
 */
-   if (BFCD_AZCD01->CSRPipeConnected )
+/* CWOODS 09/28/95 : Added if statement - pBFCD->pCSRDiagBFCD == NULL
+ | if BusPredisplay was never invoked
+ */
+   if ( pBFCD->pCSRDiagBFCD != NULL )
    {
-       usRC = ATDW001BusOpenPipe(CSR_NODEBUG, CMN_ARCH_PARMS );
-   }
+       if (BFCD_AZCD01->CSRPipeConnected )
+       {
+           usRC = ATDW001BusOpenPipe(CSR_NODEBUG, CMN_ARCH_PARMS );
+       }
 
-   /*
-   ** Free the memory for the Request Detail Messages
-   */
-   if ( BFCD_AZCD01->pRequestBlock )
-   { 
-       MEMFree( BFCD_AZCD01->pRequestBlock);
-       fclose( BFCD_AZCD01->fptrRequestLog );
-       BFCD_AZCD01->fptrRequestLog = NULL;
-       strcpy( BFCD_AZCD01->szRequestLogName, "" );
-   }
+       /*
+       ** Free the memory for the Request Detail Messages
+       */
+       if ( BFCD_AZCD01->pRequestBlock )
+       { 
+           MEMFree( BFCD_AZCD01->pRequestBlock);
+           fclose( BFCD_AZCD01->fptrRequestLog );
+           BFCD_AZCD01->fptrRequestLog = NULL;
+           strcpy( BFCD_AZCD01->szRequestLogName, "" );
+       }
 
-   for ( usCounter = 0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
-   {
-       MEMFree( BFCD_AZCD01->Service[usCounter].pServiceBlock );
-       fclose( BFCD_AZCD01->Service[usCounter].fptrServiceLog );
-       BFCD_AZCD01->Service[usCounter].fptrServiceLog = NULL;
-       strcpy( BFCD_AZCD01->Service[usCounter].szServiceLogName,"" );
-   }
-
+       for ( usCounter = 0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
+       {
+           MEMFree( BFCD_AZCD01->Service[usCounter].pServiceBlock );
+           fclose( BFCD_AZCD01->Service[usCounter].fptrServiceLog );
+           BFCD_AZCD01->Service[usCounter].fptrServiceLog = NULL;
+           strcpy( BFCD_AZCD01->Service[usCounter].szServiceLogName,"" );
+       }
+  }
 
 return(CMN_SUCCESS);
 } /* end of function ATDW001BusWindowClose */
