@@ -768,6 +768,34 @@ AEXPROC (ExitWktCloseAfterSave)
 
   } /* end of else if:  Map Comparison Window */
 
+  /*mdc 10/28/96 Added for Mass generate feature */
+  else if (strcmp(pChildWinInfo->WindowName, "AZCS009" ) == 0 )
+  {
+      if (BFCD_pCSRMapBFCD->CsrFLMassGen == CMN_YES)
+      {
+         FndGenRC = FndCommandEnable(CBI_hwnd,
+                                      "AMNMASSGEN",
+                                      &FndGenErrorBlock ); 
+
+         FndGenRC = FndCommandDisable( CBI_hwnd,
+                                       "AMNOPEN",
+                                       &FndGenErrorBlock );
+
+      }
+      else
+      {
+         FndGenRC = FndCommandDisable(CBI_hwnd,
+                                      "AMNMASSGEN",
+                                      &FndGenErrorBlock ); 
+
+         FndGenRC = FndCommandEnable( CBI_hwnd,
+                                       "AMNOPEN",
+                                       &FndGenErrorBlock );
+
+      }
+
+  }/*end of "if child AZCS009"*/
+
   /* CSC: ADDED 06/18/93 */
   HEAP_CHECK
 
