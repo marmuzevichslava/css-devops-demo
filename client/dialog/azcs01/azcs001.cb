@@ -4135,8 +4135,9 @@ SHORT Azcs001ChangeLK( SHORT sServ,
 
                 Azcs001DropClient( sClientx, sServ, 1, pSTDParms );
 
-
-                return CMN_FAIL;
+                /*mdc 011497 removed return added break
+                return CMN_FAIL;            */
+                break;
             } /* end of case 0 */
 
             case 1:
@@ -4286,8 +4287,9 @@ SHORT Azcs001ChangeCK( SHORT sServ,
 
                 Azcs001DropClient( sClientx, sServ, 2, pSTDParms );
 
-
-                return CMN_FAIL;
+                /*mdc 01-14-97 removed return and added break
+                return CMN_FAIL;                             */
+                break;
 
             } /* end of case 0 */
 
@@ -4432,8 +4434,9 @@ SHORT Azcs001ChangeLD( SHORT sServ,
 
                 Azcs001DropClient(sClientx, sServ, 3, pSTDParms);
 
-
-                return(CMN_FAIL);
+                /*mdc 01-14-97 removed return and added break
+                return(CMN_FAIL);                            */
+                break;
 
             } /* end of case 0 */
 
@@ -4579,8 +4582,9 @@ SHORT Azcs001ChangeRD( SHORT sServ,
 
                 Azcs001DropClient(sClientx, sServ, 4, pSTDParms);
 
-
-                return(CMN_FAIL);
+                /*mdc 01-14-97 removed return and added break
+                return(CMN_FAIL);                            */
+                break;
 
             } /* end of case 0 */
 
@@ -4698,11 +4702,19 @@ SHORT Azcs001ChangeRPMH( SHORT sServ,
       pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex];
 
     /* If a relationship exists see what the client indexes are */
+	/*mdc 01/27/97 added single occurrence condition.  At this point
+	some groups have 'Y' in their pRepeatingMaps structure although they no
+	longer have occurring groups that are mapped.
+	*/
+
     if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
-         pSavedRepeatingMaps[sIndex].ClientLayoutIndex > 0 )
+         pSavedRepeatingMaps[sIndex].ClientLayoutIndex > 0 || 
+         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex].
+         SingleOccurence == 'Y')
     {
         /* Make sure the number of Occurs has not changed */
         /* If so and a relationship exists drop relationship and notify user */
+
         if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                    pServiceLayoutTable[sIndex].ItemOccurs !=
             pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
@@ -4733,10 +4745,22 @@ SHORT Azcs001ChangeRPMH( SHORT sServ,
 
             pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                    pRepeatingMaps[sNewReposIx].ClientLayoutIndex = -1;
+ 
+		    /*mdc 01/28/97 added to remove occurrence data from the BFCD for this
+			item
+			*/
+			if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pReposServiceLayoutTable[sNewReposIx].ItemOccurs <= 1)
+			{
+				pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex].
+                                SingleOccurence = 'N';
+			}
 
 
-            return(CMN_FAIL);
 
+            /*mdc 01/27/97 changed return
+            return(CMN_FAIL);   */
+            return(CMN_SUCCESS);
         }
 
         sClientx = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
@@ -4766,8 +4790,9 @@ SHORT Azcs001ChangeRPMH( SHORT sServ,
 
                 Azcs001DropClient(sClientx, sServ, 5, pSTDParms);
 
-
-                return(CMN_FAIL);
+                /*mdc removed return and added break
+                return(CMN_FAIL);                   */
+                break;
 
             } /* end of case 0 */
 
