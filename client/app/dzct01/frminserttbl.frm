@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0"; "comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0"; "COMDLG32.OCX"
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
 Begin VB.Form frmInsertTbl 
    BorderStyle     =   3  'Fixed Dialog
@@ -29,6 +29,7 @@ Begin VB.Form frmInsertTbl
       _ExtentY        =   556
       _Version        =   327680
       Appearance      =   1
+      MouseIcon       =   "frminserttbl.frx":030A
    End
    Begin ComctlLib.StatusBar stbInsert 
       Align           =   2  'Align Bottom
@@ -48,9 +49,11 @@ Begin VB.Form frmInsertTbl
             AutoSize        =   1
             Object.Width           =   10425
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frminserttbl.frx":0326
    End
    Begin MSComDlg.CommonDialog ComDlg 
       Left            =   750
@@ -116,6 +119,7 @@ Begin VB.Form frmInsertTbl
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      MouseIcon       =   "frminserttbl.frx":0342
       NumItems        =   0
    End
    Begin VB.Label lblImportFile 

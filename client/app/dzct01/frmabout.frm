@@ -6,7 +6,6 @@ Begin VB.Form frmAbout
    ClientTop       =   45
    ClientWidth     =   4425
    ControlBox      =   0   'False
-   Icon            =   "frmabout.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
@@ -37,6 +36,7 @@ Begin VB.Form frmAbout
       BorderStyle     =   0  'None
       Height          =   495
       Left            =   240
+      Picture         =   "frmabout.frx":0000
       ScaleHeight     =   495
       ScaleWidth      =   495
       TabIndex        =   1
