@@ -1,0 +1,839 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  <CUffnnn>.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**                     <List Functions here>
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP001BusAmnprintClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+**  02/23/94  JLOONEY               Added FndGenErrorBlock for the macro
+**                                  wrappers.
+***************************************************************************/
+
+WCBPROC( AZRP001BusAmnprintClk )
+{
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+    FndGenRC = CmnWindowCreate( "AZRP002X", "", NULL, NULL,
+                                CMN_ARCH_PARMS );
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP001BusAmnbatchClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+**  02/23/94  JLOONEY               Added FndGenErrorBlock for the macro
+**                                  wrappers.
+**
+***************************************************************************/
+
+WCBPROC( AZRP001BusAmnbatchClk )
+{
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+    FndGenRC = CmnWindowCreate( "AZRP003X", "", NULL, NULL,
+                                CMN_ARCH_PARMS );
+
+
+    return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP001BusFindpbClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZRP001BusFindpbClk )
+{
+  #define DEST_APPL_ID   1
+  #define DEST_SRVC_ID   1
+  #define DEST_SRVC_VER  "00"
+
+  _FND_ERROR_BLOCK  FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+//  _FND_STANDARD_PB  FndStandardPB;
+//  _MSG_PARM_BLOCK   ParmBlock;
+
+//  _REQUEST_HDR      RequestHdr;
+//  _REPLY_HDR        *pReplyHdr;
+//  _SERVICE_REPLY *pServiceReply;
+
+  /*
+  _MESSAGEINPUT  *pMessageInput;
+  _MESSAGEOUTPUT *pMessageOutput;
+
+  pMessageInput  = malloc( sizeof( _MESSAGEINPUT ));
+  pMessageOutput = malloc( sizeof( _MESSAGEOUTPUT ));
+
+  memcpy( FndStandardPB.ver, FND_MSG_VER, _VER_LEN );
+  */
+
+  CHAR EntityId[ 9 ];
+  CHAR EntityType[ 9 ];
+
+//  _ENTITYDATA *pEntityDataTable;
+//  USHORT NumRows;
+
+  /* Set up Request Header */
+  FndGenRC = FndFieldQueryValue( CBI_hwnd, "EntityId",
+                                 sizeof( EntityId ),
+                                 WCD_RequestHdr.EntityId,
+                                 &FndGenErrorBlock );
+  FndGenRC = FndFieldQueryValue( CBI_hwnd, "EntityType",
+                                 sizeof( EntityType ),
+                                 WCD_RequestHdr.EntityType,
+                                 &FndGenErrorBlock );
+
+  switch( WCD_RequestHdr.EntityType[0] )
+  {
+    case 'T':
+      strcpy( WCD_RequestHdr.EntityType, "DEDTABLE" );
+      break;
+
+    case 'F':
+      strcpy( WCD_RequestHdr.EntityType, "DEFILE" );
+      break;
+
+    case 'C':
+      strcpy( WCD_RequestHdr.EntityType, "DECOPYBK" );
+      break;
+
+    case 'R':
+      strcpy( WCD_RequestHdr.EntityType, "DERECORD" );
+      break;
+
+    case 'G':
+      strcpy( WCD_RequestHdr.EntityType, "DEGROUP" );
+      break;
+
+    default:
+      break;
+  }
+
+  /*
+  pMessageInput->RequestHdr.MaxRows = _MESSAGEINPUT__ENTITYDATA_SIZE;
+
+  MSGInitPB( &FndStandardPB, &ParmBlock, pEAIA, DEST_APPL_ID,
+             DEST_SRVC_ID, DEST_SRVC_VER, pABHI );
+
+  memcpy( ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN );
+  ParmBlock.commarea.function_code = MSGIO_CONVERSE;
+  ParmBlock.buffer_size = sizeof( _MESSAGEINPUT );
+//  ParmBlock.buffer_size = MAX_MSG_LEN;
+  ParmBlock.actual_length_send = sizeof( _REQUESTHDR );
+
+//  strcpy( ParmBlock.secur.user_id, "USERID" );
+//  strcpy( ParmBlock.secur.user_pw, "PASSWO" );
+  ParmBlock.timeout_interval = 10;
+
+  FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
+                        (_MSG_RECV_AREA) pMessageOutput, pABHI );
+  */
+
+  /* Clear MLE */
+  FndGenRC = FndFieldSetValue( CBI_hwnd, "LongDesc",
+                               sizeof( LongDescData ),
+                               "",
+                               &FndGenErrorBlock );
+
+  /* Clear listbox */
+  FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd, "ReposDataLB",
+                                    &FndGenErrorBlock );
+
+  /* Set maximum number of rows to return */
+  WCD_RequestHdr.MaxRows = NUMREPOSDATALBROWS;
+
+  /* Retrieve Layout */
+  FndGenRC = SegRptRetrieveLayout( &WCD_RequestHdr, &WCD_ReplyHdr,
+                                   WCD_EntityData, CMN_ARCH_PARMS );
+
+  if( FndGenRC == MSGIO_SUCCESS )
+  {
+    FndGenRC = AZRP001PopulateWindow( WCD_EntityData,
+                                      &(WCD_ReplyHdr),
+                                      CMN_ARCH_PARMS );
+  }
+
+  return CMN_SUCCESS;
+}
+
+
+SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
+                             _REPLYHDR *pReplyHdr,
+                             CMN_ARCH_PARM_TYPES )
+{
+  _ReposDataLBRow ReposDataLBRow;
+  CHAR Indent[ 20 ];
+  USHORT i,j;
+  _FND_ERROR_BLOCK  FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+  SHORT TextLen;
+
+//  for( i=0; i<_REPLYHDR__ENTITYTEXT_SIZE; i++ )
+  for( i=0; i<pReplyHdr->NumTextRows; i++ )
+  {
+    CmnStrTrimTrailBlanks( pReplyHdr->EntityText[i],
+                           sizeof( pReplyHdr->EntityText[i] ),
+                           CMN_ARCH_PARMS );
+
+    /* Trim CR/LF from text */
+    CmnDdeTrimCRLF( pReplyHdr->EntityText[i],
+                    sizeof( pReplyHdr->EntityText[i] ));
+
+    TextLen = strlen(pReplyHdr->EntityText[i]);
+
+    pReplyHdr->EntityText[i][TextLen] = '\n';
+    pReplyHdr->EntityText[i][TextLen+1] = '\0';
+  }
+
+  /* Populate MLE */
+  CmnStrCat( CMN_ARCH_PARMS, LongDescData, sizeof( LongDescData ),
+             8,
+             pReplyHdr->EntityText[0], pReplyHdr->EntityText[1],
+             pReplyHdr->EntityText[2], pReplyHdr->EntityText[3],
+             pReplyHdr->EntityText[4], pReplyHdr->EntityText[5],
+             pReplyHdr->EntityText[6], pReplyHdr->EntityText[7] );
+
+  for( i=0; i<pReplyHdr->RowsReturned; i++ )
+  {
+    memset( Indent, 0, sizeof(Indent ));
+
+    for( j=0; j<pEntityDataTable[i].EntityLevel; j++ )
+    {
+      strcat( Indent, "  " );
+    }
+
+    memset( &ReposDataLBRow, 0, sizeof( ReposDataLBRow ));
+
+    /* JSH: 07/29/93 REMOVED */
+    /*
+    /* JSH: 09/21/93 MODIFIED from CmnStrTrimBlanks
+    CmnStrTrimTrailBlanks( pEntityDataTable[i].EntityId,
+                           sizeof( pEntityDataTable[i].EntityId ),
+                           CMM_ARCH_PARMS );
+    */
+    /* JSH: 07/29/93 ADDED */
+    /* Null terminate at first space in EntityId */
+    j = 0;
+    while( pEntityDataTable[i].EntityId[j] != ' ' )
+    {
+      j++;
+    }
+    pEntityDataTable[i].EntityId[j] = '\0';
+
+    CmnStrCat( CMN_ARCH_PARMS, ReposDataLBRow._ReposDataLBEntityIdData,
+               sizeof( ReposDataLBRow._ReposDataLBEntityIdData ),
+               2, Indent, pEntityDataTable[i].EntityId );
+
+    /* JSH: 09/21/93 MODIFIED from CmnStrTrimBlanks */
+    CmnStrTrimTrailBlanks( pEntityDataTable[i].EntityType,
+                           sizeof( pEntityDataTable[i].EntityType),
+                           CMN_ARCH_PARMS );
+
+    if( !strcmp( pEntityDataTable[i].EntityType, "DEDTABLE" ))
+    {
+      strcpy( pEntityDataTable[i].EntityType, "TABLE" );
+    }
+    else if( !strcmp( pEntityDataTable[i].EntityType, "DECOPYBK" ))
+    {
+      strcpy( pEntityDataTable[i].EntityType, "COPYBOOK" );
+    }
+    else if( !strcmp( pEntityDataTable[i].EntityType, "DERECORD" ))
+    {
+      strcpy( pEntityDataTable[i].EntityType, "RECORD" );
+    }
+    else if( !strcmp( pEntityDataTable[i].EntityType, "DEGROUP" ))
+    {
+      strcpy( pEntityDataTable[i].EntityType, "GROUP" );
+    }
+    else if( !strcmp( pEntityDataTable[i].EntityType, "DEDTELEM" ))
+    {
+      strcpy( pEntityDataTable[i].EntityType, "ELEMENT" );
+    }
+
+    CmnStrCat( CMN_ARCH_PARMS, ReposDataLBRow._ReposDataLBEntityTypeData,
+               sizeof( ReposDataLBRow._ReposDataLBEntityTypeData ),
+               2, Indent, pEntityDataTable[i].EntityType );
+
+    /* JSH: 09/21/93 MODIFIED from CmnStrTrimBlanks */
+    CmnStrTrimTrailBlanks( pEntityDataTable[i].EntityCobolName,
+                           sizeof( pEntityDataTable[i].EntityCobolName),
+                           CMN_ARCH_PARMS );
+    CmnStrCat( CMN_ARCH_PARMS,
+               ReposDataLBRow._ReposDataLBEntityNameData,
+               sizeof( ReposDataLBRow._ReposDataLBEntityNameData ),
+               2, Indent, pEntityDataTable[i].EntityCobolName );
+
+    /* Display length if it's non-zero */
+    if( pEntityDataTable[i].DteIntLength > 0 )
+    {
+      CmnStrFromInt( ReposDataLBRow._ReposDataLBLengthData,
+                     sizeof( ReposDataLBRow._ReposDataLBLengthData ),
+                     pEntityDataTable[i].DteIntLength,
+                     CMN_LEADING_ZEROES_NO,
+                     CMN_ARCH_PARMS );
+    }
+    else
+    {
+      strcpy( ReposDataLBRow._ReposDataLBLengthData, "" );
+    }
+
+    ReposDataLBRow._ReposDataLBFormatData[0] =
+        pEntityDataTable[i].DteIntFormat;
+
+    /* Display precision if format is numeric */
+    if( pEntityDataTable[i].DteIntFormat == 'N' )
+    {
+      CmnStrFromInt( ReposDataLBRow._ReposDataLBPrecisionData,
+                     sizeof( ReposDataLBRow._ReposDataLBPrecisionData ),
+                     pEntityDataTable[i].DteIntPrecision,
+                     CMN_LEADING_ZEROES_NO,
+                     CMN_ARCH_PARMS );
+    }
+    else
+    {
+      strcpy( ReposDataLBRow._ReposDataLBPrecisionData, "" );
+    }
+
+    CmnStrCopy( ReposDataLBRow._ReposDataLBUsageData,
+                pEntityDataTable[i].DteIntUsage,
+                sizeof( ReposDataLBRow._ReposDataLBUsageData ),
+                CMN_ARCH_PARMS );
+
+    /* Display occurs only if occurs > 1 */
+    if( pEntityDataTable[i].RelatOccFact > 1 )
+    {
+      CmnStrFromInt( ReposDataLBRow._ReposDataLBOccursData,
+                     sizeof( ReposDataLBRow._ReposDataLBOccursData ),
+                     pEntityDataTable[i].RelatOccFact,
+                     CMN_LEADING_ZEROES_NO,
+                     CMN_ARCH_PARMS );
+    }
+    /*
+    else
+    {
+      strcpy( ReposDataLBRow._ReposDataLBOccursData, "" );
+    }
+    */
+
+
+    /* Display Other and Other2 */
+    /* Display only if first row represents a TABLE */
+    if(( strcmp( pEntityDataTable[0].EntityType, "TABLE" ) == 0 ) &&
+/*       ( pEntityDataTable[i].RelatNulFl == 'N' )) */
+       ( strcmp( pEntityDataTable[i].EntityType, "ELEMENT" ) == 0 ) &&
+       ( pEntityDataTable[i].RelatNulFl != 'Y' ))
+    {
+      if( pEntityDataTable[i].RelatDefaultFl == 'Y' )
+      {
+        strcpy( ReposDataLBRow._ReposDataLBOther2Data,
+                "NOT NULL WITH DEFAULT" );
+      }
+      else
+      {
+        strcpy( ReposDataLBRow._ReposDataLBOther2Data,
+                "NOT NULL" );
+      }
+    }
+
+    /* Add the new row */
+    FndGenRC = FndLstBoxRowAdd( CBI_hwnd, "ReposDataLB", i,
+                                sizeof( _ReposDataLBRow ),
+                                (VOID *) &ReposDataLBRow,
+                                &FndGenErrorBlock );
+  }
+
+  return CMN_SUCCESS;
+}
+
+
+#define PRINTER_RESET         "\033E"
+#define FONT_LINE_PRINTER     "\033(0N\033(s0p16.67h8.5v0s0b0T"
+#define VMI                   "\033&l5.6C"
+#define MAX_LINES_PER_PAGE    80
+#define DUPLEX                "\033&l1S"
+
+SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
+                          _ENTITYDATA *pEntityDataTable, CHAR *PrintFile,
+                          CHAR Duplex, CMN_ARCH_PARM_TYPES )
+{
+  FILE *pfPrinter;
+  USHORT CurrRow = 0;
+  USHORT CurrPage = 1;
+  USHORT CurrLine;
+
+  /* Open PrintFile */
+  pfPrinter = fopen( PrintFile, "w" );
+
+  /* Initialize PrintFile */
+  fprintf( pfPrinter, PRINTER_RESET );
+  fprintf( pfPrinter, FONT_LINE_PRINTER );
+  fprintf( pfPrinter, VMI );
+
+  if( Duplex == 'Y' )
+  {
+    fprintf( pfPrinter, DUPLEX );
+  }
+
+  if( pfPrinter )
+  {
+    while( CurrRow < pReplyHdr->RowsReturned )
+    {
+      /* Print Header Information */
+      PrintHeader( pfPrinter, pRequestHdr, pReplyHdr, pEntityDataTable,
+                   CurrPage, &CurrLine );
+
+      while( CurrLine < MAX_LINES_PER_PAGE &&
+             CurrRow < pReplyHdr->RowsReturned )
+      {
+        /* Print Current Row */
+        /*
+        fprintf( pfPrinter, "Page %4d Line %4d Row %4d\n",
+                 CurrPage, CurrLine, CurrRow );
+        */
+        CHAR  FormatString[ 80 ];
+        SHORT Indent;
+        CHAR  EntityIdTypeName[ 80 ];
+
+        /* Calculate number of spaces to indent */
+        Indent = WCD_EntityData[CurrRow].EntityLevel * 2;
+
+
+        sprintf( EntityIdTypeName, "%-25s%-15s%-30s",
+                 WCD_EntityData[CurrRow].EntityId,
+                 WCD_EntityData[CurrRow].EntityType,
+                 WCD_EntityData[CurrRow].EntityCobolName );
+                 /*
+                 ReposDataLBEntityIdData[ CurrRow ],
+                 ReposDataLBEntityTypeData[ CurrRow ],
+                 ReposDataLBEntityNameData[ CurrRow ] );
+                 */
+
+        /* Build format string: "%-<Indent>s%-<70-Indent>s" */
+        if( Indent == 0 )
+        {
+          fprintf( pfPrinter, "      %70.70s", EntityIdTypeName );
+        }
+        else
+        {
+          sprintf( FormatString, "      %%-%d.%ds%%-%d.%ds",
+                   Indent, Indent,
+                   70-Indent, 70-Indent );
+          fprintf( pfPrinter, FormatString, "", EntityIdTypeName );
+        }
+
+        fprintf( pfPrinter, SEG_RPT_DTL_FMT,
+                 ReposDataLBFormatData[ CurrRow ],
+                 ReposDataLBLengthData[ CurrRow ],
+                 ReposDataLBPrecisionData[ CurrRow ],
+                 ReposDataLBUsageData[ CurrRow ],
+                 ReposDataLBOccursData[ CurrRow ],
+                 ReposDataLBBytesData[ CurrRow ],
+                 ReposDataLBOtherData[ CurrRow ] );
+
+        if( strlen( ReposDataLBOther2Data[ CurrRow ] ))
+        {
+          fprintf( pfPrinter, "      %70.70s", "" );
+          fprintf( pfPrinter, SEG_RPT_DTL_FMT,
+                   "",
+                   "",
+                   "",
+                   "",
+                   "",
+                   "",
+                   ReposDataLBOther2Data[ CurrRow ] );
+
+          CurrLine++;
+        }
+
+        /* Increment counters */
+        CurrRow++;
+        CurrLine++;
+
+      }
+
+      /* Check why loop terminated */
+      if( CurrLine >= MAX_LINES_PER_PAGE &&
+          CurrRow < pReplyHdr->RowsReturned )
+      {
+        /* Lines per page exceeded, but still more data */
+        fprintf( pfPrinter, "\f" );
+        CurrPage++;
+      }
+    }
+
+    /* Reset printer and close */
+    fprintf( pfPrinter, PRINTER_RESET );
+    fclose( pfPrinter );
+  }
+  else
+  {
+    /* ERROR OPENING PRINT FILE */
+  }
+
+  return CMN_SUCCESS;
+}
+
+
+#define SEG_RPT_HDR1 \
+"                                                          FOUNDATION 2.0/CSS                                              Page %4.4d\n"
+#define SEG_RPT_HDR2 \
+"                                                          SEGMENT REPORTING                                                %8.8s\n"
+#define SEG_RPT_HDR3 \
+"                                                          %8.8s (%s)\n"
+
+
+SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
+                   _REPLYHDR *pReplyHdr, _ENTITYDATA *pEntityDataTable,
+                   SHORT CurrPage, SHORT *pCurrLine )
+{
+  CHAR CurrDate[ 9 ];
+
+  fprintf( pfPrinter, "\n" );
+  fprintf( pfPrinter, SEG_RPT_HDR1, CurrPage );
+  _strdate( CurrDate );
+
+  fprintf( pfPrinter, SEG_RPT_HDR2, CurrDate );
+  fprintf( pfPrinter, SEG_RPT_HDR3, pRequestHdr->EntityId,
+           pEntityDataTable[0].EntityType );
+  fprintf( pfPrinter, "\n\n" );
+  *pCurrLine = 6;
+
+  if( CurrPage == 1 )
+  {
+    USHORT i;
+
+    /* Print Page 1 header */
+    fprintf( pfPrinter, "          %s CHARACTERISTICS\n",
+             pEntityDataTable[0].EntityType );
+    fprintf( pfPrinter, "%s\n", SEG_RPT_COLHDR1 );
+    fprintf( pfPrinter, "            SHORT DESCRIPTION:  %s\n",
+             pEntityDataTable[0].EntityId );
+    *pCurrLine += 3;
+
+    /* Print long description */
+    fprintf( pfPrinter, "             LONG DESCRIPTION:  " );
+    *pCurrLine += 1;
+
+    if( pReplyHdr->NumTextRows > 0 )
+    {
+      /* Print first line of text */
+      fprintf( pfPrinter, pReplyHdr->EntityText[0] );
+
+      for( i=1; i<pReplyHdr->NumTextRows; i++ )
+      {
+        if( strlen( pReplyHdr->EntityText[i] ) > 0 )
+        {
+          fprintf( pfPrinter, "                                %s",
+                   pReplyHdr->EntityText[i] );
+          *pCurrLine += 1;
+        }
+      }
+    }
+    else
+    {
+      fprintf( pfPrinter, "\n" );
+    }
+
+    if( strcmp( pEntityDataTable[0].EntityType, "TABLE" ) == 0 )
+    {
+      /* Print TABLE-specific fields */
+      fprintf( pfPrinter, "                   TABLE NAME:  %s\n",
+               pReplyHdr->TabName );
+
+      *pCurrLine += 1;
+    }
+
+
+    fprintf( pfPrinter, "\n\n\n\n" );
+    *pCurrLine += 4;
+  }
+
+  fprintf( pfPrinter, "%s\n%s\n%s\n",
+           SEG_RPT_COLHDR1,
+           SEG_RPT_COLHDR2,
+           SEG_RPT_COLHDR3 );
+
+  /* Reset CurrLine */
+  *pCurrLine += 3;   /* Adjust this based on size of header */
+
+  return 0;
+}
+
+
+SHORT SegRptRetrieveLayout( _REQUESTHDR *pRequestHdr,
+                            _REPLYHDR *pReplyHdr,
+                            _ENTITYDATA *pEntityDataTable,
+                            CMN_ARCH_PARM_TYPES )
+{
+  #define DEST_APPL_ID   1
+  #define DEST_SRVC_ID   1
+  #define DEST_SRVC_VER  "00"
+
+  USHORT FndGenRC = 0;
+  _FND_STANDARD_PB  FndStandardPB;
+  _FND_ERROR_BLOCK  FndGenErrorBlock;
+  _MSG_PARM_BLOCK   ParmBlock;
+
+//  _LAYOUT_REC *pLayoutRecTable;
+//  _ENTITYDATA *pEntityDataTable;
+//  USHORT OffsetTable[ 20 ];
+//  USHORT GroupCLength;
+
+//  USHORT i;
+
+  /* JSH: 07/24/93 MODIFIED */
+  _MESSAGEOUTPUT  *pMessageInput;
+  _MESSAGEOUTPUT *pMessageOutput;
+
+  SHORT ReturnCode = 0;
+  CHAR Message[ 255 ];
+  USHORT SelectedButton;
+
+
+  FndGenRC = FndWindowSetPointer(CBI_hwnd,
+                                 FNDSYSPTR_WAIT,
+                                 &FndGenErrorBlock);
+
+  FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nRetrieving Data From The Repository ...\n\n Please be patient.",
+                                   "ReposWait",
+                                   CBI_hwnd,
+                                   FND_MSGBOX_NOBUTTONS,
+                                   FND_MSGBOX_INFORMATION,
+                                   FND_MSGBOX_IDNOBUTTON,
+                                   CMN_CSS_APPL_NAME,
+                                   &FndGenErrorBlock);
+
+  /* JSH: 07/24/93 MODIFIED */
+  pMessageInput  = malloc( sizeof( _MESSAGEOUTPUT ));
+  pMessageOutput = malloc( sizeof( _MESSAGEOUTPUT ));
+
+  memcpy( FndStandardPB.ver, FND_MSG_VER, _VER_LEN );
+
+  /* Set up Request Header */
+  strcpy( pMessageInput->RequestHdr.EntityType, pRequestHdr->EntityType );
+
+  strcpy( pMessageInput->RequestHdr.EntityId, pRequestHdr->EntityId );
+  pMessageInput->RequestHdr.MaxRows = pRequestHdr->MaxRows;
+
+  /* Initialize Foundation Parm Block */
+  MSGInitPB( &FndStandardPB, &ParmBlock, pEAIA, DEST_APPL_ID,
+             DEST_SRVC_ID, DEST_SRVC_VER, pABHI );
+
+  memcpy( ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN );
+  ParmBlock.commarea.function_code = MSGIO_CONVERSE;
+  /* JSH: 07/24/93 MODIFIED */
+  ParmBlock.buffer_size = sizeof( _MESSAGEOUTPUT );
+  ParmBlock.actual_length_send = sizeof( _REQUESTHDR );
+  ParmBlock.timeout_interval = 30;
+
+  memcpy( ParmBlock.translation.map_name, "AZCR001O", _FND_MAP_NAME_LEN );
+  memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );
+
+//  FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
+//                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
+
+  FndGenRC = MSGConv( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
+                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
+
+  if( FndGenRC == MSGIO_SUCCESS &&
+      ParmBlock.appl_status.explan_code == FND_SUCCESS )
+  {
+    /* Allocate space for Layout Record Table */
+    //pReplyHdr->RowsReturned = pMessageOutput->ReplyHdr.RowsReturned;
+    memcpy( pReplyHdr, &(pMessageOutput->ReplyHdr), sizeof( _REPLYHDR ));
+
+    /* Check if any rows were returned */
+    if( pReplyHdr->RowsReturned )
+    {
+      //pEntityDataTable = (_ENTITYDATA *)
+      //                       malloc( *pNumRows * sizeof( _ENTITYDATA ));
+
+      /* Initialize memory */
+      memcpy( pEntityDataTable, &(pMessageOutput->EntityData),
+              pReplyHdr->RowsReturned * sizeof( _ENTITYDATA ));
+
+      /*
+      for( i=0; i<*pNumRows; i++ )
+      {
+        CsrMapInitItem( &(pMessageOutput->EntityData[i]),
+                        &(pLayoutRecTable[i]), CMN_ARCH_PARMS );
+      }
+      */
+
+      //*ppEntityDataTable = pEntityDataTable;
+
+      /* Initialize OffsetTable */
+      /*
+      memset( OffsetTable, 0, sizeof( OffsetTable ));
+      */
+      /*
+
+      CsrMapProcessDataLayout( pMessageOutput->EntityData,
+                               OffsetTable,
+                               pLayoutRecTable,
+                               0,
+                               0,
+                               0,
+                               &GroupCLength );
+      */
+
+      /* Check SQLCODE */
+      if( pReplyHdr->SqlCode )
+      {
+        sprintf( Message, "Rows were returned by the Repository "
+                          "Extract Service.  However, a non-zero "
+                          "SQL Code was returned.  The SQL Code was "
+                          "%ld.",
+                 pReplyHdr->SqlCode );
+
+        FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+                              FND_MSGBOX_WARNING, FND_MSGBOX_OK,
+                              NULL, &SelectedButton, &FndGenErrorBlock );
+      }
+
+
+    }
+    else
+    {
+      /* No rows were returned */
+      /* Check SQL Code */
+      switch( pMessageOutput->ReplyHdr.SqlCode )
+      {
+        case 0:
+            sprintf( Message, "No rows were returned by the Repository "
+                              "Extract Service.  The SQL Code was %ld.",
+                     pMessageOutput->ReplyHdr.SqlCode );
+            break;
+
+        default:
+            sprintf( Message, "No rows were returned by the Repository "
+                              "Extract Service.  The SQL Code was %ld.",
+                     pMessageOutput->ReplyHdr.SqlCode );
+            break;
+      }
+
+      FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+                            FND_MSGBOX_CRITICAL, FND_MSGBOX_OK,
+                            NULL, &SelectedButton, &FndGenErrorBlock );
+
+      /* Set ReturnCode to indicate error */
+      ReturnCode = 1;
+    }
+  }
+  else
+  {
+    sprintf( Message, "Distribution Services returned an error.  "
+                      "The return code from MSGConv is %d.  "
+                      "The explanation code is %d.",
+             FndGenRC, ParmBlock.appl_status.explan_code );
+
+
+    FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+                          FND_MSGBOX_CRITICAL, FND_MSGBOX_OK,
+                          NULL, &SelectedButton, &FndGenErrorBlock );
+
+    /* DS Error occurred */
+    ReturnCode = 1;
+  }
+
+  /* Free the memory allocated for Message Input and Output */
+  free( pMessageInput );
+  free( pMessageOutput );
+
+  FndGenRC = FndWindowSetPointer( CBI_hwnd,
+                                  FNDSYSPTR_ARROW,
+                                  &FndGenErrorBlock );
+
+  FndGenRC = FndMsgBoxDestroy("ReposWait",
+                               &FndGenErrorBlock);
+
+  return ReturnCode;
+}

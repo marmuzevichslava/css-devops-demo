@@ -1,0 +1,184 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  <CUffnnn>.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**                     <List Functions here>
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP002BusPrdis
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZRP002BusPrdis )
+{
+  USHORT FndGenRC = 0;
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP002BusOkpbClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZRP002BusOkpbClk )
+{
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  /*
+  **  Set up a local pointer to the OUT layout <CUffnnnO>
+  */
+  _AZRP002OUTPUT *pAZRP002Output;
+
+  /*
+  **  Set the OUT layout pointer to EAB_pWdtOutData
+  */
+  pAZRP002Output = (_AZRP002OUTPUT *) EAB_pWdtOutData;
+
+
+  /*
+  **  Format the following fields in the OUT layout <CUffnnnO>
+  */
+  CmnStrCopy( pAZRP002Output->PrintDest, PrintDestData,
+              sizeof( pAZRP002Output->PrintDest ), CMN_ARCH_PARMS );
+
+  FndGenRC = FndFieldQueryValue( CBI_hwnd,
+                                 "PrintFile",
+                                 sizeof( pAZRP002Output->PrintFile ),
+                                 pAZRP002Output->PrintFile,
+                                 &FndGenErrorBlock);
+
+  CmnStrCopy( pAZRP002Output->Duplex, DuplexData,
+              sizeof( pAZRP002Output->Duplex ), CMN_ARCH_PARMS );
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusApplicationDefined
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : Parameter1 - description
+**
+**                     Parameter2 - description
+**
+**                     ParameterN - description
+**
+**                     CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+//SHORT CUffnnnBusApplicationDefined( TYPE Parameter1,
+//                                    TYPE Parameter2,
+//                                    TYPE ParameterN,
+//                                    CMN_ARCH_PARM_TYPES)
+//{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Business logic
+  //  function.  This shell is used for application-
+  //  defined functions, rather than RAB-specified
+  //  functions.
+  //
+  //  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUffnnn>Bus<Application-DefinedName>
+  //
+  //  Then, add business logic as required.
+  //
+  //  Note: Place forward declaration for this function
+  //  in the windowname.h file.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //  USHORT FndGenRC = 0;
+
+  //  Place Application Business Logic here
+
+  //  return CMN_SUCCESS;
+//}
