@@ -9,6 +9,7 @@ Begin VB.Form frmExportSS
    ClientWidth     =   5265
    Icon            =   "frmexportss.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4065
@@ -113,15 +114,15 @@ Begin VB.Form frmExportSS
       Left            =   120
       TabIndex        =   0
       Top             =   0
-      Width           =   1935
+      Width           =   2175
       Begin VB.ListBox SelectTable 
          Height          =   3375
-         Left            =   240
+         Left            =   120
          MultiSelect     =   2  'Extended
          Sorted          =   -1  'True
          TabIndex        =   1
          Top             =   240
-         Width           =   1695
+         Width           =   1815
       End
    End
    Begin VB.Menu mnuFile 
@@ -187,6 +188,7 @@ Private Sub Form_Load()
     Screen.MousePointer = vbNormal
     
 End Sub
+
 '***************************************************************************************************************
 Private Sub mnuClose_Click()
 '***************************************************************************************************************
@@ -206,6 +208,7 @@ Public Sub mnuProcess_Click()
     Dim sXls_Path As String
     Dim sXls_Name As String
     Dim RetVal As Integer
+    Dim TableIsSelected As Boolean
     
     Const START_ROW = 13
     Const XLS_TEMP_NAME = "CTETemp.xls"
@@ -239,6 +242,19 @@ Public Sub mnuProcess_Click()
     
     j = START_ROW
     
+    For x = 0 To frmExportSS.SelectTable.ListCount - 1
+        If (frmExportSS.SelectTable.Selected(x) = True) Then
+            TableIsSelected = True
+        End If
+    Next
+            
+    If Not TableIsSelected Then
+        msg = "No table has been selected from the listbox on the current window." & vbCrLf
+        RC = MsgBox(msg, vbOKOnly + vbCritical, "Codes Table Explorer")
+        Screen.MousePointer = vbNormal
+        Exit Sub
+    End If
+        
     On Error GoTo DatabaseError
     
     For x = 0 To frmExportSS.SelectTable.ListCount - 1

@@ -6,6 +6,7 @@ Begin VB.Form frmAddModUMsg
    ClientWidth     =   7335
    Icon            =   "frmaddmodumsg.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3390

@@ -9,6 +9,7 @@ Begin VB.Form frmMain
    ForeColor       =   &H80000008&
    Icon            =   "ctmmain.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    ScaleHeight     =   6000
    ScaleWidth      =   10380
    StartUpPosition =   2  'CenterScreen
@@ -326,7 +327,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":030A
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -347,7 +347,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0326
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -368,11 +367,9 @@ Begin VB.Form frmMain
             Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "ctmmain.frx":0342
    End
    Begin VB.Image imgSplitter 
       Height          =   4065

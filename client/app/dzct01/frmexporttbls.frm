@@ -8,6 +8,7 @@ Begin VB.Form frmExportTable
    ClientWidth     =   5295
    Icon            =   "frmexporttbls.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4230

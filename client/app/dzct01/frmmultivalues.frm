@@ -7,6 +7,7 @@ Begin VB.Form frmMultiValues
    ClientWidth     =   5625
    Icon            =   "frmmultivalues.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    ScaleHeight     =   3045
    ScaleWidth      =   5625
    StartUpPosition =   3  'Windows Default
