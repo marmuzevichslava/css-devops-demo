@@ -356,6 +356,8 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 **    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
 **  --------      ----------     -----     ---------------------
 **	04/22/96	mconner						created
+**     05/21/96      mconner                  Changed logic so that it would not 
+**                                                 copy another character after EOF
 ******************************************************************/
 USHORT FileAdd(FILE *ofp, FILE *ifp)
 {
@@ -364,10 +366,13 @@ USHORT FileAdd(FILE *ofp, FILE *ifp)
 
 	 if( ofp  != NULL &&	ifp != NULL)
 	 {
+                InputChar = getc(ifp);
+
 	 	while (InputChar != EOF)
 		{
-			InputChar = getc(ifp);
-		    putc(InputChar, ofp );
+                    putc(InputChar, ofp );
+		    InputChar = getc(ifp);
+		    
 		}
 	  }
 
@@ -2864,3 +2869,4 @@ if (ServiceLayout.Precision > 0)
 return( CMN_SUCCESS );
 
 } /* End of function FormatHighValues */
+
