@@ -131,7 +131,8 @@ int CUG< ff >< desc >< version >( void *pInData,    long InLength,
 	< output copybook i.e. CUCR091O >
 		
 	/* init data structure */
-	memset( &DsParms,  0, sizeof( DS_PARMS ));
+	memset( &TvList,  0, sizeof( TVLIST ));
+	memset( &DsParms, 0, sizeof( DS_PARMS ));
 	memset( &< input copybook >,  0, sizeof( < input copybook > ));
 	memset( &< output copybook >, 0, sizeof( < output copybook > ));
 
