@@ -186,6 +186,7 @@ WCBPROC( DZSF002BusGeneratePBClk )
 	CHAR                ElemName[DZSF002_ELEM_NAME_LEN];
 	CHAR                DialogID[DZSF002_DIALOG_ID_LEN + 1];
 	CHAR                ErrMsg[DZSF002_ERR_MSG_LEN];
+	SHORT               AsciiFieldSize = 0;
 
 
 
@@ -454,16 +455,25 @@ WCBPROC( DZSF002BusGeneratePBClk )
 								}
 
 								/*
+								** determine ascii length of field.
+								*/
+								AsciiFieldSize = 0;
+								while ( isalnum(*pValue))
+								{
+									++pValue;
+									++AsciiFieldSize;
+								}
+								/*
 								** put the first datum in the string field
 								*/
 								memset(ElementValue, 0, DZSF002_ELEM_VALUE_LEN);
-								memcpy(ElementValue, pValue, FieldSize);
+								memcpy(ElementValue, pValue - AsciiFieldSize, AsciiFieldSize);
 
 
 								/*
 								** increment the pointer to the next value
 								*/
-								pValue += FieldSize;
+								++pValue;
 
 								/*
 								** loop for each offset of an element
