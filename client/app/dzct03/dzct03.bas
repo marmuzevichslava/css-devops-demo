@@ -12,11 +12,17 @@ Public wsCTM As Workspace
 Public dbCTM As Database
 Public sFunction As String
 Public iFileNum As Integer
+Public iErrorFile As Integer
 Public msg As String
 Public fCTempInFile As String
 Public fCTempOutFile As String
 Public fFTPInFile As String
 Public fFTPOutFile As String
+Public ErrorFound As Boolean
+Public LogError As Boolean
+Public Counter As Integer
+Public TotalRecords As Integer
+Const fErrorLogFile As String = "c:\temp\error.log"
 Const EXTRACT_FUNC As String = "E"
 Const UPDATE_FUNC As String = "U"
 Const USER As String = "pvcs"
@@ -31,17 +37,38 @@ Private Sub Main()
     If Not Housekeeping Then
         End
     End If
-    
+        
     'Perform Process.
-    If Not Process Then
-        End
-    End If
+    Process
         
     'Perform WrapUp.
-    If Not WrapUp Then
-        End
-    End If
+    WrapUp
+        
+End Sub
+
+Private Sub WriteToErrorLog()
     
+    On Error GoTo FileOpenError
+    
+    'Open error log file.
+    iErrorFile = FreeFile
+    Open fErrorLogFile For Append As iErrorFile
+    
+    Print #iErrorFile, msg
+
+    'Close error log file.
+    Close iErrorFile
+Exit Sub
+    
+FileOpenError:
+    ErrorFound = True
+    msg = "The output file which would contain the extracted tables could not be opened." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+
 End Sub
 
 '************************************************************
@@ -86,7 +113,7 @@ End Function
 '***********************************************************
 '**                       ParseArgs                       **
 '***********************************************************
-Function ParseArgs() As Boolean
+Public Function ParseArgs() As Boolean
 
     Dim CmdStr As String
     Const FUNCTION_VALUE As Integer = 1
@@ -125,7 +152,7 @@ End Function
 '*************************************************************
 '**                      ExportCodesTable                   **
 '*************************************************************
-Function ExportCodesTable() As Boolean
+Public Function ExportCodesTable() As Boolean
     
     Dim SQLQuery As String, sTableName As String
     Dim EntrySet As Recordset
@@ -146,6 +173,9 @@ Function ExportCodesTable() As Boolean
     
     On Error GoTo TableNameError
     
+    iFileNum = FreeFile
+    Open fCTempOutFile For Output As iFileNum
+    
     Do Until EntrySet.EOF
         sTableName = EntrySet(0).Value
         Print #iFileNum, sTableName
@@ -153,6 +183,8 @@ Function ExportCodesTable() As Boolean
         EntrySet.MoveNext
     Loop
 
+    Close #iFileNum
+    
     EntrySet.Close
     
     ExportCodesTable = True
@@ -161,45 +193,46 @@ Function ExportCodesTable() As Boolean
     
 SQLError:
     ExportCodesTable = False
+    ErrorFound = True
     msg = "An error occurred while trying to perform SQL query in the ExportCodesTable function." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
     
 RecordsetError:
     ExportCodesTable = False
+    ErrorFound = True
     msg = "An error occurred while trying to open the recordset during extract." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 TableNameError:
     ExportCodesTable = False
+    ErrorFound = True
     msg = "An error occurred while trying to get the extracted table names." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
-          
 End Function
 
 '*************************************************************
 '**                       ExtractProcess                    **
 '*************************************************************
-Function ExtractProcess() As Boolean
+Public Function ExtractProcess() As Boolean
 
     On Error GoTo FileOpenError
     
     'Open output file.
-    iFileNum = FreeFile
-    Open fCTempOutFile For Output As iFileNum
+    
     ExtractProcess = True
     
     'Export the entries for the Codes Table selection.
@@ -223,19 +256,19 @@ Function ExtractProcess() As Boolean
     
 FileOpenError:
     ExtractProcess = False
+    ErrorFound = True
     msg = "The output file which would contain the extracted tables could not be opened." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
-    
 End Function
 
 '*************************************************************
 '**                        PutTblFile                       **
 '*************************************************************
-Function PutTblFile() As Boolean
+Public Function PutTblFile() As Boolean
 
     Dim myftp As New FTP
     Dim sServer As String
@@ -287,31 +320,34 @@ Exit Function
     
 SQLError:
     PutTblFile = False
+    ErrorFound = True
     msg = "An error occurred while trying to perform SQL query in PutTblFile." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 RecordsetError:
     PutTblFile = False
+    ErrorFound = True
     msg = "An error occurred while trying to open the recordset for selecting the server in PutTblFile." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 GetServerError:
     PutTblFile = False
+    ErrorFound = True
     msg = "An error occurred while trying to get server for FTP destination in PutTblFile." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
@@ -320,14 +356,14 @@ FTPError:
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+   'Send email.
     SendEmail
 End Function
 
 '*************************************************************
 '**                        GetTblFile                       **
 '*************************************************************
-Function GetTblFile() As Boolean
+Public Function GetTblFile() As Boolean
 
     Dim myftp As New FTP
     Dim sServer As String
@@ -363,59 +399,65 @@ Function GetTblFile() As Boolean
         .LocalFile = fCTempInFile
         .GetFile
     End With
-
+    
+    On Error GoTo FTPError
+    
     'Check to see if get was successful.
     If myftp.Error Then
         GetTblFile = False
-        Err.Raise 24, GetTblFile, "The FTP failed because" & fFTPInFile & "does not exist."
+        Err.Raise 24, GetTblFile, "The FTP failed because" & fFTPInFile & " does not exist."
     Else
         GetTblFile = True
     End If
 Exit Function
 
 SQLError:
+    ErrorFound = True
     msg = "An error occurred while trying to perform SQL query in GetTblFile." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 RecordsetError:
     GetTblFile = False
+    ErrorFound = True
     msg = "An error occurred while trying to open the recordset for selecting the server in GetTblFile." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 GetServerError:
     GetTblFile = False
+    ErrorFound = True
     msg = "An error occurred while trying to get server for FTP destination in GetTblFile." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+   'Send email.
     SendEmail
 Exit Function
 
 FTPError:
     GetTblFile = False
+    ErrorFound = True
     msg = "An error occurred while trying to get input file from UNIX." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+   'Send email.
     SendEmail
 End Function
 
 '*************************************************************
 '**                       UpdateProcess                     **
 '*************************************************************
-Function UpdateProcess() As Boolean
+Public Function UpdateProcess() As Boolean
     
     'Local variables.
     Dim sTimestamp As String
@@ -468,9 +510,6 @@ Function UpdateProcess() As Boolean
     Line Input #iFileNum, CurLine
     
     Do Until EOF(iFileNum)
-     
-        'Begin DAO transaction.
-        wsCTM.BeginTrans
         
         'Parse out the record type, table name, client system use, client occurs.
         iRecordType = Val(ParseString(CurLine, ",", RECORD_TYPE_ARG))
@@ -514,14 +553,16 @@ Function UpdateProcess() As Boolean
             Case Else
         End Select
          
-        'Execute SQL.
-        dbCTM.Execute SQLUpdate, dbFailOnError
-         
         On Error GoTo ProcessingRecordError
         
+        'Begin DAO transaction.
+        wsCTM.BeginTrans
+        'Execute SQL.
+        dbCTM.Execute SQLUpdate, dbFailOnError
+                 
         'Check to see if records were processed.
         If dbCTM.RecordsAffected = 0 Then
-            Err.Raise 3, "UpdateProcess", "0 records were updated"
+            Err.Raise 3, "UpdateProcess", "The record was not updated."
             wsCTM.Rollback
         Else
             'Set SQL string.
@@ -532,7 +573,7 @@ Function UpdateProcess() As Boolean
             dbCTM.Execute SQLUpdate, dbFailOnError
         
             If dbCTM.RecordsAffected = 0 Then
-                Err.Raise 3, "UpdateProcess", "The record to be updated was unsuccessful"
+                Err.Raise 3, "UpdateProcess", "The record to be updated was unsuccessful."
                 wsCTM.Rollback
             Else
                 'Commit DAO transaction.
@@ -540,9 +581,10 @@ Function UpdateProcess() As Boolean
             End If
         End If
         
+        TotalRecords = TotalRecords + 1
         'Get the next line.
         Line Input #iFileNum, CurLine
-            
+               
     Loop
     
     'Close input file.
@@ -552,32 +594,36 @@ Function UpdateProcess() As Boolean
     
 FileOpenError:
     UpdateProcess = False
+    ErrorFound = True
     msg = "The output file which would contain the extracted tables could not be opened." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 SQLError:
     UpdateProcess = False
+    ErrorFound = True
     msg = "An error occurred while trying to perform SQL query in UpdateProcess." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
 ProcessingRecordError:
+    Counter = Counter + 1
     UpdateProcess = False
-    msg = "An error occured while loading " & sTableName & " in UpdateProcess." & _
+    LogError = True
+    msg = Counter & ": An error occured while loading " & sTableName & " with " & sTableKey & " on " & CurDateTime & " in UpdateProcess." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
-    SendEmail
+    'Place error message into error log file.
+    WriteToErrorLog
     Resume Next
 
 End Function
@@ -585,17 +631,19 @@ End Function
 '*************************************************************
 '**                        Housekeeping                     **
 '*************************************************************
-Function Housekeeping() As Boolean
+Public Function Housekeeping() As Boolean
 
     Dim bDatabaseOpened As Boolean
     
     On Error GoTo ArgumentError
     
-    '**Validate Parameters**
-        
+    'Initialze Variables
+    Counter = 0
+    
     'Verify that five parameters passed (parse the arguments).
     If Not ParseArgs Then
-        Err.Raise 5, Housekeeping, "The arguments were not correctly passed in. Usage:"
+        Err.Raise 5, Housekeeping, "The arguments were not correctly passed in. Usage:" & _
+        " <Function> <Database path> <Project> <UNIX path> <WorkFile>"
     End If
      
     On Error GoTo DatabaseError
@@ -623,31 +671,30 @@ Exit Function
 
 ArgumentError:
     Housekeeping = False
+    ErrorFound = True
     msg = "An error occurred while evaluating parameters." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-          
-    'Email error message.
+    'Send Email.
     SendEmail
-Exit Function
+    Exit Function
     
 DatabaseError:
     Housekeeping = False
+    ErrorFound = True
     msg = "An error occurred while trying to open " & fCTMDatabase & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    
-    'Email error message.
+    'Send email.
     SendEmail
-    
 End Function
 
 '**************************************************************
 '**                          Process                         **
 '**************************************************************
-Function Process() As Boolean
+Public Function Process() As Boolean
     
     On Error GoTo InvalidFunction
     
@@ -675,77 +722,85 @@ Exit Function
     
 InvalidFunction:
     Process = False
+    ErrorFound = True
     msg = "An error occurred while trying to perform Process." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
           
-    'Email error message.
+    'Send email.
     SendEmail
-    
 End Function
 
 '**************************************************************
 '**                          WrapUp                          **
 '**************************************************************
-Function WrapUp() As Boolean
+Public Function WrapUp() As Boolean
 
     Dim myftp As New FTP
     Dim sServer As String
     Dim strsql As String
     Dim DaoRS As Recordset
     
-    Select Case sFunction
-        Case EXTRACT_FUNC
-            Kill fCTempOutFile
-            
-        Case UPDATE_FUNC
-            Kill fCTempInFile
-            
-            On Error GoTo SQLError
+    If LogError = True Then
+        msg = Counter & " out of " & TotalRecords & " records were not processed." & _
+              " Please refer to c:\temp\error.log for more details."
+        SendEmail
+    End If
     
-            'Find out what server the project resides on.
-            strsql = "Select server " _
-                   & "From tblProjectEnv " _
-                   & "Where projectenv = " & Chr(39) & fProject & Chr(39)
-             
-            On Error GoTo RecordsetError
+    If ErrorFound = False Then
+        Select Case sFunction
+            Case EXTRACT_FUNC
+                Kill fCTempOutFile
+                            
+          Case UPDATE_FUNC
+                Kill fCTempInFile
+                                
+              On Error GoTo SQLError
+        
+                'Find out what server the project resides on.
+                strsql = "Select server " _
+                       & "From tblProjectEnv " _
+                       & "Where projectenv = " & Chr(39) & fProject & Chr(39)
+            
+                On Error GoTo RecordsetError
     
-            Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+                Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
-            On Error GoTo GetServerError
+                On Error GoTo GetServerError
     
-            If Not DaoRS.EOF Then
-                sServer = DaoRS(0).Value
-            Else
-                Err.Raise 15, PutTblFile, "No more records in recordset."
-            End If
+                If Not DaoRS.EOF Then
+                    sServer = DaoRS(0).Value
+                Else
+                    Err.Raise 15, PutTblFile, "No more records in recordset."
+                End If
     
-            DaoRS.Close
+                DaoRS.Close
             
-            On Error GoTo FTPError
+                On Error GoTo FTPError
                         
-            With myftp
-                .ErrorMessageBox = False
-                .HostName = sServer
-                .UserName = USER
-                .Password = PWD
-                .RemoteDirectory = fUNIXPath
-                .RemoteFile = fWorkFile & "*"
-                .DeleteDirectory
-            End With
+                With myftp
+                     .ErrorMessageBox = False
+                     .HostName = sServer
+                     .UserName = USER
+                     .Password = PWD
+                     .RemoteDirectory = fUNIXPath
+                     .RemoteFile = fWorkFile & "*"
+                     .DeleteDirectory
+                End With
        
-                        
-            'Check to see if delete was successful.
-            If myftp.Error Then
-                WrapUp = False
-                Err.Raise 33, WrapUp, fFTPInFile & " was not delected successfully."
-            Else
-                WrapUp = True
-            End If
+               'Check to see if delete was successful.
+               If myftp.Error Then
+                     WrapUp = False
+                     Err.Raise 33, WrapUp, fFTPInFile & " was not delected successfully."
+               Else
+                     WrapUp = True
+               End If
             
-    End Select
-              
+        End Select
+
+    End If
+    
     'Close DAO transaction.
     dbCTM.Close
     wsCTM.Close
@@ -758,7 +813,7 @@ SQLError:
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
@@ -768,7 +823,7 @@ RecordsetError:
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
@@ -778,7 +833,7 @@ GetServerError:
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 Exit Function
 
@@ -787,7 +842,7 @@ FTPError:
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
-    'Email error message.
+    'Send email.
     SendEmail
 End Function
 
