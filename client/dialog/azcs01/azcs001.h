@@ -65,6 +65,7 @@
 #define MESSAGE_LEN           255
 #define ERR_FILE_NM    "csrmapmg.err"
 #define CSR_MAP_MASS_GEN_LOG_EXT    "rpt"
+#define AZCS01_TEMP_CONFIG_PATH_LEN		70
 
 /***************************************************************************/
 /* Global variables                                                   */

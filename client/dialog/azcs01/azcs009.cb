@@ -50,8 +50,7 @@ if ( sAttr == AT_REQUIRED  )
 								  &FndGenErrorBlock );
 }
 
-
- strcpy(SaveDirData, BFCD_pCSRMapBFCD->CsrMapSavePath);
+ strcpy(SaveDirData, BFCD_pCSRMapBFCD->CsrMapSavePath);	
  strcpy(GenDirData, BFCD_pCSRMapBFCD->CsrMapGenPath);
 
  /*mdc 10/25/96 Added for mass generate feature */
@@ -344,7 +343,7 @@ static WCBPROC (AZCS009BUSSaveToBFCD)
   CHAR sGenPath[_PATH_LEN + 1] = "";
   CHAR sMapLstFile[_PATH_LEN + 1] = "";
   CHAR cFLMassGen;
-
+  
 /*mdc 03/14/96 get the SaveDir path */
   FndGenRC = FndFieldQueryValue(CBI_hwnd,
                                      "SaveDir",
@@ -395,8 +394,11 @@ static WCBPROC (AZCS009BUSSaveToBFCD)
   BFCD_pCSRMapBFCD->CsrFLMassGen = cFLMassGen;
 
 
-  /* Open the csrmap.cfg */
-  if (( Stream = fopen( CSR_MAP_CFG_FILE,"w" )) == NULL )
+  /* Open the csrmap.cfg */	
+  /* JHR: 12/02/98 substitued CsrMapConfigPath in to place csrmap.cfg file in
+   configuration path specified by WTS (Windows Terminal Server) registry key */
+
+  if (( Stream = fopen( pBFCD->pCSRMapBFCD->CsrMapConfigPath,"w" )) == NULL )
   {
      return( CMN_FAIL );
   }

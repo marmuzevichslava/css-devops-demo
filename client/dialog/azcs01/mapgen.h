@@ -48,7 +48,7 @@
 #define WILDCARD_LEN           21
 #define SERVICE_NAME_LEN       12
 #define CONTROL_NAME_LEN       34  /*mdc 01-11-96 added */
-#define _PATH_LEN              70         /* JLL: 06/09/93 ADDED */
+#define _PATH_LEN              70         /* JLL: 06/09/93 ADDED */       
 #define _USAGE_LEN              3         /* JLL: 06/11/93 ADDED */
 #define _FLUSH_LEN              6         /* JLL: 06/17/93 ADDED */
 #define _COPY_COMMAND_LEN     251         /* JLL: 06/17/93 ADDED */
@@ -59,7 +59,10 @@
 #ifndef _DUMMY_LEN
 #define _DUMMY_LEN             30
 #endif
-
+#ifndef AZCS01_TEMP_CONFIG_PATH_LEN  
+#define AZCS01_TEMP_CONFIG_PATH_LEN		70		   /* JHR: 12/02/98 */
+#endif
+#define	_CONFIG_PATH_LEN				 3 		   /* JHR: 12/02/98 */
 
 /****************************************************************
 **
@@ -79,7 +82,7 @@
 #define MAP_VERSION            1.0f
 #define BLANK_LINE             "\n"
 #define MAP_TMP_FILE           "MAP.TMP"
-#define CSR_MAP_CFG_FILE       "c:\\data\\csrmap.cfg"
+#define CSR_MAP_CFG_FILE       "\\data\\csrmap.cfg"
 #define MAX_ROWS_RETURNED      416
 #define MAP_GEN_CLIENT_LAYOUT  'C'
 #define MAP_GEN_SERVICE_LAYOUT 'S'
@@ -343,6 +346,7 @@ typedef struct __BFCD_GLOBAL_DATA
 
   char CsrMapSavePath[_PATH_LEN];     /* BCN: 06/08/93 */
   char CsrMapGenPath[_PATH_LEN];      /* BCN: 06/08/93 */
+  char CsrMapConfigPath[AZCS01_TEMP_CONFIG_PATH_LEN];	  /* JHR: 12/02/98 */
 
   /*mdc 10/25/96 added for mass generate feature */
   char CsrMapLstFile[_PATH_LEN];  

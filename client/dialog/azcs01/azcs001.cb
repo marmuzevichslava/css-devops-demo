@@ -1011,6 +1011,10 @@ static WCBPROC(ChkTLStatus)
 **  99/99/99  C. Crampton           Original code.
 **
 **  10/17/94  J. Looney             Clean Up.
+**  
+**  12/02/98  J. Runyan             Modification to read csrmap.cfg file from drive 
+**                                  specified in Config Path registry key
+**									for WTS (Windows Terminal Server)
 **
 ***************************************************************************/
 static WCBPROC (SetupBFCD)
@@ -1021,7 +1025,13 @@ static WCBPROC (SetupBFCD)
     FILE *Stream;
     CHAR CurLine[_CSR_MAX_MAP_LINE_LEN] = "";
     CHAR dummy[_PATH_LEN] = "";
+	
+	/* 12/02/98 jhr created as temporary storage of the Config Path registry key */
 
+	CHAR TempConfigPath[_CONFIG_PATH_LEN] = "";	
+	USHORT rc;
+	
+	
     HEAP_CHECK
 
     /* Allocate memory for the BFCD Global Structure */
@@ -1037,13 +1047,39 @@ static WCBPROC (SetupBFCD)
     memset( pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable,
             0,
             sizeof(_LAYOUT_REC) );
-    
 
-    strncpy(dummy, CSR_MAP_CFG_FILE, sizeof(dummy));
+	/*  JHR: 12/02/98  obtain the  WTS (windows terminal server) configuration key 
+	from the registry and set the path appropriately    */
+	   	
+	rc = 0;
+    rc = CmnOsGetProfileValue
+            (CMN_PROFILE_NAME_CSS,
+			 CMN_PROFILE_SECTION_MISC_FILES,             
+             CMN_PROFILE_KEY_CONFIG_PATH,
+             CMN_PROFILE_KEY_CONFIG_PATH_LEN,
+             CMN_PRF_FAIL_ON_ERROR,
+             TempConfigPath,
+             &rc,
+             CMN_NULL_ARCH_PARMS);
 
-    /* JLL: 07/16/93 ADDED */
+	/* JHR:12/02/98 Concatenate Configuration Key and Path */
+
+	if(TempConfigPath != NULL)
+	{
+		strcat(pBFCD->pCSRMapBFCD->CsrMapConfigPath,TempConfigPath);
+		strcat(pBFCD->pCSRMapBFCD->CsrMapConfigPath,CSR_MAP_CFG_FILE);
+	}			  				  
+	else   /* if registry key empty, default to c drive */
+	{
+    	strcat(pBFCD->pCSRMapBFCD->CsrMapConfigPath,CMN_C_DRIVE);
+		strcat(pBFCD->pCSRMapBFCD->CsrMapConfigPath,CSR_MAP_CFG_FILE);
+	}
+		
+	/* JLL: 07/16/93 ADDED */
+
     /* Open the csrmap.cfg to determine the save and generate directories. */
-    if (( Stream = fopen( CSR_MAP_CFG_FILE,"r" )) == NULL )
+
+    if (( Stream = fopen(pBFCD->pCSRMapBFCD->CsrMapConfigPath,"r" )) == NULL )
     {
         return CMN_FAIL;
     }
