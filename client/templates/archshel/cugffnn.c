@@ -1,19 +1,40 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
+/***************************************************************************
+**
+**               CUSTOMER/1 Cooperative Architecture Module
+**
+** FILENAME         :  CUG< ff >< nn >.c
+**
+** FUNCTIONS        :  CUG< ff >< desc >< version >
+**                     < ... >
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** <      >    <        >  <    >  Creation
+***************************************************************************/
+
+#include "cug< ff >< nn >.h"
+
 //----------------------------------------------------------
 //
 // OVERVIEW
 // 
 // This is the shell file for creating an Application Gateway 
-// Server ( AGS ) client.  There are three main sections for 
-// each function used by the AGS.  Commented in this file 
-// are explanations of what each section functionally 
-// accomplishes and code examples.  
+// Server ( AGS ) clients.  There are three main sections for 
+// each AGS client.  Commented in this file are explanations of what 
+// each section functionally accomplishes and code examples.  
 //
 // Following is a brief explanation of each section:
 //		Section 1: manipulate collected data from source and 
 //                 populate service input copybook
 //		Section 2: make DS call
 //		Section 3: collect service output copybook data and
-//                 return to source
+//                 return data to source
 //
 // References:
 //		Application Gateway Server:
@@ -30,20 +51,30 @@
 //
 //----------------------------------------------------------
 
-#include "cug< ff >< nn >.h"
 /**************************************************************************
 /* FUNCTION:        CUG< ff >< desc >< version >
 /*
 /* DESCRIPTION:     this function supports <  >. it uses a
-/*                  set of Tag-Value utility functions to input and output
+/*                  set of TagValue functions to manipulate input and output
 /*                  data.  CUG< ff >< desc >< version > populates the input 
 /*                  copybook and calls the < service type > service.  the 
-/*                  tag-value function are then used to build an output tag-
+/*                  tag-value functions are then used to build an output tag-
 /*                  value string from the output copybook. 
+/*
+/*                  < describe processing logic >
 /*		    
 /* INPUTS:          pInData
 /*                      pointer to the input data.  the data has been
 /*                      allocated in the Application Gateway Server (AGS).  
+/*             
+/*                      Required Inputs:
+/*                          < KyBa  - Account Number >
+/*                          < ... >                   
+/*
+/*                      Optional Inputs:
+/*                          < KySsn - Social Security Number >
+/*                          < ... > 
+/*
 /*                  InLength
 /*                      length of the input data.  the parameter is being 
 /*                      passed from the Application Gateway Server < , but
@@ -52,6 +83,10 @@
 /* OUTPUTS:         ppOutData
 /*                      pointer to the output data. the ppOutData points to 
 /*                      the Tag-Value string build in ApplGsTagBuildTvList.  
+/*
+/*                      < what does this function return?  data, only return
+/*                        codes, nothing, ... >
+/*
 /*                  pOutLength
 /*                      pointer to the output length.  pOutLength is set to
 /*                      1 + strlen of the tv string built in 
@@ -65,15 +100,13 @@
 /*                      retrieve a value associated with a tag from a tvlist.
 /*                  ApplGsTagSetTvPair
 /*                      add a new tvpair to the tvlist.
-/*                  BuildTvString
+/*                  ApplGsTagBuildTvString
 /*                      build output string from all tvpairs in the tvlist
 /*                  ApplGsMsgDS
 /*                      makes the actual service call.
 /*                  ApplGsGetDsRc
 /*                      return most serious error message from either message
 /*                      parm block or error parm block
-/*                  < ApplGsTagBuildTvString
-/*                      changes (YYYY-MM-DD) to (MM-DD-YYYY) >
 /*
 /* AUTHOR:          < >
 /*
@@ -116,6 +149,10 @@ int CUG< ff >< desc >< version >( void *pInData,    long InLength,
 	// needed to make the service call.  these fields are usually
 	// the keys to the service.
 	//
+	// if the same value needs to be set in multiple locations within 
+	// the input copybook, call GetTvPair once to populate a local
+	// variable then, use this variable to populate the other locations.
+	//
 	// REMOVE THIS COMMENT BLOCK WHEN FINISHED
 	//
 	//----------------------------------------------------------
@@ -155,11 +192,13 @@ int CUG< ff >< desc >< version >( void *pInData,    long InLength,
 	// SHELL INSTRUCTIONS: SECTION 2
 	// 
 	// this section is used to set up Distribution Services to
-	// make you service call.  All service specific information
-	// is stored is the DsParms structure and passed into
+	// make your service call.  All service specific information
+	// is stored is the DsParms structure and passed to
 	// ApplGsMsgDS.  This function will use DsParms to populate
-	// the service-specific areas of MsgPB and will use default
+	// the service-specific areas of the MsgPB and will use default
 	// information for the generic areas.
+	//
+	// these values should be #defined in cug< ff >< nn >.h
 	//
 	// REMOVE THIS COMMENT BLOCK WHEN FINISHED
 	//
@@ -170,19 +209,18 @@ int CUG< ff >< desc >< version >( void *pInData,    long InLength,
 	// EXAMPLES for SECTION 2:
 	//
 	//	/* setup DsParms */
-	//	DsParms.appl = 1091;
-	//  DsParms.srvc = 1091;
+	//	DsParms.appl = CUCR091_APPL_ID;
+	//  DsParms.srvc = CUCR091_SRVC_ID;
 	//  DsParms.buffer_size = sizeof( _CUCR091I );
 	//  DsParms.actual_length_send = sizeof( _CUCR091I );
-	//  strcpy(	CUCR091I.StandardHeader.CdFuncId, "01" );
-	//  strncpy( DsParms.service_ver, "01", _VER_LEN );
-	//  strncpy( DsParms.map_version, "01", _VER_LEN );
-	//  strncpy( DsParms.map_name, "CUCR091I",_FND_MAP_NAME_LEN );
+	//  strcpy(	CUCR091I.StandardHeader.CdFuncId, CUCR091_CD_FUNC_ID );
+	//  strncpy( DsParms.service_ver, CUCR091_SERV_VER, _VER_LEN );
+	//  strncpy( DsParms.map_version, CUCR091_MAP_VER, _VER_LEN );
+	//  strncpy( DsParms.map_name, CUCR091_MAP_NAME,_FND_MAP_NAME_LEN );
 	//
 	// REMOVE THIS COMMENT BLOCK WHEN FINISHED
 	//
 	//----------------------------------------------------------
- 	
 	
 	/* call ds */
 	ApplGsMsgDS( &DsParms, &< input copybook >, &< output copybook > );
@@ -193,7 +231,8 @@ int CUG< ff >< desc >< version >( void *pInData,    long InLength,
 	// 
 	// this section is used to pull data from the output copybook
 	// into the tag-value list.  any special formatting required
-	// by the front-end should also be done in this section.
+	// by the front-end should also be done in this section.  
+	// format the data before calling SetValue.
 	//
 	// if you do not want the input data concatenated with the 
 	// output data, call ApplGsTagInitTvList to reinitialize the
@@ -202,6 +241,10 @@ int CUG< ff >< desc >< version >( void *pInData,    long InLength,
 	// use ApplGsGetDsRc() to get the return code from the service.
 	// you can include/exclude logic based on ApplGsGetDsRc's 
 	// return code.
+	//
+	// NOTE: you may need to check any return codes that exist in
+	// the output copybook manually.  if this is the case,  check
+	// the codes after a successful ApplGsGetDsRc function call.
 	//
 	// REMOVE THIS COMMENT BLOCK WHEN FINISHED
 	//
