@@ -20,8 +20,6 @@
 **    --------  -----------  -------  -------------------------------------
 **	 01/08/96   mconner               added malloc.h
 **   01/15/96   mconner               added help headers
-**   03/25/99   N.Eyde                added includes and defines for 
-**                                    megascrolling
 ***************************************************************************/
 
 /***************************************************************************/
@@ -30,7 +28,6 @@
 /*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
  */
 #include <malloc.h>
-#include <azcs01.h> /* NEYDE - 03/25/99 - Added dialog header */
 #include "systcomm.hh"
 #include "roadmap.hh"
 
@@ -46,34 +43,6 @@
 /***************************************************************************/
 /* Application typedefs                                                    */
 /***************************************************************************/
-
-/* NEYDE - 03/25/99 - The following structure defines the data stored for
-**                    megascrolling data.
-*/
- #ifndef  _AZCS004_KEYS_z
- #define  _AZCS004_KEYS_z
- typedef  struct __AZCS004_Keys
- {
-   SHORT                KySelectedRow;                                                 
-
- }_AZCS004_KEYS;
- #endif
-
-
-/* NEYDE - 03/25/99 - The following structure defines the window's working
-**                    storage.
-*/
- #ifndef _AZCS004_WINDOWDATA_z
- #define _AZCS004_WINDOWDATA_z
- typedef struct __AZCS004_WindowData
- {
-    _AZCS01MEGASCROLL *pClientMegaScroll;
-    _AZCS01MEGASCROLL *pServiceMegaScroll;
-	 
- }_AZCS004_WINDOWDATA;
- #endif
-
-#define WCD_pWorkingStorageData ( (_AZCS004_WINDOWDATA *) pWindContextData->pWorkingStorageData)
 
 
 

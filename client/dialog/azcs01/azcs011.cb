@@ -1,3 +1,10 @@
+ SHORT FillGroupLB(char *LBName,
+                   _LAYOUT_REC *pLayout,
+                   SHORT NumRec,
+                   enum LANGUAGE_TYPE Language,
+                   CMN_ARCH_PARM_TYPES);
+
+
 /***************************************************************************
 **
 **               CUSTOMER SERVICE SYSTEM Business Logic Function
@@ -46,38 +53,19 @@ static WCBPROC(AZCS011BUSAboutMNClick)
 } /* End of AZCS011BUSAboutMNClick */
 
 
-/***************************************************************************
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  AZCS011BUSUserPredisplay                                                   */
+/*                                                                   */
+/* HISTORY:                                                                              
 **
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
+** 03/06/96 mconner  Replaced strcpy to WES field with FndFieldSetValue
 **
-**  FUNCTION         : AZCS011BUSUserPredisplay
-**
-**  DESCRIPTION      : This function loads the data from the input data structure into WES.
-**                      It also does all of the Predisplay stuff to set up WES.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR	     : C. Crampton
-**
-**  DATE CREATED     : 99/99/99
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/06/96   mconner              Replaced strcpy to WES fields
-**                                            with FndFieldSetValue
-**
-**    03/25/99   N.Eyde               Allocated working storage to window
-**                                    in order to implement megascrolling
-**                                    to client and service listboxes
-**
-***************************************************************************/
+**/
+/*********************************************************************/
+/*********************************************************************/
 
 
 static WCBPROC (AZCS011BUSUserPredisplay)
@@ -88,12 +76,6 @@ static WCBPROC (AZCS011BUSUserPredisplay)
      SHORT iy=0;
 
   _AZCS004I *pAzcs004i;
-
-  /* NEYDE - 03/25/99 - Allocated window's working storage
-  */
-  WCD_pWorkingStorageData = (_AZCS011_WINDOWDATA *) malloc(sizeof(_AZCS011_WINDOWDATA));
-  memset(WCD_pWorkingStorageData, 0, sizeof(_AZCS011_WINDOWDATA));
-
 
   pAzcs004i = (_AZCS004I *)CBI_pInitData;
 
@@ -269,78 +251,16 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
   return(CMN_SUCCESS);
 }
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSPredestroy
-**
-**  DESCRIPTION      : This function controls the logic when the window is destroyed
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : N.Eyde
-**
-**  DATE CREATED     : 03/25/99
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/25/99  N.Eyde                Original code.
-**
-***************************************************************************/
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*        AZCS011BusMoveLB1                                                    */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
 
 
-static WCBPROC (AZCS011BUSPredestroy)
-{
-  USHORT           FndGenRC = FND_SUCCESS;
-
-  /* NEYDE - 03/25/99 - Added a reference the window's working storage to access
-  **                    megascrolling data.  Removed (pop) all nodes from linked
-  **					list.
-  */
-  _AZCS011_WINDOWDATA *pDataPointer;
-  pDataPointer = (_AZCS011_WINDOWDATA *) WCD_pWorkingStorageData;
-
-  AZCS01MegaScrollPopAll(&pDataPointer->pServiceMegaScroll,
-	                     CMN_ARCH_PARMS);
-
-  return(CMN_SUCCESS);
-
-} /* end of AZCS011BUSPredestroy() */
-
-
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSMoveLB1
-**
-**  DESCRIPTION      : This function controls the logic when a row in List Box 1 has been selected.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
 static WCBPROC (AZCS011BUSMoveLB1)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -442,32 +362,15 @@ return(CMN_SUCCESS);
 
 } /* end of AZCS011BUSMoveLB1() */
 
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*    AZCS011BUSMoveLB2                                                        */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSMoveLB2
-**
-**  DESCRIPTION      : This function controls the logic when a row in List Box 2 has been selected.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+
 static WCBPROC (AZCS011BUSMoveLB2)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -571,52 +474,20 @@ else
 return(CMN_SUCCESS);
 
 }
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*       AZCS011BUSNewService                                                  */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSNewService
-**
-**  DESCRIPTION      : This function controls the logic when a new service is
-**                       is loaded into the combo box.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 99/99/99
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/25/99   N.Eyde               Removed all megascrolling linked list
-**                                    nodes upon selecting a new service.
-**
-***************************************************************************/
 
 static WCBPROC (AZCS011BUSNewService)
 {
   SHORT index=0;
   SHORT ServiceIndex=-1;
   USHORT  nRC=0;
-
-  /* NEYDE - 03/25/99 - Added a reference the window's working storage to access
-  **                    megascrolling data.  Removed (pop) all nodes from linked
-  **					list.
-  */
-  _AZCS011_WINDOWDATA *pDataPointer;
-  pDataPointer = (_AZCS011_WINDOWDATA *) WCD_pWorkingStorageData;
-
-  AZCS01MegaScrollPopAll(&pDataPointer->pServiceMegaScroll,
-	                     CMN_ARCH_PARMS);
-
   for(index=0; index < pBFCD->pCSRMapBFCD->NumServices; index++)
       {
        if
@@ -648,30 +519,15 @@ return(CMN_SUCCESS);
 } /* end of AZCS011BUSNewService*/
 
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSRemoveRelationship
-**
-**  DESCRIPTION      : This function controls the logic when the remove pushbutton is clicked.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*   AZCS011BUSRemoveRelationship                                              */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC (AZCS011BUSRemoveRelationship)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -788,31 +644,15 @@ ServiceDataComplete(pEventInfo,
  return(CMN_SUCCESS);
 } /* end of function AZCS011BUSRemoveRelationship */
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSCreateRelationship
-**
-**  DESCRIPTION      : This function controls the logic when the Apply PB is clicked.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*       AZCS011BUSCreateRelationship                                          */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(AZCS011BUSCreateRelationship)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -932,32 +772,15 @@ else
  return(CMN_SUCCESS);
 } /* end of function AZCS011BUSCreateRelationship */
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : FindClientMatch
-**
-**  DESCRIPTION      : This function finds a matching service for a selected
-**                        client row.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*      FindClientMatch                                              */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static SHORT FindClientMatch(CMN_ARCH_PARM_TYPES)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -1066,32 +889,15 @@ USHORT   ServiceElmnt;
  return(CMN_SUCCESS);
 }
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BusCellDataComplete
-**
-**  DESCRIPTION      : This function controls the logic when a completed row
-**                      is selected.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  AZCS011BusCellDataComplete                                                 */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(AZCS011BusCellDataComplete)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -1340,32 +1146,15 @@ SHORT                    ClientElmnt;
  return(CMN_SUCCESS);
 }
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : CellDataNotCompleteClient
-**
-**  DESCRIPTION      : This function controls the logic when a client row that
-**                      does not have a relationship defined is selected.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* CellDataNotCompleteClient                                         */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(CellDataNotCompleteClient)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -1455,32 +1244,15 @@ SHORT                     *pCellData;
  return(CMN_SUCCESS);
 }
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : CellDataNotCompleteService
-**
-**  DESCRIPTION      : This function controls the logic when a Service row that
-**                      does not have a relationship defined is selected.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* CellDataNotCompleteService                                        */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(CellDataNotCompleteService)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -1644,32 +1416,15 @@ SHORT                    FndGenRBValueShort = 0;
 }
 
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSSaveToBFCD
-**
-**  DESCRIPTION      : This function controls the logic when data needs to
-**                      be moved from WCD to BFCD.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* AZCS011BUSSaveToBFCD                                                        */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(AZCS011BUSSaveToBFCD)
 {
  SHORT ix;
@@ -1706,32 +1461,15 @@ return(CMN_SUCCESS);
 
 } /* end of function AZCS011BUSSaveToBFCD  */
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : FillStatusRM
-**
-**  DESCRIPTION      : This function controls the logic that fills the
-**                      status icon column of the list boxes.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* FillStatusRM                                                      */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(FillStatusRM)
 {
 
@@ -1799,32 +1537,16 @@ return(CMN_SUCCESS);
 
 } /* end of function FillStatusRM */
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : InitService
-**
-**  DESCRIPTION      : This function initializes the Service LB fields and
-**                      sets the controls to thier default position.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* InitService                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+
 static WCBPROC(InitService)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -1900,32 +1622,15 @@ return(CMN_SUCCESS);
 
 }
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : InitClient
-**
-**  DESCRIPTION      : This function initializes the Client LB fields and
-**                      sets the controls to thier default position.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* initclient                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(InitClient)
 {
 
@@ -1980,32 +1685,15 @@ return(CMN_SUCCESS);
 } /* initclient */
 
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : MoveClient
-**
-**  DESCRIPTION      : This function moves the client data from the layout record to the WES
-**                           fields.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* MoveClient                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(MoveClient)
 {
 
@@ -2055,31 +1743,15 @@ return(CMN_SUCCESS);
 }
 
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : CellAttrNotNorm
-**
-**  DESCRIPTION      : This function is invoked when a row with not normal attributes is selected.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*    CellAttrNotNorm                                                */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(CellAttrNotNorm)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -2317,31 +1989,15 @@ return(CMN_SUCCESS);
 }/* end of function AZCS011BUSSrvLng */
 
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : AZCS011BUSFillClientLB
-**
-**  DESCRIPTION      : This function controls the adding of data to the client list box.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  AZCS011BUSFillClientLB                                                     */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(AZCS011BUSFillClientLB)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -2409,31 +2065,15 @@ return(CMN_SUCCESS);
 } /* end of function AZCS011BUSFillClientLB */
 
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : FillServiceLB
-**
-**  DESCRIPTION      : This function controls the adding of data to the service list box.
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*    FillServiceLB                                                  */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static WCBPROC(FillServiceLB)
 {
 USHORT           FndGenRC = FND_SUCCESS;
@@ -2507,36 +2147,16 @@ return(CMN_SUCCESS);
 
 
 
-/***************************************************************************
-**
-**               CUSTOMER/1-Cooperative Business Logic Function
-**
-**  FUNCTION         : FillGroupLB
-**
-**  DESCRIPTION      : This function controls the filling of the Group Box.
-**
-**  INPUTS           :  char              *LBName
-**                      _LAYOUT_REC       *pLayout
-**                      USHORT     NumRecords
-**                      enum LANGUAGE_TYPE Language
-**                      CMN_ARCH_PARM_TYPES
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : C. Crampton
-**
-**  DATE CREATED     : 09/99/93
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/25/99   N.Eyde               Removed row selection logic as a result
-**                                    of adding megascrolling logic
-***************************************************************************/
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  FillGroupLB                                                     */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
 static SHORT FillGroupLB(char * LBName,
                            _LAYOUT_REC *pLayout,
                           SHORT NumRecords,
@@ -2659,23 +2279,19 @@ for (index=0; index < NumRecords; index++)
 /* If there was a selected row when you started select it again */
 /****************************************************************/
 
-  /* NEYDE - 03/25/99 - Removed the following code.  The row is now being 
-  **                    selected by megascrolling functionality.  
-  */
+   if (SelectedRow > 0)
+      {
+       FndGenRC = FndLstBoxRowSelect(CBI_hwnd,
+                                     LBName,
+                                     SelectedRow,
+                                     &FndGenErrorBlock);
 
-   //if (SelectedRow > 0)
-   //   {
-   //    FndGenRC = FndLstBoxRowSelect(CBI_hwnd,
-   //                                  LBName,
-   //                                  SelectedRow,
-   //                                  &FndGenErrorBlock);
-   //
-   //    if (FndGenRC != FND_SUCCESS)
-   //       {
-   //        return(CMN_FAIL);
-   //       }
-   //
-   //   }
+       if (FndGenRC != FND_SUCCESS)
+          {
+           return(CMN_FAIL);
+          }
+
+      }
 /*
 ** Reset the pointer to arrow
 */
@@ -2873,23 +2489,16 @@ return(CMN_SUCCESS);
 **    --------  -----------  -------  -------------------------------------
 **    09/99/93  C. Crampton           Original code.
 **
-**
-**    03/25/99  N.Eyde                Added megascrolling to the client list-
-**                                    box to save the user's selected row.
 ***************************************************************************/
+
+
+
 
 static WCBPROC(Azcs011busrlb01elbpagedown)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   USHORT FndGenRC;
 
-  /* NEYDE - 03/25/99 - Added variables to reference working storage, mega-
-  **                    scrolling and selected row data.  
-  */
-  USHORT           RowNum = 0;
-  _AZCS011_WINDOWDATA *pDataPointer;
-  _AZCS011_KEYS Elb1MegaData;
-  pDataPointer = (_AZCS011_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** Range check incrementing the offset for the client list box
@@ -2898,39 +2507,6 @@ static WCBPROC(Azcs011busrlb01elbpagedown)
           pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows)
        {
         pWindContextData->WCD.ClientLBOffset += NUMRLB01ELBROWS;
-
-        /* NEYDE - 03/25/99 - Added query of selected row (if any) and stored
-		**                    (MegaScrollPush) in megascrolling data.
-        */
-
-        FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
-                                               MAPGEN_CLIENT_LB_NAME,
-                                               FND_LSTBOX_START,
-                                               &RowNum,
-                                               &FndGenErrorBlock);
-
-        if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
-        {
-            return(CMN_FAIL);
-        }
-
-	
-        if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
-        {
-            Elb1MegaData.KySelectedRow = ROW_NOT_SELECTED;
-        }
-		else
-        {
-            Elb1MegaData.KySelectedRow = RowNum;
-        }
-
-		AZCS01MegaScrollPush(&pDataPointer->pClientMegaScroll,
-			              (VOID *) &Elb1MegaData,
-						  sizeof(_AZCS011_KEYS),
-						  CMN_ARCH_PARMS);
-
-        /* NEYDE - 03/25/99 - End of changes
-        */
 
         FndGenRC = AZCS011BUSFillClientLB(pEventInfo,
                                 pEAIA,
@@ -2976,8 +2552,6 @@ static WCBPROC(Azcs011busrlb01elbpagedown)
 **    --------  -----------  -------  -------------------------------------
 **    09/99/93  C. Crampton           Original code.
 **
-**    03/25/99  N.Eyde                Added megascrolling to the client list-
-**                                    box to save the user's selected row.
 ***************************************************************************/
 
 
@@ -2986,13 +2560,6 @@ static WCBPROC(Azcs011busrlb01elbpageup)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   USHORT FndGenRC;
-
-  /* NEYDE - 03/25/99 - Added variables to reference working storage and 
-  **                    megascrolling data.  
-  */
-  _AZCS011_WINDOWDATA *pDataPointer;
-  _AZCS011_KEYS *pElb1MegaData;
-  pDataPointer = (_AZCS011_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** Range check incrementing the offset for the client list box
@@ -3008,33 +2575,7 @@ static WCBPROC(Azcs011busrlb01elbpageup)
                                 pWindContextData,
                                 pABHI );
 
-        /* NEYDE - 03/25/99 - Re-select the row previously selected on this
-		**                    page using megascrolling data and remove (pop)
-		**					  the node from the megascrolling linked list.
-        */
-
-		if(pDataPointer->pClientMegaScroll != NULL)
-		{
-		   pElb1MegaData = (_AZCS011_KEYS *) pDataPointer->pClientMegaScroll->pKeys;
-		}
-
-        if (pElb1MegaData->KySelectedRow != ROW_NOT_SELECTED)
-        {
-            FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
-                                           MAPGEN_CLIENT_LB_NAME,
-                                           pElb1MegaData->KySelectedRow,
-                                           &FndGenErrorBlock);
-
-        }
-
-
-		AZCS01MegaScrollPop(&pDataPointer->pClientMegaScroll,
-						  CMN_ARCH_PARMS);
-								  
-        /* NEYDE - 03/25/99 - End of changes
-        */
-
-	}
+       }
     else
        {
         FndGenRC = FndLstBoxUpDisable(CBI_hwnd,
@@ -3072,8 +2613,6 @@ static WCBPROC(Azcs011busrlb01elbpageup)
 **    --------  -----------  -------  -------------------------------------
 **    09/99/93  C. Crampton           Original code.
 **
-**    03/25/99  N.Eyde                Added megascrolling to the service list-
-**                                    box to save the user's selected row.
 ***************************************************************************/
 
 
@@ -3083,14 +2622,6 @@ static WCBPROC(Azcs011busrlb02elbpagedown)
   _FND_ERROR_BLOCK FndGenErrorBlock;
   SHORT ix;
   USHORT FndGenRC;
-
-  /* NEYDE - 03/25/99 - Added variables to reference working storage, mega-
-  **                    scrolling and selected row data.  
-  */
-  USHORT           RowNum = 0;
-  _AZCS011_WINDOWDATA *pDataPointer;
-  _AZCS011_KEYS Elb2MegaData;
-  pDataPointer = (_AZCS011_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** assign the current service index to a local variable
@@ -3105,39 +2636,6 @@ static WCBPROC(Azcs011busrlb02elbpagedown)
           pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows)
        {
         pWindContextData->WCD.ServiceLBOffset += NUMRLB02ELBROWS;
-
-        /* NEYDE - 03/25/99 - Added query of selected row (if any) and stored
-		**                    (MegaScrollPush) in megascrolling data.
-        */
-
-        FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
-                                               MAPGEN_SERVICE_LB_NAME,
-                                               FND_LSTBOX_START,
-                                               &RowNum,
-                                               &FndGenErrorBlock);
-
-        if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
-        {
-            return(CMN_FAIL);
-        }
-
-	
-        if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
-        {
-            Elb2MegaData.KySelectedRow = ROW_NOT_SELECTED;
-        }
-		else
-        {
-            Elb2MegaData.KySelectedRow = RowNum;
-        }
-
-		AZCS01MegaScrollPush(&pDataPointer->pServiceMegaScroll,
-			              (VOID *) &Elb2MegaData,
-						  sizeof(_AZCS011_KEYS),
-						  CMN_ARCH_PARMS);
-
-        /* NEYDE - 03/25/99 - End of changes
-        */
 
         FndGenRC = FillServiceLB(pEventInfo,
                                 pEAIA,
@@ -3183,22 +2681,15 @@ static WCBPROC(Azcs011busrlb02elbpagedown)
 **    --------  -----------  -------  -------------------------------------
 **    09/99/93  C. Crampton           Original code.
 **
-**    03/25/99  N.Eyde                Added megascrolling to the service list-
-**                                    box to save the user's selected row.
 ***************************************************************************/
+
+
 
 static WCBPROC(Azcs011busrlb02elbpageup)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   SHORT ix;
   USHORT FndGenRC;
-
-  /* NEYDE - 03/25/99 - Added variables to reference working storage and 
-  **                    megascrolling data.  
-  */
-  _AZCS011_WINDOWDATA *pDataPointer;
-  _AZCS011_KEYS *pElb2MegaData;
-  pDataPointer = (_AZCS011_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** assign the current service index to a local variable
@@ -3219,32 +2710,6 @@ static WCBPROC(Azcs011busrlb02elbpageup)
                                 pWesMap,
                                 pWindContextData,
                                 pABHI );
-        /* NEYDE - 03/25/99 - Re-select the row previously selected on this
-		**                    page using megascrolling data and remove (pop)
-		**					  the node from the megascrolling linked list.
-        */
-
-		if(pDataPointer->pServiceMegaScroll != NULL)
-		{
-		   pElb2MegaData = (_AZCS011_KEYS *) pDataPointer->pServiceMegaScroll->pKeys;
-		}
-
-        if (pElb2MegaData->KySelectedRow != ROW_NOT_SELECTED)
-        {
-            FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
-                                           MAPGEN_SERVICE_LB_NAME,
-                                           pElb2MegaData->KySelectedRow,
-                                           &FndGenErrorBlock);
-
-        }
-
-
-		AZCS01MegaScrollPop(&pDataPointer->pServiceMegaScroll,
-						  CMN_ARCH_PARMS);
-								  
-        /* NEYDE - 03/25/99 - End of changes
-        */
-
        }
     else
        {
@@ -3256,32 +2721,7 @@ static WCBPROC(Azcs011busrlb02elbpageup)
   return(CMN_SUCCESS);
  }
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : LookForClientName
-**
-**  DESCRIPTION      : This function looks for a matching Client name.
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+
 static WCBPROC(LookForClientName)
 
 {
@@ -3361,32 +2801,7 @@ return(CMN_FAIL);   /* Did not find a match so return fail */
 }/* end of function  LookForClientName */
 
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : LookForServiceName
-**
-**  DESCRIPTION      : This function looks for a matching Service name.
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+
 static WCBPROC(LookForServiceName)
 
 {
@@ -3471,32 +2886,10 @@ return(CMN_FAIL);   /* Did not find a match so return fail */
 }/* end of function  LookForServiceName */
 
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : ClientEmntToRow
-**
-**  DESCRIPTION      : This function calculates the Client LB row number
-**                       based on the Element Number.
-**
-**  INPUTS           : SHORT ServiceElmnt
-**                     CMN_ARCH_PARMS
-**
-**  OUTPUTS          : Return Code - SHORT (Row Number).
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/************************************************************/
+/* CLIENTELMNTTOROW                                         */
+/************************************************************/
+
 static SHORT ClientElmntToRow(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES)
 {
  SHORT ix;
@@ -3507,34 +2900,10 @@ static SHORT ClientElmntToRow(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES)
 
 } /* end of function ClientElmntToRow */
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : ServiceElmntToRow
-**
-**  DESCRIPTION      : This function calculates the Service LB row number
-**                       based on the Element Number.
-**
-**
-**  INPUTS           : SHORT ServiceElmnt
-**                     CMN_ARCH_PARMS
-**
-**  OUTPUTS          : Return Code - SHORT (Row Number).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/************************************************************/
+/* ServiceELMNTTOROW                                         */
+/************************************************************/
+
 static SHORT ServiceElmntToRow(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES)
 {
   SHORT ix;
@@ -3546,32 +2915,10 @@ static SHORT ServiceElmntToRow(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES)
 } /* end of function ServiceElmntToRow */
 
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : LoadClientElmnt
-**
-**  DESCRIPTION      : This function control the loading of the Client LB.
-**
-**  INPUTS           : SHORT ClientElmnt
-**                     CMN_ARCH_PARMS
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS OR CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/************************************************************/
+/* LOADCLIENTELMNT                                          */
+/************************************************************/
+
 static SHORT LoadClientElmnt(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES)
 {
  SHORT ix;
@@ -3636,32 +2983,10 @@ static SHORT LoadClientElmnt(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES)
 } /* end of function LoadClientElmnt */
 
 
-/***************************************************************************
-**
-**               CUSTOMER SERVICE SYSTEM Business Logic Function
-**
-**  FUNCTION         : LoadServiceElmnt
-**
-**  DESCRIPTION      : This function control the loading of the Service LB.
-**
-**  INPUTS           : SHORT ServiceElmnt
-**                     CMN_ARCH_PARMS
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS OR CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : 
-**
-**  DATE CREATED     : 
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**
-***************************************************************************/
+/************************************************************/
+/* LoadServiceElmnt                                          */
+/************************************************************/
+
 static SHORT LoadServiceElmnt(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES)
 {
 
