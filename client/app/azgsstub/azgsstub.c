@@ -8,7 +8,7 @@ FILE *pFile = NULL;
 VOID LogTime( char *Event, struct _timeb StartTime, struct _timeb EndTime )
 {
 	char ElapsedTime[15] = "";
-	pFile = fopen( "weblog.txt", "a+" );
+	pFile = fopen( "c:\\azgs\\weblog.txt", "a+" );
 	fseek( pFile, 0L, SEEK_END );
 
 	sprintf( ElapsedTime, "%.3f", (( EndTime.time	+ 
@@ -27,7 +27,7 @@ VOID LogTime( char *Event, struct _timeb StartTime, struct _timeb EndTime )
 
 int displaymsg ()
 {
-	printf( "\nWEBSTUB: invalid parameter(s) \n" );
+	printf( "\nAZGSSTUB: invalid parameter(s) \n" );
 	printf( "USAGE:    webstub -<value type><value> ...\n" );
 	printf( "EXAMPLE:  webstub -i1 -v2 -r10 -dKyBa=0657580001 \n\n" );
 	printf( "<value types> \n" );
@@ -53,14 +53,14 @@ int main( int argc, char *argv[] )
 	char			PipeName[40] = "";
 	char			HostName[15] = "";
 	char			ServiceName[15] = "";
-	char			InData[100] = "";
+	char			InData[200] = "";
 	char			*pOutData = NULL;
 	PIPE_HANDLE		hPipe;
 	MESSAGE_HDR		MsgHeader;
 
-	/****/
-//	struct _timeb StartTime, EndTime;
-	/***/
+/****/
+//struct _timeb StartTime, EndTime;
+/***/
 
 	memset( &hPipe, 0, sizeof( PIPE_HANDLE ));
 	memset( &MsgHeader, 0, sizeof( MESSAGE_HDR ));
@@ -95,12 +95,12 @@ int main( int argc, char *argv[] )
 
 							/* transaction id */
 							case 'i':
-								MsgHeader.TxID = atoi( &argv[i][2] );
+								MsgHeader.TxID = atol( &argv[i][2] );
 								break;
 								
 							/* repeat x times */
 							case 'r':
-								Repeat = atoi( &argv[i][2] );
+								Repeat = atol( &argv[i][2] );
 								break;
 							
 							/* service name */
@@ -109,7 +109,7 @@ int main( int argc, char *argv[] )
 
 							/* transaction version */
 							case 'v':
-								MsgHeader.TxVersion = atoi( &argv[i][2] );
+								MsgHeader.TxVersion = atol( &argv[i][2] );
 								break;
 
 							default:
@@ -141,9 +141,10 @@ int main( int argc, char *argv[] )
 
 	if( strlen( InData ) == 0 )
 	{
-//		strcpy( InData, "KyBa=0135710139|One=1|Two=|Three=3" );
+		strcpy( InData, "KyBa=0656390004" );
+//		strcpy( InData, "KyBa=0135710139|TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
 //		strcpy( InData, "TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
-		strcpy( InData, "TblName=CIS00059|NumRecReq=15" );
+//		strcpy( InData, "TblName=CIS00059|NumRecReq=15" );
 //		strcpy( InData, "TblName=C1CMBMSG|TblKey=10000" );
 //		strcpy( InData, "TblName=C1CMBMSG|NumRecReq=200" );
 //		strcpy( InData, "TblName=CIS00059|TblKey=E0004" );
@@ -156,8 +157,8 @@ int main( int argc, char *argv[] )
 
 	if( MsgHeader.TxID == 0 )
 	{
-//		MsgHeader.TxID = 1;
-		MsgHeader.TxID = 51;
+		MsgHeader.TxID = 1;
+//		MsgHeader.TxID = 51;
 	}
 
 	if( MsgHeader.TxVersion == 0 )
@@ -165,6 +166,14 @@ int main( int argc, char *argv[] )
 		MsgHeader.TxVersion = 1;
 //		MsgHeader.TxVersion = 2;
 	}
+
+	/*
+	** bdl 10/29/97
+	** data caching settings
+	*/
+	MsgHeader.CacheTimeLen = 60;			
+	MsgHeader.ForceCall    = FALSE;
+	MsgHeader.ForceCache   = TRUE;
 
    for ( j = 1; j <= Repeat; ++j )
    {				 
@@ -196,7 +205,7 @@ int main( int argc, char *argv[] )
 			MsgHeader.DataLen = 1 + strlen( InData );
 
 			/* convert to network byte order */
-			ArchGsFormatMsgHdr( ORDER_TO_NET, 
+			AZGS02FormatMsgHdr( ORDER_TO_NET, 
 						        &MsgHeader ); 
 
 /***/
@@ -266,7 +275,7 @@ int main( int argc, char *argv[] )
 					if (!rc)
 					{
 						/* convert to network byte order */
-						ArchGsFormatMsgHdr( ORDER_TO_HOST, 
+						AZGS02FormatMsgHdr( ORDER_TO_HOST, 
 									        &MsgHeader );
 
 						DataLen = MsgHeader.DataLen;
