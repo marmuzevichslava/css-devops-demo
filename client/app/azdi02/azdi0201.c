@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /*************************************************************************
 **
 **		AZDI0201.C - Get Burst Information
