@@ -1,0 +1,219 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZBA003                           *
+*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Wborptqa1920_Predisplay)
+WCBFWD (Wborptqa2066_Predestroy)
+WCBFWD (Wborptqa2081_Msg_Notification)
+WCBFWD (Wborptqa2086_Interwindow_Msg)
+WCBFWD (Wborptqa2090_Window_Change)
+WCBFWD (Wborptqa2094_Window_Close)
+WCBFWD (Wborptqa2098_Redisplay)
+WCBFWD (Wborptqa2103_Window_Nowinvalid)
+WCBFWD (Wborptqa2107_Group_Validation)
+WCBFWD (Wborptqa2112_Help_Requested)
+WCBFWD (Wborptqa2117_Sdm_Notification)
+WCBFWD (Wborptqa2121_Other_Gui_Event)
+WCBFWD (Wborptqa2125_Dde_Event)
+WCBFWD (Wborptqa2130_Dde_Notification)
+WCBFWD (Wborptqa2197_Click)
+WCBFWD (Wborptqa2201_Help_Requested)
+WCBFWD (Wborptqa2219_Click)
+WCBFWD (Wborptqa2223_Help_Requested)
+WCBFWD (Wborptqa2165_List_Select)
+WCBFWD (Wborptqa2169_Double_Click)
+WCBFWD (Wborptqa2172_List_Pageup)
+WCBFWD (Wborptqa2176_List_Pagedown)
+WCBFWD (Wborptqa2180_List_Deselect)
+WCBFWD (Wborptqa2183_List_Noselect)
+WCBFWD (Wborptqa2188_Help_Requested)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZBA003WindDisp[] =
+{
+    {PREDISPLAY, Wborptqa1920_Predisplay},
+    {PREDESTROY, Wborptqa2066_Predestroy},
+    {MSG_NOTIFICATION, Wborptqa2081_Msg_Notification},
+    {INTERWINDOW_MSG, Wborptqa2086_Interwindow_Msg},
+    {WINDOW_CHANGE, Wborptqa2090_Window_Change},
+    {WINDOW_CLOSE, Wborptqa2094_Window_Close},
+    {REDISPLAY, Wborptqa2098_Redisplay},
+    {WINDOW_NOWINVALID, Wborptqa2103_Window_Nowinvalid},
+    {GROUP_VALIDATION, Wborptqa2107_Group_Validation},
+    {FND_HELP_REQUESTED, Wborptqa2112_Help_Requested},
+    {SDM_NOTIFICATION, Wborptqa2117_Sdm_Notification},
+    {OTHER_GUI_EVENT, Wborptqa2121_Other_Gui_Event},
+    {DDE_EVENT, Wborptqa2125_Dde_Event},
+    {DDE_NOTIFICATION, Wborptqa2130_Dde_Notification},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZBA003WidgDisp[] =
+{
+    {CancelPB_CMD, BUTTON_CLICK, Wborptqa2197_Click},
+    {CancelPB_CMD, FND_HELP_REQUESTED, Wborptqa2201_Help_Requested},
+    {OKPB_CMD, BUTTON_CLICK, Wborptqa2219_Click},
+    {OKPB_CMD, FND_HELP_REQUESTED, Wborptqa2223_Help_Requested},
+    {ExtractInsertHdrLb_FID, LIST_SELECT, Wborptqa2165_List_Select},
+    {ExtractInsertHdrLb_FID, FND_DOUBLE_CLICK, Wborptqa2169_Double_Click},
+    {ExtractInsertHdrLb_FID, LIST_PAGEUP, Wborptqa2172_List_Pageup},
+    {ExtractInsertHdrLb_FID, LIST_PAGEDOWN, Wborptqa2176_List_Pagedown},
+    {ExtractInsertHdrLb_FID, LIST_DESELECT, Wborptqa2180_List_Deselect},
+    {ExtractInsertHdrLb_FID, LIST_NO_SELECTION, Wborptqa2183_List_Noselect},
+    {ExtractInsertHdrLb_FID, FND_HELP_REQUESTED, Wborptqa2188_Help_Requested},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZBA003FieldDefTbl[] =
+{
+    { "ExtractInsertHdrLb", ExtractInsertHdrLb_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZBA003CommandDefTbl[] =
+{
+    { "CancelPB", CancelPB_CMD },
+    { "OKPB", OKPB_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZBA003WCTHeader =
+{ 
+    "30", 6, 1, 2,
+    sizeof(struct _DZBA003WesMap),
+    offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndData),
+    offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZBA003WCTFieldTbl[] =
+{
+  
+    { WTP_FNDLISTBOX, "ExtractInsertHdrLb", ExtractInsertHdrLb_FID,
+      ExtractInsertHdrLb_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndData) + 
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbKyBaData) + 
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbTsKyExtractData) + 
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbTxnUsrIdData) + 
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbTxExtractRemarks2Data),
+      0, 0, offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndData),
+      offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "ExtractInsertHdrLbSelInd", ExtractInsertHdrLbSelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndData[0]),
+      0, 0, offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndData),
+      offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "KyBa", ExtractInsertHdrLbKyBa_FID,
+      0, FND_IT_DOUBLE,
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbKyBaData[0]),
+      10, 0, offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbKyBaData),
+      offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbKyBaCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "TsKyExtract", ExtractInsertHdrLbTsKyExtract_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbTsKyExtractData[0]),
+      26, 0, offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTsKyExtractData),
+      offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTsKyExtractCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "TXNUSRID", ExtractInsertHdrLbTxnUsrId_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbTxnUsrIdData[0]),
+      10, 0, offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTxnUsrIdData),
+      offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTxnUsrIdCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "TxExtractRemarks2", ExtractInsertHdrLbTxExtractRemarks2_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZBA003WesMap, _ExtractInsertHdrLbTxExtractRemarks2Data[0]),
+      80, 0, offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTxExtractRemarks2Data),
+      offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTxExtractRemarks2Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZBA003WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZBA003IDWindowDefn =
+{
+    "30", DZBA003ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_HIDDEN | WCR_NON_PROPORTIONAL, DZBA003ID,
+    DZBA003AccelID, WOP_NOMENU, WOP_NOICON, 0,
+    DZBA003WidgDisp, DZBA003WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZBA003WCTHeader, DZBA003WCTFieldTbl, 
+    DZBA003WCTCommandTbl, NULL, 24, 0, 0
+};
+

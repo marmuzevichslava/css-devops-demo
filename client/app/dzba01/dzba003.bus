@@ -1,0 +1,282 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  SWAT01B.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window SWAT01BX,
+**                     includes:
+**
+**                     DZBA003BusWindowPredisp
+**                     DZBA003BusFindPBClick
+**					   DZBA003BusOkPBClick
+**
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 08/12/95    iperezar             Creation
+**
+***************************************************************************/
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA003BusWindowPredisp
+**
+**  DESCRIPTION      : This function is executed when the window is
+**					   originally opened.  It will malloc the
+**					   pointer to the WCD
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : iperezar
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 08/12/95    iperezar             Creation
+**
+***************************************************************************/
+
+WCBPROC( DZBA003BusWindowPredisp )
+{
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT             FndGenRC = 0;
+      _DZBA003INPUT      *pDZBA003INPUT;
+
+//	  memset(&(WCD_DZBA003Rqst), 0, sizeof(WCD_DZBA003Rqst));
+
+
+	  /* Disable the command pushbuttons */
+
+
+	  pDZBA003INPUT = (_DZBA003INPUT *) CBI_pInitData; 
+
+
+      /* Disable the OK pushbutton */
+	  FndCommandDisable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+
+
+      BFCD_DZBA003Rqst.DZCBA02Keys.KyBa = pDZBA003INPUT->DZCBA03Keys.KyBa;
+
+      BFCD_DZBA003Rqst.DZCBA02Keys.KyBldgNo = pDZBA003INPUT->DZCBA03Keys.KyBldgNo;
+
+      BFCD_DZBA003Rqst.DZCBA02Keys.KyPremNo = pDZBA003INPUT->DZCBA03Keys.KyPremNo;
+
+
+//	  CmnStrCopy(WCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
+//				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract,
+//			     sizeof(WCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract),
+//                 CMN_ARCH_PARMS);
+
+	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
+				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract );
+
+//	  CmnStrCopy(WCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
+//				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2,
+//			     sizeof(WCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2),
+//                 CMN_ARCH_PARMS);
+
+	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
+				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2 );
+
+//	  CmnStrCopy(WCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
+//				 pDZBA003INPUT->DZCBA03Keys.CdAccessType,
+//			     sizeof(WCD_DZBA003Rqst.DZCBA02Keys.CdAccessType),
+//                 CMN_ARCH_PARMS);
+
+	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
+				 pDZBA003INPUT->DZCBA03Keys.CdAccessType );
+
+
+      CmnCsrCall((BYTE *) &BFCD_DZBA003Rqst,
+                 (ULONG) sizeof(BFCD_DZBA003Rqst),
+                 CMN_FORCECALL_YES,
+                 "DZBA003R",
+                 CMN_ARCH_PARMS);
+
+
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA003BusWindowPredestroy
+**
+**  DESCRIPTION      : This function is executed when the window is
+**					   originally opened.  It will malloc the
+**					   pointer to the WCD
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : iperezar
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 08/12/95    iperezar             Creation
+**
+***************************************************************************/
+
+WCBPROC( DZBA003BusWindowPredestroy )
+{
+
+//    USHORT             FndGenRC = 0,
+
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA003BusOkPBClick
+**
+**  DESCRIPTION      : This function is executed when the window is
+**					   originally opened.  It will malloc the
+**					   pointer to the WCD
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : iperezar
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 08/12/95    iperezar             Creation
+**
+***************************************************************************/
+
+WCBPROC( DZBA003BusOkPBClick )
+{
+
+    USHORT             FndGenRC = 0;
+	USHORT            index = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+	_ExtractInsertHdrLbRow RowData;
+
+	_DZBA003OUTPUT * pDZBA003OUTPUT;
+
+	pDZBA003OUTPUT = EAB_pWdtOutData;
+
+//	memset(&pDZBA003OUTPUT , 0 , sizeof(_DZBA003OUTPUT) );
+
+    FndLstBoxRowQuerySelection ( CBI_hwnd,
+	                          "ExtractInsertHdrLb",
+							  StartRowNum,
+							  &index,
+							  &FndGenErrorBlock);
+
+    FndLstBoxRowQueryData ( CBI_hwnd,
+                            "ExtractInsertHdrLb",
+							index,
+							sizeof( _ExtractInsertHdrLbRow ),
+							(VOID *) &(RowData),
+							&FndGenErrorBlock);
+
+	CmnStrCopy(pDZBA003OUTPUT->DZCBA02Data.TsKyExtract ,
+	     	   RowData._ExtractInsertHdrLbTsKyExtractData ,
+			   sizeof(pDZBA003OUTPUT->DZCBA02Data.TsKyExtract ),
+               CMN_ARCH_PARMS);
+
+	pDZBA003OUTPUT->DZCBA02Data.KyBa =
+	     	   RowData._ExtractInsertHdrLbKyBaData;
+
+	CmnStrCopy(pDZBA003OUTPUT->DZCBA02Data.TxExtractRemarks2 ,
+	     	   RowData._ExtractInsertHdrLbTxExtractRemarks2Data ,
+			   sizeof(pDZBA003OUTPUT->DZCBA02Data.TxExtractRemarks2 ),
+               CMN_ARCH_PARMS);
+
+
+
+
+    return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA003BusLBSelect
+**
+**  DESCRIPTION      : This function is executed when the window is
+**					   originally opened.  It will malloc the
+**					   pointer to the WCD
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : iperezar
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 08/12/95    iperezar             Creation
+**
+***************************************************************************/
+
+WCBPROC( DZBA003BusLBSelect )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT             FndGenRC = 0;
+
+  /* Enable the command pushbuttons */
+
+  FndCommandEnable(CBI_hwnd,
+				  "OKPB",
+				  &FndGenErrorBlock);
+
+
+
+
+    return CMN_SUCCESS;
+}
+

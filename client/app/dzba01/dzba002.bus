@@ -1,0 +1,1418 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  SWAT01B.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window SWAT01BX,
+**                     includes:
+**
+**                     DZBA002BusWindowPredisp
+**                     DZBA002BusWindowPredestroy
+**                     DZBA002BusKyPremNoFC
+**                     DZBA002BusKyBldgNoFC
+**                     DZBA002BusKyBaFC
+**                     DZBA002BusValidatePBClick
+**                     DZBA002BusCDRbAccessTypeFC
+**					   DZBA002BusOkPBClick
+**
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 03/28/95    K.Chase             Creation
+**
+***************************************************************************/
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusWindowPredisp
+**
+**  DESCRIPTION      : This function is executed when the window is
+**					   originally opened.  It will malloc the
+**					   pointer to the WCD
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  KCHASE                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusWindowPredisp )
+{
+
+    USHORT             FndGenRC = 0,
+                       i = 0;
+//    CHAR              KyBaStr[KYBA_STR_LEN]; /* Target for CmnStrFromInt */
+	CHAR                KyBaStrMask[KYEXTRACTNOA_LEN]; /* Masked String Format */
+	long              KyPremNo;	/* Used as target in atol from String Format */
+	long              KyBldgNo;	/* Used as target in atol from String Format */
+
+    /* Pointer to Input Layout  SWAT01BI */
+    _SWAT01BINPUT      *pSWAT01BInput; 
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+
+    /* Declare a pointer of the Working Storage type */
+    _WindowData      *pWCDStorage;
+
+    /* Allocate memory for the working storage area */
+    pWindContextData->pWorkingStorageData =
+        (CHAR *) malloc(sizeof(_WindowData));
+
+    /* Set a pointer to the working storage area */
+    pWCDStorage = (_WindowData *) SWAT01B_WorkStorage;
+
+    /* Initialize the working storage area */
+    memset(pWCDStorage, 0, sizeof(_WindowData));
+
+	/* Set up a pointer to the value of CBI_pInitData */
+    pSWAT01BInput = (_SWAT01BINPUT *) CBI_pInitData;
+
+    /* initialize the Request area of the WCD */
+    memset(&WCD_SWAT01BRqst, 0, sizeof(WCD_SWAT01BRqst));
+
+
+    /* Disable the timestamp field when the access type is not Insert */
+
+	if (strcmp(pSWAT01BInput->SWAT01BData.CdExtractInsertAct, LT_Insert_Mode) == 0)
+	{
+		FndFieldEnable (CBI_hwnd,
+		                "TsKyExtract",
+						&FndGenErrorBlock);
+
+
+	}
+	else
+	{
+		FndFieldDisable (CBI_hwnd,
+		                "TsKyExtract",
+						&FndGenErrorBlock);
+
+	   /*  Set appropriate Status for each of the 3 fields. If the mode is
+	    |  Insert mode, then a timestamp is sufficient input and the other fields
+		|  need not be required
+		*/
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+
+	}
+
+    /* Check to see if there is data in the IN layout */
+    if( strlen (pSWAT01BInput->SWAT01BData.KyExtractNoA) > 0)
+    {
+
+   	    if ( strcmp(pSWAT01BInput->SWAT01BData.CdAccessType, LT_Acct_A) == 0)
+		{
+            /* Set Access Type to 'Account' */
+            FndFieldSetValue(CBI_hwnd,
+                        "CdAccessType",
+                         2,
+                         LT_Acct_01,
+                         &FndGenErrorBlock);
+
+	        /* Call Function to Validate correct fields to display */
+					   
+            FndGenRC = DZBA002BusCDRbAccessTypeFC( pEventInfo,
+                                                   pEAIA,
+                                                   pBFCD,
+                                                   pWesMap,
+                                                   pWindContextData,
+                                                   pABHI);
+
+
+ 	        /*Format KyBaStrMask */
+            CmnStrCopy (KyBaStrMask,
+                         pSWAT01BInput->SWAT01BData.KyExtractNoA,
+                         KYEXTRACTNOA_LEN,
+                         CMN_ARCH_PARMS);
+ 
+
+		/* Format in Masked Field Format */
+        for( i = 5; (i < (sizeof(KyBaStrMask))); i++)
+        {
+            KyBaStrMask[i] = pSWAT01BInput->SWAT01BData.KyExtractNoA[i+1];
+        }
+
+		    /* Load the Value for KyBa */
+            FndFieldSetValue(CBI_hwnd,
+                                "KyBa",
+                                sizeof(KyBaStrMask),
+                                KyBaStrMask,
+                                &FndGenErrorBlock);
+
+
+
+		} /* END: Access Type = Account */
+
+		else if(strcmp(pSWAT01BInput->SWAT01BData.CdAccessType, LT_Prem_P) == 0)
+
+		{
+            /* Set Access Type to 'Premise' */
+            FndFieldSetValue(CBI_hwnd,
+                        "CdAccessType",
+                         2,
+                         LT_Prem_02,
+                         &FndGenErrorBlock);
+
+	        /* Call Function to Validate correct fields to display */
+            FndGenRC = DZBA002BusCDRbAccessTypeFC( pEventInfo,
+                                                   pEAIA,
+                                                   pBFCD,
+                                                   pWesMap,
+                                                   pWindContextData,
+                                                   pABHI);
+
+			/* Convert from String To Long */
+			KyPremNo = atol(pSWAT01BInput->SWAT01BData.KyExtractNoA);
+
+		    /* Load the Value for KyPremNo */
+            FndFieldSetValue( CBI_hwnd,
+                            "KyPremNo",
+                            sizeof(KyPremNo),
+                            &KyPremNo,
+                            &FndGenErrorBlock);
+
+		} /* END: Access Type = Premise */
+
+		else if(strcmp(pSWAT01BInput->SWAT01BData.CdAccessType, LT_Bldg_B) == 0)
+
+		{
+            /* Set Access Type to 'Building' */
+            FndFieldSetValue(CBI_hwnd,
+                        "CdAccessType",
+                         2,
+                         LT_Bldg_03,
+                         &FndGenErrorBlock);
+
+	        /* Call Function to Validate correct fields to display */
+            FndGenRC = DZBA002BusCDRbAccessTypeFC( pEventInfo,
+                                                   pEAIA,
+                                                   pBFCD,
+                                                   pWesMap,
+                                                   pWindContextData,
+                                                   pABHI);
+
+			/* Convert from String To Long */
+			KyBldgNo = atol(pSWAT01BInput->SWAT01BData.KyExtractNoA);
+
+		    /* Load the Value for KyPremNo */
+            FndFieldSetValue( CBI_hwnd,
+                            "KyBldgNo",
+                            sizeof(KyBldgNo),
+                            &KyBldgNo,
+                            &FndGenErrorBlock);
+
+
+		} /* END: Access Type = Building */
+
+
+        /* Load the Value for TsKyExtract */
+        FndFieldSetValue( CBI_hwnd,
+                     "TsKyExtract",
+                     sizeof(pSWAT01BInput->SWAT01BData.TsKyExtract),
+                     &pSWAT01BInput->SWAT01BData.TsKyExtract,
+                     &FndGenErrorBlock);
+
+        /* Load the Value for TxExtractRemarks2 */
+        FndFieldSetValue( CBI_hwnd,
+                         "TxExtractRemarks2",
+                         sizeof(pSWAT01BInput->SWAT01BData.TxExtractRemarks2),
+                         &pSWAT01BInput->SWAT01BData.TxExtractRemarks2,
+                         &FndGenErrorBlock);
+
+	} /* END: Check to see if there is data in the IN layout */
+	else
+	{ /* No Data in IN Layout -> Add Mode */
+
+        /* Default the Access Type to 'Account' */
+        FndFieldSetValue(CBI_hwnd,
+                    "CdAccessType",
+                     2,
+                     LT_Acct_01,
+                     &FndGenErrorBlock);
+
+        /* Call Function to Validate correct fields to display */
+        FndGenRC = DZBA002BusCDRbAccessTypeFC( pEventInfo,
+                                               pEAIA,
+                                               pBFCD,
+                                               pWesMap,
+                                               pWindContextData,
+                                               pABHI);
+
+        /* Check to see if there is data in the Remarks Area */
+        if( pSWAT01BInput->SWAT01BData.TxExtractRemarks2 != NULL)
+	    {
+            /* Load the Value for TxExtractRemarks2 */
+            FndFieldSetValue( CBI_hwnd,
+                         "TxExtractRemarks2",
+                         sizeof(pSWAT01BInput->SWAT01BData.TxExtractRemarks2),
+                         &pSWAT01BInput->SWAT01BData.TxExtractRemarks2,
+                         &FndGenErrorBlock);
+
+	    } /* END: Check to see if there is data in the Remarks Area of INPUT */
+
+	} /* END: No Data in IN Layout -> Add Mode */
+
+  
+	/* Build the Actual window title */
+    CmnWindowTitleCreate( "Details",
+                          "",
+                          "Extract/Insert",
+                          CMN_DEFAULT_WINDOW_TITLE_MAX,
+                          CMN_ARCH_PARMS );
+
+	/* Disable the command pushbuttons */
+
+	FndCommandDisable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+	FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+
+    /* Show the actual window */
+    FndWindowShow( CBI_hwnd,
+                   &FndGenErrorBlock);
+
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusWindowPredestroy
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusWindowPredestroy )
+{
+    /* Declare a pointer of the Working Storage type */
+    _WindowData      *pWCDStorage;
+
+    /* Set a pointer to the working storage area */
+    pWCDStorage = (_WindowData *) SWAT01B_WorkStorage;
+
+    free ( pWCDStorage );
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusWindowPredestroy */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusKyPremNoFC
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusKyPremNoFC )
+{
+    USHORT             FndGenRC = 0;
+    _FND_ERROR_BLOCK   FndGenErrorBlock;
+	ULONG              KyPremNo = 0;
+	CHAR               cStatus;
+	CHAR			   szTxKyExtract[23];
+
+
+    FndFieldQueryValue(CBI_hwnd,
+                       "KyPremNo",
+                        sizeof(KyPremNo),
+                        &KyPremNo,
+                        &FndGenErrorBlock);
+
+	if (KyPremNo > 0)
+	{
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+	   cStatus = STS_VALID;
+
+	}
+	else
+	{
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_INCOMPLETE,
+                      &FndGenErrorBlock);
+
+	   cStatus = STS_INCOMPLETE;
+
+	}
+
+	memset (szTxKyExtract, 0 ,sizeof(szTxKyExtract));
+
+    FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(szTxKyExtract),
+                      szTxKyExtract,
+                      &FndGenErrorBlock);
+
+
+    if ( (strcmp(szTxKyExtract, EMPTY_STR) != 0) || (cStatus == STS_VALID) )
+	{
+		/* Enable the command pushbuttons */
+
+		FndCommandEnable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+		FndCommandEnable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+	}
+	else
+	{
+		/* Disable the command pushbuttons */
+
+		FndCommandDisable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+		FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+
+	}
+
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusKyPremNoFC */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusKyBldgNoFC
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusKyBldgNoFC )
+{
+    USHORT             FndGenRC = 0;
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+	CHAR               cStatus;
+	CHAR			   szTxKyExtract[23];
+	ULONG              KyBldgNo = 0;
+
+
+    FndFieldQueryValue(CBI_hwnd,
+                       "KyBldgNo",
+                        sizeof(KyBldgNo),
+                        &KyBldgNo,
+                        &FndGenErrorBlock);
+
+	if (KyBldgNo > 0)
+	{
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+	   cStatus = STS_VALID;
+
+	}
+	else
+	{
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_INCOMPLETE,
+                      &FndGenErrorBlock);
+
+	   cStatus = STS_INCOMPLETE;
+
+	}
+
+	memset (szTxKyExtract, 0 ,sizeof(szTxKyExtract));
+
+    FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(szTxKyExtract),
+                      szTxKyExtract,
+                      &FndGenErrorBlock);
+
+
+    if ( (strcmp(szTxKyExtract, EMPTY_STR) != 0) || (cStatus == STS_VALID) )
+	{
+		/* Enable the command pushbuttons */
+
+		FndCommandEnable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+		FndCommandEnable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+	}
+	else
+	{
+		/* Disable the command pushbuttons */
+
+		FndCommandDisable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+		FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+
+	}
+
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusKyBldgNoFC */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusKyBaFC
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusKyBaFC )
+{
+	CHAR               KyBaStr[11];
+    USHORT             FndGenRC = 0;
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+	CHAR               cStatus;
+	CHAR			   szTxKyExtract[23];
+
+	memset (KyBaStr, 0 ,sizeof(KyBaStr));
+
+	memset (szTxKyExtract, 0 ,sizeof(szTxKyExtract));
+
+    FndFieldQueryValue(CBI_hwnd,
+                          "KyBa",
+                          sizeof(KyBaStr),
+                          KyBaStr,
+                          &FndGenErrorBlock);
+
+
+//	if ( strcmp(KyBaStr, EMPTY_STR) != 0  )
+
+	if ( ( KyBaStr[0] >= '0' ) && ( KyBaStr[0] <= '9') )
+	     
+	{
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+	   cStatus = STS_VALID;
+
+	}
+	else
+	{
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_INCOMPLETE,
+                      &FndGenErrorBlock);
+
+	   cStatus = STS_INCOMPLETE;
+
+	}
+
+
+
+    FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(szTxKyExtract),
+                      szTxKyExtract,
+                      &FndGenErrorBlock);
+
+
+    if ( (strcmp(szTxKyExtract, EMPTY_STR) != 0) || (cStatus == STS_VALID) )
+	{
+		/* Enable the command pushbuttons */
+
+		FndCommandEnable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+		FndCommandEnable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+	}
+	else
+	{
+		/* Disable the command pushbuttons */
+
+		FndCommandDisable(CBI_hwnd,
+					  "OKPB",
+					  &FndGenErrorBlock);
+
+		FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+
+	}
+
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusKyBaFC */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA002BusKyTsKyExtFC
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusKyTsKyExtFC )
+{
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+	CHAR			   szTxKyExtract[23];
+    USHORT             FndGenRC = 0;
+
+	memset (szTxKyExtract, 0 ,sizeof(szTxKyExtract));
+
+
+    FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(szTxKyExtract),
+                      szTxKyExtract,
+                      &FndGenErrorBlock);
+
+
+    if ( strcmp(szTxKyExtract, EMPTY_STR) != 0 )
+	{
+		/* Enable the command pushbuttons */
+
+		FndCommandEnable(CBI_hwnd,
+	                  "OKPB",
+					  &FndGenErrorBlock);
+
+
+		FndCommandEnable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+	}
+	else
+	{
+		/* Disable the command pushbuttons */
+
+		FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+		FndCommandDisable(CBI_hwnd,
+	                  "OKPB",
+					  &FndGenErrorBlock);
+
+	}
+
+	   /* Set appropriate Status for each of the 3 fields */
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndGenRC = DZBA002BusKyBldgNoFC( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+	   FndGenRC = DZBA002BusKyPremNoFC( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+       FndGenRC = DZBA002BusKyBaFC( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+
+	   /*  Set appropriate Status for each of the 3 fields. If the mode is
+	    |  Insert mode, then a timestamp is sufficient input and the other fields
+		|  need not be required
+		*/
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+
+
+    return CMN_SUCCESS;
+
+}  /* End of DZBA002BusKyTsKyExtFC */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusValidatePBClick
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusValidatePBClick )
+{
+    USHORT             FndGenRC = 0;
+    _DZBA003INPUT      pDZBA003INPUT;
+	CHAR               CdAccessType[3];
+	CHAR               KyExtractNoStr[KYEXTRACTNOA_LEN];
+	CHAR               KyBaStr[KYEXTRACTNOA_LEN];
+	ULONG              KyBldgNo = 0;
+	ULONG              KyPremNo = 0;
+	CHAR			   szTxKyExtract[23];
+	CHAR		       szTxExtractRemarks2[78];
+    USHORT	           SelectedButton = 0;
+	CHAR               szTempString[12];
+
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+
+	memset(KyBaStr, 0, sizeof(KyBaStr));
+
+	memset(szTempString, 0, sizeof(szTempString) );
+
+	memset(&pDZBA003INPUT, 0, sizeof(_DZBA003INPUT) );
+
+    memset(szTxKyExtract, 0, sizeof(szTxKyExtract) );
+
+    memset(szTxExtractRemarks2, 0, sizeof(szTxExtractRemarks2) );
+
+	CmnStrCopy( CdAccessType,
+		        WCD_SWAT01BRqst.SWAT01BData.CdAccessType,
+			    sizeof(CdAccessType),
+			    CMN_ARCH_PARMS); 
+
+
+   /* If RB AccessType is Account */
+   if (strcmp ( CdAccessType, LT_Acct_01) == 0) 
+   {
+
+       
+	   /* Query Account Value and load into KyExtractNo */
+       FndFieldQueryValue(CBI_hwnd,
+                          "KyBa",
+                          sizeof(KyBaStr),
+                          KyBaStr,
+                          &FndGenErrorBlock);
+
+	   /* Convert the KyExtractNoA to DOUBLE and load into OUTPUT */
+	   pDZBA003INPUT.DZCBA03Keys.KyBa = atof(KyBaStr);
+
+
+       /* Make the code A rather than 01 for Cd Access Type */
+       CmnStrCopy( pDZBA003INPUT.DZCBA03Keys.CdAccessType,
+                   "A",
+                   sizeof(pDZBA003INPUT.DZCBA03Keys.CdAccessType),
+                   CMN_ARCH_PARMS );
+ 
+   }
+   /* If RB AccessType is Premise */
+   else if (strcmp ( CdAccessType, LT_Prem_02) == 0) 
+   {
+
+	   /* Query Account Value and load into KyPremNo	*/
+       FndFieldQueryValue(CBI_hwnd,
+                          "KyPremNo",
+                          sizeof(KyPremNo),
+                          &KyPremNo,
+                          &FndGenErrorBlock);
+
+	   /* Convert Long Integer to a String */
+       CmnStrFromInt( KyExtractNoStr,
+                      sizeof(KyExtractNoStr),
+                      KyPremNo,
+                      CMN_LEADING_ZEROES_NO,
+                      CMN_ARCH_PARMS );
+
+	   /* Populate the output DOUBLE Numeric field from converted String*/
+	   pDZBA003INPUT.DZCBA03Keys.KyPremNo = atoi (KyExtractNoStr);
+	   pDZBA003INPUT.DZCBA03Keys.KyBa = atof(KyExtractNoStr);
+
+       /* Make the code P rather than 03 for Cd Access Type */
+       CmnStrCopy( pDZBA003INPUT.DZCBA03Keys.CdAccessType,
+                   "A",
+                   sizeof(pDZBA003INPUT.DZCBA03Keys.CdAccessType),
+                   CMN_ARCH_PARMS );
+ 
+
+   }
+   /* If RB AccessType is Building */
+   else if (strcmp ( CdAccessType, LT_Bldg_03) == 0) 
+   {
+
+	   /* Query Account Value and load into KyPremNo	*/
+       FndFieldQueryValue(CBI_hwnd,
+                          "KyBldgNo",
+                          sizeof(KyBldgNo),
+                          &KyBldgNo,
+                          &FndGenErrorBlock);
+
+	   /* Convert Long Integer to a String */
+       CmnStrFromInt( KyExtractNoStr,
+                      sizeof(KyExtractNoStr),
+                      KyBldgNo,
+                      CMN_LEADING_ZEROES_NO,
+                      CMN_ARCH_PARMS );
+
+	   /* Populate the output DOUBLE Numeric field from converted String*/
+	   pDZBA003INPUT.DZCBA03Keys.KyBldgNo = atoi (KyExtractNoStr);
+	   pDZBA003INPUT.DZCBA03Keys.KyBa = atof(KyExtractNoStr);
+
+       /* Make the code B rather than 02 for Cd Access Type */
+       CmnStrCopy( pDZBA003INPUT.DZCBA03Keys.CdAccessType,
+                   "A",
+                   sizeof(pDZBA003INPUT.DZCBA03Keys.CdAccessType),
+                   CMN_ARCH_PARMS );
+ 
+
+   }
+
+   /* Query TimeStamp Value and load into TsKyExtract */
+   FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(szTxKyExtract),
+                      szTxKyExtract,
+                      &FndGenErrorBlock);
+
+   /* Set the last character of this string to NULL to accomodate the '%' */
+
+
+   /* Build the "like%" string */
+   if ( strcmp(szTxKyExtract,NULL_STR) != 0 )
+   {
+
+		CmnStrCat( CMN_ARCH_PARMS,
+				pDZBA003INPUT.DZCBA03Keys.TsKyExtract,
+				sizeof(pDZBA003INPUT.DZCBA03Keys.TsKyExtract),
+				4,
+				Begin_Qt,
+				szTxKyExtract,
+				Like_Str,
+				End_Qt );
+
+
+   }              
+
+
+   /* Query Remarks and load into TxExtractRemarks2 */
+   FndFieldQueryValue(CBI_hwnd,
+                      "TxExtractRemarks2",
+                      sizeof(szTxExtractRemarks2),
+                      szTxExtractRemarks2,
+                      &FndGenErrorBlock);
+
+   /* Set the last character of this string to NULL to accomodate the '%' */
+   szTxExtractRemarks2[79] = '\n';
+
+   /* Concatenate the "like" string */
+   if ( strcmp(szTxExtractRemarks2,NULL_STR) != 0 )
+   {
+		CmnStrCat( CMN_ARCH_PARMS,
+              pDZBA003INPUT.DZCBA03Keys.TxExtractRemarks2,
+			  sizeof(pDZBA003INPUT.DZCBA03Keys.TxExtractRemarks2),
+			  2,
+			  szTxExtractRemarks2,
+			  Like_Str );              
+   }
+
+
+								 
+   FndGenRC =  CmnWindowCreate ( "DZBA003X",
+				                   NULL,
+				                   NULL,
+				                   &pDZBA003INPUT,
+				                   CMN_ARCH_PARMS);
+
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusValidatePBClick */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusOkPBClick
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusOkPBClick )
+{
+    USHORT             FndGenRC = 0;
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+	CHAR               CdAccessType[3];
+	CHAR               KyExtractNoStr[KYEXTRACTNOA_LEN];
+	CHAR               KyBaStr[KYEXTRACTNOA_LEN];
+	ULONG              KyBldgNo = 0;
+	ULONG              KyPremNo = 0;
+
+    /* Set up pointer to child window OUT layout _SWAT01BOUTPUT */
+    _SWAT01BOUTPUT *pSWAT01BOutput;
+
+    /* Setup the pointer to the value of EAB_pWdtOutData */
+    pSWAT01BOutput = EAB_pWdtOutData;
+
+    memset(pSWAT01BOutput, 0, sizeof(_SWAT01BOUTPUT));
+
+/* QUERY THE WINDOW TO PASS THE FIELDS TO THE OUTPUT LAYOUT */
+
+//    FndFieldQueryValue(CBI_hwnd,
+//                       "CdAccessType",
+//                       sizeof(CdAccessType),
+//                       &CdAccessType,
+//                       &FndGenErrorBlock);
+//
+
+	CmnStrCopy( CdAccessType,
+		        WCD_SWAT01BRqst.SWAT01BData.CdAccessType,
+			    sizeof(CdAccessType),
+			    CMN_ARCH_PARMS); 
+
+
+
+   /* If RB AccessType is Account */
+   if (strcmp ( CdAccessType, LT_Acct_01) == 0) 
+   {
+
+       
+	   /* Query Account Value and load into KyExtractNo */
+       FndFieldQueryValue(CBI_hwnd,
+                          "KyBa",
+                          sizeof(KyBaStr),
+                          KyBaStr,
+                          &FndGenErrorBlock);
+
+	   /* Convert the KyExtractNoA to DOUBLE and load into OUTPUT */
+	   pSWAT01BOutput->SWAT01BData.KyExtractNo = atof(KyBaStr);
+
+       /* load the String Value of KyBa into KyExtractNoA */
+       CmnStrCopy( pSWAT01BOutput->SWAT01BData.KyExtractNoA,
+                   KyBaStr,
+                   sizeof(pSWAT01BOutput->SWAT01BData.KyExtractNoA),
+                   CMN_ARCH_PARMS );
+ 
+
+       /* Make the code A rather than 01 for Cd Access Type */
+       CmnStrCopy( pSWAT01BOutput->SWAT01BData.CdAccessType,
+                   "A",
+                   sizeof(pSWAT01BOutput->SWAT01BData.CdAccessType),
+                   CMN_ARCH_PARMS );
+ 
+   }
+   /* If RB AccessType is Premise */
+   else if (strcmp ( CdAccessType, LT_Prem_02) == 0) 
+   {
+
+	   /* Query Account Value and load into KyPremNo	*/
+       FndFieldQueryValue(CBI_hwnd,
+                          "KyPremNo",
+                          sizeof(KyPremNo),
+                          &KyPremNo,
+                          &FndGenErrorBlock);
+
+	   /* Convert Long Integer to a String */
+       CmnStrFromInt( KyExtractNoStr,
+                      sizeof(KyExtractNoStr),
+                      KyPremNo,
+                      CMN_LEADING_ZEROES_NO,
+                      CMN_ARCH_PARMS );
+
+	   /* Populate the output DOUBLE Numeric field from converted String*/
+	   pSWAT01BOutput->SWAT01BData.KyExtractNo = atof (KyExtractNoStr);
+
+       /* Copy the String Formatted KyExtractNoA into the Output */
+       CmnStrCopy( pSWAT01BOutput->SWAT01BData.KyExtractNoA,
+                   KyExtractNoStr,
+                   sizeof(pSWAT01BOutput->SWAT01BData.KyExtractNoA),
+                   CMN_ARCH_PARMS );
+ 
+       /* Make the code P rather than 03 for Cd Access Type */
+       CmnStrCopy( pSWAT01BOutput->SWAT01BData.CdAccessType,
+                   "P",
+                   sizeof(pSWAT01BOutput->SWAT01BData.CdAccessType),
+                   CMN_ARCH_PARMS );
+ 
+
+   }
+   /* If RB AccessType is Building */
+   else if (strcmp ( CdAccessType, LT_Bldg_03) == 0) 
+   {
+
+	   /* Query Account Value and load into KyPremNo	*/
+       FndFieldQueryValue(CBI_hwnd,
+                          "KyBldgNo",
+                          sizeof(KyBldgNo),
+                          &KyBldgNo,
+                          &FndGenErrorBlock);
+
+	   /* Convert Long Integer to a String */
+       CmnStrFromInt( KyExtractNoStr,
+                      sizeof(KyExtractNoStr),
+                      KyBldgNo,
+                      CMN_LEADING_ZEROES_NO,
+                      CMN_ARCH_PARMS );
+
+	   /* Populate the output DOUBLE Numeric field from converted String*/
+	   pSWAT01BOutput->SWAT01BData.KyExtractNo = atof (KyExtractNoStr);
+
+       /* Copy the String Formatted KyExtractNoA into the Output */
+       CmnStrCopy( pSWAT01BOutput->SWAT01BData.KyExtractNoA,
+                   KyExtractNoStr,
+                   sizeof(pSWAT01BOutput->SWAT01BData.KyExtractNoA),
+                   CMN_ARCH_PARMS );
+
+       /* Make the code B rather than 02 for Cd Access Type */
+       CmnStrCopy( pSWAT01BOutput->SWAT01BData.CdAccessType,
+                   "B",
+                   sizeof(pSWAT01BOutput->SWAT01BData.CdAccessType),
+                   CMN_ARCH_PARMS );
+ 
+ 
+
+   }
+
+   /* Query TimeStamp Value and load into TsKyExtract */
+   FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(pSWAT01BOutput->SWAT01BData.TsKyExtract),
+                      &pSWAT01BOutput->SWAT01BData.TsKyExtract,
+                      &FndGenErrorBlock);
+
+   /* Query Remarks and load into TxExtractRemarks2 */
+   FndFieldQueryValue(CBI_hwnd,
+                      "TxExtractRemarks2",
+                      sizeof(pSWAT01BOutput->SWAT01BData.TxExtractRemarks2),
+                      &pSWAT01BOutput->SWAT01BData.TxExtractRemarks2,
+                      &FndGenErrorBlock);
+
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusOkPBClick */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SWAT01BBusCDRbAccessTypeFC
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA002BusCDRbAccessTypeFC )
+{
+    USHORT             FndGenRC = 0;
+    _FND_ERROR_BLOCK   FndGenErrorBlock;
+	CHAR               CdAccessType[3];
+	DOUBLE             DfltKyBa = 0;
+	LONG               DfltKyBldgNo = 0;
+	LONG               DfltKyPremNo = 0;
+
+
+	memset(CdAccessType, 0 , sizeof(CdAccessType));
+
+    FndFieldQueryValue(CBI_hwnd,
+                       "CdAccessType",
+                       sizeof(CdAccessType),
+                       &CdAccessType,
+                       &FndGenErrorBlock);
+
+	CmnStrCopy( WCD_SWAT01BRqst.SWAT01BData.CdAccessType,
+			    CdAccessType,
+			    sizeof(CdAccessType),
+			    CMN_ARCH_PARMS); 
+
+   /* If RB AccessType is Account */
+   if (strcmp ( CdAccessType, LT_Acct_01) == 0) 
+   {
+
+       /* Display KY_BA and Hide the other 2 fields */
+
+    
+       FndFieldShow(CBI_hwnd,
+                    "KyBa",
+                    &FndGenErrorBlock);
+
+       FndFieldHide(CBI_hwnd,
+                    "KyBldgNo",
+                    &FndGenErrorBlock);
+
+	   FndFieldHide(CBI_hwnd,
+                    "KyPremNo",
+                    &FndGenErrorBlock);
+
+
+	   /* Initialize the 2 hidden fields */
+       FndFieldSetValue( CBI_hwnd,
+                        "KyBldgNo",
+                        sizeof(LONG),
+                        &DfltKyBldgNo,
+                        &FndGenErrorBlock);
+
+       FndFieldSetValue( CBI_hwnd,
+                        "KyPremNo",
+                        sizeof(LONG),
+                        &DfltKyPremNo,
+                        &FndGenErrorBlock);
+
+
+	   /* Set appropriate Status for each of the 3 fields */
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_INCOMPLETE,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+ 
+   }
+   /* If RB AccessType is Premise */
+   else if (strcmp ( CdAccessType, LT_Prem_02) == 0) 
+   {
+
+       /* Display KY_PREM_NO and Hide the other 2 fields */
+       FndFieldShow(CBI_hwnd,
+                    "KyPremNo",
+                    &FndGenErrorBlock);
+
+       FndFieldHide(CBI_hwnd,
+                    "KyBldgNo",
+                    &FndGenErrorBlock);
+
+       FndFieldHide(CBI_hwnd,
+                    "KyBa",
+                    &FndGenErrorBlock);
+
+	   /* Initialize the 2 hidden fields */
+       FndFieldSetValue( CBI_hwnd,
+                        "KyBldgNo",
+                        sizeof(LONG),
+                        &DfltKyBldgNo,
+                        &FndGenErrorBlock);
+
+       FndFieldSetValue( CBI_hwnd,
+                        "KyBa",
+                        sizeof(DOUBLE),
+                        &DfltKyBa,
+                        &FndGenErrorBlock);
+
+
+	   /* Set appropriate Status for each of the 3 fields */
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_INCOMPLETE,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+
+   }
+   /* If RB AccessType is Building */
+   else if (strcmp ( CdAccessType, LT_Bldg_03) == 0) 
+   {
+
+       /* Display KY_BLDG_NO and Hide the other 2 fields */
+       FndFieldShow(CBI_hwnd,
+                    "KyBldgNo",
+                    &FndGenErrorBlock);
+
+       FndFieldHide(CBI_hwnd,
+                    "KyPremNo",
+                    &FndGenErrorBlock);
+
+       FndFieldHide(CBI_hwnd,
+                    "KyBa",
+                    &FndGenErrorBlock);
+
+
+	   /* Initialize the 2 hidden fields */
+       FndFieldSetValue( CBI_hwnd,
+                        "KyBa",
+                        sizeof(DOUBLE),
+                        &DfltKyBa,
+                        &FndGenErrorBlock);
+
+       FndFieldSetValue( CBI_hwnd,
+                        "KyPremNo",
+                        sizeof(LONG),
+                        &DfltKyPremNo,
+                        &FndGenErrorBlock);
+
+
+ 	   /* Set appropriate Status for each of the 3 fields */
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_INCOMPLETE,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+       FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+
+   }
+
+
+    return CMN_SUCCESS;
+
+}  /* End of SWAT01BBusCDRbAccessTypeFC */
+
+
+
+

@@ -1,0 +1,140 @@
+/***************************************************************************
+*                                                                          *
+*       W I N D O W S   N T   S Y M B O L I C   D E F I N I T I O N S       *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZBA001                           *
+*                          Generated on: Thu Aug 29 18:21:02 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/***************************************************************************
+*  Field IDs                                                               *
+****************************************************************************/
+
+#define CdExtractInsertAct_FID                         0
+#define TxExtractDbId_FID                              1
+#define TxExtractOwnerId_FID                           2
+#define TxExtractPsswdId_FID                           3
+#define TxInsertPsswdId_FID                            4
+#define TxInsertDbId_FID                               5
+#define TxInsertOwnerId_FID                            6
+#define TxUserNm_FID                                   7
+#define ExtractInsertLB_FID                            8
+#define TxExtractRemarks2_FID                          9
+#define TxGenDecode4_FID                               10
+#define TxGenDecode3_FID                               11
+#define TxGenDecode2_FID                               12
+#define TxGenDecode1_FID                               13
+#define FlWindowMod_FID                                14
+#define TxGenDecode5_FID                               15
+#define ExtractInsertLBSelInd_FID                      16
+#define ExtractInsertLBCdStatusIconic_FID              17
+#define ExtractInsertLBNmRowIndx_FID                   18
+#define ExtractInsertLBCdAccessType_FID                19
+#define ExtractInsertLBKyExtractNo_FID                 20
+#define ExtractInsertLBTsKyExtract_FID                 21
+#define ExtractInsertLBTxExtractRemarks_FID            22
+#define ExtractInsertLBKyExtractNoA_FID                23
+
+/***************************************************************************
+*  Widget IDs                                                              *
+****************************************************************************/
+
+#define CdExtractInsertAct_WID                         8000
+#define TxExtractDbId_WID                              101
+#define TxExtractOwnerId_WID                           102
+#define groupBoxWidget_WID                             9000
+#define TxExtractPsswdId_WID                           103
+#define groupBoxWidget1_WID                            9001
+#define TxInsertPsswdId_WID                            104
+#define TxInsertDbId_WID                               105
+#define TxInsertOwnerId_WID                            106
+#define TxUserNm_WID                                   107
+#define staticWidget_WID                               10006
+#define ExtractInsertLB_WID                            108
+#define TxExtractRemarks2_WID                          109
+#define TxGenDecode4_WID                               110
+#define TxGenDecode3_WID                               111
+#define TxGenDecode2_WID                               112
+#define TxGenDecode1_WID                               113
+#define FlWindowMod_WID                                114
+#define staticWidget1_WID                              10007
+#define TxGenDecode5_WID                               115
+#define groupBoxWidget2_WID                            9002
+
+/***************************************************************************
+*  Command IDs                                                             *
+****************************************************************************/
+
+#define AddPB_CMD                                      1000
+#define ChangePB_CMD                                   1001
+#define DeletePB_CMD                                   1002
+#define UndeletePB_CMD                                 1003
+#define ORDERMN_CMD                                    200
+#define ProcessMN_CMD                                  1004
+#define ExitMN_CMD                                     1005
+#define EditMN_CMD                                     201
+#define Cut_CMD                                        3001
+#define Copy_CMD                                       3002
+#define Paste_CMD                                      3003
+#define HelpMN_CMD                                     202
+#define HelpforHelpMN_CMD                              1006
+#define ExtendedHelpMN_CMD                             1007
+#define KeysHelpMN_CMD                                 1008
+#define HelpIndexMN_CMD                                1009
+#define AboutMN_CMD                                    1010
+
+/***************************************************************************
+*  Radio Button Literals                                                   *
+****************************************************************************/
+#ifndef LT_ExtIns                          
+#define LT_ExtIns                           "03"
+#endif
+#ifndef LT_Ext                             
+#define LT_Ext                              "01"
+#endif
+#ifndef LT_Ins                             
+#define LT_Ins                              "02"
+#endif
+
+
+/***************************************************************************
+*  List Box Column Literals                                                *
+****************************************************************************/
+#ifndef LT_CheckedIconValue                
+#define LT_CheckedIconValue                 1
+#endif
+#ifndef LT_BlankIconValue                  
+#define LT_BlankIconValue                   2
+#endif
+#ifndef LT_AddedIconValue                  
+#define LT_AddedIconValue                   7
+#endif
+#ifndef LT_ChangedIconValue                
+#define LT_ChangedIconValue                 8
+#endif
+#ifndef LT_UnchgDelIconValue               
+#define LT_UnchgDelIconValue                9
+#endif
+#ifndef LT_AddDelIconValue                 
+#define LT_AddDelIconValue                  10
+#endif
+#ifndef LT_ChgDelIconValue                 
+#define LT_ChgDelIconValue                  11
+#endif
+#ifndef LT_AvailableIconValue              
+#define LT_AvailableIconValue               13
+#endif
+#ifndef LT_AddChgIconValue                 
+#define LT_AddChgIconValue                  14
+#endif
+#ifndef LT_AddChgDelIconValue              
+#define LT_AddChgDelIconValue               15
+#endif
+

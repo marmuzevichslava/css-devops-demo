@@ -1,0 +1,33 @@
+/***************************************************************************
+ *                                                                         *
+ *         C  W I N D O W S   N T   W I N D O W   I D E N T I F I E R S     *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *               Window Identifiers for: DZBA01                            *
+ *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *                                   by: IPEREZAR                          *
+ *                    Short Description:                                   *
+ *                                                                         *
+ ***************************************************************************/
+#define DZBA001ID                501
+#define DZBA001MenuID                501
+#define DZBA001IconID                501
+#define DZBA001AccelID               501
+#define DZBA001WctID                 501
+
+#define DZBA002ID                502
+#define DZBA002MenuID                502
+#define DZBA002IconID                502
+#define DZBA002AccelID               502
+#define DZBA002WctID                 502
+
+#define DZBA003ID                503
+#define DZBA003MenuID                503
+#define DZBA003IconID                503
+#define DZBA003AccelID               503
+#define DZBA003WctID                 503
+
+

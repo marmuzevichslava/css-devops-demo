@@ -1,0 +1,65 @@
+/***************************************************************************
+*                                                                          *
+*       W I N D O W S   N T   S Y M B O L I C   D E F I N I T I O N S       *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZBA002                           *
+*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/***************************************************************************
+*  Field IDs                                                               *
+****************************************************************************/
+
+#define CdAccessType_FID                               0
+#define KyBldgNo_FID                                   1
+#define TsKyExtract_FID                                2
+#define TxExtractRemarks2_FID                          3
+#define KyPremNo_FID                                   4
+#define FlWindowMod_FID                                5
+#define KyBa_FID                                       6
+
+/***************************************************************************
+*  Widget IDs                                                              *
+****************************************************************************/
+
+#define CdAccessType_WID                               8000
+#define KyBldgNo_WID                                   101
+#define TsKyExtract_WID                                102
+#define TxExtractRemarks2_WID                          103
+#define KyPremNo_WID                                   104
+#define FlWindowMod_WID                                105
+#define KyBa_WID                                       106
+
+/***************************************************************************
+*  Command IDs                                                             *
+****************************************************************************/
+
+#define CancelPB_CMD                                   1000
+#define OKPB_CMD                                       1001
+#define ValidPB_CMD                                    1002
+
+/***************************************************************************
+*  Radio Button Literals                                                   *
+****************************************************************************/
+#ifndef LT_Acct                            
+#define LT_Acct                             "01"
+#endif
+#ifndef LT_Premise                         
+#define LT_Premise                          "02"
+#endif
+#ifndef LT_Bldg                            
+#define LT_Bldg                             "03"
+#endif
+
+
+/***************************************************************************
+*  List Box Column Literals                                                *
+****************************************************************************/
+

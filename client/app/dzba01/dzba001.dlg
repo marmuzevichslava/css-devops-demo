@@ -1,0 +1,927 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
+*                                                                          *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZBA001                           *
+*                          Generated on: Thu Aug 29 18:21:02 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+DZBA001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,307,164
+    STYLE 0 
+     | WS_CAPTION
+     | WS_MINIMIZEBOX
+     | WS_MAXIMIZEBOX
+     | WS_SYSMENU
+     | DS_MODALFRAME
+    CAPTION "BILL ACCOUNT EXTRACT"
+    
+Begin  /* controls */
+   CONTROL "Process Mode",8000,
+              FND_RADIO_GROUP,
+              WS_VISIBLE | WS_GROUP | BS_GROUPBOX
+              ,6,15,0,0
+
+   CONTROL "Extract/Insert",116,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              | BS_RADIOBUTTON
+              ,6,15,0,0
+
+   CONTROL "Extract Only",117,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,6,15,0,0
+
+   CONTROL "Insert Only",118,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,6,15,0,0
+
+   CONTROL "Database",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,9,43,37,12
+
+   CONTROL "",101,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,51,43,81,0
+
+   CONTROL "Owner",502,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,9,57,35,12
+
+   CONTROL "",102,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,51,57,81,0
+
+   CONTROL "Extract DB",9000,
+              FND_GROUP_BOX,
+              WS_VISIBLE | BS_GROUPBOX
+              ,3,35,142,52
+
+   CONTROL "Password",503,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,10,72,38,12
+
+   CONTROL "",103,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,52,72,88,0
+
+   CONTROL "Insert DB",9001,
+              FND_GROUP_BOX,
+              WS_VISIBLE | BS_GROUPBOX
+              ,159,35,144,51
+
+   CONTROL "Password",504,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,169,71,38,12
+
+   CONTROL "",104,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,211,71,88,0
+
+   CONTROL "Database",505,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,169,43,37,12
+
+   CONTROL "",105,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,211,43,80,0
+
+   CONTROL "Owner",506,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,169,57,35,12
+
+   CONTROL "",106,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,211,57,80,0
+
+   CONTROL "",107,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,211,17,80,0
+
+   CONTROL "Default Remarks",10006,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,190,93,63,10
+
+   CONTROL "Add...",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,3,139,35,12
+
+   CONTROL "Change...",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,50,139,37,12
+
+   CONTROL "Delete",1002,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,101,139,35,12
+
+   CONTROL "Undelete",1003,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,148,139,35,12
+
+   CONTROL "",108,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,3,93,181,42
+
+   CONTROL "",109,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,189,105,110,46
+
+   CONTROL "",110,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,276,113,21,0
+
+   CONTROL "",111,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,276,113,21,0
+
+   CONTROL "",112,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,276,113,21,0
+
+   CONTROL "",113,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,276,113,21,0
+
+   CONTROL "",114,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,276,113,0,0
+
+   CONTROL "User Name",10007,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,212,3,50,10
+
+   CONTROL "",115,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,276,113,21,0
+
+   CONTROL "Process Mode",9002,
+              FND_GROUP_BOX,
+              WS_VISIBLE | BS_GROUPBOX
+              ,2,3,200,26
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+DZBA001ID 332
+Begin
+   /*  Control Data for Radio Group CdExtractInsertAct  */
+   FP_CONTROL_ID,                       "8000\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_TOP_MARGIN,                       "10\0"
+   FP_LEFT_MARGIN,                      "5\0"
+   FP_HORIZONTAL_SPACING,               "2\0"
+   FP_VERTICAL_SPACING,                 "7\0"
+   FP_DIRECTION,                        FPV_HORIZONTAL, "\0"
+   FP_BUTTONS_PER_ROW,                  "3\0"
+   FP_BUTTON_INFO,                      "116,03\0"
+   FP_BUTTON_INFO,                      "117,01\0"
+   FP_BUTTON_INFO,                      "118,02\0"
+
+   /*  Control Data for Static Text Database  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Combobox TxExtractDbId  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "51,43\0"
+   FP_LIST_WIDTH,                       "84\0"
+   FP_LIST_HEIGHT,                      "48\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "10\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Owner  */
+   FP_CONTROL_ID,                       "502\0"
+   FP_SCREEN_LENGTH,                    "5\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Combobox TxExtractOwnerId  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_SCREEN_LENGTH,                    "30\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "51,57\0"
+   FP_LIST_WIDTH,                       "81\0"
+   FP_LIST_HEIGHT,                      "48\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "30\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Password  */
+   FP_CONTROL_ID,                       "503\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field TxExtractPsswdId  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "30\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Password  */
+   FP_CONTROL_ID,                       "504\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field TxInsertPsswdId  */
+   FP_CONTROL_ID,                       "104\0"
+   FP_SCREEN_LENGTH,                    "30\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Database  */
+   FP_CONTROL_ID,                       "505\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Combobox TxInsertDbId  */
+   FP_CONTROL_ID,                       "105\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "211,43\0"
+   FP_LIST_WIDTH,                       "78\0"
+   FP_LIST_HEIGHT,                      "48\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "10\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Owner  */
+   FP_CONTROL_ID,                       "506\0"
+   FP_SCREEN_LENGTH,                    "5\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Combobox TxInsertOwnerId  */
+   FP_CONTROL_ID,                       "106\0"
+   FP_SCREEN_LENGTH,                    "30\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "211,57\0"
+   FP_LIST_WIDTH,                       "88\0"
+   FP_LIST_HEIGHT,                      "48\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "30\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Combobox TxUserNm  */
+   FP_CONTROL_ID,                       "107\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "211,17\0"
+   FP_LIST_WIDTH,                       "89\0"
+   FP_LIST_HEIGHT,                      "51\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "30\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Default Remarks  */
+   FP_CONTROL_ID,                       "10006\0"
+   FP_SCREEN_LENGTH,                    "15\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for List Box ExtractInsertLB  */
+   FP_CONTROL_ID,                       "108\0"
+   FP_CAPTION,                          "\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_DRAW_HORZ_LINES,                  FPV_FALSE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_FALSE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_TRUE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "7\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column CdStatusIconic  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "2\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_IMAGEVAL_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_IMAGE_SOURCE,                     "1,BMP,EXE,1\0"
+   FP_IMAGE_SOURCE,                     "2,BMP,EXE,2\0"
+   FP_IMAGE_SOURCE,                     "7,BMP,EXE,7\0"
+   FP_IMAGE_SOURCE,                     "8,BMP,EXE,8\0"
+   FP_IMAGE_SOURCE,                     "9,BMP,EXE,9\0"
+   FP_IMAGE_SOURCE,                     "10,BMP,EXE,10\0"
+   FP_IMAGE_SOURCE,                     "11,BMP,EXE,11\0"
+   FP_IMAGE_SOURCE,                     "13,BMP,EXE,13\0"
+   FP_IMAGE_SOURCE,                     "14,BMP,EXE,14\0"
+   FP_IMAGE_SOURCE,                     "15,BMP,EXE,15\0"
+   FP_SIZE_IMAGE,                       FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column NmRowIndx  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_PREFIX, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+
+   /*  Control Data for List Box Column CdAccessType  */
+   FP_COLUMN_ID,                        "2\0"
+   FP_CAPTION,                          "Type\0"
+   FP_SCREEN_LENGTH,                    "2\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column KY_EXTRACT_NO  */
+   FP_COLUMN_ID,                        "3\0"
+   FP_CAPTION,                          "Number\0"
+   FP_SCREEN_LENGTH,                    "12\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "12\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column TsKyExtract  */
+   FP_COLUMN_ID,                        "4\0"
+   FP_CAPTION,                          "TimeStamp\0"
+   FP_SCREEN_LENGTH,                    "26\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column TX_EXTRACT_REMARKS  */
+   FP_COLUMN_ID,                        "5\0"
+   FP_CAPTION,                          "Dev00815 Tx Extract Remarks\0"
+   FP_SCREEN_LENGTH,                    "80\0"
+   FP_INITIALLY_HIDDEN,                 FPV_TRUE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column KY_EXTRACT_NO_A  */
+   FP_COLUMN_ID,                        "6\0"
+   FP_CAPTION,                          "Dev00817 Ky Extract No A\0"
+   FP_SCREEN_LENGTH,                    "11\0"
+   FP_INITIALLY_HIDDEN,                 FPV_TRUE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field TxExtractRemarks2  */
+   FP_CONTROL_ID,                       "109\0"
+   FP_SCREEN_LENGTH,                    "80\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field TxGenDecode4  */
+   FP_CONTROL_ID,                       "110\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field TxGenDecode3  */
+   FP_CONTROL_ID,                       "111\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field TxGenDecode2  */
+   FP_CONTROL_ID,                       "112\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field TxGenDecode1  */
+   FP_CONTROL_ID,                       "113\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "114\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text User Name  */
+   FP_CONTROL_ID,                       "10007\0"
+   FP_SCREEN_LENGTH,                    "9\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field TxGenDecode5  */
+   FP_CONTROL_ID,                       "115\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+DZBA001MenuID MENU PRELOAD
+Begin  /*  menus  */
+     POPUP "Order"
+Begin
+     MENUITEM "&Process\tCtrl P",1004
+     MENUITEM "E&xit\tCtrl+X",1005
+End
+     POPUP "&Edit"
+Begin
+     MENUITEM "Cu&t\tShift Del",3001
+     MENUITEM "&Copy\tCtrl Ins",3002
+     MENUITEM "&Paste\tShift Ins",3003
+End
+     POPUP "&Help"
+Begin
+     MENUITEM "&Help for Help...",1006
+     MENUITEM "&Extended Help...",1007
+     MENUITEM "&Keys Help...",1008
+     MENUITEM "Help &Index...",1009
+     MENUITEM SEPARATOR     MENUITEM "&About...",1010
+End
+End  /*  menus  */
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+DZBA001AccelID ACCELERATORS PRELOAD
+Begin
+"P",1004,CONTROL,VIRTKEY
+"X",1005,CONTROL,VIRTKEY
+VK_DELETE,3001,SHIFT,VIRTKEY
+VK_INSERT,3002,CONTROL,VIRTKEY
+VK_INSERT,3003,SHIFT,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+DZBA001IconID ICON DZBA001.ICO
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+
+
+#ifndef BITMAP_RID_1
+#define BITMAP_RID_1
+1 BITMAP ARCB0001.BMP
+#endif
+
+#ifndef BITMAP_RID_2
+#define BITMAP_RID_2
+2 BITMAP ARCB0002.BMP
+#endif
+
+#ifndef BITMAP_RID_7
+#define BITMAP_RID_7
+7 BITMAP ARCB0007.BMP
+#endif
+
+#ifndef BITMAP_RID_8
+#define BITMAP_RID_8
+8 BITMAP ARCB0008.BMP
+#endif
+
+#ifndef BITMAP_RID_9
+#define BITMAP_RID_9
+9 BITMAP ARCB0009.BMP
+#endif
+
+#ifndef BITMAP_RID_10
+#define BITMAP_RID_10
+10 BITMAP ARCB0010.BMP
+#endif
+
+#ifndef BITMAP_RID_11
+#define BITMAP_RID_11
+11 BITMAP ARCB0011.BMP
+#endif
+
+#ifndef BITMAP_RID_13
+#define BITMAP_RID_13
+13 BITMAP ARCB0013.BMP
+#endif
+
+#ifndef BITMAP_RID_14
+#define BITMAP_RID_14
+14 BITMAP ARCB0014.BMP
+#endif
+
+#ifndef BITMAP_RID_15
+#define BITMAP_RID_15
+15 BITMAP ARCB0015.BMP
+#endif
