@@ -841,6 +841,9 @@ USHORT GetEntityType(char *pszStr)
 **  04/13/98  JRICE                 Modified code to include occurences 
 **                                  for elements
 **
+**  04/17/98  JRICE                 Added logic to concatenate item name 
+**                                  when the value is too long
+**
 ***************************************************************************/
 SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr, 
                              _REPLYHDR    *pReplyHdr,
@@ -854,6 +857,7 @@ SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr,
     SHORT  rc        = 0;
 	LONG   PrintSize = 0;
     _CMN_PD_PRINT_DATA_PARMS_EXT PrintParms;
+	LONG   ItemNameLength = 0;
 
     /* set print parms for desired format */
 	memset( &PrintParms, 0, sizeof( _CMN_PD_PRINT_DATA_PARMS_EXT ));
@@ -911,10 +915,30 @@ SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr,
 									  CDCONTROLCHAR_BOLD_ON );
 			}
 
+			/* JRICE 04/17/98
+			** Calculate item name length otuside of the sprintf statement
+			** as this value will now be used twice: once for minimum length
+			** as before, but now also for maximum length
+			*/
+			/* 
+	        ** item name 
+			** both 'document id' and 'item type' have
+			** fixed lengths to print.  however, to
+		    ** keep 'item name' from overwriting the
+			** detail columns, it does not have a set
+			** width to print.  instead, it will print
+			** from the end of 'item type' to the 
+			** beginning of 'fmt'
+			*/
+
+			ItemNameLength = 	( FMT_START_COL - OFFSET_FMT ) -         \
+								(( WCD_EntityData[CurrRow].EntityLevel * \
+								INDENT_FACTOR ) + COL_WIDTH_DOC_ID +     \
+								COL_WIDTH_ITEM_TYPE );
 			
 			/* all entities print doc id, item type, and item name */
 			PrintSize += sprintf( &PrintParms.DataToPrint[PrintSize], 
-								  "%*s%-*s%-*s%-*s",
+								  "%*s%-*s%-*s%-*.*s",
 								  
 								  /* indent */
 								  WCD_EntityData[CurrRow].EntityLevel * \
@@ -929,20 +953,11 @@ SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr,
 								  COL_WIDTH_ITEM_TYPE,
 								  &WCD_EntityData[CurrRow].EntityType,
 
-								  /* 
-								  ** item name 
-								  ** both 'document id' and 'item type' have
-								  ** fixed lengths to print.  however, to
-								  ** keep 'item name' from overwriting the
-								  ** detail columns, it does not have a set
-								  ** width to print.  instead, it will print
-								  ** from the end of 'item type' to the 
-								  ** beginning of 'fmt'
+								  /* JRICE 04/17/98
+								  ** Added value for max item length
+								  ** along with minimum
 								  */
-								  ( FMT_START_COL - OFFSET_FMT ) -         \
-								  (( WCD_EntityData[CurrRow].EntityLevel * \
-								  INDENT_FACTOR ) + COL_WIDTH_DOC_ID +     \
-								  COL_WIDTH_ITEM_TYPE ),
+								  ItemNameLength, ItemNameLength,
 								  &WCD_EntityData[CurrRow].EntityCobolName );
 
 			/*
@@ -951,7 +966,7 @@ SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr,
 			**     copybook -
 			**     table    -
 			**     group    - 					x
-			**     element  -  x   x	x	x		  x			x
+			**     element  -  x   x	x	x	x	  x			x
 			**
 			** when an item like 'group' and 'element' skip columns, 'spaces'
 			** are printed to hold the allignment 
