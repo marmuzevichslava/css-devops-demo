@@ -271,6 +271,7 @@ Public bModified As Boolean
 Public CurClient As Integer
 Public bDecodeOK As Boolean
 Public bKeyOK As Boolean
+Public bChangeKey As Boolean
 
 
 '***************************************************************************************************************
@@ -279,7 +280,8 @@ Private Sub cbxClients_Click()
     Dim x As Integer
     
     If (bFormLoaded = True) Then
-    
+        
+        bChangeKey = True
         bModified = True
     
         For x = 0 To UBound(ClientArray)
@@ -350,30 +352,56 @@ Private Sub cmdProcess_Click()
     'We are in Modify mode.
     Else
         
-        'Check to see if this new key already exists.
-        If (CheckKeyExists(CurTable, txtKey.Text, GetClientDecode(frmMain.lvListView.SelectedItem.SubItems(2))) = False) Then
-            RC = MessageBox(Me.hwnd, _
-                            "This Key does not current exists on this table!" & vbCrLf & _
+        If (bChangeKey) Then
+            'Check to see if this new key already exists.
+            If (CheckKeyExists(CurTable, txtKey.Text, GetClientDecode(Me.cbxClients)) = False) Then
+                RC = MessageBox(Me.hwnd, _
+                            "This Key does not currently exist on this table!" & vbCrLf & _
                             "Would you like to add the current Key?", _
                             "Codes Table Explorer", _
                             MB_YESNO Or MB_ICONQUESTION Or MB_DEFBUTTON1)
             
-            If (RC = IDNO) Then
-                Exit Sub
-            Else
-                'Attempt to add the record and display a status message.
-                If (AddNewRecord = True) Then
-                    RC = MessageBox(Me.hwnd, _
+                If (RC = IDNO) Then
+                    Exit Sub
+                Else
+                    'Attempt to add the record and display a status message.
+                    If (AddNewRecord = True) Then
+                        RC = MessageBox(Me.hwnd, _
                                     "Record successfully added!", _
                                     "Codes Table Explorer", _
                                     MB_OK Or MB_ICONEXCLAMATION)
-                Else
-                    RC = MsgBox(Me.hwnd, _
+                    Else
+                        RC = MsgBox(Me.hwnd, _
                                 "Unable to process new record!", _
                                 "Codes Table Explorer", _
                                 MB_OK Or MB_ICONEXCLAMATION)
+                    End If
+                End If
+            Else
+                RC = MessageBox(Me.hwnd, _
+                            "This Key currently exists on this table!" & vbCrLf & _
+                            "Would you like to modify the current Key?", _
+                            "Codes Table Explorer", _
+                            MB_YESNO Or MB_ICONQUESTION Or MB_DEFBUTTON1)
+            
+                If (RC = IDNO) Then
+                    Exit Sub
+                Else
+                    'Attempt to add the record and display a status message.
+                    If (ModifyRecord = True) Then
+                        RC = MessageBox(Me.hwnd, _
+                                    "Record successfully modified!", _
+                                    "Codes Table Explorer", _
+                                    MB_OK Or MB_ICONEXCLAMATION)
+                    Else
+                        RC = MsgBox(Me.hwnd, _
+                                "Unable to modify record!", _
+                                "Codes Table Explorer", _
+                                MB_OK Or MB_ICONEXCLAMATION)
+                    End If
                 End If
             End If
+            bChangeKey = False
         Else
             'Attempt to modify the record and display a status message.
             If (ModifyRecord = True) Then
@@ -387,8 +415,8 @@ Private Sub cmdProcess_Click()
                                 "Codes Table Explorer", _
                                 MB_OK Or MB_ICONEXCLAMATION)
             End If
-        End If
 
+        End If
     End If
 
     'Refresh the list box on the main window.
@@ -404,6 +432,7 @@ Private Sub Form_Load()
     Dim RC As Integer, x As Integer
     
     bFormLoaded = False
+    bChangeKey = False
     
      'Build the list of available clients.
     GetClientCBox
@@ -556,6 +585,11 @@ End Sub
 Private Sub txtKey_Change()
 '***************************************************************************************************************
     bModified = True
+    
+    If (bFormLoaded = True) Then
+        bChangeKey = True
+    End If
+        
     
     'Refresh the window controls
     WindowRefresh

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0"; "comdlg32.ocx"
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
 Begin VB.Form frmSourceFileGenerator 
    BorderStyle     =   3  'Fixed Dialog
@@ -10,6 +10,7 @@ Begin VB.Form frmSourceFileGenerator
    ClientWidth     =   7140
    Icon            =   "frmSourceFileGenerator.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4590
@@ -130,8 +131,7 @@ Begin VB.Form frmSourceFileGenerator
       End
    End
    Begin VB.TextBox efCUVFile 
-      BackColor       =   &H00FFFFFF&
-      Enabled         =   0   'False
+      BackColor       =   &H0000FFFF&
       Height          =   285
       Left            =   1125
       TabIndex        =   14
@@ -203,33 +203,35 @@ Begin VB.Form frmSourceFileGenerator
          Width           =   1890
       End
       Begin VB.TextBox Length 
-         BackColor       =   &H00FFFFFF&
-         Enabled         =   0   'False
+         BackColor       =   &H8000000F&
+         BorderStyle     =   0  'None
          Height          =   315
-         Left            =   4800
+         Left            =   5040
+         Locked          =   -1  'True
          TabIndex        =   6
-         Top             =   263
+         Top             =   270
          Width           =   690
       End
       Begin VB.ComboBox cboDataType 
          Height          =   315
-         Left            =   1350
+         Left            =   1320
          Style           =   2  'Dropdown List
          TabIndex        =   4
          Top             =   675
-         Width           =   1890
+         Width           =   1770
       End
       Begin VB.TextBox DataElement 
          BackColor       =   &H0000FFFF&
          Height          =   315
-         Left            =   1350
+         Left            =   1320
          TabIndex        =   2
          Top             =   263
          Width           =   2490
       End
-      Begin VB.Label Label8 
+      Begin VB.Label lblIntType 
          Alignment       =   1  'Right Justify
          Caption         =   "Integer Type:"
+         Enabled         =   0   'False
          Height          =   240
          Left            =   3675
          TabIndex        =   7
@@ -240,7 +242,7 @@ Begin VB.Form frmSourceFileGenerator
          Alignment       =   1  'Right Justify
          Caption         =   "Length:"
          Height          =   240
-         Left            =   4050
+         Left            =   4290
          TabIndex        =   5
          Top             =   300
          Width           =   615
@@ -311,57 +313,73 @@ Public FileName As String
 Public DataType As String
 Public CompType As String
 
+
+
+
+
+
 '***************************************************************************************************************
 Private Sub cboComp_Change()
 '***************************************************************************************************************
+
+
+End Sub
+
+'***************************************************************************************************************
+Private Sub cboComp_Click()
+'***************************************************************************************************************
+    Dim x As Integer
+    
+    x = 0
+    
     If Not bLoading Then
-    
-        strSQL = "SELECT CompTypeCd FROM tblCompTypes WHERE CompTypeDecode = " & _
-                 Chr(39) & cboComp.Text & Chr(39)
         
-        Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-    
-        If Not DaoRS.EOF Then
-            CompType = DaoRS(0).Value
-        Else
-            CompType = vbNull
-        End If
-        
-        DaoRS.Close
+        For x = 0 To UBound(CompTypes)
+            If (Me.cboComp.Text = CompTypes(x).CompTypeName) Then
+                CompType = CompTypes(x).CompTypeCodes
+                Exit For
+            End If
+        Next
     
     End If
-
 End Sub
 
 
 '***************************************************************************************************************
-Private Sub cboDataType_Click()
+ Public Sub cboDataType_Click()
 '***************************************************************************************************************
+    Dim x As Integer
+    
+    x = 0
+    
     If Not bLoading Then
+        
         If (cboDataType.Text = "Integer") Then
             cboComp.Enabled = True
             cbSigned.Enabled = True
+            lblIntType.Enabled = True
         Else
             cboComp.Enabled = False
             cbSigned.Enabled = False
+            lblIntType.Enabled = False
         End If
     
-        strSQL = "SELECT DataTypeCode FROM tblDataTypes WHERE DataTypeDecode = " & _
-                 Chr(39) & cboDataType.Text & Chr(39)
-        
-        Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-    
-        If Not DaoRS.EOF Then
-            DataType = DaoRS(0).Value
-        Else
-            DataType = vbNull
-        End If
-        
-        DaoRS.Close
-    
-    End If
+        For x = 0 To UBound(DataTypes)
+            If (Me.cboDataType.Text = DataTypes(x).DataTypeName) Then
+                DataType = DataTypes(x).DataTypeCodes
+                Exit For
+            End If
+        Next
+     End If
 
 End Sub
+'***************************************************************************************************************
+Private Sub cboDataType_LostFocus()
+'***************************************************************************************************************
+
+
+End Sub
+
 
 '***************************************************************************************************************
 Private Sub DataElement_Change()
@@ -379,10 +397,20 @@ Private Sub DataElement_Change()
 End Sub
 
 
+Private Sub efCUVFile_Change()
+    If (Len(efCUVFile.Text) < 1) Then
+        efCUVFile.BackColor = &HFFFF&
+    Else
+        efCUVFile.BackColor = &H80000005
+    End If
+
+    Call SetExportButtonState
+End Sub
+
 '***************************************************************************************************************
 Private Sub efPath_Change()
 '***************************************************************************************************************
-    If (Len(efPath.Text) <= 1) Then
+    If (Len(efPath.Text) < 1) Then
         efPath.BackColor = &HFFFF&
     Else
         efPath.BackColor = &H80000005
@@ -397,6 +425,10 @@ End Sub
 Private Sub Form_Load()
 '***************************************************************************************************************
     Dim x As Integer
+    Dim msg As String
+    Dim bDataTypeFlag As Boolean
+    
+    bDataTypeFlag = False
     
     lvSrcGenerate.ColumnHeaders.Add , , "Key", 600, 0
     lvSrcGenerate.ColumnHeaders.Add , , "C Name", 1500, 0
@@ -410,11 +442,112 @@ Private Sub Form_Load()
     'Set up the list view so that it highlights the entire row.
     SendMessage lvSrcGenerate.hwnd, LVM_SETEXTEDEDLISTVIEWSTYLE, 0, 33
     
+    ReDim DataTypes(0)
+    ReDim CompTypes(0)
+    
+    'Build the list of possible data types
+    strSQL = "SELECT DISTINCT DataTypeCode, DataTypeDecode From tblDataTypes order by DataTypeCode"
+    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    If Not DaoRS.EOF Then
+        While Not DaoRS.EOF
+            DataTypes(UBound(DataTypes)).DataTypeCodes = DaoRS(0).Value
+            DataTypes(UBound(DataTypes)).DataTypeName = DaoRS(1).Value
+            ReDim Preserve DataTypes(UBound(DataTypes) + 1)
+            DaoRS.MoveNext
+        Wend
+    End If
+    
+    DaoRS.Close
+      
+    For x = 0 To UBound(DataTypes)
+        Me.cboDataType.AddItem DataTypes(x).DataTypeName
+    Next
+    
+    'Build the list of possible Comp types
+    strSQL = "SELECT CompTypeCd, CompTypeDecode from tblCompTypes " & _
+             "ORDER By CompTypeCd"
+        
+    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    If Not DaoRS.EOF Then
+        While Not DaoRS.EOF
+            CompTypes(UBound(CompTypes)).CompTypeCodes = DaoRS(0).Value
+            CompTypes(UBound(CompTypes)).CompTypeName = DaoRS(1).Value
+            ReDim Preserve CompTypes(UBound(CompTypes) + 1)
+            DaoRS.MoveNext
+        Wend
+    End If
+    
+    DaoRS.Close
+    
+    For x = 0 To UBound(CompTypes)
+        Me.cboComp.AddItem CompTypes(x).CompTypeName
+    Next
+    
+    DataElement.Text = ""
+    
+    strSQL = "SELECT TableName, DataElement, DataType, Signed, Comp FROM tblCUVHeaderData"
+    strSQL = strSQL & " WHERE tblCUVHeaderData.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39)
+    
+    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    If (DaoRS.EOF = False) Then
+        If (Len(DaoRS(1).Value) > 0) Then
+            Me.DataElement.Text = DaoRS(1).Value
+        Else
+            Me.DataElement.Text = ""
+        End If
+        
+        For x = 0 To UBound(DataTypes)
+            If (RTrim(DaoRS(2).Value) = DataTypes(x).DataTypeCodes) Then
+                Me.cboDataType.Text = DataTypes(x).DataTypeName
+                bDataTypeFlag = True
+                Exit For
+            End If
+        Next
+        
+        If (bDataTypeFlag = False) Then
+            Me.cboDataType.Text = DataTypes(x).DataTypeName
+        End If
+        
+        If (Len(DaoRS(3).Value) > 0) Then
+            If (DaoRS(3).Value = True) Then
+                Me.cbSigned.Value = 1
+            Else
+                Me.cbSigned.Value = 0
+            End If
+        Else
+            Me.cbSigned.Value = 0
+        End If
+        
+        For x = 0 To UBound(CompTypes)
+            If (RTrim(DaoRS(4).Value) = CompTypes(x).CompTypeCodes And DaoRS(4).Value <> " ") Then
+                Me.cboComp.Text = CompTypes(x).CompTypeName
+                Exit For
+            End If
+        Next
+        
+    Else
+    
+        strSQL = "INSERT INTO tblCUVHeaderData (TableName) VALUES (" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & ")"
+        wsCTM.BeginTrans
+        dbCTM.Execute strSQL
+        If (dbCTM.RecordsAffected = 1) Then
+            wsCTM.CommitTrans
+        Else
+            msg = "Could not insert " & frmMain.tvTreeView.SelectedItem.Text & " into tblCUVHeaderData table."
+            RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
+            wsCTM.Rollback
+        End If
+    End If
+    
+    DaoRS.Close
     
     Me.Caption = "Generate CUV Copybook - " & frmMain.tvTreeView.SelectedItem.Text
-    efPath.Text = "G:\cuv"
+    efPath.Text = "c:\temp"
     Length.Text = frmMain.txtKeyLength.Text - 1
-    DataElement.Text = frmMain.tvTreeView.SelectedItem.Text
+    
     
     If (Left(frmMain.tvTreeView.SelectedItem.Text, 3) = "CIS") Then
         FileName = "CUV" & Right(frmMain.tvTreeView.SelectedItem.Text, 5)
@@ -430,53 +563,7 @@ Private Sub Form_Load()
     'Populate the list view with the entries contained in this table.
     Call PopulateListView
     
-    Me.Refresh
-    
-    'Get the data types.
-    bLoading = True
-    
-    strSQL = "SELECT DataTypeDecode, DataTypeCode from tblDataTypes " & _
-             "ORDER By DataTypeCode"
-             
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-    x = 0
-    While Not DaoRS.EOF
-        cboDataType.AddItem DaoRS(0).Value
-        If (DaoRS(1).Value = "S") Then
-            cboDataType.ListIndex = x
-            DataType = DaoRS(1).Value
-        Else
-            x = x + 1
-        End If
-        
-        DaoRS.MoveNext
-    Wend
-    
-    
-    DaoRS.Close
-    
     bLoading = False
-    
-    Me.Refresh
-    
-    'Get the Comp types.
-    strSQL = "SELECT CompTypeDecode, CompTypeCd from tblCompTypes " & _
-             "ORDER By CompTypeCd"
-             
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-    If Not DaoRS.EOF Then
-        
-        CompType = DaoRS(1).Value
-        
-        While Not DaoRS.EOF
-            cboComp.AddItem DaoRS(0).Value
-            DaoRS.MoveNext
-        Wend
-        DaoRS.Close
-        cboComp.ListIndex = 0
-    End If
     
     Me.Refresh
     
@@ -524,12 +611,13 @@ End Sub
 Public Sub SetExportButtonState()
 '***************************************************************************************************************
     If ((Len(efPath.Text) > 0) And _
-        (Len(DataElement.Text) > 0)) Then
+        (Len(DataElement.Text) > 0) And _
+        (Len(efCUVFile.Text) > 0)) Then
         pbGenerate.Enabled = True
     Else
         pbGenerate.Enabled = False
-
     End If
+
 
 End Sub
 
@@ -591,6 +679,40 @@ End Sub
 Private Sub pbGenerate_Click()
 '***************************************************************************************************************
     Dim bFound As Boolean, Col As Integer, RC As Integer, x As Integer
+    Dim bSignedFlag As Boolean, msg As String
+    
+    'On Error GoTo UpdateError
+    
+    If (Me.cbSigned = 1) Then
+        bSignedFlag = True
+    Else
+        bSignedFlag = False
+    End If
+       
+    If (Len(cboComp.Text) = 0) Then
+        CompType = " "
+    End If
+    
+    strSQL = "UPDATE DISTINCTROW tblCUVHeaderData SET tblCUVHeaderData.DataType = " & Chr(39) & DataType & Chr(39)
+    strSQL = strSQL & ", tblCUVHeaderData.DataElement = " & Chr(39) & Me.DataElement & Chr(39)
+    strSQL = strSQL & ", tblCUVHeaderData.Comp = " & Chr(39) & CompType & Chr(39)
+    strSQL = strSQL & ", tblCUVHeaderData.Signed = " & bSignedFlag
+    strSQL = strSQL & " WHERE (((tblCUVHeaderData.TableName)=" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "));"
+
+Debug.Print strSQL
+
+    wsCTM.BeginTrans
+    dbCTM.Execute strSQL
+    
+    If (dbCTM.RecordsAffected = 1) Then
+        wsCTM.CommitTrans
+    Else
+        wsCTM.Rollback
+        Debug.Print strSQL
+        msg = "An error has occured while trying to modify the Data Element header fields. Copybook was not generated." & vbCrLf
+        RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
+        Exit Sub
+    End If
     
     bFound = False
     
@@ -612,7 +734,7 @@ Private Sub pbGenerate_Click()
     
     If Not bFound Then
         Call GenerateCopybook
-        Unload Me
+        'Unload Me
     Else
         lvSrcGenerate.ListItems(x).Selected = True
         Set lvSrcGenerate.SelectedItem = lvSrcGenerate.ListItems(x)

@@ -43,6 +43,19 @@ End Type
 
 Public TableTypes() As TableType
 
+Type DataType
+    DataTypeName As String
+    DataTypeCodes As String
+End Type
+
+Public DataTypes() As DataType
+
+Type CompType
+    CompTypeName As String
+    CompTypeCodes As String
+End Type
+
+Public CompTypes() As CompType
 
 'Structure used during the import process for error handling.
 Type ImportError
@@ -116,6 +129,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.txtDataLength.Text = ""
     frmMain.txtKeyLength.Text = ""
     frmMain.txtCenturyDelim.Text = ""
+    frmMain.txtTotalKeys = ""
     frmMain.chkSystem.Value = False
     frmMain.chkStatic.Value = False
     frmMain.chkCodes.Value = False
@@ -156,8 +170,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
             Exit For
         End If
     Next
-    
-    
+       
     'Get all the Keys and decodes.
     Call RefreshCodeDecodeLB
     
@@ -169,8 +182,6 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.mnuDeleteTable.Enabled = True
     frmMain.mnuModifyTable.Enabled = True
                  
-    'If this is a Codes table, then enable printing and generation.
-    'If (Left(frmMain.tvTreeView.SelectedItem.Text, 3) = "CIS") Then
     If (CurTableType = 1) Then
         frmMain.mnuPrintTable.Enabled = True
         frmMain.mnuGenerate.Enabled = True
@@ -412,7 +423,6 @@ Public Sub RefreshCodeDecodeLB()
                  "tblReleases.Code = tblEntries.CSSRelease " & _
                  "ORDER BY tblEntries.Key ASC"
     
-    
     ElseIf (CurTableType = MSG_BOX) Then
         strSQL = "SELECT tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, " & _
                  "tblClients.Client, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxEntries.Comments " & _
@@ -433,8 +443,6 @@ Public Sub RefreshCodeDecodeLB()
                  "ORDER BY tblUserErrorMsgEntries.ErrorNumber ASC, tblUserErrorMsgEntries.SequenceNumber ASC"
     End If
     
-    Debug.Print strSQL
-    
     Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
     If Not DaoRS.EOF Then
@@ -442,7 +450,7 @@ Public Sub RefreshCodeDecodeLB()
         While Not DaoRS.EOF
              Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
                 
-                If (DaoRS(1).Value = vbNullChar) Then
+                If (DaoRS(1).Value = Null) Then
                     itmX.SubItems(1) = " "
                 Else
                     itmX.SubItems(1) = RTrim(DaoRS(1).Value)
@@ -484,6 +492,8 @@ Public Sub RefreshCodeDecodeLB()
         'Update the total number of keys.
         frmMain.txtTotalKeys.Text = KeyCntr
         frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
+    Else
+        frmMain.txtTotalKeys.Text = 0
     End If
 
 Exit Sub

@@ -569,8 +569,10 @@ End Sub
 
 
 Private Sub Frame1_DblClick()
-    If (Len(frmMain.txtKeyLength) > 0) Then
-        frmAddModTable.Show vbModal
+    If (bAdmin) Then
+        If (Len(frmMain.txtKeyLength) > 0) Then
+            frmAddModTable.Show vbModal
+        End If
     End If
 End Sub
 
