@@ -24,6 +24,10 @@
 **					50.
 **   01/10/96  CWOODS			Added _RM_COMMAND_LEN
 **
+** 10/25/96 mconner added field to _BFCD_GLOBAL_DATA
+**
+** 11/13/96 mconner moved prototypes from c1cbase to here
+**
 *****************************************************************/
 
 /****************************************************************
@@ -51,6 +55,11 @@
 #define _RM_COMMAND_LEN	      251	  /* CWOODS: 01/19/96 ADDED */
 #define _ALT_SERV_LEN	       10	  /* JLL: 07/01/93 ADDED */
 #define _MAPGN_MAX_MAP_LINE_LEN 450       /* JLL: 09/21/94 ADDED */
+/*mdc 10/30/96 Added for mass gen feature*/
+#ifndef _DUMMY_LEN
+#define _DUMMY_LEN             30
+#endif
+
 
 /****************************************************************
 **
@@ -65,6 +74,8 @@
 #define MAPGEN_SERVICE_LB_NAME "Rlb02ELB"
 #define CSR_MAP_SAVE_FILE_EXT  "CSM"
 #define CSR_MAP_GEN_FILE_EXT   "MAP"
+#define CSR_MAP_LOG_EXT        "LOG"
+#define CSR_MAP_ERR_EXT        "ERR"
 #define MAP_VERSION            1.0f
 #define BLANK_LINE             "\n"
 #define MAP_TMP_FILE           "MAP.TMP"
@@ -333,6 +344,10 @@ typedef struct __BFCD_GLOBAL_DATA
   char CsrMapSavePath[_PATH_LEN];     /* BCN: 06/08/93 */
   char CsrMapGenPath[_PATH_LEN];      /* BCN: 06/08/93 */
 
+  /*mdc 10/25/96 added for mass generate feature */
+  char CsrMapLstFile[_PATH_LEN];  
+  char CsrFLMassGen;
+
   char CKTaskListComplete;            /* JLL:  07/01/93 ADDED */
   char RDTaskListComplete;            /* JLL:  07/02/93 ADDED */
   char LKTaskListComplete;            /* JLL:  07/02/93 ADDED */
@@ -427,7 +442,7 @@ USHORT GenerateService( _LAYOUT_REC  ServiceLayout[],
                         _RELATE_LK   LK[],
                         _RELATE_LD   LD[],
                         SHORT Index,
-                        _SERVICE_INFO ServiceInfoTable[] );
+                        _SERVICE_INFO ServiceInfoTable[]);
 
 
 /* JLL:  06/14/93 ADDED */
@@ -476,7 +491,7 @@ USHORT WriteRPMHAndThenSome( _LAYOUT_REC  ServiceLayout[],
                              _RELATE_CK   CK[], 
                              _RELATE_RD   RD[], 
                              _RELATE_LK   LK[], 
-                             _RELATE_LD   LD[]);
+                             _RELATE_LD   LD[] );
 
 /* JLL:  06/16/93 ADDED */
 USHORT WriteRPCK( _LAYOUT_REC  ClientLayout[],
@@ -510,3 +525,14 @@ USHORT WriteRPLD( _LAYOUT_REC  ClientLayout[],
 USHORT DecodeDataType( CHAR *DataType,
                        _LAYOUT_REC ServiceLayout[],
                        USHORT Index );
+
+/*mdc 11/13/96 Moved here from c1cbase.h  
+USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES );
+
+USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES );
+
+USHORT GenerateMap( CMN_ARCH_PARM_TYPES );
+
+USHORT WriteSDM( CMN_ARCH_PARM_TYPES );
+
+USHORT WriteRMH( CMN_ARCH_PARM_TYPES) ;*/
