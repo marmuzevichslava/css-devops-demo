@@ -16,12 +16,16 @@ Public iFileNum As Integer
 Public iErrorFile As Integer
 Public msg As String
 Public fCTempInFile As String
+Public fCTempOutFile As String
 Public fFTPInFile As String
+Public fFTPOutFile As String
 Public ErrorFound As Boolean
 Public LogError As Boolean
 Const fErrorLogFile As String = "c:\temp\static_error.log"
+Const EXTRACT_TABLES As String = "E"
 Const CODES_ENTRIES As String = "C"
 Const BFA_ENTRIES As String = "B"
+Const RELATIONAL_ENTRIES = "R"
 Const USER As String = "pvcs"
 Const PWD As String = "frog42"
 Const TABLE_TYPE = 4
@@ -145,6 +149,465 @@ Public Function ParseArgs() As Boolean
         ParseArgs = False
     End If
    
+End Function
+
+'*************************************************************
+'**                      ExportCodesTable                   **
+'*************************************************************
+Public Function ExportCodesTable() As Boolean
+    
+    Dim SQLQuery As String, sTableName As String
+    Dim EntrySet As Recordset
+  
+    On Error GoTo SQLError
+    
+    'Set SQL string.
+        SQLQuery = "SELECT TableName" _
+                 & " FROM tblTables" _
+                 & " WHERE TableType = 4;"
+         
+        On Error GoTo RecordsetError
+        
+        Set EntrySet = dbCTM.OpenRecordset(SQLQuery)
+    
+    EntrySet.MoveFirst
+    
+    On Error GoTo TableNameError
+    
+    iFileNum = FreeFile
+    Open fCTempOutFile For Output As iFileNum
+    
+    Do Until EntrySet.EOF
+        sTableName = EntrySet(0).Value
+        Print #iFileNum, sTableName
+  
+        EntrySet.MoveNext
+    Loop
+
+    Close #iFileNum
+    
+    EntrySet.Close
+    
+    ExportCodesTable = True
+    
+    Exit Function
+    
+SQLError:
+    ExportCodesTable = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQL query in the ExportCodesTable function." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+    
+RecordsetError:
+    ExportCodesTable = False
+    ErrorFound = True
+    msg = "An error occurred while trying to open the recordset during extract." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+TableNameError:
+    ExportCodesTable = False
+    ErrorFound = True
+    msg = "An error occurred while trying to get the extracted table names." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+End Function
+
+'*************************************************************
+'**                       ExtractProcess                    **
+'*************************************************************
+Public Function ExtractProcess() As Boolean
+
+    On Error GoTo FileOpenError
+    
+    'Open output file.
+    
+    ExtractProcess = True
+    
+    'Export the entries for the Codes Table selection.
+    If Not ExportCodesTable Then
+        ExtractProcess = False
+    Else
+        ExtractProcess = True
+    End If
+
+    'Close output file.
+    Close iFileNum
+    
+    'Put output file to UNIX directory.
+    If Not PutTblFile Then
+        ExtractProcess = False
+    Else
+        ExtractProcess = True
+    End If
+    
+    Exit Function
+    
+FileOpenError:
+    ExtractProcess = False
+    ErrorFound = True
+    msg = "The output file which would contain the extracted tables could not be opened." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+End Function
+
+'*************************************************************
+'**                        PutTblFile                       **
+'*************************************************************
+Public Function PutTblFile() As Boolean
+
+    Dim myftp As New FTP
+    Dim sServer As String
+    Dim strsql As String
+    Dim DaoRS As Recordset
+  
+    On Error GoTo SQLError
+    
+    'Find out what server the project resides on.
+    strsql = "Select server " _
+             & "From tblProjectEnv " _
+             & "Where projectenv = " & Chr(39) & fProject & Chr(39)
+             
+    On Error GoTo RecordsetError
+    
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    On Error GoTo GetServerError
+    
+    If Not DaoRS.EOF Then
+        sServer = DaoRS(0).Value
+    Else
+        Err.Raise 15, PutTblFile, "No more records in recordset."
+    End If
+    
+    DaoRS.Close
+    
+    On Error GoTo FTPError
+    
+    'Put the output file to the UNIX directory.
+    With myftp
+        .ErrorMessageBox = False
+        .HostName = sServer
+        .UserName = USER
+        .Password = PWD
+        .RemoteFile = fFTPOutFile
+        .LocalFile = fCTempOutFile
+        .PutFile
+    End With
+
+    'Check to see if put was successful.
+    If myftp.Error Then
+        PutTblFile = False
+        Err.Raise 23, PutTblFile, "The FTP failed because " & fFTPOutFile & " does not exist."
+    Else
+        PutTblFile = True
+    End If
+Exit Function
+    
+SQLError:
+    PutTblFile = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQL query in PutTblFile." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+RecordsetError:
+    PutTblFile = False
+    ErrorFound = True
+    msg = "An error occurred while trying to open the recordset for selecting the server in PutTblFile." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+GetServerError:
+    PutTblFile = False
+    ErrorFound = True
+    msg = "An error occurred while trying to get server for FTP destination in PutTblFile." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+FTPError:
+    msg = "An error occurred while trying to put output file to UNIX." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+   'Send email.
+    SendEmail
+End Function
+
+'*************************************************************
+'**                   DeleteRelationalTables                **
+'*************************************************************
+Public Function DeleteRelationalTables() As Boolean
+     
+    Dim SQLDelete As String
+    Dim SQLQuery As String
+    
+    On Error GoTo SQLQueryError
+        
+    'Query to see if static tables exist in tblTables.
+    SQLQuery = "SELECT TableName " _
+             & "FROM tblRelTables;"
+                      
+    On Error GoTo RecordsetError1
+    
+    Set DaoRS = dbCTM.OpenRecordset(SQLQuery, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+        On Error GoTo SQLDeleteError
+    
+        'Delete static tables from tblTables.
+        SQLDelete = "DELETE * " _
+                  & "FROM tblRelTables;"
+                  
+        On Error GoTo ProcessingRelationalTableDeleteError
+                           
+        'Begin DAO transaction.
+        wsCTM.BeginTrans
+        'Execute SQL.
+        dbCTM.Execute SQLDelete, dbFailOnError
+    
+        If dbCTM.RecordsAffected = 0 Then
+            Err.Raise 4, "UpdateProcess", "The static tables were not deleted from tblTables."
+            wsCTM.Rollback
+        Else
+            'Commit DAO transaction.
+            wsCTM.CommitTrans
+        End If
+    Else
+        DaoRS.Close
+    End If
+       
+    DeleteRelationalTables = True
+    
+    Exit Function
+
+SQLDeleteError:
+    DeleteRelationalTables = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQLDelete in DeleteCodesRelations." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+ProcessingRelationalTableDeleteError:
+    DeleteRelationalTables = False
+    LogError = True
+    msg = "An error occured while to delete the static tables from tblTables." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Place error message into error log file.
+    WriteToErrorLog
+    Resume Next
+
+RecordsetError1:
+    DeleteRelationalTables = False
+    ErrorFound = True
+    msg = "An error occurred while trying to open the recordset in DeleteCodesRealtions which checks to see if any static tables exists in tblTables before deleting them." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+SQLQueryError:
+    DeleteRelationalTables = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQL query in DeleteCodesRelations." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+End Function
+
+
+'*************************************************************
+'**                   RelationalTablesUpdate                **
+'*************************************************************
+Public Function RelationalTablesUpdate() As Boolean
+
+    'Local variables.
+    Dim sTimestamp As String
+    Dim sRelTabName As String
+    Dim SQLInsert As String
+    Dim SQLQuery As String
+    Dim CurLine As String
+    Dim CurDateTime As String
+    Const REL_TABLE_ARG As Integer = 1
+    Const UPDATE_INPUT_FILE = "c:\temp\dzct03.txt"
+        
+    'Get input file from UNIX directory and place in temp directory.
+    If Not GetTblFile Then
+        RelationalTablesUpdate = False
+        Exit Function
+    Else
+        RelationalTablesUpdate = True
+    End If
+    
+    'Delete existing static information.
+    If Not DeleteRelationalTables Then
+        RelationalTablesUpdate = False
+        Exit Function
+    Else
+        RelationalTablesUpdate = True
+    End If
+    
+    'Get current date and time.
+    CurDateTime = Now
+    
+    'Format current date and time for table.
+    sTimestamp = Format(CurDateTime, "yyyy-mm-dd:hh:mm:ss:000000")
+    
+    On Error GoTo FileOpenError
+    
+    'Open input file.
+    iFileNum = FreeFile
+    Open fCTempInFile For Input As iFileNum
+    RelationalTablesUpdate = True
+    
+    'Priming read on input file.
+    Line Input #iFileNum, CurLine
+    
+    Do Until EOF(iFileNum)
+        
+        'Parse out the relational table name.
+        sRelTabName = ParseString(CurLine, " ", REL_TABLE_ARG)
+                            
+        On Error GoTo SQLQueryError
+        
+        'Query to see if static table exists in tblTables.
+        SQLQuery = "SELECT TableName " _
+                 & "FROM tblRelTables " _
+                 & "WHERE TableName = " & Chr(34) & sRelTabName & Chr(34)
+                      
+        On Error GoTo RecordsetError1
+    
+        Set DaoRS = dbCTM.OpenRecordset(SQLQuery, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+        On Error GoTo RelationalTablesSQLInsertError
+    
+        If DaoRS.EOF Then
+            'Set SQL string.
+            SQLInsert = "INSERT INTO tblRelTables " _
+                      & "SELECT " & Chr(34) & sRelTabName & Chr(34) & " As TableName;"
+                      
+            On Error GoTo ProcessingRelationalTablesError
+        
+            'Begin DAO transaction.
+            wsCTM.BeginTrans
+            'Execute SQL.
+            dbCTM.Execute SQLInsert, dbFailOnError
+    
+            If dbCTM.RecordsAffected = 0 Then
+                Err.Raise 4, "UpdateProcess", "tblRelTables was not updated for " & sRelTabName & "."
+                wsCTM.Rollback
+            Else
+                'Commit DAO transaction.
+                wsCTM.CommitTrans
+            End If
+        Else
+            DaoRS.Close
+        End If
+                
+        'Get the next line.
+        Line Input #iFileNum, CurLine
+               
+    Loop
+    
+    'Close input file.
+    Close iFileNum
+    
+    Exit Function
+    
+FileOpenError:
+    RelationalTablesUpdate = False
+    ErrorFound = True
+    msg = "The output file which would contain the list of tables could not be opened." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+ProcessingRelationalTablesError:
+    RelationalTablesUpdate = False
+    LogError = True
+    msg = "An error occured while trying to insert the relational table " & sRelTabName & " into tblRelTables." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Place error message into error log file.
+    WriteToErrorLog
+    Resume Next
+
+RecordsetError1:
+    RelationalTablesUpdate = False
+    ErrorFound = True
+    msg = "An error occurred while trying to open the recordset in RelationalTablesUpdate which checks to see if the relational table exists in tblRelTables." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+SQLQueryError:
+    RelationalTablesUpdate = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQL query in RelationalTablesUpdate." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+RelationalTablesSQLInsertError:
+    RelationalTablesUpdate = False
+    ErrorFound = True
+    msg = "An error occurred while performing SQLInsert for relational table names in RelationalTablesUpdate." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+   'Send email.
+    SendEmail
+Exit Function
+
 End Function
 
 '*************************************************************
@@ -483,9 +946,9 @@ Public Function CodesUpdateProcess() As Boolean
         On Error GoTo SQLQueryError
         
         'Query to see if codes table exists in tblCodesLookup.
-        SQLQuery = "SELECT TableName " _
+        SQLQuery = "SELECT CISName " _
                  & "FROM tblCodesLookup " _
-                 & "WHERE TableName = " & Chr(34) & sCodesTableName & Chr(34)
+                 & "WHERE CISName = " & Chr(34) & sCodesTableName & Chr(34)
                       
         On Error GoTo RecordsetError2
                
@@ -496,7 +959,7 @@ Public Function CodesUpdateProcess() As Boolean
         If DaoRS.EOF Then
             'Set SQL string.
             SQLInsert = "INSERT INTO tblCodesLookup " _
-                      & "SELECT " & Chr(34) & sCodesTableName & Chr(34) & " As TableName," _
+                      & "SELECT " & Chr(34) & sCodesTableName & Chr(34) & " As CISName," _
                       & Chr(34) & sCodesTableDecode & Chr(34) & " AS CISCOBOLName;"
                           
         On Error GoTo ProcessingCodesLookupError
@@ -530,7 +993,7 @@ Public Function CodesUpdateProcess() As Boolean
 FileOpenError:
     CodesUpdateProcess = False
     ErrorFound = True
-    msg = "The output file which would contain the extracted tables could not be opened." & _
+    msg = "The output file which would contain the list of tables could not be opened." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
@@ -1056,7 +1519,7 @@ Public Function BFAUpdateProcess() As Boolean
 FileOpenError:
     BFAUpdateProcess = False
     ErrorFound = True
-    msg = "The output file which would contain the extracted tables could not be opened." & _
+    msg = "The output file which would contain the list of tables could not be opened." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
@@ -1163,7 +1626,6 @@ RecordsetError2:
     SendEmail
 Exit Function
 
-
 End Function
 
 '*************************************************************
@@ -1178,7 +1640,7 @@ Public Function Housekeeping() As Boolean
     'Verify that five parameters passed (parse the arguments).
     If Not ParseArgs Then
         Err.Raise 5, Housekeeping, "The arguments were not correctly passed in. Usage:" & _
-        " <C or B> <Database path> <Project> <UNIX path> <WorkFile>"
+        " <E, C or B> <Database path> <Project> <UNIX path> <WorkFile>"
     End If
      
     On Error GoTo DatabaseError
@@ -1188,13 +1650,23 @@ Public Function Housekeeping() As Boolean
     Set dbCTM = wsCTM.OpenDatabase(fCTMDatabase, False, False)
         
     Select Case sRelationType
-        Case CODES_ENTRIES
+        Case EXTRACT_TABLES
             'Get the full path including filename of the temp output file and FTP used in ExtractProcess.
+            fFTPOutFile = fUNIXPath & "/" & fWorkFile
+            fCTempOutFile = "C:\TEMP\" & fWorkFile
+            
+        Case CODES_ENTRIES
+            'Get the full path including filename of the temp input file and FTP used in CodesUpdateProcess.
             fFTPInFile = fUNIXPath & "/" & fWorkFile
             fCTempInFile = "C:\TEMP\" & fWorkFile
     
         Case BFA_ENTRIES
-            'Get the full path including filename of the temp input file and FTP used in UpdateProcess.
+            'Get the full path including filename of the temp input file and FTP used in BFAUpdateProcess.
+            fFTPInFile = fUNIXPath & "/" & fWorkFile
+            fCTempInFile = "C:\TEMP\" & fWorkFile
+            
+        Case RELATIONAL_ENTRIES
+            'Get the full path including filename of the temp input file and FTP used in CodesUpdateProcess.
             fFTPInFile = fUNIXPath & "/" & fWorkFile
             fCTempInFile = "C:\TEMP\" & fWorkFile
     End Select
@@ -1235,6 +1707,13 @@ Public Function Process() As Boolean
     
     'Perform either Codes Entries or BFA Entries.
     Select Case sRelationType
+        Case EXTRACT_TABLES
+            If Not ExtractProcess Then
+                Process = False
+            Else
+                Process = True
+            End If
+            
         Case CODES_ENTRIES
             If Not CodesUpdateProcess Then
                 Process = False
@@ -1249,8 +1728,15 @@ Public Function Process() As Boolean
                 Process = True
             End If
             
+        Case RELATIONAL_ENTRIES
+            If Not RelationalTablesUpdate Then
+                Process = False
+            Else
+                Process = True
+            End If
+            
         Case Else
-            Err.Raise 13, Process, "The function argument is neither E or U."
+            Err.Raise 13, Process, "The function argument is neither E, C or B."
     
     End Select
 Exit Function
@@ -1277,12 +1763,15 @@ Public Function WrapUp() As Boolean
     Dim strsql As String
         
     If LogError = True Then
-        msg = " Please refer to c:\temp\error.log for more details."
+        msg = " Please refer to c:\temp\static_error.log for more details."
         SendEmail
     End If
     
     If ErrorFound = False Then
         Select Case sRelationType
+            Case EXTRACT_TABLES
+                Kill fCTempOutFile
+                
             Case CODES_ENTRIES
                 Kill fCTempInFile
                             
@@ -1327,7 +1816,7 @@ Public Function WrapUp() As Boolean
                      WrapUp = True
                End If
                                             
-          Case BFA_ENTRIES
+            Case BFA_ENTRIES
                 Kill fCTempInFile
                                 
                 On Error GoTo SQLError
@@ -1371,6 +1860,49 @@ Public Function WrapUp() As Boolean
                      WrapUp = True
                End If
             
+            Case RELATIONAL_ENTRIES
+                Kill fCTempInFile
+                                
+                On Error GoTo SQLError
+        
+                'Find out what server the project resides on.
+                strsql = "Select server " _
+                       & "From tblProjectEnv " _
+                       & "Where projectenv = " & Chr(39) & fProject & Chr(39)
+            
+                On Error GoTo RecordsetError
+    
+                Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+                On Error GoTo GetServerError
+    
+                If Not DaoRS.EOF Then
+                    sServer = DaoRS(0).Value
+                Else
+                    Err.Raise 15, WrapUp, "No more records in recordset."
+                End If
+    
+                DaoRS.Close
+            
+                On Error GoTo FTPError
+                        
+                With myftp
+                     .ErrorMessageBox = False
+                     .HostName = sServer
+                     .UserName = USER
+                     .Password = PWD
+                     .RemoteDirectory = fUNIXPath
+                     .RemoteFile = fWorkFile & "*"
+                     .DeleteDirectory
+                End With
+       
+               'Check to see if delete was successful.
+               If myftp.Error Then
+                     WrapUp = False
+                     Err.Raise 33, WrapUp, fFTPInFile & " was not delected successfully."
+               Else
+                     WrapUp = True
+               End If
         End Select
 
     End If
