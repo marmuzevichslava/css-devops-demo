@@ -1,19 +1,15 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
  *                                                                         *
- *             C   O S /2    W I N D O W   I D E N T I F I E R S           *
+ *         C  W I N D O W S   N T   W I N D O W   I D E N T I F I E R S     *
  *                                                                         *
- *                 Copyright (C) 1994 Andersen Consulting.                 *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *               Window Identifiers for: ATDW01                            *
- *                         Generated on: Sun Aug 27 15:58:18 1995          *
+ *                         Generated on: Tue Jul 30 00:57:00 1996          *
  *                                   by: CWOODS                            *
+ *                    Short Description: AZCD01                            *
  *                                                                         *
  ***************************************************************************/
 #define ATDW001ID                501

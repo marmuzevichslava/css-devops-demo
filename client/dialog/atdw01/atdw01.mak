@@ -1,19 +1,15 @@
-#/***************************************************************************
-#**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-#**  This work is protected by copyright law as an unpublished work.       **
-#****************************************************************************/
 #***************************************************************************
 #                                                                          *
 #                W I N D O W S   N T   M A K E   F I L E                   *
 #                                                                          *
-#                Copyright (C) 1994, Andersen Consulting.                  *
-#                          All rights reserved.                            *
+#    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 #                                                                          *
 #***************************************************************************
 #                                                                          *
 #                         Make file for: ATDW01                            *
-#                          Generated on: Sun Aug 27 15:58:18 1995          *
+#                          Generated on: Tue Jul 30 00:57:00 1996          *
 #                                    by: CWOODS                            *
+#                     Short Description: AZCD01                            *
 #                                                                          *
 #***************************************************************************
 
@@ -27,10 +23,11 @@ CC = cl
 RC = rc
 LINK = link
 
-CFLAGS_D = /c /W3 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
-CFLAGS_R = /c /W3 /Zp /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD 
-LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows   /MAP
-LFLAGS_R = /SUBSYSTEM:windows  
+
+CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D  "WIN32" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
+CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD 
+LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows,3.10   /MAP 
+LFLAGS_R = /SUBSYSTEM:windows,3.10  
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
 RCDEFINES_R = -dNDEBUG -dFND_WIN32
 
@@ -45,11 +42,13 @@ RCDEFINES = $(RCDEFINES_R)
 !endif
 RCFLAGS = -r
 
-LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib ktmsgapi.lib ktddeapi.lib
+LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib \
+           ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib ktmsgapi.lib ktddeapi.lib
 
+NODBLIBS = kndbnul.lib
 OTHLIBS  = othelibs
 DLLLIBS  =
-USRLIBS  = C1CFUNC.LIB ARCHDISP.LIB CSSFUNC.LIB
+USRLIBS  = ARCHDISP.LIB C1CFUNC.LIB CSSFUNC.LIB
 ALL_LIBS = $(LIBS)   $(DLLLIBS) $(USRLIBS)
 
 #***************************************************************************
@@ -61,11 +60,12 @@ ALL_LIBS = $(LIBS)   $(DLLLIBS) $(USRLIBS)
 ATDW01_DEP = ATDW01B.gnb ATDW01.sdt ATDW01.wdt
 
 
+
 # Make C window module ATDW001
 ATDW001_DEP = ATDW001.c	\
 		ATDW01B.gnb	\
 		ATDW001C.h	\
-#		.\AZDI0400.C	\
+		.\AZDI0400.C	\
 		.\ATDW001.BUS    \
                 ATDW001.aex     \
                 ATDW001.h       \
@@ -74,11 +74,12 @@ ATDW001_DEP = ATDW001.c	\
                 ATDW001.gnh     \
                 ATDW01.gnz        \
                 ATDW001.src
+
 # Make C window module ATDW002
 ATDW002_DEP = ATDW002.c	\
 		ATDW01B.gnb	\
 		ATDW002C.h	\
-#		.\AZDI0400.C	\
+		.\AZDI0400.C	\
 		.\ATDW002.BUS    \
                 ATDW002.aex     \
                 ATDW002.h       \
@@ -87,11 +88,12 @@ ATDW002_DEP = ATDW002.c	\
                 ATDW002.gnh     \
                 ATDW01.gnz        \
                 ATDW002.src
+
 # Make C window module ATDW003
 ATDW003_DEP = ATDW003.c	\
 		ATDW01B.gnb	\
 		ATDW003C.h	\
-#		.\AZDI0400.C	\
+		.\AZDI0400.C	\
 		.\ATDW003.BUS    \
                 ATDW003.aex     \
                 ATDW003.h       \
@@ -100,11 +102,12 @@ ATDW003_DEP = ATDW003.c	\
                 ATDW003.gnh     \
                 ATDW01.gnz        \
                 ATDW003.src
+
 # Make C window module ATDW004
 ATDW004_DEP = ATDW004.c	\
 		ATDW01B.gnb	\
 		ATDW004C.h	\
-#		.\AZDI0400.C	\
+		.\AZDI0400.C	\
 		.\ATDW004.BUS    \
                 ATDW004.aex     \
                 ATDW004.h       \
@@ -113,11 +116,12 @@ ATDW004_DEP = ATDW004.c	\
                 ATDW004.gnh     \
                 ATDW01.gnz        \
                 ATDW004.src
+
 # Make C window module ATDW006
 ATDW006_DEP = ATDW006.c	\
 		ATDW01B.gnb	\
 		ATDW006C.h	\
-#		.\AZDI0400.C	\
+		.\AZDI0400.C	\
 		.\ATDW006.BUS    \
                 ATDW006.aex     \
                 ATDW006.h       \
@@ -179,10 +183,6 @@ all:	.\$(PROJ).EXE
 #***************************************************************************
 .\ATDW01.res:   ATDW01.RC $(ATDW01_RCDEP)
    $(RC) $(RCFLAGS) $(RCDEFINES) -Fo.\ATDW01.res ATDW01.RC
-
-#***************************************************************************
-# Compile each service module
-#***************************************************************************
 
 
 #***************************************************************************

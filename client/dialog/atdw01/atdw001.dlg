@@ -1,23 +1,19 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: ATDW001                           *
-*                          Generated on: Sun Aug 27 14:55:12 1995          *
+*                          Generated on: Tue Jul 30 00:57:00 1996          *
 *                                    by: CWOODS                            *
+*                     Short Description: AZCD001                           *
 *                                                                          *
 ****************************************************************************/
 
-ATDW001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,316,225
+ATDW001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,275,225
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
@@ -26,48 +22,49 @@ ATDW001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,316,225
      | WS_THICKFRAME
      | DS_ABSALIGN
     CAPTION "CSR Diagnostics"
+    
 Begin  /* controls */
    CONTROL "Message Level",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,7,1,287,60
+              ,6,1,250,60
 
    CONTROL "Information Level",8000,
               FND_RADIO_GROUP,
-              WS_VISIBLE | BS_GROUPBOX
-              ,29,12,0,0
+              WS_VISIBLE | WS_GROUP | BS_GROUPBOX
+              ,26,12,0,0
 
    CONTROL "Service",104,
               FND_RADIO_BUTTON,
-              WS_VISIBLE | WS_TABSTOP
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,29,12,41,10
+              ,26,12,0,0
 
    CONTROL "Request",105,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,29,44,41,10
+              ,26,12,0,0
 
    CONTROL "",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,124,8,148,34
+              ,108,8,129,34
 
    CONTROL "CSR Messages for Server [Object]",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,5,66,302,144
+              ,5,66,263,144
 
    CONTROL "Request ID",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,126,38,40,8
+              ,110,50,35,8
 
    CONTROL "",103,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,167,46,43,0
+              ,146,46,38,0
 
 End /* controls */
 
@@ -82,6 +79,12 @@ Begin
    FP_CONTROL_ID,                       "8000\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_TOP_MARGIN,                       "10\0"
+   FP_LEFT_MARGIN,                      "5\0"
+   FP_HORIZONTAL_SPACING,               "96\0"
+   FP_VERTICAL_SPACING,                 "22\0"
+   FP_DIRECTION,                        FPV_VERTICAL, "\0"
+   FP_BUTTONS_PER_ROW,                  "2\0"
    FP_BUTTON_INFO,                      "104,2\0"
    FP_BUTTON_INFO,                      "105,1\0"
 
@@ -90,11 +93,6 @@ Begin
    FP_CAPTION,                          "\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "50\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -117,17 +115,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "8\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
@@ -137,7 +133,6 @@ Begin
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
    /*  Control Data for List Box Column SERVICEID  */
    FP_COLUMN_ID,                        "1\0"
@@ -148,17 +143,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
@@ -168,7 +161,6 @@ Begin
    FP_NEGATIVE_SIGN,                    FPV_MINUS_PREFIX, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
    /*  Control Data for List Box Column TranMap  */
    FP_COLUMN_ID,                        "2\0"
@@ -179,17 +171,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box TranscriptLB  */
@@ -197,11 +187,6 @@ Begin
    FP_CAPTION,                          "CSR Messages for Server [Object]\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -224,17 +209,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for Static Text Request ID  */
@@ -244,11 +227,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field REQUESTID  */
    FP_CONTROL_ID,                       "103\0"
@@ -257,15 +240,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    FP_END
 End
@@ -302,13 +285,9 @@ End  /*  menus  */
 ATDW001AccelID ACCELERATORS PRELOAD
 Begin
 "S",1000,CONTROL,VIRTKEY
-"s",1000,CONTROL,VIRTKEY
 "M",1001,CONTROL,VIRTKEY
-"m",1001,CONTROL,VIRTKEY
 "D",1002,CONTROL,VIRTKEY
-"d",1002,CONTROL,VIRTKEY
 "F",1003,CONTROL,VIRTKEY
-"f",1003,CONTROL,VIRTKEY
 End
 
 

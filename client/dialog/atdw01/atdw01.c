@@ -1,19 +1,15 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
  *                                                                         *
  *                     P R O G R A M   F R O N T   E N D                   *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                Program Front End for: ATDW01                            *
- *                         Generated on: Sun Aug 27 15:58:18 1995          *
+ *                         Generated on: Tue Jul 30 00:57:00 1996          *
  *                                   by: CWOODS                            *
+ *                    Short Description: AZCD01                            *
  *                                                                         *
  ***************************************************************************/
 
@@ -32,7 +28,7 @@
 #define  FND_PROGRAM_TYPE        FND_APPL_TYPE_CLIENT
 #define  FND_PROGRAM_LANG        FND_C_LANG
 #define  FND_DBMS                FND_DB_NONE
-#define  FND_PORTABILITY_FLAG    FALSE
+#define  FND_PORTABILITY_FLAG    TRUE
 #define  FND_WINDOW_NAME         ""
 
 /***************************************************************************

@@ -1,39 +1,36 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: ATDW003                           *
-*                          Generated on: Sun Aug 27 15:56:20 1995          *
+*                          Generated on: Tue Jul 30 00:57:00 1996          *
 *                                    by: CWOODS                            *
+*                     Short Description: AZCD003                           *
 *                                                                          *
 ****************************************************************************/
 
-ATDW003ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,195,171
+ATDW003ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,170,171
     STYLE 0 
      | WS_CAPTION
-     | WS_DLGFRAME
+     | DS_MODALFRAME
      | DS_ABSALIGN
     CAPTION "CSR Resident Maps"
+    
 Begin  /* controls */
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,16,151,37,12
+              ,14,151,32,12
 
    CONTROL "",100,
               FND_LISTBOX,
               WS_VISIBLE
-              ,16,9,164,134
+              ,14,9,143,134
 
 End /* controls */
 
@@ -49,11 +46,6 @@ Begin
    FP_CAPTION,                          "\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "50\0"
    FP_DRAW_HORZ_LINES,                  FPV_FALSE, "\0"
@@ -76,17 +68,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column REQUESTTYPE  */
@@ -98,17 +88,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column MapLoadTime  */
@@ -120,17 +108,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    FP_END

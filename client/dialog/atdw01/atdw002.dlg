@@ -1,145 +1,142 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: ATDW002                           *
-*                          Generated on: Sun Aug 27 14:55:12 1995          *
+*                          Generated on: Tue Jul 30 00:57:00 1996          *
 *                                    by: CWOODS                            *
+*                     Short Description: AZCD002                           *
 *                                                                          *
 ****************************************************************************/
 
-ATDW002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,316,179
+ATDW002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,275,179
     STYLE 0 
      | WS_CAPTION
-     | WS_DLGFRAME
+     | DS_MODALFRAME
      | DS_ABSALIGN
     CAPTION "CSR Statistics"
+    
 Begin  /* controls */
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,13,163,37,12
+              ,11,163,32,12
 
    CONTROL "Refresh",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,78,163,0,0
+              ,68,163,0,0
 
    CONTROL "Total Allocated Segments:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,8,5,94,8
+              ,5,17,82,8
 
    CONTROL "",100,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,104,13,0,0
+              ,90,13,0,0
 
    CONTROL "Memory Alarm:",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,175,5,60,8
+              ,152,17,53,8
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,237,13,50,0
+              ,206,13,44,0
 
    CONTROL "Map Bytes:",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,16,56,55,8
+              ,13,68,48,8
 
    CONTROL "",102,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,72,64,50,0
+              ,63,64,44,0
 
    CONTROL "Service Bytes:",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,13,76,55,8
+              ,11,88,48,8
 
    CONTROL "",103,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,70,84,52,0
+              ,61,84,45,0
 
    CONTROL "Node Bytes:",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,11,35,57,8
+              ,9,47,50,8
 
    CONTROL "",104,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,70,43,53,0
+              ,61,43,46,0
 
    CONTROL "Free Bytes:",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,181,35,59,8
+              ,156,47,51,8
 
    CONTROL "",105,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,242,43,53,0
+              ,210,43,46,0
 
    CONTROL "Overhead Bytes:",506,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,181,55,59,8
+              ,156,67,51,8
 
    CONTROL "",106,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,242,63,53,0
+              ,210,63,46,0
 
    CONTROL "Dead Bytes:",507,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,180,75,60,8
+              ,156,87,53,8
 
    CONTROL "",107,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,242,83,52,0
+              ,211,83,45,0
 
    CONTROL "Thread Count:",508,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,14,115,59,8
+              ,11,127,51,8
 
    CONTROL "",108,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,74,123,52,0
+              ,65,123,45,0
 
    CONTROL "Service Thread Count:",509,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,179,115,79,8
+              ,155,127,69,8
 
    CONTROL "",109,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,260,123,40,0
+              ,226,123,35,0
 
    CONTROL "Memory",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,5,34,298,74
+              ,5,34,260,74
 
 End /* controls */
 
@@ -157,11 +154,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field TotalAllocatedSegs  */
    FP_CONTROL_ID,                       "100\0"
@@ -170,10 +167,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -194,11 +190,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field MemAlarm  */
    FP_CONTROL_ID,                       "101\0"
@@ -207,15 +203,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Map Bytes:  */
    FP_CONTROL_ID,                       "502\0"
@@ -224,11 +220,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field MapBytes  */
    FP_CONTROL_ID,                       "102\0"
@@ -237,10 +233,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -261,11 +256,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field ServiceBytes  */
    FP_CONTROL_ID,                       "103\0"
@@ -274,10 +269,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -298,11 +292,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field NodeBytes  */
    FP_CONTROL_ID,                       "104\0"
@@ -311,10 +305,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -335,11 +328,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field FreeBytes  */
    FP_CONTROL_ID,                       "105\0"
@@ -348,10 +341,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -372,11 +364,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field MemNodeOverheadBytes  */
    FP_CONTROL_ID,                       "106\0"
@@ -385,10 +377,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -409,11 +400,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field DeadBytes  */
    FP_CONTROL_ID,                       "107\0"
@@ -422,10 +413,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -446,11 +436,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field ThreadCount  */
    FP_CONTROL_ID,                       "108\0"
@@ -459,10 +449,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -483,11 +472,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field ServiceThreadCount  */
    FP_CONTROL_ID,                       "109\0"
@@ -496,10 +485,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
