@@ -54,13 +54,21 @@ Begin VB.Form frmExportSS
    End
    Begin VB.Frame Frame1 
       Caption         =   "Export Path"
-      Height          =   2895
+      Height          =   2775
       Left            =   2160
       TabIndex        =   5
       Top             =   0
       Width           =   3015
+      Begin VB.TextBox txtName 
+         Height          =   285
+         Left            =   120
+         TabIndex        =   10
+         Text            =   "CTExport.xls"
+         Top             =   2400
+         Width           =   2775
+      End
       Begin VB.DirListBox Dir1 
-         Height          =   2565
+         Height          =   2115
          Left            =   120
          TabIndex        =   7
          Top             =   240
@@ -194,17 +202,19 @@ Public Sub mnuProcess_Click()
     Dim xlApp As Object, xlTemplate As Object, objSpreadSheet As Object
     Dim Title As String
     Dim TblCnt As Integer, x As Integer, j As Integer, RC As Integer
-    Dim XLS_PATH As String
+    Dim sXls_Path As String
+    Dim sXls_Name As String
     
     Const START_ROW = 13
-    Const XLS_NAME = "CTExport.xls"
     Const XLS_TEMP_NAME = "CTETemp.xls"
+    
+    sXls_Name = Me.txtName.Text
     
     FileName = Dir("n:\dzct01\CTExport.xls")
     If Len(FileName) <> 0 Then
-         XLS_PATH = "n:\dzct01\CTExport.xls"
+         sXls_Path = "n:\dzct01\CTExport.xls"
     Else
-         XLS_PATH = "c:\dzct01\CTExport.xls"
+         sXls_Path = "c:\dzct01\CTExport.xls"
     End If
     
     On Error GoTo FileCopyError
@@ -217,13 +227,12 @@ Public Sub mnuProcess_Click()
 
     Screen.MousePointer = vbHourglass
     
-    FileCopy XLS_PATH, Dir1.Path & "\" & XLS_NAME
+    FileCopy sXls_Path, Dir1.Path & "\" & sXls_Name
     
     On Error GoTo ExcelError
     
     Set xlApp = CreateObject("Excel.Application")
-    Set xlTemplate = xlApp.Workbooks.Open(Dir1.Path & "\" & XLS_NAME, , True, , "c1admin", "c1admin", True)
-    'xlApp.ActiveWorkbook.RunAutoMacros xlAutoOpen
+    Set xlTemplate = xlApp.Workbooks.Open(Dir1.Path & "\" & sXls_Name, , True, , "c1admin", "c1admin", True)
     
     Set objSpreadSheet = xlApp.ActiveWorkbook.ActiveSheet
     
@@ -328,11 +337,11 @@ Public Sub mnuProcess_Click()
         xlTemplate.SaveAs Dir1.Path & "\" & XLS_TEMP_NAME
         xlApp.Quit
         
-        Kill Dir1.Path & "\" & XLS_NAME
-        Name Dir1.Path & "\" & XLS_TEMP_NAME As Dir1.Path & "\" & XLS_NAME
+        Kill Dir1.Path & "\" & sXls_Name
+        Name Dir1.Path & "\" & XLS_TEMP_NAME As Dir1.Path & "\" & sXls_Name
         
         Title = "Successful Export"
-        MsgLine = "Successfully created " & Dir1.Path & "\" & XLS_NAME
+        MsgLine = "Successfully created " & Dir1.Path & "\" & sXls_Name
         MsgBox MsgLine, 64, Title
     Else
         xlApp.Visible = True
@@ -357,7 +366,7 @@ Public Sub mnuProcess_Click()
     
 FileCopyError:
     
-    msg = "An error has occured while copying " & XLS_PATH & " to " & Dir1.Path & "\" & XLS_NAME & "." & vbCrLf & _
+    msg = "An error has occured while copying " & sXls_Path & " to " & Dir1.Path & "\" & sXls_Name & "." & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
@@ -371,7 +380,7 @@ FileCopyError:
     
 ExcelError:
    
-    msg = "An error has occured while writing to " & Dir1.Path & "\" & XLS_NAME & "." & vbCrLf & _
+    msg = "An error has occured while writing to " & Dir1.Path & "\" & sXls_Name & "." & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
@@ -399,6 +408,14 @@ DatabaseError:
 
 End Sub
 
-Private Sub StatusBar1_PanelClick(ByVal Panel As ComctlLib.Panel)
-
+Private Sub txtName_LostFocus()
+    If InStr(txtName.Text, "\") Or InStr(txtName.Text, " ") Then
+        msg = "Invalid file name. Make sure it does not a space or slash." & vbCrLf & _
+                "Contact " & AUTHOR & " for assistance."
+        
+        RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
+    
+        Me.txtName.SetFocus
+        
+    End If
 End Sub

@@ -165,7 +165,6 @@ Begin VB.Form frmSourceFileGenerator
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "frmsourcefilegenerator.frx":030A
       NumItems        =   0
    End
    Begin VB.Frame Frame1 
