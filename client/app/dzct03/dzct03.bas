@@ -566,6 +566,8 @@ Public Function UpdateProcess() As Boolean
             Err.Raise 3, "UpdateProcess", "The record was not updated."
             wsCTM.Rollback
             Counter = Counter + 1
+        Else
+            wsCTM.CommitTrans
         End If
             
         'Set SQL string.
