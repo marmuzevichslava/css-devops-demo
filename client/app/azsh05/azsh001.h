@@ -49,9 +49,9 @@
 /* Application typedefs                                                    */
 /***************************************************************************/
 
-enum CMN_SEC_SECURITY_TRANSTYPE  { CMN_SEC_SECURITY_TRANSTYPE_GETUSERID = 1,
-							       CMN_SEC_SECURITY_TRANSTYPE_TERMINATE,
-							       CMN_SEC_SECURITY_TRANSTYPE_GETRIGHT };
+enum CMN_SEC_SECURITY_TRANSTYPE  { CMN_SEC_TRANSTYPE_GETUSERID = 1,
+							       CMN_SEC_TRANSTYPE_TERMINATE,
+							       CMN_SEC_TRANSTYPE_GETRIGHT };
 
 /***************************************************************************/
 /* Forward declarations                                                    */

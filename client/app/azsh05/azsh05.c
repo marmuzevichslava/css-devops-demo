@@ -40,10 +40,10 @@
 
     /* Call the Security Application to retrieve User ID and Password */
 	CmnReturnCode = CmnSecCallSecurity(NULL, NULL, NULL, NULL, NULL, NULL, __LINE__, __FILE__ , /*CMN_ARCH_PARMS */
-									   CMN_SEC_SECURITY_TRANSTYPE_GETUSERID, 	/* Security Transaction */
+									   CMN_SEC_TRANSTYPE_GETUSERID, 	        /* Security Transaction */
 									   &ReturnCode,
-								  	   "<Application Name>",	 							/* Requesting Application */
-                          		  	   <Toked Number>,	 								/* Token */							 	
+								  	   "CSR",	 							    /* Requesting Application */
+                          		  	   20469,	 								/* Token */							 	
 						          	   NULL,	 								/* Platform - NULL retrieves default data */
 						  		  	   UserId,
 						  		       Password) ;
