@@ -29,7 +29,7 @@ Public CurrentUser As String
 Public wsCTM As Workspace
 Public dbCTM As Database
 Public DaoRS As Recordset
-Public strSQL As String
+Public strsql As String
 
 '***************************************************************************************************************
 '** TYPE DECLARATIONS                                                                                         **
@@ -62,19 +62,59 @@ Type ImportError
     Table As String
     Key As String
     Decode As String
-    Client As String
+    client As String
     Action As String * 1
 End Type
 Public ImportErrArray() As ImportError
 
-
 'Structure for adding & modifying Key codes.
 Type objClient
-    Client As String
+    client As String
     Code As Integer
 End Type
 Public ClientArray() As objClient
 
+'Structure for populating Buttons List Box.
+Type objButtons
+    Buttons As String
+    ButtonID As Integer
+End Type
+Public ButtonsArray() As objButtons
+
+'Structure for populating Icon List Box.
+Type objIcon
+    Icon As String
+    IconID As Integer
+End Type
+Public IconArray() As objIcon
+
+'Structure for populating Default Buttons List Box.
+Type objDefaultButton
+    DefaultButton As String
+    DefaultButtonID As Integer
+End Type
+Public DefaultButtonArray() As objDefaultButton
+
+'Structure for populating the Application List Box.
+Type objApplication
+    Application As String
+    Code As Integer
+End Type
+Public ApplicationArray() As objApplication
+
+'Structure for populating the Platform List Box.
+Type objPlatform
+    Platform As String
+    Code As Integer
+End Type
+Public PlatformArray() As objPlatform
+
+'Structure for populating the Release List Box.
+Type objRelease
+    Release As String
+    Code As Integer
+End Type
+Public ReleaseArray() As objRelease
 
 '***************************************************************************************************************
 '** FUNCTION DECLARATIONS & CONSTANTS                                                                         **
@@ -171,13 +211,13 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         End If
     Next
        
-    'Get all the Keys and decodes.
-    Call RefreshCodeDecodeLB
-    
     'Save the current table to a global variable.
     CurTable = Node.Text
     CurKey = ""
     
+    'Get all the Keys and decodes.
+    Call RefreshCodeDecodeLB
+     
     'Enable the delete Table Key.
     frmMain.mnuDeleteTable.Enabled = True
     frmMain.mnuModifyTable.Enabled = True
@@ -192,13 +232,11 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.chkStatic.Enabled = True
     frmMain.chkCodes.Enabled = True
         
-    strSQL = "select Description, DecodeLen, DecodeDisplacement, " & _
+    strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
              "DataLen, KeyLen, SystemUse, StaticTableUse, CodesTableUse, CenturyDelim " & _
              "from tblTables where TableName = " & Chr(39) & Node.Text & Chr(39)
-     
-    Debug.Print strSQL
         
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
     If Not DaoRS.EOF Then
         
@@ -268,8 +306,8 @@ Public Sub BuildTableList()
     ReDim TableTypes(0)
     
     'Build the list of possible table types
-    strSQL = "select distinct TableTypeCode, Decode From tblTableCodes order by TableTypeCode"
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select distinct TableTypeCode, Decode From tblTableCodes order by TableTypeCode"
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         While Not DaoRS.EOF
@@ -292,10 +330,10 @@ Public Sub BuildTableList()
     For x = 0 To UBound(TableTypes)
     
         'Build the tree control with all the tables available within the CTM database.
-        strSQL = "Select TableName From tblTables where TableType = " & TableTypes(x).TableTypeCode & _
+        strsql = "Select TableName From tblTables where TableType = " & TableTypes(x).TableTypeCode & _
                          " order by TableName"
 
-        Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+        Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
         If Not DaoRS.EOF Then
             
@@ -317,20 +355,46 @@ Public Sub BuildTableList()
 
 End Sub
 
+'***************************************************************************************************************
+Public Function CheckUMsgKeyExists(ByVal TableName As String, _
+                               ByVal Key As Integer, _
+                               ByVal client As Integer, _
+                               ByVal SeqNumber As Integer) As Boolean
+'***************************************************************************************************************
+    
+    'Put together the sql to perform the check.
+    strsql = "SELECT 1 FROM tblUserErrorMsgEntries" _
+                 & " Where TableName = " & Chr(39) & TableName & Chr(39) & " AND Client = " & client & " AND ErrorNumber = " & Key & " AND SequenceNumber = " & SeqNumber
+        
+    'Open the recordset.
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    'If the recordset is NOT empty then the key already exists.
+    If Not DaoRS.EOF Then
+        CheckUMsgKeyExists = True
+    Else
+        CheckUMsgKeyExists = False
+        Debug.Print strsql
+    End If
+    
+    'Close the recordset.
+    DaoRS.Close
+
+End Function
 
 '***************************************************************************************************************
 Public Function CheckKeyExists(ByVal TableName As String, _
                                ByVal Key As String, _
-                               ByVal Client As Integer) As Boolean
+                               ByVal client As Integer) As Boolean
 '***************************************************************************************************************
     
     'Put together the sql to perform the check.
-    strSQL = "SELECT 1 FROM tblEntries WHERE TableName = " & Chr(39) & TableName & Chr(39) & " " & _
-             "AND Key = " & Chr(39) & Key & Chr(39) & "AND Client = " & Client
-    Debug.Print strSQL
+    strsql = "SELECT 1 FROM tblEntries WHERE TableName = " & Chr(39) & TableName & Chr(39) & " " & _
+             "AND Key = " & Chr(39) & Key & Chr(39) & "AND Client = " & client
+    Debug.Print strsql
     
     'Open the recordset.
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     'If the recordset is NOT empty then the key already exists.
     If Not DaoRS.EOF Then
@@ -367,9 +431,9 @@ Public Function CheckAuthorityLevel() As Boolean
         Exit Function
     End If
     
-    strSQL = "select 1 from tblAdmin where AdminName = " & Chr(39) & CurrentUser & Chr(39)
+    strsql = "select 1 from tblAdmin where AdminName = " & Chr(39) & CurrentUser & Chr(39)
 
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     'If something was returned then the current user is on the admin table. Otherwise
     If (DaoRS.RecordCount = 1) Then
@@ -404,51 +468,99 @@ End Function
 Public Sub RefreshCodeDecodeLB()
 '*********************************************************************************************************
     Dim itmX As ListItem, cnt As Integer
+    Dim x As Integer
     
     KeyCntr = 0
     
     frmMain.lvListView.ListItems.Clear
 
-
     On Error GoTo ODBCError
     
     If (CurTableType = CODES_TABLE) Then
-        strSQL = "SELECT tblEntries.Key, tblEntries.Decode, tblClients.Client, " & _
-                 "tblPlatforms.Platform,  tblReleases.Release, " & _
-                 "tblEntries.SystemUse,  tblEntries.StaticTableUse,  tblEntries.CodesTableUse, " & _
-                 "tblEntries.Description " & _
-                 "FROM tblEntries, tblClients, tblPlatforms, tblReleases " & _
-                 "WHERE tblEntries.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & " AND " & _
-                 "tblClients.Code = tblEntries.Client and tblPlatforms.Code = tblEntries.Platform AND " & _
-                 "tblReleases.Code = tblEntries.CSSRelease " & _
-                 "ORDER BY tblEntries.Key ASC"
-    
+        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.SystemUse, tblEntries.StaticTableUse, tblEntries.CodesTableUse, tblEntries.Comments, tblEntries.Description" _
+                 & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
+                 & " WHERE (((tblEntries.TableName) = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "))" _
+                 & " ORDER BY tblEntries.Key;"
+                 
+        frmMain.lvListView.ColumnHeaders.Clear
+        
+        'Add the column headings.
+        frmMain.lvListView.ColumnHeaders.Add , , "Key", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "SystemUse", 1300, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "StaticTableUse", 1300, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "CodesTableUse", 1300, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
+
+        'UnHide Check boxes
+        frmMain.chkCodes.Visible = True
+        frmMain.chkStatic.Visible = True
+        frmMain.chkSystem.Visible = True
+
     ElseIf (CurTableType = MSG_BOX) Then
-        strSQL = "SELECT tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, " & _
-                 "tblClients.Client, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxEntries.Comments " & _
-                 "FROM tblMsgBoxEntries, tblClients, tblPlatforms, tblReleases " & _
-                 "WHERE tblMsgBoxEntries.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & " AND " & _
-                 "tblClients.Code = tblMsgBoxEntries.Client and tblPlatforms.Code = tblMsgBoxEntries.Platform AND " & _
-                 "tblReleases.Code = tblMsgBoxEntries.CSSRelease " & _
-                 "ORDER BY tblMsgBoxEntries.Code ASC"
- 
+        strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
+                 & " FROM ((((((tblMsgBoxEntries INNER JOIN tblMsgBoxButtons ON tblMsgBoxEntries.Buttons = tblMsgBoxButtons.[Button ID]) INNER JOIN tblMsgBoxDefaultButtons ON tblMsgBoxEntries.DefaultButton = tblMsgBoxDefaultButtons.[Default Button ID]) INNER JOIN tblMsgBoxIcons ON tblMsgBoxEntries.Icon = tblMsgBoxIcons.[Icon ID]) INNER JOIN tblReleases ON tblMsgBoxEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblMsgBoxEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblMsgBoxEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblMsgBoxEntries.Application = tblApplications.Code" _
+                 & " Where (((tblMsgBoxEntries.TableName) = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "))" _
+                 & " ORDER BY tblMsgBoxEntries.Code;"
+                 
+        frmMain.lvListView.ColumnHeaders.Clear
+        
+        'Add the column headings.
+        frmMain.lvListView.ColumnHeaders.Add , , "Msg Key", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Message Box Decode", 4000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Icon", 2500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Default Button", 2500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Buttons", 2500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+        
+        'Hide Check boxes
+        frmMain.chkCodes.Visible = False
+        frmMain.chkStatic.Visible = False
+        frmMain.chkSystem.Visible = False
+
     Else
-        strSQL = "SELECT tblUserErrorMsgEntries.ErrorNumber,  tblUserErrorMsgEntries.ErrorCode, " & _
-                 "tblClients.Client, tblPlatforms.Platform,  tblReleases.Release, " & _
-                 "tblUserErrorMsgEntries.Coments, tblUserErrorMsgEntries.SequenceNumber " & _
-                 "FROM tblUserErrorMsgEntries, tblClients, tblPlatforms, tblReleases " & _
-                 "WHERE tblUserErrorMsgEntries.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & " AND " & _
-                 "tblClients.Code = tblUserErrorMsgEntries.Client and tblPlatforms.Code = tblUserErrorMsgEntries.Platform AND " & _
-                 "tblReleases.Code = tblUserErrorMsgEntries.CSSRelease " & _
-                 "ORDER BY tblUserErrorMsgEntries.ErrorNumber ASC, tblUserErrorMsgEntries.SequenceNumber ASC"
+        strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
+                 & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code" _
+                 & " Where (((tblUserErrorMsgEntries.TableName) = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "))" _
+                 & " ORDER BY tblUserErrorMsgEntries.ErrorNumber;"
+
+        frmMain.lvListView.ColumnHeaders.Clear
+        
+        'Add the column headings.
+        frmMain.lvListView.ColumnHeaders.Add , , "Error Key", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Error Message Decode", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Seq. No.", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Language", 700, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+
+        'Hide Check boxes
+        frmMain.chkCodes.Visible = False
+        frmMain.chkStatic.Visible = False
+        frmMain.chkSystem.Visible = False
+
     End If
     
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
     If Not DaoRS.EOF Then
     
         While Not DaoRS.EOF
-             Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
+        
+                Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
                 
                 If (DaoRS(1).Value = Null) Then
                     itmX.SubItems(1) = " "
@@ -459,35 +571,36 @@ Public Sub RefreshCodeDecodeLB()
                 itmX.SubItems(2) = RTrim(DaoRS(2).Value)
                 itmX.SubItems(3) = DaoRS(3).Value
                 itmX.SubItems(4) = DaoRS(4).Value
+                itmX.SubItems(5) = DaoRS(5).Value
+                itmX.SubItems(6) = DaoRS(6).Value
+                itmX.SubItems(7) = DaoRS(7).Value
+                itmX.SubItems(8) = DaoRS(8).Value
+  
+                If (CurTableType <> WES_CODE) Then
                 
-                If (CurTableType = CODES_TABLE) Then
-                    itmX.SubItems(5) = DaoRS(5).Value
-                    itmX.SubItems(6) = DaoRS(6).Value
-                    itmX.SubItems(7) = DaoRS(7).Value
-                
-                    If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
-                        itmX.SubItems(8) = CStr(DaoRS(8).Value)
+                    If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
+                        itmX.SubItems(9) = CStr(DaoRS(9).Value)
                     Else
-                        itmX.SubItems(8) = " "
+                        itmX.SubItems(9) = " "
                     End If
-                
-                Else
-                    itmX.SubItems(5) = False
-                    itmX.SubItems(6) = False
-                    itmX.SubItems(7) = False
                     
-                    If ((Not DaoRS(5).Value = vbNullChar) And (Not DaoRS(5).Value = "Null")) Then
-                        itmX.SubItems(8) = DaoRS(5).Value
-                    Else
-                        itmX.SubItems(8) = " "
+                    If (CurTableType = CODES_TABLE) Then
+                        If ((Not DaoRS(10).Value = vbNullChar) And (Not DaoRS(10).Value = "Null")) Then
+                            itmX.SubItems(10) = CStr(DaoRS(10).Value)
+                        Else
+                            itmX.SubItems(10) = " "
+                        End If
                     End If
                 End If
-                    
+                
+                frmMain.sbStatusBar.Refresh
+                
                 KeyCntr = KeyCntr + 1
                 DaoRS.MoveNext
-            Wend
+        Wend
     
         DaoRS.Close
+        frmMain.sbStatusBar.Panels(1).Text = " "
         
         'Update the total number of keys.
         frmMain.txtTotalKeys.Text = KeyCntr
@@ -495,6 +608,8 @@ Public Sub RefreshCodeDecodeLB()
     Else
         frmMain.txtTotalKeys.Text = 0
     End If
+    
+    Debug.Print strsql
 
 Exit Sub
 
@@ -546,9 +661,9 @@ End Function
 '***************************************************************************************************************
 Public Function GetButtonCode(strButton As String) As Integer
 '***************************************************************************************************************
-    strSQL = "select [Button ID] From tblMsgBoxButtons where Buttons = 'FND_MSGBOX_" & strButton & Chr(39)
+    strsql = "select [Button ID] From tblMsgBoxButtons where Buttons = 'FND_MSGBOX_" & strButton & Chr(39)
                 
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             
     If Not DaoRS.EOF Then
         GetButtonCode = DaoRS(0)
@@ -563,9 +678,9 @@ End Function
 '***************************************************************************************************************
 Public Function GetIconCode(strIcon As String) As Integer
 '***************************************************************************************************************
-    strSQL = "select [Icon ID] From tblMsgBoxIcons where Icon = 'FND_MSGBOX_" & strIcon & Chr(39)
+    strsql = "select [Icon ID] From tblMsgBoxIcons where Icon = 'FND_MSGBOX_" & strIcon & Chr(39)
                 
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             
     If Not DaoRS.EOF Then
         GetIconCode = DaoRS(0)
@@ -583,9 +698,9 @@ End Function
 '***************************************************************************************************************
 Public Function GetDefaultButtonCode(strButton As String) As Integer
 '***************************************************************************************************************
-    strSQL = "select [Default Button ID] From tblMsgBoxDefaultButtons where [Defualt Button] = 'FND_MSGBOX_" & strButton & Chr(39)
+    strsql = "select [Default Button ID] From tblMsgBoxDefaultButtons where [Defualt Button] = 'FND_MSGBOX_" & strButton & Chr(39)
                 
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             
     If Not DaoRS.EOF Then
         GetDefaultButtonCode = DaoRS(0)
@@ -599,19 +714,283 @@ Public Function GetDefaultButtonCode(strButton As String) As Integer
 End Function
 
 
+''***************************************************************************************************************
+'Public Function GetClientDecode(strClient As String) As Integer
+''***************************************************************************************************************
+'    strsql = "select Code From tblClients where Client = " & Chr(39) & strClient & Chr(39)
+'
+'    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+'
+'    If Not DaoRS.EOF Then
+'        GetClientDecode = DaoRS(0)
+'        DaoRS.Close
+'    Else
+'        GetClientDecode = SQL_NOT_FOUND
+'    End If
+'
+'End Function
+
+
 '***************************************************************************************************************
-Public Function GetClientDecode(strClient As String) As Integer
+Public Sub GetClientCBox(cboSource As Control)
 '***************************************************************************************************************
-    strSQL = "select Code From tblClients where Client = " & Chr(39) & strClient & Chr(39)
-                
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-            
+
+    ReDim ClientArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+     strsql = "Select Client, Code " _
+            & " From tblClients " _
+            & " Order By Code"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
     If Not DaoRS.EOF Then
-        GetClientDecode = DaoRS(0)
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            ClientArray(UBound(ClientArray)).client = DaoRS(0).Value
+            ClientArray(UBound(ClientArray)).Code = DaoRS(1).Value
+            ReDim Preserve ClientArray(UBound(ClientArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
         DaoRS.Close
-    Else
-        GetClientDecode = SQL_NOT_FOUND
+        cboSource.ListIndex = 0
     End If
 
-End Function
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
+
+
+'***************************************************************************************************************
+Public Sub GetButtonCBox(cboSource As Control)
+'***************************************************************************************************************
+
+    ReDim ButtonsArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+    strsql = "SELECT Buttons, [Button ID] " _
+           & " From tblMsgBoxButtons " _
+           & " ORDER BY [Button ID]"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            ButtonsArray(UBound(ButtonsArray)).Buttons = DaoRS(0).Value
+            ButtonsArray(UBound(ButtonsArray)).ButtonID = DaoRS(1).Value
+            ReDim Preserve ButtonsArray(UBound(ButtonsArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
+        DaoRS.Close
+        cboSource.ListIndex = 0
+    End If
+
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
+
+
+'***************************************************************************************************************
+Public Sub GetIconCBox(cboSource As Control)
+'***************************************************************************************************************
+
+    ReDim IconArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+    strsql = "SELECT Icon, [Icon ID] " _
+           & " From tblMsgBoxIcons " _
+           & "ORDER BY [Icon ID]"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            IconArray(UBound(IconArray)).Icon = DaoRS(0).Value
+            IconArray(UBound(IconArray)).IconID = DaoRS(1).Value
+            ReDim Preserve IconArray(UBound(IconArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
+        DaoRS.Close
+        cboSource.ListIndex = 0
+    End If
+
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
+
+
+'***************************************************************************************************************
+Public Sub GetDefaultButtonCBox(cboSource As Control)
+'***************************************************************************************************************
+
+    ReDim DefaultButtonArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+    strsql = "SELECT [Defualt Button], [Default Button ID] " _
+           & " From tblMsgBoxDefaultButtons " _
+           & " ORDER BY [Default Button ID]"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            DefaultButtonArray(UBound(DefaultButtonArray)).DefaultButton = DaoRS(0).Value
+            DefaultButtonArray(UBound(DefaultButtonArray)).DefaultButtonID = DaoRS(1).Value
+            ReDim Preserve DefaultButtonArray(UBound(DefaultButtonArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
+        DaoRS.Close
+        cboSource.ListIndex = 0
+    End If
+
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
+
+
+'***************************************************************************************************************
+Public Sub GetApplicationCBox(cboSource As Control)
+'***************************************************************************************************************
+
+    ReDim ApplicationArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+    strsql = "SELECT Application, Code " _
+           & " From tblApplications " _
+           & " ORDER BY Code"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            ApplicationArray(UBound(ApplicationArray)).Application = DaoRS(0).Value
+            ApplicationArray(UBound(ApplicationArray)).Code = DaoRS(1).Value
+            ReDim Preserve ApplicationArray(UBound(ApplicationArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
+        DaoRS.Close
+        cboSource.ListIndex = 0
+    End If
+
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
+
+'***************************************************************************************************************
+Public Sub GetPlatformCBox(cboSource As Control)
+'***************************************************************************************************************
+
+    ReDim PlatformArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+    strsql = "SELECT Platform, Code " _
+           & " From tblPlatforms " _
+           & " ORDER BY Code"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            PlatformArray(UBound(PlatformArray)).Platform = DaoRS(0).Value
+            PlatformArray(UBound(PlatformArray)).Code = DaoRS(1).Value
+            ReDim Preserve PlatformArray(UBound(PlatformArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
+        DaoRS.Close
+        cboSource.ListIndex = 0
+    End If
+
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
+
+'***************************************************************************************************************
+Public Sub GetReleaseCBox(cboSource As Control)
+'***************************************************************************************************************
+
+    ReDim ReleaseArray(0)
+
+    cboSource.Enabled = False
+    cboSource.Clear
+    Screen.MousePointer = vbHourglass
+
+    strsql = "SELECT Release, Code " _
+           & " From tblReleases " _
+           & " ORDER BY Code"
+
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+
+        While Not DaoRS.EOF
+            cboSource.AddItem DaoRS(0).Value
+            ReleaseArray(UBound(ReleaseArray)).Release = DaoRS(0).Value
+            ReleaseArray(UBound(ReleaseArray)).Code = DaoRS(1).Value
+            ReDim Preserve ReleaseArray(UBound(ReleaseArray) + 1)
+            DaoRS.MoveNext
+        Wend
+
+        DaoRS.Close
+        cboSource.ListIndex = 0
+    End If
+
+    Screen.MousePointer = vbNormal
+
+    'Enable the combo box.
+    cboSource.Enabled = True
+
+End Sub
 

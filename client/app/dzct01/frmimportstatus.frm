@@ -25,7 +25,7 @@ Begin VB.Form frmImportStatus
       EndProperty
       Height          =   465
       Left            =   1155
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   2925
       Width           =   1215
    End
@@ -43,7 +43,7 @@ Begin VB.Form frmImportStatus
       EndProperty
       Height          =   465
       Left            =   4005
-      TabIndex        =   2
+      TabIndex        =   0
       Top             =   2925
       Width           =   1215
    End
@@ -67,7 +67,8 @@ Begin VB.Form frmImportStatus
    Begin ComctlLib.ListView lvErrorList 
       Height          =   1515
       Left            =   150
-      TabIndex        =   0
+      TabIndex        =   3
+      TabStop         =   0   'False
       Top             =   1200
       Width           =   6015
       _ExtentX        =   10610
@@ -256,7 +257,7 @@ Private Sub Form_Load()
         Set itmX = lvErrorList.ListItems.Add(, , ImportErrArray(x).Table)
             itmX.SubItems(1) = ImportErrArray(x).Key
             itmX.SubItems(2) = ImportErrArray(x).Decode
-            itmX.SubItems(3) = ImportErrArray(x).Client
+            itmX.SubItems(3) = ImportErrArray(x).client
             itmX.SubItems(4) = ImportErrArray(x).Action
     Next
     

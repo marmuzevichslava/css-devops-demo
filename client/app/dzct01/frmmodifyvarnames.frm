@@ -17,7 +17,6 @@ Begin VB.Form frmModifyVarNames
    Begin VB.CommandButton cmdCancel 
       Cancel          =   -1  'True
       Caption         =   "&Cancel"
-      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -29,12 +28,13 @@ Begin VB.Form frmModifyVarNames
       EndProperty
       Height          =   375
       Left            =   2153
-      TabIndex        =   5
+      TabIndex        =   3
       Top             =   1275
       Width           =   1215
    End
    Begin VB.CommandButton cmdOK 
       Caption         =   "&OK"
+      Default         =   -1  'True
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -47,7 +47,7 @@ Begin VB.Form frmModifyVarNames
       EndProperty
       Height          =   375
       Left            =   653
-      TabIndex        =   4
+      TabIndex        =   2
       ToolTipText     =   "Add the current user id"
       Top             =   1275
       Width           =   1215
@@ -55,7 +55,7 @@ Begin VB.Form frmModifyVarNames
    Begin VB.TextBox txtCobolName 
       Height          =   315
       Left            =   1500
-      TabIndex        =   3
+      TabIndex        =   1
       ToolTipText     =   "Variable name for Cobol generation"
       Top             =   675
       Width           =   2340
@@ -63,7 +63,7 @@ Begin VB.Form frmModifyVarNames
    Begin VB.TextBox txtCName 
       Height          =   315
       Left            =   1500
-      TabIndex        =   1
+      TabIndex        =   0
       ToolTipText     =   "Variable name for C generation"
       Top             =   225
       Width           =   2340
@@ -81,7 +81,7 @@ Begin VB.Form frmModifyVarNames
       EndProperty
       Height          =   240
       Left            =   150
-      TabIndex        =   2
+      TabIndex        =   5
       Top             =   712
       Width           =   1215
    End
@@ -98,7 +98,7 @@ Begin VB.Form frmModifyVarNames
       EndProperty
       Height          =   240
       Left            =   150
-      TabIndex        =   0
+      TabIndex        =   4
       Top             =   262
       Width           =   1215
    End
@@ -197,12 +197,12 @@ Public Function SubmitVarNames() As Boolean
     If (txtCName.Text = "") Then txtCName.Text = " "
     If (txtCobolName.Text = "") Then txtCobolName.Text = " "
     
-    strSQL = "UPDATE tblEntries SET CName = '" & txtCName.Text & "', CobolName = '" & _
+    strsql = "UPDATE tblEntries SET CName = '" & txtCName.Text & "', CobolName = '" & _
              txtCobolName.Text & "' WHERE TableName = '" & frmMain.tvTreeView.SelectedItem.Text & _
              "' AND Key = '" & frmSourceFileGenerator.lvSrcGenerate.SelectedItem.Text & "'"
     
     wsCTM.BeginTrans
-    dbCTM.Execute strSQL
+    dbCTM.Execute strsql
     
     If (dbCTM.RecordsAffected > 0) Then
         wsCTM.CommitTrans

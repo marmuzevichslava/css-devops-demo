@@ -37,7 +37,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   465
       Left            =   5363
-      TabIndex        =   21
+      TabIndex        =   10
       Top             =   3975
       Width           =   1590
    End
@@ -56,7 +56,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   465
       Left            =   3638
-      TabIndex        =   20
+      TabIndex        =   9
       Top             =   3975
       Width           =   1590
    End
@@ -74,7 +74,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   465
       Left            =   1913
-      TabIndex        =   19
+      TabIndex        =   8
       Top             =   3975
       Width           =   1590
    End
@@ -92,7 +92,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   465
       Left            =   188
-      TabIndex        =   18
+      TabIndex        =   11
       Top             =   3975
       Width           =   1590
    End
@@ -109,14 +109,14 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   765
       Left            =   3825
-      TabIndex        =   15
+      TabIndex        =   21
       Top             =   2925
       Width           =   3165
       Begin VB.OptionButton optCobolOutput 
          Caption         =   "Cobol Copybook"
          Height          =   195
          Left            =   1575
-         TabIndex        =   17
+         TabIndex        =   7
          Top             =   300
          Value           =   -1  'True
          Width           =   1515
@@ -125,7 +125,7 @@ Begin VB.Form frmSourceFileGenerator
          Caption         =   "C Include File"
          Height          =   240
          Left            =   150
-         TabIndex        =   16
+         TabIndex        =   6
          Top             =   300
          Width           =   1290
       End
@@ -134,7 +134,7 @@ Begin VB.Form frmSourceFileGenerator
       BackColor       =   &H0000FFFF&
       Height          =   285
       Left            =   1125
-      TabIndex        =   14
+      TabIndex        =   5
       Top             =   3450
       Width           =   1290
    End
@@ -142,14 +142,15 @@ Begin VB.Form frmSourceFileGenerator
       BackColor       =   &H0000FFFF&
       Height          =   285
       Left            =   1125
-      TabIndex        =   12
+      TabIndex        =   4
       Top             =   3000
       Width           =   2490
    End
    Begin ComctlLib.ListView lvSrcGenerate 
       Height          =   1365
       Left            =   150
-      TabIndex        =   10
+      TabIndex        =   18
+      TabStop         =   0   'False
       Top             =   1425
       Width           =   6840
       _ExtentX        =   12065
@@ -179,7 +180,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   1140
       Left            =   150
-      TabIndex        =   0
+      TabIndex        =   12
       Top             =   150
       Width           =   6840
       Begin VB.CheckBox cbSigned 
@@ -188,7 +189,7 @@ Begin VB.Form frmSourceFileGenerator
          Enabled         =   0   'False
          Height          =   240
          Left            =   5775
-         TabIndex        =   9
+         TabIndex        =   1
          Top             =   300
          Width           =   915
       End
@@ -197,7 +198,7 @@ Begin VB.Form frmSourceFileGenerator
          Height          =   315
          Left            =   4800
          Style           =   2  'Dropdown List
-         TabIndex        =   8
+         TabIndex        =   3
          ToolTipText     =   "Types available for integer elements"
          Top             =   675
          Width           =   1890
@@ -208,7 +209,8 @@ Begin VB.Form frmSourceFileGenerator
          Height          =   315
          Left            =   5040
          Locked          =   -1  'True
-         TabIndex        =   6
+         TabIndex        =   16
+         TabStop         =   0   'False
          Top             =   270
          Width           =   690
       End
@@ -216,7 +218,7 @@ Begin VB.Form frmSourceFileGenerator
          Height          =   315
          Left            =   1320
          Style           =   2  'Dropdown List
-         TabIndex        =   4
+         TabIndex        =   2
          Top             =   675
          Width           =   1770
       End
@@ -224,7 +226,7 @@ Begin VB.Form frmSourceFileGenerator
          BackColor       =   &H0000FFFF&
          Height          =   315
          Left            =   1320
-         TabIndex        =   2
+         TabIndex        =   0
          Top             =   263
          Width           =   2490
       End
@@ -234,7 +236,7 @@ Begin VB.Form frmSourceFileGenerator
          Enabled         =   0   'False
          Height          =   240
          Left            =   3675
-         TabIndex        =   7
+         TabIndex        =   17
          Top             =   750
          Width           =   990
       End
@@ -243,7 +245,7 @@ Begin VB.Form frmSourceFileGenerator
          Caption         =   "Length:"
          Height          =   240
          Left            =   4290
-         TabIndex        =   5
+         TabIndex        =   15
          Top             =   300
          Width           =   615
       End
@@ -252,7 +254,7 @@ Begin VB.Form frmSourceFileGenerator
          Caption         =   "Data Type:"
          Height          =   240
          Left            =   300
-         TabIndex        =   3
+         TabIndex        =   14
          Top             =   750
          Width           =   915
       End
@@ -261,7 +263,7 @@ Begin VB.Form frmSourceFileGenerator
          Caption         =   "Element Name:"
          Height          =   165
          Left            =   75
-         TabIndex        =   1
+         TabIndex        =   13
          Top             =   338
          Width           =   1140
       End
@@ -279,7 +281,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   240
       Left            =   150
-      TabIndex        =   13
+      TabIndex        =   20
       Top             =   3472
       Width           =   915
    End
@@ -296,7 +298,7 @@ Begin VB.Form frmSourceFileGenerator
       EndProperty
       Height          =   240
       Left            =   150
-      TabIndex        =   11
+      TabIndex        =   19
       Top             =   3022
       Width           =   615
    End
@@ -446,8 +448,8 @@ Private Sub Form_Load()
     ReDim CompTypes(0)
     
     'Build the list of possible data types
-    strSQL = "SELECT DISTINCT DataTypeCode, DataTypeDecode From tblDataTypes order by DataTypeCode"
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "SELECT DISTINCT DataTypeCode, DataTypeDecode From tblDataTypes order by DataTypeCode"
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         While Not DaoRS.EOF
@@ -465,10 +467,10 @@ Private Sub Form_Load()
     Next
     
     'Build the list of possible Comp types
-    strSQL = "SELECT CompTypeCd, CompTypeDecode from tblCompTypes " & _
+    strsql = "SELECT CompTypeCd, CompTypeDecode from tblCompTypes " & _
              "ORDER By CompTypeCd"
         
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         While Not DaoRS.EOF
@@ -487,10 +489,10 @@ Private Sub Form_Load()
     
     DataElement.Text = ""
     
-    strSQL = "SELECT TableName, DataElement, DataType, Signed, Comp FROM tblCUVHeaderData"
-    strSQL = strSQL & " WHERE tblCUVHeaderData.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39)
+    strsql = "SELECT TableName, DataElement, DataType, Signed, Comp FROM tblCUVHeaderData"
+    strsql = strsql & " WHERE tblCUVHeaderData.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39)
     
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If (DaoRS.EOF = False) Then
         If (Len(DaoRS(1).Value) > 0) Then
@@ -530,9 +532,9 @@ Private Sub Form_Load()
         
     Else
     
-        strSQL = "INSERT INTO tblCUVHeaderData (TableName) VALUES (" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & ")"
+        strsql = "INSERT INTO tblCUVHeaderData (TableName) VALUES (" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & ")"
         wsCTM.BeginTrans
-        dbCTM.Execute strSQL
+        dbCTM.Execute strsql
         If (dbCTM.RecordsAffected = 1) Then
             wsCTM.CommitTrans
         Else
@@ -632,11 +634,11 @@ Public Sub PopulateListView()
     lvSrcGenerate.ListItems.Clear
     
     'Get all the keys decodes.
-    strSQL = "SELECT Key, CName, CobolName, Decode, ArrayName from tblEntries " & _
+    strsql = "SELECT Key, CName, CobolName, Decode, ArrayName from tblEntries " & _
              "WHERE TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & _
              Chr(39) & "ORDER By Key"
              
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
     If Not DaoRS.EOF Then
     
@@ -693,22 +695,22 @@ Private Sub pbGenerate_Click()
         CompType = " "
     End If
     
-    strSQL = "UPDATE DISTINCTROW tblCUVHeaderData SET tblCUVHeaderData.DataType = " & Chr(39) & DataType & Chr(39)
-    strSQL = strSQL & ", tblCUVHeaderData.DataElement = " & Chr(39) & Me.DataElement & Chr(39)
-    strSQL = strSQL & ", tblCUVHeaderData.Comp = " & Chr(39) & CompType & Chr(39)
-    strSQL = strSQL & ", tblCUVHeaderData.Signed = " & bSignedFlag
-    strSQL = strSQL & " WHERE (((tblCUVHeaderData.TableName)=" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "));"
+    strsql = "UPDATE DISTINCTROW tblCUVHeaderData SET tblCUVHeaderData.DataType = " & Chr(39) & DataType & Chr(39)
+    strsql = strsql & ", tblCUVHeaderData.DataElement = " & Chr(39) & Me.DataElement & Chr(39)
+    strsql = strsql & ", tblCUVHeaderData.Comp = " & Chr(39) & CompType & Chr(39)
+    strsql = strsql & ", tblCUVHeaderData.Signed = " & bSignedFlag
+    strsql = strsql & " WHERE (((tblCUVHeaderData.TableName)=" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "));"
 
-Debug.Print strSQL
+Debug.Print strsql
 
     wsCTM.BeginTrans
-    dbCTM.Execute strSQL
+    dbCTM.Execute strsql
     
     If (dbCTM.RecordsAffected = 1) Then
         wsCTM.CommitTrans
     Else
         wsCTM.Rollback
-        Debug.Print strSQL
+        Debug.Print strsql
         msg = "An error has occured while trying to modify the Data Element header fields. Copybook was not generated." & vbCrLf
         RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
         Exit Sub
@@ -837,11 +839,11 @@ Public Sub GenerateCNames()
             
             For x = 1 To lvSrcGenerate.ListItems.Count
                 
-                strSQL = "UPDATE tblEntries SET CName = ' ' WHERE TableName = " & Chr(39) & _
+                strsql = "UPDATE tblEntries SET CName = ' ' WHERE TableName = " & Chr(39) & _
                          frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                          " AND Key = " & Chr(39) & lvSrcGenerate.ListItems(x).Text & Chr(39)
                 wsCTM.BeginTrans
-                dbCTM.Execute strSQL
+                dbCTM.Execute strsql
                 wsCTM.CommitTrans
                 
                 lvSrcGenerate.ListItems(x).SubItems(1) = vbNullString
@@ -949,13 +951,13 @@ Public Sub GenerateCNames()
                 Else
                     wsCTM.BeginTrans
                     
-                    strSQL = "UPDATE tblEntries SET CName = " & Chr(39) & _
+                    strsql = "UPDATE tblEntries SET CName = " & Chr(39) & _
                              TempString & Chr(39) & ", ArrayName = " & Chr(39) & _
                              TempString & Chr(39) & " WHERE TableName = " & Chr(39) & _
                              frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Key = " & Chr(39) & "E" & KeyVal & Chr(39)
                     
-                    dbCTM.Execute strSQL
+                    dbCTM.Execute strsql
                     wsCTM.CommitTrans
                     
                     'Update the list view.
@@ -1024,11 +1026,11 @@ Public Sub GenerateCobolNames()
             
             For x = 1 To lvSrcGenerate.ListItems.Count
                 
-                strSQL = "UPDATE tblEntries SET CobolName = ' ' WHERE TableName = " & Chr(39) & _
+                strsql = "UPDATE tblEntries SET CobolName = ' ' WHERE TableName = " & Chr(39) & _
                          frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                          " AND Key = " & Chr(39) & lvSrcGenerate.ListItems(x).Text & Chr(39)
                 wsCTM.BeginTrans
-                dbCTM.Execute strSQL
+                dbCTM.Execute strsql
                 wsCTM.CommitTrans
                 
                 lvSrcGenerate.ListItems(x).SubItems(2) = vbNullString
@@ -1132,12 +1134,12 @@ Public Sub GenerateCobolNames()
                     
                     wsCTM.BeginTrans
                     
-                    strSQL = "UPDATE tblEntries SET CobolName = " & Chr(39) & _
+                    strsql = "UPDATE tblEntries SET CobolName = " & Chr(39) & _
                              TempString & Chr(39) & " WHERE TableName = " & Chr(39) & _
                              frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Key = " & Chr(39) & "E" & KeyVal & Chr(39)
                     
-                    dbCTM.Execute strSQL
+                    dbCTM.Execute strsql
                     wsCTM.CommitTrans
                     
                     'Update the list view.

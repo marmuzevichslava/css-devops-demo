@@ -16,6 +16,7 @@ Begin VB.Form frmAbout
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdCancel 
       Caption         =   "&Cancel"
+      Default         =   -1  'True
       Height          =   375
       Left            =   1440
       TabIndex        =   3

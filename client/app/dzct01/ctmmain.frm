@@ -61,6 +61,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   8475
          TabIndex        =   15
+         TabStop         =   0   'False
          ToolTipText     =   "The current table contains Codes used in C/1 source code"
          Top             =   300
          Width           =   1485
@@ -71,15 +72,18 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   6825
          TabIndex        =   14
+         TabStop         =   0   'False
          ToolTipText     =   "The current table contains Codes used within another Codes Table"
          Top             =   675
          Width           =   1485
       End
       Begin VB.CheckBox chkStatic 
          Caption         =   "Static Tables"
+         Enabled         =   0   'False
          Height          =   255
          Left            =   6825
          TabIndex        =   13
+         TabStop         =   0   'False
          ToolTipText     =   "The current table contains Codes used in Static Tables"
          Top             =   300
          Width           =   1560
@@ -202,7 +206,7 @@ Begin VB.Form frmMain
    Begin ComctlLib.TreeView tvTreeView 
       Height          =   4080
       Left            =   0
-      TabIndex        =   2
+      TabIndex        =   0
       Top             =   1425
       Width           =   2970
       _ExtentX        =   5239
@@ -213,6 +217,7 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
+      MouseIcon       =   "CTMMain.frx":0614
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -233,13 +238,14 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      MouseIcon       =   "CTMMain.frx":0630
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
       Align           =   2  'Align Bottom
       Height          =   270
       Left            =   0
-      TabIndex        =   0
+      TabIndex        =   2
       Top             =   5730
       Width           =   11760
       _ExtentX        =   20743
@@ -388,18 +394,7 @@ Private Sub Form_Load()
     Me.Height = GetSetting(App.Title, "Settings", "MainHeight", (Screen.Height * 0.6))
     Me.Left = GetSetting(App.Title, "Settings", "MainLeft", (Screen.Width - Me.Width) / 2)
     Me.Top = GetSetting(App.Title, "Settings", "MainTop", (Screen.Height - Me.Height) / 2)
-    
-    
-    'Add the column headings.
-    lvListView.ColumnHeaders.Add , , "Key", 1000, 0
-    lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
-    lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-    lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-    lvListView.ColumnHeaders.Add , , "Release", 1000, 0
-    lvListView.ColumnHeaders.Add , , "SystemUse", 1300, 0
-    lvListView.ColumnHeaders.Add , , "StaticTableUse", 1300, 0
-    lvListView.ColumnHeaders.Add , , "CodesTableUse", 1300, 0
-    lvListView.ColumnHeaders.Add , , "Description", 3000, 0
+
         
     'Set up the list view to remain highlighted when a row is selected.
     lvListView.HideSelection = False
@@ -450,8 +445,8 @@ Private Sub Form_Load()
     dbCTM.QueryTimeout = 15
     
     'Get the current transfer name of this database.
-    strSQL = "select Project from tblProject where ProjectFlag = True"
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select Project from tblProject where ProjectFlag = True"
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         sTransfer = DaoRS(0).Value
@@ -707,7 +702,8 @@ End Sub
 '***************************************************************************************************************
 Private Sub mnuDeleteKey_Click()
 '***************************************************************************************************************
-    Dim RC As Integer, x As Integer, hClient As Integer, hDBTableName As String
+    Dim RC As Integer, x As Integer, hDBTableName As String
+    Dim myClient As New client
     
     'Check to see if this what they really want to do.
     RC = MsgBox("Are you sure you wish to the selected line(s)?", _
@@ -724,33 +720,31 @@ Private Sub mnuDeleteKey_Click()
             If lvListView.ListItems.Item(x).Selected = True Then
         
                 'Get the client code for this key.
-                hClient = GetClientDecode(lvListView.SelectedItem.SubItems(2))
-            
+                myClient.Decode = lvListView.SelectedItem.SubItems(2)
+                
                 'Figure out which database table to delete from.
                 If (CurTableType = CODES_TABLE) Then
-                    strSQL = "DELETE FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
+                    strsql = "DELETE FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Key = " & Chr(39) & lvListView.ListItems.Item(x).Text & Chr(39) & _
-                             " AND Client = " & hClient
+                             " AND Client = " & myClient.Displaycode
         
                 'ElseIf (UCase(tvTreeView.SelectedItem.Text) = "C1CMBMSG") Then
                 ElseIf (CurTableType = MSG_BOX) Then
-                    strSQL = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
+                    strsql = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Code = " & Val(lvListView.ListItems.Item(x).Text) & _
-                             " AND Client = " & hClient
-                
-                'ElseIf (UCase(tvTreeView.SelectedItem.Text) = "UERRMSGS") Then
+                             " AND Client = " & myClient.Displaycode
                 ElseIf (CurTableType = WES_CODE) Then
-                    strSQL = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
+                    strsql = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND ErrorNumber = " & Val(lvListView.ListItems.Item(x).Text) & _
-                             " AND Client = " & hClient
+                             " AND Client = " & myClient.Displaycode
                 End If
         
-                Debug.Print strSQL
+                Debug.Print strsql
     
                 wsCTM.BeginTrans
                 
                 'Execute the SQL.
-                dbCTM.Execute strSQL
+                dbCTM.Execute strsql
             
                 wsCTM.CommitTrans
             End If
@@ -788,18 +782,18 @@ Private Sub mnuDeleteTable_Click()
             
             Screen.MousePointer = vbHourglass
             
-            strSQL = "DELETE * FROM tblTables WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39)
+            strsql = "DELETE * FROM tblTables WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39)
 
             'Begin a new transaction.
             wsCTM.BeginTrans
 
             'Execute the insert.
-            dbCTM.Execute strSQL
+            dbCTM.Execute strsql
     
             'Check the results.
             If (dbCTM.RecordsAffected = 1) Then
-                strSQL = "DELETE * FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39)
-                dbCTM.Execute strSQL
+                strsql = "DELETE * FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39)
+                dbCTM.Execute strsql
                 If (dbCTM.RecordsAffected > 0) Then
                                         
                     'Clear the control.
@@ -893,14 +887,17 @@ Private Sub mnuModifyKey_Click()
     
     iSelected = lvListView.SelectedItem.Index
     
-    'Check to see if this table can be modified by an administrator or not.
-    'If (Left(CurTable, 3) = "CIS") Then
     If (CurTableType = CODES_TABLE) Then
         bAddNewKey = False
         frmAddModKey.Show vbModal
+    ElseIf (CurTableType = MSG_BOX) Then
+        bAddNewKey = False
+        frmAddModMsg.Show vbModal
+    ElseIf (CurTableType = WES_CODE) Then
+        bAddNewKey = False
+        frmAddModUMsg.Show vbModal
     Else
-        RC = MsgBox("Unable to modify the current table using Codes " & vbCrLf & _
-                    "Table Explorer. Please use the CTM tool or contact" & vbCrLf & _
+        RC = MsgBox("Unable determin type of table. Please contact" & vbCrLf & _
                     "Development tools for assistance.", vbOKOnly + vbExclamation, "Codes Table Explorer")
     End If
     
@@ -921,13 +918,17 @@ Private Sub mnuAddKey_Click()
 '***************************************************************************************************************
     Dim RC As Integer
     
-    'If (Left(CurTable, 3) = "CIS") Then
     If (CurTableType = CODES_TABLE) Then
         bAddNewKey = True
         frmAddModKey.Show vbModal
+    ElseIf (CurTableType = MSG_BOX) Then
+        bAddNewKey = True
+        frmAddModMsg.Show vbModal
+    ElseIf (CurTableType = WES_CODE) Then
+        bAddNewKey = True
+        frmAddModUMsg.Show vbModal
     Else
-        RC = MsgBox("Unable to modify the current table using Codes " & vbCrLf & _
-                    "Table Explorer. Please use Microsoft Access or contact" & vbCrLf & _
+        RC = MsgBox("Unable determin type of table. Please contact" & vbCrLf & _
                     "Development tools for assistance.", vbOKOnly + vbExclamation, "Codes Table Explorer")
     End If
     
@@ -940,8 +941,6 @@ Private Sub mnuAddKey_Click()
     Screen.MousePointer = vbNormal
 
 End Sub
-
-
 
 
 Private Sub mnuModifyTable_Click()

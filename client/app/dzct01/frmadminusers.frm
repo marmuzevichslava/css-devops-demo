@@ -28,7 +28,7 @@ Begin VB.Form frmAdminUsers
       EndProperty
       Height          =   375
       Left            =   3112
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   1950
       Width           =   1215
    End
@@ -74,7 +74,7 @@ Begin VB.Form frmAdminUsers
    Begin VB.ComboBox cbxAdminList 
       Height          =   315
       Left            =   975
-      TabIndex        =   1
+      TabIndex        =   0
       ToolTipText     =   "User ID of Administrator"
       Top             =   1125
       Width           =   2565
@@ -150,14 +150,14 @@ Private Sub cmdAdd_Click()
 
 
     'If we made it here, then this is a new ID.
-    strSQL = "INSERT INTO tblAdmin (AdminName) VALUES (" & Chr(39) & cbxAdminList.Text & Chr(39) & ");"
+    strsql = "INSERT INTO tblAdmin (AdminName) VALUES (" & Chr(39) & cbxAdminList.Text & Chr(39) & ");"
 
 
     'Begin a new transaction.
      wsCTM.BeginTrans
 
     'Execute the insert.
-    dbCTM.Execute strSQL
+    dbCTM.Execute strsql
             
     'Check the results of the insert.
     If (dbCTM.RecordsAffected = 1) Then
@@ -228,13 +228,13 @@ Private Sub cmdDelete_Click()
         
 
     'If we made it here, then this id exists.
-    strSQL = "DELETE * FROM tblAdmin WHERE AdminName = " & Chr(39) & cbxAdminList.Text & Chr(39)
+    strsql = "DELETE * FROM tblAdmin WHERE AdminName = " & Chr(39) & cbxAdminList.Text & Chr(39)
 
     'Begin a new transaction.
     wsCTM.BeginTrans
 
     'Execute the insert.
-    dbCTM.Execute strSQL
+    dbCTM.Execute strsql
     
     'Check the results.
     If (dbCTM.RecordsAffected = 1) Then
@@ -279,8 +279,8 @@ Public Sub GetAdminList()
     cbxAdminList.Clear
     Screen.MousePointer = vbHourglass
     
-    strSQL = "select AdminName from tblAdmin"
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select AdminName from tblAdmin"
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         

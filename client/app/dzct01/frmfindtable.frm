@@ -17,7 +17,6 @@ Begin VB.Form frmFindTable
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cmdCancel 
       Caption         =   "&Cancel"
-      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -35,6 +34,7 @@ Begin VB.Form frmFindTable
    End
    Begin VB.CommandButton cmdFind 
       Caption         =   "&Find"
+      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -54,7 +54,7 @@ Begin VB.Form frmFindTable
       BackColor       =   &H00FFFFFF&
       Height          =   315
       Left            =   1875
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   225
       Width           =   1365
    End
@@ -71,7 +71,7 @@ Begin VB.Form frmFindTable
       EndProperty
       Height          =   240
       Left            =   150
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   255
       Width           =   1665
    End
