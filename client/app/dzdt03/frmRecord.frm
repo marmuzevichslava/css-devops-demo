@@ -777,6 +777,8 @@ Err_WriteSirInfo:
 
 End Sub
 
+
+
 Private Sub mnuInstructions_Click()
 On Error GoTo Err_mnuInstructions_Click
 
@@ -786,11 +788,13 @@ On Error GoTo Err_mnuInstructions_Click
     Dim strFilePath As String
     Dim strPath As String
     Dim intRetVal As Integer
-
+    Dim dllFindPath As New DataTeamToolDLL.PathtoCodes
+    
     'strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqRecord.doc"
     'strFilePath = "C:\Apps\Msoffice\Winword\Winword.exe" & " " & strPath
     
-    strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqRecord.txt"
+    'strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqRecord.txt"
+    strPath = dllFindPath.glrGetRegistryValueFromPath(PATH_TO_HELP_FILE)
     strFilePath = "C:\WINNT\NOTEPAD.EXE" & " " & strPath
     
     intRetVal = Shell(strFilePath, 1)    ' Run Instructions.

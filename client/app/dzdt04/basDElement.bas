@@ -2,6 +2,7 @@ Attribute VB_Name = "modDE"
 Option Explicit
 
 Public Const PATH_TO_DATATEAM_MDB = "\HKEY_LOCAL_MACHINE\SOFTWARE\DTT\DataTeamTable"
+Public Const PATH_TO_HELP_FILE = "\HKEY_LOCAL_MACHINE\SOFTWARE\DTT\ReqDEHelpFile"
 
 Public bRequired As Boolean
 Public SirTemplate As String

@@ -10,6 +10,9 @@ Public strPrefix88 As String
 Public strImplied As String
 Public bAdded As Boolean
 
+Public Const PATH_TO_HELP_FILE = "\HKEY_LOCAL_MACHINE\SOFTWARE\DTT\ReqRecordGrpHelpFile"
+
+
 
 Public Sub LoadProc(strDatabase As String, mControl As Control, strTable As String, strCode As String, strDecode As String, strObjectValue As String, Optional strObjectColumn As String)
 
