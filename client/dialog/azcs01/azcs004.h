@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /*mdc 03/20/96 _WCDAZCS004C in azcs004c.h has been hand modified to include 
 **                 _WCD_DATA WCD in the structure typedef.  This structure is not
 **                  generated correctly and must be hand modified each time the client
@@ -60,4 +64,4 @@ SHORT CheckDataTypes( USHORT ClientIndex,
                       USHORT ServiceIndex,
                       USHORT ServiceNum,
                       CMN_ARCH_PARM_TYPES);
-
+

@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /***********************************************************************
 **
 **         CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -508,4 +512,4 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
     return(CMN_SUCCESS);
 
 }
-
+

@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 static WCBPROC (AZCS009BUSUserPredisplay)
 {
  strcpy(SaveDirData, BFCD_pCSRMapBFCD->CsrMapSavePath);
@@ -242,4 +246,4 @@ static WCBPROC (AZCS009BUSSaveToBFCD)
 return(CMN_SUCCESS);
 
 }
-
+

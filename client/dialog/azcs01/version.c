@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /***********************************************************************
 **
 **         CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -195,26 +199,16 @@ BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
 
 SHORT StrTrimTrailBlanks (char *Target, USHORT nSize)
 {
-    /*mdc 1-31-96 this code rep[laces the code commented out below*/
-    char *s = Target + nSize;
-
-    while (isspace(*s) || *s == '\0')
-    {
-	*s = '\0';
-	--s;
-    }
-
-    /*mdc
-    USHORT i;
+     USHORT i;
 
 
-    |   Set the last position of the target to null
+  /*   Set the last position of the target to null */
 
-    Target[nSize - 1] = 0;
+   Target[nSize - 1] = 0;
 
 
-    |   Scan backwards replacing spaces with nulls until the first
-    |       non-null character is encountered.
+   /*   Scan backwards replacing spaces with nulls until the first
+       non-null character is encountered. */
 
     for (i = (nSize - 2);
          ((i >= 0)
@@ -229,8 +223,8 @@ SHORT StrTrimTrailBlanks (char *Target, USHORT nSize)
         {
 	    Target [i] = '\0';
         }
-    }	 end of comment of old code */
+    }	
 
     return (0);
 }
-
+

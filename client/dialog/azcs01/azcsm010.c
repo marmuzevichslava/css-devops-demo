@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /*****************************************************************
 **
 **        CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -52,6 +56,10 @@
 ** 01-31-96    MCONNER		      moved CSSr map includes to precede
 **				      Architecture includes to prevent
 **				      redefinition of _BFCD
+**
+** 04/09/96   mconner              changed all occurances of SHORT casting 
+**                                     strlen to USHORT
+**
 ******************************************************************/
 
 /**************************************************************************
@@ -155,6 +163,8 @@ SHORT MapDataLength;
 **    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
 **  --------      ----------     -----     ---------------------
 **  06/09/93      J. Looney                Original Code
+**
+**  04/09/96     mconner                   remove temp file
 **
 ******************************************************************/
 
@@ -275,6 +285,9 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                           FileNm );
 
    FndGenRC = system(CopyCommand);
+
+/*mdc 04/09/96 remove tmp file */
+FndGenRC = remove(TmpFileNm);
 
 } /* end of GenerateMap */
 
@@ -596,7 +609,7 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -960,7 +973,7 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -1012,7 +1025,7 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -1223,7 +1236,7 @@ USHORT WriteLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -1275,7 +1288,7 @@ USHORT WriteLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -1709,7 +1722,7 @@ USHORT WriteRPCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -1773,7 +1786,7 @@ USHORT WriteRPCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -2091,7 +2104,7 @@ USHORT WriteRPLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -2146,7 +2159,7 @@ USHORT WriteRPLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -2369,7 +2382,7 @@ USHORT WriteRPLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -2424,7 +2437,7 @@ USHORT WriteRPLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -2768,4 +2781,4 @@ if (ServiceLayout.Precision > 0)
 return( CMN_SUCCESS );
 
 } /* End of function FormatHighValues */
-
+

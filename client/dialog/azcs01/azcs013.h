@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /*mdc 03/21/96 Added so that it will not be in azcs013.c */
 #define EXCLUDE_FND_WRAPPERS
 
@@ -101,4 +105,4 @@ short DropClientRPMH(short sServ, short sIndex, short sNewServIndex, _STDParms *
 #define ERR_OCCURS     '4'
 #define ERR_USAGE      '5'
 #define ERR_ID         '6'
-
+

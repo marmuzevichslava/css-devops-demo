@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 /*mdc 03/20/96 _WCD_DATA WCD addded to _WCDAZCS007C in azcs007c.h. */
 /*                 This structure is not generated correctly by FCP and must be */
 /*                  edited each time azcs01 is generated.  malloc.h is not included */
@@ -53,4 +57,4 @@ SHORT CheckDataTypes( USHORT ClientIndex,
                       USHORT ServiceIndex,
                       USHORT ServiceNum,
                       CMN_ARCH_PARM_TYPES);
-
+

@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 static WCBPROC(AZCS010BUSUserPredisplay)
 {
 unsigned short FndGenRC = FND_SUCCESS;
@@ -182,4 +186,4 @@ static WCBPROC(AZCS010BUSInitLB)
 	return (CMN_SUCCESS);
 
 }/*end of AZCS010BUSInitLB */
-
+

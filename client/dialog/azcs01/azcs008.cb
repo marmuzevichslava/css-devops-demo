@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 static WCBPROC(AZCS008BUSUserPredisplay)
 {
 unsigned short FndGenRC = FND_SUCCESS;
@@ -74,4 +78,4 @@ pBFCD->pCSRMapBFCD->ClientInfo.NumSearchDestroy = iy;
 return(CMN_SUCCESS);
 
 }
-
+
