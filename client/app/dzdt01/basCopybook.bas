@@ -13,6 +13,7 @@ Public gblBClick As Boolean
 Public orgArray() As String
 
 Public Const PATH_TO_DATATEAM_MDB = "\HKEY_LOCAL_MACHINE\SOFTWARE\DTT\DataTeamTable"
+Public Const PATH_TO_HELP_FILE = "\HKEY_LOCAL_MACHINE\SOFTWARE\DTT\CopybookHelpFile"
 
 
 Public Sub LoadProc(strDatabase As String, mControl As Control, strTable As String, strCode As String, strDecode As String, strObjectValue As String, Optional strObjectColumn As String, Optional bSpace As Boolean)
