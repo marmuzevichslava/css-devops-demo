@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZBA002                           *
-*                          Generated on: Sat Nov 02 10:40:24 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -34,6 +34,7 @@ WCBFWD (Wiiikhia1001_Dde_Notification)
 WCBFWD (Wiiikhia1335_Field_Change)
 WCBFWD (Wiiikhia1342_Button_Click)
 WCBFWD (Wiiikhia1347_Help_Requested)
+WCBFWD (Wiiikhia5173_Field_Change)
 WCBFWD (Wiiikhia5628_Field_Change)
 WCBFWD (Wiiikhia1171_Field_Change)
 WCBFWD (Wiiikhia1177_Field_Exit)
@@ -69,15 +70,7 @@ WCBFWD (Wiiikhia1307_Field_Spinend)
 WCBFWD (Wiiikhia1315_Help_Requested)
 WCBFWD (Wiiikhia9589_Click)
 WCBFWD (Wiiikhia9615_Help_Requested)
-WCBFWD (Wiiikhia0944_Field_Change)
-WCBFWD (Wiiikhia1014_Field_Exit)
-WCBFWD (Wiiikhia1018_Field_Enter)
-WCBFWD (Wiiikhia1022_Field_Nowinvalid)
-WCBFWD (Wiiikhia1026_Field_Spinup)
-WCBFWD (Wiiikhia1030_Field_Spindown)
-WCBFWD (Wiiikhia1034_Field_Spinend)
-WCBFWD (Wiiikhia1037_Help_Requested)
-WCBFWD (Wiiikhia0762_Click)
+WCBFWD (Wiiikhia4565_Click)
 WCBFWD (Wiiikhia1365_Click)
 WCBFWD (Wiiikhia1372_Help_Requested)
 
@@ -113,6 +106,7 @@ WDGDISPTBL DZBA002WidgDisp[] =
     {CdAccessType_FID, FIELD_CHANGE, Wiiikhia1335_Field_Change},
     {CdAccessType_FID, BUTTON_CLICK, Wiiikhia1342_Button_Click},
     {CdAccessType_FID, FND_HELP_REQUESTED, Wiiikhia1347_Help_Requested},
+    {TxUserNm_FID, FIELD_CHANGE, Wiiikhia5173_Field_Change},
     {KyBa_FID, FIELD_CHANGE, Wiiikhia5628_Field_Change},
     {KyPremNo_FID, FIELD_CHANGE, Wiiikhia1171_Field_Change},
     {KyPremNo_FID, FIELD_EXIT, Wiiikhia1177_Field_Exit},
@@ -148,15 +142,7 @@ WDGDISPTBL DZBA002WidgDisp[] =
     {TxExtractRemarks2_FID, FND_HELP_REQUESTED, Wiiikhia1315_Help_Requested},
     {ValidPB_CMD, BUTTON_CLICK, Wiiikhia9589_Click},
     {ValidPB_CMD, FND_HELP_REQUESTED, Wiiikhia9615_Help_Requested},
-    {FlWindowMod_FID, FIELD_CHANGE, Wiiikhia0944_Field_Change},
-    {FlWindowMod_FID, FIELD_EXIT, Wiiikhia1014_Field_Exit},
-    {FlWindowMod_FID, FIELD_ENTER, Wiiikhia1018_Field_Enter},
-    {FlWindowMod_FID, FIELD_NOWINVALID, Wiiikhia1022_Field_Nowinvalid},
-    {FlWindowMod_FID, FIELD_SPINUP, Wiiikhia1026_Field_Spinup},
-    {FlWindowMod_FID, FIELD_SPINDOWN, Wiiikhia1030_Field_Spindown},
-    {FlWindowMod_FID, FIELD_SPINEND, Wiiikhia1034_Field_Spinend},
-    {FlWindowMod_FID, FND_HELP_REQUESTED, Wiiikhia1037_Help_Requested},
-    {OKPB_CMD, BUTTON_CLICK, Wiiikhia0762_Click},
+    {OKPB_CMD, BUTTON_CLICK, Wiiikhia4565_Click},
     {CancelPB_CMD, BUTTON_CLICK, Wiiikhia1365_Click},
     {CancelPB_CMD, FND_HELP_REQUESTED, Wiiikhia1372_Help_Requested},
     {0,0,0}
@@ -169,6 +155,7 @@ WDGDISPTBL DZBA002WidgDisp[] =
 FLDDEFTBLENTRY DZBA002FieldDefTbl[] =
 {
     { "CdAccessType", CdAccessType_FID },
+    { "TxUserNm", TxUserNm_FID },
     { "KyBa", KyBa_FID },
     { "KyPremNo", KyPremNo_FID },
     { "KyBldgNo", KyBldgNo_FID },
@@ -204,11 +191,11 @@ CMDDEFTBLENTRY DZBA002CommandDefTbl[] =
 
 WCTHEADER  DZBA002WCTHeader =
 { 
-    "30", 7, 7, 11,
+    "30", 8, 8, 11,
     sizeof(struct _DZBA002WesMap),
     offsetof(struct _DZBA002WesMap, _CdAccessTypeData),
     offsetof(struct _DZBA002WesMap, _CdAccessTypeCtl),
-    WLT_C, 0, 15, 0
+    WLT_C, 0, 0, 0
 }; 
 
 
@@ -224,6 +211,14 @@ WCTFIELD DZBA002WCTFieldTbl[] =
       SIZEOF(struct _DZBA002WesMap, _CdAccessTypeData),
       2, 0, offsetof(struct _DZBA002WesMap, _CdAccessTypeData),
       offsetof(struct _DZBA002WesMap, _CdAccessTypeCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "TxUserNm", TxUserNm_FID,
+      TxUserNm_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZBA002WesMap, _TxUserNmData),
+      8, 0, offsetof(struct _DZBA002WesMap, _TxUserNmData),
+      offsetof(struct _DZBA002WesMap, _TxUserNmCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
@@ -290,7 +285,7 @@ WCTCOMMAND DZBA002WCTCommandTbl[] =
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},

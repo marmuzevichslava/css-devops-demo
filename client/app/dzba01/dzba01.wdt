@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *            Window Dispatch Table for: DZBA01                            *
- *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *                         Generated on: Thu Jan 30 09:46:52 1997          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -35,6 +35,7 @@
 extern WINDEFTBLENTRY DZBA001IDWindowDefn;
 extern WINDEFTBLENTRY DZBA002IDWindowDefn;
 extern WINDEFTBLENTRY DZBA003IDWindowDefn;
+extern WINDEFTBLENTRY DZBA004IDWindowDefn;
 
 
 /***************************************************************************
@@ -45,6 +46,7 @@ EXEWINDOWLIST ExeWindowTable[] =
     FND_MAIN_WINDOW, "DZBA001X", &DZBA001IDWindowDefn,
     FND_NO, "DZBA002X", &DZBA002IDWindowDefn,
     FND_NO, "DZBA003X", &DZBA003IDWindowDefn,
+    FND_NO, "DZBA004X", &DZBA004IDWindowDefn,
     FND_NO,           "",   NULL
 };
 

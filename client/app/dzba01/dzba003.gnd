@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZBA003                           *
-*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -93,6 +93,7 @@ WDGDISPTBL DZBA003WidgDisp[] =
 FLDDEFTBLENTRY DZBA003FieldDefTbl[] =
 {
     { "ExtractInsertHdrLb", ExtractInsertHdrLb_FID },
+    { "FlWindowMod", FlWindowMod_FID },
     { "", 0}
 };
 
@@ -115,11 +116,11 @@ CMDDEFTBLENTRY DZBA003CommandDefTbl[] =
 
 WCTHEADER  DZBA003WCTHeader =
 { 
-    "30", 6, 1, 2,
+    "30", 7, 2, 2,
     sizeof(struct _DZBA003WesMap),
     offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbSelIndData),
     offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbCtl),
-    WLT_C, 0, 15, 0
+    WLT_C, 0, 0, 0
 }; 
 
 
@@ -181,6 +182,14 @@ WCTFIELD DZBA003WCTFieldTbl[] =
       offsetof(struct _DZBA003WesMap, _ExtractInsertHdrLbTxExtractRemarks2Ctl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "FlWindowMod", FlWindowMod_FID,
+      FlWindowMod_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZBA003WesMap, _FlWindowModData),
+      1, 0, offsetof(struct _DZBA003WesMap, _FlWindowModData),
+      offsetof(struct _DZBA003WesMap, _FlWindowModCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
@@ -197,7 +206,7 @@ WCTCOMMAND DZBA003WCTCommandTbl[] =
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
 };

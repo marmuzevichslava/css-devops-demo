@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *               Window Identifiers for: DZBA01                            *
- *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *                         Generated on: Thu Jan 30 09:46:52 1997          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -29,5 +29,11 @@
 #define DZBA003IconID                503
 #define DZBA003AccelID               503
 #define DZBA003WctID                 503
+
+#define DZBA004ID                504
+#define DZBA004MenuID                504
+#define DZBA004IconID                504
+#define DZBA004AccelID               504
+#define DZBA004WctID                 504
 
 

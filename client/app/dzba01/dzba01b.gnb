@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZBA01B                             *
-*                        Generated on: Sat Oct 05 16:51:30 1996            *
+*                        Generated on: Thu Jan 30 09:46:52 1997            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -143,6 +143,48 @@ typedef struct __SWAT01Luw
 }  _SWAT01LUW;
 #endif
 /***************************************************************************
+* Definition for Record Group.DZCBA011
+***************************************************************************/
+#ifndef   DEV00860_EXPORT_FILE_LEN
+#define   DEV00860_EXPORT_FILE_LEN              9
+#define   EXPORTFILE_LEN                        9
+#endif
+#ifndef   DEV00861_IMPORT_FILE_LEN
+#define   DEV00861_IMPORT_FILE_LEN              9
+#define   IMPORTFILE_LEN                        9
+#endif
+#ifndef   DEV00818_TS_KY_EXTRACT_LEN
+#define   DEV00818_TS_KY_EXTRACT_LEN            27
+#define   TSKYEXTRACT_LEN                       27
+#endif
+#ifndef _DZBAIMPEXP_z
+#define _DZBAIMPEXP_z
+
+typedef struct __DZBAImpExp
+{
+   char                  ExportFile[9];
+   char                  ImportFile[9];
+   char                  TsKyExtract[27];
+}  _DZBAIMPEXP;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZBA01N
+***************************************************************************/
+#ifndef   _SWAT01IMPEXP__ACCESSRESULTS_SIZE
+#define   _SWAT01IMPEXP__ACCESSRESULTS_SIZE     500
+#endif
+#ifndef _SWAT01IMPEXP_z
+#define _SWAT01IMPEXP_z
+
+typedef struct __SWAT01iMPeXP
+{
+   unsigned short        CdMsgioStatus;
+   unsigned short        CdServErrMsg;
+   _DZBAIMPEXP           DZBAImpExp;
+   _ACCESSRESULTS        AccessResults[500];
+}  _SWAT01IMPEXP;
+#endif
+/***************************************************************************
 * Definition for Record Group.DZCBA02K
 ***************************************************************************/
 #ifndef   DEV00802_CD_ACCESS_TYPE_LEN
@@ -169,6 +211,21 @@ typedef struct __DZCBA02Keys
    char                  TsKyExtract[27];
    char                  TxExtractRemarks2[81];
 }  _DZCBA02KEYS;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZCBA02J
+***************************************************************************/
+#ifndef   DEV00804_TXN_USR_ID_LEN
+#define   DEV00804_TXN_USR_ID_LEN               11
+#define   TXNUSRID_LEN                          11
+#endif
+#ifndef _DZCBA02J_z
+#define _DZCBA02J_z
+
+typedef struct __DZCBA02J
+{
+   char                  TxnUsrId[11];
+}  _DZCBA02J;
 #endif
 /***************************************************************************
 * Definition for Record Group.DZCBA02D
@@ -208,6 +265,7 @@ typedef struct __DZCBA02Data
 typedef struct __DZBA003Rqst
 {
    _DZCBA02KEYS          DZCBA02Keys;
+   _DZCBA02J             DZCBA02J;
    _DZCBA02DATA          DZCBA02Data[100];
 }  _DZBA003RQST;
 #endif
@@ -220,6 +278,7 @@ typedef struct __DZBA003Rqst
 typedef struct __BFCDSWAT01Bfcd
 {
    _SWAT01LUW            SWAT01Luw;
+   _SWAT01IMPEXP         SWAT01iMPeXP;
    _DZBA003RQST          DZBA003Rqst;
 }  _BFCDSWAT01BFCD;
 #endif
@@ -229,6 +288,12 @@ typedef struct __BFCDSWAT01Bfcd
 #endif
 #ifdef SERVICEMOD
 #define  BFCD_SWAT01Luw        ((_BFCD *) BFCD) ->SWAT01Luw
+#endif
+#ifdef WINDOWMOD
+#define  BFCD_SWAT01iMPeXP     ((_BFCD *) pBFCD) ->SWAT01iMPeXP
+#endif
+#ifdef SERVICEMOD
+#define  BFCD_SWAT01iMPeXP     ((_BFCD *) BFCD) ->SWAT01iMPeXP
 #endif
 #ifdef WINDOWMOD
 #define  BFCD_DZBA003Rqst      ((_BFCD *) pBFCD) ->DZBA003Rqst

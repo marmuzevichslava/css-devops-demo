@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZBA002                           *
- *                         Generated on: Sat Nov 02 10:40:24 1996          *
+ *                         Generated on: Thu Jan 30 09:46:52 1997          *
  *                                   by: IPEREZAR                          *
  *                                                                         *
  ***************************************************************************/
@@ -628,6 +628,49 @@ unsigned short           FndGenRC = FND_SUCCESS;
 CMN_ARCH_EXIT_INITIALIZE
 
 FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Wiiikhia5173_Field_Change
+ * 
+ *   WidgetName:    TxUserNm
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Wiiikhia5173_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = Dzba002bustxusernmfc( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -1944,295 +1987,7 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Wiiikhia1026_Field_Spinup
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_SPINUP
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1026_Field_Spinup)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia1037_Help_Requested
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FND_HELP_REQUESTED
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1037_Help_Requested)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia1018_Field_Enter
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_ENTER
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1018_Field_Enter)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia1014_Field_Exit
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_EXIT
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1014_Field_Exit)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia1034_Field_Spinend
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_SPINEND
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1034_Field_Spinend)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia1030_Field_Spindown
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_SPINDOWN
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1030_Field_Spindown)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia0944_Field_Change
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_CHANGE
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia0944_Field_Change)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia1022_Field_Nowinvalid
- * 
- *   WidgetName:    FlWindowMod
- *
- *   Event Name:    FIELD_NOWINVALID
- *
- *
- ***************************************************************************/
-static WCBPROC(Wiiikhia1022_Field_Nowinvalid)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Wiiikhia0762_Click
+ *   Callback Name: Wiiikhia4565_Click
  * 
  *   WidgetName:    OKPB
  *
@@ -2240,7 +1995,7 @@ return 0;
  *
  *
  ***************************************************************************/
-static WCBPROC(Wiiikhia0762_Click)
+static WCBPROC(Wiiikhia4565_Click)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA003                           *
-*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -18,17 +18,19 @@
 ****************************************************************************/
 
 #define ExtractInsertHdrLb_FID                         0
-#define ExtractInsertHdrLbSelInd_FID                   1
-#define ExtractInsertHdrLbKyBa_FID                     2
-#define ExtractInsertHdrLbTsKyExtract_FID              3
-#define ExtractInsertHdrLbTxnUsrId_FID                 4
-#define ExtractInsertHdrLbTxExtractRemarks2_FID        5
+#define FlWindowMod_FID                                1
+#define ExtractInsertHdrLbSelInd_FID                   2
+#define ExtractInsertHdrLbKyBa_FID                     3
+#define ExtractInsertHdrLbTsKyExtract_FID              4
+#define ExtractInsertHdrLbTxnUsrId_FID                 5
+#define ExtractInsertHdrLbTxExtractRemarks2_FID        6
 
 /***************************************************************************
 *  Widget IDs                                                              *
 ****************************************************************************/
 
 #define ExtractInsertHdrLb_WID                         100
+#define FlWindowMod_WID                                101
 
 /***************************************************************************
 *  Command IDs                                                             *

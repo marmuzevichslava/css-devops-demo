@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                    Resource file for: DZBA01                            *
- *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *                         Generated on: Thu Jan 30 09:46:52 1997          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -29,4 +29,5 @@ rcinclude n:\archinc\c1cptrs.rch
 rcinclude dzba001.dlg
 rcinclude dzba002.dlg
 rcinclude dzba003.dlg
+rcinclude dzba004.dlg
 

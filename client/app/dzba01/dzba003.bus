@@ -53,11 +53,9 @@
 
 WCBPROC( DZBA003BusWindowPredisp )
 {
-    _FND_ERROR_BLOCK FndGenErrorBlock;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT             FndGenRC = 0;
       _DZBA003INPUT      *pDZBA003INPUT;
-
-//	  memset(&(WCD_DZBA003Rqst), 0, sizeof(WCD_DZBA003Rqst));
 
 
 	  /* Disable the command pushbuttons */
@@ -67,11 +65,8 @@ WCBPROC( DZBA003BusWindowPredisp )
 
 
       /* Disable the OK pushbutton */
-	  FndCommandDisable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
 
-
+      CmnWindowSetApplInvalid (CMN_ARCH_PARMS);
 
       BFCD_DZBA003Rqst.DZCBA02Keys.KyBa = pDZBA003INPUT->DZCBA03Keys.KyBa;
 
@@ -79,15 +74,34 @@ WCBPROC( DZBA003BusWindowPredisp )
 
       BFCD_DZBA003Rqst.DZCBA02Keys.KyPremNo = pDZBA003INPUT->DZCBA03Keys.KyPremNo;
 
-	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
-				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract );
+//	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
+//				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract );
 
-	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
-				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2 );
+	  CmnStrCopy(BFCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
+				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract,
+                 sizeof(BFCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract),
+                 CMN_ARCH_PARMS );
 
-	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
-				 pDZBA003INPUT->DZCBA03Keys.CdAccessType );
+//	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
+//				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2 );
+      
+	  CmnStrCopy(BFCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
+				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2 ,
+                 sizeof(BFCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2),
+                 CMN_ARCH_PARMS );
 
+//	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
+//				 pDZBA003INPUT->DZCBA03Keys.CdAccessType );
+
+	  CmnStrCopy(BFCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
+				 pDZBA003INPUT->DZCBA03Keys.CdAccessType,
+                 sizeof(BFCD_DZBA003Rqst.DZCBA02Keys.CdAccessType),
+                 CMN_ARCH_PARMS );
+
+	  CmnStrCopy(BFCD_DZBA003Rqst.DZCBA02J.TxnUsrId,
+				 pDZBA003INPUT->DZCBA02Data.TxnUsrId,
+                 sizeof(BFCD_DZBA003Rqst.DZCBA02J.TxnUsrId),
+                 CMN_ARCH_PARMS );
 
       CmnCsrCall((BYTE *) &BFCD_DZBA003Rqst,
                  (ULONG) sizeof(BFCD_DZBA003Rqst),
@@ -207,9 +221,15 @@ WCBPROC( DZBA003BusOkPBClick )
 			   sizeof(pDZBA003OUTPUT->DZCBA02Data.TxExtractRemarks2 ),
                CMN_ARCH_PARMS);
 
+	CmnStrCopy(pDZBA003OUTPUT->DZCBA02Data.TxnUsrId ,
+	     	   RowData._ExtractInsertHdrLbTxnUsrIdData ,
+			   sizeof(pDZBA003OUTPUT->DZCBA02Data.TxnUsrId ),
+               CMN_ARCH_PARMS);
+
 
     return CMN_SUCCESS;
-}
+
+}  /* end DZBA003BusOkPBClick */
 
 
 /***************************************************************************
@@ -245,16 +265,14 @@ WCBPROC( DZBA003BusOkPBClick )
 WCBPROC( DZBA003BusLBSelect )
 {
 
-    _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT             FndGenRC = 0;
 
   /* Enable the command pushbuttons */
 
-  FndCommandEnable(CBI_hwnd,
-				  "OKPB",
-				  &FndGenErrorBlock);
 
+    CmnWindowSetApplValid (CMN_ARCH_PARMS);
 
+    CmnWindowSetDataModified (CMN_ARCH_PARMS);
 
 
     return CMN_SUCCESS;

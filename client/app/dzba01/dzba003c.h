@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZBA003C                            *
-*                        Generated on: Thu Aug 29 17:59:08 1996            *
+*                        Generated on: Thu Jan 30 09:46:52 1997            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -40,6 +40,21 @@ typedef struct __DZCBA02Keys
    char                  TsKyExtract[27];
    char                  TxExtractRemarks2[81];
 }  _DZCBA02KEYS;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZCBA02J
+***************************************************************************/
+#ifndef   DEV00804_TXN_USR_ID_LEN
+#define   DEV00804_TXN_USR_ID_LEN               11
+#define   TXNUSRID_LEN                          11
+#endif
+#ifndef _DZCBA02J_z
+#define _DZCBA02J_z
+
+typedef struct __DZCBA02J
+{
+   char                  TxnUsrId[11];
+}  _DZCBA02J;
 #endif
 /***************************************************************************
 * Definition for Record Group.DZCBA02D
@@ -79,6 +94,7 @@ typedef struct __DZCBA02Data
 typedef struct __DZBA003Rqst
 {
    _DZCBA02KEYS          DZCBA02Keys;
+   _DZCBA02J             DZCBA02J;
    _DZCBA02DATA          DZCBA02Data[100];
 }  _DZBA003RQST;
 #endif

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA003                           *
-*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -53,6 +53,9 @@ unsigned char _grpFiller;
     char _ExtractInsertHdrLbTxExtractRemarks2Data[50][81];
 #define ExtractInsertHdrLbTxExtractRemarks2Data    pWesMap->_ExtractInsertHdrLbTxExtractRemarks2Data
 
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
+
 
     WESFLDCTL _ExtractInsertHdrLbCtl;
 #define ExtractInsertHdrLbAttr                       pWesMap->_ExtractInsertHdrLbCtl.Attr
@@ -76,6 +79,13 @@ unsigned char _grpFiller;
     WESFLDCTL _ExtractInsertHdrLbTxExtractRemarks2Ctl[50];
 #define ExtractInsertHdrLbTxExtractRemarks2Ctl      pWesMap->_ExtractInsertHdrLbTxExtractRemarks2Ctl
 
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 };
 
 typedef struct

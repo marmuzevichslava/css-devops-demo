@@ -2,7 +2,7 @@
 **
 **               Customer Service System Business Logic Module
 **
-** FILENAME         :  SWAT01B.BUS
+** FILENAME         :  DZBA002.BUS
 **
 ** DESCRIPTION      :  Business Logic functions for window SWAT01BX,
 **                     includes:
@@ -15,6 +15,8 @@
 **                     DZBA002BusValidatePBClick
 **                     DZBA002BusCDRbAccessTypeFC
 **					   DZBA002BusOkPBClick
+**                     DZBA002bustxusernmfc
+**                     DZBA002BusKyTsKyExtFC
 **
 **
 ** REVISION HISTORY
@@ -30,7 +32,7 @@
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusWindowPredisp
+**  FUNCTION         : DZBA002BusWindowPredisp 
 **
 **  DESCRIPTION      : This function is executed when the window is
 **					   originally opened.  It will malloc the
@@ -69,18 +71,10 @@ WCBPROC( DZBA002BusWindowPredisp )
     _SWAT01BINPUT      *pSWAT01BInput; 
     _FND_ERROR_BLOCK    FndGenErrorBlock;
 
-    /* Declare a pointer of the Working Storage type */
-    _WindowData      *pWCDStorage;
 
     /* Allocate memory for the working storage area */
     pWindContextData->pWorkingStorageData =
         (CHAR *) malloc(sizeof(_WindowData));
-
-    /* Set a pointer to the working storage area */
-    pWCDStorage = (_WindowData *) SWAT01B_WorkStorage;
-
-    /* Initialize the working storage area */
-    memset(pWCDStorage, 0, sizeof(_WindowData));
 
 	/* Set up a pointer to the value of CBI_pInitData */
     pSWAT01BInput = (_SWAT01BINPUT *) CBI_pInitData;
@@ -99,13 +93,20 @@ WCBPROC( DZBA002BusWindowPredisp )
                sizeof(GlobalMode),
                CMN_ARCH_PARMS);
 
-    if (strcmp(GlobalMode, LT_Insert_Mode) == 0)
+    if ((strcmp(GlobalMode, LT_Insert_Mode) == 0) ||
+        (strcmp(GlobalMode, LT_Export_Mode) == 0))
     {
 	    
         FndFieldSetStatus( CBI_hwnd,
                          "TsKyExtract",
                           STS_INCOMPLETE,
                           &FndGenErrorBlock);
+
+        FndFieldSetMsg(CBI_hwnd,
+		               "TsKyExtract",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
 
     }
 
@@ -117,7 +118,8 @@ WCBPROC( DZBA002BusWindowPredisp )
      */
 
 
-	if (strcmp(pSWAT01BInput->SWAT01BData.CdExtractInsertAct, LT_Insert_Mode) == 0)
+	if ((strcmp(pSWAT01BInput->SWAT01BData.CdExtractInsertAct, LT_Insert_Mode) == 0)
+	||  (strcmp(pSWAT01BInput->SWAT01BData.CdExtractInsertAct, LT_Export_Mode) == 0))
 	{
 		FndFieldEnable (CBI_hwnd,
 		                "TsKyExtract",
@@ -141,15 +143,31 @@ WCBPROC( DZBA002BusWindowPredisp )
                       STS_VALID,
                       &FndGenErrorBlock);
 
+       FndFieldSetMsg(CBI_hwnd,
+			          "KyBa",
+					   MF_NO_MSG,
+					   &FndGenErrorBlock);
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBldgNo",,
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_VALID,
                       &FndGenErrorBlock);
+
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyPremNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
 
 
 	}
@@ -318,11 +336,6 @@ WCBPROC( DZBA002BusWindowPredisp )
                           CMN_DEFAULT_WINDOW_TITLE_MAX,
                           CMN_ARCH_PARMS );
 
-	/* Disable the command pushbuttons */
-
-	FndCommandDisable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
 
 	FndCommandDisable(CBI_hwnd,
 	                  "ValidPB",
@@ -335,13 +348,14 @@ WCBPROC( DZBA002BusWindowPredisp )
 
 
     return CMN_SUCCESS;
-}
+
+}  /* end DZBA002BusWindowPredisp */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusWindowPredestroy
+**  FUNCTION         : DZBA002BusWindowPredestroy
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -367,23 +381,16 @@ WCBPROC( DZBA002BusWindowPredisp )
 
 WCBPROC( DZBA002BusWindowPredestroy )
 {
-    /* Declare a pointer of the Working Storage type */
-    _WindowData      *pWCDStorage;
-
-    /* Set a pointer to the working storage area */
-    pWCDStorage = (_WindowData *) SWAT01B_WorkStorage;
-
-    free ( pWCDStorage );
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusWindowPredestroy */
+}  /* End of DZBA002BusWindowPredestroy */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusKyPremNoFC
+**  FUNCTION         : DZBA002BusKyPremNoFC
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -429,17 +436,47 @@ WCBPROC( DZBA002BusKyPremNoFC )
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyPremNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
 	   cStatus = STS_VALID;
 
 	}
 	else
 	{
-       FndFieldSetStatus(CBI_hwnd,
+       if ((strcmp(GlobalMode, LT_Insert_Mode) != 0) &&
+           (strcmp(GlobalMode, LT_Export_Mode) != 0))
+       {
+            FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_INCOMPLETE,
                       &FndGenErrorBlock);
 
-	   cStatus = STS_INCOMPLETE;
+            FndFieldSetMsg(CBI_hwnd,
+		               "KyPremNo",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
+
+	        cStatus = STS_INCOMPLETE;
+       }
+       else
+       {
+            FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+			FndFieldSetMsg(CBI_hwnd,
+			               "KyPremNo",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	        cStatus = STS_INCOMPLETE;
+       }
 
 	}
 
@@ -456,12 +493,6 @@ WCBPROC( DZBA002BusKyPremNoFC )
 	{
 		/* Enable the command pushbuttons */
 
-	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
-	    {
-		    FndCommandEnable(CBI_hwnd,
-			        		 "OKPB",
-					         &FndGenErrorBlock);
-        }
 
 		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
 		                                "TsKyExtract",
@@ -477,11 +508,6 @@ WCBPROC( DZBA002BusKyPremNoFC )
 	}
 	else
 	{
-		/* Disable the command pushbuttons */
-
-		FndCommandDisable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
 
 		FndCommandDisable(CBI_hwnd,
 	                  "ValidPB",
@@ -493,13 +519,13 @@ WCBPROC( DZBA002BusKyPremNoFC )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusKyPremNoFC */
+}  /* End of DZBA002BusKyPremNoFC */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusKyBldgNoFC
+**  FUNCTION         : DZBA002BusKyBldgNoFC
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -545,17 +571,48 @@ WCBPROC( DZBA002BusKyBldgNoFC )
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+	                  "KyBldgNo",
+	    			  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
 	   cStatus = STS_VALID;
 
 	}
 	else
 	{
-       FndFieldSetStatus(CBI_hwnd,
+       if ((strcmp(GlobalMode, LT_Insert_Mode) != 0) &&
+           (strcmp(GlobalMode, LT_Export_Mode) != 0))
+       {
+            FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_INCOMPLETE,
                       &FndGenErrorBlock);
 
-	   cStatus = STS_INCOMPLETE;
+            FndFieldSetMsg(CBI_hwnd,
+		               "KyBldgNo",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
+
+	        cStatus = STS_INCOMPLETE;
+       }
+       else
+       {
+            FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+			FndFieldSetMsg(CBI_hwnd,
+			               "KyBldgNo",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+
+	        cStatus = STS_INCOMPLETE;
+       }
 
 	}
 
@@ -570,14 +627,6 @@ WCBPROC( DZBA002BusKyBldgNoFC )
 
     if ( (strcmp(szTxKyExtract, EMPTY_STR) != 0) || (cStatus == STS_VALID) )
 	{
-		/* Enable the command pushbuttons */
-
-	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
-	    {
-		    FndCommandEnable(CBI_hwnd,
-			        		 "OKPB",
-					         &FndGenErrorBlock);
-        }
 
 		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
 		                                "TsKyExtract",
@@ -593,11 +642,6 @@ WCBPROC( DZBA002BusKyBldgNoFC )
 	}
 	else
 	{
-		/* Disable the command pushbuttons */
-
-		FndCommandDisable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
 
 		FndCommandDisable(CBI_hwnd,
 	                  "ValidPB",
@@ -609,13 +653,13 @@ WCBPROC( DZBA002BusKyBldgNoFC )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusKyBldgNoFC */
+}  /* End of DZBA002BusKyBldgNoFC  */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusKyBaFC
+**  FUNCTION         : DZBA002BusKyBaFC
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -658,8 +702,6 @@ WCBPROC( DZBA002BusKyBaFC )
                           &FndGenErrorBlock);
 
 
-//	if ( strcmp(KyBaStr, EMPTY_STR) != 0  )
-
 	if ( ( KyBaStr[0] >= '0' ) && ( KyBaStr[0] <= '9') )
 	     
 	{
@@ -668,17 +710,48 @@ WCBPROC( DZBA002BusKyBaFC )
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+		              "KyBa",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
 	   cStatus = STS_VALID;
 
 	}
 	else
 	{
-       FndFieldSetStatus(CBI_hwnd,
+       if ((strcmp(GlobalMode, LT_Insert_Mode) != 0) &&
+           (strcmp(GlobalMode, LT_Export_Mode) != 0))
+       {
+           FndFieldSetStatus(CBI_hwnd,
                       "KyBa",
                       STS_INCOMPLETE,
                       &FndGenErrorBlock);
 
-	   cStatus = STS_INCOMPLETE;
+            FndFieldSetMsg(CBI_hwnd,
+		               "KyBa",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
+
+	       cStatus = STS_INCOMPLETE;
+       }
+       else
+       {
+           FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+		   FndFieldSetMsg(CBI_hwnd,
+			              "KyBa",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+
+	       cStatus = STS_INCOMPLETE;
+       }
 
 	}
 
@@ -693,14 +766,6 @@ WCBPROC( DZBA002BusKyBaFC )
 
     if ( (strcmp(szTxKyExtract, EMPTY_STR) != 0) || (cStatus == STS_VALID) )
 	{
-		/* Enable the command pushbuttons */
-
-	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
-	    {
-		    FndCommandEnable(CBI_hwnd,
-			        		 "OKPB",
-					         &FndGenErrorBlock);
-        }
 
 		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
 		                                "TsKyExtract",
@@ -716,12 +781,6 @@ WCBPROC( DZBA002BusKyBaFC )
 	}
 	else
 	{
-		/* Disable the command pushbuttons */
-
-		FndCommandDisable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
-
 		FndCommandDisable(CBI_hwnd,
 	                  "ValidPB",
 					  &FndGenErrorBlock);
@@ -732,7 +791,7 @@ WCBPROC( DZBA002BusKyBaFC )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusKyBaFC */
+}  /* End of DZBA002BusKyBaFC */
 
 /***************************************************************************
 **
@@ -782,12 +841,6 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
 	{
 		/* Enable the command pushbuttons */
 
-	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
-	    {
-		    FndCommandEnable(CBI_hwnd,
-			        		 "OKPB",
-					         &FndGenErrorBlock);
-        }
 
 		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
 		                                "TsKyExtract",
@@ -805,6 +858,12 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
                           STS_VALID,
                           &FndGenErrorBlock);
 
+		FndFieldSetMsg(CBI_hwnd,
+			           "TsKyExtract",
+					   MF_NO_MSG,
+					   &FndGenErrorBlock);
+
+
 	}
 	else
 	{
@@ -819,10 +878,11 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
                           STS_INCOMPLETE,
                           &FndGenErrorBlock);
 
+        FndFieldSetMsg(CBI_hwnd,
+		               "TsKyExtract",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
 
-		FndCommandDisable(CBI_hwnd,
-	                  "OKPB",
-					  &FndGenErrorBlock);
 
 	}
 
@@ -832,15 +892,33 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBa",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBldgNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_VALID,
                       &FndGenErrorBlock);
+
+	   FndFieldSetMsg(CBI_hwnd,
+	                  "KyPremNo",
+	   			      MF_NO_MSG,
+					  &FndGenErrorBlock);
+
 
        FndGenRC = DZBA002BusKyBldgNoFC( pEventInfo,
                            pEAIA,
@@ -863,6 +941,13 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
                            pWindContextData,
                            pABHI);
 
+       FndGenRC = Dzba002bustxusernmfc( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
 
 	   /*  Set appropriate Status for each of the 3 fields. If the mode is
 	    |  Insert mode, then a timestamp is sufficient input and the other fields
@@ -874,15 +959,31 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBa",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBldgNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_VALID,
                       &FndGenErrorBlock);
+
+  	   FndFieldSetMsg(CBI_hwnd,
+		              "KyPremNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
 
 
 
@@ -896,7 +997,7 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusValidatePBClick
+**  FUNCTION         : DZBA002BusValidatePBClick
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -933,8 +1034,14 @@ WCBPROC( DZBA002BusValidatePBClick )
 	CHAR		       szTxExtractRemarks2[78];
     USHORT	           SelectedButton = 0;
 	CHAR               szTempString[12];
+    CHAR               szTxnUsrId[11], 
+	                   szTxnUsrId2[7];
 
     _FND_ERROR_BLOCK    FndGenErrorBlock;
+
+    memset(szTxnUsrId, 0, sizeof(szTxnUsrId));
+
+    memset(szTxnUsrId2, 0, sizeof(szTxnUsrId2));
 
 	memset(KyBaStr, 0, sizeof(KyBaStr));
 
@@ -1043,9 +1150,6 @@ WCBPROC( DZBA002BusValidatePBClick )
                       szTxKyExtract,
                       &FndGenErrorBlock);
 
-   /* Set the last character of this string to NULL to accomodate the '%' */
-
-
    /* Build the "like%" string */
    if ( strcmp(szTxKyExtract,NULL_STR) != 0 )
    {
@@ -1085,6 +1189,32 @@ WCBPROC( DZBA002BusValidatePBClick )
    }
 
 
+   /* Query User Id field */
+   FndFieldQueryValue(CBI_hwnd,
+                      "TxUserNm",
+                      sizeof(szTxnUsrId),
+                      szTxnUsrId,
+                      &FndGenErrorBlock);
+
+
+
+   /* Concatenate the "like" string */
+
+   if ( strcmp(szTxnUsrId,NULL_STR) != 0 )
+   {
+		memcpy(szTxnUsrId2, szTxnUsrId, sizeof(szTxnUsrId2) );
+
+		CmnStrCat( CMN_ARCH_PARMS,
+				pDZBA003INPUT.DZCBA02Data.TxnUsrId,
+				sizeof(pDZBA003INPUT.DZCBA02Data.TxnUsrId),
+				4,
+				Begin_Qt,
+				szTxnUsrId2,
+				Like_Str,
+				End_Qt );
+
+
+   }              
 								 
    FndGenRC =  CmnWindowCreate ( "DZBA003X",
 				                   NULL,
@@ -1095,13 +1225,13 @@ WCBPROC( DZBA002BusValidatePBClick )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusValidatePBClick */
+}  /* End of DZBA002BusValidatePBClick */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusOkPBClick
+**  FUNCTION         : DZBA002BusOkPBClick 
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -1145,12 +1275,6 @@ WCBPROC( DZBA002BusOkPBClick )
 
 /* QUERY THE WINDOW TO PASS THE FIELDS TO THE OUTPUT LAYOUT */
 
-//    FndFieldQueryValue(CBI_hwnd,
-//                       "CdAccessType",
-//                       sizeof(CdAccessType),
-//                       &CdAccessType,
-//                       &FndGenErrorBlock);
-//
 
 	CmnStrCopy( CdAccessType,
 		        WCD_SWAT01BRqst.SWAT01BData.CdAccessType,
@@ -1277,14 +1401,14 @@ WCBPROC( DZBA002BusOkPBClick )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusOkPBClick */
+}  /* End of DZBA002BusOkPBClick  */
 
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01BBusCDRbAccessTypeFC
+**  FUNCTION         : DZBA002BusCDRbAccessTypeFC
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01B.h file.
@@ -1365,21 +1489,61 @@ WCBPROC( DZBA002BusCDRbAccessTypeFC )
                         &FndGenErrorBlock);
 
 
+
+
 	   /* Set appropriate Status for each of the 3 fields */
-       FndFieldSetStatus(CBI_hwnd,
+
+       if ((strcmp(GlobalMode, LT_Insert_Mode) != 0) &&
+           (strcmp(GlobalMode, LT_Export_Mode) != 0))
+       {
+           FndFieldSetStatus(CBI_hwnd,
                       "KyBa",
                       STS_INCOMPLETE,
                       &FndGenErrorBlock);
+
+           FndFieldSetMsg(CBI_hwnd,
+		               "KyBa",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
+
+       }
+       else
+       {
+           FndFieldSetStatus(CBI_hwnd,
+                      "KyBa",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+		   FndFieldSetMsg(CBI_hwnd,
+			              "KyBa",
+						  MF_NO_MSG,
+						  &FndGenErrorBlock);
+
+
+       }
 
        FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBldgNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_VALID,
                       &FndGenErrorBlock);
+
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyPremNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
 
  
    }
@@ -1415,20 +1579,57 @@ WCBPROC( DZBA002BusCDRbAccessTypeFC )
 
 
 	   /* Set appropriate Status for each of the 3 fields */
-       FndFieldSetStatus(CBI_hwnd,
+       if ((strcmp(GlobalMode, LT_Insert_Mode) != 0) &&
+           (strcmp(GlobalMode, LT_Export_Mode) != 0))
+       {
+           FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_INCOMPLETE,
                       &FndGenErrorBlock);
+
+           FndFieldSetMsg(CBI_hwnd,
+		               "KyPremNo",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
+
+       }
+       else
+       {
+           FndFieldSetStatus(CBI_hwnd,
+                      "KyPremNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+		   FndFieldSetMsg(CBI_hwnd,
+			              "KyPremNo",
+						  MF_NO_MSG,
+						  &FndGenErrorBlock);
+
+
+       }
 
        FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBldgNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyBa",
                       STS_VALID,
                       &FndGenErrorBlock);
+
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBa",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
 
 
    }
@@ -1465,20 +1666,57 @@ WCBPROC( DZBA002BusCDRbAccessTypeFC )
 
 
  	   /* Set appropriate Status for each of the 3 fields */
-       FndFieldSetStatus(CBI_hwnd,
+
+       if ((strcmp(GlobalMode, LT_Insert_Mode) != 0) &&
+           (strcmp(GlobalMode, LT_Export_Mode) != 0))
+       {
+           FndFieldSetStatus(CBI_hwnd,
                       "KyBldgNo",
                       STS_INCOMPLETE,
                       &FndGenErrorBlock);
+
+           FndFieldSetMsg(CBI_hwnd,
+		               "KyBldgNo",
+					   STSM_FIELD_REQUIRED,
+					   &FndGenErrorBlock);
+
+       }
+       else
+       {
+           FndFieldSetStatus(CBI_hwnd,
+                      "KyBldgNo",
+                      STS_VALID,
+                      &FndGenErrorBlock);
+
+		   FndFieldSetMsg(CBI_hwnd,
+			              "KyBldgNo",
+						  MF_NO_MSG,
+						  &FndGenErrorBlock);
+
+
+       }
 
        FndFieldSetStatus(CBI_hwnd,
                       "KyPremNo",
                       STS_VALID,
                       &FndGenErrorBlock);
 
+	   FndFieldSetMsg(CBI_hwnd,
+	                  "KyPremNo",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
+
        FndFieldSetStatus(CBI_hwnd,
                       "KyBa",
                       STS_VALID,
                       &FndGenErrorBlock);
+
+	   FndFieldSetMsg(CBI_hwnd,
+			          "KyBa",
+					  MF_NO_MSG,
+					  &FndGenErrorBlock);
+
 
 
    }
@@ -1486,8 +1724,186 @@ WCBPROC( DZBA002BusCDRbAccessTypeFC )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01BBusCDRbAccessTypeFC */
+}  /* End of DZBA002BusCDRbAccessTypeFC */
 
 
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA002XUserNameFldChg
+**
+**  DESCRIPTION      : 
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC(DZBA002XUserNameFldChg)
+{
+
+    return CMN_SUCCESS;
+
+}  /* End of DZBA002XUserNameFldChg */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA002XTxGenDec2FldChg
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC(DZBA002XTxGenDec2FldChg)
+{
+
+    return CMN_SUCCESS;
+
+}  /* End of DZBA002XTxGenDec2FldChg */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : Dzba002bustxusernmfc
+**
+**  DESCRIPTION      : This function free the memory of the typedef,
+**                     declared in SWAT01B.h file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  K.Chase                Original code.
+**
+***************************************************************************/
+
+WCBPROC(Dzba002bustxusernmfc)
+{
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+	CHAR			   szTxUserNm[9],
+                       szTxKyExtract[26];
+    USHORT             FndGenRC = 0;
+
+	memset (szTxUserNm, 0 ,sizeof(szTxUserNm) );
+    memset (szTxKyExtract, 0, sizeof(szTxKyExtract) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                      "TxUserNm",
+                      sizeof(szTxUserNm),
+                      szTxUserNm,
+                      &FndGenErrorBlock);
+
+    FndFieldQueryValue(CBI_hwnd,
+                      "TsKyExtract",
+                      sizeof(szTxKyExtract),
+                      szTxKyExtract,
+                      &FndGenErrorBlock);
+
+
+    if (strcmp(szTxKyExtract, EMPTY_STR) == 0) 
+	{
+
+
+    if ( strcmp(szTxUserNm, EMPTY_STR) != 0 )
+	{
+		/* Enable the command pushbuttons */
+
+
+		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
+		                                "TsKyExtract",
+						                &FndGenErrorBlock);
+
+        if (FndGenRC == FND_SUCCESS)
+        {
+		    FndCommandEnable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+        }
+
+        FndFieldSetStatus( CBI_hwnd,
+                         "TxUserNm",
+                          STS_VALID,
+                          &FndGenErrorBlock);
+
+		FndFieldSetMsg(CBI_hwnd,
+			           "TxUserNm",
+					   MF_NO_MSG,
+					   &FndGenErrorBlock);
+
+
+	}
+	else
+	{
+		/* Disable the command pushbuttons */
+
+		FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+	}
+
+    }  /* if (strcmp(szTxKyExtract, EMPTY_STR) == 0) */
+    else
+    {
+		FndCommandEnable(CBI_hwnd,
+	                     "ValidPB",
+					     &FndGenErrorBlock);
+
+    }  /*  else  */
+   
+
+    return CMN_SUCCESS;
+
+
+}  /* End of Dzba002bustxusernmfc */
 
 

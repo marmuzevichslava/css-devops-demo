@@ -7,198 +7,200 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA001                           *
-*                          Generated on: Mon Nov 04 09:02:22 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZBA001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,307,164
+DZBA001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,279,175
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
      | WS_MAXIMIZEBOX
      | WS_SYSMENU
      | DS_MODALFRAME
-    CAPTION "BILL ACCOUNT EXTRACT"
+    CAPTION "Bill Account Extract"
     
 Begin  /* controls */
    CONTROL "Process Mode",8000,
               FND_RADIO_GROUP,
               WS_VISIBLE | WS_GROUP | BS_GROUPBOX
-              ,6,15,0,0
+              ,7,15,0,0
 
-   CONTROL "Extract/Insert",116,
+   CONTROL "Extract/Insert",114,
               FND_RADIO_BUTTON,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,6,15,0,0
+              ,7,15,0,0
 
-   CONTROL "Extract Only",117,
+   CONTROL "Extract Only",115,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,6,15,0,0
+              ,7,15,0,0
 
-   CONTROL "Insert Only",118,
+   CONTROL "Insert Only",116,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,6,15,0,0
+              ,7,15,0,0
+
+   CONTROL "Export",117,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,7,15,0,0
+
+   CONTROL "Import",118,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,7,15,0,0
+
+   CONTROL "Instance :",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,6,44,33,12
 
    CONTROL "",101,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,211,17,80,0
+              ,44,44,78,0
 
-   CONTROL "User Name",10000,
+   CONTROL "Database :",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,212,3,50,10
-
-   CONTROL "Database",502,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,9,43,37,12
+              ,6,58,36,12
 
    CONTROL "",102,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,51,43,81,0
+              ,44,58,78,0
 
-   CONTROL "Owner",503,
+   CONTROL "Password :",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,9,57,35,12
+              ,6,73,37,12
 
    CONTROL "",103,
-              FND_COMBOBOX,
-              WS_VISIBLE | WS_TABSTOP
-              ,51,57,81,0
-
-   CONTROL "Password",504,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,10,72,38,12
-
-   CONTROL "",104,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,52,72,88,0
+              ,44,73,86,0
 
    CONTROL "Extract DB",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,3,35,142,52
+              ,3,36,134,52
+
+   CONTROL "Instance :",504,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,148,44,33,12
+
+   CONTROL "",104,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,186,44,77,0
 
    CONTROL "Insert DB",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,159,35,144,51
+              ,142,37,135,51
 
-   CONTROL "Database",505,
+   CONTROL "Database :",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,169,43,37,12
+              ,148,59,37,12
 
    CONTROL "",105,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,211,43,80,0
+              ,186,59,77,0
 
-   CONTROL "Owner",506,
+   CONTROL "Password :",506,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,169,57,35,12
+              ,148,73,37,12
 
    CONTROL "",106,
-              FND_COMBOBOX,
-              WS_VISIBLE | WS_TABSTOP
-              ,211,57,80,0
-
-   CONTROL "Password",507,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,169,71,38,12
-
-   CONTROL "",107,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,211,71,88,0
+              ,186,73,85,0
 
-   CONTROL "Remarks",108,
+   CONTROL "Remarks",107,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,93,181,42
+              ,3,94,166,42
 
-   CONTROL "Default Remarks",10007,
+   CONTROL "Default Remarks",10006,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,190,93,63,10
+              ,176,94,55,10
 
    CONTROL "Add...",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,3,139,35,12
+              ,4,138,38,12
 
    CONTROL "Change...",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,50,139,37,12
+              ,47,138,39,12
 
    CONTROL "Delete",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,101,139,35,12
+              ,90,138,37,12
 
    CONTROL "Undelete",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,147,139,35,12
+              ,132,138,37,12
 
-   CONTROL "",109,
+   CONTROL "",108,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,189,105,110,46
-
-   CONTROL "",110,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,276,113,21,0
-
-   CONTROL "",111,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,276,113,21,0
-
-   CONTROL "",112,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,276,113,21,0
-
-   CONTROL "",113,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,276,113,21,0
-
-   CONTROL "",114,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,276,113,0,0
-
-   CONTROL "",115,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,276,113,21,0
+              ,175,106,102,46
 
    CONTROL "Process Mode",9002,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,2,3,200,26
+              ,2,4,275,27
+
+   CONTROL "",109,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,131,44,4,0
+
+   CONTROL "",110,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,131,58,4,0
+
+   CONTROL "",111,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,272,45,4,0
+
+   CONTROL "",112,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,272,58,5,0
+
+   CONTROL "",5200,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,3,153,222,12
+
+   CONTROL "",113,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,235,153,11,0
 
 End /* controls */
 
@@ -214,60 +216,20 @@ Begin
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
    FP_TOP_MARGIN,                       "10\0"
-   FP_LEFT_MARGIN,                      "5\0"
-   FP_HORIZONTAL_SPACING,               "2\0"
+   FP_LEFT_MARGIN,                      "4\0"
+   FP_HORIZONTAL_SPACING,               "1\0"
    FP_VERTICAL_SPACING,                 "7\0"
    FP_DIRECTION,                        FPV_HORIZONTAL, "\0"
-   FP_BUTTONS_PER_ROW,                  "3\0"
-   FP_BUTTON_INFO,                      "116,03\0"
-   FP_BUTTON_INFO,                      "117,01\0"
-   FP_BUTTON_INFO,                      "118,02\0"
+   FP_BUTTONS_PER_ROW,                  "5\0"
+   FP_BUTTON_INFO,                      "114,03\0"
+   FP_BUTTON_INFO,                      "115,01\0"
+   FP_BUTTON_INFO,                      "116,02\0"
+   FP_BUTTON_INFO,                      "117,04\0"
+   FP_BUTTON_INFO,                      "118,05\0"
 
-   /*  Control Data for Combobox TxUserNm  */
-   FP_CONTROL_ID,                       "101\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_REQUIRED,                         FPV_TRUE, "\0"
-   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
-   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
-   FP_LANGUAGE,                         "E\0"
-   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
-   FP_DECODE_TABLE,                     "\0"
-   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "211,17\0"
-   FP_LIST_WIDTH,                       "89\0"
-   FP_LIST_HEIGHT,                      "51\0"
-   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
-   FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
-   FP_LINK_FIELD,                       FPV_NONE, "\0"
-   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
-   FP_CODE_LENGTH,                      "8\0"
-   FP_DECODE_LENGTH,                    "20\0"
-   FP_DATA_FORMAT,                      "A\0"
-
-   /*  Control Data for Static Text User Name  */
-   FP_CONTROL_ID,                       "10000\0"
-   FP_SCREEN_LENGTH,                    "9\0"
-   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
-
-   /*  Control Data for Static Text Database  */
-   FP_CONTROL_ID,                       "502\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   /*  Control Data for Static Text Instance :  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -279,7 +241,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Combobox TxExtractDbId  */
-   FP_CONTROL_ID,                       "102\0"
+   FP_CONTROL_ID,                       "101\0"
    FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -293,23 +255,23 @@ Begin
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_LANGUAGE,                         "E\0"
-   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWN_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
-   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "51,43\0"
-   FP_LIST_WIDTH,                       "84\0"
-   FP_LIST_HEIGHT,                      "20\0"
-   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_LIST_SORT_ORDER,                  FPV_ASCENDING_ORDER, "\0"
+   FP_LIST_POSITION,                    "44,44\0"
+   FP_LIST_WIDTH,                       "86\0"
+   FP_LIST_HEIGHT,                      "22\0"
+   FP_LIST_ARRANGEMENT,                 FPV_CODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
-   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_LINK_FIELD,                       "109,D\0"
    FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
    FP_CODE_LENGTH,                      "10\0"
    FP_DECODE_LENGTH,                    "20\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Static Text Owner  */
-   FP_CONTROL_ID,                       "503\0"
-   FP_SCREEN_LENGTH,                    "5\0"
+   /*  Control Data for Static Text Database :  */
+   FP_CONTROL_ID,                       "502\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -321,7 +283,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Combobox TxExtractOwnerId  */
-   FP_CONTROL_ID,                       "103\0"
+   FP_CONTROL_ID,                       "102\0"
    FP_SCREEN_LENGTH,                    "30\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -335,23 +297,23 @@ Begin
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_LANGUAGE,                         "E\0"
-   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWN_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
-   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "51,57\0"
-   FP_LIST_WIDTH,                       "81\0"
-   FP_LIST_HEIGHT,                      "48\0"
-   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_LIST_SORT_ORDER,                  FPV_ASCENDING_ORDER, "\0"
+   FP_LIST_POSITION,                    "44,58\0"
+   FP_LIST_WIDTH,                       "86\0"
+   FP_LIST_HEIGHT,                      "50\0"
+   FP_LIST_ARRANGEMENT,                 FPV_CODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
-   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_LINK_FIELD,                       "110,D\0"
    FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
    FP_CODE_LENGTH,                      "30\0"
    FP_DECODE_LENGTH,                    "20\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Static Text Password  */
-   FP_CONTROL_ID,                       "504\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   /*  Control Data for Static Text Password :  */
+   FP_CONTROL_ID,                       "503\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -363,7 +325,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field TxExtractPsswdId  */
-   FP_CONTROL_ID,                       "104\0"
+   FP_CONTROL_ID,                       "103\0"
    FP_SCREEN_LENGTH,                    "30\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -379,9 +341,9 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Static Text Database  */
-   FP_CONTROL_ID,                       "505\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   /*  Control Data for Static Text Instance :  */
+   FP_CONTROL_ID,                       "504\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -393,7 +355,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Combobox TxInsertDbId  */
-   FP_CONTROL_ID,                       "105\0"
+   FP_CONTROL_ID,                       "104\0"
    FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -407,23 +369,23 @@ Begin
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_LANGUAGE,                         "E\0"
-   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWN_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
-   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "211,43\0"
-   FP_LIST_WIDTH,                       "87\0"
-   FP_LIST_HEIGHT,                      "18\0"
-   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_LIST_SORT_ORDER,                  FPV_ASCENDING_ORDER, "\0"
+   FP_LIST_POSITION,                    "186,44\0"
+   FP_LIST_WIDTH,                       "82\0"
+   FP_LIST_HEIGHT,                      "29\0"
+   FP_LIST_ARRANGEMENT,                 FPV_CODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
-   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_LINK_FIELD,                       "111,D\0"
    FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
    FP_CODE_LENGTH,                      "10\0"
    FP_DECODE_LENGTH,                    "20\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Static Text Owner  */
-   FP_CONTROL_ID,                       "506\0"
-   FP_SCREEN_LENGTH,                    "5\0"
+   /*  Control Data for Static Text Database :  */
+   FP_CONTROL_ID,                       "505\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -435,7 +397,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Combobox TxInsertOwnerId  */
-   FP_CONTROL_ID,                       "106\0"
+   FP_CONTROL_ID,                       "105\0"
    FP_SCREEN_LENGTH,                    "30\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -449,23 +411,23 @@ Begin
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_LANGUAGE,                         "E\0"
-   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWN_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
-   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "211,57\0"
-   FP_LIST_WIDTH,                       "88\0"
+   FP_LIST_SORT_ORDER,                  FPV_ASCENDING_ORDER, "\0"
+   FP_LIST_POSITION,                    "186,59\0"
+   FP_LIST_WIDTH,                       "85\0"
    FP_LIST_HEIGHT,                      "48\0"
-   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_LIST_ARRANGEMENT,                 FPV_CODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_CODE, "\0"
-   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_LINK_FIELD,                       "112,D\0"
    FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
    FP_CODE_LENGTH,                      "30\0"
    FP_DECODE_LENGTH,                    "20\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Static Text Password  */
-   FP_CONTROL_ID,                       "507\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   /*  Control Data for Static Text Password :  */
+   FP_CONTROL_ID,                       "506\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -477,7 +439,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field TxInsertPsswdId  */
-   FP_CONTROL_ID,                       "107\0"
+   FP_CONTROL_ID,                       "106\0"
    FP_SCREEN_LENGTH,                    "30\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -494,7 +456,7 @@ Begin
    FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for List Box ExtractInsertLB  */
-   FP_CONTROL_ID,                       "108\0"
+   FP_CONTROL_ID,                       "107\0"
    FP_CAPTION,                          "Remarks\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
@@ -673,7 +635,7 @@ Begin
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for Static Text Default Remarks  */
-   FP_CONTROL_ID,                       "10007\0"
+   FP_CONTROL_ID,                       "10006\0"
    FP_SCREEN_LENGTH,                    "15\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -686,7 +648,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field TxExtractRemarks2  */
-   FP_CONTROL_ID,                       "109\0"
+   FP_CONTROL_ID,                       "108\0"
    FP_SCREEN_LENGTH,                    "80\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -702,16 +664,27 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
+   /*  Control Data for Entry Field TxGenDecode3  */
+   FP_CONTROL_ID,                       "109\0"
+   FP_SCREEN_LENGTH,                    "25\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
    /*  Control Data for Entry Field TxGenDecode4  */
    FP_CONTROL_ID,                       "110\0"
    FP_SCREEN_LENGTH,                    "20\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
@@ -719,16 +692,13 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Entry Field TxGenDecode3  */
+   /*  Control Data for Entry Field TxGenDecode5  */
    FP_CONTROL_ID,                       "111\0"
    FP_SCREEN_LENGTH,                    "20\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
@@ -736,16 +706,13 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Entry Field TxGenDecode2  */
+   /*  Control Data for Entry Field TxGenDecode6  */
    FP_CONTROL_ID,                       "112\0"
    FP_SCREEN_LENGTH,                    "20\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
@@ -753,10 +720,10 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Entry Field TxGenDecode1  */
-   FP_CONTROL_ID,                       "113\0"
-   FP_SCREEN_LENGTH,                    "20\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   /*  Control Data for Error Field TxMsgAreaA  */
+   FP_CONTROL_ID,                       "5200\0"
+   FP_SCREEN_LENGTH,                    "79\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
@@ -771,9 +738,9 @@ Begin
    FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Entry Field FlWindowMod  */
-   FP_CONTROL_ID,                       "114\0"
+   FP_CONTROL_ID,                       "113\0"
    FP_SCREEN_LENGTH,                    "1\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
@@ -783,24 +750,8 @@ Begin
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
-   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
-   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
-   FP_DATA_FORMAT,                      "A\0"
-
-   /*  Control Data for Entry Field TxGenDecode5  */
-   FP_CONTROL_ID,                       "115\0"
-   FP_SCREEN_LENGTH,                    "20\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
-   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
@@ -825,13 +776,17 @@ Begin
      MENUITEM "&Copy\tCtrl Ins",3002
      MENUITEM "&Paste\tShift Ins",3003
 End
+     POPUP "&Options"
+Begin
+     MENUITEM "Export / Import Dtl...\tAlt+X",1006
+End
      POPUP "&Help"
 Begin
-     MENUITEM "&Help for Help...",1006
-     MENUITEM "&Extended Help...",1007
-     MENUITEM "&Keys Help...",1008
-     MENUITEM "Help &Index...",1009
-     MENUITEM SEPARATOR     MENUITEM "&About...",1010
+     MENUITEM "&Help for Help...",1007
+     MENUITEM "&Extended Help...",1008
+     MENUITEM "&Keys Help...",1009
+     MENUITEM "Help &Index...",1010
+     MENUITEM SEPARATOR     MENUITEM "&About...",1011
 End
 End  /*  menus  */
 
@@ -847,6 +802,7 @@ Begin
 VK_DELETE,3001,SHIFT,VIRTKEY
 VK_INSERT,3002,CONTROL,VIRTKEY
 VK_INSERT,3003,SHIFT,VIRTKEY
+"X",1006,ALT,VIRTKEY
 End
 
 

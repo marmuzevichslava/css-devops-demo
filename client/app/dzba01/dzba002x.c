@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZBA002X DETAILS FOR EXT/INS      *
- *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *                         Generated on: Thu Jan 30 09:46:52 1997          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -121,8 +121,6 @@
 #include "dzba003i.h"
 #include "dzba003o.h"
 
-#include "cudom005.h"
-#include "cudom007.h"
 
 /***************************************************************************
  * Window Header File                                                      *
@@ -133,7 +131,7 @@
  * Callbacks                                                               *
  ***************************************************************************/
 #include "dzba002.aex"
-#include "archhelp.cb"
+// #include "archhelp.cb"
 #include "azdi0400.c"
 #include "dzba002.bus"
 

@@ -198,6 +198,13 @@ AEXPROC( ExitWktCloseAfterSave )
 	/* Establish output addressability */
         pDZBA003OUTPUT = EAB_pChildData;
 
+    /* Load the Value for the user id */
+        FndFieldSetValue( CBI_hwnd,
+                     "TxUserNm",
+                     sizeof(pDZBA003OUTPUT->DZCBA02Data.TxnUsrId),
+                     &pDZBA003OUTPUT->DZCBA02Data.TxnUsrId ,
+                     &FndGenErrorBlock);
+
     /* Load the Value for TsKyExtract */
         FndFieldSetValue( CBI_hwnd,
                      "TsKyExtract",
@@ -279,9 +286,9 @@ AEXPROC( ExitWktCloseAfterSave )
 
     if (strcmp(GlobalMode, LT_Insert_Mode) == 0)
     {
-	    FndCommandEnable(CBI_hwnd,
-			        	 "OKPB",
-					     &FndGenErrorBlock);
+//	    FndCommandEnable(CBI_hwnd,
+//			        	 "OKPB",
+//					     &FndGenErrorBlock);
 
         FndFieldSetStatus( CBI_hwnd,
                          "TsKyExtract",
@@ -736,94 +743,6 @@ AEXPROC( ExitDomDragOver )
 
 AEXPROC( ExitDomDrop )
 {
-
-    USHORT            FndGenRC = 0;
-    _FND_ERROR_BLOCK  FndGenErrorBlock;
-	CHAR              CdAccessType[3];
-	CHAR              KyBaStr[KYBA_STR_LEN];
-	DOUBLE            KyBa;
-	LONG              KyPremNo;
-	LONG              KyBldgNo;
-    _CUDOM005REC      *pKyBaData;
-    _CUDOM007PREMDOM  *pKyPremData;
-
-	 /* Determine which field is currently being displayed on Window
-	 // Bill Account, Premise, or Building
-	 */
-     FndFieldQueryValue(CBI_hwnd,
-                       "CdAccessType",
-                       sizeof(CdAccessType),
-                       &CdAccessType,
-                       &FndGenErrorBlock);
-
-   /* If RB AccessType is Account */
-   if (strcmp ( CdAccessType, LT_Acct_01) == 0) 
-   {
-
-
-       CmnDomGetObject (5, &pKyBaData, CMN_ARCH_PARMS );
-
-	   /* If Data is in pointer to Bill Account Dom Structure */
-       if ( pKyBaData != NULL )
-       {
-		   /* Load value from pointer into locally declared LONG */
-	       KyBa = pKyBaData->KyBa;
-
-           /* Convert KyBa to string for Masked Window Field */
-           CmnStrFromFloat( KyBaStr,
-                          KYBA_STR_LEN,
-                          KyBa,
-                          0,
-                          CMN_LEADING_ZEROES_NO,
-                          CMN_ARCH_PARMS );
-
-		   /* Populate Window Field */
-           FndFieldSetValue(CBI_hwnd,
-                            "KyBa",
-                            sizeof(KyBaStr),
-                            KyBaStr,
-                            &FndGenErrorBlock);
-
-	    } /* END: pKyBaData != NULL */ 
-	} /* END: CdRbAccessType = Account */ 
-
-	/* If RB AccessType is Premise */
-	else if(strcmp ( CdAccessType, LT_Prem_02) == 0)
-	{
-        CmnDomGetObject (7, &pKyPremData, CMN_ARCH_PARMS );
-
-        if ( pKyPremData != NULL )
-        {
-	        KyPremNo = pKyPremData->KyPremNo;
-
-            FndFieldSetValue(
-                             CBI_hwnd,
-                             "KyPremNo",
-                             sizeof(pKyPremData->KyPremNo),
-                             &pKyPremData->KyPremNo,
-                             &FndGenErrorBlock);
-
-		} /* END: pKyPremData != NULL */ 
-	} /* END: AccessType is Premise */
-
- 	/* If RB AccessType is Building */
-	else if(strcmp ( CdAccessType, LT_Bldg_03) == 0)
-	{
-        CmnDomGetObject (7, &pKyPremData, CMN_ARCH_PARMS );
-
-        if ( pKyPremData != NULL )
-        {
-	        KyBldgNo = pKyPremData->KyBldgNo;
-
-            FndFieldSetValue(
-                             CBI_hwnd,
-                             "KyBldgNo",
-                             sizeof(pKyPremData->KyBldgNo),
-                             &pKyPremData->KyBldgNo,
-                             &FndGenErrorBlock);
-
-		} /* END: pKyPremData != NULL */ 
-	} /* END: AccessType is Building */
 
 
     return CMN_SUCCESS;

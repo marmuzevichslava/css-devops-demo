@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA002                           *
-*                          Generated on: Sat Nov 02 10:40:24 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZBA002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,131,157
+DZBA002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,129,166
     STYLE 0 
      | WS_CAPTION
      | WS_SYSMENU
@@ -23,100 +23,114 @@ DZBA002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,131,157
 Begin  /* controls */
    CONTROL "Entity Type",8000,
               FND_RADIO_GROUP,
-              WS_VISIBLE | BS_GROUPBOX
-              ,5,0,57,64
+              WS_VISIBLE | WS_GROUP | BS_GROUPBOX
+              ,7,0,50,48
 
-   CONTROL "Account",107,
+   CONTROL "Account",108,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              | BS_RADIOBUTTON
+              ,7,0,0,0
+
+   CONTROL "Premise",109,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,5,0,0,0
+              ,7,0,0,0
 
-   CONTROL "Premise",108,
+   CONTROL "Building",110,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,5,0,0,0
+              ,7,0,0,0
 
-   CONTROL "Building",109,
-              FND_RADIO_BUTTON,
-              WS_VISIBLE
-              | BS_RADIOBUTTON
-              ,5,0,0,0
-
-   CONTROL "Bill Account",501,
+   CONTROL "User Name",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,3,70,45,12
+              ,3,55,38,12
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,50,70,74,0
+              ,43,55,82,0
 
-   CONTROL "Premise",502,
+   CONTROL "Bill Account",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,3,70,43,12
+              ,3,70,39,12
 
    CONTROL "",102,
-              FND_NUMERICFIELD,
+              FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,50,70,74,0
+              ,43,70,81,0
 
-   CONTROL "Building",503,
+   CONTROL "Premise",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,4,70,43,12
+              ,4,70,37,12
 
    CONTROL "",103,
               FND_NUMERICFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,50,70,74,12
+              ,44,70,81,0
 
-   CONTROL "TimeStamp",504,
+   CONTROL "Building",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,2,86,46,12
+              ,4,70,39,12
 
    CONTROL "",104,
-              FND_ENTRYFIELD,
+              FND_NUMERICFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,50,86,74,0
+              ,44,70,81,12
 
-   CONTROL "Remarks",505,
+   CONTROL "TimeStamp",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,2,102,46,28
+              ,3,86,38,12
 
    CONTROL "",105,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,50,102,74,28
+              ,43,86,81,0
+
+   CONTROL "Remarks",506,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,3,102,30,28
+
+   CONTROL "",106,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,43,102,81,28
 
    CONTROL "Fin&d...",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,82,50,41,0
+              ,82,38,43,14
 
-   CONTROL "",106,
+   CONTROL "",5200,
               FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,111,21,0,0
+              WS_VISIBLE
+              ,3,145,105,12
+
+   CONTROL "",107,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,77,16,11,0
 
    CONTROL "OK",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-     | BS_DEFPUSHBUTTON
-              ,16,134,37,12
+              ,24,134,36,12
 
    CONTROL "Cancel",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,64,134,41,12
+              ,69,134,36,12
 
 End /* controls */
 
@@ -131,18 +145,48 @@ Begin
    FP_CONTROL_ID,                       "8000\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
-   FP_TOP_MARGIN,                       "10\0"
-   FP_LEFT_MARGIN,                      "9\0"
+   FP_TOP_MARGIN,                       "6\0"
+   FP_LEFT_MARGIN,                      "8\0"
    FP_HORIZONTAL_SPACING,               "3\0"
-   FP_VERTICAL_SPACING,                 "5\0"
+   FP_VERTICAL_SPACING,                 "0\0"
    FP_DIRECTION,                        FPV_VERTICAL, "\0"
    FP_BUTTONS_PER_ROW,                  "3\0"
-   FP_BUTTON_INFO,                      "107,01\0"
-   FP_BUTTON_INFO,                      "108,02\0"
-   FP_BUTTON_INFO,                      "109,03\0"
+   FP_BUTTON_INFO,                      "108,01\0"
+   FP_BUTTON_INFO,                      "109,02\0"
+   FP_BUTTON_INFO,                      "110,03\0"
+
+   /*  Control Data for Static Text User Name  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "9\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field TxUserNm  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Bill Account  */
-   FP_CONTROL_ID,                       "501\0"
+   FP_CONTROL_ID,                       "502\0"
    FP_SCREEN_LENGTH,                    "12\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -152,7 +196,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field KyBa  */
-   FP_CONTROL_ID,                       "101\0"
+   FP_CONTROL_ID,                       "102\0"
    FP_SCREEN_LENGTH,                    "10\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -166,7 +210,7 @@ Begin
    FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Premise  */
-   FP_CONTROL_ID,                       "502\0"
+   FP_CONTROL_ID,                       "503\0"
    FP_SCREEN_LENGTH,                    "7\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -179,42 +223,6 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field KyPremNo  */
-   FP_CONTROL_ID,                       "102\0"
-   FP_SCREEN_LENGTH,                    "9\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
-   FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
-   FP_INTEGRAL_DIGITS,                  "9\0"
-   FP_FRACTIONAL_DIGITS,                "0\0"
-   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
-   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
-   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
-   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
-   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
-
-   /*  Control Data for Static Text Building  */
-   FP_CONTROL_ID,                       "503\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
-
-   /*  Control Data for Numeric Field KyBldgNo  */
    FP_CONTROL_ID,                       "103\0"
    FP_SCREEN_LENGTH,                    "9\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
@@ -237,8 +245,44 @@ Begin
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
    FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for Static Text TimeStamp  */
+   /*  Control Data for Static Text Building  */
    FP_CONTROL_ID,                       "504\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Numeric Field KyBldgNo  */
+   FP_CONTROL_ID,                       "104\0"
+   FP_SCREEN_LENGTH,                    "9\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_INTEGRAL_DIGITS,                  "9\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for Static Text TimeStamp  */
+   FP_CONTROL_ID,                       "505\0"
    FP_SCREEN_LENGTH,                    "9\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -251,7 +295,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field TsKyExtract  */
-   FP_CONTROL_ID,                       "104\0"
+   FP_CONTROL_ID,                       "105\0"
    FP_SCREEN_LENGTH,                    "26\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -268,7 +312,7 @@ Begin
    FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Remarks  */
-   FP_CONTROL_ID,                       "505\0"
+   FP_CONTROL_ID,                       "506\0"
    FP_SCREEN_LENGTH,                    "7\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -281,7 +325,7 @@ Begin
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field TxExtractRemarks2  */
-   FP_CONTROL_ID,                       "105\0"
+   FP_CONTROL_ID,                       "106\0"
    FP_SCREEN_LENGTH,                    "80\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
@@ -297,10 +341,10 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Entry Field FlWindowMod  */
-   FP_CONTROL_ID,                       "106\0"
-   FP_SCREEN_LENGTH,                    "1\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   /*  Control Data for Error Field TxMsgAreaA  */
+   FP_CONTROL_ID,                       "5200\0"
+   FP_SCREEN_LENGTH,                    "79\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
@@ -311,6 +355,24 @@ Begin
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "107\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 

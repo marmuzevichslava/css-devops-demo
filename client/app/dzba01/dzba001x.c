@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZBA001X BILL ACCOUNT EXTRACT     *
- *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *                         Generated on: Thu Jan 30 09:46:52 1997          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -118,6 +118,8 @@
  ***************************************************************************/
 #include "dzba002i.h"
 #include "dzba002o.h"
+#include "dzba004i.h"
+#include "dzba004o.h"
 
 
 /***************************************************************************
@@ -129,7 +131,7 @@
  * Callbacks                                                               *
  ***************************************************************************/
 #include "dzba001.aex"
-#include "archhelp.cb"
+// #include "archhelp.cb"
 #include "azdi0400.c"
 #include "dzba001.bus"
 #include "dzba001.vld"

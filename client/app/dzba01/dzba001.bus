@@ -16,6 +16,8 @@
 **                     DZBA001UndelPbClk
 **                     DZBA001AddPbClk
 **                     DZBA001ChgPbClk
+**                     DZBA001MnExpClk
+**                     DZBA001MnImpClk
 **
 ** REVISION HISTORY
 **
@@ -29,7 +31,7 @@
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01ABusWindowPredisp
+**  FUNCTION         : DZBA001BusWindowPredisp
 **
 **  DESCRIPTION      : This function is executed when the window is
 **					   originally opened.  It will malloc the
@@ -59,27 +61,21 @@ WCBPROC( DZBA001BusWindowPredisp )
 {
 
     USHORT             FndGenRC = 0;
-	CHAR               CdExtractDbId[3];
-	CHAR               CdInsertDbId[3];
     _FND_ERROR_BLOCK    FndGenErrorBlock;
 
-
-    /* Declare a pointer of the Working Storage type */
-    _WindowData      *pWCDStorage;
 
     /* Allocate memory for the working storage area */
     pWindContextData->pWorkingStorageData =
         (CHAR *) malloc(sizeof(_WindowData));
 
-    /* Set a pointer to the working storage area */
-    pWCDStorage = (_WindowData *) SWAT01A_WorkStorage;
 
 	/* The Global variable that will hold the password is cleared */
     memset(GlobalHoldPassword, 0, sizeof(GlobalHoldPassword));
 
-    memset(&DeletedRows, 0, sizeof(DeletedRows) );
+    memset(&WCD_Dzba004c, 0, sizeof(WCD_Dzba004c) );
 
-    /* Open the report file */
+    
+    /* Open the report file, if one already exists, it will be overwritten. */
 
 	LogFile = fopen( REPORT_FILE , "w");
 
@@ -87,15 +83,6 @@ WCBPROC( DZBA001BusWindowPredisp )
 	fprintf(LogFile, LOG_COLUMNS);
 
 	fflush(LogFile);
-
-
-	/* Disable the process menu item */
-	FndCommandDisable ( CBI_hwnd,
-	                    "ProcessMN",
-						&FndGenErrorBlock );
-     
-    /* Initialize the working storage area */
-    memset(pWCDStorage, 0, sizeof(_WindowData));
 
    /* initialize the LUW area of the BFCD */
     memset(&BFCD_SWAT01Luw, 0, sizeof(BFCD_SWAT01Luw));
@@ -145,27 +132,23 @@ WCBPROC( DZBA001BusWindowPredisp )
                  "DEV00800",
                  CMN_ARCH_PARMS);
 
-    /* Initialize the TxGenDecode5 field (TxUserNm) */
-    CmnComboInit("TxUserNm",
-                 "DEV00800",
-                 CMN_ARCH_PARMS);
-
 
     /* SET THE DB DEFAULTS */
 
-    /* Default the local value to the 01 - First Value in Codes Tbl */
-    CmnStrCopy( CdExtractDbId,
-                 "01",
-                 sizeof(CdExtractDbId),
-                 CMN_ARCH_PARMS );
-
-    /* Default the local value to the 01 - First Value in Codes Tbl */
-    CmnStrCopy( CdInsertDbId,
-                 "01",
-                 sizeof(CdInsertDbId),
-                 CMN_ARCH_PARMS );
+	/* Set the default files */
 
 
+    CmnStrCopy( WCD_Dzba004c.ImportFile,
+	            "IMPORT",
+                sizeof(WCD_Dzba004c.ImportFile),
+                CMN_ARCH_PARMS );
+
+    CmnStrCopy( WCD_Dzba004c.ExportFile,
+	            "EXPORT",
+                sizeof(WCD_Dzba004c.ExportFile),
+                CMN_ARCH_PARMS );
+    
+    
 	/* Call Vld Function to Set Correct Attributes for each DB Info Combo Box */
     FndGenRC = DZBA001VldCDExtInsFC( pEventInfo,
                                     pEAIA,
@@ -183,19 +166,21 @@ WCBPROC( DZBA001BusWindowPredisp )
                           CMN_DEFAULT_WINDOW_TITLE_MAX,
                           CMN_ARCH_PARMS );
 
+
     /* Show the actual window */
 
     FndWindowShow( CBI_hwnd,
                    &FndGenErrorBlock);
 
     return CMN_SUCCESS;
-}
+
+}  /* DZBA001BusWindowPredisp */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01ABusWindowPredestroy
+**  FUNCTION         : DZBA001BusWindowPredestroy
 **
 **  DESCRIPTION      : This function free the memory of the typedef,
 **                     declared in SWAT01A.h file.
@@ -221,13 +206,7 @@ WCBPROC( DZBA001BusWindowPredisp )
 
 WCBPROC( DZBA001BusWindowPredestroy )
 {
-    /* Declare a pointer of the Working Storage type */
-    _WindowData      *pWCDStorage;
 
-    /* Set a pointer to the working storage area */
-    pWCDStorage = (_WindowData *) SWAT01A_WorkStorage;
-
-    free ( pWCDStorage );
 
     /* Close the report file */
 
@@ -237,7 +216,7 @@ WCBPROC( DZBA001BusWindowPredestroy )
 
     return CMN_SUCCESS;
 
-}  /* End of SWAT01ABusWindowPredestroy */
+}  /* End of DZBA001BusWindowPredestroy */
 
 
 
@@ -246,13 +225,14 @@ WCBPROC( DZBA001BusWindowPredestroy )
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01ABusProcessMNClick
+**  FUNCTION         : DZBA001BusProcessMNClick
 **
 **  DESCRIPTION      : This function is invoked whenever the process menu
 **                     item is clicked. It formats the LUW layout with the
 **                     window fields.
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**					   EAB_pSessionData->Azgrsm03ApplData.KyUserId,
 **
 **  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
 **
@@ -277,17 +257,16 @@ WCBPROC( DZBA001BusProcessMNClick )
 {
     USHORT              RowNumber = 0,
                         FndGenRC = 0;
+    USHORT              SelectedButton = 0;  /* For Prebill Errors MsgBox */
     _FND_ERROR_BLOCK    FndGenErrorBlock;
     _ExtractInsertLBRow RowData;
 
-    /* Declare a pointer of the Working Storage type */
-    _WindowData         *pWCDStorage;
-
-    /* Set a pointer to the working storage area */
-    pWCDStorage =  (_WindowData *) SWAT01A_WorkStorage;
-
-
     /* Copy all DB information from Window to BFCD */
+
+       CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.TxUserNm,
+	     		   EAB_pSessionData->Azgrsm03ApplData.KyUserId,
+				   sizeof(BFCD_SWAT01Luw.SWAT01AData.TxUserNm),
+				   CMN_ARCH_PARMS);
 
        FndFieldQueryValue(CBI_hwnd,
                     "CdExtractInsertAct",
@@ -311,14 +290,6 @@ WCBPROC( DZBA001BusProcessMNClick )
 
 
        FndFieldQueryValue(CBI_hwnd,
-                    "TxUserNm",
-                    sizeof(BFCD_SWAT01Luw.SWAT01AData.TxUserNm),
-                    BFCD_SWAT01Luw.SWAT01AData.TxUserNm,
-                    &FndGenErrorBlock);
-
-
-
-       FndFieldQueryValue(CBI_hwnd,
                     "TxExtractOwnerId",
                     TXEXTRACTOWNERID_LEN,
                     BFCD_SWAT01Luw.SWAT01AData.TxExtractOwnerId,
@@ -330,6 +301,14 @@ WCBPROC( DZBA001BusProcessMNClick )
                     TXINSERTOWNERID_LEN,
                     BFCD_SWAT01Luw.SWAT01AData.TxInsertOwnerId,
                     &FndGenErrorBlock);
+
+
+       FndFieldQueryValue(CBI_hwnd,
+                    "TxExtractRemarks2",
+                    TXEXTRACTREMARKS_LEN,
+                    BFCD_SWAT01Luw.SWAT01AData.TxExtractRemarks,
+                    &FndGenErrorBlock);
+
 
 
 	   /*
@@ -349,33 +328,6 @@ WCBPROC( DZBA001BusProcessMNClick )
 				   sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
 				   CMN_ARCH_PARMS);
        
-       /*
-       CmnStrCat( CMN_ARCH_PARMS,
-                  BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId,
-			      sizeof(BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId),
-                  3,
-                  GlobalHoldPassword,
-                  AT_STRING,
-                  BFCD_SWAT01Luw.SWAT01AData.TxExtractDbId);
-
-
-       CmnStrCat( CMN_ARCH_PARMS,
-                  BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId,
-			      sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
-                  3,
-                  GlobalHoldPasswordB,
-                  AT_STRING,
-                  BFCD_SWAT01Luw.SWAT01AData.TxInsertDbId);
-
-       */
-
-       FndFieldQueryValue(CBI_hwnd,
-                    "TxExtractRemarks2",
-                    TXEXTRACTREMARKS_LEN,
-                    BFCD_SWAT01Luw.SWAT01AData.TxExtractRemarks,
-                    &FndGenErrorBlock);
-
-
 
        if (strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Ext_Ins_Mode,
 	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
@@ -400,6 +352,37 @@ WCBPROC( DZBA001BusProcessMNClick )
        | Processing loop kicked off here 
        */
 
+        if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Import_Mode,
+	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
+        {
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
+                        LT_Import_Mode,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
+                        CMN_ARCH_PARMS );
+
+
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId ,
+                        WCD_Dzba004c.ImportFile,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
+                        CMN_ARCH_PARMS );
+
+
+				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+				                         sizeof(_ACCESSRESULTS) );
+
+			    /* call the CSR with the LUW layout SWAT01M */
+                CmnCsrCall((BYTE *)&(BFCD_SWAT01Luw),
+                           (ULONG)sizeof(_SWAT01LUW),
+                            CMN_FORCECALL_YES,
+                            "DZBA01M",
+                            CMN_ARCH_PARMS);
+
+
+        }  /* end if */
+
+        else
+        {
+
        RowQueryNumber = 0;
 
        memset( &RowData, 0, sizeof(_ExtractInsertLBRow ) );
@@ -418,7 +401,58 @@ WCBPROC( DZBA001BusProcessMNClick )
                                                &RowData,
                                                &FndGenErrorBlock);
 
-                                            
+       /* if a row is flagged for deletion, do not process it for extraction/insertion */
+       if ( (RowData._ExtractInsertLBCdStatusIconicData == CMN_LBROW_STATUS_ADD_DELETED) ||
+            (RowData._ExtractInsertLBCdStatusIconicData == CMN_LBROW_STATUS_ADD_CHG_DEL) )
+            
+       {
+          /* if the first row is flagged for deletion, go through the listbox until 
+           | a "processable" row is found.
+           */
+
+       while ( (RowData._ExtractInsertLBCdStatusIconicData == CMN_LBROW_STATUS_ADD_DELETED) ||
+               (RowData._ExtractInsertLBCdStatusIconicData == CMN_LBROW_STATUS_ADD_CHG_DEL) )
+            
+             {
+             memset( &RowData, 0, sizeof(_ExtractInsertLBRow ) );
+
+
+		     CmnErrOverrides ( CMN_NO_OVERRIDE_TITLE,
+		                       CMN_OVERRIDE_FATAL,
+						       CMN_ERR_LOGGING_DEFAULT,
+						       CMN_RESULT_DEFAULT,
+		                       CMN_ARCH_PARMS);
+						    
+
+             FndGenRC = FndLstBoxRowQueryData ( CBI_hwnd,
+                                               "ExtractInsertLB",
+                                               RowQueryNumber,
+                                               sizeof(RowData),
+                                               &RowData,
+                                               &FndGenErrorBlock);
+
+             if ( FndGenRC != FND_SUCCESS)
+             {
+
+                  FndMsgBoxDisplayText( BAD_DATA,
+                                      "DZBA001L",
+                                      CBI_hwnd,
+                                      FND_MSGBOX_OK,
+                                      FND_MSGBOX_WARNING,
+                                      FND_MSGBOX_OK,
+                                      "Bill Account Extract",
+                                      &SelectedButton,
+				                      &FndGenErrorBlock );
+
+                  return CMN_SUCCESS;
+             } /* end if ( FndGenRC != FND_SUCCESS) */
+
+             RowQueryNumber++;
+
+             } /* end while */
+
+       }  /* if row is flagged for deletion */ 
+
 
        BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo = RowData._ExtractInsertLBKyExtractNoData;
 
@@ -476,17 +510,73 @@ WCBPROC( DZBA001BusProcessMNClick )
 
 
         }  /* end if */
+        else if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Export_Mode,
+	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
+        {
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
+                        LT_Export_Mode,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
+                        CMN_ARCH_PARMS );
+
+                memset( BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId ,
+                        0,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId) );
+
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId ,
+                        WCD_Dzba004c.ExportFile,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
+                        CMN_ARCH_PARMS );
+
+				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+				                         sizeof(_ACCESSRESULTS) );
+
+			    /* call the CSR with the LUW layout SWAT01M */
+                CmnCsrCall((BYTE *)&(BFCD_SWAT01Luw),
+                           (ULONG)sizeof(_SWAT01LUW),
+                            CMN_FORCECALL_YES,
+                            "DZBA01M",
+                            CMN_ARCH_PARMS);
 
 
+        }  /* end if */
+        else if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Import_Mode,
+	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
+        {
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
+                        LT_Import_Mode,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
+                        CMN_ARCH_PARMS );
+
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId ,
+                        WCD_Dzba004c.ImportFile,
+                        sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
+                        CMN_ARCH_PARMS );
+
+
+				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+				                         sizeof(_ACCESSRESULTS) );
+
+			    /* call the CSR with the LUW layout SWAT01M */
+                CmnCsrCall((BYTE *)&(BFCD_SWAT01Luw),
+                           (ULONG)sizeof(_SWAT01LUW),
+                            CMN_FORCECALL_YES,
+                            "DZBA01M",
+                            CMN_ARCH_PARMS);
+
+
+        }  /* end if */
+
+        }  /* end if */
 
     return CMN_SUCCESS;
-}
+
+}  /* end DZBA001BusProcessMNClick */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01ABusLBSelect
+**  FUNCTION         : DZBA001BusLBSelect
 **
 **  DESCRIPTION      : This function is invoked whenever the ListBox Row is
 **                     selected
@@ -513,7 +603,8 @@ WCBPROC( DZBA001BusProcessMNClick )
 WCBPROC( DZBA001BusLBSelect )
 {
     return CMN_SUCCESS;
-}
+
+}   /* end DZBA001BusLBSelect */
 
 
 
@@ -522,7 +613,7 @@ WCBPROC( DZBA001BusLBSelect )
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : SWAT01ABusProcessMNClick
+**  FUNCTION         : DZBA001BusProcessMNEnable
 **
 **  DESCRIPTION      : This function is invoked whenever the process menu
 **                     item is clicked. It formats the LUW layout with the
@@ -537,7 +628,7 @@ WCBPROC( DZBA001BusLBSelect )
 **                     CmnCsrCall
 **                     FndFieldQueryValue
 **
-**  AUTHOR           : KCHASE
+**  AUTHOR           : iperezar
 **
 **  DATE CREATED     : 03/28/95
 **
@@ -552,7 +643,6 @@ WCBPROC( DZBA001BusLBSelect )
 WCBPROC( DZBA001BusProcessMNEnable )
 {
 
-
     USHORT             NumRows = 0,
 	                   FndGenRC = 0;
 	CHAR               cStatusInsDb;
@@ -561,7 +651,6 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	CHAR               cStatusExtDb;
 	CHAR               cStatusExtOwn;
 	CHAR               cStatusExtPw;
-    CHAR               cStatusUserNm;
     CHAR               CdExtractInsertAct[3];
 
     _FND_ERROR_BLOCK   FndGenErrorBlock;
@@ -583,11 +672,6 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	FndFieldQueryStatus ( CBI_hwnd,
 		                  "TxExtractOwnerId",
 						  &cStatusExtOwn,
-						  &FndGenErrorBlock);
-
-	FndFieldQueryStatus ( CBI_hwnd,
-		                  "TxUserNm",
-						  &cStatusUserNm,
 						  &FndGenErrorBlock);
 
 	FndFieldQueryStatus ( CBI_hwnd,
@@ -614,50 +698,30 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	if (strcmp(CdExtractInsertAct, LT_Ext_Ins_Mode) == 0)
 	{
 	
-    if ( ( (cStatusExtDb == 'R') || (cStatusExtDb == 'F') ) &&
-		 ( (cStatusInsPw == 'R') || (cStatusInsPw == 'F') ) &&
-		 ( (cStatusExtPw == 'R') || (cStatusExtPw == 'F') ) &&
-	     ( (cStatusInsOwn == 'R') || (cStatusInsOwn == 'F') ) &&
-		 ( (cStatusInsDb == 'R') || (cStatusInsDb == 'F') ) &&
-		 ( (cStatusUserNm == 'R') || (cStatusUserNm == 'F') ) &&
-		 ( (cStatusExtOwn == 'R') || (cStatusExtOwn == 'F') ) )
+    if ( ( (cStatusExtDb == STS_VALID) || (cStatusExtDb == STS_WESVALID) ) &&
+		 ( (cStatusInsPw == STS_VALID) || (cStatusInsPw == STS_WESVALID) ) &&
+		 ( (cStatusExtPw == STS_VALID) || (cStatusExtPw == STS_WESVALID) ) &&
+	     ( (cStatusInsOwn == STS_VALID) || (cStatusInsOwn == STS_WESVALID) ) &&
+		 ( (cStatusInsDb == STS_VALID) || (cStatusInsDb == STS_WESVALID) ) &&
+		 ( (cStatusExtOwn == STS_VALID) || (cStatusExtOwn == STS_WESVALID) ) )
     {
 
-		/* The following segment of code checks if there are any rows in the 
-		   listbox.  The API FndLstBoxRowSelect does this by attempting to
-		   do a Select on Row 0. If this row is empty the Process menu item is
-		   enabled. This API also kicks up an error message box. To suppress this
-		   message box, the Cmn API CmnErrOverrides is used.
-		   */
-
-		CmnErrOverrides ( CMN_NO_OVERRIDE_TITLE,
-		                  CMN_OVERRIDE_FATAL,
-						  CMN_ERR_LOGGING_DEFAULT,
-						  CMN_RESULT_DEFAULT,
-		                  CMN_ARCH_PARMS);
-						    
 
 		if ( NumberOfRows > 0 )
 		{
 
-		      FndCommandEnable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+              CmnWindowSetApplValid ( CMN_ARCH_PARMS );
 
 		}
 		else
 		{
-		      FndCommandDisable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
 
 		}
 	}
 	else
 	{
-		      FndCommandDisable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
 
 	}
 
@@ -667,116 +731,93 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	else if (strcmp(CdExtractInsertAct, LT_Extract_Mode) == 0)
 	{
 	
-    if ( ( (cStatusExtDb == 'R') || (cStatusExtDb == 'F') ) &&
-		 ( (cStatusExtPw == 'R') || (cStatusExtPw == 'F') ) &&
-         ( (cStatusUserNm == 'R') || (cStatusUserNm == 'F') ) &&
-		 ( (cStatusExtOwn == 'R') || (cStatusExtOwn == 'F') ) )
+    if ( ( (cStatusExtDb == STS_VALID) || (cStatusExtDb == STS_WESVALID) ) &&
+		 ( (cStatusExtPw == STS_VALID) || (cStatusExtPw == STS_WESVALID) ) &&
+		 ( (cStatusExtOwn == STS_VALID) || (cStatusExtOwn == STS_WESVALID) ) )
     {
 
-		/* The following segment of code checks if there are any rows in the 
-		   listbox.  The API FndLstBoxRowSelect does this by attempting to
-		   do a Select on Row 0. If this row is empty the Process menu item is
-		   enabled. This API also kicks up an error message box. To suppress this
-		   message box, the Cmn API CmnErrOverrides is used.
-		   */
-
-		CmnErrOverrides ( CMN_NO_OVERRIDE_TITLE,
-		                  CMN_OVERRIDE_FATAL,
-						  CMN_ERR_LOGGING_DEFAULT,
-						  CMN_RESULT_DEFAULT,
-		                  CMN_ARCH_PARMS);
-						    
-	    FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
-		                    "ExtractInsertLB",
-		                     NumRows,
-						     &FndGenErrorBlock);
 
 		if ( NumberOfRows > 0 )
 		{
 
-		      FndCommandEnable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+              CmnWindowSetApplValid ( CMN_ARCH_PARMS );
 
 		}
 		else
 		{
-		      FndCommandDisable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
 
 		}
 	}
 	else
 	{
-		      FndCommandDisable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
 
 	}
 
     } /* if extract */
 	 
-	/* if insert */
 
 	else if (strcmp(CdExtractInsertAct, LT_Insert_Mode) == 0)
-	{
+   	{
 	
-    if ( ( (cStatusInsDb == 'R') || (cStatusInsDb == 'F') ) &&
-		 ( (cStatusInsPw == 'R') || (cStatusInsPw == 'F') ) &&
-         ( (cStatusUserNm == 'R') || (cStatusUserNm == 'F') ) &&
-		 ( (cStatusInsOwn == 'R') || (cStatusInsOwn == 'F') ) )
-    {
-
-		/* The following segment of code checks if there are any rows in the 
-		   listbox.  The API FndLstBoxRowSelect does this by attempting to
-		   do a Select on Row 0. If this row is empty the Process menu item is
-		   enabled. This API also kicks up an error message box. To suppress this
-		   message box, the Cmn API CmnErrOverrides is used.
-		   */
-
-		CmnErrOverrides ( CMN_NO_OVERRIDE_TITLE,
-		                  CMN_OVERRIDE_FATAL,
-						  CMN_ERR_LOGGING_DEFAULT,
-						  CMN_RESULT_DEFAULT,
-		                  CMN_ARCH_PARMS);
-						    
-	    FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
-		                    "ExtractInsertLB",
-		                     NumRows,
-						     &FndGenErrorBlock);
+        if ( ( (cStatusInsDb == STS_VALID) || (cStatusInsDb == STS_WESVALID) ) &&
+		     ( (cStatusInsPw == STS_VALID) || (cStatusInsPw == STS_WESVALID) ) &&
+		    ( (cStatusInsOwn == STS_VALID) || (cStatusInsOwn == STS_WESVALID) ) )
+        {
 
 
-		if ( NumberOfRows > 0 )
-		{
+		    if ( NumberOfRows > 0 )
+		    {
 
-		      FndCommandEnable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+              CmnWindowSetApplValid ( CMN_ARCH_PARMS );
 
-		}
-		else
-		{
-		      FndCommandDisable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+		    }
+		    else
+		    {
 
-		}
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
 
-	}
-	else
-	{
-		      FndCommandDisable( CBI_hwnd,
-		                        "ProcessMN",
-						        &FndGenErrorBlock);
+		    }
 
-	}
+	    }
+	    else
+	    {
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
+
+	    }
 
     } /* if insert */
+	else if (strcmp(CdExtractInsertAct, LT_Export_Mode) == 0) 
+	{
+	
+		    if ( NumberOfRows > 0 )
+		    {
+
+              CmnWindowSetApplValid ( CMN_ARCH_PARMS );
+
+		    }
+		    else
+		    {
+
+              CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
+
+		    }
+
+    } /* if export */
+	else if (strcmp(CdExtractInsertAct, LT_Import_Mode) == 0) 
+	{
+	
+              CmnWindowSetApplValid ( CMN_ARCH_PARMS );
+
+    } /* if export */
 
     return CMN_SUCCESS;
 
-}
+}	/* end DZBA001BusProcessMNEnable */
+
+
 
 
 
@@ -784,7 +825,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : DZBA001DelPbClk
+**  FUNCTION         : DZBA001MnExpClk
 **
 **  DESCRIPTION      : This function is invoked whenever the process menu
 **                     item is clicked. It formats the LUW layout with the
@@ -795,9 +836,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 **  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
 **
 **
-**  CALLED FUNCTIONS : CmnStrCopy
-**                     CmnCsrCall
-**                     FndFieldQueryValue
+**  CALLED FUNCTIONS : 
 **
 **  AUTHOR           : KCHASE
 **
@@ -807,71 +846,48 @@ WCBPROC( DZBA001BusProcessMNEnable )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
+**    03/28/95  IPEREZAR                Original code.
 **
 ***************************************************************************/
 
-WCBPROC( DZBA001DelPbClk )
+WCBPROC( DZBA001MnExpClk )
 {
 
-    USHORT            RowNumber = 0,
-                      FndGenRC = 0;
-    _FND_ERROR_BLOCK  FndGenErrorBlock;
+    USHORT            FndGenRC = 0;
+//    _FND_ERROR_BLOCK  FndGenErrorBlock;
+    _DZBA004INPUTREC pDZBA004INPUTREC;
 
+//   pDZBA004INPUTREC = malloc(sizeof(_DZBA004INPUTREC));
 
-    /* Query the row selected for delete */
-    FndGenRC = FndLstBoxRowQuerySelection ( CBI_hwnd,
-                                            "ExtractInsertLB",
-                                            FND_LSTBOX_START,
-                                            &RowNumber,
-                                            &FndGenErrorBlock);
+   memset(&pDZBA004INPUTREC, 0, sizeof(_DZBA004INPUTREC) );
 
-    /* The structure holding all deleted material is populated */
+   CmnStrCopy( pDZBA004INPUTREC.DZBA004Input.ExportFile ,
+               WCD_Dzba004c.ExportFile,
+               sizeof(pDZBA004INPUTREC.DZBA004Input.ExportFile),
+               CMN_ARCH_PARMS );
 
-    DeletedIndex = DeletedIndex + 1;     
+   CmnStrCopy( pDZBA004INPUTREC.DZBA004Input.ImportFile ,
+               WCD_Dzba004c.ImportFile,
+               sizeof(pDZBA004INPUTREC.DZBA004Input.ImportFile),
+               CMN_ARCH_PARMS );
 
-    memset(&DeletedRows[DeletedIndex], 0, sizeof(_ExtractInsertLBRow) );
-
-    FndGenRC = FndLstBoxRowQueryData ( CBI_hwnd,
-                                       "ExtractInsertLB",
-                                         RowNumber,
-                                         sizeof(_ExtractInsertLBRow),
-                                         &DeletedRows[DeletedIndex],
-                                         &FndGenErrorBlock);
-
-
-    /* Delete the selected row. */
-    FndGenRC = FndLstBoxRowDelete ( CBI_hwnd,
-                                    "ExtractInsertLB",
-                                     RowNumber,
-                                     &FndGenErrorBlock);
-
-	/* Decrement the number of rows. */
-    NumberOfRows--;
-
-	/* Execute the process enable callback */
-
-	FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-    /* Enable undelete pushbutton */
-    FndCommandEnable( CBI_hwnd,
-                       "UndeletePB",
-    		           &FndGenErrorBlock);
+   FndGenRC =  CmnWindowCreate ( "DZBA004X",
+				                 "DZBA004A",
+				                  NULL,
+				                  &pDZBA004INPUTREC,
+				                  CMN_ARCH_PARMS);
 
 
     return CMN_SUCCESS;
-}
+}  /* end DZBA001MnExpClk */
+
+
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : DZBA001UndelPbClk
+**  FUNCTION         : DZBA001TxGenDec3FldChg
 **
 **  DESCRIPTION      : This function is invoked whenever the process menu
 **                     item is clicked. It formats the LUW layout with the
@@ -882,9 +898,7 @@ WCBPROC( DZBA001DelPbClk )
 **  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
 **
 **
-**  CALLED FUNCTIONS : CmnStrCopy
-**                     CmnCsrCall
-**                     FndFieldQueryValue
+**  CALLED FUNCTIONS : 
 **
 **  AUTHOR           : KCHASE
 **
@@ -894,37 +908,694 @@ WCBPROC( DZBA001DelPbClk )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
+**    03/28/95  IPEREZAR                Original code.
 **
 ***************************************************************************/
 
-WCBPROC( DZBA001UndelPbClk )
+WCBPROC( DZBA001TxGenDec3FldChg )
 {
 
     USHORT            FndGenRC = 0;
     _FND_ERROR_BLOCK  FndGenErrorBlock;
 
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxExtractDbIdTemp[TXEXTRACTDBID_LEN];
 
-    CmnElbAssignRowData( "ExtractInsertLB",
-                          NumberOfRows,
-                          &DeletedRows[DeletedIndex],
-                          NULL,
-                          CMN_ARCH_PARMS);
 
-    NumberOfRows++;
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxExtractDbIdTemp, 0, sizeof(TxExtractDbIdTemp) );
 
-    DeletedIndex = DeletedIndex - 1;
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode3",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
 
-    if (DeletedIndex == 0)
-    {
-		      FndCommandDisable( CBI_hwnd,
-		                         "UndeletePB",
-						         &FndGenErrorBlock);
-    }
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxExtractDbId",
+                    sizeof(TxExtractDbIdTemp),
+                    TxExtractDbIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxExtractDbIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractDbId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractDbId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractDbId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractDbId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+
+}  /* end DZBA001TxGenDec3FldChg */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxGenDec4FldChg
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxGenDec4FldChg )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxExtractOwnerIdTemp[TXEXTRACTOWNERID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxExtractOwnerIdTemp, 0, sizeof(TxExtractOwnerIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode4",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxExtractOwnerId",
+                    sizeof(TxExtractOwnerIdTemp),
+                    TxExtractOwnerIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxExtractOwnerIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractOwnerId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractOwnerId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractOwnerId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractOwnerId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+
+}  /* end DZBA001TxGenDec4FldChg */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxGenDec5FldChg
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxGenDec5FldChg )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxExtractDbIdTemp[TXEXTRACTDBID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxExtractDbIdTemp, 0, sizeof(TxExtractDbIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode5",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxInsertDbId",
+                    sizeof(TxExtractDbIdTemp),
+                    TxExtractDbIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxExtractDbIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertDbId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertDbId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertDbId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertDbId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+
+}	/* end DZBA001TxGenDec5FldChg */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxGenDec6FldChg
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxGenDec6FldChg )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxInsertOwnerIdTemp[TXINSERTOWNERID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxInsertOwnerIdTemp, 0, sizeof(TxInsertOwnerIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode4",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxInsertOwnerId",
+                    sizeof(TxInsertOwnerIdTemp),
+                    TxInsertOwnerIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxInsertOwnerIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertOwnerId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertOwnerId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertOwnerId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertOwnerId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
 
 
     return CMN_SUCCESS;
 }
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxInsOwnIdFldChg
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxInsOwnIdFldChg )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxInsertOwnerIdTemp[TXINSERTOWNERID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxInsertOwnerIdTemp, 0, sizeof(TxInsertOwnerIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode4",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxInsertOwnerId",
+                    sizeof(TxInsertOwnerIdTemp),
+                    TxInsertOwnerIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxInsertOwnerIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertOwnerId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertOwnerId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertOwnerId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertOwnerId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxInsDbIdFldChg
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxInsDbIdFldChg )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxExtractDbIdTemp[TXEXTRACTDBID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxExtractDbIdTemp, 0, sizeof(TxExtractDbIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode5",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxInsertDbId",
+                    sizeof(TxExtractDbIdTemp),
+                    TxExtractDbIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxExtractDbIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertDbId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertDbId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxInsertDbId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxInsertDbId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxExtOwnIdFldChg
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxExtOwnIdFldChg )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxExtractOwnerIdTemp[TXEXTRACTOWNERID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxExtractOwnerIdTemp, 0, sizeof(TxExtractOwnerIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode4",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxExtractOwnerId",
+                    sizeof(TxExtractOwnerIdTemp),
+                    TxExtractOwnerIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxExtractOwnerIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractOwnerId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractOwnerId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractOwnerId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractOwnerId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+
+}  /* end DZBA001TxExtOwnIdFldChg */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001TxExtDbId
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  IPEREZAR                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001TxExtDbId )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+	char 			  TxGenDecodeTemp[BaseDecodeLength],
+	                  TxExtractDbIdTemp[TXEXTRACTDBID_LEN];
+
+
+	memset(TxGenDecodeTemp, 0, sizeof(TxGenDecodeTemp) );
+	memset(TxExtractDbIdTemp, 0, sizeof(TxExtractDbIdTemp) );
+
+    FndFieldQueryValue(CBI_hwnd,
+                    "TxGenDecode3",
+                    sizeof(TxGenDecodeTemp),
+                    TxGenDecodeTemp,
+                    &FndGenErrorBlock);
+
+	if (strcmp(TxGenDecodeTemp, "") == 0 )
+	{
+	     FndFieldQueryValue(CBI_hwnd,
+                    "TxExtractDbId",
+                    sizeof(TxExtractDbIdTemp),
+                    TxExtractDbIdTemp,
+                    &FndGenErrorBlock);
+
+		 if (strcmp(TxExtractDbIdTemp, "") == 0 )
+	     {
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractDbId",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractDbId",
+						   STSM_FIELD_REQUIRED,
+						   &FndGenErrorBlock);
+		 }	/* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+	}  /* if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+	else
+	{
+			 FndFieldSetStatus(CBI_hwnd,
+			                  "TxExtractDbId",
+							  STS_VALID,
+							  &FndGenErrorBlock);
+			
+			 FndFieldSetMsg(CBI_hwnd,
+			               "TxExtractDbId",
+						   MF_NO_MSG,
+						   &FndGenErrorBlock);
+
+	} /* else if (strcmp(TxGenDecodeTemp, "") == 0 ) */
+
+
+    return CMN_SUCCESS;
+} /* end DZBA001TxExtDbId */
+
 
 
 /***************************************************************************
@@ -966,13 +1637,13 @@ WCBPROC( DZBA001AddPbClk )
 
 
     return CMN_SUCCESS;
-}
+}  /* end DZBA001AddPbClk  */
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : DZBA001AddPbClk
+**  FUNCTION         : DZBA001ChgPbClk
 **
 **  DESCRIPTION      : This function is invoked whenever the process menu
 **                     item is clicked. It formats the LUW layout with the
@@ -1009,5 +1680,6 @@ WCBPROC( DZBA001ChgPbClk )
 
 
     return CMN_SUCCESS;
-}
+
+}  /* end DZBA001ChgPbClk */
 

@@ -36,6 +36,8 @@
 #define LT_Extract_Mode  "01"
 #define LT_Insert_Mode   "02"
 #define LT_Ext_Ins_Mode  "03"
+#define LT_Export_Mode   "04"
+#define LT_Import_Mode   "05"
 
 /* Literals defining the CdAccessType */
 #define LT_Acct_A         "A"
@@ -49,11 +51,14 @@
 #define NOCONN             "NOCONN"
 #define NODATA             "NODATA"
 
+
+#define BAD_DATA           "There are now rows to process."
 #define BAD_EXT_PW         "Incorrect Password on Extraction Criteria."
 #define BAD_INS_PW         "Incorrect Password on Insertion Criteria."
 #define NO_DATA_FOUND      "Account Not Found."
 
 
+#define BaseDecodeLength 21
 
 /* Literal appearing on message box of Window 3 when no accounts are retrieved */
 #define BAEXT_NO_ACCT     "No Accounts Found To Match Criteria"
@@ -84,8 +89,9 @@ USHORT RowQueryNumber = 0;
 
 BOOL   ChangeFlag = FALSE;
 
-
 BOOL   DeleteFlag = FALSE;
+BOOL   Continue = FALSE;
+
 USHORT DeletedIndex = 0;
 
 _ExtractInsertLBRow DeletedRows[NUMEXTRACTINSERTLBROWS];
@@ -127,22 +133,4 @@ FILE *LogFile;
 
 const unsigned short TableCountLimit = 500;
 char NullString[] = "";
-
-//WCBFWD( SWAT01AVldExtDbFC )
-//WCBFWD( SWAT01AVldInsDbFC)
-//WCBFWD( SWAT01AVldExtOwnerFC )
-//WCBFWD( SWAT01AVldInsOwnerFC )
-//WCBFWD( SWAT01AVldExtPasswdFC )
-//WCBFWD( SWAT01AVldInsPasswdFC )
-//WCBFWD( SWAT01AVldUserNmFC )
-
-/***************************************************************************/
-/* Forward declarations for Application Business Functions                 */
-/***************************************************************************/
-
-
-//WCBFWD( SWAT01ABusWindowPredisp )
-//WCBFWD( SWAT01ABusWindowPredestroy )
-//WCBFWD( SWAT01ABusLBSelect)
-//WCBFWD( SWAT01ABusProcessMNClick )
 

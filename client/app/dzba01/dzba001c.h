@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZBA001C                            *
-*                        Generated on: Thu Aug 29 17:59:08 1996            *
+*                        Generated on: Thu Jan 30 09:46:52 1997            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -122,6 +122,41 @@ typedef struct __SWAT01ARqst
 }  _SWAT01ARQST;
 #endif
 /***************************************************************************
+* Definition for Record Group.DZBA004C
+***************************************************************************/
+#ifndef   DEV00858_SERVER_FILE_PATH_LEN
+#define   DEV00858_SERVER_FILE_PATH_LEN         51
+#define   SERVERFILEPATH_LEN                    51
+#endif
+#ifndef   DEV00859_CLIENT_FILE_PATH_LEN
+#define   DEV00859_CLIENT_FILE_PATH_LEN         51
+#define   CLIENTFILEPATH_LEN                    51
+#endif
+#ifndef   DEV00860_EXPORT_FILE_LEN
+#define   DEV00860_EXPORT_FILE_LEN              9
+#define   EXPORTFILE_LEN                        9
+#endif
+#ifndef   DEV00861_IMPORT_FILE_LEN
+#define   DEV00861_IMPORT_FILE_LEN              9
+#define   IMPORTFILE_LEN                        9
+#endif
+#ifndef   DEV00862_WORKING_DIRECTORY_LEN
+#define   DEV00862_WORKING_DIRECTORY_LEN        9
+#define   WORKINGDIRECTORY_LEN                  9
+#endif
+#ifndef _DZBA004C_z
+#define _DZBA004C_z
+
+typedef struct __Dzba004c
+{
+   char                  ServerFilePath[51];
+   char                  ClientFilePath[51];
+   char                  ExportFile[9];
+   char                  ImportFile[9];
+   char                  WorkingDirectory[9];
+}  _DZBA004C;
+#endif
+/***************************************************************************
 * Definition for Record.DZBA001C
 ***************************************************************************/
 #ifndef _WCDSWAT01AWCD_z
@@ -132,11 +167,13 @@ typedef struct __WCDSWAT01AWCD
    _ARCHDATA             ArchData;
    _SWAT01ARQST          SWAT01ARqst;
    char*                 pWorkingStorageData;
+   _DZBA004C             Dzba004c;
 }  _WCDSWAT01AWCD;
 #endif
 
 #define  WCD_ArchData          pWindContextData->ArchData
 #define  WCD_SWAT01ARqst       pWindContextData->SWAT01ARqst
 #define  WCD_pWorkingStorageData pWindContextData->pWorkingStorageData
+#define  WCD_Dzba004c          pWindContextData->Dzba004c
 #define  WINCONTEXTNAME        _WCDSWAT01AWCD
 

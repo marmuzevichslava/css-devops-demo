@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA001                           *
-*                          Generated on: Mon Nov 04 09:02:22 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -37,9 +37,6 @@ unsigned char _grpFiller;
 
    char _CdExtractInsertActData[3];
 #define CdExtractInsertActData              pWesMap->_CdExtractInsertActData
-
-   char _TxUserNmData[9];
-#define TxUserNmData              pWesMap->_TxUserNmData
 
    char _TxExtractDbIdData[11];
 #define TxExtractDbIdData              pWesMap->_TxExtractDbIdData
@@ -89,23 +86,20 @@ unsigned char _grpFiller;
    char _TxExtractRemarks2Data[81];
 #define TxExtractRemarks2Data              pWesMap->_TxExtractRemarks2Data
 
+   char _TxGenDecode3Data[26];
+#define TxGenDecode3Data              pWesMap->_TxGenDecode3Data
+
    char _TxGenDecode4Data[21];
 #define TxGenDecode4Data              pWesMap->_TxGenDecode4Data
 
-   char _TxGenDecode3Data[21];
-#define TxGenDecode3Data              pWesMap->_TxGenDecode3Data
+   char _TxGenDecode5Data[21];
+#define TxGenDecode5Data              pWesMap->_TxGenDecode5Data
 
-   char _TxGenDecode2Data[21];
-#define TxGenDecode2Data              pWesMap->_TxGenDecode2Data
-
-   char _TxGenDecode1Data[21];
-#define TxGenDecode1Data              pWesMap->_TxGenDecode1Data
+   char _TxGenDecode6Data[21];
+#define TxGenDecode6Data              pWesMap->_TxGenDecode6Data
 
    char _FlWindowModData[2];
 #define FlWindowModData              pWesMap->_FlWindowModData
-
-   char _TxGenDecode5Data[21];
-#define TxGenDecode5Data              pWesMap->_TxGenDecode5Data
 
 
     WESFLDCTL _CdExtractInsertActCtl;
@@ -114,13 +108,6 @@ unsigned char _grpFiller;
 #define CdExtractInsertActRights                     pWesMap->_CdExtractInsertActCtl.Rights
 #define CdExtractInsertActMsg                        pWesMap->_CdExtractInsertActCtl.Msg
 #define CdExtractInsertActCursor                     pWesMap->_CdExtractInsertActCtl.Cursor
-
-    WESFLDCTL _TxUserNmCtl;
-#define TxUserNmAttr                       pWesMap->_TxUserNmCtl.Attr
-#define TxUserNmStatus                     pWesMap->_TxUserNmCtl.Status
-#define TxUserNmRights                     pWesMap->_TxUserNmCtl.Rights
-#define TxUserNmMsg                        pWesMap->_TxUserNmCtl.Msg
-#define TxUserNmCursor                     pWesMap->_TxUserNmCtl.Cursor
 
     WESFLDCTL _TxExtractDbIdCtl;
 #define TxExtractDbIdAttr                       pWesMap->_TxExtractDbIdCtl.Attr
@@ -203,13 +190,6 @@ unsigned char _grpFiller;
 #define TxExtractRemarks2Msg                        pWesMap->_TxExtractRemarks2Ctl.Msg
 #define TxExtractRemarks2Cursor                     pWesMap->_TxExtractRemarks2Ctl.Cursor
 
-    WESFLDCTL _TxGenDecode4Ctl;
-#define TxGenDecode4Attr                       pWesMap->_TxGenDecode4Ctl.Attr
-#define TxGenDecode4Status                     pWesMap->_TxGenDecode4Ctl.Status
-#define TxGenDecode4Rights                     pWesMap->_TxGenDecode4Ctl.Rights
-#define TxGenDecode4Msg                        pWesMap->_TxGenDecode4Ctl.Msg
-#define TxGenDecode4Cursor                     pWesMap->_TxGenDecode4Ctl.Cursor
-
     WESFLDCTL _TxGenDecode3Ctl;
 #define TxGenDecode3Attr                       pWesMap->_TxGenDecode3Ctl.Attr
 #define TxGenDecode3Status                     pWesMap->_TxGenDecode3Ctl.Status
@@ -217,26 +197,12 @@ unsigned char _grpFiller;
 #define TxGenDecode3Msg                        pWesMap->_TxGenDecode3Ctl.Msg
 #define TxGenDecode3Cursor                     pWesMap->_TxGenDecode3Ctl.Cursor
 
-    WESFLDCTL _TxGenDecode2Ctl;
-#define TxGenDecode2Attr                       pWesMap->_TxGenDecode2Ctl.Attr
-#define TxGenDecode2Status                     pWesMap->_TxGenDecode2Ctl.Status
-#define TxGenDecode2Rights                     pWesMap->_TxGenDecode2Ctl.Rights
-#define TxGenDecode2Msg                        pWesMap->_TxGenDecode2Ctl.Msg
-#define TxGenDecode2Cursor                     pWesMap->_TxGenDecode2Ctl.Cursor
-
-    WESFLDCTL _TxGenDecode1Ctl;
-#define TxGenDecode1Attr                       pWesMap->_TxGenDecode1Ctl.Attr
-#define TxGenDecode1Status                     pWesMap->_TxGenDecode1Ctl.Status
-#define TxGenDecode1Rights                     pWesMap->_TxGenDecode1Ctl.Rights
-#define TxGenDecode1Msg                        pWesMap->_TxGenDecode1Ctl.Msg
-#define TxGenDecode1Cursor                     pWesMap->_TxGenDecode1Ctl.Cursor
-
-    WESFLDCTL _FlWindowModCtl;
-#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
-#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
-#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
-#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
-#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
+    WESFLDCTL _TxGenDecode4Ctl;
+#define TxGenDecode4Attr                       pWesMap->_TxGenDecode4Ctl.Attr
+#define TxGenDecode4Status                     pWesMap->_TxGenDecode4Ctl.Status
+#define TxGenDecode4Rights                     pWesMap->_TxGenDecode4Ctl.Rights
+#define TxGenDecode4Msg                        pWesMap->_TxGenDecode4Ctl.Msg
+#define TxGenDecode4Cursor                     pWesMap->_TxGenDecode4Ctl.Cursor
 
     WESFLDCTL _TxGenDecode5Ctl;
 #define TxGenDecode5Attr                       pWesMap->_TxGenDecode5Ctl.Attr
@@ -244,6 +210,20 @@ unsigned char _grpFiller;
 #define TxGenDecode5Rights                     pWesMap->_TxGenDecode5Ctl.Rights
 #define TxGenDecode5Msg                        pWesMap->_TxGenDecode5Ctl.Msg
 #define TxGenDecode5Cursor                     pWesMap->_TxGenDecode5Ctl.Cursor
+
+    WESFLDCTL _TxGenDecode6Ctl;
+#define TxGenDecode6Attr                       pWesMap->_TxGenDecode6Ctl.Attr
+#define TxGenDecode6Status                     pWesMap->_TxGenDecode6Ctl.Status
+#define TxGenDecode6Rights                     pWesMap->_TxGenDecode6Ctl.Rights
+#define TxGenDecode6Msg                        pWesMap->_TxGenDecode6Ctl.Msg
+#define TxGenDecode6Cursor                     pWesMap->_TxGenDecode6Ctl.Cursor
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 };
 
 typedef struct

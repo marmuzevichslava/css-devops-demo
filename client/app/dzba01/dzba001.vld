@@ -221,6 +221,79 @@ WCBPROC( DZBA001VldCDExtInsFC )
                         &FndGenErrorBlock);
 
     }
+    else if ((strcmp ( CdExtInsMode, LT_Import_Mode) == 0) ||
+             (strcmp ( CdExtInsMode, LT_Export_Mode) == 0))
+    {
+		 /* Change Status to Valid */
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxInsertDbId",
+                            STS_VALID,
+                            &FndGenErrorBlock);
+
+		 /* Change Status to Valid */
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxInsertPsswdId",
+                            STS_VALID,
+                            &FndGenErrorBlock);
+
+		 /* Change Status to Valid */
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxInsertOwnerId",
+                            STS_VALID,
+                            &FndGenErrorBlock);
+
+
+		 /* Disable Field - TxInsertDbId */
+         FndFieldDisable(CBI_hwnd,
+                        "TxInsertDbId",
+                        &FndGenErrorBlock);
+
+		 /* Disable Field - TxInsertPsswdId*/
+         FndFieldDisable(CBI_hwnd,
+                        "TxInsertPsswdId",
+                        &FndGenErrorBlock);
+
+		 /* Disable Field - TxInsertOwnerId*/
+         FndFieldDisable(CBI_hwnd,
+                        "TxInsertOwnerId",
+                        &FndGenErrorBlock);
+
+
+		 /* Change Status to Valid */
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxExtractDbId",
+                            STS_VALID,
+                            &FndGenErrorBlock);
+
+		 /* Change Status to Valid */
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxExtractPsswdId",
+                            STS_VALID,
+                            &FndGenErrorBlock);
+
+		 /* Change Status to Valid */
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxExtractOwnerId",
+                            STS_VALID,
+                            &FndGenErrorBlock);
+
+
+		 /* Disable Field - TxExtractDbId */
+         FndFieldDisable(CBI_hwnd,
+                        "TxExtractDbId",
+                        &FndGenErrorBlock);
+
+		 /* Disable Field - TxExtractPsswdId*/
+         FndFieldDisable(CBI_hwnd,
+                        "TxExtractPsswdId",
+                        &FndGenErrorBlock);
+
+		 /* Disable Field - TxExtractOwnerId*/
+         FndFieldDisable(CBI_hwnd,
+                        "TxExtractOwnerId",
+                        &FndGenErrorBlock);
+
+    }
 
     /* If RB is Extract/Insert */
     else 
@@ -289,176 +362,21 @@ WCBPROC( DZBA001VldCDExtInsFC )
 
     }
 
-    return CMN_SUCCESS;
-}
 
-/***************************************************************************
-**
-**               Customer Service System Business Logic Function
-**
-**  FUNCTION         : SWAT01AVldExtDbFC
-**
-**  DESCRIPTION      : This function is executed when the Extract DB Combo
-**					   Box Value Changes
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : KCHASE
-**
-**  DATE CREATED     : 03/28/95
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
-**
-***************************************************************************/
+    /* Determine whether to enable the Process Menu Item */
+	FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
 
-WCBPROC( DZBA001VldExtDbFC )
-{
-
-    USHORT             FndGenRC = 0;
-
-    CssAlphaFieldSetRequired("TxExtractDbId",
-                              TXEXTRACTDBID_LEN,
-                              CMN_ARCH_PARMS);
-     
 
     return CMN_SUCCESS;
 }
 
 
-/***************************************************************************
-**
-**               Customer Service System Business Logic Function
-**
-**  FUNCTION         : SWAT01AVldInsDbFC
-**
-**  DESCRIPTION      : This function is executed when the Insert DB Combo
-**					   Box Value Changes
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : KCHASE
-**
-**  DATE CREATED     : 03/28/95
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
-**
-***************************************************************************/
 
-WCBPROC( DZBA001VldInsDbFC )
-{
-
-    USHORT             FndGenRC = 0;
-
-    CssAlphaFieldSetRequired("TxInsertDbId",
-                              TXINSERTDBID_LEN,
-                              CMN_ARCH_PARMS);
-     
-    return CMN_SUCCESS;
-}
-
-/***************************************************************************
-**
-**               Customer Service System Business Logic Function
-**
-**  FUNCTION         : SWAT01AVldExtOwnerFC
-**
-**  DESCRIPTION      : This function is executed when the Extract Owner Combo
-**					   Box Value Changes
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : KCHASE
-**
-**  DATE CREATED     : 03/28/95
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
-**
-***************************************************************************/
-
-WCBPROC( DZBA001VldExtOwnerFC )
-{
-
-    USHORT             FndGenRC = 0;
-
-    CssAlphaFieldSetRequired("TxExtractOwnerId",
-                              TXEXTRACTOWNERID_LEN,
-                              CMN_ARCH_PARMS);
-     
-
-    return CMN_SUCCESS;
-}
-
-/***************************************************************************
-**
-**               Customer Service System Business Logic Function
-**
-**  FUNCTION         : SWAT01AVldInsOwnerFC
-**
-**  DESCRIPTION      : This function is executed when the Insert Owner Combo
-**					   Box Value Changes
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : KCHASE
-**
-**  DATE CREATED     : 03/28/95
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
-**
-***************************************************************************/
-
-WCBPROC( DZBA001VldInsOwnerFC )
-{
-
-    USHORT             FndGenRC = 0;
-
-    CssAlphaFieldSetRequired("TxInsertOwnerId",
-                              TXINSERTOWNERID_LEN,
-                              CMN_ARCH_PARMS);
-     
-
-    return CMN_SUCCESS;
-}
 
 /***************************************************************************
 **
@@ -651,7 +569,15 @@ WCBPROC( DZBA001VldExtPasswdFC )
 
 	 } /* else if (Mode == DELETE_MODE) */
 
-	 
+    /* Determine whether to enable the Process Menu Item */
+	FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+
      return CMN_SUCCESS;
 
 } /* DZBA001VldExtPasswdFC */
@@ -847,44 +773,18 @@ WCBPROC( DZBA001VldInsPasswdFC )
 	 } /* else if (Mode == DELETE_MODE) */
 
 	 
-     
-
-    return CMN_SUCCESS;
-}
-
-/***************************************************************************
-**
-**               Customer Service System Business Logic Function
-**
-**  FUNCTION         : SWAT01AVldExtDbFC
-**
-**  DESCRIPTION      : This function is executed when the Extract DB Combo
-**					   Box Value Changes
-**
-**
-**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
-**
-**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
-**
-**
-**  CALLED FUNCTIONS : NONE
-**
-**  AUTHOR           : KCHASE
-**
-**  DATE CREATED     : 03/28/95
-**
-**  REVISION HISTORY :
-**
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    03/28/95  KCHASE                Original code.
-**
-***************************************************************************/
-
-WCBPROC( DZBA001VldUserNmFC )
-{
+    /* Determine whether to enable the Process Menu Item */
+	FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
 
 
     return CMN_SUCCESS;
-}
+
+} /* end DZBA001VldInsPasswdFC  */
+
+
 

@@ -31,6 +31,9 @@ char GlobalMode[3];
 #define LT_Extract_Mode "01"
 #define LT_Insert_Mode  "02"
 #define LT_Ext_Ins_Mode "03"
+#define LT_Export_Mode   "04"
+#define LT_Import_Mode   "05"
+
 
 #define LT_Acct_01      "01"
 #define LT_Prem_02      "02"
@@ -72,6 +75,7 @@ typedef struct __WindowData
 WCBFWD( DZBA002BusCDRbAccessTypeFC )
 WCBFWD( DZBA002BusKyBldgNoFC )
 WCBFWD( DZBA002BusKyPremNoFC )
+WCBFWD( Dzba002bustxusernmfc )
 
 
 //WCBFWD( SWAT01ABusWindowPredisp )

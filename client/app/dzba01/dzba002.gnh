@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA002                           *
-*                          Generated on: Sat Nov 02 10:40:24 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -18,24 +18,26 @@
 ****************************************************************************/
 
 #define CdAccessType_FID                               0
-#define KyBa_FID                                       1
-#define KyPremNo_FID                                   2
-#define KyBldgNo_FID                                   3
-#define TsKyExtract_FID                                4
-#define TxExtractRemarks2_FID                          5
-#define FlWindowMod_FID                                6
+#define TxUserNm_FID                                   1
+#define KyBa_FID                                       2
+#define KyPremNo_FID                                   3
+#define KyBldgNo_FID                                   4
+#define TsKyExtract_FID                                5
+#define TxExtractRemarks2_FID                          6
+#define FlWindowMod_FID                                7
 
 /***************************************************************************
 *  Widget IDs                                                              *
 ****************************************************************************/
 
 #define CdAccessType_WID                               8000
-#define KyBa_WID                                       101
-#define KyPremNo_WID                                   102
-#define KyBldgNo_WID                                   103
-#define TsKyExtract_WID                                104
-#define TxExtractRemarks2_WID                          105
-#define FlWindowMod_WID                                106
+#define TxUserNm_WID                                   101
+#define KyBa_WID                                       102
+#define KyPremNo_WID                                   103
+#define KyBldgNo_WID                                   104
+#define TsKyExtract_WID                                105
+#define TxExtractRemarks2_WID                          106
+#define FlWindowMod_WID                                107
 
 /***************************************************************************
 *  Command IDs                                                             *

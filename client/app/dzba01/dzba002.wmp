@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA002                           *
-*                          Generated on: Sat Nov 02 10:40:24 1996          *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -38,6 +38,9 @@ unsigned char _grpFiller;
    char _CdAccessTypeData[3];
 #define CdAccessTypeData              pWesMap->_CdAccessTypeData
 
+   char _TxUserNmData[9];
+#define TxUserNmData              pWesMap->_TxUserNmData
+
    char _KyBaData[11];
 #define KyBaData              pWesMap->_KyBaData
 
@@ -63,6 +66,13 @@ unsigned char _grpFiller;
 #define CdAccessTypeRights                     pWesMap->_CdAccessTypeCtl.Rights
 #define CdAccessTypeMsg                        pWesMap->_CdAccessTypeCtl.Msg
 #define CdAccessTypeCursor                     pWesMap->_CdAccessTypeCtl.Cursor
+
+    WESFLDCTL _TxUserNmCtl;
+#define TxUserNmAttr                       pWesMap->_TxUserNmCtl.Attr
+#define TxUserNmStatus                     pWesMap->_TxUserNmCtl.Status
+#define TxUserNmRights                     pWesMap->_TxUserNmCtl.Rights
+#define TxUserNmMsg                        pWesMap->_TxUserNmCtl.Msg
+#define TxUserNmCursor                     pWesMap->_TxUserNmCtl.Cursor
 
     WESFLDCTL _KyBaCtl;
 #define KyBaAttr                       pWesMap->_KyBaCtl.Attr

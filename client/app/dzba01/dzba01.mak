@@ -7,7 +7,7 @@
 #***************************************************************************
 #                                                                          *
 #                         Make file for: DZBA01                            *
-#                          Generated on: Thu Aug 29 17:59:08 1996          *
+#                          Generated on: Thu Jan 30 09:46:52 1997          *
 #                                    by: IPEREZAR                          *
 #                     Short Description:                                   *
 #                                                                          *
@@ -63,10 +63,12 @@ DZBA01_DEP = DZBA01B.gnb DZBA01.sdt DZBA01.wdt
 
 # Make C window module DZBA001X
 DZBA001X_DEP = DZBA001X.c	\
-		.\DZBA01B.gnb	\
-		.\DZBA001C.h	\
-		.\DZBA002I.h	\
-		.\DZBA002O.h	\
+		DZBA01B.gnb	\
+		DZBA001C.h	\
+		DZBA002I.h	\
+		DZBA002O.h	\
+		DZBA004I.h	\
+		DZBA004O.h	\
 		.\AZDI0400.C	\
 		.\DZBA001.BUS	\
 		.\DZBA001.VLD    \
@@ -80,12 +82,12 @@ DZBA001X_DEP = DZBA001X.c	\
 
 # Make C window module DZBA002X
 DZBA002X_DEP = DZBA002X.c	\
-		.\DZBA01B.gnb	\
-		.\DZBA002C.h	\
-		.\DZBA002I.h	\
-		.\DZBA002O.h	\
-		.\DZBA003I.h	\
-		.\DZBA003O.h	\
+		DZBA01B.gnb	\
+		DZBA002C.h	\
+		DZBA002I.h	\
+		DZBA002O.h	\
+		DZBA003I.h	\
+		DZBA003O.h	\
 		.\AZDI0400.C	\
 		.\DZBA002.BUS    \
                 DZBA002.aex     \
@@ -98,10 +100,10 @@ DZBA002X_DEP = DZBA002X.c	\
 
 # Make C window module DZBA003X
 DZBA003X_DEP = DZBA003X.c	\
-		.\DZBA01B.gnb	\
-		.\DZBA003C.h	\
-		.\DZBA003I.h	\
-		.\DZBA003O.h	\
+		DZBA01B.gnb	\
+		DZBA003C.h	\
+		DZBA003I.h	\
+		DZBA003O.h	\
 		.\AZDI0400.C	\
 		.\DZBA003.BUS    \
                 DZBA003.aex     \
@@ -112,13 +114,30 @@ DZBA003X_DEP = DZBA003X.c	\
                 DZBA01.gnz        \
                 DZBA003.src
 
+# Make C window module DZBA004X
+DZBA004X_DEP = DZBA004X.c	\
+		DZBA01B.gnb	\
+		DZBA004C.h	\
+		DZBA004I.h	\
+		DZBA004O.h	\
+		.\AZDI0400.C	\
+		.\DZBA004.BUS    \
+                DZBA004.aex     \
+                DZBA004.h       \
+                DZBA004.wmp     \
+                DZBA004.gnd     \
+                DZBA004.gnh     \
+                DZBA01.gnz        \
+                DZBA004.src
+
 
 
 # Make RC dependencies for DZBA01
 DZBA01_RCDEP = DZBA01.gnz    \
                DZBA001.dlg  \
                DZBA002.dlg  \
-               DZBA003.dlg 
+               DZBA003.dlg  \
+               DZBA004.dlg 
 
 
 #***************************************************************************
@@ -148,6 +167,10 @@ all:	.\$(PROJ).EXE
 .\DZBA003X.obj : $(DZBA003X_DEP)
     $(CC) $(CFLAGS) /I.\ /Fo.\DZBA003X.obj DZBA003X.c
 
+# Make C window module DZBA004X
+.\DZBA004X.obj : $(DZBA004X_DEP)
+    $(CC) $(CFLAGS) /I.\ /Fo.\DZBA004X.obj DZBA004X.c
+
 
 #***************************************************************************
 # Compile the executable resource file
@@ -171,13 +194,15 @@ all:	.\$(PROJ).EXE
 .\$(PROJ).EXE :  .\DZBA01.obj .\DZBA01.res 	\
 		.\DZBA001X.obj 	\
 		.\DZBA002X.obj 	\
-		.\DZBA003X.obj 
+		.\DZBA003X.obj 	\
+		.\DZBA004X.obj 
     link $(LFLAGS) @<<
 /OUT:.\$(PROJ).EXE
 .\DZBA01.obj
       .\DZBA001X.obj
       .\DZBA002X.obj
       .\DZBA003X.obj
+      .\DZBA004X.obj
 
 .\DZBA01.res
 $(ALL_LIBS)
