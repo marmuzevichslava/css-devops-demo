@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZSF001                           *
- *                         Generated on: Wed Feb 04 14:22:17 1998          *
+ *                         Generated on: Tue Feb 03 16:37:36 1998          *
  *                                   by: MCONNER                           *
  *                                                                         *
  *                                                                         *
@@ -48,7 +48,7 @@ CMN_ARCH_EXIT_INITIALIZE
                               pWindContextData,
                               pABHI);
 
-   FndGenRC = DZSF001BusPrdis( pEventInfo,
+   FndGenRC = Dzsf001xprdis( pEventInfo,
                               pEAIA,
                               pBFCD,
                               pWesMap,
@@ -62,123 +62,6 @@ CMN_ARCH_EXIT_INITIALIZE
    FndGenRC = FndCommandDisable( CBI_hwnd,
                                  "ResetPB",
                                  &FndGenErrorBlock);
-
-   FndGenRC = CmnArchTerm( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   return 0;
-
-}
-
-
-
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Xtzytjhi5619_Other_Gui_Event
- * 
- *
- *
- *   Event Name:    OTHER_GUI_EVENT
- *
- *
- ***************************************************************************/
-static WCBPROC(Xtzytjhi5619_Other_Gui_Event)
-{
-   unsigned short        FndGenRC = 0;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-
-   FndGenRC = CmnArchInit( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   FndGenRC = CmnArchTerm( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   return 0;
-
-}
-
-
-
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Xtzytjhi5647_Window_Close
- * 
- *
- *
- *   Event Name:    WINDOW_CLOSE
- *
- *
- ***************************************************************************/
-static WCBPROC(Xtzytjhi5647_Window_Close)
-{
-   unsigned short        FndGenRC = 0;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-
-   FndGenRC = CmnArchInit( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   FndGenRC = CmnArchTerm( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   return 0;
-
-}
-
-
-
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Xtzytjhi5576_Predestroy
- * 
- *
- *
- *   Event Name:    PREDESTROY
- *
- *
- ***************************************************************************/
-static WCBPROC(Xtzytjhi5576_Predestroy)
-{
-   unsigned short        FndGenRC = 0;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-
-   FndGenRC = CmnArchInit( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
 
    FndGenRC = CmnArchTerm( pEventInfo,
                               pEAIA,
@@ -212,21 +95,7 @@ static WCBPROC(Xtzytjhi6233_Interwindow_Msg)
 CMN_ARCH_EXIT_INITIALIZE
 
 
-   FndGenRC = CmnArchInit( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   FndGenRC = DZSF001BusRecvMsg( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   FndGenRC = CmnArchTerm( pEventInfo,
+   FndGenRC = Dzsf001xrecvmsg( pEventInfo,
                               pEAIA,
                               pBFCD,
                               pWesMap,
@@ -260,13 +129,6 @@ CMN_ARCH_EXIT_INITIALIZE
 
    memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-   FndGenRC = CmnArchInit( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
    FndGenRC = FndCommandEnable( CBI_hwnd,
                                 "CMNCONT",
                                 &FndGenErrorBlock);
@@ -274,20 +136,6 @@ CMN_ARCH_EXIT_INITIALIZE
    FndGenRC = FndCommandDisable( CBI_hwnd,
                                  "CMNPAUSE",
                                  &FndGenErrorBlock);
-
-   FndGenRC = DZSF001BusPausePBClick( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   FndGenRC = CmnArchTerm( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
 
    return 0;
 
@@ -316,13 +164,6 @@ CMN_ARCH_EXIT_INITIALIZE
 
    memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-   FndGenRC = CmnArchInit( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
    FndGenRC = FndCommandEnable( CBI_hwnd,
                                 "CMNPAUSE",
                                 &FndGenErrorBlock);
@@ -330,20 +171,6 @@ CMN_ARCH_EXIT_INITIALIZE
    FndGenRC = FndCommandDisable( CBI_hwnd,
                                  "CMNCONT",
                                  &FndGenErrorBlock);
-
-   FndGenRC = DZSF001BusContPBClick( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
-
-   FndGenRC = CmnArchTerm( pEventInfo,
-                              pEAIA,
-                              pBFCD,
-                              pWesMap,
-                              pWindContextData,
-                              pABHI);
 
    return 0;
 

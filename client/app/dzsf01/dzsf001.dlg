@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *             Symbolic Definitions for: DZSF001                           *
- *                         Generated on: Wed Feb 04 14:22:17 1998          *
+ *                         Generated on: Tue Feb 03 16:37:36 1998          *
  *                                   by: MCONNER                           *
  *                    Short Description:                                   *             
  *                                                                         *
@@ -28,131 +28,131 @@ Begin  /* controls */
    CONTROL "Client IP Address:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,9,2,78,12
+              ,9,7,78,8
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,91,2,69,0
+              ,91,3,69,0
 
    CONTROL "Current Message ID:",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,9,16,78,12
+              ,9,21,78,8
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,91,16,69,0
+              ,91,17,69,0
 
    CONTROL "Current Server:",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,9,30,78,12
+              ,9,35,78,8
 
    CONTROL "",102,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,91,30,69,0
+              ,91,31,69,0
 
    CONTROL "Client Message Summary",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,6,46,152,54
+              ,6,47,152,54
 
    CONTROL "Elapsed Time:",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,13,56,82,12
+              ,13,61,82,8
 
    CONTROL "",103,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,97,56,51,0
+              ,97,57,51,0
 
    CONTROL "Quantity Sent:",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,13,70,82,12
+              ,13,75,82,8
 
    CONTROL "",104,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,97,70,50,0
+              ,97,71,50,0
 
    CONTROL "Average Per Minute:",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,13,84,82,12
+              ,13,89,82,8
 
    CONTROL "",105,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,97,84,50,0
+              ,97,85,50,0
 
    CONTROL "Previous Service Call",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,6,104,152,68
+              ,6,105,152,68
 
    CONTROL "Message ID:",506,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,15,114,82,12
+              ,15,119,82,8
 
    CONTROL "",106,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,99,114,52,0
+              ,99,115,52,0
 
    CONTROL "Response Time:",507,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,15,128,82,12
+              ,15,133,82,8
 
    CONTROL "",107,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,99,128,52,0
+              ,99,129,52,0
 
    CONTROL "Bytes Sent:",508,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,15,142,82,12
+              ,15,147,82,8
 
    CONTROL "",108,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,99,142,52,0
+              ,99,143,52,0
 
    CONTROL "Bytes Received:",509,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,15,156,82,12
+              ,15,161,82,8
 
    CONTROL "",109,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,99,156,52,0
+              ,99,157,52,0
 
    CONTROL "Pause",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,92,194,66,15
+              ,92,195,66,15
 
    CONTROL "Continue",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,92,176,66,15
+              ,92,177,66,15
 
    CONTROL "Reset",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,6,178,74,28
+              ,6,179,74,28
 
 End /* controls */
 
@@ -524,7 +524,7 @@ End
 **********************************************/
 
 
-DZSF001IconID ICON TAB.ICO
+DZSF001IconID ICON DEV02009.ICO
 
 
 

@@ -253,8 +253,9 @@ Element KySpt %ld 4 1
 Offset 39
 
 [CUCR001I][CUCS02]
-Element KyCustNo %ld 4 1
+Element KyCustNo %ld 4 2
 Offset 31
+Offset 738
 
 [CUCR012A][CUBI36]
 Element KyBa %lf 8 1
@@ -486,7 +487,36 @@ Offset 35
 Element KyBldgNo %ld 4 1
 Offset 722
 
-[CUCR072I][CUSO04]
+[CUCR072I][CUSO08]
 Element KySoNo %ld 4 1
 Offset 2063
+
+[CUCL066I][CUSO08]
+Element KyBa %lf 8 2
+Offset 23
+Offset 5080
+Element KyCustNo %ld 4 1
+Offset 31
+Element KyPremNo %ld 4 1
+Offset 35
+Element NoLockSeqPrem %ld 2 1
+Offset 65
+Element NoLockSeqFoHdr %ld 2 1
+Offset 73
+Element KySoNo %ld 4 2
+Offset 156
+Offset 5075
+Element KyFordNo %ld 4 1
+Offset 43
+
+[CUCR066I][CUSO41]
+Element KyBa %lf 8 1
+Offset 23
+Element KyCustNo %ld 4 1
+Offset 31
+Element KyPremNo %ld 4 1
+Offset 35
+Element NoLockSeqPrem %ld 2 1
+Offset 65
+
 

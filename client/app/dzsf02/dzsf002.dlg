@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *             Symbolic Definitions for: DZSF002                           *
- *                         Generated on: Tue Feb 03 10:15:18 1998          *
+ *                         Generated on: Thu Feb 26 12:58:01 1998          *
  *                                   by: MCONNER                           *
  *                    Short Description:                                   *             
  *                                                                         *
@@ -204,7 +204,7 @@ Begin
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_TRUE, "\0"
    FP_VALID_CONDITION,                  ">=,0\0"
-   FP_VALID_CONDITION,                  "<=,10000\0"
+   FP_VALID_CONDITION,                  "<=,100000\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_INTEGRAL_DIGITS,                  "8\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
