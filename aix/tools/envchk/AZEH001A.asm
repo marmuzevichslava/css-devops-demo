@@ -1,4 +1,3 @@
-      * SCCS: AZEH001A.pco  2.1  04/21/95  11:37:32
          TITLE 'DETERMINE WHAT ENVIRONMENT  YOU ARE RUNNING IN'         
 *---------------------------------------------------------------------  
 * FOR THE CSS PROJECT.                                                  
@@ -10,6 +9,8 @@
 *                                                                       
 *  A "C" WILL BE SENT BACK IF IT IS CICS.                               
 *     -                                                                 
+*(c) COPYRIGHT 1995 ANDERSEN CONSULTING - ALL RIGHTS RESERVED.          
+*THIS WORK IS PROTECTED BY COPYRIGHT LAW AS AN UNPUBLISHED WORK.        
 *---------------------------------------------------------------------  
 AZEH001A START 0                                                        
 AZEH001A AMODE 31                                                       
