@@ -17,13 +17,14 @@
 **             CCRAMPTO                 Original File.
 **
 **   11/17/94  JLOONEY                  Changed MAX_SD from 20 to
-**                                      50.
+**					50.
+**   01/10/96  CWOODS			Added _RM_COMMAND_LEN
 **
 *****************************************************************/
 
 /****************************************************************
 **
-**                     INLUDES FILES
+**		       INLUDES FILES
 **
 *****************************************************************/
 #include "explode.h"     /* JLL: 07/01/93 ADDED */
@@ -42,7 +43,8 @@
 #define _USAGE_LEN              3         /* JLL: 06/11/93 ADDED */
 #define _FLUSH_LEN              6         /* JLL: 06/17/93 ADDED */
 #define _COPY_COMMAND_LEN     251         /* JLL: 06/17/93 ADDED */
-#define _ALT_SERV_LEN          10         /* JLL: 07/01/93 ADDED */
+#define _RM_COMMAND_LEN	      251	  /* CWOODS: 01/19/96 ADDED */
+#define _ALT_SERV_LEN	       10	  /* JLL: 07/01/93 ADDED */
 #define _MAPGN_MAX_MAP_LINE_LEN 450       /* JLL: 09/21/94 ADDED */
 
 /****************************************************************
