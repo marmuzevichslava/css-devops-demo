@@ -26,7 +26,8 @@ typedef struct __ArchData
    typedef struct __WCDAzcs011c                                                 
    {                                                                            
       _ARCHDATA ArchData;  
-      _WCD_DATA WCD; /*mdc 03/22/96 not defined in FCP*/                                                     
+      _WCD_DATA WCD; /*mdc 03/22/96 not defined in FCP*/
+      CHAR      *pWorkingStorageData;	/* NEYDE 03/25/99 */
    }  _WCDAZCS011C;                                                             
 #endif                                                                          
                                                                                 

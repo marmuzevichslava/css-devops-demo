@@ -28,6 +28,9 @@
 **                          DecodeDataType
 **                          FormatHighValues
 **                          FileAdd
+**                          AZCS01MegaScrollPush
+**                          AZCS01MegaScrollPop
+**                          AZCS01MegaScrollPopAll
 **
 **  DATE CREATED  :  06/09/93
 **
@@ -72,6 +75,9 @@
 **									WriteCK, WriteLK, and WriteLD
 ** 11/15/96      CWOODS             PTF-A - Added check for Usage = 'V' if it
 **                                  is a Date Type.
+**
+** 03/25/99     NEYDE               Added three megascrolling functions which
+**                                  are modelled after the CSS counterparts.
 ******************************************************************/
 
 /**************************************************************************
@@ -3203,3 +3209,318 @@ USHORT LogError( char * psMsg )
  
     return CMN_SUCCESS;
 }/*End of LogError*/
+
+
+/***************************************************************************
+**
+**       CUSTOMER SERVICE SYTEM CSR MAP GENERATOR FUNCTION
+**
+**  FUNCTION         : AZCS01MegaScrollPush
+**
+**  DESCRIPTION      : This function will create and add nodes to the top
+**                     of a megascroll stack.  The stack is used to keep
+**                     track of keys when megascrolling down so the window
+**                     can megascroll up by using the keys stored on top
+**                     of the stack.  This stack building function can be
+**                     used by any program because it also allocates a block
+**                     of memory for the keys area.  The stack structure
+**                     uses a void pointer to the allocated key area.  When
+**                     a programmer needs to query or copy the keys from
+**                     the top of the stack, the programmer should typecast
+**                     the pointer to the key area with the typedef of the
+**                     key structure that was passed to this function.
+**
+**                     Companion functions to this function are
+**                     AZCS01MegaScrollPop and AZCS01MegaScrollPopAll.
+**
+**  INPUTS           : _AZCS01MEGASCROLL **pMegaStruct - pointer to a pointer to
+**                                     the megascroll structure
+**
+**                     VOID *pNewKeys - void pointer to a keys structure
+**                                      allocated in the top node of the
+**                                      stack
+**
+**                     size_t KeySize - size if the key structure.  size_t
+**                                      typdef is used by malloc and memcpy
+**
+**                     CMN_ARCH_PARM_TYPES - standard CSS parameters
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**                     _AZCS01MEGASCROLL **pMegaStruct - pointer to new address
+**                                     for the megascroll structure pointer
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : SolutionWorks/Andersen Consulting
+**
+**  DATE CREATED     : 03/25/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/25/99  NEYDE                 Original code.
+**
+***************************************************************************/
+
+
+SHORT AZCS01MegaScrollPush(  _AZCS01MEGASCROLL **pMegaStruct,
+                           VOID *pNewKeys,
+                           size_t KeySize,
+                           CMN_ARCH_PARM_TYPES)
+{
+    _AZCS01MEGASCROLL  *pLocalOldTopNode;
+    _AZCS01MEGASCROLL  *pLocalNewTopNode;
+    USHORT FndGenRC = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    /* Set a local pointer to the pointer to pointer pMegaStruct */
+    pLocalOldTopNode =  (_AZCS01MEGASCROLL * ) *pMegaStruct ;
+
+    /* if the stack pointer is NULL, the stack is empty,
+       so start a new stack */
+    if (pLocalOldTopNode == NULL)
+    {
+        /* allocate memory for the stack structure */
+        pLocalNewTopNode = (_AZCS01MEGASCROLL * ) malloc(sizeof(_AZCS01MEGASCROLL));
+
+        /* if there is a problem allocating memory,
+           call error handler and log error */
+        if( pLocalNewTopNode == NULL)
+        {
+            CmnErrHandler(CMN_ARCH_PARMS_INCOMING_LN_FL);
+
+            FndWindowDestroy(CBI_hwnd,
+                             &FndGenErrorBlock);
+
+            return CMN_FAIL;
+        }
+
+        /* set the block of memory to zero */
+        memset(pLocalNewTopNode, 0, sizeof(_AZCS01MEGASCROLL));
+
+        /* allocate space for the key area */
+        pLocalNewTopNode->pKeys = (VOID *) malloc(KeySize);
+
+        /* if there is a problem allocating memory,
+           call error handler and log error */
+        if( pLocalNewTopNode->pKeys == NULL)
+        {
+            CmnErrHandler(CMN_ARCH_PARMS_INCOMING_LN_FL);
+
+            FndWindowDestroy(CBI_hwnd,
+                             &FndGenErrorBlock);
+
+            return CMN_FAIL;
+        }
+
+        /* set the block of memory to zero */
+        memset(pLocalNewTopNode->pKeys, 0, KeySize);
+
+        /* copy the keys to the allocated block of memory */
+        memcpy(pLocalNewTopNode->pKeys, pNewKeys, KeySize);
+
+        /* set the pointer to the pointer to the mega srcoll structure
+           equal to the local pointer */
+        *pMegaStruct = pLocalNewTopNode;
+
+    }
+    /* if the stack pointer is not NULL, then add a new node to the
+       top of the stack */
+    else
+    {
+
+        /* allocate memory for the stack structure */
+        pLocalNewTopNode = (_AZCS01MEGASCROLL * )  malloc(sizeof(_AZCS01MEGASCROLL));
+
+        /* if there is a problem allocating memory,
+           call error handler and log error */
+        if( pLocalNewTopNode == NULL)
+        {
+            CmnErrHandler(CMN_ARCH_PARMS_INCOMING_LN_FL);
+
+            FndWindowDestroy(CBI_hwnd,
+                             &FndGenErrorBlock);
+
+            return CMN_FAIL;
+        }
+
+        /* set the block of memory to zero */
+        memset(pLocalNewTopNode, 0, sizeof(_AZCS01MEGASCROLL));
+
+        /* allocate space for the key area */
+        pLocalNewTopNode->pKeys = (void *) malloc(KeySize);
+
+        /* if there is a problem allocating memory,
+           call error handler and log error */
+        if( pLocalNewTopNode->pKeys == NULL)
+        {
+            CmnErrHandler(CMN_ARCH_PARMS_INCOMING_LN_FL);
+
+            FndWindowDestroy(CBI_hwnd,
+                             &FndGenErrorBlock);
+
+            return CMN_FAIL;
+        }
+
+        /* set the block of memory to zero */
+        memset(pLocalNewTopNode->pKeys, 0, KeySize);
+
+        /* copy the keys to the allocated block of memory */
+        memcpy(pLocalNewTopNode->pKeys, pNewKeys, KeySize);
+
+        /* move the new node to the top of the stack */
+        pLocalNewTopNode->pNext = pLocalOldTopNode;
+
+        /* set the pointer to the pointer to the mega srcoll structure
+           equal to the local pointer */
+        *pMegaStruct = pLocalNewTopNode;
+    }
+
+    return CMN_SUCCESS;
+
+} /* End of AZCS01MegaScrollPush function  */
+
+/***************************************************************************
+**
+**       CUSTOMER SERVICE SYTEM CSR MAP GENERATOR FUNCTION
+**
+**  FUNCTION         : AZCS01MegaScrollPop
+**
+**  DESCRIPTION      : This function will free ("pop") the top node of the
+**                     megascroll stack.  The stack is used to keep
+**                     track of keys when megascrolling down so the window
+**                     can megascroll up by using the keys stored on top
+**                     of the stack.  This stack popping function can be
+**                     used by any program.
+**
+**                     Companion functions to this function are
+**                     AZCS01MegaScrollPush and AZCS01MegaScrollPopAll.
+**
+**  INPUTS           : _AZCS01MEGASCROLL **pMegaStruct - pointer to a pointer to
+**                                     the megascroll structure
+**
+**                     CMN_ARCH_PARM_TYPES - standard CSS parameters
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**                     _AZCS01MEGASCROLL **pMegaStruct - pointer to new address
+**                                     for the megascroll structure pointer
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : SolutionWorks/Andersen Consulting
+**
+**  DATE CREATED     : 03/25/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/25/99  NEYDE                 Original code.
+**
+***************************************************************************/
+
+SHORT AZCS01MegaScrollPop ( _AZCS01MEGASCROLL **pMegaStruct,
+                          CMN_ARCH_PARM_TYPES)
+{
+    _AZCS01MEGASCROLL  *pLocalOldTopNode;
+    _AZCS01MEGASCROLL  *pLocalNewTopNode;
+
+    /* Set a local pointer to the pointer to pointer pMegaStruct */
+    pLocalOldTopNode =  (_AZCS01MEGASCROLL * ) *pMegaStruct;
+
+    if( pLocalOldTopNode == NULL)
+    {
+        return CMN_SUCCESS;
+
+    }
+    /* Set a local pointer to the pointer to the next node */
+    pLocalNewTopNode = pLocalOldTopNode->pNext;
+
+    /* if stack is not empty, free the top node */
+    if (pLocalOldTopNode != NULL)
+    {
+        /* if keys are not empty, free the key area */
+        if(pLocalOldTopNode->pKeys != NULL)
+        {
+            /* free the allocated block to the keys */
+            free(pLocalOldTopNode->pKeys);
+        }
+        /* free the allocated bock to the old top node */
+        free(pLocalOldTopNode);
+    }
+
+    /* set the pointer to the pointer to the mega srcoll structure
+       equal to the local pointer */
+    *pMegaStruct = pLocalNewTopNode;
+
+    return CMN_SUCCESS;
+
+} /* End of AZCS01MegaScrollPop function  */
+
+/***************************************************************************
+**
+**               Customer Service System Application Function
+**
+**       CUSTOMER SERVICE SYTEM CSR MAP GENERATOR FUNCTION
+**
+**  DESCRIPTION      : This function will free ("pop") all the nodes of the
+**                     megascroll stack by calling AZCS01MegaScrollPop until
+**                     the stack is empty (NULL).  The stack is used to keep
+**                     track of keys when megascrolling down so the window
+**                     can megascroll up by using the keys stored on top
+**                     of the stack.  This stack popping function can be
+**                     used by any program.
+**
+**                     Companion functions to this function are
+**                     AZCS01MegaScrollPush and AZCS01MegaScrollPop.
+**
+**  INPUTS           : _AZCS01MEGASCROLL **pMegaStruct - pointer to a pointer to
+**                                     the megascroll structure
+**
+**                     CMN_ARCH_PARM_TYPES - standard CSS parameters
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**                     _AZCS01MEGASCROLL **pMegaStruct - pointer to new address
+**                                     for the megascroll structure pointer
+**
+**  CALLED FUNCTIONS : AZCS01MegaScrollPop
+**
+**  AUTHOR           : SolutionWorks/Andersen Consulting
+**
+**  DATE CREATED     : 03/25/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/25/99  NEYDE                 Original code.
+**
+***************************************************************************/
+
+SHORT AZCS01MegaScrollPopAll ( _AZCS01MEGASCROLL **pMegaStruct,
+                             CMN_ARCH_PARM_TYPES)
+{
+    _AZCS01MEGASCROLL  *pLocalTopNode;
+
+    /* Set a local pointer to the pointer to pointer pMegaStruct */
+    pLocalTopNode =  (_AZCS01MEGASCROLL * ) *pMegaStruct;
+
+    /* while top of stack is not NULL, call AZCS01MegaScrollPop to
+       pop off the top of the stack until the stack is empty (NULL)*/
+    while (pLocalTopNode != NULL)
+    {
+        AZCS01MegaScrollPop (&pLocalTopNode,
+                          CMN_ARCH_PARMS);
+    }
+
+    /* set the pointer to the pointer to the mega srcoll structure
+       equal to the local pointer */
+    *pMegaStruct = pLocalTopNode;
+
+    return CMN_SUCCESS;
+
+} /* End of AZCS01MegaScrollPopAll function  */

@@ -1,16 +1,24 @@
 /***************************************************************************
  *                                                                         *
- *                 C   A P P L I C A T I O N   L O G I C                   *
+ *               C  A P P L I C A T I O N   L O G I C                      *
  *                                                                         *
- *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *              Copyright (C) 1996, Andersen Consulting.                   *
+ *                        All rights reserved.                             *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS011                           *
- *                         Generated on: Wed Sep 25 13:29:14 1996          *
- *                                   by: MCONNER                           *
+ *                         Generated on: Mon Apr 05 13:51:52 1999          *
+ *                                   by: NEYDE                             *
+ *                                                                         *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *   User API Prototypes:                                                  *
  *                                                                         *
  ***************************************************************************/
+
+
 
 /***************************************************************************
  *
@@ -26,90 +34,94 @@
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5952_Predisplay)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
-                             "ApplyPB",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
-                             "RemovePB",
-                             &FndGenErrorBlock);
+   FndGenRC = FndCommandDisable( CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "SRVCELEMENT",
-                             &FndGenErrorBlock);
+   FndGenRC = FndCommandDisable( CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "CLNTELEMENT",
-                             &FndGenErrorBlock);
+   FndGenRC = FndFieldDisable( CBI_hwnd,
+                                 "SRVCELEMENT",
+                                 &FndGenErrorBlock);
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "Occurs",
-                             &FndGenErrorBlock);
+   FndGenRC = FndFieldDisable( CBI_hwnd,
+                                 "CLNTELEMENT",
+                                 &FndGenErrorBlock);
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "Occurs1",
-                             &FndGenErrorBlock);
+   FndGenRC = FndFieldDisable( CBI_hwnd,
+                                 "Occurs",
+                                 &FndGenErrorBlock);
 
-FndGenRC = FndCommandCheckMenu( CBI_hwnd,
-                            "AMNCLTC",
-                            &FndGenErrorBlock);
+   FndGenRC = FndFieldDisable( CBI_hwnd,
+                                 "Occurs1",
+                                 &FndGenErrorBlock);
 
-FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
-                            "AMNCLTCB",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandCheckMenu( CBI_hwnd,
+                                   "AMNCLTC",
+                                   &FndGenErrorBlock);
 
-FndGenRC = FndCommandCheckMenu( CBI_hwnd,
-                            "AMNSRVCB",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
+                                     "AMNCLTCB",
+                                     &FndGenErrorBlock);
 
-FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
-                            "AMNSRVC",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandCheckMenu( CBI_hwnd,
+                                   "AMNSRVCB",
+                                   &FndGenErrorBlock);
 
-FndGenRC = AZCS011BUSUserPredisplay( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
+                                     "AMNSRVC",
+                                     &FndGenErrorBlock);
 
-FndGenRC = AZCS011BUSFillClientLB( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSUserPredisplay( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = AZCS011BUSNewService( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSFillClientLB( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSNewService( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Window-Level Event
@@ -124,100 +136,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5962_Other_Gui_Event)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Tdwxfxwo5955_Predestroy
- * 
- *
- *
- *   Event Name:    PREDESTROY
- *
- *
- ***************************************************************************/
-static WCBPROC(Tdwxfxwo5955_Predestroy)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
+   return 0;
 
 }
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Tdwxfxwo5957_Interwindow_Msg
- * 
- *
- *
- *   Event Name:    INTERWINDOW_MSG
- *
- *
- ***************************************************************************/
-static WCBPROC(Tdwxfxwo5957_Interwindow_Msg)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
 
 
-}
+
 /***************************************************************************
  *
  *   Window-Level Event
@@ -232,28 +175,116 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5960_Window_Close)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Tdwxfxwo5955_Predestroy
+ * 
+ *
+ *
+ *   Event Name:    PREDESTROY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Tdwxfxwo5955_Predestroy)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = AZCS011BUSPredestroy( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Tdwxfxwo5957_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Tdwxfxwo5957_Interwindow_Msg)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -268,28 +299,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5982_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -304,28 +338,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5985_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -340,28 +377,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5987_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -376,44 +416,48 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5989_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandCheckMenu( CBI_hwnd,
-                            "AMNCLTC",
-                            &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
-                            "AMNCLTCB",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandCheckMenu( CBI_hwnd,
+                                   "AMNCLTC",
+                                   &FndGenErrorBlock);
 
-FndGenRC = AZCS011BUSClntLng( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
+                                     "AMNCLTCB",
+                                     &FndGenErrorBlock);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSClntLng( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -428,44 +472,48 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5991_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandCheckMenu( CBI_hwnd,
-                            "AMNCLTCB",
-                            &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
-                            "AMNCLTC",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandCheckMenu( CBI_hwnd,
+                                   "AMNCLTCB",
+                                   &FndGenErrorBlock);
 
-FndGenRC = AZCS011BUSClntLng( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
+                                     "AMNCLTC",
+                                     &FndGenErrorBlock);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSClntLng( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -480,44 +528,48 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5994_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandCheckMenu( CBI_hwnd,
-                            "AMNSRVC",
-                            &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
-                            "AMNSRVCB",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandCheckMenu( CBI_hwnd,
+                                   "AMNSRVC",
+                                   &FndGenErrorBlock);
 
-FndGenRC = AZCS011BUSSrvLng( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
+                                     "AMNSRVCB",
+                                     &FndGenErrorBlock);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSSrvLng( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -532,44 +584,48 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5996_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandCheckMenu( CBI_hwnd,
-                            "AMNSRVCB",
-                            &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
-                            "AMNSRVC",
-                            &FndGenErrorBlock);
+   FndGenRC = FndCommandCheckMenu( CBI_hwnd,
+                                   "AMNSRVCB",
+                                   &FndGenErrorBlock);
 
-FndGenRC = AZCS011BUSSrvLng( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandUncheckMenu( CBI_hwnd,
+                                     "AMNSRVC",
+                                     &FndGenErrorBlock);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSSrvLng( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -584,28 +640,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5998_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -620,28 +679,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo6000_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -656,28 +718,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo6003_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -692,28 +757,31 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo6005_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -728,35 +796,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo6007_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = AZCS011BUSAboutMNClick( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSAboutMNClick( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -771,121 +842,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5964_Field_Change)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = AZCS011BUSNewService( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSNewService( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Tdwxfxwo0313_List_Select
- * 
- *   WidgetName:    Rlb01ELB
- *
- *   Event Name:    LIST_SELECT
- *
- *
- ***************************************************************************/
-static WCBPROC(Tdwxfxwo0313_List_Select)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = AZCS011BUSMoveLB1( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
+   return 0;
 
 }
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Tdwxfxwo9107_List_Pagedown
- * 
- *   WidgetName:    Rlb01ELB
- *
- *   Event Name:    LIST_PAGEDOWN
- *
- *
- ***************************************************************************/
-static WCBPROC(Tdwxfxwo9107_List_Pagedown)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = Azcs011busrlb01elbpagedown( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
 
 
-}
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -900,121 +888,130 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo9063_List_Pageup)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = Azcs011busrlb01elbpageup( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = Azcs011busrlb01elbpageup( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
  *
- *   Callback Name: Tdwxfxwo0376_List_Select
+ *   Callback Name: Tdwxfxwo9107_List_Pagedown
  * 
- *   WidgetName:    Rlb02ELB
- *
- *   Event Name:    LIST_SELECT
- *
- *
- ***************************************************************************/
-static WCBPROC(Tdwxfxwo0376_List_Select)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = AZCS011BUSMoveLB2( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Tdwxfxwo9199_List_Pagedown
- * 
- *   WidgetName:    Rlb02ELB
+ *   WidgetName:    Rlb01ELB
  *
  *   Event Name:    LIST_PAGEDOWN
  *
  *
  ***************************************************************************/
-static WCBPROC(Tdwxfxwo9199_List_Pagedown)
+static WCBPROC(Tdwxfxwo9107_List_Pagedown)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = Azcs011busrlb02elbpagedown( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = Azcs011busrlb01elbpagedown( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Tdwxfxwo0313_List_Select
+ * 
+ *   WidgetName:    Rlb01ELB
+ *
+ *   Event Name:    LIST_SELECT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Tdwxfxwo0313_List_Select)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = AZCS011BUSMoveLB1( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -1029,35 +1026,130 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo9160_List_Pageup)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = Azcs011busrlb02elbpageup( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = Azcs011busrlb02elbpageup( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Tdwxfxwo9199_List_Pagedown
+ * 
+ *   WidgetName:    Rlb02ELB
+ *
+ *   Event Name:    LIST_PAGEDOWN
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Tdwxfxwo9199_List_Pagedown)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = Azcs011busrlb02elbpagedown( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Tdwxfxwo0376_List_Select
+ * 
+ *   WidgetName:    Rlb02ELB
+ *
+ *   Event Name:    LIST_SELECT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Tdwxfxwo0376_List_Select)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = AZCS011BUSMoveLB2( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -1072,35 +1164,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5971_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = AZCS011BUSCreateRelationship( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSCreateRelationship( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -1115,35 +1210,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5973_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = AZCS011BUSRemoveRelationship( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSRemoveRelationship( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -1158,71 +1256,73 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo0427_Field_Change)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-if ( ClntTypeData == LT_ClntElementRB )
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   if (ClntTypeData == 1)
    {
 
-   FndGenRC = FndFieldEnable(CBI_hwnd,
-                            "CLNTELEMENT",
-                            &FndGenErrorBlock);
+      FndGenRC = FndFieldEnable( CBI_hwnd,
+                                   "CLNTELEMENT",
+                                   &FndGenErrorBlock);
 
-   FndGenRC = FndFieldEnable(CBI_hwnd,
-                            "Occurs1",
-                            &FndGenErrorBlock);
+      FndGenRC = FndFieldEnable( CBI_hwnd,
+                                   "Occurs1",
+                                   &FndGenErrorBlock);
 
-   FndGenRC = AZCS011BUSChangeClientType( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+      FndGenRC = AZCS011BUSChangeClientType( pEventInfo,
+                                 pEAIA,
+                                 pBFCD,
+                                 pWesMap,
+                                 pWindContextData,
+                                 pABHI);
 
    } /* end if */
 
-if ( ClntTypeData == LT_ClntLiteralRB )
-
+   if (ClntTypeData == 2)
    {
 
-   FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "CLNTELEMENT",
-                             &FndGenErrorBlock);
+      FndGenRC = FndFieldDisable( CBI_hwnd,
+                                    "CLNTELEMENT",
+                                    &FndGenErrorBlock);
 
-   FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "Occurs1",
-                             &FndGenErrorBlock);
+      FndGenRC = FndFieldDisable( CBI_hwnd,
+                                    "Occurs1",
+                                    &FndGenErrorBlock);
 
-   FndGenRC = AZCS011BUSChangeServiceType( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+      FndGenRC = AZCS011BUSChangeServiceType( pEventInfo,
+                                 pEAIA,
+                                 pBFCD,
+                                 pWesMap,
+                                 pWindContextData,
+                                 pABHI);
 
    } /* end if */
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
-
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -1237,35 +1337,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5975_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = AZCS011BUSSaveToBFCD( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = AZCS011BUSSaveToBFCD( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -1280,26 +1383,26 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Tdwxfxwo5978_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
 CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   return 0;
 
 }
 

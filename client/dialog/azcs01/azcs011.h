@@ -16,6 +16,8 @@
 **    --------  -----------  -------  -------------------------------------
 **	 01/08/96   mconner               added malloc.h
 **   01/15/96   mconner               added help headers
+**   03/25/99   N.Eyde                added includes and defines for 
+**                                    megascrolling
 ***************************************************************************/
 
 /***************************************************************************/
@@ -24,6 +26,7 @@
 /*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
  */
 #include <malloc.h>
+#include <azcs01.h> /* NEYDE - 03/25/99 - Added dialog header */
 #include "systcomm.hh"
 #include "roadmap.hh"
 
@@ -32,6 +35,33 @@
 /* Application #defines                                                    */
 /***************************************************************************/
 
+/* NEYDE - 03/25/99 - The following structure defines the data stored for
+**                    megascrolling data.
+*/
+ #ifndef  _AZCS011_KEYS_z
+ #define  _AZCS011_KEYS_z
+ typedef  struct __AZCS011_Keys
+ {
+   SHORT                KySelectedRow;                                                 
+
+ }_AZCS011_KEYS;
+ #endif
+
+
+/* NEYDE - 03/25/99 - The following structure defines the window's working
+**                    storage.
+*/
+ #ifndef _AZCS011_WINDOWDATA_z
+ #define _AZCS011_WINDOWDATA_z
+ typedef struct __AZCS011_WindowData
+ {
+    _AZCS01MEGASCROLL *pClientMegaScroll;
+    _AZCS01MEGASCROLL *pServiceMegaScroll;
+	 
+ }_AZCS011_WINDOWDATA;
+ #endif
+
+#define WCD_pWorkingStorageData ( (_AZCS011_WINDOWDATA *) pWindContextData->pWorkingStorageData)
 
 /***************************************************************************/
 /* Application typedefs                                                    */
@@ -86,4 +116,11 @@ SHORT ClientElmntToRow(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES);
 SHORT ServiceElmntToRow(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES);
 SHORT LoadClientElmnt(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES);
 SHORT LoadServiceElmnt(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES);
+
+SHORT FillGroupLB(char *LBName,
+                   _LAYOUT_REC *pLayout,
+                   SHORT NumRec,
+                   enum LANGUAGE_TYPE Language,
+                   CMN_ARCH_PARM_TYPES);
+
 
