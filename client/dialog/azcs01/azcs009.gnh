@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS009                           *
-*                          Generated on: Wed Sep 25 13:28:52 1996          *
+*                          Generated on: Wed Nov 20 11:22:14 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -19,7 +19,9 @@
 
 #define SaveDir_FID                                    0
 #define GenDir_FID                                     1
-#define FlWindowMod_FID                                2
+#define FLMassGen_FID                                  2
+#define MapLstFile_FID                                 3
+#define FlWindowMod_FID                                4
 
 /***************************************************************************
 *  Widget IDs                                                              *
@@ -27,7 +29,10 @@
 
 #define SaveDir_WID                                    100
 #define GenDir_WID                                     101
-#define FlWindowMod_WID                                102
+#define FLMassGen_WID                                  102
+#define MapLstFile_WID                                 103
+#define FlWindowMod_WID                                104
+#define groupBoxWidget_WID                             9000
 
 /***************************************************************************
 *  Command IDs                                                             *
