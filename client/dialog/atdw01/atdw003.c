@@ -1,4 +1,8 @@
 /***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
+/***************************************************************************
  *                                                                         *
  *           C   W I N D O W S    N T   W I N D O W   F I L E              *
  *                                                                         *
