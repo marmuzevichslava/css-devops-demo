@@ -19,6 +19,8 @@
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
 **    99/99/99  XXXXXXXX              Original code.
+**    02/22/97  MEVANS      15881     Moved #define CSR_DIAG_PIPE_TIMEOUT
+**                                    to atdw01.h -- Used by atdw002.bus
 **
 ***************************************************************************/
 /* cwoods: added help files */
@@ -45,7 +47,7 @@
 
 #define RESET_PRINTER "\033E"
 
-#define CSR_DIAG_PIPE_TIMEOUT 1000
+//#define CSR_DIAG_PIPE_TIMEOUT 1000
 
 #define FILE_LEN            80
 

@@ -48,7 +48,7 @@ LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.l
 NODBLIBS = kndbnul.lib
 OTHLIBS  = othelibs
 DLLLIBS  =
-USRLIBS  = ARCHDISP.LIB C1CFUNC.LIB CSSFUNC.LIB
+USRLIBS  = ARCHDISP.LIB C1CFUNC.LIB CSSFUNC.LIB tcppipe.lib
 ALL_LIBS = $(LIBS)   $(DLLLIBS) $(USRLIBS)
 
 #***************************************************************************

@@ -2,6 +2,29 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
+/***************************************************************************
+**
+**               Customer Service System Application Header File
+**
+**  FILENAME         : ATDW001.H
+**
+**  DESCRIPTION      : Window Header File
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**    02/22/97  MEVANS      15881     Added #define CSR_DIAG_PIPE_TIMEOUT
+**                                    Used to incorporate -- Replaced calls 
+**                                    to Named pipes APIs with calls to 
+**                                    portable TcpPipe APIs
+**
+***************************************************************************/
 /*
 ** Windows NT Compile specific data type conversions
 */
@@ -18,8 +41,9 @@
 #include "CSRDIAG.HH"  /* Help topic header file */
 // #include "CSRUTILS.C"
 
-
 #define CSR_DIAG_REVISION "1.0"
+#define CSR_DIAG_PIPE_TIMEOUT 1000
+
 
 /*
 ** Detail line

@@ -20,8 +20,16 @@
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
 ** 99/99/99    XXXXXXXX            Creation
+** 02/20/97    MEVANS      15881   Replaced Named pipes API with portable 
+**                                 TcpPipe API
 **
 ***************************************************************************/
+/**************************************************************************
+**
+**   C1/C Architecture #include
+**
+***************************************************************************/
+#include <tcppipe.h> /* MEVANS 02/21/97 */
 
 
 /***************************************************************************
@@ -153,64 +161,154 @@ WCBPROC( ATDW002BusRefreshClick )
 **    --------  -----------  -------  -------------------------------------
 **    08/10/93  C. Crampton           Original code.
 **    05/06/94  C. Crampton           Changed for new CmnOs version  
+**    02/20/97  MEVANS       15881    Replaced Named pipes API with
+**                                    portable TcpPipe API
 ***************************************************************************/
 
 WCBPROC( ATDW002BusUpdateWES)
  {
-#include <time.h>
+    #include <time.h>
 
   /*  _FND_ERROR_BLOCK FndGenErrorBlock; */
   /*  USHORT FndGenRC = 0; */
-
     char tmpbuf[10];
     struct tm *ptmTmpBuf;
     _CSR_STATISTICS Statistics;
     _CSR_PIPE_PACKAGE Request;
-    LONG lBytesRead;
+   	PIPE_HANDLE PipeHandle;			/* CWOODS 07/19/96:  TCP Sockets Handle */
+   	CHAR CSRPortId[CMN_CSRPORTID_LEN];	   
+	CHAR CSRPipeName[CMN_CSRPIPENAME_LEN]; 
+    USHORT ArchIniRC = CMN_SUCCESS; /* CWOODS 07/19/96 : Return Code */
+	LONG BytesRead;			 /* Bytes read from the pipe */
+	LONG BytesWrite;		 /* CWOODS 07/19/96:  Length of data for TcpPipeWrite */
+//    LONG lBytesRead;
 	LONG MemAlarmLong=0;
-    BOOL bRC;
+//    BOOL bRC;
+    USHORT usSelectedButton;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    SHORT rc = 0;
 
     Request.Transaction = CSR_STATS;
     Request.SourceProcessId = 0;
     Request.hFile = NULL;
     Request.hwnd = CBI_hwnd;
 
-    bRC = CmnOsCallNamedPipe (CSR_PIPE_NAME,
-                              &Request,
-                              sizeof(_CSR_PIPE_PACKAGE),
-                              &Statistics,
-                              sizeof(_CSR_STATISTICS),
-                              &lBytesRead,
-                              CSR_PIPE_TIMEOUT,
-                              CMN_ARCH_PARMS);
-
-
-	/* convert MemAlarm to a long, format time_t structure, and set WES Map field */
-    MemAlarmLong = atol ( Statistics.MemAlarm );
-    ptmTmpBuf = localtime((time_t *) &MemAlarmLong);
-    if (ptmTmpBuf)   /* not-null means good time value */
+   	/* CWOODS 07/19/96
+    ** MEVANS 02/21/97 - SIR 15881
+    ** Read from .ini file the port ID.  
+    ** If the call fails, then log and shutdown 
+    */
+    if ( (ArchIniRC= CmnUtGetProfileString( CMN_PROFILE_SECTION_ARCH, 
+									        CMN_PROFILE_SECTION_CSRPORTID,
+											CSRPortId,
+											CMN_NULL_ARCH_PARMS)) == CMN_SUCCESS)
     {
-        strftime(tmpbuf,
-                 sizeof(tmpbuf)-1,
-                 "%H:%M:%S",
-                 ptmTmpBuf);
+	    memset(CSRPipeName,0,sizeof(CSRPipeName));
+		strcat(CSRPipeName,"\\\\localhost\\");
+		strncat(CSRPipeName,CSRPortId,sizeof(CSRPortId));
+	}
+	else
+	{
+        FndMsgBoxDisplayText(
+            "Error determining CSR Port !! \n\n"
+            "Make sure the CSR Data is in Arch.ini before starting this program. \n\n"
+            "Exiting program ...",
+            NULL,
+            CBI_hwnd,
+            FND_MSGBOX_OK,
+            FND_MSGBOX_ERROR,
+            FND_MSGBOX_IDOK,
+            CSR_DIAG_APPL_NAME,
+            &usSelectedButton,
+            &FndGenErrorBlock);
+
+        return(CMN_FAIL);
+	}
+
+    	/* MEVANS 02/21/97:  Open the pipe and Send the data */
+	if( (rc = TcpPipeOpen( CSRPipeName, 
+                           &PipeHandle )) == CMN_SUCCESS )
+    {
+        /* CWOODS 07/19/96 : Specify the length of data for TcpPipeWrite. */
+		BytesWrite = sizeof(_CSR_PIPE_PACKAGE);			    
+		if ((rc = TcpPipeWrite( PipeHandle, 
+                                &Request, 
+                                &BytesWrite, 
+                                CSR_DIAG_PIPE_TIMEOUT )) == CMN_SUCCESS)
+		{
+		    BytesRead = sizeof(_CSR_STATISTICS);
+			if ((rc = TcpPipeRead( PipeHandle, 
+                                   &Statistics, 
+                                   &BytesRead, 
+                                   CSR_DIAG_PIPE_TIMEOUT )) == CMN_SUCCESS)
+			{
+			    rc = TcpPipeClose( PipeHandle );
+		    } /* end successful TcpPipeOpen */
+        }
     }
+
+//    bRC = CmnOsCallNamedPipe (CSR_PIPE_NAME,
+//                              &Request,
+//                              sizeof(_CSR_PIPE_PACKAGE),
+//                              &Statistics,
+//                              sizeof(_CSR_STATISTICS),
+//                              &lBytesRead,
+//                              CSR_PIPE_TIMEOUT,
+//                              CMN_ARCH_PARMS);
+
+    /* If data retrieved from pipe,
+    ** convert MemAlarm to a long, format time_t structure, 
+    ** and set WES Map field 
+    */
+    if (rc == CMN_SUCCESS )
+    {
+        MemAlarmLong = atol ( Statistics.MemAlarm );
+        ptmTmpBuf = localtime((time_t *) &MemAlarmLong);
+        if (ptmTmpBuf)   /* not-null means good time value */
+        {
+            strftime(tmpbuf,
+                     sizeof(tmpbuf)-1,
+                     "%H:%M:%S",
+                     ptmTmpBuf);
+        }
+        else
+        {
+            strcpy(tmpbuf, "N/A");
+        }
+        strcpy(MemAlarmData, tmpbuf);
+
+        MapBytesData = Statistics.MapBytes;
+        ServiceBytesData = Statistics.ServiceBytes;
+        NodeBytesData = Statistics.NodeBytes;
+
+	    FreeBytesData = Statistics.FreeBytes;
+        MemNodeOverheadBytesData = Statistics.MemNodeOverheadBytes;
+
+	    DeadBytesData = Statistics.DeadBytes;
+        ThreadCountData = Statistics.ThreadCount;
+        ServiceThreadCountData = Statistics.ServiceThreadCount;
+
+    }
+    /* Else, display the error to the user if you cannot connect. */
     else
     {
-        strcpy(tmpbuf, "N/A");
+        FndMsgBoxDisplayText(
+            "Error communicating with the CSR !! \n\n"
+            "Make sure the CSR is running before starting this program. \n\n"
+            "Exiting program ...",
+            NULL,
+            CBI_hwnd,
+            FND_MSGBOX_OK,
+            FND_MSGBOX_ERROR,
+            FND_MSGBOX_IDOK,
+            CSR_DIAG_APPL_NAME,
+            &usSelectedButton,
+            &FndGenErrorBlock);
+
+    	    /* Set CSRPipeConnected to FALSE to indicate it failed */
+	        BFCD_AZCD01->CSRPipeConnected=FALSE;
     }
-    strcpy(MemAlarmData, tmpbuf);
 
-    MapBytesData = Statistics.MapBytes;
-    ServiceBytesData = Statistics.ServiceBytes;
-    NodeBytesData = Statistics.NodeBytes;
-
-	FreeBytesData = Statistics.FreeBytes;
-    MemNodeOverheadBytesData = Statistics.MemNodeOverheadBytes;
-
-	DeadBytesData = Statistics.DeadBytes;
-    ThreadCountData = Statistics.ThreadCount;
-    ServiceThreadCountData = Statistics.ServiceThreadCount;
-
-    return CMN_SUCCESS;
+    return rc;
  }

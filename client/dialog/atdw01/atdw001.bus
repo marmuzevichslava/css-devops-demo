@@ -41,8 +41,16 @@
 **								   support MEM APIs after 2.4.  Changed
 **								   MEMFree to free and changed CmnMemAllocPrivate
 **								   to malloc.
+** 02/21/97  MEVANS      15881     Replaced calls Named pipes APIs with 
+**                                 with calls to portable TcpPipe APIs
 **
 ***************************************************************************/
+/**************************************************************************
+**
+**   C1/C Architecture #include
+**
+***************************************************************************/
+#include <tcppipe.h> /* MEVANS 02/21/97 */
 
 OPENFILENAME OpenFileName;
 
@@ -840,112 +848,169 @@ WCBPROC( ATDW001BusServicesLBDblClick )
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
 **    99/99/99  XXXXXXXX              Original code.
+**    02/20/97  MEVANS       15881    Replaced logic based on Named pipes
+**                                    API with logic based on portable 
+**                                    TcpPipe API
 **
 ***************************************************************************/
 
 SHORT ATDW001BusOpenPipe(enum TRANSACTION_TYPE TransactionType ,CMN_ARCH_PARM_TYPES)
 {
 
-  _FND_ERROR_BLOCK FndGenErrorBlock;
-  USHORT FndGenRC = 0;
-  USHORT usSelectedButton;
-  USHORT rc;                      /* return code */
-  ULONG BytesRead;               /* The number of bytes read from the pipe */
-  SHORT PathNotFoundCount = 0;    /* Path Not Found retries counter */
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    USHORT usSelectedButton;
+    USHORT rc;                      /* return code */
+//    ULONG BytesRead;               /* The number of bytes read from the pipe */
+    SHORT PathNotFoundCount = 0;    /* Path Not Found retries counter */
 
-  _CSR_PIPE_PACKAGE CsrPackage;
-  _CSR_CALL_REPLY CsrCallReply;
+    _CSR_PIPE_PACKAGE CsrPipePackage;
+    _CSR_CALL_REPLY CsrCallReply;
+   	PIPE_HANDLE PipeHandle;			/* CWOODS 07/19/96:  TCP Sockets Handle */
+   	CHAR CSRPortId[CMN_CSRPORTID_LEN];	   
+	CHAR CSRPipeName[CMN_CSRPIPENAME_LEN]; 
+    USHORT ArchIniRC = CMN_SUCCESS; /* CWOODS 07/19/96 : Return Code */
+	LONG BytesRead;			 /* Bytes read from the pipe */
+	LONG BytesWrite;		 /* CWOODS 07/19/96:  Length of data for TcpPipeWrite */
 
+    /*
+    ** Initialize the CsrPipePackage structure to pass thru the pipe
+    */
 
-  /*
-  ** Initialize the CsrPackage structure to pass thru the pipe
-  */
+    CsrPipePackage.Transaction = TransactionType;
+    CsrPipePackage.SourceProcessId = 0 ;
+    CsrPipePackage.hFile = (HANDLE) NULL;
+    CsrPipePackage.hwnd = CBI_hwnd;
 
-    CsrPackage.Transaction = TransactionType;
-    CsrPackage.SourceProcessId = 0 ;
-    CsrPackage.hFile = (HANDLE) NULL;
-    CsrPackage.hwnd = CBI_hwnd;
+	/* CWOODS 07/19/96
+    ** MEVANS 02/21/97 - SIR 15881
+    ** Read from .ini file the port ID.  
+    ** If the call fails, then log and shutdown 
+    */
+    if ( (ArchIniRC= CmnUtGetProfileString( CMN_PROFILE_SECTION_ARCH, 
+									        CMN_PROFILE_SECTION_CSRPORTID,
+											CSRPortId,
+											CMN_NULL_ARCH_PARMS)) == CMN_SUCCESS)
+    {
+	    memset(CSRPipeName,0,sizeof(CSRPipeName));
+		strcat(CSRPipeName,"\\\\localhost\\");
+		strncat(CSRPipeName,CSRPortId,sizeof(CSRPortId));
+	}
+	else
+	{
+        FndMsgBoxDisplayText(
+            "Error determining CSR Port !! \n\n"
+            "Make sure the CSR Data is in Arch.ini before starting this program. \n\n"
+            "Exiting program ...",
+            NULL,
+            CBI_hwnd,
+            FND_MSGBOX_OK,
+            FND_MSGBOX_ERROR,
+            FND_MSGBOX_IDOK,
+            CSR_DIAG_APPL_NAME,
+            &usSelectedButton,
+            &FndGenErrorBlock);
 
-
-
-
-/*
-** Send the CsrPackage Data structure 
-** down the named pipe to the CSR.
-*/
-
-rc = CmnOsCallNamedPipe( CSR_PIPE_NAME,
-                         (PVOID)  &CsrPackage,
-                         sizeof( CsrPackage),
-                         &CsrCallReply,
-                         sizeof(_CSR_CALL_REPLY),
-                         &BytesRead,
-						 CSR_DIAG_PIPE_TIMEOUT,
-						 CMN_ARCH_PARMS );
+        return(CMN_FAIL);
+	}
+			
+    /*
+    ** Send the CsrPipePackage Data structure 
+    ** down the named pipe to the CSR.
+    */
+	/* MEVANS 02/21/97:  Open the pipe and Send the data */
+	if( (rc = TcpPipeOpen( CSRPipeName, 
+                           &PipeHandle )) == CMN_SUCCESS )
+    {
+        /* CWOODS 07/19/96 : Specify the length of data for TcpPipeWrite. */
+		BytesWrite = sizeof(_CSR_PIPE_PACKAGE);			    
+		if ((rc = TcpPipeWrite( PipeHandle, 
+                                &CsrPipePackage, 
+                                &BytesWrite, 
+                                CSR_DIAG_PIPE_TIMEOUT )) == CMN_SUCCESS)
+		{
+		    BytesRead = sizeof(_CSR_CALL_REPLY);
+			if ((rc = TcpPipeRead( PipeHandle, 
+                                   &CsrCallReply, 
+                                   &BytesRead, 
+                                   CSR_DIAG_PIPE_TIMEOUT )) == CMN_SUCCESS)
+			{
+			    rc = TcpPipeClose( PipeHandle );
+		    } /* end successful TcpPipeOpen */
+        }
+    }
+			  	
+//rc = CmnOsCallNamedPipe( CSR_PIPE_NAME,
+//                         (PVOID)  &CsrPackage,
+//                         sizeof( CsrPackage),
+//                         &CsrCallReply,
+//                         sizeof(_CSR_CALL_REPLY),
+//                         &BytesRead,
+//						 CSR_DIAG_PIPE_TIMEOUT,
+//						 CMN_ARCH_PARMS );
 
 /* Wait and try two more times to call the name pipe again
 ** if the return codes not ok
 */
-while (( rc == ERROR_PIPE_BUSY   ||
-                 rc == ERROR_PATH_NOT_FOUND) && ( PathNotFoundCount < 2 ))
-{
+//while (( rc == ERROR_PIPE_BUSY   ||
+//                 rc == ERROR_PATH_NOT_FOUND) && ( PathNotFoundCount < 2 ))
+//{
     /*
     ** The pipes busy wait until its free
     */
-    if (rc == ERROR_PIPE_BUSY)
-    {
-        rc = CmnOsWaitNamedPipe( CSR_PIPE_NAME, 
-                                 CSR_PIPE_TIMEOUT,
-                                 CMN_ARCH_PARMS );
-    }
+//    if (rc == ERROR_PIPE_BUSY)
+//    {
+//        rc = CmnOsWaitNamedPipe( CSR_PIPE_NAME, 
+//                                 CSR_PIPE_TIMEOUT,
+//                                 CMN_ARCH_PARMS );
+//    }
 
     /* If the wait was successful... */
-    if ( rc == CMN_SUCCESS )
-    {
+//    if ( rc == CMN_SUCCESS )
+//    {
         /* Try to call the named pipe again. */
 
 
-        rc = CmnOsCallNamedPipe( CSR_PIPE_NAME,
-                                (PVOID)  &CsrPackage,
-                                sizeof( CsrPackage),
-                                &CsrCallReply,
-                                sizeof(_CSR_CALL_REPLY),
-                                &BytesRead,
-                                CSR_DIAG_PIPE_TIMEOUT,
-                                CMN_ARCH_PARMS );
+//        rc = CmnOsCallNamedPipe( CSR_PIPE_NAME,
+//                                (PVOID)  &CsrPackage,
+//                                sizeof( CsrPackage),
+//                                &CsrCallReply,
+//                                sizeof(_CSR_CALL_REPLY),
+//                                &BytesRead,
+//                                CSR_DIAG_PIPE_TIMEOUT,
+//                                CMN_ARCH_PARMS );
 
-    }
-    else
+//    }
+//    else
+//    {
+//         PathNotFoundCount++;
+//    }
+
+//} /* end of the while loop */
+
+    /* Display the error to the user if you cannot connect after 3 tries. */
+    if (rc != CMN_SUCCESS )
+    //if (  ( rc != CMN_SUCCESS     )
+    //   && ( rc != ERROR_PIPE_BUSY ) )
     {
-         PathNotFoundCount++;
+        FndMsgBoxDisplayText(
+            "Error communicating with the CSR !! \n\n"
+            "Make sure the CSR is running before starting this program. \n\n"
+            "Exiting program ...",
+            NULL,
+            CBI_hwnd,
+            FND_MSGBOX_OK,
+            FND_MSGBOX_ERROR,
+            FND_MSGBOX_IDOK,
+            CSR_DIAG_APPL_NAME,
+            &usSelectedButton,
+            &FndGenErrorBlock);
+
+	    /* Set CSRPipeConnected to FALSE to indicate it failed */
+	    BFCD_AZCD01->CSRPipeConnected=FALSE;
     }
 
-} /* end of the while loop */
-
-/* Display the error to the user if you cannot connect after 3 tries. */
-if (  ( rc != CMN_SUCCESS     )
-   && ( rc != ERROR_PIPE_BUSY ) )
-
-
-{
-    FndMsgBoxDisplayText("Error communicating with the CSR !! \n\n"
-                         "Make sure the CSR is running before starting this program. \n\n"
-                         "Exiting program ...",
-                         NULL,
-                         CBI_hwnd,
-                         FND_MSGBOX_OK,
-                         FND_MSGBOX_ERROR,
-                         FND_MSGBOX_IDOK,
-                         CSR_DIAG_APPL_NAME,
-                         &usSelectedButton,
-                         &FndGenErrorBlock);
-
-	/* Set CSRPipeConnected to FALSE to indicate it failed */
-	BFCD_AZCD01->CSRPipeConnected=FALSE;
-}
-
-
- return CMN_SUCCESS;
+    return CMN_SUCCESS;
 
 }  /* end of function ATDW001BusOpenPipe */
 
