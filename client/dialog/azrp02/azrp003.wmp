@@ -1,0 +1,59 @@
+/***************************************************************************
+*                                                                          *
+*             O S / 2    W E S   M A P   D E F I N I T I O N               *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZRP003                           *
+*                          Generated on: Fri Mar 29 09:26:24 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+struct _AZRP003WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _BatchListFileData[256];
+#define BatchListFileData              pWesMap->_BatchListFileData
+
+   char _DuplexData[2];
+#define DuplexData              pWesMap->_DuplexData
+
+
+    WESFLDCTL _BatchListFileCtl;
+#define BatchListFileAttr                       pWesMap->_BatchListFileCtl.Attr
+#define BatchListFileStatus                     pWesMap->_BatchListFileCtl.Status
+#define BatchListFileRights                     pWesMap->_BatchListFileCtl.Rights
+#define BatchListFileMsg                        pWesMap->_BatchListFileCtl.Msg
+#define BatchListFileCursor                     pWesMap->_BatchListFileCtl.Cursor
+
+    WESFLDCTL _DuplexCtl;
+#define DuplexAttr                       pWesMap->_DuplexCtl.Attr
+#define DuplexStatus                     pWesMap->_DuplexCtl.Status
+#define DuplexRights                     pWesMap->_DuplexCtl.Rights
+#define DuplexMsg                        pWesMap->_DuplexCtl.Msg
+#define DuplexCursor                     pWesMap->_DuplexCtl.Cursor
+};
+

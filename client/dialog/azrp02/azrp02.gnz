@@ -1,0 +1,33 @@
+/***************************************************************************
+ *                                                                         *
+ *             C   O S /2    W I N D O W   I D E N T I F I E R S           *
+ *                                                                         *
+ *                 Copyright (C) 1994 Andersen Consulting.                 *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *               Window Identifiers for: AZRP02                            *
+ *                         Generated on: Fri Mar 29 09:26:24 1996          *
+ *                                   by: MCONNER                           *
+ *                                                                         *
+ ***************************************************************************/
+#define AZRP001ID                501
+#define AZRP001MenuID                501
+#define AZRP001IconID                501
+#define AZRP001AccelID               501
+#define AZRP001WctID                 501
+
+#define AZRP002ID                502
+#define AZRP002MenuID                502
+#define AZRP002IconID                502
+#define AZRP002AccelID               502
+#define AZRP002WctID                 502
+
+#define AZRP003ID                503
+#define AZRP003MenuID                503
+#define AZRP003IconID                503
+#define AZRP003AccelID               503
+#define AZRP003WctID                 503
+
+

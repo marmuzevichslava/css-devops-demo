@@ -1,0 +1,141 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZRP002                           *
+*                          Generated on: Fri Mar 29 09:26:24 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+AZRP002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,253,77
+    STYLE 0 
+     | WS_CAPTION
+     | WS_SYSMENU
+     | DS_MODALFRAME
+    CAPTION "Print Segment Report"
+Begin  /* controls */
+   CONTROL "PrintDest",8000,
+              FND_RADIO_GROUP,
+              WS_VISIBLE | BS_GROUPBOX
+              ,11,9,0,0
+
+   CONTROL "To Printer",103,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE | WS_TABSTOP
+              | BS_RADIOBUTTON
+              ,11,9,50,10
+
+   CONTROL "To File",104,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,11,24,50,10
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,65,21,166,0
+
+   CONTROL "Duplex",102,
+              FND_CHECK_BOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP  | BS_CHECKBOX
+              ,13,41,0,0
+
+   CONTROL "OK",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+     | BS_DEFPUSHBUTTON
+              ,12,61,37,12
+
+   CONTROL "Cancel",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,63,61,37,12
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+AZRP002ID 332
+Begin
+   /*  Control Data for Radio Group PrintDest  */
+   FP_CONTROL_ID,                       "8000\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_BUTTON_INFO,                      "103,P\0"
+   FP_BUTTON_INFO,                      "104,F\0"
+
+   /*  Control Data for Entry Field PrintFile  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "255\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   /*  Control Data for Checkbox Duplex  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+AZRP002AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1001,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+
