@@ -4,15 +4,15 @@ Begin VB.Form frmMain
    Caption         =   "CTMBrowser"
    ClientHeight    =   6000
    ClientLeft      =   165
-   ClientTop       =   735
+   ClientTop       =   450
    ClientWidth     =   11760
+   ForeColor       =   &H80000008&
    Icon            =   "CTMMain.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MouseIcon       =   "CTMMain.frx":030A
    ScaleHeight     =   6000
    ScaleWidth      =   11760
-   StartUpPosition =   3  'Windows Default
    Begin VB.Frame Frame1 
       Caption         =   "Current Table:"
       BeginProperty Font 
@@ -30,9 +30,12 @@ Begin VB.Form frmMain
       Top             =   120
       Width           =   10575
       Begin VB.TextBox txtCenturyDelim 
-         Enabled         =   0   'False
+         BackColor       =   &H8000000B&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H00000000&
          Height          =   285
          Left            =   5925
+         Locked          =   -1  'True
          TabIndex        =   18
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
@@ -40,9 +43,12 @@ Begin VB.Form frmMain
          Width           =   495
       End
       Begin VB.TextBox txtTotalKeys 
-         Enabled         =   0   'False
+         BackColor       =   &H8000000B&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H00000000&
          Height          =   285
          Left            =   5925
+         Locked          =   -1  'True
          TabIndex        =   16
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
@@ -51,6 +57,7 @@ Begin VB.Form frmMain
       End
       Begin VB.CheckBox chkSystem 
          Caption         =   "System Code"
+         Enabled         =   0   'False
          Height          =   255
          Left            =   8475
          TabIndex        =   15
@@ -60,6 +67,7 @@ Begin VB.Form frmMain
       End
       Begin VB.CheckBox chkCodes 
          Caption         =   "Codes Tables"
+         Enabled         =   0   'False
          Height          =   255
          Left            =   6825
          TabIndex        =   14
@@ -77,9 +85,12 @@ Begin VB.Form frmMain
          Width           =   1560
       End
       Begin VB.TextBox txtDecodeLength 
-         Enabled         =   0   'False
+         BackColor       =   &H8000000B&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H00000000&
          Height          =   285
          Left            =   3600
+         Locked          =   -1  'True
          TabIndex        =   11
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
@@ -87,9 +98,12 @@ Begin VB.Form frmMain
          Width           =   495
       End
       Begin VB.TextBox txtDecodeDisplacement 
-         Enabled         =   0   'False
+         BackColor       =   &H8000000B&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H00000000&
          Height          =   285
          Left            =   3600
+         Locked          =   -1  'True
          TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Length of the decode displacement"
@@ -97,9 +111,12 @@ Begin VB.Form frmMain
          Width           =   495
       End
       Begin VB.TextBox txtKeyLength 
-         Enabled         =   0   'False
+         BackColor       =   &H8000000B&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H00000000&
          Height          =   285
          Left            =   1275
+         Locked          =   -1  'True
          TabIndex        =   7
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
@@ -107,9 +124,12 @@ Begin VB.Form frmMain
          Width           =   495
       End
       Begin VB.TextBox txtDataLength 
-         Enabled         =   0   'False
+         BackColor       =   &H80000004&
+         BorderStyle     =   0  'None
+         ForeColor       =   &H00000000&
          Height          =   285
          Left            =   1275
+         Locked          =   -1  'True
          TabIndex        =   6
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
@@ -193,7 +213,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0614
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -214,7 +233,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0630
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -232,14 +250,12 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   20241
+            Object.Width           =   20320
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "CTMMain.frx":064C
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -298,6 +314,11 @@ Begin VB.Form frmMain
          Caption         =   "&Add New Codes Table..."
          Shortcut        =   ^A
       End
+      Begin VB.Menu mnuModifyTable 
+         Caption         =   "&Modify Current Table..."
+         Enabled         =   0   'False
+         Shortcut        =   ^M
+      End
       Begin VB.Menu mnuDeleteTable 
          Caption         =   "&Delete Current Table"
          Enabled         =   0   'False
@@ -348,6 +369,10 @@ Option Explicit
 Public mbMoving As Boolean
 Public bBrowseOnly As Boolean
 Const sglSplitLimit = 500
+Const CODES_TABLE = 1
+Const MSG_BOX = 2
+Const WES_CODE = 3
+
 
 
 
@@ -379,16 +404,10 @@ Private Sub Form_Load()
     'Set up the list view to remain highlighted when a row is selected.
     lvListView.HideSelection = False
     
-    'Disable the entry fields and check boxes.
-    txtDecodeLength.Enabled = False
-    txtDecodeDisplacement.Enabled = False
-    txtDataLength.Enabled = False
-    txtKeyLength.Enabled = False
     chkSystem.Enabled = False
     chkStatic.Enabled = False
     chkCodes.Enabled = False
-    
-    
+      
     'Set up the list view so that it highlights the entire row.
     SendMessage lvListView.hwnd, LVM_SETEXTEDEDLISTVIEWSTYLE, 0, 33
     
@@ -409,8 +428,7 @@ Private Sub Form_Load()
         RC = MsgBox(msg, vbOKOnly + vbInformation + vbApplicationModal, "Codes Table Update")
         End
     End If
-
-    
+ 
     'Update the current status on the main form.
     sbStatusBar.Panels(1).Text = "Connecting to database..."
     Me.Refresh
@@ -428,8 +446,6 @@ Private Sub Form_Load()
     'Attempt to open the database in shared edit mode. Comment this out to switch to using ODBC.
     Set dbCTM = Workspaces(0).OpenDatabase(CTMDatabase, False, False)
     
-    
-    
     'Set the length of the query timeouts.
     dbCTM.QueryTimeout = 15
     
@@ -445,8 +461,6 @@ Private Sub Form_Load()
     
     'Build the treeview control.
     Call BuildTableList
-    
-    
     
     'Check the authority Level to see if the current user has admin rights.
     sbStatusBar.Panels(1).Text = "Determining Authority Levels..."
@@ -554,8 +568,14 @@ Private Sub Form_Resize()
 End Sub
 
 
+Private Sub Frame1_DblClick()
+    If (Len(frmMain.txtKeyLength) > 0) Then
+        frmAddModTable.Show vbModal
+    End If
+End Sub
+
 '***************************************************************************************************************
-Private Sub imgSplitter_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgSplitter_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
     With imgSplitter
         picSplitter.Move .Left, .Top, .Width \ 2, .Height - 20
@@ -566,7 +586,7 @@ End Sub
 
 
 '***************************************************************************************************************
-Private Sub imgSplitter_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgSplitter_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
     Dim sglPos As Single
     
@@ -585,7 +605,7 @@ End Sub
 
 
 '***************************************************************************************************************
-Private Sub imgSplitter_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgSplitter_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
     SizeControls picSplitter.Left
     picSplitter.Visible = False
@@ -625,7 +645,7 @@ End Sub
 
 
 '***************************************************************************************************************
-Private Sub TreeView1_DragDrop(Source As Control, x As Single, y As Single)
+Private Sub TreeView1_DragDrop(Source As Control, x As Single, Y As Single)
 '***************************************************************************************************************
     If Source = imgSplitter Then
         SizeControls x
@@ -650,7 +670,7 @@ End Sub
 
 
 '***************************************************************************************************************
-Private Sub lvListView_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lvListView_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
     'If ((Button = vbRightButton) And (bAdmin) And (CurTableType = 1)) Then
     If ((Button = vbRightButton) And (bAdmin)) Then
@@ -694,32 +714,30 @@ Private Sub mnuDeleteKey_Click()
     If (RC = vbYes) Then
         
         Screen.MousePointer = vbHourglass
-        
-        
+                
         'Begin a new transaction.
-        wsCTM.BeginTrans
+        'wsCTM.BeginTrans
     
-        
         For x = 1 To lvListView.ListItems.Count
             If lvListView.ListItems.Item(x).Selected = True Then
         
                 'Get the client code for this key.
                 hClient = GetClientDecode(lvListView.SelectedItem.SubItems(2))
-
-                
+            
                 'Figure out which database table to delete from.
-                If (Left(tvTreeView.SelectedItem.Text, 3) = "CIS") Then
-                    
+                If (CurTableType = CODES_TABLE) Then
                     strSQL = "DELETE FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Key = " & Chr(39) & lvListView.ListItems.Item(x).Text & Chr(39) & _
                              " AND Client = " & hClient
         
-                ElseIf (UCase(tvTreeView.SelectedItem.Text) = "C1CMBMSG") Then
+                'ElseIf (UCase(tvTreeView.SelectedItem.Text) = "C1CMBMSG") Then
+                ElseIf (CurTableType = MSG_BOX) Then
                     strSQL = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Code = " & Val(lvListView.ListItems.Item(x).Text) & _
                              " AND Client = " & hClient
                 
-                ElseIf (UCase(tvTreeView.SelectedItem.Text) = "UERRMSGS") Then
+                'ElseIf (UCase(tvTreeView.SelectedItem.Text) = "UERRMSGS") Then
+                ElseIf (CurTableType = WES_CODE) Then
                     strSQL = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND ErrorNumber = " & Val(lvListView.ListItems.Item(x).Text) & _
                              " AND Client = " & hClient
@@ -727,14 +745,17 @@ Private Sub mnuDeleteKey_Click()
         
                 Debug.Print strSQL
     
+                wsCTM.BeginTrans
+                
                 'Execute the SQL.
                 dbCTM.Execute strSQL
             
+                wsCTM.CommitTrans
             End If
         Next
 
         'Commit the delete transactions.
-        wsCTM.CommitTrans
+        'wsCTM.CommitTrans
 
         Screen.MousePointer = vbNormal
 
@@ -755,8 +776,8 @@ Private Sub mnuDeleteTable_Click()
 '***************************************************************************************************************
     Dim RC As Integer, i As Integer
     
-    If (Left(CurTable, 3) = "CIS") Then
-    
+    'If (Left(CurTable, 3) = "CIS") Then
+    If (CurTableType = CODES_TABLE) Then
         RC = MsgBox("Are you sure you wish to delete the current table and " & _
                     vbCrLf & "all the Keys that it contains?", _
                     vbYesNo + vbQuestion, "Codes Table Explorer")
@@ -871,8 +892,8 @@ Private Sub mnuModifyKey_Click()
     iSelected = lvListView.SelectedItem.Index
     
     'Check to see if this table can be modified by an administrator or not.
-    If (Left(CurTable, 3) = "CIS") Then
-    
+    'If (Left(CurTable, 3) = "CIS") Then
+    If (CurTableType = CODES_TABLE) Then
         bAddNewKey = False
         frmAddModKey.Show vbModal
     Else
@@ -890,8 +911,6 @@ Private Sub mnuModifyKey_Click()
     lvListView.Refresh
     lvListView.SetFocus
     
-    
-    
 End Sub
 
 
@@ -900,8 +919,8 @@ Private Sub mnuAddKey_Click()
 '***************************************************************************************************************
     Dim RC As Integer
     
-    If (Left(CurTable, 3) = "CIS") Then
-    
+    'If (Left(CurTable, 3) = "CIS") Then
+    If (CurTableType = CODES_TABLE) Then
         bAddNewKey = True
         frmAddModKey.Show vbModal
     Else
@@ -911,7 +930,6 @@ Private Sub mnuAddKey_Click()
     End If
     
     Screen.MousePointer = vbHourglass
-    
     
     'Get all the Keys and decodes.
     Call RefreshCodeDecodeLB
@@ -923,6 +941,10 @@ End Sub
 
 
 
+
+Private Sub mnuModifyTable_Click()
+    frmAddModTable.Show vbModal
+End Sub
 
 '***************************************************************************************************************
 Private Sub mnuPrintTable_Click()

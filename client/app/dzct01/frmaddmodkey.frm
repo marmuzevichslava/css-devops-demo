@@ -306,7 +306,8 @@ Private Sub cmdProcess_Click()
     If (bAddNewKey) Then
         
         'Check to see if this new key already exists.
-        If (CheckKeyExists(CurTable, txtKey.Text, GetClientDecode(frmMain.lvListView.SelectedItem.SubItems(2))) = True) Then
+        'If (CheckKeyExists(CurTable, txtKey.Text, GetClientDecode(frmMain.lvListView.SelectedItem.SubItems(2))) = True) Then
+        If (CheckKeyExists(CurTable, txtKey.Text, GetClientDecode(Me.cbxClients.Text)) = True) Then
             RC = MessageBox(Me.hwnd, _
                             "This Key already exists on this table!" & vbCrLf & _
                             "Would you like to overwrite the existing Key?", _
@@ -445,7 +446,6 @@ Private Sub Form_Load()
             Else
                 txtDesc.Text = " "
             End If
-            
             
             'Get the C variable name.
             If (Len(DaoRS(3).Value) > 0) Then

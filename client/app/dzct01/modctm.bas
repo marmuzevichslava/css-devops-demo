@@ -4,9 +4,13 @@ Option Explicit
 '***************************************************************************************************************
 '** CONSTANTS                                                                                                 **
 '***************************************************************************************************************
-Public Const AUTHOR As String = "Ted Vreeland"
+Public Const AUTHOR As String = "technical support team"
 Public Const SQL_FOUND As Integer = 0
 Public Const SQL_NOT_FOUND As Integer = 100
+
+Const CODES_TABLE = 1
+Const MSG_BOX = 2
+Const WES_CODE = 3
 
 '***************************************************************************************************************
 '** VARIABLES                                                                                                 **
@@ -116,16 +120,9 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.chkStatic.Value = False
     frmMain.chkCodes.Value = False
         
-    frmMain.txtDecodeLength.Enabled = False
-    frmMain.txtDecodeDisplacement.Enabled = False
-    frmMain.txtDataLength.Enabled = False
-    frmMain.txtKeyLength.Enabled = False
-    frmMain.txtCenturyDelim.Enabled = False
-    'frmMain.chkSystem.Enabled = False
-    'frmMain.chkStatic.Enabled = False
-    'frmMain.chkCodes.Enabled = False
     frmMain.mnuPrintTable.Enabled = False
     frmMain.mnuDeleteTable.Enabled = False
+    frmMain.mnuModifyTable.Enabled = False
     frmMain.mnuGenerate.Enabled = False
     
     Screen.MousePointer = vbHourglass
@@ -152,7 +149,6 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         End If
     Next
     
-    
     'Get the parent table type code for this node.
     For x = 0 To UBound(TableTypes)
         If (Node.Parent = TableTypes(x).TableTypeName) Then
@@ -165,24 +161,17 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     'Get all the Keys and decodes.
     Call RefreshCodeDecodeLB
     
-    
     'Save the current table to a global variable.
     CurTable = Node.Text
     CurKey = ""
     
     'Enable the delete Table Key.
     frmMain.mnuDeleteTable.Enabled = True
-        
-        
-    'frmMain.txtDecodeLength.Enabled = true
-    'frmMain.txtDecodeDisplacement.Enabled = True
-    'frmMain.txtDataLength.Enabled = True
-    'frmMain.txtKeyLength.Enabled = True
-    'frmMain.txtCenturyDelim.Enabled = True
-            
-    'If this is a CIS table, then enable printing and generation.
-    If (Left(frmMain.tvTreeView.SelectedItem.Text, 3) = "CIS") Then
-    
+    frmMain.mnuModifyTable.Enabled = True
+                 
+    'If this is a Codes table, then enable printing and generation.
+    'If (Left(frmMain.tvTreeView.SelectedItem.Text, 3) = "CIS") Then
+    If (CurTableType = 1) Then
         frmMain.mnuPrintTable.Enabled = True
         frmMain.mnuGenerate.Enabled = True
     End If
@@ -207,8 +196,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         Else
             frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
         End If
-            
-            
+                    
         frmMain.txtDecodeLength.Text = CStr(DaoRS(1).Value)
             
         If (IsNull(DaoRS(2).Value)) Then
@@ -328,6 +316,7 @@ Public Function CheckKeyExists(ByVal TableName As String, _
     'Put together the sql to perform the check.
     strSQL = "SELECT 1 FROM tblEntries WHERE TableName = " & Chr(39) & TableName & Chr(39) & " " & _
              "AND Key = " & Chr(39) & Key & Chr(39) & "AND Client = " & Client
+    Debug.Print strSQL
     
     'Open the recordset.
     Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -412,7 +401,7 @@ Public Sub RefreshCodeDecodeLB()
 
     On Error GoTo ODBCError
     
-    If (CurTableType = 1) Then
+    If (CurTableType = CODES_TABLE) Then
         strSQL = "SELECT tblEntries.Key, tblEntries.Decode, tblClients.Client, " & _
                  "tblPlatforms.Platform,  tblReleases.Release, " & _
                  "tblEntries.SystemUse,  tblEntries.StaticTableUse,  tblEntries.CodesTableUse, " & _
@@ -424,7 +413,7 @@ Public Sub RefreshCodeDecodeLB()
                  "ORDER BY tblEntries.Key ASC"
     
     
-    ElseIf (CurTableType = 2) Then
+    ElseIf (CurTableType = MSG_BOX) Then
         strSQL = "SELECT tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, " & _
                  "tblClients.Client, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxEntries.Comments " & _
                  "FROM tblMsgBoxEntries, tblClients, tblPlatforms, tblReleases " & _
@@ -463,7 +452,7 @@ Public Sub RefreshCodeDecodeLB()
                 itmX.SubItems(3) = DaoRS(3).Value
                 itmX.SubItems(4) = DaoRS(4).Value
                 
-                If (CurTableType = 1) Then
+                If (CurTableType = CODES_TABLE) Then
                     itmX.SubItems(5) = DaoRS(5).Value
                     itmX.SubItems(6) = DaoRS(6).Value
                     itmX.SubItems(7) = DaoRS(7).Value

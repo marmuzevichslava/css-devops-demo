@@ -8,7 +8,6 @@ Begin VB.Form frmAbout
    ControlBox      =   0   'False
    Icon            =   "frmAbout.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   1875
@@ -18,9 +17,9 @@ Begin VB.Form frmAbout
    Begin VB.CommandButton cmdCancel 
       Caption         =   "&Cancel"
       Height          =   375
-      Left            =   1425
+      Left            =   1440
       TabIndex        =   3
-      Top             =   1350
+      Top             =   1200
       Width           =   1215
    End
    Begin VB.PictureBox Picture1 
@@ -43,7 +42,7 @@ Begin VB.Form frmAbout
       Width           =   2775
    End
    Begin VB.Label lblAuthor 
-      Caption         =   "Author: Ted Vreeland, Solution Works"
+      Caption         =   "Author:  SolutionWorks"
       Height          =   255
       Left            =   900
       TabIndex        =   2

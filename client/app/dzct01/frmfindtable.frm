@@ -51,6 +51,7 @@ Begin VB.Form frmFindTable
       Width           =   990
    End
    Begin VB.TextBox txtFindTable 
+      BackColor       =   &H00FFFFFF&
       Height          =   315
       Left            =   1875
       TabIndex        =   1

@@ -25,7 +25,6 @@ Begin VB.Form frmSourceFileGenerator
    End
    Begin VB.CommandButton pbExit 
       Caption         =   "E&xit"
-      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -43,6 +42,7 @@ Begin VB.Form frmSourceFileGenerator
    End
    Begin VB.CommandButton pbGenerate 
       Caption         =   "&Generate"
+      Default         =   -1  'True
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -1047,3 +1047,4 @@ Public Sub GenerateCobolNames()
     Me.Refresh
 
 End Sub
+

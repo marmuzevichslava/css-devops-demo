@@ -8,13 +8,29 @@ Begin VB.Form frmExportTable
    ClientWidth     =   5130
    Icon            =   "frmExportTbls.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   5115
    ScaleWidth      =   5130
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdFind 
+      Caption         =   "&Find"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   390
+      Left            =   3840
+      TabIndex        =   24
+      Top             =   2760
+      Width           =   1140
+   End
    Begin VB.Frame Frame3 
       Caption         =   "File &Options"
       BeginProperty Font 
@@ -52,7 +68,6 @@ Begin VB.Form frmExportTable
    End
    Begin VB.CommandButton pbCancel 
       Caption         =   "&Cancel"
-      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -70,7 +85,7 @@ Begin VB.Form frmExportTable
    End
    Begin VB.CommandButton pbOK 
       Caption         =   "&Export"
-      Enabled         =   0   'False
+      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -122,7 +137,7 @@ Begin VB.Form frmExportTable
          Width           =   1965
       End
       Begin VB.OptionButton optExportAll 
-         Caption         =   "All Tables"
+         Caption         =   "Export All Clients"
          Height          =   240
          Left            =   150
          TabIndex        =   16
@@ -133,19 +148,19 @@ Begin VB.Form frmExportTable
    End
    Begin VB.TextBox efExportFile 
       Height          =   285
-      Left            =   1875
+      Left            =   1275
       TabIndex        =   14
       ToolTipText     =   "Name of file to export to"
       Top             =   3000
-      Width           =   3090
+      Width           =   2370
    End
    Begin VB.TextBox efPath 
       Height          =   285
-      Left            =   1875
+      Left            =   1275
       TabIndex        =   12
       ToolTipText     =   "Output directory for export"
       Top             =   2625
-      Width           =   3090
+      Width           =   2370
    End
    Begin VB.Frame Frame1 
       Caption         =   "Export Table &For"
@@ -228,7 +243,7 @@ Begin VB.Form frmExportTable
    Begin VB.ListBox SelectTable 
       Height          =   1815
       ItemData        =   "frmExportTbls.frx":030A
-      Left            =   150
+      Left            =   120
       List            =   "frmExportTbls.frx":030C
       MultiSelect     =   2  'Extended
       Sorted          =   -1  'True
@@ -249,7 +264,7 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   750
+      Left            =   150
       TabIndex        =   13
       Top             =   3075
       Width           =   990
@@ -266,7 +281,7 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   1275
+      Left            =   675
       TabIndex        =   11
       Top             =   2670
       Width           =   465
@@ -295,6 +310,10 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Public OldPath As String
+
+Private Sub cmdFind_Click()
+    frmFindExportTable.Show vbModal
+End Sub
 
 '***************************************************************************************************************
 Private Sub efPath_Change()
@@ -354,16 +373,18 @@ Private Sub Form_Load()
     Call LoadPlatforms
     
     'Set the default directory for the export path
-    efPath.Text = "K:\DATA\TABLECHG"
+    
     
     'Set the default export type
-    optExportCustom.Value = True
+    optExportAll.Value = True
     
     'Set the default file option
     optCreateFile.Value = True
     
     Screen.MousePointer = vbNormal
-    SelectTable.SetFocus
+    'SelectTable.SetFocus
+    efPath.Text = "K:\DATA\TABLECHG\"
+    
     Me.Refresh
 
 End Sub
@@ -385,7 +406,8 @@ Private Sub optExportAll_Click()
     cbClient.Enabled = False
     SelectTable.Enabled = True
     
-    efPath = OldPath
+    cmdFind.Enabled = True
+    
     Me.Refresh
     
     Call SetExportButtonState
@@ -411,10 +433,11 @@ Private Sub optExportCISOnly_Click()
     Screen.MousePointer = vbNormal
     
     cbClient.Enabled = False
-    SelectTable.Enabled = True
+    SelectTable.Enabled = False
     
-    efPath.Text = "C:\DEV\FND30\DATA"
-    efExportFile.Text = "TCODF010"
+    efExportFile.Text = "TCODF010.DAT"
+    
+    cmdFind.Enabled = False
     
     Me.Refresh
     
@@ -431,14 +454,15 @@ Private Sub optExportCustom_Click()
     SelectTable.Enabled = False
     
     For x = 0 To SelectTable.ListCount - 1
-        SelectTable.Selected(x) = False
+        SelectTable.Selected(x) = True
     Next
     
     SelectTable.Enabled = True
     cbClient.Enabled = True
     
     Screen.MousePointer = vbNormal
-    efPath = OldPath
+    
+    cmdFind.Enabled = True
     
     Me.Refresh
     
@@ -580,11 +604,11 @@ Private Sub SelectTable_Click()
         
     'One item selected
     ElseIf (SelectTable.SelCount = 1) Then
-        efExportFile.Text = SelectTable.Text & ".DAT"
+        efExportFile.Text = Trim$(SelectTable.Text) & ".DAT"
     
     'Multiple tables selected.
     Else
-        efExportFile.Text = "CTEXPORT.DAT"
+        efExportFile.Text = "TCODF010.DAT"
     End If
     
     Call SetExportButtonState
@@ -595,11 +619,17 @@ End Sub
 '***************************************************************************************************************
 Public Sub SetExportButtonState()
 '***************************************************************************************************************
-    If ((SelectTable.SelCount > 0) And (Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
+    'If ((SelectTable.SelCount > 0) And (Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
+    If ((Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
         pbOK.Enabled = True
     Else
         pbOK.Enabled = False
-
     End If
 
+    If (optExportCISOnly = True) Then
+        cmdFind.Enabled = False
+    Else
+        cmdFind.Enabled = True
+    End If
+    
 End Sub
