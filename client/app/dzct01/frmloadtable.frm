@@ -57,7 +57,6 @@ Begin VB.Form frmTableLoad
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
-      MouseIcon       =   "frmloadtable.frx":030A
    End
    Begin VB.Frame Frame1 
       Caption         =   "Environment Settings:"
@@ -114,16 +113,13 @@ Begin VB.Form frmTableLoad
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frmloadtable.frx":0326
    End
    Begin VB.Menu mnuFile 
       Caption         =   "&File"
@@ -535,6 +531,8 @@ Function LoadCodesTables() As Boolean
         Do While sFile <> ""
             sKcodTime1 = FileDateTime(KCOD_PATH & "\" & KCOD_NAME)
             
+            Sleep 1000
+            
             'Load dat files
             With mywdj
                 .Command = DAT_LOAD_EXE & " " & sDatPath & "\" & sFile
@@ -621,7 +619,7 @@ Function InitializeSettings() As Boolean
         sServer = DaoRS(0).Value
     Else
         DaoRS.Close
-        GoTo ErrorHandler
+        Err.Raise 1, "DAO", "Database Error - No rows returned for server name."
     End If
 
     DaoRS.Close
@@ -729,7 +727,8 @@ Function LoadXltMaps() As Boolean
             LoadXltMaps = False
         End If
    End If
-Exit Function
+    
+    Exit Function
 
 ErrorHandler:
         
@@ -791,6 +790,9 @@ Function GetXltMaps() As Boolean
     Else
         GetXltMaps = True
     End If
+    
+    Exit Function
+    
 ErrorHandler:
             
     msg = "An error occured while backing up " & KCOD_NAME & vbCrLf _
@@ -841,6 +843,8 @@ Function GetTblFile() As Boolean
     End If
     
     GetTblFile = True
+    
+    Exit Function
     
 ErrorHandler:
     Screen.MousePointer = vbNormal
