@@ -415,8 +415,10 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
   USHORT usLBRows;
   SHORT TextLen;
   SHORT sCtr = 0;
+  USHORT usAllSpaces = 0;
   char *psLongDesc;
   char *pszStr;
+  char *pszTmp;
 
 //  for( i=0; i<_REPLYHDR__ENTITYTEXT_SIZE; i++ )
   for( i=0; i<pReplyHdr->NumTextRows; i++ )
@@ -540,9 +542,63 @@ while (*pszStr)
                            sizeof( pEntityDataTable[i].EntityType),
                            CMN_ARCH_PARMS );
 
-
-
 	FndGenRC = GetEntityType(pEntityDataTable[i].EntityType);
+
+    /*mdc 06/11/96 Alocate memory for the temp entity type */
+    pszStr = (char *)calloc((strlen(Indent) + strlen(pEntityDataTable[i].EntityType) + 2),
+                                sizeof(char));
+    if (pszStr )
+    {
+        strcpy(pszStr, Indent);
+        strcat(pszStr, pEntityDataTable[i].EntityType);
+    }
+    else
+    {
+         return CMN_FAIL;
+    }
+
+
+    if ( strlen(pszStr) > sizeof( ReposDataLBRow._ReposDataLBEntityTypeData ) - 1)
+    {
+        FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nIndentation from nesting will cause some data to be truncated.",
+                                   NULL,
+                                   CBI_hwnd,
+                                   FND_MSGBOX_OK,
+                                   FND_MSGBOX_WARNING,
+                                   FND_MSGBOX_IDOK,
+                                   CMN_CSS_APPL_NAME,
+                                   &FndGenErrorBlock);
+
+        *(pszStr + sizeof(ReposDataLBRow._ReposDataLBEntityTypeData) - 2) = '\0';
+        /*check if all spaces */
+        pszTmp = pszStr;
+        while( *pszTmp )
+        {
+            if (isspace(*pszTmp))
+            {
+                usAllSpaces = 1;
+            }
+            else
+            {
+                usAllSpaces = 0;
+                break;
+            }
+            ++pszTmp;
+        }
+        if ( usAllSpaces )
+        {
+            FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nIndentation from nesting will cause some data to not be shown!",
+                                   NULL,
+                                   CBI_hwnd,
+                                   FND_MSGBOX_OK,
+                                   FND_MSGBOX_WARNING,
+                                   FND_MSGBOX_IDOK,
+                                   CMN_CSS_APPL_NAME,
+                                   &FndGenErrorBlock);
+        }
+
+ 
+     } /*End of if ( strlen(pszStr) > sizeof( ReposDataLBRow */
 
    /*mdc 05/10/96 removed to funtion  above
     if( strcmp( pEntityDataTable[i].EntityType, "DEDTABLE" ) == 0)
@@ -568,7 +624,10 @@ while (*pszStr)
 
     CmnStrCat( CMN_ARCH_PARMS, ReposDataLBRow._ReposDataLBEntityTypeData,
                sizeof( ReposDataLBRow._ReposDataLBEntityTypeData ),
-               2, Indent, pEntityDataTable[i].EntityType );
+               1, pszStr );
+
+    /*mdc 06/11/96 pszStr no longer needed so free it*/
+    free(pszStr);
 
     /* JSH: 09/21/93 MODIFIED from CmnStrTrimBlanks */
     CmnStrTrimTrailBlanks( pEntityDataTable[i].EntityCobolName,
@@ -1256,7 +1315,8 @@ USHORT StrParse(char *psStr,
 				USHORT usNumStrs)
 
 {
-    USHORT i = 0;
+/*mdc 06/11/96 change i to short */
+    SHORT i = 0;
     char *s;
 
     s = psStr;
