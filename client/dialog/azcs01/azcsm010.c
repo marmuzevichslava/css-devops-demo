@@ -70,6 +70,8 @@
 ** 08/20/96   jlooney				Modified if statements for FND 3.0 INT3
 **								    date issue (internally now stored as N).
 **									WriteCK, WriteLK, and WriteLD
+** 11/15/96      CWOODS             PTF-A - Added check for Usage = 'V' if it
+**                                  is a Date Type.
 ******************************************************************/
 
 /**************************************************************************
@@ -590,6 +592,7 @@ USHORT GenerateService(_LAYOUT_REC  ServiceLayout[],
 **  08/20/96	  J. Looney				   Added to if stmt to check
 **										   for numeric date due to 
 **										   FND 3.0 upgrade.
+**  11/15/96      CWOODS                   PTF-A - Added check for Usage = 'V' for Date Data Types
 ******************************************************************/
 
 #define CK_LINE_1 "********  C O M P A R E  K E Y S  ********\n"
@@ -673,8 +676,13 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                         ** If Usage is TS (TimeStamp) change DataType to CSR_TMSTMP
                         ** If Usage is TM (Time) change DataType to CSR_TIME
                         ** Otherwise just leave it as CSR_STRING
-                        */
-                        if (strcmp(ServiceLayout[Index].Usage, "DT") == 0)
+                        */                                 
+                        /* CWOODS 11/15/96:  PTF-A Release - Check for 'V' Usage */
+                        if ( (strcmp(ServiceLayout[Index].Usage, "DT") == 0) ||
+
+                            ((ServiceLayout[Index].ElementTypeCode == 'D') &&
+                             (!strcmp(ServiceLayout[Index].Usage,"V"))    ) )
+
                         {
                             strncpy(DataType, "CSR_DATE", _DATA_TYPE_LEN);
                         }
@@ -969,6 +977,8 @@ USHORT WriteRD( _LAYOUT_REC  ClientLayout[],
 **  08/20/96	  J. Looney				   Added to if stmt to check
 **										   for numeric date due to 
 **										   FND 3.0 upgrade.
+**  11/15/96      CWOODS                   PTF-A - Added check for Usage = 'V' if it
+**                                         is a Date Type.
 ******************************************************************/
 
 #define LK_LINE_1 "********  L O A D  K E Y S  ********\n"
@@ -1052,7 +1062,11 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
                         ** If Usage is TM (Time) change DataType to CSR_TIME
                         ** Otherwise just leave it as CSR_STRING
                         */
-                        if (strcmp(ServiceLayout[Index].Usage, "DT") == 0)
+                        /* CWOODS 11/15/96:  PTF-A Release - Check for 'V' Usage */
+                        if ( (strcmp(ServiceLayout[Index].Usage, "DT") == 0) ||
+
+                            ((ServiceLayout[Index].ElementTypeCode == 'D') &&
+                             (!strcmp(ServiceLayout[Index].Usage,"V"))    ) )
                         {
                             strncpy(DataType, "CSR_DATE", _DATA_TYPE_LEN);
                         }
@@ -1243,6 +1257,8 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
 **  08/20/96	  J. Looney				   Added to if stmt to check
 **										   for numeric date due to 
 **										   FND 3.0 upgrade.
+**  11/15/96      CWOODS                   PTF-A - Added check for Usage = 'V' if it
+**                                         is a Date Type.
 ******************************************************************/
 
 #define LD_LINE_1 "********  L O A D  D A T A  ********\n"
@@ -1328,7 +1344,12 @@ USHORT WriteLD( _LAYOUT_REC  ClientLayout[],
                         ** If Usage is TM (Time) change DataType to CSR_TIME
                         ** Otherwise just leave it as CSR_STRING
                         */
-                        if (strcmp(ServiceLayout[Index].Usage, "DT") == 0)
+                        /* CWOODS 11/15/96:  PTF-A Release - Check for 'V' Usage */
+                        if ( (strcmp(ServiceLayout[Index].Usage, "DT") == 0) ||
+
+                           ((ServiceLayout[Index].ElementTypeCode == 'D') &&
+                             (!strcmp(ServiceLayout[Index].Usage,"V"))    ) )
+
                         {
                             strncpy(DataType, "CSR_DATE", _DATA_TYPE_LEN);
                         }
@@ -1808,7 +1829,12 @@ USHORT WriteRPCK( _LAYOUT_REC  ClientLayout[],
                         ** If Usage is TM (Time) change DataType to CSR_TIME
                         ** Otherwise just leave it as CSR_STRING
                         */
-                        if (strcmp(ServiceLayout[Index].Usage, "DT") == 0)
+                        /* CWOODS 11/15/96:  PTF-A Release - Check for 'V' Usage */
+                        if ( (strcmp(ServiceLayout[Index].Usage, "DT") == 0) ||
+
+                            ((ServiceLayout[Index].ElementTypeCode == 'D') &&
+                             (!strcmp(ServiceLayout[Index].Usage,"V"))    ) )
+
                         {
                             strncpy(DataType, "CSR_DATE", _DATA_TYPE_LEN);
                         }
@@ -2193,7 +2219,12 @@ USHORT WriteRPLK( _LAYOUT_REC  ClientLayout[],
                         ** If Usage is TM (Time) change DataType to CSR_TIME
                         ** Otherwise just leave it as CSR_STRING
                         */
-                        if (strcmp(ServiceLayout[Index].Usage, "DT") == 0)
+                        /* CWOODS 11/15/96:  PTF-A Release - Check for 'V' Usage */
+                        if ( (strcmp(ServiceLayout[Index].Usage, "DT") == 0) ||
+
+                            ((ServiceLayout[Index].ElementTypeCode == 'D') &&
+                             (!strcmp(ServiceLayout[Index].Usage,"V"))    ) )
+
                         {
                             strncpy(DataType, "CSR_DATE", _DATA_TYPE_LEN);
                         }
@@ -2471,7 +2502,12 @@ USHORT WriteRPLD( _LAYOUT_REC  ClientLayout[],
                         ** If Usage is TM (Time) change DataType to CSR_TIME
                         ** Otherwise just leave it as CSR_STRING
                         */
-                        if (strcmp(ServiceLayout[Index].Usage, "DT") == 0)
+                        /* CWOODS 11/15/96:  PTF-A Release - Check for 'V' Usage */
+                        if ( (strcmp(ServiceLayout[Index].Usage, "DT") == 0) ||
+
+                            ((ServiceLayout[Index].ElementTypeCode == 'D') &&
+                             (!strcmp(ServiceLayout[Index].Usage,"V"))    ) )
+
                         {
                             strncpy(DataType, "CSR_DATE", _DATA_TYPE_LEN);
                         }

@@ -18,6 +18,7 @@
 **  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
 **  --------    ----------      -----      ---------------------
 **  08/11/94    C. Crampton                Baseline
+**  11/15/96    cwoods                     PTF-A - Added check for DteIntUsage='V'
 ***********************************************************************/
 #define  INCL_WIN
 #define  INCL_DOS
@@ -153,7 +154,13 @@ SHORT BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
             {
                 nTypeVal = AZVS01_USAGE_COMP3;
             }
-            else if (!strcmp ((pEntityData+i)->DteIntUsage, "DT"))
+            /* CWOODS 11/15/96:  PTF-A Rollout.  Added check for DteIntUsage = "V" */
+            else if ((!strcmp ((pEntityData+i)->DteIntUsage, "DT")) ||
+
+                     ( ((pEntityData+i)->DteTypeCode == 'D') &&
+                       (!strcmp ((pEntityData+i)->DteIntUsage, "V")) 
+                     )
+                    )
             {
                 nTypeVal = AZVS01_USAGE_DATE;
             }
