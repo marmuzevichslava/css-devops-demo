@@ -1,0 +1,188 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS010                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+AZCS010ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,162,154
+    STYLE 0 
+     | WS_CAPTION
+     | WS_DLGFRAME
+    CAPTION "CSR Maps"
+Begin  /* controls */
+   CONTROL "OK",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,9,131,37,12
+
+   CONTROL "Cancel",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,57,131,37,12
+
+   CONTROL "CSR Maps",100,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,3,7,149,116
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,121,133,0,0
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+AZCS010ID 332
+Begin
+   /*  Control Data for List Box MapLB  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_CAPTION,                          "CSR Maps\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_FALSE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
+   FP_SORTING_COLUMNS,                  "1A\0"
+   FP_COLUMNS_PER_LINE,                 "2\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column NmRowIndx  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_TRUE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_PREFIX, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column REQUESTID  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "Request Id\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "69\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+AZCS010AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1001,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

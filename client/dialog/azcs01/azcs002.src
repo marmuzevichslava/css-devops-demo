@@ -1,0 +1,401 @@
+/***************************************************************************
+ *                                                                         *
+ *       C   O S / 2   W I N D O W   A P P L I C A T I O N   L O G I C     *
+ *                                                                         *
+ *              Copyright (C) 1994, Andersen Consulting.                   *
+ *                        All rights reserved.                             *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: AZCS002                           *
+ *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                                   by: MCONNER                           *
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt1446_Predisplay
+ * 
+ *
+ *
+ *   Event Name:    PREDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt1446_Predisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = FndWindowSetText( CBI_hwnd,
+                            "Open Request Information",
+                            &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CLIENTLAYOUT",
+                             &FndGenErrorBlock);
+
+strncpy(RequestTypeData,LT_RequestTypeIN,3);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt2696_Other_Gui_Event
+ * 
+ *
+ *
+ *   Event Name:    OTHER_GUI_EVENT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt2696_Other_Gui_Event)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt2577_Predestroy
+ * 
+ *
+ *
+ *   Event Name:    PREDESTROY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt2577_Predestroy)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt2441_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt2441_Interwindow_Msg)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt2622_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt2622_Msg_Notification)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt2557_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt2557_Window_Close)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ejskkjkt7175_Field_Exit
+ * 
+ *   WidgetName:    REQUESTID
+ *
+ *   Event Name:    FIELD_EXIT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt7175_Field_Exit)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = ChkForMap( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ejskkjkt9450_Field_Change
+ * 
+ *   WidgetName:    REQUESTTYPE
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt9450_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ejskkjkt4045_Click
+ * 
+ *   WidgetName:    OKPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt4045_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = LdAZCS2O( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ejskkjkt4082_Click
+ * 
+ *   WidgetName:    CancelPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt4082_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+

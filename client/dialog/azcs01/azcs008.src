@@ -1,0 +1,503 @@
+/***************************************************************************
+ *                                                                         *
+ *       C   O S / 2   W I N D O W   A P P L I C A T I O N   L O G I C     *
+ *                                                                         *
+ *              Copyright (C) 1994, Andersen Consulting.                   *
+ *                        All rights reserved.                             *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: AZCS008                           *
+ *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                                   by: MCONNER                           *
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1383_Predisplay
+ * 
+ *
+ *
+ *   Event Name:    PREDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1383_Predisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = AZCS008BUSUserPredisplay( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1393_Other_Gui_Event
+ * 
+ *
+ *
+ *   Event Name:    OTHER_GUI_EVENT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1393_Other_Gui_Event)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr8348_Redisplay
+ * 
+ *
+ *
+ *   Event Name:    REDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr8348_Redisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                            "OKPB",
+                            &FndGenErrorBlock);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1386_Predestroy
+ * 
+ *
+ *
+ *   Event Name:    PREDESTROY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1386_Predestroy)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1389_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1389_Interwindow_Msg)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1387_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1387_Msg_Notification)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Liucusfr1391_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1391_Window_Close)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Liucusfr1397_Click
+ * 
+ *   WidgetName:    OKPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1397_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = AZCS008BUSSaveToBFCD( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Liucusfr9151_List_Select
+ * 
+ *   WidgetName:    MapLB
+ *
+ *   Event Name:    LIST_SELECT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr9151_List_Select)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Liucusfr6519_Click
+ * 
+ *   WidgetName:    AddPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr6519_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Liucusfr6568_Click
+ * 
+ *   WidgetName:    DeletePB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr6568_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Liucusfr6632_Click
+ * 
+ *   WidgetName:    UndeletePB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr6632_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Liucusfr1399_Click
+ * 
+ *   WidgetName:    CancelPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Liucusfr1399_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+

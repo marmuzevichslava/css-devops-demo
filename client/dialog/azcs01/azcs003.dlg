@@ -1,0 +1,388 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS003                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+AZCS003ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,333,115
+    STYLE 0 
+     | WS_CAPTION
+     | WS_DLGFRAME
+    CAPTION ""
+Begin  /* controls */
+   CONTROL "&Server",500,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,60,-3,22,8
+
+   CONTROL "",100,
+              FND_NUMERICFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,85,5,35,0
+
+   CONTROL "Service ID",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,45,13,38,8
+
+   CONTROL "",101,
+              FND_NUMERICFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,85,21,35,0
+
+   CONTROL "Translation Map Name",502,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,3,30,80,8
+
+   CONTROL "",102,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,85,38,69,0
+
+   CONTROL "Service Age Limit",503,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,17,47,66,8
+
+   CONTROL "",103,
+              FND_NUMERICFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,85,55,35,0
+
+   CONTROL "Data Used in &Update",104,
+              FND_CHECK_BOX,
+              WS_VISIBLE | WS_TABSTOP  | BS_CHECKBOX
+              ,35,85,0,0
+
+   CONTROL "Service Type",8005,
+              FND_RADIO_GROUP,
+              WS_VISIBLE | BS_GROUPBOX
+              ,193,8,62,43
+
+   CONTROL "&Primary",109,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE | WS_TABSTOP
+              | BS_RADIOBUTTON
+              ,204,19,50,10
+
+   CONTROL "&Alternate",110,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,204,34,50,10
+
+   CONTROL "Alternate CSR Map",506,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,185,51,67,8
+
+   CONTROL "",106,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,254,59,35,0
+
+   CONTROL "Anticipatory Call Module",507,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,166,68,87,8
+
+   CONTROL "",107,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,254,76,69,0
+
+   CONTROL "OK",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+     | BS_DEFPUSHBUTTON
+              ,9,99,37,12
+
+   CONTROL "Cancel",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,55,99,37,12
+
+   CONTROL "&Force Call",108,
+              FND_CHECK_BOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP  | BS_CHECKBOX
+              ,35,73,0,0
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+AZCS003ID 332
+Begin
+   /*  Control Data for Static Text ~Server  */
+   FP_CONTROL_ID,                       "500\0"
+   FP_SCREEN_LENGTH,                    "7\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Numeric Field SERVER  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_INTEGRAL_DIGITS,                  "8\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for Static Text Service ID  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Numeric Field SERVICEID  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_PREFIX, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for Static Text Translation Map Name  */
+   FP_CONTROL_ID,                       "502\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field TranMap  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   /*  Control Data for Static Text Service Age Limit  */
+   FP_CONTROL_ID,                       "503\0"
+   FP_SCREEN_LENGTH,                    "17\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Numeric Field SERVICEAGE  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_INTEGRAL_DIGITS,                  "8\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for Checkbox Flush  */
+   FP_CONTROL_ID,                       "104\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+
+   /*  Control Data for Radio Group ServiceMapType  */
+   FP_CONTROL_ID,                       "8005\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_BUTTON_INFO,                      "109,1\0"
+   FP_BUTTON_INFO,                      "110,2\0"
+
+   /*  Control Data for Static Text Alternate CSR Map  */
+   FP_CONTROL_ID,                       "506\0"
+   FP_SCREEN_LENGTH,                    "17\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field ALTMAP  */
+   FP_CONTROL_ID,                       "106\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   /*  Control Data for Static Text Anticipatory Call Module  */
+   FP_CONTROL_ID,                       "507\0"
+   FP_SCREEN_LENGTH,                    "24\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field ANTICMODULE  */
+   FP_CONTROL_ID,                       "107\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   /*  Control Data for Checkbox ForceCall  */
+   FP_CONTROL_ID,                       "108\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+AZCS003AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1001,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

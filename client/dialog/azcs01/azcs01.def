@@ -1,0 +1,23 @@
+;*****************************************************************************
+;
+;           C   C O M P I L E R   D E F I N I T I O N   F I L E
+;
+;                  Copyright (C) 1994, Andersen Consulting.
+;                           All rights reserved.
+;
+;*****************************************************************************
+;
+;              Compiler Definitions for: AZCS01  
+;                          Generated on: Thu Mar 21 14:16:12 1996
+;                                    by: MCONNER             
+;
+;*****************************************************************************
+
+NAME           AZCS01  WINDOWAPI
+DESCRIPTION    'AZCS01'
+EXETYPE        WINDOWS
+STUB           'WINSTUB.EXE'
+CODE           PRELOAD MOVEABLE DISCARDABLE
+DATA           PRELOAD MOVEABLE MULTIPLE
+HEAPSIZE       1024
+STACKSIZE      20000

@@ -1,0 +1,32 @@
+/******************************************************************************/
+/*                                                                            */
+/*   Header name  :   AZCS01B                                                 */
+/*                                                                            */
+/*   Description  :                                                           */
+/*                                                                            */
+/*   Generation Date: 03/21/96                                                */
+/*              Time: 14:19:50                                                */
+/******************************************************************************/
+/*mdc 03/21/96 Added to define _BFCD_GLOBAL_DATA for azcs01b.gnb */
+
+#include "csrcmn.h"
+#include "mapgen.h"                                                                               
+                                                                                
+#ifndef _BFCDCSRMAPBFCD_z                                                       
+#define _BFCDCSRMAPBFCD_z                                                       
+                                                                                
+   typedef struct __BFCDCSRMapBFCD                                              
+   {                                                                            
+      _BFCD_GLOBAL_DATA *pCSRMapBFCD;                                           
+   }  _BFCDCSRMAPBFCD;                                                          
+#endif                                                                          
+                                                                                
+#ifdef WINDOWMOD                                                                
+#define BFCD_pCSRMapBFCD ((_BFCD     *) pBFCD) ->pCSRMapBFCD                    
+#endif                                                                          
+#ifdef SERVICEMOD                                                               
+#define BFCD_pCSRMapBFCD ((_BFCD     *)  BFCD) ->pCSRMapBFCD                    
+#endif                                                                          
+#define _BFCD                _BFCDCSRMAPBFCD                                    
+#define  FND_BFCD_SIZE  sizeof(_BFCD)                                           
+                                                                                

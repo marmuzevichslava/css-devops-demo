@@ -1,0 +1,59 @@
+/***************************************************************************
+*                                                                          *
+*             O S / 2    W E S   M A P   D E F I N I T I O N               *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS009                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+struct _AZCS009WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _SaveDirData[256];
+#define SaveDirData              pWesMap->_SaveDirData
+
+   char _GenDirData[256];
+#define GenDirData              pWesMap->_GenDirData
+
+
+    WESFLDCTL _SaveDirCtl;
+#define SaveDirAttr                       pWesMap->_SaveDirCtl.Attr
+#define SaveDirStatus                     pWesMap->_SaveDirCtl.Status
+#define SaveDirRights                     pWesMap->_SaveDirCtl.Rights
+#define SaveDirMsg                        pWesMap->_SaveDirCtl.Msg
+#define SaveDirCursor                     pWesMap->_SaveDirCtl.Cursor
+
+    WESFLDCTL _GenDirCtl;
+#define GenDirAttr                       pWesMap->_GenDirCtl.Attr
+#define GenDirStatus                     pWesMap->_GenDirCtl.Status
+#define GenDirRights                     pWesMap->_GenDirCtl.Rights
+#define GenDirMsg                        pWesMap->_GenDirCtl.Msg
+#define GenDirCursor                     pWesMap->_GenDirCtl.Cursor
+};
+

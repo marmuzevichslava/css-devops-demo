@@ -1,0 +1,65 @@
+/***************************************************************************
+*                                                                          *
+*           O S / 2    S Y M B O L I C   D E F I N I T I O N S             *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS003                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+/***************************************************************************
+*  Field IDs                                                               *
+****************************************************************************/
+
+#define Server_FID                                     0
+#define ServiceID_FID                                  1
+#define TranMap_FID                                    2
+#define ServiceAge_FID                                 3
+#define Flush_FID                                      4
+#define ServiceMapType_FID                             5
+#define AltMap_FID                                     6
+#define AnticModule_FID                                7
+#define ForceCall_FID                                  8
+
+/***************************************************************************
+*  Widget IDs                                                              *
+****************************************************************************/
+
+#define Server_WID                                     100
+#define ServiceID_WID                                  101
+#define TranMap_WID                                    102
+#define ServiceAge_WID                                 103
+#define Flush_WID                                      104
+#define ServiceMapType_WID                             8005
+#define AltMap_WID                                     106
+#define AnticModule_WID                                107
+#define ForceCall_WID                                  108
+
+/***************************************************************************
+*  Command IDs                                                             *
+****************************************************************************/
+
+#define OKPB_CMD                                       1000
+#define CancelPB_CMD                                   1001
+
+/***************************************************************************
+*  Radio Button Literals                                                   *
+****************************************************************************/
+#ifndef LT_Primary                         
+#define LT_Primary                          "1"
+#endif
+#ifndef LT_Alternate                       
+#define LT_Alternate                        "2"
+#endif
+
+
+/***************************************************************************
+*  List Box Column Literals                                                *
+****************************************************************************/
+

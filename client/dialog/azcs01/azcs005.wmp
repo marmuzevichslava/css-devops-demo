@@ -1,0 +1,201 @@
+/***************************************************************************
+*                                                                          *
+*             O S / 2    W E S   M A P   D E F I N I T I O N               *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS005                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+struct _AZCS005WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _ServiceLayoutNameData[33];
+#define ServiceLayoutNameData              pWesMap->_ServiceLayoutNameData
+
+
+#define  NUMRLB01ELBROWS   200
+
+    char _Rlb01ELBSelIndData[200];
+#define Rlb01ELBSelIndData    pWesMap->_Rlb01ELBSelIndData
+
+    unsigned short _Rlb01ELBCdStatusIconicData[200];
+#define Rlb01ELBCdStatusIconicData    pWesMap->_Rlb01ELBCdStatusIconicData
+
+    char _Rlb01ELBRecTypeData[200][2];
+#define Rlb01ELBRecTypeData    pWesMap->_Rlb01ELBRecTypeData
+
+    char _Rlb01ELBControlNameData[200][34];
+#define Rlb01ELBControlNameData    pWesMap->_Rlb01ELBControlNameData
+
+    char _Rlb01ELBDataTypeData[200][8];
+#define Rlb01ELBDataTypeData    pWesMap->_Rlb01ELBDataTypeData
+
+    unsigned long _Rlb01ELBNumBytesData[200];
+#define Rlb01ELBNumBytesData    pWesMap->_Rlb01ELBNumBytesData
+
+
+#define  NUMRLB02ELBROWS   200
+
+    char _Rlb02ELBSelIndData[200];
+#define Rlb02ELBSelIndData    pWesMap->_Rlb02ELBSelIndData
+
+    unsigned short _Rlb02ELBCdStatusIconicData[200];
+#define Rlb02ELBCdStatusIconicData    pWesMap->_Rlb02ELBCdStatusIconicData
+
+    char _Rlb02ELBRecTypeData[200][2];
+#define Rlb02ELBRecTypeData    pWesMap->_Rlb02ELBRecTypeData
+
+    char _Rlb02ELBControlNameData[200][34];
+#define Rlb02ELBControlNameData    pWesMap->_Rlb02ELBControlNameData
+
+    char _Rlb02ELBDataTypeData[200][8];
+#define Rlb02ELBDataTypeData    pWesMap->_Rlb02ELBDataTypeData
+
+    unsigned long _Rlb02ELBNumBytesData[200];
+#define Rlb02ELBNumBytesData    pWesMap->_Rlb02ELBNumBytesData
+
+   char _ClntElementData[34];
+#define ClntElementData              pWesMap->_ClntElementData
+
+   char _ClientLayoutData[33];
+#define ClientLayoutData              pWesMap->_ClientLayoutData
+
+   char _SrvcElementData[34];
+#define SrvcElementData              pWesMap->_SrvcElementData
+
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
+
+
+    WESFLDCTL _ServiceLayoutNameCtl;
+#define ServiceLayoutNameAttr                       pWesMap->_ServiceLayoutNameCtl.Attr
+#define ServiceLayoutNameStatus                     pWesMap->_ServiceLayoutNameCtl.Status
+#define ServiceLayoutNameRights                     pWesMap->_ServiceLayoutNameCtl.Rights
+#define ServiceLayoutNameMsg                        pWesMap->_ServiceLayoutNameCtl.Msg
+#define ServiceLayoutNameCursor                     pWesMap->_ServiceLayoutNameCtl.Cursor
+
+    WESFLDCTL _Rlb01ELBCtl;
+#define Rlb01ELBAttr                       pWesMap->_Rlb01ELBCtl.Attr
+#define Rlb01ELBStatus                     pWesMap->_Rlb01ELBCtl.Status
+#define Rlb01ELBRights                     pWesMap->_Rlb01ELBCtl.Rights
+#define Rlb01ELBMsg                        pWesMap->_Rlb01ELBCtl.Msg
+#define Rlb01ELBCursor                     pWesMap->_Rlb01ELBCtl.Cursor
+
+    WESFLDCTL _Rlb01ELBSelIndCtl[200];
+#define Rlb01ELBSelIndCtl      pWesMap->_Rlb01ELBSelIndCtl
+
+    WESFLDCTL _Rlb01ELBCdStatusIconicCtl[200];
+#define Rlb01ELBCdStatusIconicCtl      pWesMap->_Rlb01ELBCdStatusIconicCtl
+
+    WESFLDCTL _Rlb01ELBRecTypeCtl[200];
+#define Rlb01ELBRecTypeCtl      pWesMap->_Rlb01ELBRecTypeCtl
+
+    WESFLDCTL _Rlb01ELBControlNameCtl[200];
+#define Rlb01ELBControlNameCtl      pWesMap->_Rlb01ELBControlNameCtl
+
+    WESFLDCTL _Rlb01ELBDataTypeCtl[200];
+#define Rlb01ELBDataTypeCtl      pWesMap->_Rlb01ELBDataTypeCtl
+
+    WESFLDCTL _Rlb01ELBNumBytesCtl[200];
+#define Rlb01ELBNumBytesCtl      pWesMap->_Rlb01ELBNumBytesCtl
+
+
+    WESFLDCTL _Rlb02ELBCtl;
+#define Rlb02ELBAttr                       pWesMap->_Rlb02ELBCtl.Attr
+#define Rlb02ELBStatus                     pWesMap->_Rlb02ELBCtl.Status
+#define Rlb02ELBRights                     pWesMap->_Rlb02ELBCtl.Rights
+#define Rlb02ELBMsg                        pWesMap->_Rlb02ELBCtl.Msg
+#define Rlb02ELBCursor                     pWesMap->_Rlb02ELBCtl.Cursor
+
+    WESFLDCTL _Rlb02ELBSelIndCtl[200];
+#define Rlb02ELBSelIndCtl      pWesMap->_Rlb02ELBSelIndCtl
+
+    WESFLDCTL _Rlb02ELBCdStatusIconicCtl[200];
+#define Rlb02ELBCdStatusIconicCtl      pWesMap->_Rlb02ELBCdStatusIconicCtl
+
+    WESFLDCTL _Rlb02ELBRecTypeCtl[200];
+#define Rlb02ELBRecTypeCtl      pWesMap->_Rlb02ELBRecTypeCtl
+
+    WESFLDCTL _Rlb02ELBControlNameCtl[200];
+#define Rlb02ELBControlNameCtl      pWesMap->_Rlb02ELBControlNameCtl
+
+    WESFLDCTL _Rlb02ELBDataTypeCtl[200];
+#define Rlb02ELBDataTypeCtl      pWesMap->_Rlb02ELBDataTypeCtl
+
+    WESFLDCTL _Rlb02ELBNumBytesCtl[200];
+#define Rlb02ELBNumBytesCtl      pWesMap->_Rlb02ELBNumBytesCtl
+
+
+    WESFLDCTL _ClntElementCtl;
+#define ClntElementAttr                       pWesMap->_ClntElementCtl.Attr
+#define ClntElementStatus                     pWesMap->_ClntElementCtl.Status
+#define ClntElementRights                     pWesMap->_ClntElementCtl.Rights
+#define ClntElementMsg                        pWesMap->_ClntElementCtl.Msg
+#define ClntElementCursor                     pWesMap->_ClntElementCtl.Cursor
+
+    WESFLDCTL _ClientLayoutCtl;
+#define ClientLayoutAttr                       pWesMap->_ClientLayoutCtl.Attr
+#define ClientLayoutStatus                     pWesMap->_ClientLayoutCtl.Status
+#define ClientLayoutRights                     pWesMap->_ClientLayoutCtl.Rights
+#define ClientLayoutMsg                        pWesMap->_ClientLayoutCtl.Msg
+#define ClientLayoutCursor                     pWesMap->_ClientLayoutCtl.Cursor
+
+    WESFLDCTL _SrvcElementCtl;
+#define SrvcElementAttr                       pWesMap->_SrvcElementCtl.Attr
+#define SrvcElementStatus                     pWesMap->_SrvcElementCtl.Status
+#define SrvcElementRights                     pWesMap->_SrvcElementCtl.Rights
+#define SrvcElementMsg                        pWesMap->_SrvcElementCtl.Msg
+#define SrvcElementCursor                     pWesMap->_SrvcElementCtl.Cursor
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
+};
+
+typedef struct
+{
+    unsigned short  _Rlb01ELBCdStatusIconicData;
+    char  _Rlb01ELBRecTypeData[2];
+    char  _Rlb01ELBControlNameData[34];
+    char  _Rlb01ELBDataTypeData[8];
+    unsigned long  _Rlb01ELBNumBytesData;
+}_Rlb01ELBRow;
+
+typedef struct
+{
+    unsigned short  _Rlb02ELBCdStatusIconicData;
+    char  _Rlb02ELBRecTypeData[2];
+    char  _Rlb02ELBControlNameData[34];
+    char  _Rlb02ELBDataTypeData[8];
+    unsigned long  _Rlb02ELBNumBytesData;
+}_Rlb02ELBRow;
+

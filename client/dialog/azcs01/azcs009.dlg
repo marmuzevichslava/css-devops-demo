@@ -1,0 +1,164 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS009                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+AZCS009ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,229,79
+    STYLE 0 
+     | WS_CAPTION
+     | WS_DLGFRAME
+    CAPTION "Specify Directories"
+Begin  /* controls */
+   CONTROL "OK",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,7,63,37,12
+
+   CONTROL "Cancel",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,53,63,37,12
+
+   CONTROL "&Save Directory:",500,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,17,5,72,8
+
+   CONTROL "",100,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,91,13,0,0
+
+   CONTROL "&Generation Directory:",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,14,29,76,8
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,91,37,0,0
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+AZCS009ID 332
+Begin
+   /*  Control Data for Static Text ~Save Directory:  */
+   FP_CONTROL_ID,                       "500\0"
+   FP_SCREEN_LENGTH,                    "16\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field SaveDir  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   /*  Control Data for Static Text ~Generation Directory:  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "22\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Entry Field GenDir  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+AZCS009AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1001,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

@@ -1,0 +1,129 @@
+/***************************************************************************
+*                                                                          *
+*             O S / 2    W E S   M A P   D E F I N I T I O N               *
+*                                                                          *
+*                Copyright (C) 1994, Andersen Consulting.                  *
+*                          All rights reserved.                            *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: AZCS003                           *
+*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                                    by: MCONNER                           *
+*                                                                          *
+****************************************************************************/
+
+struct _AZCS003WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   unsigned long _ServerData;
+#define ServerData              pWesMap->_ServerData
+
+   unsigned short _ServiceIDData;
+#define ServiceIDData              pWesMap->_ServiceIDData
+
+   char _TranMapData[10];
+#define TranMapData              pWesMap->_TranMapData
+
+   unsigned long _ServiceAgeData;
+#define ServiceAgeData              pWesMap->_ServiceAgeData
+
+   char _FlushData[2];
+#define FlushData              pWesMap->_FlushData
+
+   char _ServiceMapTypeData[3];
+#define ServiceMapTypeData              pWesMap->_ServiceMapTypeData
+
+   char _AltMapData[10];
+#define AltMapData              pWesMap->_AltMapData
+
+   char _AnticModuleData[11];
+#define AnticModuleData              pWesMap->_AnticModuleData
+
+   char _ForceCallData[2];
+#define ForceCallData              pWesMap->_ForceCallData
+
+
+    WESFLDCTL _ServerCtl;
+#define ServerAttr                       pWesMap->_ServerCtl.Attr
+#define ServerStatus                     pWesMap->_ServerCtl.Status
+#define ServerRights                     pWesMap->_ServerCtl.Rights
+#define ServerMsg                        pWesMap->_ServerCtl.Msg
+#define ServerCursor                     pWesMap->_ServerCtl.Cursor
+
+    WESFLDCTL _ServiceIDCtl;
+#define ServiceIDAttr                       pWesMap->_ServiceIDCtl.Attr
+#define ServiceIDStatus                     pWesMap->_ServiceIDCtl.Status
+#define ServiceIDRights                     pWesMap->_ServiceIDCtl.Rights
+#define ServiceIDMsg                        pWesMap->_ServiceIDCtl.Msg
+#define ServiceIDCursor                     pWesMap->_ServiceIDCtl.Cursor
+
+    WESFLDCTL _TranMapCtl;
+#define TranMapAttr                       pWesMap->_TranMapCtl.Attr
+#define TranMapStatus                     pWesMap->_TranMapCtl.Status
+#define TranMapRights                     pWesMap->_TranMapCtl.Rights
+#define TranMapMsg                        pWesMap->_TranMapCtl.Msg
+#define TranMapCursor                     pWesMap->_TranMapCtl.Cursor
+
+    WESFLDCTL _ServiceAgeCtl;
+#define ServiceAgeAttr                       pWesMap->_ServiceAgeCtl.Attr
+#define ServiceAgeStatus                     pWesMap->_ServiceAgeCtl.Status
+#define ServiceAgeRights                     pWesMap->_ServiceAgeCtl.Rights
+#define ServiceAgeMsg                        pWesMap->_ServiceAgeCtl.Msg
+#define ServiceAgeCursor                     pWesMap->_ServiceAgeCtl.Cursor
+
+    WESFLDCTL _FlushCtl;
+#define FlushAttr                       pWesMap->_FlushCtl.Attr
+#define FlushStatus                     pWesMap->_FlushCtl.Status
+#define FlushRights                     pWesMap->_FlushCtl.Rights
+#define FlushMsg                        pWesMap->_FlushCtl.Msg
+#define FlushCursor                     pWesMap->_FlushCtl.Cursor
+
+    WESFLDCTL _ServiceMapTypeCtl;
+#define ServiceMapTypeAttr                       pWesMap->_ServiceMapTypeCtl.Attr
+#define ServiceMapTypeStatus                     pWesMap->_ServiceMapTypeCtl.Status
+#define ServiceMapTypeRights                     pWesMap->_ServiceMapTypeCtl.Rights
+#define ServiceMapTypeMsg                        pWesMap->_ServiceMapTypeCtl.Msg
+#define ServiceMapTypeCursor                     pWesMap->_ServiceMapTypeCtl.Cursor
+
+    WESFLDCTL _AltMapCtl;
+#define AltMapAttr                       pWesMap->_AltMapCtl.Attr
+#define AltMapStatus                     pWesMap->_AltMapCtl.Status
+#define AltMapRights                     pWesMap->_AltMapCtl.Rights
+#define AltMapMsg                        pWesMap->_AltMapCtl.Msg
+#define AltMapCursor                     pWesMap->_AltMapCtl.Cursor
+
+    WESFLDCTL _AnticModuleCtl;
+#define AnticModuleAttr                       pWesMap->_AnticModuleCtl.Attr
+#define AnticModuleStatus                     pWesMap->_AnticModuleCtl.Status
+#define AnticModuleRights                     pWesMap->_AnticModuleCtl.Rights
+#define AnticModuleMsg                        pWesMap->_AnticModuleCtl.Msg
+#define AnticModuleCursor                     pWesMap->_AnticModuleCtl.Cursor
+
+    WESFLDCTL _ForceCallCtl;
+#define ForceCallAttr                       pWesMap->_ForceCallCtl.Attr
+#define ForceCallStatus                     pWesMap->_ForceCallCtl.Status
+#define ForceCallRights                     pWesMap->_ForceCallCtl.Rights
+#define ForceCallMsg                        pWesMap->_ForceCallCtl.Msg
+#define ForceCallCursor                     pWesMap->_ForceCallCtl.Cursor
+};
+

@@ -1,0 +1,42 @@
+/***************************************************************************
+ *                                                                         *
+ *          C   W I N D O W S   N T   R E S O U R C E   F I L E            *
+ *                                                                         *
+ *                Copyright (C) 1994 Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                    Resource file for: AZCS01                            *
+ *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                                   by: MCONNER                           *
+ *                                                                         *
+ ***************************************************************************/
+#include <windows.h>
+#include <kwdxk010.h>
+
+/***************************************************************************
+ * Window Identifier File                                                  * 
+ ***************************************************************************/
+#include "AZCS01.gnz"
+
+
+/***************************************************************************
+ * Window Resource Files                                                   * 
+ ***************************************************************************/
+rcinclude n:\archinc\c1cptrs.rch
+
+rcinclude azcs001.dlg
+rcinclude azcs002.dlg
+rcinclude azcs006.dlg
+rcinclude azcs007.dlg
+rcinclude azcs004.dlg
+rcinclude azcs005.dlg
+rcinclude azcs008.dlg
+rcinclude azcs009.dlg
+rcinclude azcs010.dlg
+rcinclude azcs003.dlg
+rcinclude azcs011.dlg
+rcinclude azcs013.dlg
+rcinclude azcs014.dlg
+
