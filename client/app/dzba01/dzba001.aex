@@ -471,8 +471,12 @@ AEXPROC( ExitCsrNotification )
 						}
 				        fflush(LogFile);
 
-						nTotalReturnCounter =  nTotalReturnCounter + 
+
+						if (BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows > 0)
+						{
+						    nTotalReturnCounter =  nTotalReturnCounter + 
 				                  BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows;
+						}
 					}
 
 					nTableCounter++;
@@ -885,8 +889,11 @@ AEXPROC( ExitCsrNotification )
 					}
 					fflush(LogFile);
 
-					nTotalReturnCounter =  nTotalReturnCounter + 
+					if ( BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows > 0 )
+					{
+					     nTotalReturnCounter =  nTotalReturnCounter + 
 				                  BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows;
+					}
 				}
 
 					nTableCounter++;
