@@ -1,0 +1,20 @@
+/***************************************************************************
+ *
+ *   ~CallbackType.
+ *
+ *   Callback Name: ~CommentCallbackName
+ * 
+~WidgetEvent!
+ *
+ *   Event Name:    ~EventName.
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(~CallbackName.)
+{
+~LocalStorage
+% JSH: 11/4/94 ADDED %
+CMN_ARCH_EXIT_INITIALIZE
+~InitRoutines
+~Actions
+}

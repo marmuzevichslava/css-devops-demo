@@ -1,0 +1,194 @@
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : LdAZCS2O
+**
+**  DESCRIPTION      : This function loads the data into the output data structure for window 2.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+
+static WCBPROC (LdAZCS2O)
+{
+ _REQUESTINFO *pLdAzcs002o;
+
+  pLdAzcs002o = EAB_pWdtOutData;
+
+ strcpy(pLdAzcs002o->RequestID   , RequestIDData);
+ strcpy(pLdAzcs002o->RequestType , RequestTypeData);
+ strcpy(pLdAzcs002o->ClientLayout, ClientLayoutData);
+ return(CMN_SUCCESS);
+
+}
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : ChkForMap
+**
+**  DESCRIPTION      : This function checks to see if a save map has been saved
+**                       for this request id.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+static WCBPROC (ChkForMap)
+{
+    unsigned short          FndGenRC = FND_SUCCESS;
+   _FND_ERROR_BLOCK         FndGenErrorBlock;
+
+    /* JLL: 06/30/93 ADDED */
+    FILE                   *Stream;
+    CHAR                    FileNm[_CSR_MAP_FILENAME_LEN] = "";
+    CHAR                    CurLine[_MAPGN_MAX_MAP_LINE_LEN] = "";
+    CHAR                    d1[_DUMMY_LEN],d2[_DUMMY_LEN],d3[_DUMMY_LEN],
+                            d4[_DUMMY_LEN],d5[_DUMMY_LEN],d6[_DUMMY_LEN],
+                            d7[_DUMMY_LEN], d8[_DUMMY_LEN];
+
+    /* JLL: 06/30/93 ADDED */
+
+    /* Open Map File */
+    FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
+                          FileNm,
+                          _CSR_MAP_FILENAME_LEN,
+                          5,
+                          BFCD_CSRMapBFCD->CsrMapSavePath,
+                          "\\",
+                          RequestIDData,
+                          ".",
+                          CSR_MAP_SAVE_FILE_EXT );
+
+
+ /***************************************************/
+ /* IF MAP FOUND THEN PUT IN TO WES FIELDS          */
+ /***************************************************/
+
+    /* JLL: 06/30/93 ADDED */
+    if (( Stream = fopen( FileNm,"r" )) != NULL )
+    {
+
+        /* Format the Request Header */
+        fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
+
+        sscanf( CurLine,CSR_MAP_REQ_HEADER_FORMAT_STR,
+                d1,d2,BFCD_CSRMapBFCD->ClientInfo.ReqId,
+                d3,BFCD_CSRMapBFCD->ClientInfo.ClientLayoutName,
+                d4,BFCD_CSRMapBFCD->ClientInfo.ReqType,
+                d5,&BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy,
+                d6,&BFCD_CSRMapBFCD->ClientInfo.NumClientRows,
+                d7,&BFCD_CSRMapBFCD->NumServices,
+                d8,&BFCD_CSRMapBFCD->ClientInfo.Version );
+
+
+        /* Close the file */
+        fclose( Stream );
+
+        FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                     "CLIENTLAYOUT",
+                                     sizeof( ClientLayoutData ),
+                                     BFCD_CSRMapBFCD->ClientInfo.ClientLayoutName,
+                                     &FndGenErrorBlock );
+/* CSC: CHANGED 07/21/93 */
+        if( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "INQUIRY" ) == 0 )
+          {
+          FndGenRC = FndValueEnableItem( CBI_hwnd,
+                                         "REQUESTTYPE",
+                                         LT_RequestTypeIN,
+                                         &FndGenErrorBlock );
+
+          FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                       "REQUESTTYPE", ,
+                                       sizeof( RequestTypeData ),
+                                       "1",
+                                       &FndGenErrorBlock );
+        }
+        else
+        {
+
+          FndGenRC = FndValueEnableItem( CBI_hwnd,
+                                         "REQUESTTYPE",
+                                         LT_RequestTypeUP,
+                                         &FndGenErrorBlock );
+
+          FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                       "REQUESTTYPE", ,
+                                       sizeof( RequestTypeData ),
+                                       LT_RequestTypeUP,
+                                       &FndGenErrorBlock );
+        }
+
+        /* If a map is found disable the entire RB group */
+          FndGenRC = FndFieldDisable( CBI_hwnd,
+                                      "REQUESTTYPE",
+                                      &FndGenErrorBlock);
+
+          FndGenRC = FndFieldDisable( CBI_hwnd,
+                                      "CLIENTLAYOUT",
+                                      &FndGenErrorBlock );
+
+
+
+    }
+
+    else
+    {  /* Saved Map Not Found */
+       /* Set default to Inquiry */
+        strcpy( RequestTypeData,
+                LT_RequestTypeIN );
+
+        /* Enable the Radio Button Group */
+        FndGenRC = FndFieldEnable( CBI_hwnd,
+                                   "REQUESTTYPE",
+                                   &FndGenErrorBlock );
+
+        FndGenRC = FndFieldEnable( CBI_hwnd,
+                                   "CLIENTLAYOUT",
+                                   &FndGenErrorBlock );
+
+
+    }
+
+
+ return(CMN_SUCCESS);
+
+}
+
+

@@ -1,0 +1,156 @@
+static WCBPROC (UserPredisplay)
+{
+ strcpy(SaveDirData, BFCD_CSRMapBFCD->CsrMapSavePath);
+ strcpy(GenDirData, BFCD_CSRMapBFCD->CsrMapGenPath);
+
+ return(CMN_SUCCESS);
+}
+
+static WCBPROC (ChkSaveDir)
+{
+  /* JLL: 07/16/93 ADDED */
+  FILE *Stream;
+  _FND_ERROR_BLOCK  ErrorBlock;
+  short FndGenRC;
+  USHORT SelectedButton;
+  CHAR FileNm[_CSR_MAP_FILENAME_LEN] = "";
+
+  FndGenRC = FndFieldQueryValue( CBI_hwnd,
+                      "SaveDir",
+                      _PATH_LEN,
+                      BFCD_CSRMapBFCD->CsrMapSavePath,
+                      &ErrorBlock );
+
+  /* Obtain file name */
+  FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
+                        FileNm,
+                        _CSR_MAP_FILENAME_LEN,
+                        3,
+                        BFCD_CSRMapBFCD->CsrMapSavePath,
+                        "\\",
+                        MAP_TMP_FILE );
+
+  if (( Stream = fopen( FileNm,"w" )) == NULL )
+  {
+
+/*     FndMsgBoxDisplayText( "Invalid Save Directory.\nPlease respecify.\n",
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           NULL,
+                           &SelectedButton,
+                           &ErrorBlock );
+*/
+
+     FndFieldSetStatus( CBI_hwnd,
+                        "SaveDir",
+                        STS_INVALID,
+                        &ErrorBlock );
+
+     return( CMN_FAIL );
+
+  }
+  else
+  {
+     FndFieldSetStatus( CBI_hwnd,
+                        "SaveDir",
+                        STS_VALID,
+                        &ErrorBlock );
+
+     fclose( Stream );
+     remove( FileNm );
+  }
+
+  return(CMN_SUCCESS);
+}
+
+static WCBPROC (ChkGenDir)
+{
+  _FND_ERROR_BLOCK  ErrorBlock;
+  short FndGenRC;
+  CHAR FileNm[_CSR_MAP_FILENAME_LEN] = "";
+  USHORT SelectedButton;
+  FILE *Stream;
+
+  FndGenRC = FndFieldQueryValue( CBI_hwnd,
+                      "GenDir",
+                      _PATH_LEN,
+                      BFCD_CSRMapBFCD->CsrMapGenPath,
+                      &ErrorBlock );
+
+
+  /* Obtain file name */
+  FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
+                        FileNm,
+                        _CSR_MAP_FILENAME_LEN,
+                        3,
+                        BFCD_CSRMapBFCD->CsrMapGenPath,
+                        "\\",
+                        MAP_TMP_FILE );
+
+  if (( Stream = fopen( FileNm,"w" )) == NULL )
+  {
+/*
+     FndMsgBoxDisplayText( "Invalid Generate Directory.\nPlease respecify.\n",
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           NULL,
+                           &SelectedButton,
+                           &ErrorBlock );
+*/
+     FndFieldSetStatus( CBI_hwnd,
+                        "GenDir",
+                        STS_INVALID,
+                        &ErrorBlock );
+
+     return( CMN_FAIL );
+
+  }
+  else
+  {
+     FndFieldSetStatus( CBI_hwnd,
+                        "GenDir",
+                        STS_VALID,
+                        &ErrorBlock );
+
+     fclose( Stream );
+     remove( FileNm );
+  }
+
+
+  return(CMN_SUCCESS);
+}
+
+static WCBPROC (SaveToBFCD)
+{
+  FILE *Stream;
+
+
+  /* Open the csrmap.cfg */
+  if (( Stream = fopen( CSR_MAP_CFG_FILE,"w" )) == NULL )
+  {
+     return( CMN_FAIL );
+  }
+
+  fprintf( Stream,
+           "%s %s\n",
+           "SAVE: ",
+           BFCD_CSRMapBFCD->CsrMapSavePath );
+
+  fprintf( Stream,
+           "%s %s\n",
+           "GENERATE: ",
+           BFCD_CSRMapBFCD->CsrMapGenPath );
+
+  fclose( Stream );
+
+
+return(CMN_SUCCESS);
+
+}
+

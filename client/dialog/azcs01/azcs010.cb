@@ -1,0 +1,158 @@
+static WCBPROC(User_Predisplay)
+{
+unsigned short FndGenRC = FND_SUCCESS;
+unsigned short ix;
+BOOL Continue;
+_FND_ERROR_BLOCK ErrorBlock;
+_MapLBRow LBox;
+char *pColon;
+char DriveLetter;
+USHORT DriveNumber;
+
+PSZ pszFiles;
+HDIR hdir = HDIR_CREATE;
+USHORT usSearchCount = 1;
+FILEFINDBUF FindBuf;
+CHAR szPath[_PATH_LEN];
+PCHAR pchTemp;
+USHORT sRc = 0;
+USHORT usCurrFile = 0;
+USHORT usFileCount = 0xFFFF;
+
+
+/* Get the drive letter for the Generation Path directory */
+
+pColon = strchr(BFCD_CSRMapBFCD->CsrMapGenPath,':');
+if(pColon)
+  {
+   DriveLetter = *(pColon-1);
+   strcpy(szPath, pColon+1);
+  }
+else
+  {
+   DriveLetter = 'C';
+   strcpy(szPath, BFCD_CSRMapBFCD->CsrMapGenPath);
+  }
+
+/* Calculate the Drive Number A=1, B=2 ... */
+
+DriveNumber = (toupper(DriveLetter) - 'A') + 1;
+
+
+/* Select the Drive */
+
+sRc = DosSelectDisk(DriveNumber);
+
+/* Change the Directory */
+
+sRc = DosChDir(szPath, 0L);
+
+pszFiles = "*.MAP";
+
+ix=0;
+Continue=TRUE;
+while (Continue)
+     {
+
+      /* Find out how many files there are */
+      sRc = DosFindFirst(pszFiles, &hdir, FILE_NORMAL, &FindBuf,
+                         sizeof(FILEFINDBUF), &usFileCount, 0L);
+
+      /* Now begin looking for files */
+      hdir = HDIR_CREATE;
+      sRc = DosFindFirst(pszFiles, &hdir, FILE_NORMAL, &FindBuf,
+                         sizeof(FILEFINDBUF), &usSearchCount, 0l);
+
+      if (sRc == 0)
+         {
+          while (!sRc && usSearchCount)
+                {
+                 /* Cutoff the extension */
+                 pchTemp = strchr(FindBuf.achName,'.');
+                 if (pchTemp)
+                     *pchTemp = '\0';
+
+                 /* Move the filename without extension into the List Box */
+                 LBox._MapLBCdStatusIconicData = CMN_LBROW_STATUS_AVAILABLE;
+                 strcpy(LBox._MapLBRequestIDData, FindBuf.achName);
+                 FndGenRC = FndLstBoxRowAdd(CBI_hwnd,
+                                 "MapLB",
+                                 ix,
+                                 sizeof(LBox),
+                                 (void *) &LBox,
+                                 &ErrorBlock);
+
+                 if (FndGenRC != FND_SUCCESS)
+                    {
+                     Continue = FALSE;
+                     return(CMN_FAIL);
+                    }
+
+                 ix++;
+
+                 if (ix >= NUMMAPLBROWS)
+                     return(CMN_SUCCESS);
+
+                 /* get the next file */
+                 sRc = DosFindNext( hdir, &FindBuf, sizeof(FILEFINDBUF),
+                       &usSearchCount);
+
+                 if (sRc == ERROR_NO_MORE_FILES)
+                     Continue = FALSE;
+                }
+         }
+      else
+         return(CMN_FAIL);
+     } /* end of while (Continue) loop */
+
+ return(CMN_SUCCESS);
+} /* End of function User_Predisplay */
+
+static WCBPROC(LdAZCS010O)
+{
+unsigned short FndGenRC = FND_SUCCESS;
+unsigned short ix=0;
+_FND_ERROR_BLOCK ErrorBlock;
+int RowNumber;
+_SDMapName *pSDMapName;
+_MapLBRow LBox;
+
+RowNumber = FND_LSTBOX_START;
+ix=0;
+
+pSDMapName = EAB_pWdtOutData;
+
+ do
+    {
+     FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                            "MapLB",
+                                            RowNumber,
+                                            &RowNumber,
+                                            &ErrorBlock);
+
+     if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+        {
+         strcpy(pSDMapName[ix].SDMapName, "");
+         return(CMN_FAIL);
+        }
+     else
+      if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
+         {
+          strcpy(pSDMapName[ix].SDMapName, "");
+          return(CMN_SUCCESS);
+         }
+     FndGenRC = FndLstBoxRowQueryData(CBI_hwnd,
+                                      "MapLB",
+                                      RowNumber,
+                                      sizeof(LBox),
+                                      &LBox,
+                                      &ErrorBlock);
+
+     strcpy(pSDMapName[ix].SDMapName, LBox._MapLBRequestIDData);
+     ix ++;
+
+    } while (RowNumber < MAXSD);
+
+ return(CMN_SUCCESS);
+}
+

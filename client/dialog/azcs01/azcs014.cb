@@ -1,0 +1,24 @@
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  UserPredisplay                                                   */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC (AZCS014BusPredisplay)
+{
+     unsigned short           FndGenRC = FND_SUCCESS;
+/*     _FND_ERROR_BLOCK         FndGenErrorBlock; */
+     short ix=0;
+     short iy=0;
+
+  strcpy(ReleaseData, CSR_MAPGEN_REVISION );
+  strcpy(ReleaseDateData, __DATE__ );
+
+  return(CMN_SUCCESS);
+}
+
+

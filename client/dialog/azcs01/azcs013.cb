@@ -1,0 +1,3323 @@
+#define STACKSIZE 51200
+VOID FileOut( CHAR *Text );
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZCS013BusPredisplay
+**
+**  DESCRIPTION      : This function is invoked at predisplay of the Saved Map
+**                       and Repository Comparision window.
+**
+**  INPUTS           : Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Added code for dealing with saved relationship
+**                                  layouts.
+**
+**  08/03/94  C. Crampton           Added EXCLUDE_FND_WRAPPERS and logic for
+**                                  more messages than listbox can handle.
+**
+**  10/18/94  J. Looney             Clean Up.
+***************************************************************************/
+static WCBPROC(AZCS013BusPredisplay)
+{
+    SHORT nRC = 0;
+    SHORT FndGenRC;
+    SHORT sIndex;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _STDParms *pSTDParms;
+
+    HEAP_CHECK
+
+    /* Allocate memory for the parms to be passed around in the
+     * Compare Layouts thread.
+     */
+    pSTDParms = (_STDParms *) malloc(sizeof(_STDParms));
+    pSTDParms->pBFCD = pBFCD;
+    pSTDParms->hwnd = CBI_hwnd;
+
+    /*
+     * Set the window to invalid. This will make the ok pushbutton disabled.
+     * When you get the done message set the window to valid.
+     */
+    FndGenRC = CmnWindowDataModNotReqd(CMN_ARCH_PARMS);
+    FndGenRC = CmnWindowSetApplInvalid(CMN_ARCH_PARMS);
+
+    /*
+     * Set the AbortFlag to FALSE, it will be set to true when the thread
+     * should stop processing.
+     */
+    pBFCD->pCSRMapBFCD->AbortFlag = FALSE;
+
+    /* Set the warning flag to false */
+    bWarn = FALSE;
+
+    /* Set the error flag to false */
+    bError = FALSE;
+
+    /* Set the remap flag to false */
+    bRemap = FALSE;
+
+    /*
+     * Save the relationship structures in case you need to fall back to the
+     * saved map data. If there is a difference between the repos and saved
+     * data layouts some reordering may occur. You need a fall back copy in
+     * case the user wants to go back to the saved map.
+     */
+    for( sIndex = 0; sIndex<pBFCD->pCSRMapBFCD->NumServices; sIndex++ )
+    {
+        /*
+         * Save existing tables
+         */
+
+        /* Compare Keys */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pCompareKeys )
+        {
+            if( !pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                 pSavedCompareKeys )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                       pSavedCompareKeys =
+                (_RELATE_CK *) malloc((sizeof(_RELATE_CK)*MAXSERVICEROWS));
+
+                memset(pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                       pSavedCompareKeys,
+                       0,
+                       sizeof(_RELATE_CK)*MAXSERVICEROWS );
+            }
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pSavedCompareKeys,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pCompareKeys,
+                    sizeof(_RELATE_CK)*MAXSERVICEROWS );
+
+        } /* End of if pCompareKeys exists */
+
+        /* Return Data */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pReturnData )
+        {
+            if( !pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                        pSavedReturnData )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pSavedReturnData =
+                    (_RELATE_RD *) malloc((sizeof(_RELATE_RD)*MAXSERVICEROWS));
+
+                memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                               pSavedReturnData,
+                        0,
+                        sizeof(_RELATE_RD)*MAXSERVICEROWS );
+            }
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pSavedReturnData,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pReturnData,
+                    sizeof(_RELATE_RD)*MAXSERVICEROWS );
+        } /* End of if pReturnData exists */
+
+        /* Load Keys */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pLoadKeys )
+        {
+            if( !pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                 pSavedLoadKeys )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pSavedLoadKeys =
+                (_RELATE_LK *) malloc((sizeof(_RELATE_LK)*MAXSERVICEROWS));
+
+                memset(pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                              pSavedLoadKeys,
+                       0,
+                       sizeof(_RELATE_LK)*MAXSERVICEROWS );
+            }
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pSavedLoadKeys,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pLoadKeys,
+                    sizeof(_RELATE_LK)*MAXSERVICEROWS );
+
+        } /* End of if pLoadKeys exists */
+
+        /* Load Data */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pLoadData )
+        {
+            if( !pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pSavedLoadData )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pSavedLoadData =
+                (_RELATE_LD *) malloc((sizeof(_RELATE_LD)*MAXSERVICEROWS));
+
+                memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                               pSavedLoadData,
+                        0,
+                        sizeof(_RELATE_LD)*MAXSERVICEROWS );
+            }
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pSavedLoadData,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pLoadData,
+                    sizeof(_RELATE_LD)*MAXSERVICEROWS );
+
+        } /* End of if pLoadData exists */
+
+        /* Repeating Maps */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pRepeatingMaps )
+        {
+            if( !pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                pSavedRepeatingMaps )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].pSavedRepeatingMaps =
+                (_RELATE_RPMH *) malloc((sizeof(_RELATE_RPMH)*MAXSERVICEROWS));
+
+                memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                               pSavedRepeatingMaps,
+                        0,
+                        sizeof(_RELATE_RPMH)*MAXSERVICEROWS );
+            }
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pSavedRepeatingMaps,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].
+                           pRepeatingMaps,
+                    sizeof(_RELATE_RPMH)*MAXSERVICEROWS );
+
+        } /* End of if pRepeatingMaps exists */
+
+    } /* end of loop for number of services */
+
+    /* Start the thread to compare the repository and saved map data. */
+
+    HEAP_CHECK
+
+    nRC = _beginthread( (void (_cdecl _FAR_ *) (void _FAR_ *))CompareLayouts,
+                         NULL,
+                         STACKSIZE,
+                         (VOID *) pSTDParms );
+
+    HEAP_CHECK
+
+    if (nRC < 0)
+    {
+        USHORT usSelectedButton;
+
+        FndGenRC = FndMsgBoxDisplayText(
+                           "Unable to start thread for comparision!\n\n"
+                           "Close the application and try again !!!!",
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           CMN_MAPGEN_NAME,
+                           &usSelectedButton,
+                           &FndGenErrorBlock );
+
+        return CMN_FAIL;
+    }
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of function AZCS013BusPredisplay  */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ProcessMsg
+**
+**  DESCRIPTION      : This function handles any messages that are recieved via
+**                      the interwindow_msg event. It only processes events with
+**                      an event id within the mapgen range.
+**
+**  INPUTS           : Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Chris Crampton
+**
+**  DATE CREATED     : 09/20/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  09/20/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+**
+***************************************************************************/
+WCBPROC(ProcessMsg)
+{
+    SHORT FndGenRC;
+    USHORT SelectedButton;
+    CHAR *pInputMsg = "Function Process InterWindow Msg Activated";
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _MsgLBRow MsgLB;
+    static ULONG ulNumRows=0;
+
+    HEAP_CHECK
+
+    FileOut( "Entering ProcessMsg\n" );
+
+    /* Process only messages within the mapgen event id range */
+    if( CBI_IWApplMsg < CMN_MAPGEN_MSG_BASE ||
+        CBI_IWApplMsg > CMN_MAPGEN_MSG_BASE + CMN_MSG_SPACER )
+    {
+        return CMN_SUCCESS;
+    }
+
+    /*
+     * See if the message is that the thread is all done.
+     * If it is then make the Message List boxes status valid which will
+     *  enable the OK pushbutton.
+     */
+
+    if ( CBI_IWApplMsg == CMN_MAPGEN_MSG_DONE )
+    {
+        DosSemClear( &hsemLock );
+
+        /*
+         * Set the window to valid. This will make the ok pushbutton enabled.
+         */
+
+        FndGenRC = CmnWindowSetApplValid(CMN_ARCH_PARMS);
+
+        if (bError)
+        {
+            /*
+             * See if the user wants to keep checking the map or revert back
+             * to the old map. If they do, tell the thread to stop processing
+             * and call the UseOldMap function.
+             */
+
+            FndGenRC = FndMsgBoxDisplayText(
+                                   "Changes have occurred to the data layouts since "
+                                   "the last time the map was saved.\n\n"
+                                   "Do you want to use the new layout format "
+                                   "?\n",
+                                   NULL,
+                                   CBI_hwnd,
+                                   FND_MSGBOX_YESNO,
+                                   FND_MSGBOX_INFORMATION,
+                                   FND_MSGBOX_IDYES,
+                                   CMN_MAPGEN_NAME,
+                                   &SelectedButton,
+                                   &FndGenErrorBlock);
+
+            if ( SelectedButton == FND_MSGBOX_IDNO )
+            {
+                pBFCD->pCSRMapBFCD->AbortFlag = TRUE;
+                FndGenRC = Azcs013BusUseOldMap(pEventInfo,
+                                               pEAIA,
+                                               pBFCD,
+                                               pWesMap,
+                                               pWindContextData,
+                                               pABHI);
+            }
+
+        } /* End of if any errors occured */
+
+        ulNumRows = 0;
+
+        return CMN_SUCCESS;
+    }
+
+    /* Increment the counter for the number of messages */
+    ulNumRows++;
+
+    /*
+     * If the listbox for messages in not full add the current message to it.
+     */
+
+    if ( ulNumRows < NUMMSGLBROWS)
+    {
+        MsgLB._MsgLBMsgTypeData = CBI_IWApplMsg - CMN_MAPGEN_MSG_BASE;
+
+        strncpy( MsgLB._MsgLBDataBufferData,
+                 CBI_IWApplParm,
+                 sizeof( MsgLB._MsgLBDataBufferData )); /* 256 */
+
+        FndGenRC = CmnErrOverrides(NULL,
+                                   CMN_OVERRIDE_FATAL,
+                                   CMN_ERR_LOGGING_DEFAULT,
+                                   CMN_RC_CONTINUE_PROCESSING,
+                                   CMN_ARCH_PARMS);
+
+
+        FndGenRC = FndLstBoxRowAdd( CBI_hwnd,
+                                    "MsgLB",
+                                    FND_LSTBOX_END,
+                                    sizeof(_MsgLBRow),
+                                    &MsgLB,
+                                    &FndGenErrorBlock);
+
+
+        FileOut( MsgLB._MsgLBDataBufferData );
+
+        /* Check the return code from the add */
+        if ( FndGenRC != FND_SUCCESS )
+        {
+            FndGenRC = FndMsgBoxDisplayText(
+                              "An error occured adding a row to the listbox",
+                              NULL,
+                              CBI_hwnd,
+                              FND_MSGBOX_OK,
+                              FND_MSGBOX_ERROR,
+                              FND_MSGBOX_IDOK,
+                              CMN_MAPGEN_NAME,
+                              &SelectedButton,
+                              &FndGenErrorBlock );
+            /* Clear the semaphore that was set by the calling routine */
+            DosSemClear( &hsemLock );
+
+            return CMN_FAIL;
+        }
+
+    } /* end of if ( ulNumRows < NUMMSGLBROWS) */
+
+    else if ( ulNumRows == NUMMSGLBROWS )
+    {
+
+        /* Clear the semaphore that was set by the calling routine */
+        DosSemClear(&hsemLock);
+
+        FndGenRC = FndMsgBoxDisplayText(
+              "More errors have occurred than can fit in the Listbox\n\n"
+              "All new error messages will be discarded !",
+                                        NULL,
+                                        CBI_hwnd,
+                                        FND_MSGBOX_OK,
+                                        FND_MSGBOX_ERROR,
+                                        FND_MSGBOX_IDOK,
+                                        CMN_MAPGEN_NAME,
+                                        &SelectedButton,
+                                        &FndGenErrorBlock);
+
+        return CMN_FAIL;
+    }
+
+    /* More message than the message box can handle have occured. */
+    else
+    {
+        DosSemClear(&hsemLock);
+    }
+
+    /*
+     * Display a message box if its an error but only for the first one
+     */
+
+    if( CBI_IWApplMsg == CMN_MAPGEN_MSG_ERROR )
+    {
+        if ( bError == FALSE )
+        {
+           bError = TRUE;
+           FndGenRC = FndMsgBoxDisplayText(
+                               "ERRORS occured comparing the saved map data "
+                               "and the repository data !!\n\n"
+                               " Inspect the log carefully.",
+                               NULL,
+                               CBI_hwnd,
+                               FND_MSGBOX_OK,
+                               FND_MSGBOX_CRITICAL,
+                               FND_MSGBOX_IDOK,
+                               CMN_MAPGEN_NAME,
+                               &SelectedButton,
+                               &FndGenErrorBlock);
+        }
+    }
+
+    /* Display a message box if its a warning but only for the first one */
+    if (CBI_IWApplMsg == CMN_MAPGEN_MSG_WARN)
+    {
+        if( bWarn == FALSE )
+        {
+            bWarn = TRUE;
+
+            FndGenRC = FndMsgBoxDisplayText(
+                            "Warings were issued comparing the saved map "
+                            "data and the repository data !!\n\n Inspect "
+                            "the log carefully.",
+                            NULL,
+                            CBI_hwnd,
+                            FND_MSGBOX_OK,
+                            FND_MSGBOX_CRITICAL,
+                            FND_MSGBOX_IDOK,
+                            CMN_MAPGEN_NAME,
+                            &SelectedButton,
+                            &FndGenErrorBlock );
+
+
+          }
+     }
+
+    /* Clear the semaphore that was set by the calling routine */
+    DosSemClear( &hsemLock );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of ProcessMsg */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CompareLayouts
+**
+**  DESCRIPTION      : This function is the controlling function for comparing a saved
+**                      data layout with the current repository layout.
+**
+**  INPUTS           : pSTDParms - This is a pointer to the STDParms data structure.
+**                                 It contains a pointer to BFCD and a pointer to the window
+**                                 handle. You need this because the compare layouts runs
+**                                 as a seperate thread spawned from the window.
+**
+**  OUTPUTS          : Return Code - VOID
+**
+**
+**  CALLED FUNCTIONS : CheckIt
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/21/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/21/93  CCRAMPTO              Original code.
+**
+**  10/18/94  JLOONEY               Clean Up.
+***************************************************************************/
+VOID CompareLayouts(_STDParms *pSTDParms)
+{
+    SHORT nServiceIndex;
+    SHORT sNumRows;
+    USHORT FndGenRC;
+    USHORT MsgID;
+    HWND hwnd;
+    BOOL bMatch = TRUE;
+    BOOL bInfo  = FALSE;
+    BOOL bCritical = FALSE;
+    CHAR MsgData[255];
+    _LAYOUT_REC *pReposLayout;
+    _LAYOUT_REC *pSavedLayout;
+    _BFCD * pBFCD;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+    FILE *fptr;
+
+//    HEAP_CHECK_BEEP
+    if (_heapchk() != _HEAPOK) { DosBeep(55,100); }
+
+    /* Save off the STDParm values */
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Send a message to the window for the 1st message of the listbox */
+    MsgID = CMN_MAPGEN_MSG_INFO;
+    strncpy( MsgData,
+             "***** Starting Comparison of Repository and Saved Map "
+             "Data Layouts *****",
+             sizeof( MsgData ));
+
+//  POSTMSG;
+
+
+                 FndGenRC = DosSemSet(&hsemLock);
+                 FndGenRC = FndWndMsgPost( hwnd,
+                                           MsgID,
+                                           &MsgData,
+                                           &FndGenErrorBlock);
+                 FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+                 if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)
+                    _endthread();
+
+    /* Check the Client map first */
+    MsgID = CMN_MAPGEN_MSG_INFO;
+
+    sprintf( MsgData,                                            /* 255 */
+             "Checking Client Layout %s.",
+             pBFCD->pCSRMapBFCD->ClientInfo.ClientLayoutName );  /*   9 */
+
+    POSTMSG;
+
+    /* Error if the number of client rows have changed */
+    if( pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows !=
+        pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows )
+    {
+        bMatch = FALSE;
+
+        MsgID = CMN_MAPGEN_MSG_ERROR;
+
+        strncpy( MsgData,
+                 "The number of Data Rows in the Repository is not the "
+                 "same as in the Saved Map",
+                 sizeof( MsgData ));
+
+        POSTMSG;
+    } /* end of if:  Error, the number of client rows have changed */
+
+    /* Populate local vars for easier use */
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+
+    /* Use the lower of the two values as the maximum rows to check */
+    if( pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows <
+        pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows )
+    {
+        sNumRows = pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows;
+    }
+
+    else
+    {
+        sNumRows = pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows;
+    }
+
+    HEAP_CHECK_BEEP
+
+    CheckIt( MAP_GEN_CLIENT_LAYOUT,
+             0,
+             sNumRows,
+             pReposLayout,
+             pSavedLayout,
+             pSTDParms );
+
+    HEAP_CHECK_BEEP
+
+    if( bRemap )
+    {
+        FndGenRC = DosSemSet(&hsemLock);
+        FndGenRC = FndWndMsgPost( hwnd,
+                                  CMN_MAPGEN_MSG_DONE,
+                                  &MsgData,
+                                  &FndGenErrorBlock);
+
+        FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+
+        HEAP_CHECK_BEEP
+
+        return;
+    }
+
+    MsgID = CMN_MAPGEN_MSG_INFO;
+    sprintf( MsgData,                                              /* 255 */
+             "Finished Checking Client Layout %s.",
+             pBFCD->pCSRMapBFCD->ClientInfo.ClientLayoutName );    /*   9 */
+
+    POSTMSG;
+
+    /* Check each of the service maps next */
+    for( nServiceIndex = 0;
+         nServiceIndex < pBFCD->pCSRMapBFCD->NumServices;
+         nServiceIndex++ )
+    {
+        MsgID = CMN_MAPGEN_MSG_INFO;                                /* 255 */
+        sprintf( MsgData,
+                 "Checking Service Layout %s.",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                        ServiceLayoutName );                        /*  12 */
+        POSTMSG;
+
+        pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                              pReposServiceLayoutTable;
+        pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                              pServiceLayoutTable;
+
+        /*
+         * Check and make sure the size of the Service copy book has not
+         * changed.  If it has changed they must regenerate or else small
+         * buff problems will occur.
+         */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+            NumReposServiceRows !=
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+            NumServiceRows )
+        {
+            MsgID = CMN_MAPGEN_MSG_ERROR;
+            sprintf( MsgData,                                       /* 255 */
+                     "Service Layout %s has changed in size."
+                     " You must regenerate to correct this problem",
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                            ServiceLayoutName );                    /*  12 */
+           POSTMSG;
+
+        }
+
+        /* Use the smaller of the two row sizes as the max rows to check */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                   NumReposServiceRows >
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                   NumServiceRows )
+        {
+            sNumRows = pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                              NumServiceRows;
+        }
+        else
+        {
+            sNumRows = pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                              NumReposServiceRows;
+        }
+
+        CheckIt( MAP_GEN_SERVICE_LAYOUT,
+                 nServiceIndex,
+                 sNumRows,
+                 pReposLayout,
+                 pSavedLayout,
+                 pSTDParms );
+
+        if ( bRemap )
+        {
+            FndGenRC = DosSemSet( &hsemLock );
+            FndGenRC = FndWndMsgPost( hwnd,
+                                      CMN_MAPGEN_MSG_DONE,
+                                      &MsgData,
+                                      &FndGenErrorBlock );
+
+            FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+
+            HEAP_CHECK_BEEP
+
+            return;
+        }
+
+        MsgID = CMN_MAPGEN_MSG_INFO;
+        sprintf( MsgData,                                           /* 255 */
+                 "***** Finished Checking Service Layout %s.",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
+                        ServiceLayoutName );                        /*  12 */
+
+        POSTMSG;
+
+    } /* end of for loop thru NumServices */
+
+    /* Tell the message handler that you are done */
+    FndGenRC = DosSemSet(&hsemLock);
+    FndGenRC = FndWndMsgPost( hwnd,
+                              CMN_MAPGEN_MSG_DONE,
+                              &MsgData,
+                              &FndGenErrorBlock );
+
+    FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+
+    HEAP_CHECK_BEEP
+
+} /* end of CompareLayouts */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CheckIt
+**
+**  DESCRIPTION      : This function controls the comparision of 2 data layouts.
+**
+**  INPUTS           : cLayoutType - Flag to determine if this a client or service layout.
+**                     sServiceIndex - Service Table index.
+**                     sNumRows - Number of rows in the layouts.
+**                     pReposLayout - pointer to the repository layout structure.
+**                     pSavedLayout - pointer to the saved layout structure.
+**                     pSTDParms - pointer to the stdparms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : Remap
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/21/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/21/93  CCRAMPTO              Original code.
+**
+**  10/18/94  JLOONEY               Clean Up.
+**
+***************************************************************************/
+static SHORT CheckIt( CHAR cLayoutType,
+                      SHORT sServiceIndex,
+                      SHORT sNumRows,
+                      _LAYOUT_REC *pReposLayout,
+                      _LAYOUT_REC *pSavedLayout,
+                      _STDParms *pSTDParms )
+{
+    SHORT sIndex;
+    SHORT sRC = 0;
+    USHORT    MsgID;
+    USHORT FndGenRC;
+    CHAR MsgData[255];
+    BOOL bMatch = TRUE;
+    BOOL bWarn = FALSE;
+    BOOL bError = FALSE;
+    BOOL bMisAligned = FALSE;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    /* Save off the STDParm values */
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    for ( sIndex = 0; sIndex < sNumRows; sIndex++ )
+    {
+        if( strncmp( pReposLayout[sIndex].ItemId,
+                     pSavedLayout[sIndex].ItemId,
+                     strlen(pSavedLayout[sIndex].ItemId )) != 0 )
+        {
+            if ( !bMisAligned )
+            {
+                MsgID  = CMN_MAPGEN_MSG_ERROR;
+                bError = TRUE;
+
+                sprintf( MsgData,                                /* 255 */
+                /* 44 */ "Names do NOT match, The order of the layout "
+                /* 78 */ "records has changed !! Saved map Row %d = %s "
+                /* 56 */ "Repository Row %d = %s",
+                         sIndex,
+                         pSavedLayout[sIndex].ItemId,
+                         sIndex,
+                         pReposLayout[sIndex].ItemId );
+
+                POSTMSG;
+
+                bMisAligned = TRUE;
+            }
+
+            /* Try and remap the existing relationships */
+            if ( !bRemap )
+            {
+                sRC = Remap( pSTDParms );
+                bRemap = TRUE;
+
+                HEAP_CHECK_BEEP
+
+                return CMN_SUCCESS;
+            }
+
+            continue;
+        }
+
+        if( pReposLayout[sIndex].ItemType != pSavedLayout[sIndex].ItemType )
+        {
+            MsgID = CMN_MAPGEN_MSG_WARN;
+            bError = TRUE;
+
+            sprintf( MsgData,                                   /* 255 */
+                     "The data type of item %s has changed !! Saved map ="
+                     " %c Repository = %c",
+                     pReposLayout[sIndex].ItemId,               /*  32 */
+                     pSavedLayout[sIndex].ItemType,             /*   1 */
+                     pReposLayout[sIndex].ItemType );           /*   1 */
+
+            POSTMSG;
+
+        }
+
+        if( pReposLayout[sIndex].ItemType == 'E' &&
+            pReposLayout[sIndex].Format != pSavedLayout[sIndex].Format )
+        {
+            MsgID = CMN_MAPGEN_MSG_WARN;
+            bError = TRUE;
+
+            sprintf( MsgData,                                    /* 255 */
+                     "The data format of item %s has changed !! Saved map "
+                     "= %c Repository = %c",
+                     pReposLayout[sIndex].ItemId,                /*  32 */
+                     pSavedLayout[sIndex].Format,                /*   1 */
+                     pReposLayout[sIndex].Format);               /*   1 */
+
+            POSTMSG;
+
+        }
+
+        if( pReposLayout[sIndex].ItemLength != pSavedLayout[sIndex].
+                                               ItemLength )
+        {
+            MsgID = CMN_MAPGEN_MSG_WARN;
+            bWarn = TRUE;
+
+            sprintf( MsgData,                                   /* 255 */
+                     "The data length of item %s has changed !! Saved map"
+                     " = %d Repository = %d",
+                     pReposLayout[sIndex].ItemId,               /*  32 */
+                     pSavedLayout[sIndex].ItemLength,           /*   4 */
+                     pReposLayout[sIndex].ItemLength);          /*   4 */
+
+            POSTMSG;
+
+        }
+
+        if( pReposLayout[sIndex].ItemType == 'E' &&
+            strcmp( pReposLayout[sIndex].Usage,
+                    pSavedLayout[sIndex].Usage) != 0 )
+        {
+            MsgID = CMN_MAPGEN_MSG_WARN;
+            bError = TRUE;
+
+            sprintf( MsgData,                                   /* 255 */
+                     "The data usage of item %s has changed !! Saved map"
+                     " = %s Repository = %s",
+                     pReposLayout[sIndex].ItemId,               /*  32 */
+                     pSavedLayout[sIndex].Usage,                /*   3 */
+                     pReposLayout[sIndex].Usage );              /*   3 */
+
+              POSTMSG;
+        }
+
+        if ( 'G' == pReposLayout[sIndex].ItemType  &&
+              pReposLayout[sIndex].ItemOccurs !=
+              pSavedLayout[sIndex].ItemOccurs )
+        {
+              MsgID = CMN_MAPGEN_MSG_WARN;
+              bError = TRUE;
+
+              sprintf( MsgData,                                 /* 255 */
+                       "The number of occurences of Group %s has changed "
+                       "!! Saved map = %d Repository = %d",
+                       pReposLayout[sIndex].ItemId,             /*  32 */
+                       pSavedLayout[sIndex].ItemOccurs,         /*   4 */
+                       pReposLayout[sIndex].ItemOccurs );       /*   4 */
+
+              POSTMSG;
+        }
+    } /* END OF LOOP THRU ALL ROWS */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of CheckIt() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : PrintLog
+**
+**  DESCRIPTION      : This function reads the data from the Message List Box
+**                      and sends each message to the line printer.
+**
+**  INPUTS           : Standard Wes Callback parameters
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Chris Crampton
+**
+**  DATE CREATED     : 11/21/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/21/94  CCRAMPTO              Original code.
+**
+**  10/18/94  JLOONEY               Clean Up.
+**
+***************************************************************************/
+static WCBPROC(PrintLog)
+{
+    SHORT FndGenRC;
+    USHORT usSelectedButton;
+    USHORT usIndex;
+    CHAR szOutputFileName[255];
+    CHAR szErrorMsg[255];
+    BOOL bMore=TRUE;
+    FILE *fhndFilePtr;
+    _FND_ERROR_BLOCK ErrorBlock;
+    _MsgLBRow MsgBox;
+
+    HEAP_CHECK_BEEP
+
+    /* open a file handle for the printer */
+
+    fhndFilePtr = fopen("LPT1", "w");
+
+    if( fhndFilePtr == NULL )
+    {
+        sprintf( szErrorMsg,
+                 "Unable to open output file %s for printing",
+                 szOutputFileName );
+
+        FndGenRC = FndMsgBoxDisplayText( szErrorMsg,
+                                         NULL,
+                                         CBI_hwnd,
+                                         FND_MSGBOX_OK,
+                                         FND_MSGBOX_ERROR,
+                                         FND_MSGBOX_IDOK,
+                                         CMN_MAPGEN_NAME,
+                                         &usSelectedButton,
+                                         &ErrorBlock );
+
+        HEAP_CHECK_BEEP
+
+        return CMN_FAIL;
+    }
+
+    /* set the printer to landscape mode */
+    FndGenRC = fprintf(fhndFilePtr, SET_LANDSCAPE);
+
+    /* set the font to line printer (smaller font) */
+    FndGenRC = fprintf(fhndFilePtr, LINE_PRINTER);
+
+    /* set the line spacing to smaller */
+    FndGenRC = fprintf(fhndFilePtr, VMI);
+
+    strncpy( szErrorMsg,
+             "Printing Repository vs. Saved Map Comparision Log ...",
+             sizeof( szErrorMsg ));
+
+    FndGenRC = FndMsgBoxDisplayMdlssText( szErrorMsg,
+                                          "PrintMsgBox",
+                                          CBI_hwnd,
+                                          FND_MSGBOX_NOBUTTONS,
+                                          FND_MSGBOX_INFORMATION,
+                                          FND_MSGBOX_IDNOBUTTON,
+                                          CMN_MAPGEN_NAME,
+                                          &ErrorBlock );
+
+    usIndex = 0;
+    bMore = TRUE;
+
+    while ( bMore )
+    {
+        FndGenRC = CmnErrOverrides( NULL,
+                                    CMN_OVERRIDE_FATAL,
+                                    CMN_ERR_LOGGING_DEFAULT,
+                                    CMN_RC_CONTINUE_PROCESSING,
+                                    CMN_ARCH_PARMS );
+
+        FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                          "MsgLB",
+                                          usIndex,
+                                          sizeof( _MsgLBRow ),
+                                          &MsgBox,
+                                          &ErrorBlock );
+
+        if ( FndGenRC != FND_SUCCESS && FndGenRC != LBOX_ROW_EMPTY )
+        {
+            HEAP_CHECK_BEEP
+
+            return CMN_FAIL;
+        }
+        else if ( FndGenRC == LBOX_ROW_EMPTY )
+        {
+            bMore = FALSE;
+        }
+        else
+        {
+            fprintf( fhndFilePtr, "%s\n", MsgBox._MsgLBDataBufferData );
+            usIndex++;
+        }
+
+    } /* end of while more rows in list box */
+
+    /* reset the printer to defaults */
+    FndGenRC = fprintf( fhndFilePtr, RESET_PRINTER );
+
+    fclose( fhndFilePtr );
+
+    FndGenRC = DosSleep(2000L);
+
+    FndGenRC = FndMsgBoxDestroy( "PrintMsgBox",
+                                 &ErrorBlock );
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of PrintLog() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : SaveLog
+**
+**  DESCRIPTION      : This function reads the messages in the list box and saves
+**                      them to a file.
+**
+**  INPUTS           : Standard Wes callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Chris Crampton
+**
+**  DATE CREATED     : 11/21/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/21/93  CCRAMPTO              Original code.
+**
+**  10/18/94  JLOONEY               Clean Up.
+***************************************************************************/
+static WCBPROC(SaveLog)
+{
+    SHORT FndGenRC;
+    USHORT usSelectedButton;
+    USHORT usIndex;
+    FILE *fhndFilePtr;
+    CHAR szOutputFileName[255];
+    CHAR szErrorMsg[255];
+    _FND_ERROR_BLOCK ErrorBlock;
+    BOOL bMore=TRUE;
+    _MsgLBRow MsgBox;
+
+    HEAP_CHECK_BEEP
+
+    /* Build the output filename */
+    sprintf( szOutputFileName,                          /* 255 */
+             "%s\\%s.LOG",
+             pBFCD->pCSRMapBFCD->CsrMapSavePath,        /*  70 */
+             pBFCD->pCSRMapBFCD->ClientInfo.ReqId );    /*   9 */
+
+    fhndFilePtr = fopen(szOutputFileName, "w");
+
+    if ( fhndFilePtr == NULL )
+    {
+        sprintf( szErrorMsg,                                    /* 255 */
+                 "Unable to open output file %s for saving",
+                 szOutputFileName );                            /* 255 */
+
+
+        FndGenRC = FndMsgBoxDisplayText( szErrorMsg,
+                                         NULL,
+                                         CBI_hwnd,
+                                         FND_MSGBOX_OK,
+                                         FND_MSGBOX_ERROR,
+                                         FND_MSGBOX_IDOK,
+                                         CMN_MAPGEN_NAME,
+                                         &usSelectedButton,
+                                         &ErrorBlock );
+        HEAP_CHECK_BEEP
+
+        return CMN_FAIL;
+    }
+
+    sprintf( szErrorMsg,                                /* 255 */
+             "Saving Log information to %s ",
+             szOutputFileName );                        /* 255 */
+
+    FndGenRC = FndMsgBoxDisplayMdlssText( szErrorMsg,
+                                          "SaveMsgBox",
+                                          CBI_hwnd,
+                                          FND_MSGBOX_NOBUTTONS,
+                                          FND_MSGBOX_INFORMATION,
+                                          FND_MSGBOX_IDNOBUTTON,
+                                          CMN_MAPGEN_NAME,
+                                          &ErrorBlock );
+
+
+    usIndex = 0;
+    bMore = TRUE;
+
+    while ( bMore )
+    {
+        FndGenRC = CmnErrOverrides(NULL,
+                                   CMN_OVERRIDE_FATAL,
+                                   CMN_ERR_LOGGING_DEFAULT,
+                                   CMN_RC_CONTINUE_PROCESSING,
+                                   CMN_ARCH_PARMS);
+
+        FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                          "MsgLB",
+                                          usIndex,
+                                          sizeof(_MsgLBRow),
+                                          &MsgBox,
+                                          &ErrorBlock );
+
+        if ( FndGenRC != FND_SUCCESS && FndGenRC != LBOX_ROW_EMPTY )
+        {
+            HEAP_CHECK_BEEP
+
+            return CMN_FAIL;
+        }
+        else if ( FndGenRC == LBOX_ROW_EMPTY )
+        {
+            bMore = FALSE;
+        }
+        else
+        {
+            fprintf( fhndFilePtr, "%s\n", MsgBox._MsgLBDataBufferData );
+            usIndex++;
+        }
+
+    } /* end of while more rows in list box */
+
+    fclose(fhndFilePtr);
+
+    DosSleep(3000L); /* Make sure they can read it so sleep for 3 seconds */
+
+    FndGenRC = FndMsgBoxDestroy( "SaveMsgBox",
+                                 &ErrorBlock );
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function SaveLog() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : Azcs013BusUseOldMap
+**
+**  DESCRIPTION      : This function replaces the repository data structures with
+**                     the data structures from a saved map.
+**
+**  INPUTS           : Standard 6 Foundation Parameters
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/20/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  09/20/93  C CRAMPTON            Original code.
+**
+**  10/18/94  J LOONEY              Clean Up.
+**
+***************************************************************************/
+static WCBPROC(Azcs013BusUseOldMap)
+{
+    SHORT ix;
+
+    HEAP_CHECK_BEEP
+
+    /*
+     * Move the Client Stuff
+     *  Assign the number of saved client rows to the client row counter
+     *  free the old repos layout table
+     *  assign the saved map layout table pointer to the repos layout pointer
+     */
+    pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows =
+                                pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows;
+
+    free( pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable );
+
+    pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable =
+                           pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+
+    /* Move the Service Stuff */
+    for ( ix = 0; ix < pBFCD->pCSRMapBFCD->NumServices; ix++ )
+    {
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows =
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumServiceRows;
+
+        free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+              pReposServiceLayoutTable );
+
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable =
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pServiceLayoutTable;
+
+
+        /* Copy the relationship tables */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedLoadKeys )
+        {
+            memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys,
+                    0,
+                    sizeof(  _RELATE_LK) * MAXSERVICEROWS);
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedLoadKeys,
+                    sizeof(  _RELATE_LK) * MAXSERVICEROWS );
+
+        } /* end of if load keys table exists */
+
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedCompareKeys )
+        {
+            memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pCompareKeys,
+                    0,
+                    sizeof(  _RELATE_CK) * MAXSERVICEROWS );
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pCompareKeys,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+                           pSavedCompareKeys,
+                    sizeof(  _RELATE_CK) * MAXSERVICEROWS );
+
+        } /* end of if compare keys table exists */
+
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedLoadData )
+        {
+            memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadData,
+                    0,
+                    sizeof(  _RELATE_LD) * MAXSERVICEROWS );
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadData,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedLoadData,
+                    sizeof(  _RELATE_LD) * MAXSERVICEROWS );
+
+        } /* end of if load data table exists */
+
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedReturnData )
+        {
+            memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReturnData,
+                    0,
+                    sizeof(  _RELATE_RD) * MAXSERVICEROWS );
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReturnData,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedReturnData,
+                    sizeof(  _RELATE_RD) * MAXSERVICEROWS );
+
+        } /* end of if return data table exists */
+
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pSavedRepeatingMaps )
+        {
+            memset( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pRepeatingMaps,
+                    0,
+                    sizeof(  _RELATE_RPMH) * MAXSERVICEROWS );
+
+            memcpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pRepeatingMaps,
+                    pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+                           pSavedRepeatingMaps,
+                    sizeof(  _RELATE_RPMH) * MAXSERVICEROWS );
+
+        } /* end of if repeating maps  exists */
+
+    } /* end of service loop */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* End of function Azcs013BusUseOldMap() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : Remap
+**
+**  DESCRIPTION      : This function trys to remap existing relationships when
+**                       a saved data layouts and the repository data layouts do not match.
+**
+**  INPUTS           : pSTDParms - Pointer the the STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : ChangeIt
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+***************************************************************************/
+SHORT Remap(_STDParms *pSTDParms)
+{
+    SHORT sOccurs=0;
+    SHORT sNumTimes=0;
+    SHORT sNewServIndex;
+    SHORT sServx;
+    SHORT sRowx;
+    SHORT sRC=0;
+    SHORT FndGenRC=0;
+    USHORT MsgID=0;
+    CHAR MsgData[255];
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Cleanup the layout tables */
+    for ( sServx = 0; sServx < pBFCD->pCSRMapBFCD->NumServices; sServx++ )
+    {
+        for ( sRowx = 1;
+              sRowx < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                        NumReposServiceRows;
+              sRowx++ )
+        {
+
+            /* Compare Key */
+            if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pCompareKeys )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                  pCompareKeys[sRowx].ClientLayoutIndex = -1;
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                  pCompareKeys[sRowx].LiteralUsed = 'N';
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                  pCompareKeys[sRowx].WildCardUsed = 'N';
+            } /* end of if:  Compare Key */
+
+
+            /* Load Key */
+            if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pLoadKeys )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                  pLoadKeys[sRowx].ClientLayoutIndex = -1;
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                  pLoadKeys[sRowx].LiteralUsed = 'N';
+            } /* end of if:  Load Key */
+
+
+            /* Load Data */
+            if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pLoadData )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pLoadData[sRowx].
+                                              ClientLayoutIndex = -1;
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pLoadData[sRowx].
+                                              LiteralUsed = 'N';
+            } /* end of if:  Load Data */
+
+            /* Return Data */
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pReturnData )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                     pReturnData[sRowx].ClientLayoutIndex = -1;
+
+            } /* end of if:  Return Data */
+
+            /* RPMH */
+            if (pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].pRepeatingMaps )
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                   pRepeatingMaps[sRowx].ClientLayoutIndex = -1;
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                   pRepeatingMaps[sRowx].SingleOccurence = 'N';
+            } /* end of if:  RPMH */
+
+        } /* end of loop thru each row */
+
+     } /* end of loop thru each service */
+
+     /* Loop thru each of the services */
+    for ( sServx = 0; sServx < pBFCD->pCSRMapBFCD->NumServices; sServx++ )
+    {
+        pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                                       pServiceLayoutTable;
+        pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                                  pReposServiceLayoutTable;
+
+        sprintf( MsgData,
+                 "Remapping Service Layout %s. ",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                     ServiceLayoutName );
+
+        MsgID = CMN_MAPGEN_MSG_INFO;
+
+        POSTMSG;
+
+        /* Loop thru each of the rows in this service layout record */
+        for ( sRowx = 1;
+              sRowx < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                             NumServiceRows;
+              sRowx++ )
+        {
+            /* Find the service rows new index */
+            sNumTimes = FindFullName( sRowx,
+                                      pSavedLayout,
+                                      pReposLayout,
+                                      pBFCD->pCSRMapBFCD->
+                                             ServiceInfoTable[sServx].
+                                                 NumReposServiceRows,
+                                      &sNewServIndex );
+
+            /*
+             * See if this group.element is unique.
+             * if it is not unique you can not remap it so drop any
+             * relationships.
+             */
+            switch( sNumTimes )
+            {
+                case 1:
+                {
+                    /*
+                     * Change the relationhip indexs
+                     */
+                    sRC = ChangeIt( sServx,
+                                    sRowx,
+                                    sNewServIndex,
+                                    pSTDParms );
+
+                    break;
+                } /* end of case 1 */
+
+                case 0:
+                {
+                    sprintf( MsgData,              /* 255 */
+                             "Service Element %s no longer exists in the "
+                              "repository layout. ",
+                             BuildFullName(sRowx, pSavedLayout)); /* 255 */
+
+                    MsgID = CMN_MAPGEN_MSG_INFO;
+
+                    POSTMSG;
+
+                    continue;
+                }  /* end of case 0 */
+
+            } /* end of switch(sNumTimes) */
+
+        } /* end of loop thru each row in the service */
+
+        sprintf( MsgData,                                       /* 255 */
+                 "Done remapping Service Layout %s. ",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sServx].
+                                        ServiceLayoutName );
+
+        MsgID = CMN_MAPGEN_MSG_INFO;
+
+        POSTMSG;
+
+    } /* end of for loop thru each of the services */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* End of Remap() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ChangeIt
+**
+**  DESCRIPTION      : This function trys to remap existing any relationships for a
+**                       specific row.
+**
+**  INPUTS           : sServ - The current services number.
+**
+**                     sIndex - The saved relationship tables row index.
+**
+**                     sNewReposIx - The repository tables row index.
+**
+**                     pSTDParms - pointer to the standard parms data structure.
+**                         This includes a pointer to BFCD and the calling programs window
+**                         handle.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : ChangeLK
+**                     ChangeCK
+**                     ChangeLD
+**                     ChangeRD
+**                     ChangeRPMH
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up.
+***************************************************************************/
+SHORT ChangeIt( SHORT sServ,
+                SHORT sIndex,
+                SHORT sNewReposIx,
+                _STDParms *pSTDParms)
+{
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    /* Assign the input parameters to local variables */
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    /* Assign BFCD variables to local variables for easier reading */
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+
+    /* See if any Load Keys are defined for this service */
+    if (pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadKeys)
+    {
+        FndGenRC = ChangeLK( sServ, sIndex, sNewReposIx, pSTDParms );
+        if ( FndGenRC != CMN_SUCCESS )
+        {
+           HEAP_CHECK_BEEP
+
+           return FndGenRC;
+
+        }
+    } /* End of Load Keys logic */
+
+    /* See if any Compare Keys are defined for this service */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pCompareKeys )
+    {
+        FndGenRC = ChangeCK(sServ, sIndex, sNewReposIx, pSTDParms);
+
+        if ( FndGenRC != CMN_SUCCESS )
+        {
+            HEAP_CHECK_BEEP
+            return(FndGenRC);
+        }
+
+    } /* End of Compare Keys logic */
+
+    /* See if any Load Data relationships are defined for this service */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadData )
+    {
+        FndGenRC = ChangeLD(sServ, sIndex, sNewReposIx, pSTDParms);
+
+        if ( FndGenRC != CMN_SUCCESS )
+        {
+            HEAP_CHECK_BEEP
+
+            return(FndGenRC);
+        }
+
+    } /* End of Load Data logic */
+
+    /* See if any Return Data relationships are defined for this service */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData )
+    {
+        FndGenRC = ChangeRD( sServ, sIndex, sNewReposIx, pSTDParms );
+
+        if ( FndGenRC != CMN_SUCCESS )
+        {
+            HEAP_CHECK_BEEP
+
+            return(FndGenRC);
+
+        }
+
+    } /* End of Return Data logic */
+
+    /* See if any Repeating Maps Header relationships are defined for this
+     * service
+     */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pRepeatingMaps )
+    {
+        FndGenRC = ChangeRPMH( sServ, sIndex, sNewReposIx, pSTDParms );
+
+        if ( FndGenRC != CMN_SUCCESS )
+        {
+            HEAP_CHECK_BEEP
+
+            return( FndGenRC );
+
+        }
+
+    } /* End of Load Data logic */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* End of function ChangeIt */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : FindFullName
+**
+**  DESCRIPTION      : This function looks in a layout_rec structure trying to find
+**                       an occurence of a Parent and Element name.
+**
+**  INPUTS           : sSavedIndex - Index into the saved data layout.
+**                     pSavedLayout - Pointer to the saved data layout.
+**                     pReposLayout - Pointer to the repository data layout.
+**                     sNumReposRows - Number of rows in the repository.
+**
+**  OUTPUTS          : sReposIndex - Matching index in the repository data layout.
+**                     Return Code - Number of matches found (0 or 1).
+**
+**  CALLED FUNCTIONS : BuildFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up
+***************************************************************************/
+SHORT FindFullName(SHORT sSavedIndex,
+                   _LAYOUT_REC *pSavedLayout,
+                   _LAYOUT_REC *pReposLayout,
+                   SHORT sNumReposRows,
+                   SHORT *sReposIndex)
+{
+    SHORT sIndex;
+    CHAR szBuildName[255];
+    CHAR szTempName[255];
+
+    HEAP_CHECK_BEEP
+
+    /* Build the full name for the saved element */
+    strncpy( szBuildName,
+             BuildFullName(sSavedIndex, pSavedLayout),
+             sizeof( szBuildName ));
+
+    /*
+     * Loop thru all of the layout records looking for a match on the group
+     * and element name.  Only check records that have a non negative
+     * parent index.  A match occurs if the parent index matches the group
+     * and ItemId matches the element name
+     */
+    for ( sIndex = 0; sIndex < sNumReposRows; sIndex++ )
+    {
+        strncpy( szTempName,
+                 BuildFullName(sIndex, pReposLayout),
+                 sizeof( szTempName ));
+
+        if (strcmp(szBuildName, szTempName) == 0 )
+        {
+            *sReposIndex = sIndex;
+
+            HEAP_CHECK_BEEP
+
+            return(1);
+
+        } /* End of if element data type */
+
+    } /* end of for loop thru each layout record */
+
+    HEAP_CHECK_BEEP
+
+    return(0);
+
+} /* End of FindFullName */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DropClient
+**
+**  DESCRIPTION      : This function drops any relationships that involved this
+**                      client index. It only searches the tables defined by the process argument.
+**
+**  INPUTS           : sClientx - Client saved index to drop.
+**                     sServ - Service index.
+**                     Process - Flag of which tables to process (i.e. LK, CK)
+**                     pSTDParms - pointer to STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : FindFullName
+**                     DropClientLK
+**                     DropClientCK
+**                     DropClientLD
+**                     DropClientRD
+**                     DropClientRPMH
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+**
+***************************************************************************/
+SHORT DropClient( SHORT sClientx,
+                  SHORT sServ,
+                  SHORT Process,
+                  _STDParms *pSTDParms )
+{
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    SHORT sNumTimes;
+    SHORT sIndex;
+    SHORT sNewServIndex;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    /* Loop thru each row of the relationships tables */
+    for ( sIndex = 0;
+          sIndex < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          NumServiceRows;
+          sIndex++ )
+    {
+        /* Find the repository index for this service row */
+
+        sNumTimes = FindFullName( sIndex,
+                                  pBFCD->pCSRMapBFCD->
+                                      ServiceInfoTable[sServ].
+                                      pServiceLayoutTable,
+                                  pBFCD->pCSRMapBFCD->
+                                      ServiceInfoTable[sServ].
+                                      pReposServiceLayoutTable,
+                                  pBFCD->pCSRMapBFCD->
+                                      ServiceInfoTable[sServ].
+                                      NumReposServiceRows,
+                                  &sNewServIndex );
+        /*
+         * If the service does not exist in the repository just
+         * skip this row.
+         */
+        if ( sNumTimes == 0 )
+        {
+            continue;
+        }
+
+        /* Do any load keys exist */
+        if ( Process == 1 && pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pLoadKeys )
+        {
+            /* Does the argument index match the saved client layout index */
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pSavedLoadKeys[sIndex].ClientLayoutIndex == sClientx )
+            {
+                FndGenRC = DropClientLK( sServ,
+                                         sIndex,
+                                         sNewServIndex,
+                                         pSTDParms );
+
+            } /* end of if a relationship is defined */
+
+        } /* End of Load Keys logic */
+
+        /* Do any compare keys exist */
+        if( Process == 2 &&
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pCompareKeys )
+        {
+            /* Does the argument index match the saved client layout index */
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                pSavedCompareKeys[sIndex].ClientLayoutIndex == sClientx )
+            {
+                FndGenRC = DropClientCK( sServ,
+                                         sIndex,
+                                         sNewServIndex,
+                                         pSTDParms );
+
+            } /* end of if a relationship is defined */
+
+        } /* End of Compare Keys logic */
+
+        /* Do any load data relationships exist */
+        if ( Process == 3 &&
+             pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadData )
+        {
+            /* Does the argument index match the saved client layout index */
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                pSavedLoadData[sIndex].ClientLayoutIndex == sClientx )
+            {
+                FndGenRC = DropClientLD( sServ,
+                                         sIndex,
+                                         sNewServIndex,
+                                         pSTDParms );
+
+            } /* end of if a relationship is defined */
+
+        } /* End of Load Data logic */
+
+        /* Do any return data relationships exist */
+        if( Process == 4 &&
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData )
+        {
+            /* Does the argument index match the saved client layout index */
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                pSavedReturnData[sIndex].ClientLayoutIndex == sClientx )
+            {
+                FndGenRC = DropClientRD( sServ,
+                                         sIndex,
+                                         sNewServIndex,
+                                         pSTDParms );
+            }    /* end of if a relationship is defined */
+
+        }  /* End of Return Data logic */
+
+        /* Do any Repeating Map relationships exist */
+        if( Process == 5 &&
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pRepeatingMaps )
+        {
+            /* Does the argument index match the saved client layout index */
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                pSavedRepeatingMaps[sIndex].ClientLayoutIndex == sClientx )
+            {
+                FndGenRC = DropClientRPMH( sServ,
+                                           sIndex,
+                                           sNewServIndex,
+                                           pSTDParms );
+            }    /* end of if a relationship is defined */
+
+        }  /* End of Return Data logic */
+
+    } /* End of for loop for each row */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* End of function DropClient */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ChangeLK
+**
+**  DESCRIPTION      : This function changes the indexes for the Load Key relationship table.
+**
+**  INPUTS           : sServ - The current services index
+**
+**                     sIndex - Index to services saved relationship tables.
+**
+**                     sNewReposIx - Index to the services repository tables.
+**
+**                     pSTDParms - pointer to the standard parms data structure.
+**                         This includes a pointer to BFCD and the calling programs window
+**                         handle.
+**
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : FindFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/15/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up
+**
+***************************************************************************/
+SHORT ChangeLK( SHORT sServ,
+                SHORT sIndex,
+                SHORT sNewReposIx,
+                _STDParms *pSTDParms )
+
+{
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    SHORT sClientx;
+    SHORT sNewClientIndex;
+    SHORT sNumTimes;
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    /* Assign the input parameters to local variables */
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Assign BFCD variables to local variables for easier reading */
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+
+    /*
+     * Copy the saved data using the old index to the new table using
+     * the new index
+     */
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadKeys[sNewReposIx] =
+           pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedLoadKeys[sIndex];
+
+    /* If a relationship exists see what the client indexes are */
+    if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+        pSavedLoadKeys[sIndex].ClientLayoutIndex > 0 )
+    {
+        sClientx = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pSavedLoadKeys[sIndex].ClientLayoutIndex;
+
+        /* Find the new Client index */
+        sNumTimes = FindFullName( sClientx,
+                                  pSavedLayout,
+                                  pReposLayout,
+                                  pBFCD->pCSRMapBFCD->ClientInfo.
+                                       NumReposClientRows,
+                                  &sNewClientIndex );
+
+        switch(sNumTimes)
+        {
+            case 0:
+            {
+                sprintf( MsgData,           /* 255 */
+                         "Client Element %s no longer exists in the "
+                         "repository layout. "
+                         "Any previous relationships will be dropped",
+                         BuildFullName(sClientx, pSavedLayout) ); /* 255 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                DropClient( sClientx, sServ, 1, pSTDParms );
+
+                HEAP_CHECK_BEEP
+
+                return CMN_FAIL;
+            } /* end of case 0 */
+
+            case 1:
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                            pLoadKeys[sNewReposIx].ClientLayoutIndex =
+                                                           sNewClientIndex;
+
+                strncpy( ClientName,
+                         BuildFullName(sClientx, pSavedLayout),
+                         sizeof( ClientName ));
+
+                strncpy( ServiceName,
+                         BuildFullName( sIndex,
+                                        pBFCD->pCSRMapBFCD->
+                                               ServiceInfoTable[sServ].
+                                               pServiceLayoutTable),
+                         sizeof( ServiceName ));
+
+                sprintf( MsgData,               /* 255 */
+                         "Remapping LK Relationship between Client "
+                         "Element %s and Service Element %s.",
+                         ClientName,            /* 255 */
+                         ServiceName );         /* 255 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                break;
+
+            } /* end of case 1 */
+
+        } /* end of switch */
+
+    } /* end of if a relationship is defined */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function ChangeLK */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ChangeCK
+**
+**  DESCRIPTION      : This function changes the indexes for the Change Key relationship table.
+**
+**  INPUTS           : sServ - The current services index
+**
+**                     sIndex - Index to services saved relationship tables.
+**
+**                     sNewReposIx - Index to the services repository tables.
+**
+**                     pSTDParms - pointer to the standard parms data structure.
+**                         This includes a pointer to BFCD and the calling programs window
+**                         handle.
+**
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : FindFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/15/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+SHORT ChangeCK( SHORT sServ,
+                SHORT sIndex,
+                SHORT sNewReposIx,
+                _STDParms *pSTDParms )
+
+{
+    SHORT sClientx;
+    SHORT sNewClientIndex;
+    SHORT sNumTimes;
+    SHORT FndGenRC;
+    USHORT MsgID=0;
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    /* Assign the input parameters to local variables */
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Assign BFCD variables to local variables for easier reading */
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+
+    /*
+     * Copy the saved data using the old index to the new table using the
+     * new index
+     */
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pCompareKeys[sNewReposIx] =
+       pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedCompareKeys[sIndex];
+
+    /*
+     * If a relationship exists see what the client indexes are
+     */
+    if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+               pSavedCompareKeys[sIndex].ClientLayoutIndex > 0 )
+    {
+        sClientx = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pSavedCompareKeys[sIndex].ClientLayoutIndex;
+
+        /* Find the new Client index */
+        sNumTimes = FindFullName( sClientx,
+                                  pSavedLayout,
+                                  pReposLayout,
+                                  pBFCD->pCSRMapBFCD->ClientInfo.
+                                              NumReposClientRows,
+                                  &sNewClientIndex );
+
+        switch(sNumTimes)
+        {
+            case 0:
+            {
+
+                sprintf( MsgData,                           /* 255 */
+                         "Client Element %s no longer exists in the "
+                         "repository layout. "
+                         "Any previous relationships will be dropped",
+                         BuildFullName( sClientx, pSavedLayout )); /* 70 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                DropClient( sClientx, sServ, 2, pSTDParms );
+
+                HEAP_CHECK_BEEP
+
+                return CMN_FAIL;
+
+            } /* end of case 0 */
+
+            case 1:
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                               pCompareKeys[sNewReposIx].ClientLayoutIndex =
+                               sNewClientIndex;
+
+                strncpy( ClientName,
+                         BuildFullName(sClientx, pSavedLayout),
+                         sizeof( ClientName ));
+
+                strncpy( ServiceName,
+                         BuildFullName( sIndex,
+                                        pBFCD->pCSRMapBFCD->
+                                               ServiceInfoTable[sServ].
+                                               pServiceLayoutTable ),
+                         sizeof( ServiceName ));
+
+                sprintf( MsgData,                           /* 255 */
+                         "Remapping CK Relationship between Client "
+                         "Element %s and Service Element %s.",
+                         ClientName,                        /* 255 */
+                         ServiceName );                     /* 255 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                break;
+
+            } /* end of case 1 */
+
+        } /* end of switch */
+
+    } /* end of if a relationship is defined */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function ChangeCK */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ChangeLD
+**
+**  DESCRIPTION      : This function changes the indexes for the Load Data relationship table.
+**
+**  INPUTS           : sServ - The current services index
+**
+**                     sIndex - Index to services saved relationship tables.
+**
+**                     sNewReposIx - Index to the services repository tables.
+**
+**                     pSTDParms - pointer to the standard parms data structure.
+**                         This includes a pointer to BFCD and the calling programs window
+**                         handle.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : FindFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/15/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+**
+***************************************************************************/
+SHORT ChangeLD( SHORT sServ,
+                SHORT sIndex,
+                SHORT sNewReposIx,
+                _STDParms *pSTDParms )
+{
+    USHORT MsgID=0;
+    SHORT sClientx;
+    SHORT sNewClientIndex;
+    SHORT sNumTimes;
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    /* Assign the input parameters to local variables */
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Assign BFCD variables to local variables for easier reading */
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+
+    /*
+     * Copy the saved data using the old index to the new table
+     * using the new index
+     */
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadData[sNewReposIx] =
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedLoadData[sIndex];
+
+    /* If a relationship exists see what the client indexes are */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedLoadData[sIndex].
+         ClientLayoutIndex > 0 )
+    {
+        sClientx = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pSavedLoadData[sIndex].ClientLayoutIndex;
+
+        /* Find the new Client index */
+        sNumTimes = FindFullName( sClientx,
+                                  pSavedLayout,
+                                  pReposLayout,
+                                  pBFCD->pCSRMapBFCD->ClientInfo.
+                                          NumReposClientRows,
+                                  &sNewClientIndex );
+
+        switch(sNumTimes)
+        {
+            case 0:
+            {
+                sprintf( MsgData,                           /* 255 */
+                         "Client Element %s no longer exists in the "
+                         "repository layout. "
+                         "Any previous relationships will be dropped.",
+                         BuildFullName(sClientx, pSavedLayout));  /* 70 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                DropClient(sClientx, sServ, 3, pSTDParms);
+
+                HEAP_CHECK_BEEP
+
+                return(CMN_FAIL);
+
+            } /* end of case 0 */
+
+            case 1:
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                 pLoadData[sNewReposIx].ClientLayoutIndex =
+                                                        sNewClientIndex;
+
+                strncpy( ClientName,
+                         BuildFullName(sClientx, pSavedLayout),
+                         sizeof( ClientName ));
+
+                strncpy( ServiceName,
+                         BuildFullName( sIndex,
+                                        pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                               pServiceLayoutTable ),
+                         sizeof( ServiceName ));
+
+                sprintf( MsgData,                               /* 255 */
+                         "Remapping LD Relationship between Client Element "
+                         "%s and Service Element %s",
+                         ClientName,                            /* 255 */
+                         ServiceName );                         /* 255 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                break;
+
+            } /* end of case 1 */
+
+        } /* end of switch */
+
+    } /* end of if a relationship is defined */
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function ChangeLD */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ChangeRD
+**
+**  DESCRIPTION      : This function changes the indexes for the Return Data relationship table.
+**
+**  INPUTS           : sServ - The current services index
+**
+**                     sIndex - Index to services saved relationship tables.
+**
+**                     sNewReposIx - Index to the services repository tables.
+**
+**                     pSTDParms - pointer to the standard parms data structure.
+**                         This includes a pointer to BFCD and the calling programs window
+**                         handle.
+**
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : FindFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/15/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+**
+***************************************************************************/
+SHORT ChangeRD( SHORT sServ,
+                SHORT sIndex,
+                SHORT sNewReposIx,
+                _STDParms *pSTDParms)
+
+{
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    SHORT sClientx;
+    SHORT sNewClientIndex;
+    SHORT sNumTimes;
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    /* Assign the input parameters to local variable */
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Assign BFCD variables to local variables for easier reading */
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+
+    /*
+     * Copy the saved data using the old index to the new table using
+     * the new index
+     */
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData[sNewReposIx] =
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedReturnData[sIndex];
+
+    /* If a relationship exists see what the client indexes are */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+         pSavedReturnData[sIndex].ClientLayoutIndex > 0 )
+    {
+        sClientx = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pSavedReturnData[sIndex].ClientLayoutIndex;
+
+        /* Find the new Client index */
+        sNumTimes = FindFullName( sClientx,
+                                  pSavedLayout,
+                                  pReposLayout,
+                                  pBFCD->pCSRMapBFCD->ClientInfo.
+                                              NumReposClientRows,
+                                  &sNewClientIndex );
+
+        switch( sNumTimes )
+        {
+            case 0:
+            {
+                sprintf( MsgData,                           /* 255 */
+                         "Client Element %s no longer exists in the "
+                         "repository layout. "
+                         "Any previous relationships will be dropped",
+                         BuildFullName(sClientx, pSavedLayout) ); /* 70 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                DropClient(sClientx, sServ, 4, pSTDParms);
+
+                HEAP_CHECK_BEEP
+
+                return(CMN_FAIL);
+
+            } /* end of case 0 */
+
+            case 1:
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                pReturnData[sNewReposIx].ClientLayoutIndex =
+                                sNewClientIndex;
+
+                strncpy( ClientName,
+                         BuildFullName(sClientx, pSavedLayout),
+                         sizeof( ClientName ));
+
+                strncpy( ServiceName,
+                         BuildFullName( sIndex,
+                                        pBFCD->pCSRMapBFCD->
+                                          ServiceInfoTable[sServ].
+                                          pServiceLayoutTable ),
+                         sizeof( ServiceName ));
+
+                sprintf( MsgData,                       /* 255 */
+                         "Remapping RD Relationship between Client "
+                         "Element %s and Service Element %s.",
+                         ClientName ,                   /* 255 */
+                         ServiceName );                 /* 255 */
+
+                 MsgID = CMN_MAPGEN_MSG_INFO;
+
+                 POSTMSG;
+
+                 break;
+
+            } /* end of case 1 */
+
+        } /* end of switch */
+
+    } /* end of if a relationship is defined */
+
+    HEAP_CHECK_BEEP
+
+    return( CMN_SUCCESS );
+
+} /* end of function ChangeRD */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : ChangeRPMH
+**
+**  DESCRIPTION      : This function changes the indexes for the Repeating Map
+**                       relationship table.
+**
+**  INPUTS           : sServ - The current services index
+**
+**                     sIndex - Index to services saved relationship tables.
+**
+**                     sNewReposIx - Index to the services repository tables.
+**
+**                     pSTDParms - pointer to the standard parms data structure.
+**                         This includes a pointer to BFCD and the calling programs window
+**                         handle.
+**
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : FindFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/15/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+**
+***************************************************************************/
+SHORT ChangeRPMH( SHORT sServ,
+                  SHORT sIndex,
+                  SHORT sNewReposIx,
+                  _STDParms *pSTDParms )
+
+{
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    SHORT sClientx;
+    SHORT sNewClientIndex;
+    SHORT sNumTimes;
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    /* Assign the input parameters to local variables */
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    /* Assign BFCD variables to local variables for easier reading */
+    pSavedLayout = pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable;
+
+    /*
+     * Copy the saved data using the old index to the new table
+     * using the new index
+     */
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pRepeatingMaps[sNewReposIx] =
+      pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex];
+
+    /* If a relationship exists see what the client indexes are */
+    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+         pSavedRepeatingMaps[sIndex].ClientLayoutIndex > 0 )
+    {
+        /* Make sure the number of Occurs has not changed */
+        /* If so and a relationship exists drop relationship and notify user */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pServiceLayoutTable[sIndex].ItemOccurs !=
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pReposServiceLayoutTable[sNewReposIx].ItemOccurs )
+        {
+            sprintf( MsgData,                               /* 255 */
+                     "The number of occurences for Group %s has changed !",
+                     BuildFullName( sIndex,
+                                    pBFCD->pCSRMapBFCD->
+                                           ServiceInfoTable[sServ].
+                                           pServiceLayoutTable) ); /* 70 */
+
+            MsgID = CMN_MAPGEN_MSG_WARN;
+
+            POSTMSG;
+
+            sprintf( MsgData,                               /* 255 */
+                     "Dropping relationships for Group %s.",
+                     BuildFullName(sIndex,
+                                   pBFCD->pCSRMapBFCD->
+                                          ServiceInfoTable[sServ].
+                                          pServiceLayoutTable) ); /* 70 */
+
+
+            MsgID = CMN_MAPGEN_MSG_WARN;
+
+            POSTMSG;
+
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pRepeatingMaps[sNewReposIx].ClientLayoutIndex = -1;
+
+            HEAP_CHECK_BEEP
+
+            return(CMN_FAIL);
+
+        }
+
+        sClientx = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pSavedRepeatingMaps[sIndex].ClientLayoutIndex;
+
+        /* Find the new Client index */
+        sNumTimes = FindFullName(sClientx,
+                                 pSavedLayout,
+                                 pReposLayout,
+                                 pBFCD->pCSRMapBFCD->ClientInfo.
+                                        NumReposClientRows,
+                                 &sNewClientIndex );
+
+        switch(sNumTimes)
+        {
+            case 0:
+            {
+                sprintf( MsgData,                               /* 255 */
+                         "Client Group %s no longer exists in the "
+                         "repository layout. "
+                         "Any previous relationships will be dropped",
+                         BuildFullName(sClientx, pSavedLayout) );  /* 70 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                DropClient(sClientx, sServ, 5, pSTDParms);
+
+                HEAP_CHECK_BEEP
+
+                return(CMN_FAIL);
+
+            } /* end of case 0 */
+
+            case 1:
+            {
+                pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                     pRepeatingMaps[sNewReposIx].ClientLayoutIndex =
+                                                           sNewClientIndex;
+
+                strncpy( ClientName,
+                         BuildFullName(sClientx, pSavedLayout),
+                         sizeof( ClientName ));
+
+                strncpy( ServiceName,
+                         BuildFullName( sIndex,
+                                        pBFCD->pCSRMapBFCD->
+                                               ServiceInfoTable[sServ].
+                                               pServiceLayoutTable ),
+                         sizeof( ServiceName ));
+
+                sprintf(MsgData,                        /* 255 */
+                        "Remapping RPMH Relationship between Client "
+                        "Group %s and Service Group %s.",
+                        ClientName ,                    /* 255 */
+                        ServiceName );                  /* 255 */
+
+                MsgID = CMN_MAPGEN_MSG_INFO;
+
+                POSTMSG;
+
+                break;
+
+            } /* end of case 1 */
+
+        } /* end of switch */
+
+    } /* end of if a relationship is defined */
+
+    HEAP_CHECK_BEEP
+
+    return (CMN_SUCCESS);
+
+} /* end of function ChangeRPMH */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DropClientLK
+**
+**  DESCRIPTION      : This function does the actual details of dropping a relationship.
+**                      It initializes all varaibles in the relationship data structure.
+**                      Also it posts the message to the message box.
+**
+**  INPUTS           : sServ - Service index.
+**                     sIndex - Saved layout index.
+**                     sNewServIndex - Repository layout index.
+**                     pSTDParms - Pointer to STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+***************************************************************************/
+SHORT DropClientLK( SHORT sServ,
+                    SHORT sIndex,
+                    SHORT sNewServIndex,
+                    _STDParms *pSTDParms )
+{
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD            = pSTDParms->pBFCD;
+    hwnd             = pSTDParms->hwnd;
+
+    pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pServiceLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pReposServiceLayoutTable;
+
+    strncpy( ClientName,
+             BuildFullName( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                    pSavedLoadKeys[sIndex].ClientLayoutIndex,
+                            pBFCD->pCSRMapBFCD->ClientInfo.
+                                    pClientLayoutTable),
+             sizeof( ClientName ));
+
+    strncpy( ServiceName,
+             BuildFullName( sIndex,
+                            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pServiceLayoutTable ),
+             sizeof( ServiceName ));
+
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+           pLoadKeys[sNewServIndex].ClientLayoutIndex = -1;
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+           pLoadKeys[sNewServIndex].LiteralUsed = 'N';
+
+    strncpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pLoadKeys[sNewServIndex].LiteralValue,
+             "",
+             sizeof ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                      pLoadKeys[sNewServIndex].LiteralValue));
+
+    sprintf( MsgData,                               /* 255 */
+             "Dropping LK Relationship between Client Element %s and "
+             "Service Element %s",
+             ClientName,                            /* 255 */
+             ServiceName );                         /* 255 */
+
+    MsgID = CMN_MAPGEN_MSG_WARN;
+
+    POSTMSG;
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function DropClientLK */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DropClientLD
+**
+**  DESCRIPTION      : This function does the actual details of dropping a relationship.
+**                      It initializes all varaibles in the relationship data structure.
+**                      Also it posts the message to the message box.
+**
+**  INPUTS           : sServ - Service index.
+**                     sIndex - Saved layout index.
+**                     sNewServIndex - Repository layout index.
+**                     pSTDParms - Pointer to STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton              Original code.
+**
+***************************************************************************/
+SHORT DropClientLD( SHORT sServ,
+                    SHORT sIndex,
+                    SHORT sNewServIndex,
+                    _STDParms *pSTDParms )
+{
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pServiceLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pReposServiceLayoutTable;
+
+    strncpy( ClientName,
+             BuildFullName( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pSavedLoadData[sIndex].ClientLayoutIndex,
+                            pBFCD->pCSRMapBFCD->ClientInfo.
+                                   pClientLayoutTable),
+             sizeof( ClientName ));
+
+    strncpy( ServiceName,
+             BuildFullName( sIndex,
+                            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pServiceLayoutTable ),
+             sizeof( ServiceName ));
+
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadData[sNewServIndex].
+           ClientLayoutIndex = -1;
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadData[sNewServIndex].
+           LiteralUsed = 'N';
+
+    strncpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pLoadData[sNewServIndex].LiteralValue,
+             "",
+             sizeof( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pLoadData[sNewServIndex].LiteralValue ));
+
+    sprintf( MsgData,                                       /* 255 */
+             "Dropping LD Relationship between Client Element %s and "
+             "Service Element %s.",
+             ClientName,                                    /* 255 */
+             ServiceName );                                 /* 255 */
+
+    MsgID = CMN_MAPGEN_MSG_WARN;
+
+    POSTMSG;
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function DropClientLD */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DropClientRD
+**
+**  DESCRIPTION      : This function does the actual details of dropping a relationship.
+**                      It initializes all varaibles in the relationship data structure.
+**                      Also it posts the message to the message box.
+**
+**  INPUTS           : sServ - Service index.
+**                     sIndex - Saved layout index.
+**                     sNewServIndex - Repository layout index.
+**                     pSTDParms - Pointer to STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+SHORT DropClientRD( SHORT sServ,
+                    SHORT sIndex,
+                    SHORT sNewServIndex,
+                    _STDParms *pSTDParms )
+{
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pServiceLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pReposServiceLayoutTable;
+
+    strncpy( ClientName,
+             BuildFullName( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                 pSavedReturnData[sIndex].ClientLayoutIndex,
+                            pBFCD->pCSRMapBFCD->ClientInfo.
+                                 pClientLayoutTable),
+             sizeof( ClientName ));
+
+    strncpy( ServiceName,
+             BuildFullName( sIndex,
+                            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pServiceLayoutTable ),
+             sizeof( ServiceName ));
+
+    sprintf( MsgData,                                   /* 255 */
+             "Dropping RD Relationship between Client Element %s and "
+             "Service Element %s.",
+             ClientName,                                /* 255 */
+             ServiceName);                              /* 255 */
+
+    MsgID = CMN_MAPGEN_MSG_WARN;
+
+    POSTMSG;
+
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData[sNewServIndex].
+            ClientLayoutIndex = -1;
+
+    HEAP_CHECK_BEEP
+
+    return(CMN_SUCCESS);
+
+} /* end of function DropClientRD */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DropClientCK
+**
+**
+**  DESCRIPTION      : This function does the actual details of dropping a relationship.
+**                      It initializes all varaibles in the relationship data structure.
+**                      Also it posts the message to the message box.
+**
+**  INPUTS           : sServ - Service index.
+**                     sIndex - Saved layout index.
+**                     sNewServIndex - Repository layout index.
+**                     pSTDParms - Pointer to STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean up.
+**
+***************************************************************************/
+SHORT DropClientCK( SHORT sServ,
+                    SHORT sIndex,
+                    SHORT sNewServIndex,
+                    _STDParms *pSTDParms )
+{
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pServiceLayoutTable;
+    pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pReposServiceLayoutTable;
+
+    strncpy( ClientName,
+             BuildFullName( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pSavedCompareKeys[sIndex].
+                                   ClientLayoutIndex,
+                            pBFCD->pCSRMapBFCD->ClientInfo.
+                                   pClientLayoutTable),
+             sizeof( ClientName ));
+
+    strncpy( ServiceName,
+             BuildFullName( sIndex,
+                            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pServiceLayoutTable ),
+             sizeof( ServiceName ));
+
+    sprintf(MsgData,                                        /* 255 */
+            "Dropping CK Relationship between Client Element %s and "
+            "Service Element %s.",
+            ClientName,                                     /* 255 */
+            ServiceName );                                  /* 255 */
+
+    MsgID = CMN_MAPGEN_MSG_WARN;
+
+    POSTMSG;
+
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pCompareKeys[sNewServIndex].ClientLayoutIndex = -1;
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pCompareKeys[sNewServIndex].LiteralUsed = 'N';
+
+    strncpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pCompareKeys[sNewServIndex].LiteralValue,
+             "",
+             sizeof( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pCompareKeys[sNewServIndex].LiteralValue  ));
+
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+           pCompareKeys[sNewServIndex].WildCardUsed = 'N';
+
+    strncpy( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pCompareKeys[sNewServIndex].WildCardValue,
+             "",
+             sizeof( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                            pCompareKeys[sNewServIndex].WildCardValue ));
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function DropClientCK */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DropClientRPMH
+**
+**  DESCRIPTION      : This function does the actual details of dropping a relationship.
+**                      It initializes all varaibles in the relationship data structure.
+**                      Also it posts the message to the message box.
+**
+**  INPUTS           : sServ - Service index.
+**                     sIndex - Saved layout index.
+**                     sNewServIndex - Repository layout index.
+**                     pSTDParms - Pointer to STDParms data structure.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up.
+***************************************************************************/
+SHORT DropClientRPMH( SHORT sServ,
+                      SHORT sIndex,
+                      SHORT sNewServIndex,
+                      _STDParms *pSTDParms )
+{
+    CHAR MsgData[255];
+    CHAR ClientName[255];
+    CHAR ServiceName[255];
+    USHORT MsgID=0;
+    SHORT FndGenRC;
+    _LAYOUT_REC *pSavedLayout;
+    _LAYOUT_REC *pReposLayout;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _BFCD * pBFCD;
+    HWND hwnd;
+
+    HEAP_CHECK_BEEP
+
+    pBFCD = pSTDParms->pBFCD;
+    hwnd  = pSTDParms->hwnd;
+
+    pSavedLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pServiceLayoutTable;
+
+    pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                          pReposServiceLayoutTable;
+
+    strncpy( ClientName,
+             BuildFullName( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pSavedRepeatingMaps[sIndex].
+                                   ClientLayoutIndex,
+                            pBFCD->pCSRMapBFCD->ClientInfo.
+                                   pClientLayoutTable),
+             sizeof( ClientName ));
+
+    strncpy( ServiceName,
+             BuildFullName( sIndex,
+                            pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                                   pServiceLayoutTable ),
+             sizeof( ServiceName ));
+
+    sprintf( MsgData,                                   /* 255 */
+             "Dropping RPMH Relationship between Client Group %s "
+             "and Service Group %s.",
+             ClientName,                                /* 255 */
+             ServiceName );                             /* 255 */
+
+    MsgID = CMN_MAPGEN_MSG_WARN;
+
+    POSTMSG;
+
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+           pRepeatingMaps[sNewServIndex].ClientLayoutIndex = -1;
+    pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+           pRepeatingMaps[sNewServIndex].SingleOccurence = 'N';
+
+    HEAP_CHECK_BEEP
+
+    return CMN_SUCCESS;
+
+} /* end of function DropClientRPMH */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : BuildFullName
+**
+**  DESCRIPTION      : This function builds a fully qualified name. Fully qualified
+**                      means it goes all the way thru its hierarchial structure to build
+**                      the name. This implies that a truly unique name can be built.
+**                      To do this the function calls itself recursively until it gets to the
+**                      top of its hierarchial tree (parent index = -1). Then as it returns
+**                      from each of the recursive calls it concatenates the C name of the element
+**                      at this level to the previous levels.
+**
+**                     **** NOTE **** The name is built in a static character array. Subsequent calls
+**                                     to this function will destroy the data in this array.
+**
+**
+**  INPUTS           : sElementx - Index of the variable whose name to build.
+**                     pLayout - pointer to the data layout.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : Itself - This function is recursive.
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
+{
+    static CHAR szFullName[255];
+    CHAR *pszTemp;
+    SHORT sParentx;
+    static SHORT sNestedLevel=0;
+
+    HEAP_CHECK_BEEP
+
+    /*
+     * sParentx will be -1 when you are at the top of the hierarchy
+     */
+    sParentx = pLayout[sElementx].ParentIndex;
+
+    /* if not at top call yourself again, Also keep track of how deep in */
+    /*   the hierarchy you are. */
+    if ( sParentx != -1 )
+    {
+        sNestedLevel++;
+
+        BuildFullName( sParentx, pLayout );
+
+        sNestedLevel--;
+    }
+    else
+    {
+        strncpy( szFullName, "", sizeof( szFullName));
+
+        sElementx = 0;
+    }
+
+    /* Concatenate the C name onto the end of szFullName */
+    strcat( szFullName, pLayout[sElementx].ItemCName );
+
+    /*
+     * Find out if the end of the field is blank filled. If it is then
+     * we want to put a null where the first blank field is. pszTemp
+     * will contain the address of the first blank or Null if none exist.
+     * A  period is placed between each level in the hierarchy, but
+     * not at the end of the name.
+     */
+    pszTemp = strchr(szFullName, ' ');
+
+    /* Blank filled and not at the end */
+    if ( pszTemp && sNestedLevel != 0 )
+    {
+        strcpy(pszTemp,".");
+    }
+
+    /* blank filled and at the end */
+    else if ( pszTemp && sNestedLevel == 0 )
+    {
+        strcpy( pszTemp, "" );
+    }
+
+    /* Not Blank filled and not at end */
+    else if ( !pszTemp && sNestedLevel != 0 )
+    {
+        strcat(szFullName, ".");
+    }
+
+    /* Not Blank filled and at the end */
+    else
+    {
+        strcat(szFullName, "");
+    }
+
+    HEAP_CHECK_BEEP
+
+    return( szFullName );
+
+} /* end of BuildFullName */
+
+
+
+
+VOID FileOut( CHAR *Text )
+{
+  /*
+  FILE *fp;
+
+  if( fp = fopen( "bug", "a" ))
+  {
+    fprintf( fp, "%s", Text );
+    fclose( fp );
+  }
+  */
+
+  DosSleep( 100 );
+  return;
+}

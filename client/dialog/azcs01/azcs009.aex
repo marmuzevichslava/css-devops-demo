@@ -1,0 +1,2200 @@
+/***************************************************************************
+**
+**               Customer Service System Architecture Module
+**
+** FILENAME         :  <Window Name>.AEX
+**
+** DESCRIPTION      :  CSS Architecture Exit Functions:
+**
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY   SIR #   DESCRIPTION OF CHANGE
+** --------    -----------  ------  ---------------------------------------
+** 03/11/93    C. CRAMPTON          Created skeleton
+** 03/12/93    L. Misfeldt          Modified ELB exit functions to contain
+**                                     example code.
+** 04/08/93    C.Crampton           Changed function names to 23 characters.
+***************************************************************************/
+
+/***************************************************************************/
+/* Forward declarations for Architecture Exit functions                    */
+/***************************************************************************/
+
+
+/* JSH: 03/16/93 MODIFIED */
+AEXFWD(ExitWdtSetDataLength);
+
+AEXFWD(ExitSibStartDialog);
+
+AEXFWD(CmnArchExitInitialize);
+AEXFWD(ExitHlpInit);       /* 04/08/93 CSC: ADDED */
+AEXFWD(CmnExitTlChdIntDatSet);
+AEXFWD(CmnExitTlChdIntDatGet);
+AEXFWD(ExitTlPopulateData);
+AEXFWD(ExitWktCloseAfterSave);
+AEXFWD(ExitWktCloseAfterCancel);
+AEXFWD(ExitElbRegister);
+AEXFWD(ExitElb1CloseAfterSave);
+AEXFWD(ExitElb1CloseAfterCncl);
+AEXFWD(ExitElb1BuildInstName);  /* 3/12/93 LGM: Modified Name */
+AEXFWD(ExitElb1BuildInitData);
+AEXFWD(ExitElb1BuildDelData);  /* 04/08/93 FDG: ADDED */
+AEXFWD(ExitElb2CloseAfterSave);
+AEXFWD(ExitElb2CloseAfterCncl);
+AEXFWD(ExitElb2BuildInstName);  /* 3/12/93 LGM: Modified Name */
+AEXFWD(ExitElb2BuildInitData);
+AEXFWD(ExitElb2BuildDelData);  /* 04/08/93 FDG: ADDED */
+AEXFWD(ExitElb3CloseAfterSave);
+AEXFWD(ExitElb3CloseAfterCncl);
+AEXFWD(ExitElb3BuildInstName);  /* 3/12/93 LGM: Modified Name */
+AEXFWD(ExitElb3BuildInitData);
+AEXFWD(ExitElb3BuildDelData);  /* 04/08/93 FDG: ADDED */
+AEXFWD(ExitElb4CloseAfterSave);
+AEXFWD(ExitElb4CloseAfterCncl);
+AEXFWD(ExitElb4BuildInstName);  /* 3/12/93 LGM: Modified Name */
+AEXFWD(ExitElb4BuildInitData);
+AEXFWD(ExitElb4BuildDelData);  /* 04/08/93 FDG: ADDED */
+AEXFWD(ExitElb5CloseAfterSave);
+AEXFWD(ExitElb5CloseAfterCncl);
+AEXFWD(ExitElb5BuildInstName);  /* 3/12/93 LGM: Modified Name */
+AEXFWD(ExitElb5BuildInitData);
+AEXFWD(ExitElb5BuildDelData);  /* 04/08/93 FDG: ADDED */
+
+
+/***************************************************************************/
+/* ArchExitTable - This table is used by the architecture functions to     */
+/*  resolve function addresses in the users program. All functions must    */
+/*  be registered in this table.                                           */
+/***************************************************************************/
+
+
+static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
+{
+  /* JSH: 03/10/93 ADDED */
+  /* JSH: 03/16/93 MODIFIED */
+  REGISTERARCHEXIT(ExitWdtSetDataLength),
+
+  REGISTERARCHEXIT(ExitSibStartDialog),
+  REGISTERARCHEXIT(ExitHlpInit),       /* 04/08/93 CSC: ADDED */
+  REGISTERARCHEXIT(CmnExitTlChdIntDatSet),
+  REGISTERARCHEXIT(CmnExitTlChdIntDatGet),
+  REGISTERARCHEXIT(ExitTlPopulateData),
+  REGISTERARCHEXIT(ExitWktCloseAfterSave),
+  REGISTERARCHEXIT(ExitWktCloseAfterCancel),
+  REGISTERARCHEXIT(ExitElbRegister),
+  REGISTERARCHEXIT(ExitElb1CloseAfterSave),
+  REGISTERARCHEXIT(ExitElb1CloseAfterCncl),
+  REGISTERARCHEXIT(ExitElb1BuildInstName), /* 3/12/93 LGM: Modified Name */
+  REGISTERARCHEXIT(ExitElb1BuildInitData),
+  REGISTERARCHEXIT(ExitElb1BuildDelData), /* 04/08/93 FDG: ADDED */
+  REGISTERARCHEXIT(ExitElb2CloseAfterSave),
+  REGISTERARCHEXIT(ExitElb2CloseAfterCncl),
+  REGISTERARCHEXIT(ExitElb2BuildInstName), /* 3/12/93 LGM: Modified Name */
+  REGISTERARCHEXIT(ExitElb2BuildInitData),
+  REGISTERARCHEXIT(ExitElb2BuildDelData), /* 04/08/93 FDG: ADDED */
+  REGISTERARCHEXIT(ExitElb3CloseAfterSave),
+  REGISTERARCHEXIT(ExitElb3CloseAfterCncl),
+  REGISTERARCHEXIT(ExitElb3BuildInstName), /* 3/12/93 LGM: Modified Name */
+  REGISTERARCHEXIT(ExitElb3BuildInitData),
+  REGISTERARCHEXIT(ExitElb3BuildDelData), /* 04/08/93 FDG: ADDED */
+  REGISTERARCHEXIT(ExitElb4CloseAfterSave),
+  REGISTERARCHEXIT(ExitElb4CloseAfterCncl),
+  REGISTERARCHEXIT(ExitElb4BuildInstName), /* 3/12/93 LGM: Modified Name */
+  REGISTERARCHEXIT(ExitElb4BuildInitData),
+  REGISTERARCHEXIT(ExitElb4BuildDelData), /* 04/08/93 FDG: ADDED */
+  REGISTERARCHEXIT(ExitElb5CloseAfterSave),
+  REGISTERARCHEXIT(ExitElb5CloseAfterCncl),
+  REGISTERARCHEXIT(ExitElb5BuildInstName), /* 3/12/93 LGM: Modified Name */
+  REGISTERARCHEXIT(ExitElb5BuildInitData),
+  REGISTERARCHEXIT(ExitElb5BuildDelData), /* 04/08/93 FDG: ADDED */
+  "",0
+};
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitWdtSetDataLength
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : JON HERSTEIN
+**
+**  DATE CREATED     : MARCH 10, 1993
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/10/93  J. HERSTEIN           Original code.
+**
+***************************************************************************/
+
+/* JSH: 03/10/93 ADDED */
+/* JSH: 03/16/93 MODIFIED */
+AEXPROC (ExitWdtSetDataLength)
+{
+  /* JSH: 03/19/93 MODIFIED */
+  /* UNCOMMENT THE FOLLOWING LINE */
+  /*
+  EAB_pAwdList->DataLength = sizeof( <YOURDATASTRUCT> );
+  */
+  /* UNCOMMENT THE PRECEDING LINE */
+
+  return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitHlpInit
+**
+**  DESCRIPTION      : This function initializes Help for this Window.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : CHRIS CRAMPTON
+**
+**  DATE CREATED     : APRIL 8, 1993
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  04/08/93  C. CRAMPTON           Original code.
+**  04/15/93  C. CRAMPTON           Added CmnHlpMgrSetPanels logic.
+**  10/06/94  J. LOONEY             Deleted all help logic.  Use a previous
+**                                  revision to reimplement the help logic.
+***************************************************************************/
+
+AEXPROC (ExitHlpInit)
+{
+
+/****************  User Instructions  **********************************/
+/***                                                                 ***/
+/***  The User needs to make 3 changes to implement this             ***/
+/***   functionality:                                                ***/
+/***                                                                 ***/
+/***    1. Change the macro field HELPWINDOWTITLE. Enter the string  ***/
+/***       that you want as the title of the help window. It must be ***/
+/***       enclosed in double quotes (C language string).            ***/
+/***       (I.E. #define HELPWINDOWTITLE "Help for Window XXXX" )    ***/
+/***                                                                 ***/
+/***    2. Change the macro field HELPFILENAME. Enter the name of    ***/
+/***       the help file including the filename extension. It must   ***/
+/***       be enclosed in double quotes (C language string).         ***/
+/***       (I.E. #define HELPFILENAME "HELP.HLP" )                   ***/
+/***                                                                 ***/
+/***    3. Add the Widget or Command Id and the corresponding        ***/
+/***         Help Panels Panel Number to the PanelList array.        ***/
+/***         When the user presses <F1> WES will look in this array  ***/
+/***         for the Widget or Command ID. If the ID exists the      ***/
+/***         corresponding Panel will be displayed.                  ***/
+/***       (I.E. PanelList[] = { Widget Id1 , Panel Number 1,        ***/
+/***                             Widget Id2 , Panel Number 2         ***/
+/***                           };                                    ***/
+/***                                                                 ***/
+/***   NO OTHER CHANGES TO THIS FUNCTION SHOULD BE NECESSARY.        ***/
+/***                                                                 ***/
+/***********************************************************************/
+
+
+/***********************************************************************/
+/***  Change the 3 fields above. See User Instructions above.        ***/
+/***                                                                 ***/
+/***   NO OTHER CHANGES TO THIS FUNCTION SHOULD BE NECESSARY.        ***/
+/***                                                                 ***/
+/***********************************************************************/
+
+/***********************************************************************/
+/*** Initialize the help instance for this window by calling         ***/
+/***    the CmnHlpMgrInitInst function.                              ***/
+/***********************************************************************/
+
+
+/***********************************************************************/
+/*** Create the Widget and Command Id to Panel number relationship.  ***/
+/***********************************************************************/
+
+    return(CMN_SUCCESS);
+}
+
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Architecture Function
+**
+** FUNCTION     :   CmnExitTlChdIntDatSet
+**
+** DESCRIPTION      :   This function is called when a task list row has been
+**                      double-clicked.  It provides the programmer with a
+**                      means of specifying initial data for the window
+**                      being created.  The programmer may specify different
+**                      initial data structures for each child window of a
+**                      task list.
+**
+** INPUTS           :   CMN_ARCH_PARM_TYPES CMN_ARCH_PARMS
+**                                         (Standard FOUNDATION data needed
+**                                          to access the WES map, BFCD,
+**                                          WCD, etc...)
+**
+** OUTPUTS          :   return code (CMN_SUCCESS)
+**
+**
+** CALLED FUNCTIONS :   NONE
+**
+**
+** AUTHOR           :   Florida Power Corporation & Andersen Consulting
+**
+** DATE CREATED     :   3-08-93
+**
+**
+** REVISION HISTORY
+**
+**   DATE      REVISED BY        SIR #      DESCRIPTION OF CHANGE
+** --------  ----------------  ---------  ----------------------------------
+** 03/08/93  FGANTER                      Original Code
+**
+***************************************************************************/
+AEXPROC (CmnExitTlChdIntDatSet)
+{
+
+    /**
+     ** Declare initial data structures for each child window of a TASK LIST.
+     ** Declare an initial data structure for every window that has
+     **   different initial data fields.
+     ** If the child window does not require initial data, a structure
+     **   should not be defined.  Also, this function will
+     **   automatically set initial data to NULL.
+     **
+     ** In most cases the child window's input layout will already be
+     **   declared in a copybook.  If not, declare the initial data structure
+     **   similar to the following example.
+     **
+     ** NOTE:  This same structure should appear in the child window's
+     **          CmnExitTlChdIntDatGet function.
+     **/
+
+    typedef struct __WIN1_INITIAL_DATA {
+        short number;
+        char string[10];
+        } _WIN1_INITIAL_DATA;
+
+
+    /**
+     ** The programmer should define an instance of the structure as in the
+     **   following example:
+     **/
+    _WIN1_INITIAL_DATA *pInitialData1;
+
+    /* Assume there is no initial data. */
+    pCmnArchBlock->TlbChildInfo.pInitialData = NULL;
+
+    /* If there IS initial data, fill it in as in the following example. */
+
+    if( !strncmp( pCmnArchBlock->TlbChildInfo.WindowName, "CUCP003", CMN_WINDOWNAME_LEN ) )
+    {
+
+        /**
+         ** Allocate memory for the initial data.  (It will be deallocated by
+         **   the child window.)
+         **/
+        pInitialData1 = malloc( sizeof(_WIN1_INITIAL_DATA) );
+
+        /* Initialize Initial Data for window 1. */
+        memset(pInitialData1, 0, sizeof(_WIN1_INITIAL_DATA));
+
+        /* Fill in the initial data fields for structure 1. */
+
+        pInitialData1->number = 10;
+        strncpy (pInitialData1->string, "String 1", (sizeof(pInitialData1->string) - 1));
+
+        /**
+         ** Set the architecture's Initial Data pointer equal to the address
+         **   of the InitialData1 values.  (The architecture will use this
+         **   pointer when creating the child window.)
+         **/
+        pCmnArchBlock->TlbChildInfo.pInitialData = pInitialData1;
+
+    } /* End if( !strncmp( pCmnArchBlock->TlbChildInfo.WindowName, "CUCP003", CMN_WINDOWNAME_LEN ) ) */
+
+    else if( !strncmp( pCmnArchBlock->TlbChildInfo.WindowName, "CUCP004", CMN_WINDOWNAME_LEN ) )
+    {
+
+        /**
+         ** Allocate memory for the initial data.  (It will be deallocated by
+         **   the child window.)
+         **/
+        pInitialData1 = malloc( sizeof(_WIN1_INITIAL_DATA) );
+
+        /* Initialize Initial Data for window 1. */
+        memset(pInitialData1, 0, sizeof(_WIN1_INITIAL_DATA));
+
+        /* Fill in the initial data fields for structure 1. */
+
+        pInitialData1->number = 11;
+        strncpy (pInitialData1->string, "String 2", (sizeof(pInitialData1->string) - 1));
+
+        /**
+         ** Set the architecture's Initial Data pointer equal to the address
+         **   of the InitialData1 values.  (The architecture will use this
+         **   pointer when creating the child window.)
+         **/
+        pCmnArchBlock->TlbChildInfo.pInitialData = pInitialData1;
+
+    } /* End if( !strncmp( pCmnArchBlock->TlbChildInfo.WindowName, "CUCP004", CMN_WINDOWNAME_LEN ) ) */
+
+
+
+
+  return (CMN_SUCCESS);
+}
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Architecture Function
+**
+** FUNCTION     :   CmnExitTlChdIntDatGet
+**
+** DESCRIPTION      :   This function is called when a task list row has been
+**                      double-clicked.  It provides the programmer with a
+**                      means of specifying initial data for the window
+**                      being created.  The programmer may specify different
+**                      initial data structures for each child window of a
+**                      task list.
+**
+** INPUTS           :   CMN_ARCH_PARM_TYPES CMN_ARCH_PARMS
+**                                         (Standard FOUNDATION data needed
+**                                          to access the WES map, BFCD,
+**                                          WCD, etc...)
+**
+** OUTPUTS          :   return code (CMN_SUCCESS)
+**
+**
+** CALLED FUNCTIONS :   NONE
+**
+**
+** AUTHOR           :   Florida Power Corporation & Andersen Consulting
+**
+** DATE CREATED     :   3-08-93
+**
+**
+** REVISION HISTORY
+**
+**   DATE      REVISED BY        SIR #      DESCRIPTION OF CHANGE
+** --------  ----------------  ---------  ----------------------------------
+** 03/08/93  FGANTER                      Original Code
+** 03/18/93  FGANTER                      Modified example code
+**
+***************************************************************************/
+AEXPROC (CmnExitTlChdIntDatGet)
+{
+/*
+    unsigned short   FndGenRC          = FND_SUCCESS;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    long             TestNum           = 0;
+*/
+    /**
+     ** Set up a structure identical to the one used in this window's
+     **   parent's CmnExitTlChdIntDatSet function.
+     ** The following example coincides with the example in
+     **   CmnExitTlChdIntDatSet.
+     **/
+/*
+    typedef struct __WIN1_INITIAL_DATA {
+        short number;
+        char string[10];
+        } _WIN1_INITIAL_DATA;
+*/
+
+    /* Declare a pointer as in the following example: */
+/*    _WIN1_INITIAL_DATA *pInitialData1; */
+
+    /* Set the pointer equal to the address of the initial data. */
+/*    pInitialData1 = ( _WIN1_INITIAL_DATA * ) CBI_pInitData; */
+
+    /* Move the data to the WES map. */
+/*
+    TestNum = pInitialData1->number;
+
+    FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                 "QyCalcSersBatch",
+                                 sizeof( TestNum ),
+                                 &TestNum,
+                                 &FndGenErrorBlock );
+*/
+    return(CMN_SUCCESS);
+
+} /* End CmnExitTlChdIntDatGet function */
+
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Architecture Function
+**
+** FUNCTION     :   ExitTlPopulateData
+**
+** DESCRIPTION      :   This is a user exit function called from this
+**                      window's PREDISPLAY.  It allows the
+**                      programmer to populate the Task List with data.
+**
+** INPUTS           :   CMN_ARCH_PARM_TYPES CMN_ARCH_PARMS
+**                                         (Standard FOUNDATION data needed
+**                                          to access the WES map, BFCD,
+**                                          WCD, etc...)
+**
+** OUTPUTS          :   return code (CMN_SUCCESS)
+**
+**
+** CALLED FUNCTIONS :   NONE
+**
+**
+** AUTHOR           :   Florida Power Corporation & Andersen Consulting
+**
+** DATE CREATED     :   3-08-93
+**
+**
+** REVISION HISTORY
+**
+**   DATE      REVISED BY        SIR #      DESCRIPTION OF CHANGE
+** --------  ----------------  ---------  ----------------------------------
+** 03/08/93  FGANTER                      Original Code
+**
+***************************************************************************/
+AEXPROC (ExitTlPopulateData)
+{
+
+    unsigned short   FndGenRC          = FND_SUCCESS;
+/*    _FND_ERROR_BLOCK FndGenErrorBlock; */
+
+    return(CMN_SUCCESS);
+
+} /* End ExitTlPopulateData function */
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitWktCloseAfterSave
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitWktCloseAfterSave)
+{
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitWktCloseAfterCancel
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitWktCloseAfterCancel)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElbRegister
+**
+**  DESCRIPTION      : This exit function allows for the coding of the
+**                     enterable list box registration function:
+**                     CmnElbRegisterRelations.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : CmnElbRegisterRelations (for each ELB in window)
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElbRegister)
+{
+
+    /*  Each enterable list box in a window MUST be registered with  */
+    /*     the architecture.  Use the following function once for    */
+    /*     enterable list box in the window.                         */
+
+
+    /*  MODIFIED: LGM 03/22/93  the following comment changed  */
+
+    /* Example:
+    |  rc = CmnElbRegisterRelations
+    |                   (
+    |                    ELB Widget Name,
+    |                    Sequence Number (1 - 5),
+    |                    sizeof (Enterable List Box Row Structure Name),
+    |                    ELB Child Window Name,
+    |                    Add Pushbutton Widget Name (or NULL),
+    |                    Add Using Pushbutton Widget Name (or NULL),
+    |                    Change Pushbutton Widget Name (or NULL),
+    |                    Delete Pushbutton Widget Name (or NULL),
+    |                    Undelete Pushbutton Widget Name (or NULL)
+    |                    CMN_ARCH_PARMS
+    |                   );
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb1CloseAfterSave
+**
+**  DESCRIPTION      : This exit function is for Close After Save processing
+**                     for the enterable list box registered as sequence
+**                     number 1.  Place any necessary statements in this
+**                     exit to process the saved data from the enterable
+**                     list box child window.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb1CloseAfterSave)
+{
+
+    /*  Declare variables to point to the saved data in WDT  */
+
+    /*  Example:
+    |    YOUR_OUTPUT_DATA_STRUCT   *pData;
+    */
+
+
+    /*  Establish addressability to the output data in WDT  */
+
+    /*   Example:
+    |    pData = (YOUR_OUTPUT_DATA_STRUCT *) CMN_ELB_CHILD_DATA;
+    */
+
+    /*   Place code after this comment to move the data to the various
+    |       columns of the enterable list box and to perform any additional
+    |       processing as needed.  The following #defines are available
+    |       to access ELB architecture information:
+    |
+    |       CMN_ELB_WIDGET_NAME - The widget name for the enterable list
+    |                             box being processed.
+    |
+    |       CMN_ELB_ROW_PROCESSING - The row number in the enterable list
+    |                                box being processed.
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb1CloseAfterCncl
+**
+**  DESCRIPTION      : This exit function is for Close After Cancel
+**                     and Exit Pending processing for the enterable list
+**                     box registered as sequence number 1.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitElb1CloseAfterCncl)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb1BuildInstName
+**
+**  DESCRIPTION      : This exit function is used to specify any additional
+**                     columns for building the window instance name for
+**                     the child window of the enterable list box registered
+**                     as sequence number 1.  This instance name is used
+**                     by the architecture to build a complete window
+**                     instance name for the child window during a 'change'
+**                     operation.  It is important to note that the name
+**                     built in this exit function is also used within
+**                     window data tracking to identify the data.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : sprintf
+**                     CmnElbAssignChgWinInstName
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb1BuildInstName)
+{
+
+
+    /*  Declare a variable that will contain your key columns string  */
+
+    /*  Example:
+    |   char szKeyColumns[whatever size you may need];
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Execute the C run-time routine 'sprintf' to concatenate the
+    |      columns together into a null-terminated string...
+    |   Example:
+    |       sprintf (szKeyColumns,
+    |                <Format Specification>,
+    |                <Format Data Item1>,
+    |                <Format Data Item2>,
+    |                ...)
+    */
+
+    /*  Execute the architecture function CmnElbAssignChgWinInstName
+    |      to tell the architecture what the window instance name is:
+    |   Example:
+    |       CmnElbAssignChgWinInstName (szKeyColumns, CMN_ARCH_PARMS);
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb1BuildInitData
+**
+**  DESCRIPTION      : This exit function is used to build the initial data
+**                     structure to be passed to the child window of the
+**                     enterable list box registered as sequence number 1.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : CmnElbAssignInitialData
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb1BuildInitData)
+{
+
+    /*  Declare an instance of the data structure to pass to the  */
+    /*     child window of the enterable list box.                */
+
+    /*  Example:
+    |     YOUR_INITIAL_DATA_STRUCT  InitialData;
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Fill your initial data structure with data   */
+
+    /*  Execute the architecture function CmnElbAssignInitialData
+    |      passing the address of your initial data structure and
+    |      the length of your initial data structure.  Make sure to
+    |      cast the address as a (void *).  This will allow the
+    |      architecture to pass your data structure on to the child window
+    |      of the enterable list box with the data you supplied.
+    |
+    |   Example:
+    |       CmnElbAssignInitialData (
+    |                                (void *) InitialData,
+    |                                sizeof (InitialData),
+    |                                CMN_ARCH_PARMS
+    |                               );
+    */
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb1BuildDelData
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS :
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**
+***************************************************************************/
+
+AEXPROC (ExitElb1BuildDelData)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb2CloseAfterSave
+**
+**  DESCRIPTION      : This exit function is for Close After Save processing
+**                     for the enterable list box registered as sequence
+**                     number 2.  Place any necessary statements in this
+**                     exit to process the saved data from the enterable
+**                     list box child window.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb2CloseAfterSave)
+{
+
+    /*  Declare variables to point to the saved data in WDT  */
+
+    /*  Example:
+    |    YOUR_OUTPUT_DATA_STRUCT   *pData;
+    */
+
+
+    /*  Establish addressability to the output data in WDT  */
+
+    /*   Example:
+    |    pData = (YOUR_OUTPUT_DATA_STRUCT *) CMN_ELB_CHILD_DATA;
+    */
+
+    /*   Place code after this comment to move the data to the various
+    |       columns of the enterable list box and to perform any additional
+    |       processing as needed.  The following #defines are available
+    |       to access ELB architecture information:
+    |
+    |       CMN_ELB_WIDGET_NAME - The widget name for the enterable list
+    |                             box being processed.
+    |
+    |       CMN_ELB_ROW_PROCESSING - The row number in the enterable list
+    |                                box being processed.
+    */
+
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb2CloseAfterCncl
+**
+**  DESCRIPTION      : This exit function is for Close After Cancel
+**                     and Exit Pending processing for the enterable list
+**                     box registered as sequence number 2.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitElb2CloseAfterCncl)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb2BuildInstName
+**
+**  DESCRIPTION      : This exit function is used to specify any additional
+**                     columns for building the window instance name for
+**                     the child window of the enterable list box registered
+**                     as sequence number 2.  This instance name is used
+**                     by the architecture to build a complete window
+**                     instance name for the child window during a 'change'
+**                     operation.  It is important to note that the name
+**                     built in this exit function is also used within
+**                     window data tracking to identify the data.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : sprintf
+**                     CmnElbAssignChgWinInstName
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb2BuildInstName)
+{
+
+    /*  Declare a variable that will contain your key columns string  */
+
+    /*  Example:
+    |   char szKeyColumns[whatever size you may need];
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Execute the C run-time routine 'sprintf' to concatenate the
+    |      columns together into a null-terminated string...
+    |   Example:
+    |       sprintf (szKeyColumns,
+    |                <Format Specification>,
+    |                <Format Data Item1>,
+    |                <Format Data Item2>,
+    |                ...)
+    */
+
+    /*  Execute the architecture function CmnElbAssignChgWinInstName
+    |      to tell the architecture what the window instance name is:
+    |   Example:
+    |       CmnElbAssignChgWinInstName (szKeyColumns, CMN_ARCH_PARMS);
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb2BuildInitData
+**
+**  DESCRIPTION      : This exit function is used to build the initial data
+**                     structure to be passed to the child window of the
+**                     enterable list box registered as sequence number 2.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : CmnElbAssignInitialData
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb2BuildInitData)
+{
+
+    /*  Declare an instance of the data structure to pass to the  */
+    /*     child window of the enterable list box.                */
+
+    /*  Example:
+    |     YOUR_INITIAL_DATA_STRUCT  InitialData;
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Fill your initial data structure with data   */
+
+    /*  Execute the architecture function CmnElbAssignInitialData
+    |      passing the address of your initial data structure and
+    |      the length of your initial data structure.  Make sure to
+    |      cast the address as a (void *).  This will allow the
+    |      architecture to pass your data structure on to the child window
+    |      of the enterable list box with the data you supplied.
+    |
+    |   Example:
+    |       CmnElbAssignInitialData (
+    |                                (void *) InitialData,
+    |                                sizeof (InitialData),
+    |                                CMN_ARCH_PARMS
+    |                               );
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb2BuildDelData
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS :
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**
+***************************************************************************/
+
+AEXPROC (ExitElb2BuildDelData)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb3CloseAfterSave
+**
+**  DESCRIPTION      : This exit function is for Close After Save processing
+**                     for the enterable list box registered as sequence
+**                     number 3.  Place any necessary statements in this
+**                     exit to process the saved data from the enterable
+**                     list box child window.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb3CloseAfterSave)
+{
+
+    /*  Declare variables to point to the saved data in WDT  */
+
+    /*  Example:
+    |    YOUR_OUTPUT_DATA_STRUCT   *pData;
+    */
+
+
+    /*  Establish addressability to the output data in WDT  */
+
+    /*   Example:
+    |    pData = (YOUR_OUTPUT_DATA_STRUCT *) CMN_ELB_CHILD_DATA;
+    */
+
+    /*   Place code after this comment to move the data to the various
+    |       columns of the enterable list box and to perform any additional
+    |       processing as needed.  The following #defines are available
+    |       to access ELB architecture information:
+    |
+    |       CMN_ELB_WIDGET_NAME - The widget name for the enterable list
+    |                             box being processed.
+    |
+    |       CMN_ELB_ROW_PROCESSING - The row number in the enterable list
+    |                                box being processed.
+    */
+
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb3CloseAfterCncl
+**
+**  DESCRIPTION      : This exit function is for Close After Cancel
+**                     and Exit Pending processing for the enterable list
+**                     box registered as sequence number 3.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitElb3CloseAfterCncl)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb3BuildInstName
+**
+**  DESCRIPTION      : This exit function is used to specify any additional
+**                     columns for building the window instance name for
+**                     the child window of the enterable list box registered
+**                     as sequence number 3.  This instance name is used
+**                     by the architecture to build a complete window
+**                     instance name for the child window during a 'change'
+**                     operation.  It is important to note that the name
+**                     built in this exit function is also used within
+**                     window data tracking to identify the data.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : sprintf
+**                     CmnElbAssignChgWinInstName
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb3BuildInstName)
+{
+
+    /*  Declare a variable that will contain your key columns string  */
+
+    /*  Example:
+    |   char szKeyColumns[whatever size you may need];
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Execute the C run-time routine 'sprintf' to concatenate the
+    |      columns together into a null-terminated string...
+    |   Example:
+    |       sprintf (szKeyColumns,
+    |                <Format Specification>,
+    |                <Format Data Item1>,
+    |                <Format Data Item2>,
+    |                ...)
+    */
+
+    /*  Execute the architecture function CmnElbAssignChgWinInstName
+    |      to tell the architecture what the window instance name is:
+    |   Example:
+    |       CmnElbAssignChgWinInstName (szKeyColumns, CMN_ARCH_PARMS);
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb3BuildInitData
+**
+**  DESCRIPTION      : This exit function is used to build the initial data
+**                     structure to be passed to the child window of the
+**                     enterable list box registered as sequence number 3.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : CmnElbAssignInitialData
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb3BuildInitData)
+{
+
+    /*  Declare an instance of the data structure to pass to the  */
+    /*     child window of the enterable list box.                */
+
+    /*  Example:
+    |     YOUR_INITIAL_DATA_STRUCT  InitialData;
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Fill your initial data structure with data   */
+
+    /*  Execute the architecture function CmnElbAssignInitialData
+    |      passing the address of your initial data structure and
+    |      the length of your initial data structure.  Make sure to
+    |      cast the address as a (void *).  This will allow the
+    |      architecture to pass your data structure on to the child window
+    |      of the enterable list box with the data you supplied.
+    |
+    |   Example:
+    |       CmnElbAssignInitialData (
+    |                                (void *) InitialData,
+    |                                sizeof (InitialData),
+    |                                CMN_ARCH_PARMS
+    |                               );
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb3BuildDelData
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS :
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**
+***************************************************************************/
+
+AEXPROC (ExitElb3BuildDelData)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb4CloseAfterSave
+**
+**  DESCRIPTION      : This exit function is for Close After Save processing
+**                     for the enterable list box registered as sequence
+**                     number 4.  Place any necessary statements in this
+**                     exit to process the saved data from the enterable
+**                     list box child window.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb4CloseAfterSave)
+{
+
+    /*  Declare variables to point to the saved data in WDT  */
+
+    /*  Example:
+    |    YOUR_OUTPUT_DATA_STRUCT   *pData;
+    */
+
+
+    /*  Establish addressability to the output data in WDT  */
+
+    /*   Example:
+    |    pData = (YOUR_OUTPUT_DATA_STRUCT *) CMN_ELB_CHILD_DATA;
+    */
+
+    /*   Place code after this comment to move the data to the various
+    |       columns of the enterable list box and to perform any additional
+    |       processing as needed.  The following #defines are available
+    |       to access ELB architecture information:
+    |
+    |       CMN_ELB_WIDGET_NAME - The widget name for the enterable list
+    |                             box being processed.
+    |
+    |       CMN_ELB_ROW_PROCESSING - The row number in the enterable list
+    |                                box being processed.
+    */
+
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb4CloseAfterCncl
+**
+**  DESCRIPTION      : This exit function is for Close After Cancel
+**                     and Exit Pending processing for the enterable list
+**                     box registered as sequence number 4.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitElb4CloseAfterCncl)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb4BuildInstName
+**
+**  DESCRIPTION      : This exit function is used to specify any additional
+**                     columns for building the window instance name for
+**                     the child window of the enterable list box registered
+**                     as sequence number 4.  This instance name is used
+**                     by the architecture to build a complete window
+**                     instance name for the child window during a 'change'
+**                     operation.  It is important to note that the name
+**                     built in this exit function is also used within
+**                     window data tracking to identify the data.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : sprintf
+**                     CmnElbAssignChgWinInstName
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb4BuildInstName)
+{
+
+    /*  Declare a variable that will contain your key columns string  */
+
+    /*  Example:
+    |   char szKeyColumns[whatever size you may need];
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Execute the C run-time routine 'sprintf' to concatenate the
+    |      columns together into a null-terminated string...
+    |   Example:
+    |       sprintf (szKeyColumns,
+    |                <Format Specification>,
+    |                <Format Data Item1>,
+    |                <Format Data Item2>,
+    |                ...)
+    */
+
+    /*  Execute the architecture function CmnElbAssignChgWinInstName
+    |      to tell the architecture what the window instance name is:
+    |   Example:
+    |       CmnElbAssignChgWinInstName (szKeyColumns, CMN_ARCH_PARMS);
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb4BuildInitData
+**
+**  DESCRIPTION      : This exit function is used to build the initial data
+**                     structure to be passed to the child window of the
+**                     enterable list box registered as sequence number 4.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : CmnElbAssignInitialData
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb4BuildInitData)
+{
+
+    /*  Declare an instance of the data structure to pass to the  */
+    /*     child window of the enterable list box.                */
+
+    /*  Example:
+    |     YOUR_INITIAL_DATA_STRUCT  InitialData;
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Fill your initial data structure with data   */
+
+    /*  Execute the architecture function CmnElbAssignInitialData
+    |      passing the address of your initial data structure and
+    |      the length of your initial data structure.  Make sure to
+    |      cast the address as a (void *).  This will allow the
+    |      architecture to pass your data structure on to the child window
+    |      of the enterable list box with the data you supplied.
+    |
+    |   Example:
+    |       CmnElbAssignInitialData (
+    |                                (void *) InitialData,
+    |                                sizeof (InitialData),
+    |                                CMN_ARCH_PARMS
+    |                               );
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb4BuildDelData
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS :
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**
+***************************************************************************/
+
+AEXPROC (ExitElb4BuildDelData)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb5CloseAfterSave
+**
+**  DESCRIPTION      : This exit function is for Close After Save processing
+**                     for the enterable list box registered as sequence
+**                     number 5.  Place any necessary statements in this
+**                     exit to process the saved data from the enterable
+**                     list box child window.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb5CloseAfterSave)
+{
+
+    /*  Declare variables to point to the saved data in WDT  */
+
+    /*  Example:
+    |    YOUR_OUTPUT_DATA_STRUCT   *pData;
+    */
+
+
+    /*  Establish addressability to the output data in WDT  */
+
+    /*   Example:
+    |    pData = (YOUR_OUTPUT_DATA_STRUCT *) CMN_ELB_CHILD_DATA;
+    */
+
+    /*   Place code after this comment to move the data to the various
+    |       columns of the enterable list box and to perform any additional
+    |       processing as needed.  The following #defines are available
+    |       to access ELB architecture information:
+    |
+    |       CMN_ELB_WIDGET_NAME - The widget name for the enterable list
+    |                             box being processed.
+    |
+    |       CMN_ELB_ROW_PROCESSING - The row number in the enterable list
+    |                                box being processed.
+    */
+
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb5CloseAfterCncl
+**
+**  DESCRIPTION      : This exit function is for Close After Cancel
+**                     and Exit Pending processing for the enterable list
+**                     box registered as sequence number 5.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**
+***************************************************************************/
+
+AEXPROC (ExitElb5CloseAfterCncl)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb5BuildInstName
+**
+**  DESCRIPTION      : This exit function is used to specify any additional
+**                     columns for building the window instance name for
+**                     the child window of the enterable list box registered
+**                     as sequence number 5.  This instance name is used
+**                     by the architecture to build a complete window
+**                     instance name for the child window during a 'change'
+**                     operation.  It is important to note that the name
+**                     built in this exit function is also used within
+**                     window data tracking to identify the data.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : sprintf
+**                     CmnElbAssignChgWinInstName
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb5BuildInstName)
+{
+
+    /*  Declare a variable that will contain your key columns string  */
+
+    /*  Example:
+    |   char szKeyColumns[whatever size you may need];
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Execute the C run-time routine 'sprintf' to concatenate the
+    |      columns together into a null-terminated string...
+    |   Example:
+    |       sprintf (szKeyColumns,
+    |                <Format Specification>,
+    |                <Format Data Item1>,
+    |                <Format Data Item2>,
+    |                ...)
+    */
+
+    /*  Execute the architecture function CmnElbAssignChgWinInstName
+    |      to tell the architecture what the window instance name is:
+    |   Example:
+    |       CmnElbAssignChgWinInstName (szKeyColumns, CMN_ARCH_PARMS);
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb5BuildInitData
+**
+**  DESCRIPTION      : This exit function is used to build the initial data
+**                     structure to be passed to the child window of the
+**                     enterable list box registered as sequence number 5.
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : CmnElbAssignInitialData
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Created skeleton
+**  03/12/93  L. Misfeldt           Modified to contain shell code
+**
+***************************************************************************/
+
+AEXPROC (ExitElb5BuildInitData)
+{
+
+    /*  Declare an instance of the data structure to pass to the  */
+    /*     child window of the enterable list box.                */
+
+    /*  Example:
+    |     YOUR_INITIAL_DATA_STRUCT  InitialData;
+    */
+
+    /*  The enterable list box widget name and row number being processed
+    |      can be accessed via the following:
+    |      CMN_ELB_WIDGET_NAME
+    |      CMN_ELB_ROW_PROCESSING
+    */
+
+    /*  Fill your initial data structure with data   */
+
+    /*  Execute the architecture function CmnElbAssignInitialData
+    |      passing the address of your initial data structure and
+    |      the length of your initial data structure.  Make sure to
+    |      cast the address as a (void *).  This will allow the
+    |      architecture to pass your data structure on to the child window
+    |      of the enterable list box with the data you supplied.
+    |
+    |   Example:
+    |       CmnElbAssignInitialData (
+    |                                (void *) InitialData,
+    |                                sizeof (InitialData),
+    |                                CMN_ARCH_PARMS
+    |                               );
+    */
+
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitElb5BuildDelData
+**
+**  DESCRIPTION      :
+**
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS :
+**
+**  AUTHOR           :
+**
+**  DATE CREATED     :
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**
+***************************************************************************/
+
+AEXPROC (ExitElb5BuildDelData)
+{
+
+  return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : CmnArchExitInitialize
+**
+**  DESCRIPTION      : This function is called during the windows Predisplay Event.
+**                     It performs 2 functions:
+**                       1. Allocates space for the Architecture Block portion
+**                             of Widow Context Data.
+**                       2. Assign a Window Context Data pointer to the
+**                             ArchExitTable so the local function addresses
+**                             can be located.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : CHRIS CRAMPTON
+**
+**  DATE CREATED     : MARCH 10, 1993
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/11/93  C. CRAMPTON           Original Code
+**
+**
+***************************************************************************/
+
+
+AEXPROC( CmnArchExitInitialize )
+{
+  int ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
+
+  HEAP_CHECK;
+
+  /* Allocate space for Common Architecture Block, then Initialize */
+ pCmnArchBlock = (_CMN_ARCH_BLOCK *) malloc( sizeof( _CMN_ARCH_BLOCK ));
+  memset( pCmnArchBlock, 0, sizeof( _CMN_ARCH_BLOCK ));
+
+  /* Set WCD pointer to Arch Exit Table equal to global table */
+  /* JSH: 03/16/93 MODIFIED */
+  EAB_pArchExitTable = ArchExitTable;
+
+  HEAP_CHECK;
+
+
+  return (CMN_SUCCESS);
+} /* End of CmnArchExitInitialize */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Function
+**
+**  FUNCTION         : ExitSibStartDialog
+**
+**  DESCRIPTION      : This user exit function allows the programmer
+**                       to perform any logic required when a child window
+**                       is sending a request to start a sibling dialog.
+**                       In this function, the programmer can code logic
+**                       to fill in data keys, to start the requested dialog,
+**                       or to allow the message to continue upward to
+**                       this window's parent.
+**
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : short - CMN_SUCCESS or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Florida Power Corporation & Andersen Consulting
+**
+**  DATE CREATED     : MARCH 16, 1993
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  03/16/93  FGANTER               Original code.
+**
+***************************************************************************/
+AEXPROC (ExitSibStartDialog)
+{
+
+}

@@ -1,0 +1,3127 @@
+short FindClientMatch(CMN_ARCH_PARM_TYPES);
+short FillLayoutLB(char *LBName,
+                   _LAYOUT_REC *pLayout,
+                   unsigned short NumRec,
+                   enum LANGUAGE_TYPE Language,
+                   CMN_ARCH_PARM_TYPES);
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : UnLdAZCS6I
+**
+**  DESCRIPTION      : This function is called at predisplay of window 6. It
+**                      sets all the defaults for the window.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC (UnLdAZCS6I)
+{
+     unsigned short           FndGenRC = FND_SUCCESS;
+     _FND_ERROR_BLOCK         FndGenErrorBlock;
+     short ix=0;
+     short iy=0;
+
+  _AZCS004I *pAzcs004i;
+
+  pAzcs004i = (_AZCS004I *)CBI_pInitData;
+
+  strcpy(ClientLayoutData, pAzcs004i->ClientLayout);
+  strcpy(ServiceLayoutNameData,pAzcs004i->Services[0].ServerLayout);
+  pWindContextData->WCD.CurrentServiceIndex = 0;
+
+  FndGenRC = FndValueInit( CBI_hwnd,
+                         "ServiceLayoutName",
+                         1,
+                         31,
+                         32,
+                         &FndGenErrorBlock);
+
+  if (FndGenRC != FND_SUCCESS)
+      {
+       return (CMN_FAIL);
+      }
+
+    for (ix = 0; ix < pAzcs004i->NumServices; ix++)
+       {
+
+        FndGenRC = FndValueAddItem (CBI_hwnd,
+                                    "ServiceLayoutName",
+                                     1,
+                                     FND_VALUE_END,
+                                     pAzcs004i->Services[ix].ServerLayout,
+                                     pAzcs004i->Services[ix].ServerLayout,
+                                     &FndGenErrorBlock);
+
+        if (FndGenRC != FND_SUCCESS)
+            {
+             return (CMN_FAIL);
+            }
+
+       } /* end of while loop for filling Services combo box */
+
+      /* SET THE DEFAULTS */
+      /*   1. WINDOW LANGUAGES IN WCD */
+      /*   2. Number of services      */
+      /*   3. Previous Good List_Select row */
+
+      pWindContextData->WCD.ClientLanguage = C_LANGUAGE;
+      pWindContextData->WCD.ServiceLanguage = COBOL_LANGUAGE;
+
+      pWindContextData->WCD.NumServices = pBFCD->pCSRMapBFCD->NumServices;
+      pWindContextData->WCD.PrevClientRow = 0;
+      pWindContextData->WCD.PrevServiceRow = 0;
+
+  /*********************************************************************/
+  /* Loop thru and copy all the service stuff down from BFCD into WCD  */
+  /*********************************************************************/
+      for (ix=0; ix < pWindContextData->WCD.NumServices; ix++)
+          {
+            memcpy(&(pWindContextData->WCD.ServiceInfoTable[ix]),
+                   &(pBFCD->pCSRMapBFCD->ServiceInfoTable[ix]),
+                   sizeof(_SERVICE_INFO) );
+            pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys =
+               (_RELATE_LK *) malloc(MAXSERVICEROWS * sizeof(_RELATE_LK) );
+
+            memset(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys,
+                   0,
+                   MAXSERVICEROWS * sizeof(_RELATE_LK) );
+
+          /* JLL:  07/06/93 CHANGED FROM MAXSERVICEROWS TO NumReposServiceRows */
+           if (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys)
+           {
+             memcpy((pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys),
+                  (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys),
+                  (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows
+                   * sizeof(_RELATE_LK)) );
+           }
+           else
+             {
+              for(iy=0; iy < MAXSERVICEROWS; iy++)
+                {
+                 pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[iy].ClientLayoutIndex = -1;
+                 pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[iy].LiteralUsed = 'N';
+
+                 /* JLL: 06/30/93 ADDED */
+                 strcpy( pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[iy].LiteralValue, "NULL" );
+                }
+             }
+          } /* end of for loop */
+
+  /*********************************************************************/
+  /* Setup the Relationship stuff                                      */
+  /*********************************************************************/
+
+
+   /* Make the apply pushbutton the default */
+   FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+  /*
+  ** Make the List Box Offsets 0
+  */
+     pWindContextData->WCD.ClientLBOffset = 0;
+     pWindContextData->WCD.ServiceLBOffset = 0;
+
+
+  return(CMN_SUCCESS);
+}
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : MoveLB1
+**
+**  DESCRIPTION      : The function is invoked by the List_Select event for the
+**                     Client List Box. It controls the flow of control depending
+**                     on the status of the selected row.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC (MoveLB1)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+unsigned short           RowNum;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+unsigned int             CellAttr;
+unsigned short           CellData;
+unsigned short          *pCellData;
+
+/*
+** Find out which row was selected
+*/
+
+FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                       MAPGEN_CLIENT_LB_NAME,
+                                       FND_LSTBOX_START,
+                                       &RowNum,
+                                       &FndGenErrorBlock);
+
+/*
+** Find out what the attributes of the selected row are
+*/
+
+FndGenRC = FndLstBoxCellQueryAttr( CBI_hwnd,
+                                   MAPGEN_CLIENT_LB_NAME,
+                                   RowNum,
+                                   0,
+                                   &CellAttr,
+                                   &FndGenErrorBlock);
+
+/*
+** Move the selected rows data into the relationship section
+**   if the attribute is normal otherwise return.
+*/
+
+if (CellAttr == AT_NORMAL)
+    {
+     pWindContextData->WCD.PrevClientRow = RowNum;
+     FndGenRC = CellAttrNormC(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI );
+
+    }
+else
+    {
+    FndGenRC = CellAttrNotNorm(pEventInfo,
+                               pEAIA,
+                               pBFCD,
+                               pWesMap,
+                               pWindContextData,
+                               pABHI );
+
+    if (FndGenRC != FND_SUCCESS)
+       {
+        return(CMN_FAIL);
+       }
+
+
+    }
+
+/*
+** Find out what the value of the icon field is
+*/
+pCellData = &CellData;
+FndGenRC = FndLstBoxCellQueryData( CBI_hwnd,
+                                      MAPGEN_CLIENT_LB_NAME,
+                                      RowNum,
+                                      0,
+                                      sizeof(CellData),
+                                      (void *)pCellData,
+                                      &FndGenErrorBlock);
+
+if (CellData == CMN_LBROW_STATUS_COMPLETED)  /* Checked */
+   {
+     FndGenRC = CellDataComplete(pEventInfo,
+                                 pEAIA,
+                                 pBFCD,
+                                 pWesMap,
+                                 pWindContextData,
+                                 pABHI);
+   }
+else
+   {
+     FndGenRC = CellDataNotCompleteClient(pEventInfo,
+                                    pEAIA,
+                                    pBFCD,
+                                    pWesMap,
+                                    pWindContextData,
+                                    pABHI);
+
+   }
+
+return(CMN_SUCCESS);
+
+
+
+} /* end of MoveLB1() */
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : MoveLB2
+**
+**  DESCRIPTION      : This function is invoked by a List_Select event on the
+**                     service listbox. It controls the logic flow depending
+**                     on the status of the selected row.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC (MoveLB2)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+unsigned short           RowNum;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+unsigned int             CellAttr;
+unsigned short           CellData;
+unsigned short          *pCellData;
+
+/***********************************/
+/* Find out which row was selected */
+/***********************************/
+
+FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                       MAPGEN_SERVICE_LB_NAME,
+                            FND_LSTBOX_START,
+                            &RowNum,
+                            &FndGenErrorBlock);
+
+/***********************************************/
+/* Find out what the attributes of the row are */
+/***********************************************/
+
+FndGenRC = FndLstBoxCellQueryAttr( CBI_hwnd,
+                                      MAPGEN_SERVICE_LB_NAME,
+                                      RowNum,
+                                      0,
+                                      &CellAttr,
+                                      &FndGenErrorBlock);
+
+/*******************************************************/
+/* Move the selected row into the relationship section */
+/*******************************************************/
+
+if (CellAttr == AT_NORMAL)
+    {
+     pWindContextData->WCD.PrevServiceRow = RowNum;
+     FndGenRC = CellAttrNormS(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI );
+
+    }
+else
+    {
+    FndGenRC = CellAttrNotNorm(pEventInfo,
+                               pEAIA,
+                               pBFCD,
+                               pWesMap,
+                               pWindContextData,
+                               pABHI );
+
+    if (FndGenRC != FND_SUCCESS)
+       {
+        return(CMN_FAIL);
+       }
+
+
+    }
+
+
+
+/************************************************/
+/* Find out what the value of the icon field is */
+/************************************************/
+pCellData = &CellData;
+FndGenRC = FndLstBoxCellQueryData( CBI_hwnd,
+                                      MAPGEN_SERVICE_LB_NAME,
+                                      RowNum,
+                                      0,
+                                      sizeof(CellData),
+                                      (void *)pCellData,
+                                      &FndGenErrorBlock);
+
+if (CellData == CMN_LBROW_STATUS_COMPLETED)  /* Checked */
+   {
+
+     FndGenRC = CellDataComplete(pEventInfo,
+                                 pEAIA,
+                                 pBFCD,
+                                 pWesMap,
+                                 pWindContextData,
+                                 pABHI);
+   }
+else
+   {
+     FndGenRC = CellDataNotCompleteService(pEventInfo,
+                                    pEAIA,
+                                    pBFCD,
+                                    pWesMap,
+                                    pWindContextData,
+                                    pABHI);
+   }
+return(CMN_SUCCESS);
+
+}
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : NewService
+**
+**  DESCRIPTION      : This function is invoked by a field_change event on the
+**                      service combo-box. It handles any processing that is
+**                      necessary when a new service needs to be loaded into
+**                      the service combo-box.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC (NewService)
+{
+  int index=0;
+  int ServiceIndex=-1;
+  unsigned int  nRC=0;
+  /*
+  ** Compare the BFCD Services versus the Service name in WES
+  */
+
+  ServiceIndex = -1;
+  for(index=0; index < pBFCD->pCSRMapBFCD->NumServices; index++)
+      {
+       if
+          (strcmp(pBFCD->pCSRMapBFCD->ServiceInfoTable[index].ServiceLayoutName,
+                  ServiceLayoutNameData) == 0)
+          {
+           ServiceIndex = index;
+           break;
+          }
+
+      }
+  /*
+  ** If a valid service match was found have the listbox upadate
+  */
+  if (ServiceIndex >= 0)
+      {
+      pWindContextData->WCD.CurrentServiceIndex = ServiceIndex;
+      pWindContextData->WCD.ServiceLBOffset = 0;
+
+      nRC = FillServiceLB(pEventInfo,
+                          pEAIA,
+                          pBFCD,
+                          pWesMap,
+                          pWindContextData,
+                          pABHI);
+     }
+
+return(CMN_SUCCESS);
+
+} /* end of NewService*/
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*   RemoveRelationship                                              */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : RemoveRelationship
+**
+**  DESCRIPTION      : This function remove a relationship between a client and
+**                     service or a service and a literal.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+static WCBPROC (RemoveRelationship)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    ServiceRow;
+short                    ServiceElmnt;
+short                    ClientRow;
+short                    ClientElmnt;
+int                      CellData;
+short                    ix;
+short                    iy;
+BOOL                     MultipleService;
+
+/*
+** Assign the Service Index to a local varaible
+*/
+ix = pWindContextData->WCD.CurrentServiceIndex;
+
+/*
+** Find out which service row is selected and calculate its index
+*/
+FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+                                      MAPGEN_SERVICE_LB_NAME,
+                                      FND_LSTBOX_START,
+                                      &ServiceRow,
+                                      &FndGenErrorBlock);
+ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
+
+/*
+** Set the status icon cell to unchanged for the service row
+*/
+CellData = CMN_LBROW_STATUS_UNCHANGED;
+FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
+                                 MAPGEN_SERVICE_LB_NAME,
+                                 ServiceRow,
+                                 0,
+                                 sizeof(short),
+                                 &CellData,
+                                 &FndGenErrorBlock);
+
+
+/*
+** Is there a matching client row or is there a literal ?
+*/
+
+if (pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed == 'N')
+   {
+    /*
+    ** There is a matching client row so get the row number and calculate the
+    **  index.
+    */
+    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+                                      MAPGEN_CLIENT_LB_NAME,
+                                      FND_LSTBOX_START,
+                                      &ClientRow,
+                                      &FndGenErrorBlock);
+    ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
+
+    /*
+    ** See if this client has multiple service relationships. If it does you
+    **  must leave the check mark in the status icon column. If it does not
+    **  change the status icon column.
+    */
+
+    MultipleService = FALSE;
+    /*
+    ** Loop thru all of the service rows
+    */
+    for (iy=0; iy < pWindContextData->WCD.ServiceInfoTable[ix].NumReposServiceRows; iy++)
+        {
+         /*
+         ** Check each service element to see it if matching client element is
+         **  the current client. If they match and this service index is not the current
+         **  service then the client has multiple service relationships.
+         */
+         if (pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[iy].ClientLayoutIndex == ClientElmnt &&
+             iy != ServiceRow)
+            {
+             MultipleService = TRUE;
+            }
+
+        }
+    /*
+    ** If this client does not have multiple service relationships set the status icon
+    **  cell back to unchanged.
+    */
+    if (!MultipleService)
+       {
+        FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
+                                 MAPGEN_CLIENT_LB_NAME,
+                                 ClientRow,
+                                 0,
+                                 sizeof(short),
+                                 &CellData,
+                                 &FndGenErrorBlock);
+
+       }
+
+ /* De-Select the rows */
+    Rlb01ELBSelIndData[ClientRow] = FALSE;
+   }
+/*
+** The service has a relationship with a literal not an element.
+*/
+else
+   {
+   pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed = 'N';
+
+   /* JLL: 06/30/93 CHANGED FROM "" TO "NULL" */
+   strcpy(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,"NULL");
+
+   }
+
+/*
+** Clean up the service side
+*/
+Rlb02ELBSelIndData[ServiceRow] = FALSE;
+pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex=-1;
+pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed = 'N';
+
+InitService(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+InitClient(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+ return(CMN_SUCCESS);
+} /* end of function RemoveRelationship */
+
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : CreateRelationhsip
+**
+**  DESCRIPTION      : This function defines a relationship between a client and
+**                      service element or between a service and a literal value.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**    01/28/94  C. Crampton           Added code for CheckDataTypes logic.
+**
+***************************************************************************/
+
+static WCBPROC(CreateRelationship)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+unsigned short           ServiceRow;
+unsigned short           ServiceElmnt;
+unsigned short           ClientRow;
+unsigned short           ClientElmnt;
+int                      CellData;
+short                    ix;
+
+ix = pWindContextData->WCD.CurrentServiceIndex;
+
+/**********************************************/
+/*** Find out which service row is selected ***/
+/**********************************************/
+
+FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+                                      MAPGEN_SERVICE_LB_NAME,
+                                      FND_LSTBOX_START,
+                                      &ServiceRow,
+                                      &FndGenErrorBlock);
+ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
+
+/*
+** If the client side uses the element
+*/
+
+if (ClntTypeData == LT_ClntElementRB)
+    {
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed = 'N';
+
+    /* JLL: 06/30/93 CHANGED FROM "" TO "NULL" */
+    strcpy( pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,"NULL" );
+
+    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+                                      MAPGEN_CLIENT_LB_NAME,
+                                      FND_LSTBOX_START,
+                                      &ClientRow,
+                                      &FndGenErrorBlock);
+
+    ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
+
+    /*
+    ** Make sure the data types match
+    */
+    FndGenRC = CheckDataTypes( ClientElmnt, ServiceElmnt, ix, CMN_ARCH_PARMS);
+
+    if (FndGenRC != CMN_SUCCESS)
+    {
+        return(CMN_FAIL);
+    }
+
+
+    CellData = CMN_LBROW_STATUS_COMPLETED;
+
+    FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
+                                 MAPGEN_CLIENT_LB_NAME,
+                                 ClientRow,
+                                 0,
+                                 sizeof(short),
+                                 &CellData,
+                                 &FndGenErrorBlock);
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex = ClientElmnt;
+    Rlb01ELBSelIndData[ClientRow] = FALSE;
+    }
+
+/*
+** If the client side uses the literal
+*/
+
+else
+ if (ClntTypeData == LT_ClntLiteralRB)
+    {
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed = 'Y';
+    strcpy(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,
+              ClntLiteralData);
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex = -1;
+    }
+else
+ if (ClntTypeData == LT_ClntHvRB)
+    {
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed = 'Y';
+    strcpy(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,
+              CMN_HIGH_VALUES_STR);
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex = -1;
+    }
+else
+ if (ClntTypeData == LT_ClntLVRB)
+    {
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed = 'Y';
+    strcpy(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,
+              CMN_LOW_VALUES_STR);
+    pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex = -1;
+    }
+
+
+
+ /*
+** Set the completed flag for this row
+*/
+
+CellData = CMN_LBROW_STATUS_COMPLETED;
+FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
+                                 MAPGEN_SERVICE_LB_NAME,
+                                 ServiceRow,
+                                 0,
+                                 sizeof(short),
+                                 &CellData,
+                                 &FndGenErrorBlock);
+
+
+ /* De-Select the service row */
+    Rlb02ELBSelIndData[ServiceRow] = FALSE;
+
+    InitService(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+    InitClient(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+ return(CMN_SUCCESS);
+} /* end of function CreateRelationship */
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : FindClientMatch
+**
+**  DESCRIPTION      : This function looks thru the service table to find a
+**                      matching service relationship.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT - valid service index or CMN_FAIL.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static short FindClientMatch(CMN_ARCH_PARM_TYPES)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short index;
+short ClientRow;
+short ClientElmnt;
+short ix;
+
+/*
+** Assign the current service to a local variable
+*/
+ix = pWindContextData->WCD.CurrentServiceIndex;
+
+/*
+** Find out which client row is selectd and calculate its index
+*/
+
+FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                    MAPGEN_CLIENT_LB_NAME,
+                                    FND_LSTBOX_START,
+                                    &ClientRow,
+                                    &FndGenErrorBlock);
+ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
+
+/*
+** Loop thru all of the service rows and find the first service element with
+**  the selected clients index
+*/
+
+for (index=0; index < MAXSERVICEROWS; index++)
+    {
+     if (ClientElmnt == pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[index].ClientLayoutIndex)
+         return(index);
+    }
+/*
+** If not match was found return CMN_FAIL
+*/
+return(CMN_FAIL);
+} /*  end of function FindClientMatch */
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : CellAttrNormC
+**
+**  DESCRIPTION      : This function is called when a client row with the normal
+**                      attributes has been selected.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC(CellAttrNormC)
+{
+ unsigned short           FndGenRC = FND_SUCCESS;
+ short ClientRow;
+ short ClientElmnt;
+
+/*
+** Get the client row and calculate the client index
+*/
+ ClientRow = CBI_ListRow;
+ ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
+
+/*
+** Move the client name to WES depending on the selected language
+*/
+if (pWindContextData->WCD.ClientLanguage == C_LANGUAGE)
+    {
+     strcpy(ClntElementData,
+     (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCName);
+    }
+else
+    {
+     strcpy(ClntElementData,
+     (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCobolName);
+
+    }
+
+
+ return(CMN_SUCCESS);
+}
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : CellAttrNormS
+**
+**  DESCRIPTION      : This function is copies the necessary data to WES for a
+**                      service that has normal attributes.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC(CellAttrNormS)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+short                    ix;
+short ServiceElmnt;
+
+ServiceElmnt = CBI_ListRow + pWindContextData->WCD.ServiceLBOffset;
+
+ix = pWindContextData->WCD.CurrentServiceIndex;
+
+if (pWindContextData->WCD.ServiceLanguage == C_LANGUAGE)
+   {
+    strcpy(SrvcElementData,
+    (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable + ServiceElmnt)->ItemCName);
+   }
+else
+   {
+    strcpy(SrvcElementData,
+    (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable + ServiceElmnt)->ItemCobolName);
+    }
+
+
+ return(CMN_SUCCESS);
+}
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : CellDataComplete
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC(CellDataComplete)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    FndGenRBValueShort = 0;
+
+short                    ServiceRow;
+short                    ServiceElmnt;
+short                    ix;
+short                    iy;
+short                    ClientRow;
+short                    ClientElmnt;
+
+ix = pWindContextData->WCD.CurrentServiceIndex;
+
+
+/*
+** List Select was from Client Side
+*/
+    if (CBI_WidgetID == Rlb01ELB_FID)
+        {
+         /*
+         ** Assign the row number and calculate the index
+         */
+         ClientRow = CBI_ListRow;
+         ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
+
+         /*
+         ** Find out what the selected Service row is
+         */
+         FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                                MAPGEN_SERVICE_LB_NAME,
+                                                FND_LSTBOX_START,
+                                                &ServiceRow,
+                                                &FndGenErrorBlock);
+         /*
+         ** If there isn't a selected service row find the first match for the client
+         */
+
+         if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
+             {
+              ServiceElmnt = FindClientMatch(CMN_ARCH_PARMS);
+              FndGenRC = LoadServiceElmnt(ServiceElmnt,
+                                          CMN_ARCH_PARMS);
+             }
+         /*
+         ** A service row is selected
+         */
+         else
+          if (FndGenRC == FND_SUCCESS)
+             {
+              ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
+              /*
+              ** If the service row does not have a relationship with the client defined
+              **  find the first one that does
+              */
+              if (pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex
+                   != ClientElmnt)
+                 {
+                  ServiceElmnt = FindClientMatch(CMN_ARCH_PARMS);
+                  FndGenRC = LoadServiceElmnt(ServiceElmnt,
+                                              CMN_ARCH_PARMS);
+                 }
+             }
+         /*
+         **  Bad return code on the query of selected service row
+         */
+         else
+             {
+              return(CMN_FAIL);
+             }
+       }
+    /*
+    ** Sevice Row was selected
+    */
+    else
+        {
+
+         ServiceRow = CBI_ListRow;
+         ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
+         /*
+         ** There is a relationship with a client element
+         */
+         if(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed == 'N')
+            {
+             ClientElmnt = pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex;
+             ClientRow = ClientElmntToRow(ClientElmnt, CMN_ARCH_PARMS);
+             FndGenRC = LoadClientElmnt(ClientElmnt, CMN_ARCH_PARMS);
+            }
+        }
+    /*
+    ** If you have a valid service row
+    */
+    if (ServiceRow >= 0 && ServiceRow < NUMRLB02ELBROWS)
+       {
+        /*
+        ** Move the Relationship data from the WCD table into the relationship section of the window
+        */
+
+        /* Move the Client Element stuff down */
+       if (toupper(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUsed) ==
+                                        'N')
+          {
+
+           if (pWindContextData->WCD.ClientLanguage == C_LANGUAGE)
+              {
+              strcpy(ClntElementData,
+             (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCName);
+              }
+           else
+              {
+                strcpy(ClntElementData,
+                (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCobolName);
+              }
+             /* set the radio button to element */
+
+             ClntTypeData = LT_ClntElementRB;
+
+             FndGenRBValueShort = LT_ClntElementRB;
+             FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+             FndGenRBValueShort = LT_ClntHvRB;
+             FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+             FndGenRBValueShort = LT_ClntLVRB;
+             FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+             FndGenRBValueShort = LT_ClntLiteralRB;
+             FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+            strcpy(ClntLiteralData, "");
+            FndGenRC = FndFieldDisable( CBI_hwnd,
+                                      "CLNTLITERAL",
+                                      &FndGenErrorBlock);
+
+            FndGenRC = FndFieldEnable( CBI_hwnd,
+                                      "CLNTELEMENT",
+                                      &FndGenErrorBlock);
+
+          }
+       else
+          {  /* Literal used not a data Element */
+          /*
+          ** Disable any selected client rows
+          */
+
+          for (iy=0; iy < NUMRLB01ELBROWS; iy++)
+              {
+               Rlb01ELBSelIndData[iy] = FALSE;
+              }
+
+          /*
+          ** Disable client entry field and radio button
+          */
+
+
+           FndGenRBValueShort = LT_ClntElementRB;
+           FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+          strcpy(ClntElementData, "");
+
+          FndGenRC = FndFieldDisable( CBI_hwnd,
+                                      "CLNTELEMENT",
+                                      &FndGenErrorBlock);
+
+
+          /*
+          ** If the literal is High Values, enable the high values radio button
+          **/
+          if (strcmp(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,
+                     CMN_HIGH_VALUES_STR) == 0)
+          {
+
+           FndGenRBValueShort = LT_ClntHvRB;
+           FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+           ClntTypeData = LT_ClntHvRB;  /* Set the Radio Button */
+
+           strcpy(ClntLiteralData, "");  /* Clear out the literal field */
+
+           FndGenRBValueShort = LT_ClntLiteralRB;
+           FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+           FndGenRBValueShort = LT_ClntLVRB;
+           FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+          }
+
+          else
+          if (strcmp(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue,
+                     CMN_LOW_VALUES_STR) == 0)
+          {
+              FndGenRBValueShort = LT_ClntLVRB;
+              FndGenRC = FndValueEnableItem( CBI_hwnd,
+                                             "CLNTTYPE",
+                                             (VOID *) &FndGenRBValueShort,
+                                             &FndGenErrorBlock);
+
+              ClntTypeData = LT_ClntLVRB;
+
+              strcpy(ClntLiteralData, "");  /* Clear out the literal field */
+
+              FndGenRBValueShort = LT_ClntLiteralRB;
+              FndGenRC = FndValueDisableItem( CBI_hwnd,
+                                              "CLNTTYPE",
+                                              (VOID *) &FndGenRBValueShort,
+                                              &FndGenErrorBlock);
+
+              FndGenRBValueShort = LT_ClntHvRB;
+              FndGenRC = FndValueDisableItem( CBI_hwnd,
+                                              "CLNTTYPE",
+                                              (VOID *) &FndGenRBValueShort,
+                                              &FndGenErrorBlock);
+          }
+          else
+          {
+              strcpy(ClntLiteralData,pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralValue);
+
+              FndGenRBValueShort = LT_ClntLiteralRB;
+              FndGenRC = FndValueEnableItem( CBI_hwnd,
+                                            "CLNTTYPE",
+                                            (VOID *) &FndGenRBValueShort,
+                                            &FndGenErrorBlock);
+
+              ClntTypeData = LT_ClntLiteralRB;
+
+
+              FndGenRC = FndFieldDisable( CBI_hwnd,
+                                         "CLNTLITERAL",
+                                         &FndGenErrorBlock);
+
+
+              FndGenRBValueShort = LT_ClntHvRB;
+              FndGenRC = FndValueDisableItem( CBI_hwnd,
+                                             "CLNTTYPE",
+                                             (VOID *) &FndGenRBValueShort,
+                                              &FndGenErrorBlock);
+
+              FndGenRBValueShort = LT_ClntLVRB;
+              FndGenRC = FndValueDisableItem( CBI_hwnd,
+                                             "CLNTTYPE",
+                                             (VOID *)&FndGenRBValueShort,
+                                              &FndGenErrorBlock);
+          }
+
+       } /* end of if literal value */
+
+      /* Copy the Service element down */
+      if (pWindContextData->WCD.ServiceLanguage == C_LANGUAGE)
+          {
+            strcpy(SrvcElementData,
+           (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable + ServiceElmnt)->ItemCName);
+          }
+      else
+          {
+           strcpy(SrvcElementData,
+           (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable + ServiceElmnt)->ItemCobolName);
+          }
+
+
+       } /* end of if (ServiceRow >= 0 && ServiceRow < MAXSERVICEROWS) */
+
+
+
+    if (Rlb02ELBCdStatusIconicData[ServiceRow] == CMN_LBROW_STATUS_COMPLETED)
+       {
+        FndGenRC = FndCommandEnable(CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
+
+        FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
+       }
+    else
+       {
+
+        FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
+
+        FndGenRC = FndCommandEnable(CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
+       }
+
+
+ return(CMN_SUCCESS);
+}
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : CellDataNotCompleteClient
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+static WCBPROC(CellDataNotCompleteClient)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    RowNum = -1;
+int                      CellData;
+int                     *pCellData;
+short                    ServiceIndex;
+
+pCellData = &CellData;
+
+FndGenRC = InitClient(pEventInfo,
+                      pEAIA,
+                      pBFCD,
+                      pWesMap,
+                      pWindContextData,
+                      pABHI );
+
+/*
+** Find out if there is a selected Service row
+*/
+
+FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                       MAPGEN_SERVICE_LB_NAME,
+                                       FND_LSTBOX_START,
+                                       &RowNum,
+                                       &FndGenErrorBlock);
+
+if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+    {
+     return(CMN_FAIL);
+    }
+/*
+** A service row is selected
+*/
+if (FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+    {
+     FndGenRC = FndLstBoxCellQueryData( CBI_hwnd,
+                                        MAPGEN_SERVICE_LB_NAME,
+                                        RowNum,
+                                        0,
+                                        sizeof(CellData),
+                                        (void *)pCellData,
+                                        &FndGenErrorBlock);
+      /*
+      ** Does the seleced service row have a complete status
+      */
+      if (CellData == CMN_LBROW_STATUS_COMPLETED)
+          {
+           Rlb02ELBSelIndData[RowNum] = FALSE;
+           InitService(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                          pABHI );
+          }
+       /*
+       ** the selected service row does not have a completed status
+       */
+       else
+           {
+            FndGenRC = FndCommandEnable(CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
+
+            FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
+           }
+
+
+    } /* end of if service row selected */
+/*
+** no client selected so look for a matching client
+*/
+else
+    {
+     InitService(pEventInfo,
+                  pEAIA,
+                  pBFCD,
+                  pWesMap,
+                  pWindContextData,
+                  pABHI );
+
+     ServiceIndex = LookForServiceName(pEventInfo,
+                                       pEAIA,
+                                       pBFCD,
+                                       pWesMap,
+                                       pWindContextData,
+                                       pABHI );
+
+     if (ServiceIndex != CMN_FAIL)
+         {
+          FndGenRC = LoadServiceElmnt(ServiceIndex, CMN_ARCH_PARMS);
+         }
+    }
+
+
+FndGenRC = MoveClient(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI );
+ return(CMN_SUCCESS);
+}
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : CellDataNotCompleteService
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+static WCBPROC(CellDataNotCompleteService)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    RowNum = -1;
+int                      CellData;
+int                     *pCellData;
+short                    ClientIndex;
+
+     pCellData = &CellData;
+
+    /* Find out if there is a selected Client row */
+    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                           MAPGEN_CLIENT_LB_NAME,
+                                           FND_LSTBOX_START,
+                                           &RowNum,
+                                           &FndGenErrorBlock);
+
+    if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+        {
+        return(CMN_FAIL);
+       }
+
+   /*
+   ** A client row is selected
+   */
+
+    if (FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+       {
+        FndGenRC = FndCommandEnable(CBI_hwnd,
+                                    "ApplyPB",
+                                    &FndGenErrorBlock);
+
+        FndGenRC = FndCommandDisable(CBI_hwnd,
+                                     "RemovePB",
+                                     &FndGenErrorBlock);
+       }
+    else
+        {
+         InitClient(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI );
+         /*
+         ** Look for a matching name
+         */
+         ClientIndex = LookForClientName(pEventInfo,
+                                         pEAIA,
+                                         pBFCD,
+                                         pWesMap,
+                                         pWindContextData,
+                                         pABHI );
+
+        if (ClientIndex != CMN_FAIL)
+           {
+            FndGenRC = LoadClientElmnt(ClientIndex, CMN_ARCH_PARMS);
+           }
+        }
+
+
+    FndGenRC = MoveService(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI );
+ return(CMN_SUCCESS);
+
+}
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* SaveToBFCD                                                        */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(SaveToBFCD)
+{
+ int ix;
+ _RELATE_LK *pOldBFCD;
+ _RELATE_LK *pTempBFCD;
+ _RELATE_LK *pTempWCD;
+ int TempSize;
+
+
+ for (ix=0; ix<pWindContextData->WCD.NumServices; ix++)
+     {
+      pOldBFCD = pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys;
+
+      pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys =
+         (_RELATE_LK *) malloc(MAXSERVICEROWS * sizeof(_RELATE_LK) );
+
+      memset(pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys,
+             0,
+             MAXSERVICEROWS * sizeof(_RELATE_LK));
+      free(pOldBFCD);
+      pTempBFCD = (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys);
+      pTempWCD = (pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys);
+      TempSize = (MAXSERVICEROWS * sizeof(_RELATE_LK));
+
+      pOldBFCD =memcpy((pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys),
+             (pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys),
+             (MAXSERVICEROWS * sizeof(_RELATE_LK)) );
+
+      free(pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys);
+     }
+
+return(CMN_SUCCESS);
+
+} /* end of function SaveToBFCD  */
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* FillStatusLK                                                      */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(FillStatusLK)
+{
+
+int ix;
+short ServNum;
+short ClientRow;
+short ClientElmnt;
+short ServiceRow;
+
+ServNum = pWindContextData->WCD.CurrentServiceIndex;
+
+/*
+** Clear out the Client Listbox
+*/
+for (ix=0; ix < NUMRLB01ELBROWS; ix++)
+    {
+     if (Rlb01ELBCdStatusIconicData[ix] != CMN_LBROW_STATUS_AVAILABLE)
+        {
+         Rlb01ELBCdStatusIconicData[ix] = CMN_LBROW_STATUS_AVAILABLE;
+        }
+    }
+/*
+** Clear out the Service Listbox
+*/
+for (ix=0; ix < NUMRLB02ELBROWS; ix++)
+    {
+     if (Rlb02ELBCdStatusIconicData[ix] != CMN_LBROW_STATUS_AVAILABLE)
+        {
+         Rlb02ELBCdStatusIconicData[ix] = CMN_LBROW_STATUS_AVAILABLE;
+        }
+    }
+
+
+/* Check the Service table for completed relationships */
+for (ix=0; ix < pWindContextData->WCD.ServiceInfoTable[ServNum].NumReposServiceRows; ix++)
+    {
+     if (pWindContextData->WCD.ServiceInfoTable[ServNum].pLoadKeys[ix].ClientLayoutIndex > 0 )
+        {
+         ClientElmnt = pWindContextData->WCD.ServiceInfoTable[ServNum].pLoadKeys[ix].ClientLayoutIndex;
+
+         /*
+         ** If the row is in the Client or Service LB mark it completed
+         */
+         if (ClientElmnt >= pWindContextData->WCD.ClientLBOffset &&
+             ClientElmnt <  pWindContextData->WCD.ClientLBOffset + NUMRLB01ELBROWS)
+            {
+             ClientRow = ClientElmntToRow(ClientElmnt, CMN_ARCH_PARMS);
+             Rlb01ELBCdStatusIconicData[ClientRow] = CMN_LBROW_STATUS_COMPLETED;
+            }
+         if (ix >= pWindContextData->WCD.ServiceLBOffset &&
+             ix < pWindContextData->WCD.ServiceLBOffset + NUMRLB02ELBROWS)
+            {
+             ServiceRow = ServiceElmntToRow(ix, CMN_ARCH_PARMS);
+             Rlb02ELBCdStatusIconicData[ServiceRow] = CMN_LBROW_STATUS_COMPLETED;
+            }
+
+        }
+    /*
+    ** If the service element has a literal relationship defined
+    */
+    else if (pWindContextData->WCD.ServiceInfoTable[ServNum].pLoadKeys[ix].LiteralUsed == 'Y')
+        {
+
+         if (ix >= pWindContextData->WCD.ServiceLBOffset &&
+             ix < pWindContextData->WCD.ServiceLBOffset + NUMRLB02ELBROWS)
+            {
+             ServiceRow = ServiceElmntToRow(ix, CMN_ARCH_PARMS);
+             Rlb02ELBCdStatusIconicData[ServiceRow] = CMN_LBROW_STATUS_COMPLETED;
+            }
+        }
+    }  /* end of for loop thru all service LK rows */
+
+return(CMN_SUCCESS);
+
+} /* end of function FillStatusLK */
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* InitService                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+
+static WCBPROC(InitService)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+
+strcpy(SrvcElementData, "");
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
+
+
+return(CMN_SUCCESS);
+
+
+}
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* MoveService                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(MoveService)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    ix;
+short                    ServiceElmnt;
+
+
+
+ix = pWindContextData->WCD.CurrentServiceIndex;
+ServiceElmnt = CBI_ListRow + pWindContextData->WCD.ServiceLBOffset;
+
+FndGenRC = FndFieldEnable(CBI_hwnd,
+                             "SRVCELEMENT",
+                             &FndGenErrorBlock);
+
+if (pWindContextData->WCD.ServiceLanguage == C_LANGUAGE)
+    {
+     strcpy(SrvcElementData,
+      (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable + ServiceElmnt)->ItemCName);
+    }
+else
+    {
+     strcpy(SrvcElementData,
+      (pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable + ServiceElmnt)->ItemCobolName);
+
+    }
+
+
+return(CMN_SUCCESS);
+
+
+}
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* initclient                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(InitClient)
+{
+
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    FndGenRBValueShort = 0;
+
+
+/*
+** Enable the radio button elements
+*/
+
+ClntTypeData = LT_ClntElementRB;
+
+FndGenRBValueShort = LT_ClntElementRB;
+FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+FndGenRBValueShort = LT_ClntLiteralRB;
+FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+FndGenRBValueShort = LT_ClntHvRB;
+FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+FndGenRBValueShort = LT_ClntLVRB;
+FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+/*
+** Disable the Entry fields
+*/
+
+strcpy(ClntElementData, "");
+FndGenRC = FndFieldEnable(CBI_hwnd,
+                          "CLNTELEMENT",
+                          &FndGenErrorBlock);
+
+strcpy(ClntLiteralData, "");
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                           "CLNTLITERAL",
+                           &FndGenErrorBlock);
+/*
+** Disable the pushbuttons
+*/
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
+
+
+return(CMN_SUCCESS);
+
+} /* initclient */
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* MoveClient                                                       */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(MoveClient)
+{
+
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    FndGenRBValueShort = 0;
+short                    ClientElmnt;
+
+
+ClientElmnt = CBI_ListRow + pWindContextData->WCD.ClientLBOffset;
+
+FndGenRBValueShort = LT_ClntElementRB;
+FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+FndGenRC = FndFieldEnable(CBI_hwnd,
+                             "CLNTELEMENT",
+                             &FndGenErrorBlock);
+
+
+
+if (pWindContextData->WCD.ClientLanguage == C_LANGUAGE)
+    {
+     strcpy(ClntElementData,
+      (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCName);
+    }
+else
+    {
+     strcpy(ClntElementData,
+      (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCobolName);
+
+    }
+
+/*
+** Disable the literal entry field and other radio button groups
+*/
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                           "CLNTLITERAL",
+                           &FndGenErrorBlock);
+strcpy(ClntLiteralData, "");
+
+if (Rlb01ELBCdStatusIconicData[CBI_ListRow] == CMN_LBROW_STATUS_COMPLETED)
+{
+    FndGenRBValueShort = LT_ClntLiteralRB;
+    FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+    FndGenRBValueShort = LT_ClntHvRB;
+    FndGenRC = FndValueDisableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+    FndGenRBValueShort = LT_ClntLVRB;
+    FndGenRC = FndValueDisableItem( CBI_hwnd,
+                                "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+}
+else
+{
+
+    FndGenRBValueShort = LT_ClntLiteralRB;
+    FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+    FndGenRBValueShort = LT_ClntHvRB;
+    FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+    FndGenRBValueShort = LT_ClntLVRB;
+    FndGenRC = FndValueEnableItem( CBI_hwnd,
+                                "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+}
+
+
+return(CMN_SUCCESS);
+
+}
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*    CellAttrNotNorm                                                */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(CellAttrNotNorm)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+// _FND_ERROR_BLOCK         FndGenErrorBlock;
+
+    DosBeep(440, 100);
+
+
+return(CMN_FAIL);
+
+}
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* ChangeClientType                                                  */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(ChangeClientType)
+{
+
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    FndGenRBValueShort = 0;
+
+
+/* set the radio button to element */
+
+    FndGenRBValueShort = LT_ClntElementRB;
+    FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+    ClntTypeData = FndGenRBValueShort;
+    strcpy(ClntLiteralData, "");
+    FndGenRC = FndFieldDisable( CBI_hwnd,
+                                      "CLNTLITERAL",
+                                      &FndGenErrorBlock);
+
+
+
+return(CMN_SUCCESS);
+} /* END OF FUNCTION ChangeClientType */
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/* ChangeServiceType                                                 */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC(ChangeServiceType)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+short                    FndGenRBValueShort = 0;
+
+int ix=0;
+
+for (ix=0; ix < NUMRLB01ELBROWS; ix++)
+    {
+     Rlb01ELBSelIndData[ix] = FALSE;
+    }
+
+FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "ApplyPB",
+                            &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "RemovePB",
+                             &FndGenErrorBlock);
+
+
+return(CMN_SUCCESS);
+} /* END OF FUNCTION ChangeClientType */
+
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  ClntLng                                                          */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static WCBPROC (ClntLng)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+FndGenRC = FndCommandQueryChecked (CBI_hwnd,
+                                   "AMNCLTC",
+                                   &FndGenErrorBlock);
+
+if (FndGenRC == FND_SUCCESS)
+    {
+     pWindContextData->WCD.ClientLanguage = C_LANGUAGE;
+    }
+else if (FndGenRC == CMD_COMMAND_NOT_CHECKED)
+    {
+     pWindContextData->WCD.ClientLanguage = COBOL_LANGUAGE;
+    }
+else
+    {
+     return(CMN_FAIL);
+    }
+
+FndGenRC = FillClientLB(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+return(CMN_SUCCESS);
+} /* end of function ClntLng */
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  SrvLng                                                           */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+
+static WCBPROC (SrvLng)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+FndGenRC = FndCommandQueryChecked (CBI_hwnd,
+                                   "AMNSRVC",
+                                   &FndGenErrorBlock);
+
+if (FndGenRC == FND_SUCCESS)
+    {
+     pWindContextData->WCD.ServiceLanguage = C_LANGUAGE;
+    }
+else if (FndGenRC == CMD_COMMAND_NOT_CHECKED)
+    {
+     pWindContextData->WCD.ServiceLanguage = COBOL_LANGUAGE;
+    }
+else
+    {
+     return(CMN_FAIL);
+    }
+
+
+FndGenRC = FillServiceLB(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return(CMN_SUCCESS);
+
+}/* end of function SrvLng */
+
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  FillLayoutLB                                                     */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+
+static short FillLayoutLB(char * LBName,
+                           _LAYOUT_REC *pLayout,
+                          unsigned short NumRecords,
+                          enum LANGUAGE_TYPE Language,
+                          CMN_ARCH_PARM_TYPES)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+_Rlb01ELBRow NewRow;
+unsigned short index=0;
+char padding[]="   ";
+short index2=0;
+ _LAYOUT_REC *pTemp;
+char ControlName[34];
+
+/*
+** Set the pointer to wait
+*/
+
+ FndWindowSetPointer(CBI_hwnd,
+                     FNDSYSPTR_WAIT,
+                     &FndGenErrorBlock);
+
+
+/* Clear out the ListBox */
+
+FndLstBoxRowDeleteAll( CBI_hwnd, LBName, &FndGenErrorBlock);
+
+
+for (index=0; index < NumRecords; index++)
+    {
+     pTemp = (_LAYOUT_REC *)(pLayout+index);
+
+     NewRow._Rlb01ELBCdStatusIconicData = CMN_LBROW_STATUS_AVAILABLE;
+
+     /* CSC: 09/20/93 MODIFIED*/
+     // NewRow._Rlb01ELBNumBytesData = ((_LAYOUT_REC *)(pLayout+index))->ItemLength;
+     NewRow._Rlb01ELBNumBytesData = ((_LAYOUT_REC *)(pLayout+index))->ItemCLength;
+
+     sprintf(NewRow._Rlb01ELBRecTypeData,"%c",toupper((pLayout+index)->ItemType));
+
+     strcpy(NewRow._Rlb01ELBControlNameData,"");
+     for (index2=0; index2 < (pLayout+index)->IndentLevel &&
+                    (index2 * strlen(padding)) <
+                             sizeof(ControlName); index2++)
+         {
+          strcat(NewRow._Rlb01ELBControlNameData, padding);
+         }
+
+     if (Language == C_LANGUAGE)
+         strncat(NewRow._Rlb01ELBControlNameData,
+                 (pLayout+index)->ItemCName,
+                  sizeof(ControlName) - strlen(NewRow._Rlb01ELBControlNameData) - 1);
+     else
+        strncat(NewRow._Rlb01ELBControlNameData,(pLayout+index)->ItemCobolName,
+                        sizeof(ControlName) - strlen(NewRow._Rlb01ELBControlNameData) - 1);
+
+
+     if (toupper((pLayout+index)->Format) == 'A')
+         {
+          strcpy(NewRow._Rlb01ELBDataTypeData,"Alpha");
+         }
+     else
+      if (toupper((pLayout+index)->Format) == 'N')
+         {
+          strcpy(NewRow._Rlb01ELBDataTypeData,"Numeric");
+         }
+    else
+          strcpy(NewRow._Rlb01ELBDataTypeData,"");
+
+
+     FndGenRC = FndLstBoxRowAdd( CBI_hwnd,
+                            LBName,
+                            index,
+                            sizeof(_Rlb01ELBRow),
+                            &NewRow,
+                            &FndGenErrorBlock);
+
+     if ((pLayout+index)->ItemType != 'E')
+        {
+         FndGenRC = FndLstBoxRowSetAttr (CBI_hwnd,
+                                         LBName,
+                                         index,
+                                         AT_GREYED,
+                                         &FndGenErrorBlock);
+        }
+     else
+         {
+
+         FndGenRC = FndLstBoxRowSetAttr (CBI_hwnd,
+                                         LBName,
+                                         index,
+                                         AT_NORMAL,
+                                         &FndGenErrorBlock);
+         }
+    } /* end of for (index=0; index < NumRecords; index++) loop */
+
+/*
+** Reset the pointer to arrow
+*/
+
+ FndWindowSetPointer(CBI_hwnd,
+                     FNDSYSPTR_ARROW,
+                     &FndGenErrorBlock);
+
+
+ return(CMN_SUCCESS);
+
+}
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*  FillClientLB                                                     */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+static WCBPROC(FillClientLB)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+unsigned short           usNumRows;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+usNumRows = pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows -
+            pWindContextData->WCD.ClientLBOffset;
+
+if (usNumRows > NUMRLB01ELBROWS)
+   {
+    usNumRows = NUMRLB01ELBROWS;
+   }
+
+
+FndGenRC = FillLayoutLB(MAPGEN_CLIENT_LB_NAME,
+                        pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable +
+                        pWindContextData->WCD.ClientLBOffset,
+                        usNumRows,
+                        pWindContextData->WCD.ClientLanguage,
+                        CMN_ARCH_PARMS);
+
+FndGenRC = FillStatusLK( pEventInfo,
+                         pEAIA,
+                         pBFCD,
+                         pWesMap,
+                         pWindContextData,
+                         pABHI);
+
+/*
+** Reset the UP page button
+*/
+
+if (pWindContextData->WCD.ClientLBOffset > 0)
+    {
+     FndGenRC = FndLstBoxUpEnable(CBI_hwnd,
+                                  MAPGEN_CLIENT_LB_NAME,
+                                  &FndGenErrorBlock);
+     }
+else
+     {
+      FndGenRC = FndLstBoxUpDisable(CBI_hwnd,
+                                  MAPGEN_CLIENT_LB_NAME,
+                                  &FndGenErrorBlock);
+     }
+
+/*
+** Reset the DOWN page button
+*/
+
+if ((pWindContextData->WCD.ClientLBOffset + NUMRLB01ELBROWS) <
+     pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows)
+    {
+     FndGenRC = FndLstBoxDownEnable(CBI_hwnd,
+                                    MAPGEN_CLIENT_LB_NAME,
+                                    &FndGenErrorBlock);
+    }
+else
+    {
+     FndGenRC = FndLstBoxDownDisable(CBI_hwnd,
+                                     MAPGEN_CLIENT_LB_NAME,
+                                     &FndGenErrorBlock);
+    }
+
+return(CMN_SUCCESS);
+} /* end of function FillClientLB */
+
+
+
+
+/*********************************************************************/
+/*********************************************************************/
+/*                                                                   */
+/*    FillServiceLB                                                  */
+/*                                                                   */
+/*********************************************************************/
+/*********************************************************************/
+
+static WCBPROC(FillServiceLB)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+short ix;
+unsigned short           usNumRows;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+ix = pWindContextData->WCD.CurrentServiceIndex;
+
+usNumRows = pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows -
+            pWindContextData->WCD.ServiceLBOffset;
+
+if (usNumRows > NUMRLB02ELBROWS)
+   {
+    usNumRows = NUMRLB02ELBROWS;
+   }
+
+FndGenRC = FillLayoutLB(MAPGEN_SERVICE_LB_NAME,
+                        pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable +
+                         pWindContextData->WCD.ServiceLBOffset,
+                        usNumRows,
+                        pWindContextData->WCD.ServiceLanguage,
+                        CMN_ARCH_PARMS);
+
+FndGenRC = FillStatusLK( pEventInfo,
+                         pEAIA,
+                         pBFCD,
+                         pWesMap,
+                         pWindContextData,
+                         pABHI);
+/*
+** Reset the UP page button
+*/
+
+if (pWindContextData->WCD.ServiceLBOffset > 0)
+    {
+     FndGenRC = FndLstBoxUpEnable(CBI_hwnd,
+                                  MAPGEN_SERVICE_LB_NAME,
+                                  &FndGenErrorBlock);
+     }
+else
+     {
+      FndGenRC = FndLstBoxUpDisable(CBI_hwnd,
+                                  MAPGEN_SERVICE_LB_NAME,
+                                  &FndGenErrorBlock);
+     }
+
+/*
+** Reset the DOWN page button
+*/
+
+if ((pWindContextData->WCD.ServiceLBOffset + NUMRLB02ELBROWS) <
+     pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows)
+    {
+     FndGenRC = FndLstBoxDownEnable(CBI_hwnd,
+                                    MAPGEN_SERVICE_LB_NAME,
+                                    &FndGenErrorBlock);
+    }
+else
+    {
+     FndGenRC = FndLstBoxDownDisable(CBI_hwnd,
+                                     MAPGEN_SERVICE_LB_NAME,
+                                     &FndGenErrorBlock);
+    }
+
+return(CMN_SUCCESS);
+} /* end of function FillServiceLB */
+
+
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+
+static WCBPROC(Azcs006busrlb01elbpagedown)
+ {
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC;
+
+  /*
+  ** Range check incrementing the offset for the client list box
+  */
+    if (( pWindContextData->WCD.ClientLBOffset + NUMRLB01ELBROWS) <
+          pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows)
+       {
+        pWindContextData->WCD.ClientLBOffset += NUMRLB01ELBROWS;
+
+        FndGenRC = FillClientLB(pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI );
+
+       }
+    else
+       {
+        FndGenRC = FndLstBoxDownDisable(CBI_hwnd,
+                                        MAPGEN_CLIENT_LB_NAME,
+                                        &FndGenErrorBlock);
+       }
+
+  return(CMN_SUCCESS);
+ }
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+static WCBPROC(Azcs006busrlb01elbpageup)
+ {
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC;
+
+  /*
+  ** Range check incrementing the offset for the client list box
+  */
+    if (pWindContextData->WCD.ClientLBOffset > 0)
+       {
+        pWindContextData->WCD.ClientLBOffset -= NUMRLB01ELBROWS;
+
+        FndGenRC = FillClientLB(pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI );
+
+       }
+    else
+       {
+        FndGenRC = FndLstBoxUpDisable(CBI_hwnd,
+                                      MAPGEN_CLIENT_LB_NAME,
+                                      &FndGenErrorBlock);
+       }
+
+
+  return(CMN_SUCCESS);
+ }
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC(Azcs006busrlb02elbpagedown)
+ {
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  short ix;
+  USHORT FndGenRC;
+
+  /*
+  ** assign the current service index to a local variable
+  */
+
+  ix = pWindContextData->WCD.CurrentServiceIndex;
+
+  /*
+  ** Range check incrementing the offset for the client list box
+  */
+    if (( pWindContextData->WCD.ServiceLBOffset + NUMRLB02ELBROWS) <
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows)
+       {
+        pWindContextData->WCD.ServiceLBOffset += NUMRLB02ELBROWS;
+
+        FndGenRC = FillServiceLB(pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI );
+       }
+    else
+       {
+        FndGenRC = FndLstBoxDownDisable(CBI_hwnd,
+                                        MAPGEN_SERVICE_LB_NAME,
+                                        &FndGenErrorBlock);
+       }
+
+
+  return(CMN_SUCCESS);
+ }
+
+
+
+
+static WCBPROC(Azcs006busrlb02elbpageup)
+ {
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  short ix;
+  USHORT FndGenRC;
+
+  /*
+  ** assign the current service index to a local variable
+  */
+
+  ix = pWindContextData->WCD.CurrentServiceIndex;
+
+  /*
+  ** Range check incrementing the offset for the client list box
+  */
+    if ( pWindContextData->WCD.ServiceLBOffset  > 0)
+       {
+        pWindContextData->WCD.ServiceLBOffset -= NUMRLB02ELBROWS;
+
+        FndGenRC = FillServiceLB(pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI );
+       }
+    else
+       {
+        FndGenRC = FndLstBoxUpDisable(CBI_hwnd,
+                                      MAPGEN_SERVICE_LB_NAME,
+                                      &FndGenErrorBlock);
+       }
+
+  return(CMN_SUCCESS);
+ }
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC(LookForClientName)
+
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+char ReposName[ITEM_NAME_LEN];
+short ix;
+short ServiceNum = 0;
+BOOL ServiceInCobol;
+short ServiceElmnt;
+short ServiceRow;
+
+ ServiceNum = pWindContextData->WCD.CurrentServiceIndex;
+
+
+/***************************************************************/
+/* Find out what language the service is using.                */
+/***************************************************************/
+
+ FndGenRC = FndCommandQueryChecked( CBI_hwnd,
+                                    "AMNSRVCB",
+                                    &FndGenErrorBlock);
+
+
+FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+                                      MAPGEN_SERVICE_LB_NAME,
+                                      FND_LSTBOX_START,
+                                      &ServiceRow,
+                                      &FndGenErrorBlock);
+
+ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
+
+
+/***************************************************************/
+/* Get the service name from the repository based on language. */
+/***************************************************************/
+
+ if (FndGenRC == FND_SUCCESS)
+    {
+     ServiceInCobol = TRUE ;
+     strcpy(ReposName,
+           (pBFCD->pCSRMapBFCD->ServiceInfoTable[ServiceNum].pReposServiceLayoutTable + ServiceElmnt)->ItemCobolName);
+    }
+ else
+    {
+     ServiceInCobol = FALSE;
+     strcpy(ReposName,
+           (pBFCD->pCSRMapBFCD->ServiceInfoTable[ServiceNum].pReposServiceLayoutTable + ServiceElmnt)->ItemCName);
+    }
+
+/***************************************************************/
+/* Loop thru the client repository rows and try to find a match*/
+/***************************************************************/
+
+ for (ix=0; ix < pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows; ix++)
+     {
+      if (ServiceInCobol)  /* service name is in cobol */
+         {
+          if(strcmp(ReposName,
+                    (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ix)->ItemCobolName) == 0)
+            {
+             return(ix);
+            }
+         }
+      else
+         {
+          if(strcmp(ReposName,
+             (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ix)->ItemCName) == 0)
+            {
+             return(ix);
+            }
+         }
+     } /* end of for loop thru client repository rows */
+
+return(CMN_FAIL);   /* Did not find a match so return fail */
+
+}/* end of function  LookForClientName */
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static WCBPROC(LookForServiceName)
+
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+char ReposName[ITEM_NAME_LEN];
+short ix;
+short ServiceNum = 0;
+BOOL ClientInC;
+char TempName[ITEM_NAME_LEN];
+short ClientRow;
+short ClientElmnt;
+
+ ServiceNum = pWindContextData->WCD.CurrentServiceIndex;
+
+/***************************************************************/
+/* Find out what language the client is using.                 */
+/***************************************************************/
+
+ FndGenRC = FndCommandQueryChecked( CBI_hwnd,
+                                    "AMNCLTC",
+                                    &FndGenErrorBlock);
+
+ FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+                                      MAPGEN_CLIENT_LB_NAME,
+                                      FND_LSTBOX_START,
+                                      &ClientRow,
+                                      &FndGenErrorBlock);
+
+ ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
+
+
+/***************************************************************/
+/* Get the client name from the repository based on language. */
+/***************************************************************/
+
+ if (FndGenRC == FND_SUCCESS)
+    {
+     ClientInC = TRUE ;
+     strcpy(ReposName,
+           (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCName);
+    }
+ else
+    {
+     ClientInC = FALSE;
+     strcpy(ReposName,
+           (pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable + ClientElmnt)->ItemCobolName);
+    }
+
+/***************************************************************/
+/* Loop thru the client repository rows and try to find a match*/
+/***************************************************************/
+
+ for (ix=0; ix < pBFCD->pCSRMapBFCD->ServiceInfoTable[ServiceNum].NumReposServiceRows; ix++)
+     {
+      if (ClientInC)  /* Client name is in C */
+         {
+          strcpy(TempName,
+             (pBFCD->pCSRMapBFCD->ServiceInfoTable[ServiceNum].pReposServiceLayoutTable + ix)->ItemCName);
+
+          if(strcmp(ReposName,
+                    TempName) == 0)
+            {
+             return(ix);
+            }
+         }
+      else
+         {
+          strcpy(TempName,
+              (pBFCD->pCSRMapBFCD->ServiceInfoTable[ServiceNum].pReposServiceLayoutTable + ix)->ItemCobolName);
+
+          if(strcmp(ReposName,
+              (pBFCD->pCSRMapBFCD->ServiceInfoTable[ServiceNum].pReposServiceLayoutTable + ix)->ItemCobolName) == 0)
+            {
+             return(ix);
+            }
+         }
+     } /* end of for loop thru client repository rows */
+
+return(CMN_FAIL);   /* Did not find a match so return fail */
+
+}/* end of function  LookForServiceName */
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+static short LoadClientElmnt(short ClientElmnt, CMN_ARCH_PARM_TYPES)
+{
+ SHORT ix;
+ unsigned short           FndGenRC = FND_SUCCESS;
+ _FND_ERROR_BLOCK         FndGenErrorBlock;
+
+ ix = 0;
+
+ /*
+ ** Make sure the ClientElmnt parameter is valid
+ */
+
+ if (ClientElmnt < 0 ||
+     ClientElmnt > pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows)
+    {
+     return(CMN_FAIL);
+    }
+
+ /*
+ ** Calculate what the offset should be
+ */
+
+ while ((ix + NUMRLB01ELBROWS - 1) < ClientElmnt)
+     {
+      ix += NUMRLB01ELBROWS;
+     }
+
+ /*
+ ** If the client element is not in the current offset reload the listbox
+ */
+ if (pWindContextData->WCD.ClientLBOffset != ix)
+    {
+
+      /*
+      ** Set the BFCD offset
+      */
+
+      pWindContextData->WCD.ClientLBOffset = ix;
+
+      /*
+      ** Fill the listbox
+      */
+      FndGenRC =  FillClientLB (pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI );
+    }
+
+ /*
+ ** Select the row
+ */
+ FndGenRC = FndLstBoxRowSelect(CBI_hwnd,
+                               MAPGEN_CLIENT_LB_NAME,
+                               ClientElmntToRow(ClientElmnt, CMN_ARCH_PARMS),
+                               &FndGenErrorBlock);
+
+
+ return(CMN_SUCCESS);
+
+} /* end of function LoadClientElmnt */
+
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static short LoadServiceElmnt(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
+{
+
+ SHORT ix;
+ unsigned short           FndGenRC = FND_SUCCESS;
+ _FND_ERROR_BLOCK         FndGenErrorBlock;
+ USHORT usIndex;
+ ix = 0;
+
+
+ usIndex = pWindContextData->WCD.CurrentServiceIndex;
+
+
+ /*
+ ** Make sure the ServiceElmnt parameter is valid
+ */
+
+ if (ServiceElmnt < 0 ||
+     ServiceElmnt > pBFCD->pCSRMapBFCD->ServiceInfoTable[usIndex].NumReposServiceRows)
+    {
+     return(CMN_FAIL);
+    }
+
+ /*
+ ** Calculate what the offset should be
+ */
+
+ while ((ix + NUMRLB02ELBROWS - 1) < ServiceElmnt)
+     {
+      ix += NUMRLB02ELBROWS;
+     }
+
+
+ /*
+ ** If the row is not in the current listbox reload the listbox
+ */
+
+ if (pWindContextData->WCD.ServiceLBOffset != ix)
+    {
+     /*
+     ** Set the BFCD offset
+     */
+
+     pWindContextData->WCD.ServiceLBOffset = ix;
+
+     /*
+     ** Fill the listbox
+     */
+
+     FndGenRC =  FillServiceLB (pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI );
+    }
+
+ /*
+ ** Select the row
+ */
+
+ FndGenRC = FndLstBoxRowSelect(CBI_hwnd,
+                               MAPGEN_SERVICE_LB_NAME,
+                               ServiceElmntToRow(ServiceElmnt, CMN_ARCH_PARMS),
+                               &FndGenErrorBlock);
+
+
+ return(CMN_SUCCESS);
+
+} /* end of function LoadServiceElmnt */
+
+
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+static short ClientElmntToRow(short ClientElmnt, CMN_ARCH_PARM_TYPES)
+{
+ short ix;
+
+ ix = ClientElmnt % NUMRLB01ELBROWS;
+
+ return(ix);
+
+} /* end of function ClientElmntToRow */
+
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         :
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 09/26/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    09/26/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+
+static short ServiceElmntToRow(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
+{
+  short ix;
+
+  ix = ServiceElmnt % NUMRLB02ELBROWS;
+
+ return(ix);
+
+} /* end of function ServiceElmntToRow */
+
+
+

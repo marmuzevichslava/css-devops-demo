@@ -1,0 +1,13 @@
+%---------------------------------------------------------------%
+%  MAKE_WIN - Makefile statements to produce window module .OBJ %
+%---------------------------------------------------------------%
+% JSH: 12/4/94 ADDED .aex and .h dependencies %
+# Make C window module ~ModuleName
+~ModuleName._DEP = ~WindowDependencies    \
+                ~WindowName..aex     \
+                ~WindowName..h       \
+                ~WindowName..wmp     \
+                ~WindowName..gnd     \
+                ~WindowName..gnh     \
+                ~ExeName..gnz        \
+                ~WindowName..src

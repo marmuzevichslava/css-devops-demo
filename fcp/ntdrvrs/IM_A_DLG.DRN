@@ -1,0 +1,6 @@
+% CWOODS 09/13/95 : New Directory structure  %
+% Removed FND_USER_RESOURCE_PATH\ before ~imageFile %
+#ifndef ~imageTypeString._RID_~resourceID
+#define ~imageTypeString._RID_~resourceID
+~resourceID ~imageTypeString ~imageFile
+#endif

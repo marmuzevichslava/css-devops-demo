@@ -1,0 +1,2343 @@
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS001BusAboutMNClick
+**
+**  DESCRIPTION      : This function creates the About window for the applicaition.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/14/94  J. Looney             Clean up.
+**
+***************************************************************************/
+static WCBPROC(AZCS001BusAboutMNClick)
+{
+    SHORT FndGenRC = CMN_SUCCESS;
+    SHORT nRC      = CMN_SUCCESS;
+    CHAR WindowName[]   = "AZCS014";
+    CHAR InstanceName[] = "";
+
+    HEAP_CHECK
+
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                NULL,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* End of AZCS001BusAboutMNClick */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : OpnAZCS2
+**
+**  DESCRIPTION      : This function creates window 2.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/14/94  J. Looney             Clean up.
+**
+***************************************************************************/
+static WCBPROC(OpnAZCS2)
+{
+    CHAR WindowName[]   = "AZCS002";
+    CHAR InstanceName[] = "REQUEST";
+    SHORT nRC      = CMN_SUCCESS;
+    SHORT FndGenRC = CMN_SUCCESS;
+    USHORT usSelectedButton;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _REQUESTINFO DummyInput;
+
+    HEAP_CHECK
+
+    /* Check the ChangeFlag to see if changes have been made to the
+     * current map
+     */
+    if (pBFCD->pCSRMapBFCD->ChangeFlag == 'Y')
+    {
+        FndGenRC = FndMsgBoxDisplayText( "The Current map has changed !\n\n"
+                                         "Do you want to save it ?",
+                                         NULL,
+                                         CBI_hwnd,
+                                         FND_MSGBOX_YESNO,
+                                         FND_MSGBOX_QUERY,
+                                         FND_MSGBOX_IDYES,
+                                         CMN_MAPGEN_NAME,
+                                         &usSelectedButton,
+                                         &FndGenErrorBlock );
+
+        /* Save Map */
+        if ( usSelectedButton == FND_MSGBOX_IDYES )
+        {
+            FndGenRC = AZCS001BusAmnSaveClk( pEventInfo,
+                                             pEAIA,
+                                             pBFCD,
+                                             pWesMap,
+                                             pWindContextData,
+                                             pABHI );
+
+            pBFCD->pCSRMapBFCD->ChangeFlag = 'N';
+        } /* Save Map */
+
+    } /* end of if:  Changes were made to map */
+
+    /* Create the Open Request Information window */
+    nRC = CmnWindowCreate( WindowName,
+                           InstanceName,
+                           NULL,
+                           &DummyInput,
+                           CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of OpnAZCS2 */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : OpnAZCS3
+**
+**  DESCRIPTION      : This function creates window 3.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/14/94  J. Looney             Clean up.
+**
+***************************************************************************/
+static WCBPROC(OpnAZCS3)
+{
+    SHORT FndGenRC = CMN_SUCCESS;
+    SHORT nRC      = CMN_SUCCESS;
+    CHAR WindowName[]   = "AZCS003";
+    CHAR InstanceName[] = "";
+    _AZCS003I InCpybook;
+
+    HEAP_CHECK
+
+    InCpybook.Server     = 2;
+    InCpybook.ServiceID  = 3;
+    InCpybook.ServiceAge = 100;
+    strncpy( InCpybook.TranMap,
+             "GETDATA",
+             sizeof( InCpybook.TranMap ));
+    strncpy( InCpybook.AnticModule,
+             "NextMod",
+             sizeof( InCpybook.AnticModule ));
+
+    /* Create the Add Service Information window */
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                (VOID *) &InCpybook,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of OpnAZCS3 */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : OpnAZCS4
+**
+**  DESCRIPTION      : This function creates window 4.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/14/94  J. Looney             Clean up.
+**
+***************************************************************************/
+static WCBPROC(OpnAZCS4)
+{
+    CHAR   WindowName[]   = "AZCS004";
+    CHAR   InstanceName[] = "AZCS004";
+    SHORT  nRC            = CMN_SUCCESS;
+    USHORT FndGenRC       = CMN_SUCCESS;
+    USHORT nSelectedRow   = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _Rlb01ELBRow ListBox;
+    _AZCS004I InCpyBook;
+
+    HEAP_CHECK
+
+    /* Find out which row is selected in the service ELB */
+    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                           "Rlb01ELB",
+                                           FND_LSTBOX_START,
+                                           &nSelectedRow,
+                                           &FndGenErrorBlock );
+
+    /* Get the data for the service row in the ELB */
+    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                      "Rlb01ELB",
+                                      nSelectedRow,
+                                      sizeof(ListBox),
+                                      &ListBox,
+                                      &FndGenErrorBlock );
+
+    /* Populate the name of the client layout in the input layout */
+    strncpy( InCpyBook.ClientLayout,
+             ClientLayoutData,
+             sizeof( InCpyBook.ClientLayout ));
+
+    InCpyBook.pRelate = NULL;
+
+    /* Create the Copmpare Key window */
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                &InCpyBook,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+} /* end of OpnAZCS4 */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : OpnAZCS5
+**
+**  DESCRIPTION      : This function creates window 5.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(OpnAZCS5)
+{
+    CHAR   WindowName[]   = "AZCS005";
+    CHAR   InstanceName[] = "AZCS005";
+    SHORT  nRC            = CMN_SUCCESS;
+    USHORT FndGenRC       = CMN_SUCCESS;
+    USHORT nSelectedRow;
+    _AZCS004I InCpyBook;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _Rlb01ELBRow ListBox;
+
+    HEAP_CHECK
+
+    /* Find out which row is selected in the service ELB */
+    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                           "Rlb01ELB",
+                                           FND_LSTBOX_START,
+                                           &nSelectedRow,
+                                           &FndGenErrorBlock );
+
+    /* Get the data for the service row in the ELB */
+    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                      "Rlb01ELB",
+                                      nSelectedRow,
+                                      sizeof(ListBox),
+                                      &ListBox,
+                                      &FndGenErrorBlock );
+
+    /* Populate the name of the client layout in the input layout */
+    strncpy( InCpyBook.ClientLayout,
+             ClientLayoutData,
+             sizeof ( InCpyBook.ClientLayout ));
+
+    InCpyBook.pRelate = NULL;
+
+    /* Create the Return Data window */
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                &InCpyBook,
+                                CMN_ARCH_PARMS);
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of OpnAZCS5 */
+
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : OpnAZCS6
+**
+**  DESCRIPTION      : This function opens window 6
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(OpnAZCS6)
+{
+    CHAR   WindowName[]   = "AZCS006";
+    CHAR   InstanceName[] = "AZCS006";
+    SHORT  nRC            = CMN_SUCCESS;
+    USHORT FndGenRC       = CMN_SUCCESS;
+    USHORT nSelectedRow;
+    _AZCS004I InCpyBook;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _Rlb01ELBRow ListBox;
+
+    HEAP_CHECK
+
+    /* Find out which row is selected in the service ELB */
+    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                           "Rlb01ELB",
+                                           FND_LSTBOX_START,
+                                           &nSelectedRow,
+                                           &FndGenErrorBlock );
+
+    /* Get the data for the service row in the ELB */
+    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                      "Rlb01ELB",
+                                      nSelectedRow,
+                                      sizeof(ListBox),
+                                      &ListBox,
+                                      &FndGenErrorBlock );
+
+    /* Populate the name of the client layout in the input layout */
+    strncpy( InCpyBook.ClientLayout,
+             ClientLayoutData,
+             sizeof( InCpyBook.ClientLayout ));
+
+    InCpyBook.pRelate = NULL;
+
+    /* Create the Load Key Window */
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                &InCpyBook,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of OpnAZCS6 */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : OpnAZCS7
+**
+**  DESCRIPTION      : This function opens window 7
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(OpnAZCS7)
+{
+    CHAR   WindowName[]   = "AZCS007";
+    CHAR   InstanceName[] = "AZCS007";
+    SHORT  nRC            = CMN_SUCCESS;
+    USHORT FndGenRC       = CMN_SUCCESS;
+    USHORT nSelectedRow;
+    _AZCS004I InCpyBook;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    _Rlb01ELBRow ListBox;
+
+    HEAP_CHECK
+
+    /* Find out which row is selected in the service ELB */
+    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                           "Rlb01ELB",
+                                           FND_LSTBOX_START,
+                                           &nSelectedRow,
+                                           &FndGenErrorBlock );
+
+    /* Get the data for the service row in the ELB */
+    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                      "Rlb01ELB",
+                                      nSelectedRow,
+                                      sizeof(ListBox),
+                                      &ListBox,
+                                      &FndGenErrorBlock);
+
+    /* Populate the name of the client layout in the input layout */
+    strncpy( InCpyBook.ClientLayout,
+            ClientLayoutData,
+            sizeof( InCpyBook.ClientLayout ));
+
+    InCpyBook.pRelate = NULL;
+
+    /* Create the Load Data window */
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                &InCpyBook,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of OpnAZCS7 */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : ClsAZCS1
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(ClsAZCS1)
+{
+    return CMN_SUCCESS;
+
+} /* end of ClsAZCS1 */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : GetDefDir
+**
+**  DESCRIPTION      : This function creates window 9.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(GetDefDir)
+{
+    CHAR WindowName[] = "AZCS009";
+    CHAR InstanceName[] = "Specify";
+    CHAR DummyInput;
+    SHORT nRC = CMN_SUCCESS;
+    SHORT FndGenRC;
+
+    HEAP_CHECK
+
+    /* Create the Specify Directories window */
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                &DummyInput,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of GetDefDir */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : ChkTLStatus
+**
+**  DESCRIPTION      : This function checks the task list status.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(ChkTLStatus)
+{
+    USHORT FndGenRC          = FND_SUCCESS;
+    SHORT  RowNumber         = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    if ( strncmp( RequestTypeData, "Inquiry", sizeof( RequestTypeData)) == 0)
+    {
+        /* Compare Key */
+        if ( TaskListCdStatusIconicData[TL_CK_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_CK_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if: Compare Key */
+
+        /* Return Data */
+        if ( TaskListCdStatusIconicData[TL_RD_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RD_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if: Return Data */
+
+        /* Load Keys  */
+        if ( TaskListCdStatusIconicData[TL_LK_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LK_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if:  Load Keys */
+
+        /* Load Data */
+        FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                        CMN_LB_TLB_CONTROL_NAME,
+                                        TL_LD_ROW_NUM,
+                                        AT_UNAVAILABLE,
+                                        &FndGenErrorBlock );
+
+        /* Search and Destroy */
+        FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                        CMN_LB_TLB_CONTROL_NAME,
+                                        TL_SD_ROW_NUM,
+                                        AT_UNAVAILABLE,
+                                        &FndGenErrorBlock );
+
+        /* Repeating Maps */
+        if ( TaskListCdStatusIconicData[TL_RM_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RM_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+
+        } /* end of if:  Repeating Maps */
+
+    } /* end of if RequestTypeData is Inquiry */
+
+    else if (strncmp(RequestTypeData, "LUW", sizeof( RequestTypeData )) == 0)
+    {
+        /* Compare Key */
+        if ( TaskListCdStatusIconicData[TL_CK_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_CK_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if:  Compare Key */
+
+        /* Return Data */
+        if ( TaskListCdStatusIconicData[TL_RD_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RD_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if:  Return Data */
+
+        /* Load Keys  */
+        if ( TaskListCdStatusIconicData[TL_LK_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LK_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if:  Load Keys */
+
+        /* Load Data */
+        if ( TaskListCdStatusIconicData[TL_LD_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LD_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if:  Load Data */
+
+        /* Search and Destroy */
+        if ( TaskListCdStatusIconicData[TL_SD_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_SD_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of if:  Search and Destroy */
+
+        /* Repeating Maps */
+        if ( TaskListCdStatusIconicData[TL_RM_ROW_NUM] !=
+             CMN_LBROW_STATUS_COMPLETED )
+        {
+
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RM_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+
+        } /* end of if:  Repeating Maps */
+
+    } /* end of else if:  LUW */
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of ChkTLStatus */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : SetupBFCD
+**
+**  DESCRIPTION      : This function initializes the BFCD data structure.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC (SetupBFCD)
+{
+    USHORT FndGenRC;
+    _FND_ERROR_BLOCK ErrorBlock;
+    FILE *Stream;
+    CHAR CurLine[_CSR_MAX_MAP_LINE_LEN] = "";
+    CHAR dummy[_PATH_LEN] = "";
+
+    HEAP_CHECK
+
+    /* Allocate memory for the BFCD Global Structure */
+    pBFCD->pCSRMapBFCD =
+                 (_BFCD_GLOBAL_DATA *) malloc(sizeof(_BFCD_GLOBAL_DATA));
+
+    memset(pBFCD->pCSRMapBFCD, 0, sizeof(_BFCD_GLOBAL_DATA) );
+    pBFCD->pCSRMapBFCD->NumServices = 0;
+
+    /* Allocate memory for the Client Main Layout Table */
+    pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable =
+                 (_LAYOUT_REC *) malloc(sizeof(_LAYOUT_REC));
+    memset( pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable,
+            0,
+            sizeof(_LAYOUT_REC) );
+
+    strcpy(dummy, CSR_MAP_CFG_FILE );
+
+    /* JLL: 07/16/93 ADDED */
+    /* Open the csrmap.cfg to determine the save and generate directories. */
+    if (( Stream = fopen( CSR_MAP_CFG_FILE,"r" )) == NULL )
+    {
+        return CMN_FAIL;
+    }
+
+    /* Read in the Save Directory */
+    fgets( CurLine,_CSR_MAX_MAP_LINE_LEN, Stream );
+    sscanf( CurLine,
+            "%s %s",
+            dummy,
+            BFCD_CSRMapBFCD->CsrMapSavePath );
+
+    /* Read in the Generate Directory */
+    fgets( CurLine,_CSR_MAX_MAP_LINE_LEN, Stream );
+    sscanf( CurLine,
+            "%s %s",
+            dummy,
+            BFCD_CSRMapBFCD->CsrMapGenPath );
+
+    /* Close the csrmap.cfg file */
+    fclose( Stream );
+
+    /* To control the enabling of non-preemptive
+     * controls we have added a hidden field to the
+     * window. Usually the task list is used for
+     * purpose. But in this application until the
+     * user has identified the map and at least one
+     * service we make the task list unavailable.
+     * Once they have identified the map and service
+     * we make this hidden field valid and let the
+     * task list take over the status processing.
+     *
+     * At predisplay we make the hidden field
+     *   STS_INVALID.
+     * At WktCloseAfterSave  if they get a saved map
+     *    we make the field STS_VALID.
+     * At ELB1CloseAfterSave we make the field
+     *   STS_VALID.
+     */
+
+    FndGenRC = FndFieldSetStatus( CBI_hwnd,
+                                  "GenerateStatus",
+                                  STS_INVALID,
+                                  &ErrorBlock);
+
+    /* Set the ChangeFlag to No. */
+    BFCD_CSRMapBFCD->ChangeFlag = 'N';
+
+    FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "AMNDUMP",
+                                 &ErrorBlock);
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of SetupBFCD */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS001BusAmnGenerateClk
+**
+**  DESCRIPTION      : This function controls the generating and saving of maps.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(AZCS001BusAmnGenerateClk)
+{
+    USHORT FndGenRC = FND_SUCCESS;
+    SHORT  i        = 0;
+    SHORT  servx;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    /* Set pointer to wait */
+    FndGenRC = FndWindowSetPointer( CBI_hwnd,
+                                    FNDSYSPTR_WAIT,
+                                    &FndGenErrorBlock );
+
+    /* JLL: 07/06/93 ADDED */
+    for ( i = 0; i < pBFCD->pCSRMapBFCD->NumServices; i++ )
+    {
+       servx = GetServiceIndex(Rlb01ELBServerData[i],
+                               Rlb01ELBServiceIDData[i],
+                               Rlb01ELBTranMapData[i],
+                               CMN_ARCH_PARMS);
+
+
+       if (( Rlb01ELBCdStatusIconicData[i] == LT_UnchgDelIconValue ) ||
+           ( Rlb01ELBCdStatusIconicData[i] == LT_AddDelIconValue ) ||
+           ( Rlb01ELBCdStatusIconicData[i] == LT_ChgDelIconValue))
+       {
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[servx].DeleteFlag = TRUE;
+       }
+       else
+       {
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[servx].DeleteFlag = FALSE;
+       }
+
+    } /* end of for */
+
+    FndGenRC = GenerateMap( CMN_ARCH_PARMS );
+    FndGenRC = AZCS001BusAmnSaveClk( pEventInfo,
+                                     pEAIA,
+                                     pBFCD,
+                                     pWesMap,
+                                     pWindContextData,
+                                     pABHI );
+
+    /* Change the pointer back to an arrow */
+    FndGenRC = FndWindowSetPointer(CBI_hwnd,
+                                   FNDSYSPTR_ARROW,
+                                   &FndGenErrorBlock);
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+} /* end of AZCS001BusAmnGenerateClk */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS001BusAmnSaveClk
+**
+**  DESCRIPTION      : This function controls the saving of a map.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean up.
+**
+***************************************************************************/
+static WCBPROC( AZCS001BusAmnSaveClk )
+{
+    USHORT FndGenRC = FND_SUCCESS;
+    SHORT  i        = 0;
+    SHORT  servx;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    /* Set the pointer to wait */
+    FndGenRC = FndWindowSetPointer(CBI_hwnd,
+                                   FNDSYSPTR_WAIT,
+                                   &FndGenErrorBlock);
+
+    /* JLL: 07/01/93 ADDED */
+    if ( TaskListCdStatusIconicData[TL_CK_ROW_NUM] ==
+         CMN_LBROW_STATUS_COMPLETED )
+    {
+        BFCD_CSRMapBFCD->CKTaskListComplete = 'Y';
+    }
+    else
+    {
+        BFCD_CSRMapBFCD->CKTaskListComplete = 'N';
+    }
+
+    /* JLL: 07/02/93 ADDED */
+    if ( TaskListCdStatusIconicData[TL_RD_ROW_NUM] ==
+         CMN_LBROW_STATUS_COMPLETED )
+    {
+        BFCD_CSRMapBFCD->RDTaskListComplete = 'Y';
+    }
+    else
+    {
+        BFCD_CSRMapBFCD->RDTaskListComplete = 'N';
+    }
+
+    /* JLL: 07/02/93 ADDED */
+    if ( TaskListCdStatusIconicData[TL_LK_ROW_NUM] ==
+         CMN_LBROW_STATUS_COMPLETED )
+    {
+        BFCD_CSRMapBFCD->LKTaskListComplete = 'Y';
+    }
+    else
+    {
+        BFCD_CSRMapBFCD->LKTaskListComplete = 'N';
+    }
+
+    /* JLL: 07/02/93 ADDED */
+    if ( TaskListCdStatusIconicData[TL_LD_ROW_NUM] ==
+         CMN_LBROW_STATUS_COMPLETED )
+    {
+        BFCD_CSRMapBFCD->LDTaskListComplete = 'Y';
+    }
+    else
+    {
+        BFCD_CSRMapBFCD->LDTaskListComplete = 'N';
+    }
+
+    /* JLL: 07/12/93 ADDED */
+    if ( TaskListCdStatusIconicData[TL_RM_ROW_NUM] ==
+         CMN_LBROW_STATUS_COMPLETED )
+    {
+        BFCD_CSRMapBFCD->RPMHTaskListComplete = 'Y';
+    }
+    else
+    {
+        BFCD_CSRMapBFCD->RPMHTaskListComplete = 'N';
+    }
+
+    /* JLL: 07/06/93 ADDED */
+    for ( i = 0; i < pBFCD->pCSRMapBFCD->NumServices; i++ )
+    {
+       servx = GetServiceIndex(Rlb01ELBServerData[i],
+                               Rlb01ELBServiceIDData[i],
+                               Rlb01ELBTranMapData[i],
+                               CMN_ARCH_PARMS);
+
+       if (( Rlb01ELBCdStatusIconicData[i] == LT_UnchgDelIconValue ) ||
+           ( Rlb01ELBCdStatusIconicData[i] == LT_AddDelIconValue ) ||
+           ( Rlb01ELBCdStatusIconicData[i] == LT_ChgDelIconValue))
+
+       {
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[servx].DeleteFlag = TRUE;
+       }
+       else
+       {
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[servx].DeleteFlag = FALSE;
+       }
+
+    } /* end of for */
+
+    FndGenRC = CsrMapWriteMapFile( CMN_ARCH_PARMS );
+
+    pBFCD->pCSRMapBFCD->ChangeFlag = 'N';
+
+    /* Change to pointer back to an arrow */
+    FndGenRC = FndWindowSetPointer(CBI_hwnd,
+                                   FNDSYSPTR_ARROW,
+                                   &FndGenErrorBlock);
+
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of AZCS001BusAmnSaveClk */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : RestoreServiceLB
+**
+**  DESCRIPTION      : This function loads the Services List Box.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC (RestoreServiceLB)
+{
+    SHORT  ix;
+    SHORT  nRC;
+    USHORT FndGenRC = FND_SUCCESS;
+    _Rlb01ELBRow NewRow;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    /* Loop thru all of the services in BFCD and Add them to the List Box */
+    for ( ix = 0; ix < pBFCD->pCSRMapBFCD->NumServices; ix++ )
+    {
+        NewRow._Rlb01ELBCdStatusIconicData = LT_AvailableIconValue;
+
+        NewRow._Rlb01ELBServerData =
+                  pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].Server;
+
+        NewRow._Rlb01ELBServiceIDData =
+               pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].ServiceId;
+
+        NewRow._Rlb01ELBServiceAgeData =
+          pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].ServiceAgeLimit;
+
+        /* CSC: 07/12/94 Modify Flush */
+        if( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].FlushFlag )
+        {
+            strncpy( NewRow._Rlb01ELBFlushData,
+                     "Y",
+                     sizeof( NewRow._Rlb01ELBFlushData ));
+        }
+        else
+        {
+            strncpy( NewRow._Rlb01ELBFlushData,
+                     "N",
+                     sizeof( NewRow._Rlb01ELBFlushData ));
+        }
+
+        strncpy( NewRow._Rlb01ELBTranMapData,
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].ServiceLayoutName,
+                 sizeof( NewRow._Rlb01ELBTranMapData ));
+
+        strncpy( NewRow._Rlb01ELBForceCallData,
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].ForceCall,
+                 sizeof( NewRow._Rlb01ELBForceCallData ));
+
+        strncpy( NewRow._Rlb01ELBAnticModuleData,
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].AnticCallModule,
+                 sizeof( NewRow._Rlb01ELBAnticModuleData ));
+
+        strncpy( NewRow._Rlb01ELBAltMapData,
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].AlternateService,
+                 sizeof( NewRow._Rlb01ELBAltMapData ));
+
+        /* Populate row */
+        nRC = CmnElbAssignRowData( MAPGEN_ELB_NAME,
+                                   ix,
+                                   (void *)&NewRow,
+                                   NULL,
+                                   CMN_ARCH_PARMS );
+
+        /* Error from CmnElbAssignRowData */
+        if ( nRC != CMN_SUCCESS )
+        {
+            return CMN_FAIL;
+        } /* end of if:  Error fromCmnElbAssignRowData */
+
+        /* Show the row */
+        FndGenRC = FndLstBoxRowShow( CBI_hwnd,
+                                     MAPGEN_ELB_NAME,
+                                     ix,
+                                     &FndGenErrorBlock );
+
+        /* Error from FndLstBoxRowShow */
+        if ( nRC != CMN_SUCCESS )
+        {
+            return CMN_FAIL;
+        } /* end of if:  Error from FndLstBoxRowShow */
+
+    } /* end of loop thru each BFCD service */
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of RestoreServiceLB */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS001Bus
+**
+**  DESCRIPTION      : This function restores the Task List to its previous state.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC (RestoreTaskList)
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = FND_SUCCESS;
+    SHORT  ix;
+
+    /* Loop thru all of the services in BFCD and see if any relationships
+     * have been completed.
+     */
+    for ( ix = 0; ix < pBFCD->pCSRMapBFCD->NumServices; ix++ )
+    {
+        /*
+         *  See if any Compare Key relationships exist
+         *  Should be unavailable for Updates
+         */
+        if ( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType,"2") == 0)
+        {
+            TaskListCdStatusIconicData[TL_CK_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_CK_ROW_NUM,
+                                            AT_UNAVAILABLE,
+                                            &FndGenErrorBlock );
+        } /* end of if */
+
+        else if ( BFCD_CSRMapBFCD->CKTaskListComplete == 'Y' )
+        {
+            TaskListCdStatusIconicData[TL_CK_ROW_NUM] =
+                                                  CMN_LBROW_STATUS_COMPLETED;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_CK_ROW_NUM,
+                                            AT_REQUIRED_COMPLETE,
+                                            &FndGenErrorBlock );
+        } /* end of else if */
+
+        else
+        {
+            TaskListCdStatusIconicData[TL_CK_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_CK_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of else */
+
+        /* See if any Return Data relationships exist */
+        if ( BFCD_CSRMapBFCD->RDTaskListComplete == 'Y' )
+        {
+            TaskListCdStatusIconicData[TL_RD_ROW_NUM] =
+                                                  CMN_LBROW_STATUS_COMPLETED;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RD_ROW_NUM,
+                                            AT_REQUIRED_COMPLETE,
+                                            &FndGenErrorBlock );
+        } /* end of if */
+
+        else
+        {
+            TaskListCdStatusIconicData[TL_RD_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RD_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of else */
+
+        /* See if any Load Keys relationships exist */
+        if ( BFCD_CSRMapBFCD->LKTaskListComplete == 'Y' )
+        {
+            TaskListCdStatusIconicData[TL_LK_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_COMPLETED;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LK_ROW_NUM,
+                                            AT_REQUIRED_COMPLETE,
+                                            &FndGenErrorBlock );
+        } /* end of if */
+
+        else
+        {
+            TaskListCdStatusIconicData[TL_LK_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LK_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of else */
+
+        /* See if any Load Data relationships exist */
+        if ( BFCD_CSRMapBFCD->LDTaskListComplete == 'Y' )
+        {
+            TaskListCdStatusIconicData[TL_LD_ROW_NUM] =
+                                                  CMN_LBROW_STATUS_COMPLETED;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LD_ROW_NUM,
+                                            AT_REQUIRED_COMPLETE,
+                                            &FndGenErrorBlock );
+        } /* end of if */
+
+        else if (strcmp(pBFCD->pCSRMapBFCD->ClientInfo.ReqType, "2") == 0)
+        {
+            TaskListCdStatusIconicData[TL_LD_ROW_NUM] =
+                                                  CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LD_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of else if */
+
+        else
+        {
+            TaskListCdStatusIconicData[TL_LD_ROW_NUM] =
+                                                  CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_LD_ROW_NUM,
+                                            AT_UNAVAILABLE,
+                                            &FndGenErrorBlock );
+        } /* end of else */
+
+        /* See if any Search and Destroy references exist */
+        if (strcmp(BFCD_CSRMapBFCD->ClientInfo.ReqType,"2") == 0)
+        {
+            if (pBFCD->pCSRMapBFCD->ClientInfo.NumSearchDestroy > 0)
+            {
+                TaskListCdStatusIconicData[TL_SD_ROW_NUM] =
+                                                  CMN_LBROW_STATUS_COMPLETED;
+                FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                                CMN_LB_TLB_CONTROL_NAME,
+                                                TL_SD_ROW_NUM,
+                                                AT_REQUIRED_COMPLETE,
+                                                &FndGenErrorBlock );
+
+            } /* end of inner if */
+
+            else
+            {
+                TaskListCdStatusIconicData[TL_SD_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+                FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                                CMN_LB_TLB_CONTROL_NAME,
+                                                TL_SD_ROW_NUM,
+                                                AT_OPTIONAL,
+                                                &FndGenErrorBlock );
+            } /* end of inner else */
+
+        } /* end of if */
+
+        else
+        {
+            TaskListCdStatusIconicData[TL_SD_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_SD_ROW_NUM,
+                                            AT_UNAVAILABLE,
+                                            &FndGenErrorBlock );
+        } /* end of else */
+
+        /* JLL:  07/12/93 ADDED */
+        /* See if any Repeating Maps references exist */
+        if ( pBFCD->pCSRMapBFCD->RPMHTaskListComplete == 'Y' )
+        {
+            TaskListCdStatusIconicData[TL_RM_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_COMPLETED;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RM_ROW_NUM,
+                                            AT_REQUIRED_COMPLETE,
+                                            &FndGenErrorBlock );
+        } /* end of if */
+
+        else
+        {
+            TaskListCdStatusIconicData[TL_RM_ROW_NUM] =
+                                                 CMN_LBROW_STATUS_AVAILABLE;
+            FndGenRC = FndLstBoxRowSetAttr( CBI_hwnd,
+                                            CMN_LB_TLB_CONTROL_NAME,
+                                            TL_RM_ROW_NUM,
+                                            AT_REQUIRED,
+                                            &FndGenErrorBlock );
+        } /* end of else */
+
+    }  /* end of do loop for all BFCD services */
+
+    FndGenRC = CmnTlCheckStatus(CMN_ARCH_PARMS);
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of RestoreTaskList */
+
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : GetServiceReposData
+**
+**  DESCRIPTION      : This function controls the retrieving of repository data for
+**                       each of the services in the saved map.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+static WCBPROC(GetServiceReposData)
+{
+    SHORT  ix;
+    USHORT FndGenRC   = 0;
+    DOUBLE VersionNum = 0. ;
+
+    HEAP_CHECK
+
+    /* Loop thru all of the services from the map and get the repository data */
+    for ( ix = 0; ix < pBFCD->pCSRMapBFCD->NumServices; ix++)
+    {
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows =
+                                                             MAXSERVICEROWS;
+
+        /* Get the Service Layout from the Repository */
+        FndGenRC = CsrMapRetrieveLayout(
+                                  pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+                                    ServiceLayoutName,
+                                  MAP_GEN_SERVICE_LAYOUT,
+                                  &(pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+                                    pReposServiceLayoutTable),
+                                  &(pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+                                    NumReposServiceRows),
+                                  &VersionNum,
+                                  CMN_ARCH_PARMS );
+
+        /* Error from CsrMapRetrieveLayout */
+        if ( FndGenRC != FND_SUCCESS )
+        {
+            return FndGenRC;
+        }
+
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].Version = VersionNum;
+
+    } /* end of for loop thru each of the services */
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* End of function GetServiceReposData */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS001BusCleanupBFCD
+**
+**  DESCRIPTION      : This function initializes the BFCD back to its pristine state.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/14/94  J. Looney             Clean Up.
+***************************************************************************/
+static WCBPROC( AZCS001BusCleanupBFCD )
+{
+    USHORT FndGenRC = 0;
+    USHORT usRC     = 0;
+    SHORT  ix       = 0;
+    SHORT  sRC      = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    /*
+     * Cleanup the Top Level stuff first
+     */
+    pBFCD->pCSRMapBFCD->ChangeFlag           = 'N';
+    pBFCD->pCSRMapBFCD->CKTaskListComplete   = 'N';
+    pBFCD->pCSRMapBFCD->RDTaskListComplete   = 'N';
+    pBFCD->pCSRMapBFCD->LKTaskListComplete   = 'N';
+    pBFCD->pCSRMapBFCD->LDTaskListComplete   = 'N';
+    pBFCD->pCSRMapBFCD->RPMHTaskListComplete = 'N';
+
+    /*
+     * Cleanup the Client Info Stuff
+     */
+    strcpy(pBFCD->pCSRMapBFCD->ClientInfo.ReqId,"");
+    strcpy(pBFCD->pCSRMapBFCD->ClientInfo.ClientLayoutName,"");
+    strcpy(pBFCD->pCSRMapBFCD->ClientInfo.ReqType,"");
+
+    pBFCD->pCSRMapBFCD->ClientInfo.NumSearchDestroy   = 0;
+    pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows      = 0;
+    pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows = 0;
+
+    /* CSM Version of the Client Layout */
+    if ( pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable )
+    {
+        free( pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable );
+        pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable = NULL;
+    }
+
+    /* Repository Version of the Client Layout */
+    if ( pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable )
+    {
+        free( pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable );
+        pBFCD->pCSRMapBFCD->ClientInfo.pReposClientLayoutTable = NULL;
+    }
+
+    /*
+     * Cleanup the Service stuff
+     */
+
+    for ( ix=0; ix < pBFCD->pCSRMapBFCD->NumServices; ix++ )
+    {
+        /* CSM Version of the Service Layout */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pServiceLayoutTable )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+                  pServiceLayoutTable );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pServiceLayoutTable
+                = NULL;
+        }
+
+        /* Repository Version of the Service Layout */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].
+             pReposServiceLayoutTable )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReposServiceLayoutTable = NULL;
+        }
+
+        /* RPMH */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pRepeatingMaps )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pRepeatingMaps );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pRepeatingMaps = NULL;
+        }
+
+        /* CK */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pCompareKeys )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pCompareKeys );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pCompareKeys = NULL;
+        }
+
+        /* LK */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadKeys = NULL;
+        }
+
+        /* LD */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadData )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadData );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pLoadData = NULL;
+        }
+
+        /* RD */
+        if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReturnData )
+        {
+            free( pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReturnData );
+            pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].pReturnData = NULL;
+        }
+
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].DeleteFlag = FALSE;
+
+    } /* end of for */
+
+    pBFCD->pCSRMapBFCD->NumServices = 0;
+
+    /* Clean up the Wes Map stuff for azcs001 */
+    strcpy( RequestTypeData,  "" );
+    strcpy( RequestIDData,    "" );
+    strcpy( ClientLayoutData, "" );
+
+    /* Clean up the Listbox stuff */
+    sRC = CmnElbInit( "Rlb01ELB", CMN_ARCH_PARMS );
+
+    /* Cleanup the Task list stuff */
+    FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
+                                      CMN_LB_TLB_CONTROL_NAME,
+                                      &FndGenErrorBlock );
+
+    /* Populate the TL with rows */
+    FndGenRC = AZCS001ExitTlPopulateData( CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* end of AZCS001BusCleanupBFCD */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : GetServiceIndex
+**
+**  DESCRIPTION      : This function finds the service index based on the
+**                      Server, Service ID and Translation Map.
+**
+**  INPUTS           : unsigned long Server    - Server number
+**                     unsigned long ServiceID - Service Id number
+**                     char *        TranMap   - Translation Map name
+**                     CMN_ARCH_PARMS          - Standard Architecture Pams
+**
+**  OUTPUTS          : Return Code - SHORT - Valid index or -1 if not found.
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+**
+***************************************************************************/
+SHORT GetServiceIndex( ULONG Server,
+                       USHORT ServiceID,
+                       CHAR *TranMap,
+                       CMN_ARCH_PARM_TYPES )
+{
+    SHORT index = 0;
+
+    HEAP_CHECK
+
+    for ( index = 0; index < pBFCD->pCSRMapBFCD->NumServices; index++ )
+    {
+        if( Server == pBFCD->pCSRMapBFCD->ServiceInfoTable[index].Server &&
+            ServiceID == (USHORT) pBFCD->pCSRMapBFCD->ServiceInfoTable[index].
+                         ServiceId &&
+            (strcmp(TranMap,pBFCD->pCSRMapBFCD->ServiceInfoTable[index].
+                    ServiceLayoutName ) == 0) )
+        {
+           HEAP_CHECK
+
+           return( index );
+        }
+    }
+
+    HEAP_CHECK
+
+    return(-1);
+
+} /* end of function GetServiceIndex */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS001BusAMNDumpClk
+**
+**  DESCRIPTION      : This function Dumps the internal map generator tables
+**                       to the line printer.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean up.
+**
+***************************************************************************/
+WCBPROC(AZCS001BusAMNDumpClk)
+{
+    #define LAYOUT1 "%-5.2d %-8.8s %-4.1c  %-31.31s  %-5.1c  %-6.1c  %-5.1i  %-6.1i  %-8.1i  %-6.1i\n"
+    #define LAYOUT_HD1 "               Data                                   Elmnt                                  Parent\n"
+    #define LAYOUT_HD2 "Index Item Id  Type  C Name                           Type   Format  Level  Offset  C Length Index\n"
+    #define LAYOUT_HD3 "===== ======== ====  ===============================  =====  ======  =====  ======  ======== ======\n"
+
+    SHORT sIndex;
+    SHORT sServ;
+    SHORT FndGenRC;
+    USHORT usSelectedButton;
+    FILE *fptrFileName;
+    CHAR szFileName[255];
+    CHAR szMsgBuff[255];
+    CHAR szMsgBuff2[33];
+    CHAR szMsgInfo[255];
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    /*
+     * Start with the Layout Tables
+     */
+
+    sprintf( szFileName, "%s\\%s.DMP",
+             pBFCD->pCSRMapBFCD->CsrMapSavePath,        /* 70 */
+             pBFCD->pCSRMapBFCD->ClientInfo.ReqId );    /*  9 */
+
+    fptrFileName = fopen(szFileName, "w");
+
+    sprintf( szMsgInfo,
+             "Internal Tables will be written to file:\n\n %s",  /* ~44 */
+             szFileName );                                       /* 255 */
+
+    /* Display message to user */
+    FndGenRC = FndMsgBoxDisplayText( szMsgInfo,
+                                     NULL,
+                                     CBI_hwnd,
+                                     FND_MSGBOX_OKCANCEL,
+                                     FND_MSGBOX_INFORMATION,
+                                     FND_MSGBOX_IDOK,
+                                     CMN_MAPGEN_NAME,
+                                     &usSelectedButton,
+                                     &FndGenErrorBlock);
+
+    if ( usSelectedButton != FND_MSGBOX_IDOK )
+    {
+        return CMN_SUCCESS;
+    }
+
+    /* set the font to line printer (smaller font) */
+    FndGenRC = fprintf( fptrFileName, LINE_PRINTER );
+
+    /* set the line spacing to smaller */
+    FndGenRC = fprintf( fptrFileName, VMI );
+
+    fprintf( fptrFileName, "Dumping Repository Client Layout\n\n" );
+    fprintf( fptrFileName, LAYOUT_HD1 );
+    fprintf( fptrFileName, LAYOUT_HD2 );
+    fprintf (fptrFileName, LAYOUT_HD3 );
+
+
+    for( sIndex = 0;
+         sIndex < pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows;
+         sIndex++ )
+    {
+        fprintf( fptrFileName,
+                 LAYOUT1,
+                 sIndex,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ItemId,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ItemType,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ItemCName,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ElementTypeCode,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].Format,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ItemLevel,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ItemOffset,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ItemCLength,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pReposClientLayoutTable[sIndex].ParentIndex);
+    } /* end of for */
+
+    fprintf( fptrFileName, "\n\n\nDumping Saved Client Layout\n\n" );
+    fprintf( fptrFileName, LAYOUT_HD1 );
+    fprintf( fptrFileName, LAYOUT_HD2 );
+    fprintf( fptrFileName, LAYOUT_HD3 );
+
+    for ( sIndex = 0;
+          sIndex < pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows;
+          sIndex++ )
+    {
+        fprintf( fptrFileName,
+                 LAYOUT1,
+                 sIndex,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ItemId,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ItemType,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ItemCName,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ElementTypeCode,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].Format,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ItemLevel,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ItemOffset,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ItemCLength,
+                 pBFCD->pCSRMapBFCD->ClientInfo.
+                     pClientLayoutTable[sIndex].ParentIndex);
+    } /* end of for */
+
+    fprintf( fptrFileName, "\n\n\nDumping Repository Service Layout \n\n" );
+
+    for( sServ = 0; sServ < pBFCD->pCSRMapBFCD->NumServices; sServ++ )
+    {
+        fprintf( fptrFileName,
+                 "\nService: %s\n\n",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                       ServiceLayoutName );
+        fprintf( fptrFileName, LAYOUT_HD1 );
+        fprintf( fptrFileName, LAYOUT_HD2 );
+        fprintf( fptrFileName, LAYOUT_HD3 );
+
+        for( sIndex = 0;
+             sIndex < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                      NumReposServiceRows;
+             sIndex++ )
+        {
+            fprintf( fptrFileName,
+                     LAYOUT1,
+                     sIndex,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemId,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemType,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemCName,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ElementTypeCode,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].Format,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemLevel,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemOffset,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemCLength,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ParentIndex );
+
+        } /* end of inner for */
+
+    } /* end of outer for */
+
+    fprintf( fptrFileName, "\n\n\nDumping Saved Service Layout \n\n" );
+
+    for ( sServ = 0; sServ < pBFCD->pCSRMapBFCD->NumServices; sServ++ )
+    {
+        fprintf( fptrFileName,
+                 "\nService: %s\n\n",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   ServiceLayoutName );
+        fprintf( fptrFileName, LAYOUT_HD1 );
+        fprintf( fptrFileName, LAYOUT_HD2 );
+        fprintf( fptrFileName, LAYOUT_HD3 );
+
+        for( sIndex = 0;
+             sIndex < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                      NumServiceRows;
+             sIndex++ )
+        {
+            fprintf( fptrFileName,
+                     LAYOUT1,
+                     sIndex,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemId,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemType,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemCName,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ElementTypeCode,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].Format,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemLevel,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemOffset,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemCLength,
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ParentIndex );
+
+        } /* end of inner for */
+
+    } /* end of outer for */
+
+    /*
+     * Print out the relationships for each service
+     */
+    #define RELAT1 "%i %s %i %c"
+    #define COMPKEYS "%-5.2d %-7.3c %-8.3c  "
+    #define LOADKEYS "%-5.2d %-7.3c  "
+    #define LOADDATA "%-5.2d %-7.3c  "
+    #define RETURNDATA "%-5.2d"
+    #define RELAT_HD1 "                                                             Compare Key          Load Key      Load Data     Return Data\n"
+    #define RELAT_HD2 "Index  Item C Name                      Parent Ix Type  Index Literal WildCard  Index Literal  Index Literal    Index\n"
+    #define RELAT_HD3 "=====  ===============================  ========= ====  ===== ======= ========  ===== =======  ===== =======  ===========\n"
+
+    fprintf( fptrFileName, "\n\nDumping Saved Relationship Data\n\n" );
+
+    for( sServ = 0; sServ < pBFCD->pCSRMapBFCD->NumServices; sServ++ )
+    {
+        fprintf( fptrFileName,
+                 "\nService: %s\n\n",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                     ServiceLayoutName );
+        fprintf( fptrFileName,RELAT_HD1 );
+        fprintf( fptrFileName,RELAT_HD2 );
+        fprintf( fptrFileName,RELAT_HD3 );
+
+        for( sIndex = 0;
+             sIndex < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                      NumServiceRows;
+             sIndex++ )
+        {
+            sprintf( szMsgBuff,                                   /* 255 */
+                     "%-4.2i   %-31.31s  %-4.2i    %3.3c     ",
+                     sIndex,                                      /*   4 */
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemCName,   /*  32 */
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ParentIndex, /*   4 */
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pServiceLayoutTable[sIndex].ItemType );  /*   1 */
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                    pSavedCompareKeys )
+            {
+                sprintf( szMsgBuff2,                                 /* 33 */
+                         COMPKEYS,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedCompareKeys[sIndex].ClientLayoutIndex, /* 4 */
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedCompareKeys[sIndex].LiteralUsed,   /* 1 */
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedCompareKeys[sIndex].WildCardUsed );/* 1 */
+            }
+
+            else
+            {
+                sprintf( szMsgBuff2, COMPKEYS, -1, 'N', 'N' );
+
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedLoadKeys )
+            {
+                sprintf( szMsgBuff2,                                /* 33 */
+                         LOADKEYS,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedLoadKeys[sIndex].ClientLayoutIndex, /* 4 */
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedLoadKeys[sIndex].LiteralUsed );   /* 1 */
+            }
+
+            else
+            {
+                sprintf (szMsgBuff2, LOADKEYS, -1, 'N' );
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedLoadData )
+            {
+                sprintf( szMsgBuff2,                                /* 33 */
+                         LOADDATA,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedLoadData[sIndex].ClientLayoutIndex, /* 4 */
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pSavedLoadData[sIndex].LiteralUsed );  /* 1 */
+            }
+            else
+            {
+                sprintf( szMsgBuff2, LOADDATA, -1, 'N' );
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedReturnData )
+            {
+                sprintf( szMsgBuff2,                                /* 33 */
+                         RETURNDATA,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ]. /* 1 */
+                             pSavedReturnData[sIndex].ClientLayoutIndex);
+            }
+            else
+            {
+                sprintf( szMsgBuff2, RETURNDATA, -1 );
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            fprintf( fptrFileName, "%s\n", szMsgBuff );
+
+        } /* End of for each row in the service */
+
+        /*
+         * Print out the New Relationship data for this service
+         */
+
+        fprintf( fptrFileName, "\n\nDumping New Relationship Data\n\n" );
+        fprintf( fptrFileName,
+                 "\nService: %s\n\n",
+                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                     ServiceLayoutName );
+        fprintf( fptrFileName,RELAT_HD1 );
+        fprintf( fptrFileName,RELAT_HD2 );
+        fprintf( fptrFileName,RELAT_HD3 );
+
+        for( sIndex = 0;
+             sIndex < pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                      NumReposServiceRows;
+             sIndex++ )
+        {
+            sprintf( szMsgBuff,                                     /* 255 */
+                     "%-4.2i   %-31.31s  %-4.2i    %3.3c     ",
+                     sIndex,                                        /*   4 */
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemCName,/*  32 */
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ParentIndex,/* 4 */
+                     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReposServiceLayoutTable[sIndex].ItemType ); /* 1 */
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pCompareKeys )
+            {
+               sprintf( szMsgBuff2,                                 /* 33 */
+                        COMPKEYS,
+                        pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                            pCompareKeys[sIndex].ClientLayoutIndex, /*  4 */
+                        pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                            pCompareKeys[sIndex].LiteralUsed,       /*  1 */
+                        pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                            pCompareKeys[sIndex].WildCardUsed);     /*  1 */
+            }
+            else
+            {
+                sprintf( szMsgBuff2, COMPKEYS, -1, 'N', 'N' );
+
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadKeys )
+            {
+                sprintf( szMsgBuff2,                                 /* 33 */
+                         LOADKEYS,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pLoadKeys[sIndex].ClientLayoutIndex,    /*  4 */
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pLoadKeys[sIndex].LiteralUsed );        /*  1 */
+            }
+            else
+            {
+               sprintf(szMsgBuff2, LOADKEYS, -1, 'N');
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            if( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pLoadData )
+            {
+                sprintf( szMsgBuff2,                                 /* 33 */
+                         LOADDATA,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pLoadData[sIndex].ClientLayoutIndex,    /*  4 */
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                             pLoadData[sIndex].LiteralUsed);         /*  1 */
+            }
+            else
+            {
+                sprintf( szMsgBuff2, LOADDATA, -1, 'N' );
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData )
+            {
+                sprintf( szMsgBuff2,                                 /* 33 */
+                         RETURNDATA,
+                         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                         pReturnData[sIndex].ClientLayoutIndex );    /*  4 */
+            }
+            else
+            {
+                sprintf( szMsgBuff2, RETURNDATA, -1 );
+            }
+
+            strcat( szMsgBuff, szMsgBuff2 );
+
+            fprintf( fptrFileName, "%s\n", szMsgBuff );
+
+        } /* End of for each row in the service */
+
+    } /* end of for each service defined */
+
+    /* reset the printer to defaults */
+    FndGenRC = fprintf( fptrFileName, RESET_PRINTER );
+
+    fclose( fptrFileName );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* End of function DumpTables */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : SetDeleteFlag
+**
+**  DESCRIPTION      : This function Sets the Delete Flag variable in BFCD.
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 07/13/94
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  07/13/94  C. Crampton           Original code.
+**
+**  10/17/94  J. Looney             Clean Up.
+***************************************************************************/
+WCBPROC(SetDeleteFlag)
+{
+    SHORT sIndex;
+    USHORT FndGenRC = FND_SUCCESS;
+    USHORT usRow;
+    _Rlb01ELBRow RowData;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    /*
+     * Find out which row is being marked for deletion
+     */
+
+    FndGenRC = FndLstBoxRowQuerySelection ( CBI_hwnd,
+                                            "Rlb01ELB",
+                                            FND_LSTBOX_START,
+                                            &usRow,
+                                            &FndGenErrorBlock );
+
+    /*
+     * Get the Row information
+     */
+    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                      "Rlb01ELB",
+                                      usRow,
+                                      sizeof(RowData),
+                                      (void *)&RowData,
+                                      &FndGenErrorBlock);
+    /*
+     * Find out what the service Index is
+     */
+    sIndex = GetServiceIndex( RowData._Rlb01ELBServerData  ,
+                              RowData._Rlb01ELBServiceIDData ,
+                              RowData._Rlb01ELBTranMapData ,
+                              CMN_ARCH_PARMS );
+
+    /*
+     * Set the flag in BFCD
+     */
+    if ( sIndex >= 0 )
+    {
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].DeleteFlag =  TRUE;
+    }
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+}/* end of SetDeleteFlag */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : ResetDeleteFlag
+**
+**  DESCRIPTION      : This function Resets the Delete Flag variable in BFCD.
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 07/13/94
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  07/13/94  C. Crampton           Original code.
+**
+***************************************************************************/
+WCBPROC(ResetDeleteFlag)
+{
+    SHORT sIndex;
+    USHORT FndGenRC = FND_SUCCESS;
+    USHORT usRow;
+    _Rlb01ELBRow RowData;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    HEAP_CHECK
+
+    /*
+     * Find out which row is being marked for deletion
+     */
+    FndGenRC = FndLstBoxRowQuerySelection ( CBI_hwnd,
+                                            "Rlb01ELB",
+                                            FND_LSTBOX_START,
+                                            &usRow,
+                                            &FndGenErrorBlock );
+
+    /*
+     * Get the Row information
+     */
+    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+                                      "Rlb01ELB",
+                                      usRow,
+                                      sizeof(RowData),
+                                      (void *)&RowData,
+                                      &FndGenErrorBlock);
+    /*
+     * Find out what the service Index is
+     */
+    sIndex = GetServiceIndex(RowData._Rlb01ELBServerData  ,
+                             RowData._Rlb01ELBServiceIDData ,
+                             RowData._Rlb01ELBTranMapData ,
+                             CMN_ARCH_PARMS);
+
+    /*
+     * Set the flag in BFCD
+     */
+    if ( sIndex >= 0 )
+    {
+        pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].DeleteFlag =  FALSE;
+    }
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+}/* end of ResetDeleteFlag */
