@@ -368,7 +368,7 @@ Begin VB.Form frmCopyBk
       Width           =   1815
    End
    Begin VB.Label lblUser 
-      Caption         =   "4. Copybook Name:"
+      Caption         =   "4. Copybook ID:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -1478,6 +1478,10 @@ Err_Form_Load:
     GoTo Exit_Form_Load
     
  
+End Sub
+
+Private Sub lblUser_Click()
+
 End Sub
 
 Private Sub mnuAddCpyBk_Click()
