@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO012                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -37,13 +37,13 @@
 *  Command IDs                                                             *
 ****************************************************************************/
 
-#define ElmSlct_CMD                                    1000
-#define ElmSlctC_CMD                                   1001
-#define OKPB_CMD                                       1002
-#define CancelPB_CMD                                   1003
-#define ElmJns_CMD                                     1004
-#define FIND_TABLE_B_CMD                               1005
-#define FIND_TABLE_C_CMD                               1006
+#define FindTableB_CMD                                 1000
+#define ElmSlct_CMD                                    1001
+#define FindTableC_CMD                                 1002
+#define ElmSlctC_CMD                                   1003
+#define OKPB_CMD                                       1004
+#define CancelPB_CMD                                   1005
+#define ElmJnsPB_CMD                                   1006
 #define EditMN_CMD                                     200
 #define Cut_CMD                                        3001
 #define Copy_CMD                                       3002

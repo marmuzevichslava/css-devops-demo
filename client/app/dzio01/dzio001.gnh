@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO001                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -78,11 +78,11 @@
 *  Command IDs                                                             *
 ****************************************************************************/
 
-#define FindPB1_CMD                                    1000
-#define VIEW1_CMD                                      1001
-#define FindPB2_CMD                                    1002
-#define VIEW2_CMD                                      1003
-#define FolderPB_CMD                                   1004
+#define FolderPB_CMD                                   1000
+#define FindPB1_CMD                                    1001
+#define VIEW1_CMD                                      1002
+#define FindPB2_CMD                                    1003
+#define VIEW2_CMD                                      1004
 #define IoMod_CMD                                      200
 #define MntmNew_CMD                                    1005
 #define MntmOpen_CMD                                   1006

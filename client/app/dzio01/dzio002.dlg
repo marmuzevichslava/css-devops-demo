@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO002                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 11 11:44:39 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -16,7 +16,6 @@
 DZIO002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,178,116
     STYLE 0 
      | WS_CAPTION
-     | WS_MAXIMIZEBOX
      | WS_SYSMENU
      | DS_MODALFRAME
     CAPTION "Select Entity"

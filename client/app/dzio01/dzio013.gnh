@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO013                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -43,8 +43,8 @@
 
 #define AddPB_CMD                                      1000
 #define DeletePB_CMD                                   1001
-#define OKPB_CMD                                       1002
-#define CancelPB_CMD                                   1003
+#define CancelPB_CMD                                   1002
+#define OKPB_CMD                                       1003
 #define EditMN_CMD                                     200
 #define Cut_CMD                                        3001
 #define Copy_CMD                                       3002

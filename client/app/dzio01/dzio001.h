@@ -24,7 +24,7 @@
 #define FETCH	  "Fetch"
 #define INSERT	  "Insert"
 #define UPDATE	  "Update"
-#define SUM	  "Sum"
+#define SUM	      "Sum"
 #define COUNT	  "Count"
 #define DEL 	  "Delete"
 #define FETNX	  "FetNx"
@@ -87,8 +87,8 @@
 #define NOTFOUND  "NotFound"
 #define NEWMOD	  "NewModul"
 
-#define DESCKYS   "Desc Keys"
-#define TBLJOINS  "Table Joins"
+#define DESCKYS   "Desc Keys..."
+#define TBLJOINS  "Table Joins..."
 #define CHECKED   'Y'
 
 #define TITLE1	  "I/O Module Saved Successfully."

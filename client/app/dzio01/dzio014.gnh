@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO014                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -24,11 +24,19 @@
 #define MainJoinLB_FID                                 4
 #define Dz00820RelationalOperators_FID                 5
 #define JoinTable1SelInd_FID                           6
-#define JoinTable1TableNameWidget_FID                  7
-#define JoinTable2SelInd_FID                           8
-#define JoinTable2TableNameWidget_FID                  9
-#define MainJoinLBSelInd_FID                           10
-#define MainJoinLBAppliedJoinEntry_FID                 11
+#define JoinTable1EntityName_FID                       7
+#define JoinTable1Dz00707_FID                          8
+#define JoinTable2SelInd_FID                           9
+#define JoinTable2EntityName_FID                       10
+#define JoinTable2Dz00707_FID                          11
+#define MainJoinLBSelInd_FID                           12
+#define MainJoinLBSecTabBNm_FID                        13
+#define MainJoinLBDotFill1_FID                         14
+#define MainJoinLBElmId_FID                            15
+#define MainJoinLBRelationalOperator_FID               16
+#define MainJoinLBSecTabCNm_FID                        17
+#define MainJoinLBDotFill2_FID                         18
+#define MainJoinLBJoinElmId_FID                        19
 
 /***************************************************************************
 *  Widget IDs                                                              *
@@ -45,11 +53,11 @@
 *  Command IDs                                                             *
 ****************************************************************************/
 
-#define OKPB_CMD                                       1000
-#define CancelPB_CMD                                   1001
-#define ApplyPB_CMD                                    1002
-#define DeletePB_CMD                                   1003
-#define UndeletePB_CMD                                 1004
+#define CancelPB_CMD                                   1000
+#define ApplyPB_CMD                                    1001
+#define DeletePB_CMD                                   1002
+#define UndeletePB_CMD                                 1003
+#define OKPB_CMD                                       1004
 #define EditMN_CMD                                     200
 #define Cut_CMD                                        3001
 #define Copy_CMD                                       3002

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO014                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -41,8 +41,11 @@ unsigned char _grpFiller;
     char _JoinTable1SelIndData[200];
 #define JoinTable1SelIndData    pWesMap->_JoinTable1SelIndData
 
-    char _JoinTable1TableNameWidgetData[200][19];
-#define JoinTable1TableNameWidgetData    pWesMap->_JoinTable1TableNameWidgetData
+    char _JoinTable1EntityNameData[200][37];
+#define JoinTable1EntityNameData    pWesMap->_JoinTable1EntityNameData
+
+    char _JoinTable1Dz00707Data[200][33];
+#define JoinTable1Dz00707Data    pWesMap->_JoinTable1Dz00707Data
 
 
 #define  NUMJOINTABLE2ROWS   200
@@ -50,8 +53,11 @@ unsigned char _grpFiller;
     char _JoinTable2SelIndData[200];
 #define JoinTable2SelIndData    pWesMap->_JoinTable2SelIndData
 
-    char _JoinTable2TableNameWidgetData[200][19];
-#define JoinTable2TableNameWidgetData    pWesMap->_JoinTable2TableNameWidgetData
+    char _JoinTable2EntityNameData[200][37];
+#define JoinTable2EntityNameData    pWesMap->_JoinTable2EntityNameData
+
+    char _JoinTable2Dz00707Data[200][33];
+#define JoinTable2Dz00707Data    pWesMap->_JoinTable2Dz00707Data
 
    char _PrimTblLstData[9];
 #define PrimTblLstData              pWesMap->_PrimTblLstData
@@ -65,8 +71,26 @@ unsigned char _grpFiller;
     char _MainJoinLBSelIndData[50];
 #define MainJoinLBSelIndData    pWesMap->_MainJoinLBSelIndData
 
-    char _MainJoinLBAppliedJoinEntryData[50][51];
-#define MainJoinLBAppliedJoinEntryData    pWesMap->_MainJoinLBAppliedJoinEntryData
+    char _MainJoinLBSecTabBNmData[50][19];
+#define MainJoinLBSecTabBNmData    pWesMap->_MainJoinLBSecTabBNmData
+
+    char _MainJoinLBDotFill1Data[50][2];
+#define MainJoinLBDotFill1Data    pWesMap->_MainJoinLBDotFill1Data
+
+    char _MainJoinLBElmIdData[50][9];
+#define MainJoinLBElmIdData    pWesMap->_MainJoinLBElmIdData
+
+    char _MainJoinLBRelationalOperatorData[50][13];
+#define MainJoinLBRelationalOperatorData    pWesMap->_MainJoinLBRelationalOperatorData
+
+    char _MainJoinLBSecTabCNmData[50][19];
+#define MainJoinLBSecTabCNmData    pWesMap->_MainJoinLBSecTabCNmData
+
+    char _MainJoinLBDotFill2Data[50][2];
+#define MainJoinLBDotFill2Data    pWesMap->_MainJoinLBDotFill2Data
+
+    char _MainJoinLBJoinElmIdData[50][9];
+#define MainJoinLBJoinElmIdData    pWesMap->_MainJoinLBJoinElmIdData
 
    char _Dz00820RelationalOperatorsData[9];
 #define Dz00820RelationalOperatorsData              pWesMap->_Dz00820RelationalOperatorsData
@@ -82,8 +106,11 @@ unsigned char _grpFiller;
     WESFLDCTL _JoinTable1SelIndCtl[200];
 #define JoinTable1SelIndCtl      pWesMap->_JoinTable1SelIndCtl
 
-    WESFLDCTL _JoinTable1TableNameWidgetCtl[200];
-#define JoinTable1TableNameWidgetCtl      pWesMap->_JoinTable1TableNameWidgetCtl
+    WESFLDCTL _JoinTable1EntityNameCtl[200];
+#define JoinTable1EntityNameCtl      pWesMap->_JoinTable1EntityNameCtl
+
+    WESFLDCTL _JoinTable1Dz00707Ctl[200];
+#define JoinTable1Dz00707Ctl      pWesMap->_JoinTable1Dz00707Ctl
 
 
     WESFLDCTL _JoinTable2Ctl;
@@ -96,8 +123,11 @@ unsigned char _grpFiller;
     WESFLDCTL _JoinTable2SelIndCtl[200];
 #define JoinTable2SelIndCtl      pWesMap->_JoinTable2SelIndCtl
 
-    WESFLDCTL _JoinTable2TableNameWidgetCtl[200];
-#define JoinTable2TableNameWidgetCtl      pWesMap->_JoinTable2TableNameWidgetCtl
+    WESFLDCTL _JoinTable2EntityNameCtl[200];
+#define JoinTable2EntityNameCtl      pWesMap->_JoinTable2EntityNameCtl
+
+    WESFLDCTL _JoinTable2Dz00707Ctl[200];
+#define JoinTable2Dz00707Ctl      pWesMap->_JoinTable2Dz00707Ctl
 
 
     WESFLDCTL _PrimTblLstCtl;
@@ -124,8 +154,26 @@ unsigned char _grpFiller;
     WESFLDCTL _MainJoinLBSelIndCtl[50];
 #define MainJoinLBSelIndCtl      pWesMap->_MainJoinLBSelIndCtl
 
-    WESFLDCTL _MainJoinLBAppliedJoinEntryCtl[50];
-#define MainJoinLBAppliedJoinEntryCtl      pWesMap->_MainJoinLBAppliedJoinEntryCtl
+    WESFLDCTL _MainJoinLBSecTabBNmCtl[50];
+#define MainJoinLBSecTabBNmCtl      pWesMap->_MainJoinLBSecTabBNmCtl
+
+    WESFLDCTL _MainJoinLBDotFill1Ctl[50];
+#define MainJoinLBDotFill1Ctl      pWesMap->_MainJoinLBDotFill1Ctl
+
+    WESFLDCTL _MainJoinLBElmIdCtl[50];
+#define MainJoinLBElmIdCtl      pWesMap->_MainJoinLBElmIdCtl
+
+    WESFLDCTL _MainJoinLBRelationalOperatorCtl[50];
+#define MainJoinLBRelationalOperatorCtl      pWesMap->_MainJoinLBRelationalOperatorCtl
+
+    WESFLDCTL _MainJoinLBSecTabCNmCtl[50];
+#define MainJoinLBSecTabCNmCtl      pWesMap->_MainJoinLBSecTabCNmCtl
+
+    WESFLDCTL _MainJoinLBDotFill2Ctl[50];
+#define MainJoinLBDotFill2Ctl      pWesMap->_MainJoinLBDotFill2Ctl
+
+    WESFLDCTL _MainJoinLBJoinElmIdCtl[50];
+#define MainJoinLBJoinElmIdCtl      pWesMap->_MainJoinLBJoinElmIdCtl
 
 
     WESFLDCTL _Dz00820RelationalOperatorsCtl;
@@ -138,16 +186,24 @@ unsigned char _grpFiller;
 
 typedef struct
 {
-    char  _JoinTable1TableNameWidgetData[19];
+    char  _JoinTable1EntityNameData[37];
+    char  _JoinTable1Dz00707Data[33];
 }_JoinTable1Row;
 
 typedef struct
 {
-    char  _JoinTable2TableNameWidgetData[19];
+    char  _JoinTable2EntityNameData[37];
+    char  _JoinTable2Dz00707Data[33];
 }_JoinTable2Row;
 
 typedef struct
 {
-    char  _MainJoinLBAppliedJoinEntryData[51];
+    char  _MainJoinLBSecTabBNmData[19];
+    char  _MainJoinLBDotFill1Data[2];
+    char  _MainJoinLBElmIdData[9];
+    char  _MainJoinLBRelationalOperatorData[13];
+    char  _MainJoinLBSecTabCNmData[19];
+    char  _MainJoinLBDotFill2Data[2];
+    char  _MainJoinLBJoinElmIdData[9];
 }_MainJoinLBRow;
 

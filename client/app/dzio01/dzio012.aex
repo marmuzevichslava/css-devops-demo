@@ -1,28 +1,32 @@
 /***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
+/***************************************************************************
 **
 **            Customer Service System Architecture Exit Module
 **
-**  FILENAME         : <CUFFnnn>.AEX
+**  FILENAME         : DZIO012.AEX
 **
 **  DESCRIPTION      : CSS Architecture Exit Functions:
 **
-**  AUTHOR	     : Andersen Consulting
+**  AUTHOR           : IPEREZAR
 **
-**  DATE CREATED     : 08/29/95
+**  DATE CREATED     : 10/11/96
 **
 **  REVISION HISTORY :
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-** 08/29/95    IPEREZAR 	   Creation
+**    10/11/96  IPEREZAR              Original code.
 **
 ***************************************************************************/
 
 /***************************************************************************/
 /* Include help files as required for this window.                         */
 /***************************************************************************/
-//#include "<xxxx>.hh"
-//#include "<xxxx>.hh"
+#include <roadmap.hh>
+#include <systcomm.hh>
 
 /***************************************************************************/
 /* Forward declarations for Architecture Exit functions                    */
@@ -84,6 +88,9 @@ AEXFWD( ExitSecSetBrowse );
 AEXFWD( ExitHlpInit );
 
 AEXFWD( CmnArchExitInitialize );
+
+AEXFWD( ExitParentFound );
+AEXFWD( ExitAcceptMessage );
 
 
 /***************************************************************************/
@@ -148,6 +155,8 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
     REGISTERARCHEXIT( ExitSecSetBrowse ),
 
     REGISTERARCHEXIT( ExitHlpInit ),
+	REGISTERARCHEXIT( ExitParentFound ),
+	REGISTERARCHEXIT( ExitAcceptMessage ),
     "",0
 };
 
@@ -184,42 +193,44 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
 
 AEXPROC( ExitWktCloseAfterSave )
 {
-  //---------------------------------------------------
-  //  S H E L L   I N S T R U C T I O N S
-  //
-  //  Replace <CUFFnnnOutput>, <WesField>, and <ChildField>
-  //  with the appropriate values for all possible OUT
-  //  layouts.
-  //
-  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
-  //
-  //---------------------------------------------------
 
-  //
-  //  USHORT           FndGenRC = 0;
-  //  _FND_ERROR_BLOCK FndGenErrorBlock;
-  //
-  //  /* Handle window CUFFnnnX */
-  //  if( strcmp( EAB_ChildWindowName, "<CUFFnnnX>" ) == 0 )
-  //  {
-  //      /* Set up pointer to child window OUT layout <_CUFFnnnOUTPUT> */
-  //      <_CUFFnnnOUTPUT> *p<CUFFnnnOutput>;
-  //
-  //      /* Set the pointer to EAB_pChildData */
-  //      p<CUFFnnnOutput> = EAB_pChildData;
-  //
-  //      /* Update the following window fields using <CUFFnnnOutput> */
-  //      FndFieldSetValue( CBI_hwnd,
-  //                        "<WesField>",
-  //                        <ChildField length>,
-  //                        &(p<CUFFnnnOutput->ChildField>),
-  //                        &FndGenErrorBlock );
-  //  }
-  //  else if( ... )
-  //  {
-  //      ...
-  //  }
-  //
+  
+    USHORT           FndGenRC = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+  
+    /* Check whether or not to enable the OK pushbutton */
+    FndGenRC = DZIO012XEnableOkPb( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+
+    /* Handle window CUFFnnnX */
+    if( strcmp( EAB_ChildWindowName, DZIO002X ) == 0 )
+    {
+        if (OpenWindow == SECTABB_Char)
+        {
+        
+        /* Update the following window fields using <CUFFnnnOutput> */
+            FndFieldSetValue( CBI_hwnd,
+                              "SecTabB",
+                                sizeof(pBFCD->DZIO012Luw.SecTabB),
+                                pBFCD->DZIO012Luw.SecTabB,
+                                &FndGenErrorBlock );
+
+        }
+        else if (OpenWindow == SECTABC_Char)
+        {
+        /* Update the following window fields using <CUFFnnnOutput> */
+            FndFieldSetValue( CBI_hwnd,
+                              "SecTabC",
+                                sizeof(pBFCD->DZIO012Luw.SecTabC),
+                                pBFCD->DZIO012Luw.SecTabC,
+                                &FndGenErrorBlock );
+        }
+    }
 
     return CMN_SUCCESS;
 
@@ -1695,6 +1706,38 @@ AEXPROC( ExitSecSetBrowse )
 } /* End of ExitSecSetBrowse */
 
 
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitHlpInit
+**
+**  DESCRIPTION      : This exit is invoked during Predisplay. This exit 
+**                     initializes the Help Manager subsystem by
+**                     calling FND Help Manger APIs. The logic to be 
+**                     included depends on whether or not this is 
+**                     the Main window of the dialog.
+**                     
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
 AEXPROC( ExitHlpInit )
 {
   //---------------------------------------------------
@@ -3089,6 +3132,203 @@ AEXPROC( CmnArchExitInitialize )
 } /* End of CmnArchExitInitialize */
 
 
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitParentFound
+**
+**  DESCRIPTION      : This exit is invoked if Parent dialogs have been
+**                     located in global dialog tracking from a request
+**                     using CmnGdtEnumParents.  
+**
+**                     This exit should be coded with application logic
+**                     for any Child dialog which has "Process Next" or 
+**                     "Skip To Next" functionality. If this window
+**                     does not have this functionality, simply return
+**                     CMN_SUCCESS out of this exit.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitParentFound )
+{
+
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+//    USHORT FndGenRC = 0;
+//
+//	/* Declare a structure of type _CMN_COPYDATA */
+//	_CMN_COPYDATA	Copydata;
+//
+//	/* Declare a structure that holds data to pass to/from parent dialog. */
+//  <_YOUR_STRUCTURE>  DataForParent;
+//
+//  /* Query the parent's window name and/or instance name in the archblock.
+//	*/
+//	if ((strcmp (EAB_GdtParentWndName,"<CUffnnnX>") == 0)
+//  &&  (strcmp (EAB_GdtParentInstName, "<instance name>") == 0))
+//	{
+//		/* Query fields from the window, and format packet to pass to
+//		** Parent dialog.
+//		*/
+//
+//		/* Fill Copydata structure with information about your DataForParent
+//		** structure.
+//		*/
+//		/* Object Type should be defined in CSS.H */
+//		Copydata.DataBuffer = <Object Type>;
+//
+//		Copydata.sizeData = sizeof (_YOUR_STRUCTURE);
+//
+//		/* Pass a pointer to DataForParent in the Copydata structure. */
+//		Copydata.pData = &DataForParent;
+//
+//		/* Send a message to the parent dialog */
+//    	CmnWndMsgSend (EAB_GdtParentWndName,
+//        	           (CHAR *) EAB_GdtParentInstName,
+//            	       CMN_MSG_COPYDATA,
+//                	   &Copydata,
+//                 	   CMN_ARCH_PARMS) ;
+//
+//		/* The Parent dialog may return new data in the DataForParent structure.
+//		** If so, use this return data to fulfill the application's needs.
+//		*/
+//
+//	} /* end if the parent window we want to message to */
+	 
+    return CMN_SUCCESS;
+
+} /* End of ExitParentFound */
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitAcceptMessage
+**
+**  DESCRIPTION      : This function handles the CMN_MSG_COPYDATA message
+**					   when sent to this window.  Accept the pointer passed
+**					   to reference the data that the other dialog wishes to
+**					   send.  Use the data to update status on the window,
+**					   and then pass back any return data in the same data
+**					   structure. 
+**
+**                     This exit should be coded with application logic
+**                     for any "Parent object select" dialog which needs
+**                     to respond to either a "Process Next" or "Skip To
+**                     Next" request from a Child dialog. If this window
+**                     does not have this functionality, simply return
+**                     CMN_SUCCESS out of this exit.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitAcceptMessage )
+{
+//    USHORT           	FndGenRC = 0;
+//    _FND_ERROR_BLOCK 	FndGenErrorBlock;
+//
+//	/* Declare a pointer to the Copydata structure */
+// 	 _CMN_COPYDATA		*pCopydata;
+//
+//	/* If return data is expected, declare a structure to pass it in.  This structure
+//	** must EXACTLY MATCH the structure of the data that you've been sent.  Otherwise
+//	** data may be distorted or truncated.
+//	*/
+//	_YOUR_STRUCTURE		*pReturnData;
+//
+//	/* Declare error message string - this one is defined for windows that do not have
+//	** either OK or Process commands. 
+//	*/
+//    CHAR FatalMsg[sizeof(CMN_ERR_MSG_HDR_CONST) - 1 +
+//                  sizeof(CMN_ERR_MSG_HDR_FATAL) - 1 +
+//                  sizeof(CMN_ERR_MSG_NEWLINES)  ];
+//
+//	/* Set your pointer to Copydata to the address in shared memory. */
+//  	pCopydata = EAB_Copydata;
+//
+//	/* Query if the object type of the data sent is what is expected. 
+//  ** A macro for the object type should be defined in CSS.h
+//	*/
+//  if (pCopydata->DataBuffer == <object type desired>
+//	{
+//		/* use the data sent to repopulate the window. */
+//
+//		/* if new return data is expected from the sender of this message.
+//		** then populate the information in the structure that resides at
+//		** pCopydata->pData.
+//		*/
+//		/* Set your return data pointer to the same location as pCopydata->pData. */
+//		pReturnData = pCopydata->pData;
+//
+//		/* Populate _YOUR_STRUCTURE with return data. */
+//
+//	} /* End if object type is recognized */
+//
+//	else /* Error:  object type cannot be recognized */
+//	{
+//        memset(FatalMsg, 0, sizeof(FatalMsg));
+//
+//        CmnStrCat(CMN_ARCH_PARMS,
+//                  FatalMsg,
+//                  sizeof(FatalMsg),
+//                  CMN_NUM_SOURCES_3,
+//                  CMN_ERR_MSG_HDR_CONST,
+//                  CMN_ERR_MSG_HDR_FATAL,
+//                  CMN_ERR_MSG_NEWLINES);
+//
+//        CmnMsgBoxOverrides(CMN_MSGBOX_LOGGING_YES, CMN_ARCH_PARMS);
+//
+//        CmnMsgBoxDisplay(MX_COPYDATA_ERR, NULL, NULL, CMN_ARCH_PARMS, FatalMsg);
+//
+//        CmnWindowSetFatalError( CMN_ARCH_PARMS );
+//
+//       /* Disable all menu items on the window. */
+//      FndCommandDisable (CBI_hwnd, "widget name", &FndGenErrorBlock );
+//
+//		/* Please note:  If this window has either Process or OK, then the message 
+//		** should include a line that says "OK" and "Process" will be disabled.  See 
+//		** STD-TECH 326-214 for details.
+//		*/
+//	} /* End:  Error:  object type cannot be recognized. */
+  		
+    return CMN_SUCCESS;
+
+} /* End of ExitAcceptMessage */
+
+						   
 /***************************************************************************
 **
 **               Customer Service System Architecture Exit Function

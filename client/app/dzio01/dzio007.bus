@@ -60,10 +60,6 @@ WCBPROC( DZIO007BusPrdis   )
 
     _Dz00751Row RowData;
 
-    FndGenRC = FndWindowCenter(CBI_hwnd,
-			       FND_WINDOW_OWNER,
-			       &FndGenErrorBlock);
-
     FndGenRC = FndCommandDisable(CBI_hwnd,
 	                            "OKPB",
 								&FndGenErrorBlock);

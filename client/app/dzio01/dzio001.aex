@@ -196,7 +196,6 @@ AEXPROC( ExitWktCloseAfterSave )
 
    _FND_ERROR_BLOCK FndGenErrorBlock;
 
-
    _DZCR001OUTPUT  *MessageOutput;
    _DZCR001INPUT   *MessageInput;
 
@@ -213,11 +212,9 @@ AEXPROC( ExitWktCloseAfterSave )
     memset(&(MessageInReturn) , 0, sizeof(MessageInReturn) );
 
     /* Handle window DZIO002X */
-
     if( strcmp( EAB_ChildWindowName, DZIO002X ) == 0 )
     {
 
-  //	  /* Set up pointer to child window OUT layout <_CUFFnnnOUTPUT> */
 
 	 _DZIO002O *pDZIO002O;
 
@@ -270,23 +267,9 @@ AEXPROC( ExitWktCloseAfterSave )
 //				   pWindContextData,
 //				   pABHI);
 
-/************************************************************************/
-
-
 
     FndGenRC = DZIO01CommandEnable(MNTSAVEAS,
 				   CMN_ARCH_PARMS);
-
-
-//    FndGenRC = DZIO01MsgBoxDisplay(TITLE6,
-//				   BOX_TITLE2,
-//				   CBI_hwnd,
-//				   FND_MSGBOX_NOBUTTONS,
-//				   FND_MSGBOX_INFORMATION,
-//				   FND_MSGBOX_IDNOBUTTON,
-//				   BOX_TITLE2,
-//				   CMN_ARCH_PARMS);
-//
 
 
     FndGenRC = FndMsgBoxDisplayMdlssText( TITLE6,
@@ -405,7 +388,7 @@ AEXPROC( ExitWktCloseAfterSave )
 
 /**************************************************************************
 *									  *
-*   Formatting the Primary Table Name and ALR Prefix			  *
+*   Formatting the Table Names and ALR Prefix			  *
 *									  *
 ***************************************************************************/
 
@@ -503,24 +486,10 @@ AEXPROC( ExitWktCloseAfterSave )
     }
 
 
-
-
-
-/************************************************************************/
 	  }
 	  else if (strcmp(pBFCD->DZIO01Hdr.FuncNm,OPNMOD) == 0)
 	  {
 
-//	      FndGenRC = FndMsgBoxDisplayText(pMsgBoxText,
-//					 MsgBoxName,
-//					 OwnerHwnd,
-//					 Buttons,
-//					 Icon,
-//					 DefaultButton,
-//					 pMsgBoxTitle,
-//					 &SelectedButton,
-//					 &FndGenErrorBlock);
-//
 
           FndGenRC = FndMsgBoxDisplayMdlssText( TITLE7,
 				   BOX_TITLE3,
@@ -531,50 +500,6 @@ AEXPROC( ExitWktCloseAfterSave )
 				   BOX_TITLE3,
 				   &FndGenErrorBlock);
 
-   /*********************************************************************
-
-   MessageInput = (_DZCR001INPUT *) calloc (1, sizeof(_DZCR001INPUT));
-   MessageOutput = (_DZCR001OUTPUT *) calloc (1, sizeof(_DZCR001OUTPUT));
-
-   memset(MessageInput, '\0',sizeof(_DZCR001INPUT));
-   memset(MessageOutput, '\0',sizeof(_DZCR001OUTPUT));
-
-   strncpy(MessageInput->Hdr_DZ0101.Iomodnm,pBFCD->DZIO01Hdr.Iomodnm,
-		   sizeof(MessageInput->Hdr_DZ0101.Iomodnm) );
-   strncpy(MessageInput->Hdr_DZ0101.Alrcbook,OPNMOD,
-		   sizeof(MessageInput->Hdr_DZ0101.Alrcbook) );
-
-
-   memcpy(FndStandardPB.ver,SRVC_VER, _VER_LEN);
-
-   i = sizeof (MessageOutput->StandardHeader);
-   MSGInitPB(&FndStandardPB,
-	     &ParmBlock,
-	     pEAIA,
-	     APPL_ID,
-	     SRVC_ID,
-	     SRVC_VER,
-	     pABHI);
-
-   memcpy(ParmBlock.commarea.ver,FND_MSG_VER,_VER_LEN);
-
-
-   memcpy(ParmBlock.dest.service_id.service_ver, SRVC_VER, _VER_LEN);
-
-   ParmBlock.actual_length_send = sizeof(_DZCR001INPUT);
-   ParmBlock.src.language = FND_LANGUAGE_C;
-   ParmBlock.buffer_size = sizeof(_DZCR001OUTPUT);
-   ParmBlock.dest.service_id.appl = APPL_ID;
-   ParmBlock.dest.service_id.srvc = SRVC_ID;
-   memcpy(ParmBlock.translation.map_name, SRVC_MAP, _FND_MAP_NAME_LEN);
-   memcpy(ParmBlock.translation.map_version,SRVC_VER, _VER_LEN);
-
-   FndGenRC = MSGConvUI(&ParmBlock,
-			(_MSG_SEND_AREA) MessageInput,
-			(_MSG_RECV_AREA) MessageOutput,
-			pABHI);
-
-   ***************************************************************************/
 
 
    FndGenRC = DZIO01ServiceCall(CMN_ARCH_PARMS,
@@ -683,6 +608,63 @@ AEXPROC( ExitWktCloseAfterSave )
 
 	       FndGenRC = DZIO01CommandEnable( VIEWPB2,
 			    CMN_ARCH_PARMS);
+
+/**************************************************************************
+*		                                     							  *
+* Formatting the parameters of tables DZ01TB03 and DZ01TB04               *
+*                                                                         *
+***************************************************************************/
+
+
+           memcpy( &(pBFCD->DZIO013Luw), &(MessageOutput->DZIO013Luw),  
+		             sizeof(_DZIO013LUW) );
+
+           memcpy( &(pBFCD->DZIO014Luw), &(MessageOutput->DZIO014Luw), 
+		             sizeof(_DZIO014LUW) );
+
+
+/********************************************************************************
+*										                                        *
+* Set the table names                                                           *
+*										                                        *
+*********************************************************************************/
+ 
+		   CmnStrCopy(pBFCD->DZIO012Luw.SecTabB,
+		              MessageOutput->Hdr_DZ0202.SecTabB,
+					  sizeof(pBFCD->DZIO012Luw.SecTabB),
+					  CMN_ARCH_PARMS);
+
+		   CmnStrCopy(pBFCD->DZIO012Luw.SecTabBNm,
+		              MessageOutput->Hdr_DZ0202.SecTabBNm,
+					  sizeof(pBFCD->DZIO012Luw.SecTabBNm),
+					  CMN_ARCH_PARMS);
+
+		   CmnStrCopy(pBFCD->DZIO012Luw.SecTabC,
+		              MessageOutput->Hdr_DZ0202.SecTabC,
+					  sizeof(pBFCD->DZIO012Luw.SecTabC),
+					  CMN_ARCH_PARMS);
+
+		   CmnStrCopy(pBFCD->DZIO012Luw.SecTabCNm,
+		              MessageOutput->Hdr_DZ0202.SecTabCNm,
+					  sizeof(pBFCD->DZIO012Luw.SecTabCNm),
+					  CMN_ARCH_PARMS);
+
+           CmnStrTrimTrailBlanks(pBFCD->DZIO012Luw.SecTabB, 
+		                         sizeof(pBFCD->DZIO012Luw.SecTabB),
+								 CMN_ARCH_PARMS);
+
+           CmnStrTrimTrailBlanks(pBFCD->DZIO012Luw.SecTabC, 
+		                         sizeof(pBFCD->DZIO012Luw.SecTabC),
+								 CMN_ARCH_PARMS);
+
+           CmnStrTrimTrailBlanks(pBFCD->DZIO012Luw.SecTabBNm, 
+		                         sizeof(pBFCD->DZIO012Luw.SecTabBNm),
+								 CMN_ARCH_PARMS);
+
+           CmnStrTrimTrailBlanks(pBFCD->DZIO012Luw.SecTabCNm, 
+		                         sizeof(pBFCD->DZIO012Luw.SecTabCNm),
+								 CMN_ARCH_PARMS);
+
 
 /*********************************************************************************
 *										 *
@@ -863,16 +845,20 @@ AEXPROC( ExitWktCloseAfterSave )
 			   MessageOutput->Hdr_DZ0202.PrimTabNm,
 				sizeof(pBFCD->DZIO01Hdr.PrimTabNm) );
 
+           CmnStrTrimTrailBlanks(pBFCD->DZIO01Hdr.PrimTabNm, 
+		                         sizeof(pBFCD->DZIO01Hdr.PrimTabNm),
+								 CMN_ARCH_PARMS);
+
 	       strncpy(pBFCD->DZIO01Luw.Dz00713,
 			   MessageOutput->Hdr_DZ0101.Vw_Nm,
 				sizeof(pBFCD->DZIO01Luw.Dz00713) );
 
 
 /*********************************************************************************
-*										 *
-* Enabling and formatting the standard function checkboxes			 *
-*										 *
-*********************************************************************************/
+*										                                         *
+* Enabling and formatting the standard function checkboxes			             *
+*										                                         *
+**********************************************************************************/
 
 	       FndGenRC = DZIO01FieldEnable( TASKLIST,
 			    CMN_ARCH_PARMS);
@@ -911,18 +897,6 @@ AEXPROC( ExitWktCloseAfterSave )
 	 } /* if ( strcmp(MessageOutput->Hdr_DZ0101.Alrcbook,NOTFOUND) == 0) */
 
    } /* (if FndGenRC == 0) */
-//   else
-//   {
-//	      FndGenRC = DZIO01MsgBoxDisplay(TITLE4,
-//					     BOX_TITLE,
-//					     CBI_hwnd,
-//					     FND_MSGBOX_OK,
-//					     FND_MSGBOX_WARNING,
-//					     FND_MSGBOX_IDOK,
-//					     BOX_TITLE,
-//					     CMN_ARCH_PARMS);
-//
-// }
 
 
    }  /* if "OpnModul" */
@@ -1491,8 +1465,52 @@ AEXPROC( ExitTlPopulateData )
     USHORT	       RowNumber = 0;
 
     /*
+    | Setting Up Table Joins Task List Item
+    */
+
+
+
+/*  Set Task List Row status to UNCHANGED   */
+    TaskListData._TaskListCdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
+
+/*   Set Task Name of Task List row (how it will appear in Task List)  */
+    CmnStrCopy( TaskListData._TaskListWnWindowTitleData,
+		 TBLJOINS,
+		 sizeof(TaskListData._TaskListWnWindowTitleData),
+		 CMN_ARCH_PARMS );
+
+/*   Set Window Name of Task List child window     */
+    CmnStrCopy( TaskListData._TaskListWktWindowNameData,
+		 DZIO012X,
+		  sizeof(TaskListData._TaskListWktWindowNameData),
+		  CMN_ARCH_PARMS );
+
+/*     Add Task List row to Task List  */  
+
+    FndLstBoxRowAdd( CBI_hwnd,
+		      CMN_LB_TLB_CONTROL_NAME,
+		      RowNumber,
+		      sizeof(_TaskListRow),
+		      &TaskListData,
+		      &FndGenErrorBlock );
+
+/*    Set attributes of new Task List row     */
+    FndLstBoxRowSetAttr( CBI_hwnd,
+			 CMN_LB_TLB_CONTROL_NAME,
+			 RowNumber,
+			 AT_NORMAL,
+			 &FndGenErrorBlock );
+
+
+
+    /*
     | Setting Up Descending Keys Task List Item
     */
+
+    memset(&TaskListData , 0, sizeof(TaskListData) );
+
+    RowNumber = 1;
+
 
     /* Set Task List Row status to UNCHANGED */
     TaskListData._TaskListCdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
@@ -1523,48 +1541,6 @@ AEXPROC( ExitTlPopulateData )
 			 AT_NORMAL,
 			 &FndGenErrorBlock );
 
-
-    /*
-    | Setting Up Table Joins Task List Item
-    */
-
-/*******************************************************************************
-
-    RowNumber = RowNumber + 1;
-
-//  Set Task List Row status to UNCHANGED 
-    TaskListData._TaskListCdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
-
-//     Set Task Name of Task List row (how it will appear in Task List) 
-    CmnStrCopy( TaskListData._TaskListWnWindowTitleData,
-		 TBLJOINS,
-		 sizeof(TaskListData._TaskListWnWindowTitleData),
-		 CMN_ARCH_PARMS );
-
-//   Set Window Name of Task List child window 
-    CmnStrCopy( TaskListData._TaskListWktWindowNameData,
-		 DZIO012X,
-		  sizeof(TaskListData._TaskListWktWindowNameData),
-		  CMN_ARCH_PARMS );
-
-//     Add Task List row to Task List 
-//	 Temporarily removed because this is not yet ready for release 
-
-    FndLstBoxRowAdd( CBI_hwnd,
-		      CMN_LB_TLB_CONTROL_NAME,
-		      RowNumber,
-		      sizeof(_TaskListRow),
-		      &TaskListData,
-		      &FndGenErrorBlock );
-
-//    Set attributes of new Task List row 
-    FndLstBoxRowSetAttr( CBI_hwnd,
-			 CMN_LB_TLB_CONTROL_NAME,
-			 RowNumber,
-			 AT_NORMAL,
-			 &FndGenErrorBlock );
-
-*******************************************************************************/
 
     return CMN_SUCCESS;
 
@@ -1625,21 +1601,29 @@ AEXPROC( ExitTlSetChildInitData )
 		   9,
 		   CMN_ARCH_PARMS);
 
-//	CmnStrFromInt(EAB_TlChildInstanceName,
-//		       CMN_TL_CHILD_INSTANCE_LEN,
-//		       CBI_ListRow,
-//		       CMN_LEADING_ZEROES_YES,
-//		       CMN_ARCH_PARMS);
 
     }
     else if( strcmp( EAB_TlChildWindowName, DZIO012X ) == 0 )
     {
 
-//	CmnStrFromInt(EAB_TlChildInstanceName,
-//		       CMN_TL_CHILD_INSTANCE_LEN,
-//		       CBI_ListRow,
-//		       CMN_LEADING_ZEROES_YES,
-//		       CMN_ARCH_PARMS);
+    _DZIO012I *pDZIO012I;
+
+    FndGenRC = DZIO01FieldQueryValue(PRIMTAB,
+				     pBFCD->DZIO012Luw.PrimTab,
+				     sizeof(pBFCD->DZIO012Luw.PrimTab),
+				     CMN_ARCH_PARMS);
+
+
+    CmnMemAllocPrivate( sizeof(_DZIO012I),
+                        &pDZIO012I,
+                        CMN_ARCH_PARMS);
+
+    EAB_TlChildWindowData = pDZIO012I;
+
+	CmnStrCopy(EAB_TlChildInstanceName,
+		   DZIO012X,
+		   9,
+		   CMN_ARCH_PARMS);
 
     }
 
@@ -3486,6 +3470,7 @@ AEXPROC( CmnArchExitInitialize )
 
     /* Assign Architecture Exit Table */
     EAB_pArchExitTable = ArchExitTable;
+
 
     return CMN_SUCCESS;
 

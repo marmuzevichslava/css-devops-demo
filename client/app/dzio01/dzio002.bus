@@ -59,11 +59,9 @@ WCBPROC( DZIO002BusPrdis )
 
     memset(&(WCD_Rqst),'\0',sizeof(_RQST) );
 
-    FndGenRC = FndWindowCenter(CBI_hwnd,
-			       FND_WINDOW_OWNER,
-			       &FndGenErrorBlock);
-
-
+    FndCommandDisable (CBI_hwnd,
+                       "OKPB",
+                       &FndGenErrorBlock);
 
     /* Format the WCD request layout  */
 
@@ -76,23 +74,40 @@ WCBPROC( DZIO002BusPrdis )
 
     if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0)
     {
-	FndGenRC = FndWindowSetText(CBI_hwnd,
+	    FndGenRC = FndWindowSetText(CBI_hwnd,
 				    TITLE1,
 				    &FndGenErrorBlock);
 
-	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
-		   DEIOMOD,
-		   sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
-		   CMN_ARCH_PARMS );
+	    CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
+		            DEIOMOD,
+		            sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
+		            CMN_ARCH_PARMS );
 
-	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc,
-		   pBFCD->DZIO01Hdr.Iomodnm,
-		   sizeof(WCD_Rqst.Dzsr002xKeys.TxObjectDesc),
-		   CMN_ARCH_PARMS );
+	    CmnStrCopy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc,
+		            pBFCD->DZIO01Hdr.Iomodnm,
+		            sizeof(WCD_Rqst.Dzsr002xKeys.TxObjectDesc),
+		            CMN_ARCH_PARMS );
 
 
     }
-    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,PRITABLE) == 0)
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp, PRITABLE) == 0)
+    {
+	    FndGenRC = FndWindowSetText(CBI_hwnd,
+				    TITLE2,
+				    &FndGenErrorBlock);
+
+	    CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
+		            DEDTABLE,
+		            sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
+		            CMN_ARCH_PARMS );
+
+	    strcpy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc, pBFCD->DZIO01Hdr.PrimTab );
+	    j = strlen(pBFCD->DZIO01Hdr.PrimTab);
+	    WCD_Rqst.Dzsr002xKeys.TxObjectDesc[8] = '\0';
+
+
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp, SECTABB) == 0)
     {
 	FndGenRC = FndWindowSetText(CBI_hwnd,
 				    TITLE2,
@@ -103,8 +118,25 @@ WCBPROC( DZIO002BusPrdis )
 		   sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
 		   CMN_ARCH_PARMS );
 
-	strcpy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc, pBFCD->DZIO01Hdr.PrimTab );
-	j = strlen(pBFCD->DZIO01Hdr.PrimTab);
+	strcpy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc, pBFCD->DZIO012Luw.SecTabB );
+	j = strlen(pBFCD->DZIO012Luw.SecTabB);
+	WCD_Rqst.Dzsr002xKeys.TxObjectDesc[8] = '\0';
+
+
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp, SECTABC) == 0)
+    {
+	FndGenRC = FndWindowSetText(CBI_hwnd,
+				    TITLE2,
+				    &FndGenErrorBlock);
+
+	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
+		   DEDTABLE,
+		   sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
+		   CMN_ARCH_PARMS );
+
+	strcpy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc, pBFCD->DZIO012Luw.SecTabC );
+	j = strlen(pBFCD->DZIO012Luw.SecTabC);
 	WCD_Rqst.Dzsr002xKeys.TxObjectDesc[8] = '\0';
 
 
@@ -166,7 +198,7 @@ WCBPROC( DZIO002BusPrdis )
 **  FUNCTION	     : DZIO002LstSelect
 **
 **  DESCRIPTION      : This function is invoked by the opening of window
-**		       number 2.
+**		               number 2.
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -187,38 +219,15 @@ WCBPROC( DZIO002BusPrdis )
 **
 ***************************************************************************/
 
-WCBPROC( DZIO002LstSelect )
+WCBPROC( Dzio002LstSelect )
 {
 
     _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT FndGenRC = 0;
-    USHORT RowNumber = 0;
-    _ImpObjNmLBRow RowData;
 
-
-    if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0)
-    {
-	 FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
-					       IMPOBJ,
-					       RowNumber,
-					       &RowNumber,
-					       &FndGenErrorBlock);
-
-	 FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
-				IMPOBJ,
-				RowNumber,
-				sizeof(RowData._ImpObjNmLBTxObjectDescData),
-				RowData._ImpObjNmLBTxObjectDescData,
-				&FndGenErrorBlock);
-
-	 strncpy(pBFCD->DZIO01Hdr.Iomodnm, RowData._ImpObjNmLBTxObjectDescData,
-	    sizeof(pBFCD->DZIO01Hdr.FuncNm) );
-	 strncpy(pBFCD->DZIO01Luw.Iomodnm, RowData._ImpObjNmLBTxObjectDescData,
-	    sizeof(pBFCD->DZIO01Hdr.FuncNm) );
-
-
-    }
-
+    FndCommandEnable (CBI_hwnd,
+                       "OKPB",
+                       &FndGenErrorBlock);
 
     return CMN_SUCCESS;
 
@@ -300,6 +309,16 @@ WCBPROC( DZIO002BusPbOkClk )
 	 strncpy(pBFCD->DZIO01Hdr.PrimTab, RowData._ImpObjNmLBTxObjectDescData,
 	    sizeof(pBFCD->DZIO01Hdr.PrimTab) );
 	 strncpy(pBFCD->DZIO01Luw.PrimTab, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.PrimTab) );
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABB) == 0 )
+    {
+	 strncpy(pBFCD->DZIO012Luw.SecTabB, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.PrimTab) );
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABC) == 0 )
+    {
+	 strncpy(pBFCD->DZIO012Luw.SecTabC, RowData._ImpObjNmLBTxObjectDescData,
 	    sizeof(pBFCD->DZIO01Hdr.PrimTab) );
     }
     else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,ALRCOPYB) == 0 )

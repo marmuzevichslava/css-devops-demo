@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZIO012X TABLE JOINS              *
- *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                         Generated on: Mon Nov 04 17:40:03 1996          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -73,6 +73,7 @@
 /***************************************************************************
  * Window Context Data
  ***************************************************************************/
+#include "dzio012c.h"
 
 #if !defined(WINCONTEXTNAME)
 #define WINCONTEXTNAME       void
@@ -116,7 +117,6 @@
  * Copybooks and Source Includes
  ***************************************************************************/
 #include "azrp001m.h"
-#include "dzio012c.h"
 #include "dzio012i.h"
 #include "dzio012o.h"
 

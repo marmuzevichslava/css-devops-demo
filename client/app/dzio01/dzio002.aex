@@ -344,21 +344,28 @@ AEXPROC( ExitCsrNotification )
 	     {
 
 
-		    FndGenRC = FndMsgBoxDisplayMdlssText(
-					    TITLE4,
-					    BOX_TITLE,
-					    CBI_hwnd,
-					    FND_MSGBOX_OK,
-					    FND_MSGBOX_WARNING,
-					    FND_MSGBOX_IDOK,
-					    BOX_TITLE,
-					    &FndGenErrorBlock);
+    		DZIO01MsgBoxDisplay(TITLE4,
+									BOX_TITLE,
+									CBI_hwnd,
+									FND_MSGBOX_OK,
+									FND_MSGBOX_INFORMATION,
+									FND_MSGBOX_IDOK,
+									BOX_TITLE,
+									CMN_ARCH_PARMS);
 
+
+
+
+            FndWindowDestroy( CBI_hwnd,
+                        &FndGenErrorBlock );
 
 
 	     }
 	     else
 	     {
+         
+         FndWindowShow( CBI_hwnd,
+                        &FndGenErrorBlock );
 
 	     while (RowNumber < (pClientData -> Dzsr002xKeys.QyALRAclCnt) )
 	     {

@@ -7,8 +7,13 @@
 ** DESCRIPTION	    :  Business Logic functions for window DZIO001X,
 **                     includes:
 **
-**
-**
+**					   DZIO013xPredisplay
+** 					   DZIO013xMainLbDblClk
+**					   DZIO013xMainLbSelect
+**					   DZIO013xSecLbDblCkl
+**					   DZIO013xAddPbClk
+**					   DZIO013xDelPbClk
+**					   DZIO013xOkPbClk
 **
 ** REVISION HISTORY
 **
@@ -49,8 +54,255 @@ WCBPROC(DZIO013xPredisplay )
 {
 
     USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+	USHORT RowNumber = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    char OrdFlg[4] = NULL_STR;
+    _Dz00751Row RowData;
 
+    #define DEST_APPL_ID   1
+    #define DEST_SRVC_ID   1
+    #define DEST_SRVC_VER  "00"
+
+    _FND_STANDARD_PB  FndStandardPB;
+    _MSG_PARM_BLOCK   ParmBlock;
+
+    _MESSAGEOUTPUT  *pMessageInput;
+    _MESSAGEOUTPUT *pMessageOutput;
+
+    CHAR Message[ 255 ];
+    USHORT SelectedButton;
+    SHORT ReturnCode = 0;
+
+    memset( &ParmBlock, 0, sizeof(ParmBlock) );
+
+
+	SelectElementsCount = 0;
+
+    FndGenRC = FndCommandDisable(CBI_hwnd,
+	                            "OKPB",
+								&FndGenErrorBlock);
+
+    FndGenRC = FndCommandDisable(CBI_hwnd,
+	                            "AddPB",
+								&FndGenErrorBlock);
+
+    FndGenRC = FndCommandDisable(CBI_hwnd,
+	                            "DeletePB",
+								&FndGenErrorBlock);
+
+
+
+    FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nRetrieving Data From The Repository ...\n\n Please be patient.",
+                                   "ReposWait",
+                                   CBI_hwnd,
+                                   FND_MSGBOX_NOBUTTONS,
+                                   FND_MSGBOX_INFORMATION,
+                                   FND_MSGBOX_IDNOBUTTON,
+                                   CMN_CSS_APPL_NAME,
+                                   &FndGenErrorBlock);
+
+    pMessageInput  = malloc( sizeof( _MESSAGEOUTPUT ));
+    pMessageOutput = malloc( sizeof( _MESSAGEOUTPUT ));
+
+    memset (pMessageInput , 0, sizeof(_MESSAGEOUTPUT) );
+    memset (pMessageOutput , 0, sizeof(_MESSAGEOUTPUT) );
+
+      /* Set up Request Header */
+    strcpy( pMessageInput->RequestHdr.EntityType, DEDTABLE );
+
+    pMessageInput->RequestHdr.MaxRows = 200;
+
+
+    if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABB) == 0)
+    {
+         FndFieldSetValue (CBI_hwnd,
+                           "TableName",
+                           sizeof(pBFCD->DZIO012Luw.SecTabB),
+                           pBFCD->DZIO012Luw.SecTabB,
+                           &FndGenErrorBlock);
+
+         strcpy( pMessageInput->RequestHdr.EntityId, pBFCD->DZIO012Luw.SecTabB );
+
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABC) == 0)
+    {
+         FndFieldSetValue (CBI_hwnd,
+                           "TableName",
+                           sizeof(pBFCD->DZIO012Luw.SecTabC),
+                           pBFCD->DZIO012Luw.SecTabC,
+                           &FndGenErrorBlock);
+
+         strcpy( pMessageInput->RequestHdr.EntityId, pBFCD->DZIO012Luw.SecTabC );
+    }
+
+      /* Initialize Foundation Parm Block */
+    MSGInitPB( &FndStandardPB, &ParmBlock, pEAIA, DEST_APPL_ID,
+             DEST_SRVC_ID, DEST_SRVC_VER, pABHI );
+
+    memcpy( ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN );
+    ParmBlock.commarea.function_code = MSGIO_CONVERSE;
+    
+    ParmBlock.buffer_size = sizeof( _MESSAGEOUTPUT );
+    ParmBlock.actual_length_send = sizeof( _REQUESTHDR );
+    ParmBlock.timeout_interval = 30;
+
+    ParmBlock.dest.language = 'A';
+    ParmBlock.dest.service_id.appl = DEST_APPL_ID;
+    ParmBlock.dest.service_id.srvc = DEST_SRVC_ID;
+    memcpy(ParmBlock.dest.service_id.service_ver, DEST_SRVC_VER, 
+                          sizeof(ParmBlock.dest.service_id.service_ver) );
+
+    memcpy( ParmBlock.translation.map_name, "AZCR001O", _FND_MAP_NAME_LEN );
+    memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );
+
+    FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
+                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
+
+
+    if( FndGenRC == MSGIO_SUCCESS &&
+        ParmBlock.appl_status.explan_code == FND_SUCCESS )
+    {
+        /* Check if any rows were returned */
+        if( pMessageOutput->ReplyHdr.RowsReturned > 0)
+        {
+            /* Check SQLCODE */
+            if( pMessageOutput->ReplyHdr.SqlCode  != 0 )
+            {
+            sprintf( Message, "Rows were returned by the Repository "
+                          "Extract Service.  However, a non-zero "
+                          "SQL Code was returned.  The SQL Code was "
+                          "%ld.",
+                           pMessageOutput->ReplyHdr.SqlCode );
+                    
+            FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+                              FND_MSGBOX_WARNING, FND_MSGBOX_OK,
+                              NULL, &SelectedButton, &FndGenErrorBlock );
+            }
+            else 
+            {
+            /***********Populate the window with the requisite data *********/
+
+	            FndGenRC = DZIO007PopulateWindow( pMessageOutput->EntityData,
+                                                  &(pMessageOutput->ReplyHdr),
+                                                  CMN_ARCH_PARMS );
+
+				/*
+				 |  The data corresponding to the repository extract listbox has been
+				 |  populated. Now the data corresponding to the I/O Module working 
+				 |  listbox needs to be.
+				 */
+
+		    RowNumber = 0;
+
+			if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABB) == 0)
+			{
+
+				while(strcmp(pBFCD->DZIO013Luw.DZIO013ASelect[RowNumber].ElmId, "") != 0)
+				{
+					CmnStrCopy (RowData._Dz00751Dz00799Data, 
+					            pBFCD->DZIO013Luw.DZIO013ASelect[RowNumber].ElmId ,
+						        sizeof(RowData._Dz00751Dz00799Data),
+								CMN_ARCH_PARMS );
+
+					CmnStrCopy(RowData._Dz00751KeyTypData, 
+						       OrdFlg,
+							   sizeof(RowData._Dz00751KeyTypData),
+							   CMN_ARCH_PARMS );
+
+					FndGenRC = FndLstBoxRowAdd( CBI_hwnd,
+											    DZ00751,
+												RowNumber,
+												sizeof(RowData),
+												&RowData,
+												&FndGenErrorBlock);
+
+					SelectElementsCount = SelectElementsCount + 1;
+					RowNumber = RowNumber + 1;
+
+				} /* end while */
+
+			} /* end if */
+			else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABC) == 0)
+			{
+				while(strcmp(pBFCD->DZIO013Luw.DZIO013BSelect[RowNumber].ElmId, "") != 0)
+				{
+					CmnStrCopy (RowData._Dz00751Dz00799Data, 
+					            pBFCD->DZIO013Luw.DZIO013BSelect[RowNumber].ElmId ,
+						        sizeof(RowData._Dz00751Dz00799Data),
+								CMN_ARCH_PARMS );
+
+					CmnStrCopy(RowData._Dz00751KeyTypData, 
+						       OrdFlg,
+							   sizeof(RowData._Dz00751KeyTypData),
+							   CMN_ARCH_PARMS );
+
+					FndGenRC = FndLstBoxRowAdd( CBI_hwnd,
+											    DZ00751,
+												RowNumber,
+												sizeof(RowData),
+												&RowData,
+												&FndGenErrorBlock);
+
+					SelectElementsCount = SelectElementsCount + 1;
+					RowNumber = RowNumber + 1;
+
+				} /* end for */
+
+			} /* end if */
+
+
+
+
+				/*
+				 | After both listboxes have been populated, the window should be shown.
+				 */
+
+                FndWindowShow (CBI_hwnd,
+                                &FndGenErrorBlock);
+
+            }
+        }
+        else
+        {
+        /* No rows were returned */
+        /* Check SQL Code */
+            switch( pMessageOutput->ReplyHdr.SqlCode )
+            {
+                case 0:
+	                sprintf( Message, "No keys returned by the Repository "
+                              "Extract Service.  The SQL Code was %ld.",
+                               pMessageOutput->ReplyHdr.SqlCode );
+                    break;
+
+                default:
+	                sprintf( Message, "No Keys Returned by Extract Service."
+			                "The SQL Code was %ld.",
+                                pMessageOutput->ReplyHdr.SqlCode );
+                    break;
+            }
+
+            FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+                            FND_MSGBOX_CRITICAL, FND_MSGBOX_OK,
+                            NULL, &SelectedButton, &FndGenErrorBlock );
+
+			FndWindowDestroy( CBI_hwnd,
+			      			  &FndGenErrorBlock);
+
+        }
+    }
+
+    /* Free the memory allocated for Message Input and Output */
+    free( pMessageInput );
+    free( pMessageOutput );
+
+	
+
+    FndGenRC = FndWindowSetPointer( CBI_hwnd,
+                                  FNDSYSPTR_ARROW,
+                                  &FndGenErrorBlock );
+
+    FndGenRC = FndMsgBoxDestroy("ReposWait",
+                               &FndGenErrorBlock);
 
     return FndGenRC;
 }
@@ -133,7 +385,35 @@ WCBPROC(DZIO013xMainLbSelect )
 {
 
     USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT LRowNumber = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    if (SelectElementsCount > 0 )
+    {
+
+        FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+					  DZ00751,
+					  FND_LSTBOX_START,
+					  &LRowNumber,
+					  &FndGenErrorBlock);
+
+        FndGenRC = FndLstBoxRowDeselect(CBI_hwnd,
+					                DZ00751,
+					                LRowNumber,
+					                &FndGenErrorBlock);
+    }
+
+
+
+    FndGenRC = FndCommandEnable(CBI_hwnd,
+	                            "AddPB",
+								&FndGenErrorBlock);
+
+    FndGenRC = FndCommandDisable(CBI_hwnd,
+	                            "DeletePB",
+								&FndGenErrorBlock);
+
 
 
     return FndGenRC;
@@ -217,7 +497,28 @@ WCBPROC(DZIO013xSecLbSelect )
 {
 
     USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT LRowNumber = 0;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+					  REPOSDAT,
+					  FND_LSTBOX_START,
+					  &LRowNumber,
+					  &FndGenErrorBlock);
+
+    FndGenRC = FndLstBoxRowDeselect(CBI_hwnd,
+					                REPOSDAT,
+					                LRowNumber,
+					                &FndGenErrorBlock);
+
+    FndGenRC = FndCommandDisable(CBI_hwnd,
+	                            "AddPB",
+								&FndGenErrorBlock);
+
+    FndGenRC = FndCommandEnable(CBI_hwnd,
+	                            "DeletePB",
+								&FndGenErrorBlock);
+
 
 
     return FndGenRC;
@@ -258,9 +559,104 @@ WCBPROC(DZIO013xSecLbSelect )
 WCBPROC(DZIO013xAddPbClk )
 {
 
+    _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT RRowNumber = 0;
+    USHORT LRowNumber = 0;
+    char OrdFlg[4] = NULL_STR;
+    USHORT j = 0;
+    USHORT test_var = 0;
 
+    _Dz00751Row RowData;
+    _ReposDataLBRow EntrData;
+
+    FndGenRC = FndCommandEnable(CBI_hwnd,
+	                            "OKPB",
+								&FndGenErrorBlock);
+
+
+    memset(RowData._Dz00751Dz00799Data,' ',
+			      sizeof(RowData._Dz00751Dz00799Data) );
+
+    memset(RowData._Dz00751KeyTypData,' ',
+			      sizeof(RowData._Dz00751KeyTypData) );
+
+
+
+
+    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+					  REPOSDAT,
+					  FND_LSTBOX_START,
+					  &LRowNumber,
+					  &FndGenErrorBlock);
+
+    // Query of the row to be added from the right list box
+
+    FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
+				      REPOSDAT,
+				      LRowNumber,
+				      sizeof(_ReposDataLBRow),
+				      (void *) &(EntrData),
+				      &FndGenErrorBlock);
+
+
+
+
+    RowData._Dz00751NmRowIndxData++;
+
+//  Make certain that the key in question has not been added already
+
+    test_var = 0;
+
+    for (j = 0; j < SelectElementsCount; j++)
+    {
+	 FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
+				      DZ00751,
+				      j,
+				      sizeof(_Dz00751Row),
+				      (void *) &(RowData),
+				      &FndGenErrorBlock);
+
+	 if (strcmp(RowData._Dz00751Dz00799Data ,
+		    EntrData._ReposDataLBDz00707Data ) == 0)
+	 {
+	     test_var++;
+	 }
+
+    }
+
+    if (test_var == 0)
+    {
+
+	strncpy(RowData._Dz00751Dz00799Data, EntrData._ReposDataLBDz00707Data ,
+			  sizeof(RowData._Dz00751Dz00799Data) );
+
+	strncpy(RowData._Dz00751KeyTypData, OrdFlg,
+			  sizeof(RowData._Dz00751KeyTypData) );
+
+	FndGenRC = FndLstBoxRowAdd(CBI_hwnd,
+				DZ00751,
+				RRowNumber,
+				sizeof(RowData),
+				&RowData,
+				&FndGenErrorBlock);
+
+    SelectElementsCount = SelectElementsCount + 1;
+
+    }
+    else
+    {
+	FndGenRC = FndMsgBoxDisplayMdlssText(TITLE1,
+					     BOX_TITLE,
+					     CBI_hwnd,
+					     FND_MSGBOX_OK,
+					     FND_MSGBOX_WARNING,
+					     FND_MSGBOX_IDOK,
+					     BOX_TITLE,
+					     &FndGenErrorBlock);
+
+
+    }
 
     return FndGenRC;
 }
@@ -300,11 +696,41 @@ WCBPROC(DZIO013xAddPbClk )
 WCBPROC(DZIO013xDelPbClk )
 {
 
+    _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT LRowNumber = 0;
+    char OrdFlg[4] = NULL_STR;
+
+    FndGenRC = FndCommandEnable(CBI_hwnd,
+	                            "OKPB",
+								&FndGenErrorBlock);
+
+  //  Place Application Business Logic here
+
+    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+					  DZ00751,
+					  FND_LSTBOX_START,
+					  &LRowNumber,
+					  &FndGenErrorBlock);
+
+    FndGenRC = FndLstBoxRowDelete(CBI_hwnd,
+				  DZ00751,
+				  LRowNumber,
+				  &FndGenErrorBlock);
+
+    SelectElementsCount = SelectElementsCount - 1;
 
 
-    return FndGenRC;
+    if (SelectElementsCount == 0)
+    {
+        FndGenRC = FndCommandDisable(CBI_hwnd,
+	                            "DeletePB",
+								&FndGenErrorBlock);
+
+    }
+
+
+    return CMN_SUCCESS;
 }
 
 
@@ -343,7 +769,65 @@ WCBPROC(DZIO013xOkPbClk )
 {
 
     USHORT FndGenRC = 0;
-//    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT RowNumber = 0;
+
+    _Dz00751Row RowData;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+   if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABB) == 0)
+   {
+        memset(&(pBFCD->DZIO013Luw.DZIO013ASelect), 0, 
+		                       sizeof(pBFCD->DZIO013Luw.DZIO013ASelect) );
+
+		for (RowNumber = 0; RowNumber < SelectElementsCount; RowNumber++)
+		{
+		     memset(&(RowData), 0, sizeof(RowData) );
+
+			 FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
+				      DZ00751,
+				      RowNumber,
+				      sizeof(_Dz00751Row),
+				      (void *) &(RowData),
+				      &FndGenErrorBlock);
+
+			 memcpy ( pBFCD->DZIO013Luw.DZIO013ASelect[RowNumber].ElmId,
+						  RowData._Dz00751Dz00799Data,
+						  sizeof(pBFCD->DZIO013Luw.DZIO013ASelect[RowNumber].ElmId) );
+
+			 CmnStrCopy ( pBFCD->DZIO013Luw.DZIO013ASelect[RowNumber].ElmTblNm,
+						  pBFCD->DZIO012Luw.SecTabBNm,
+						  sizeof(pBFCD->DZIO013Luw.DZIO013ASelect[RowNumber].ElmTblNm),
+						  CMN_ARCH_PARMS);
+
+		}
+   }
+   else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,SECTABC) == 0)
+   {
+        memset(&(pBFCD->DZIO013Luw.DZIO013BSelect), 0, 
+		                       sizeof(pBFCD->DZIO013Luw.DZIO013BSelect) );
+
+		for (RowNumber = 0; RowNumber < SelectElementsCount; RowNumber++)
+		{
+		     memset(&(RowData), 0, sizeof(RowData) );
+
+			 FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
+				      DZ00751,
+				      RowNumber,
+				      sizeof(_Dz00751Row),
+				      (void *) &(RowData),
+				      &FndGenErrorBlock);
+
+			 memcpy ( pBFCD->DZIO013Luw.DZIO013BSelect[RowNumber].ElmId,
+						  RowData._Dz00751Dz00799Data,
+						  sizeof(pBFCD->DZIO013Luw.DZIO013BSelect[RowNumber].ElmId) );
+
+			 CmnStrCopy ( pBFCD->DZIO013Luw.DZIO013BSelect[RowNumber].ElmTblNm,
+						  pBFCD->DZIO012Luw.SecTabCNm,
+						  sizeof(pBFCD->DZIO013Luw.DZIO013BSelect[RowNumber].ElmTblNm),
+						  CMN_ARCH_PARMS);
+
+		}
+   }
 
 
     return FndGenRC;

@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZIO014                           *
- *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                         Generated on: Mon Nov 04 17:40:03 1996          *
  *                                   by: IPEREZAR                          *
  *                                                                         *
  ***************************************************************************/
@@ -66,6 +66,78 @@ FndGenRC = FndValueDisableItem( CBI_hwnd,
                             &FndGenErrorBlock);
 
 FndGenRC = DZIO014xPredisplay( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Hwkilehb1742_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hwkilehb1742_Window_Close)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Hwkilehb1732_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hwkilehb1732_Msg_Notification)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -157,83 +229,11 @@ return 0;
 }
 /***************************************************************************
  *
- *   Window-Level Event
- *
- *   Callback Name: Hwkilehb1732_Msg_Notification
- * 
- *
- *
- *   Event Name:    MSG_NOTIFICATION
- *
- *
- ***************************************************************************/
-static WCBPROC(Hwkilehb1732_Msg_Notification)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Hwkilehb1742_Window_Close
- * 
- *
- *
- *   Event Name:    WINDOW_CLOSE
- *
- *
- ***************************************************************************/
-static WCBPROC(Hwkilehb1742_Window_Close)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
  *   Widget-Level Event
  *
  *   Callback Name: Hwkilehb1321_List_Select
  * 
- *   WidgetName:    JOIN_TABLE_1
+ *   WidgetName:    JoinTable1
  *
  *   Event Name:    LIST_SELECT
  *
@@ -276,7 +276,7 @@ return 0;
  *
  *   Callback Name: Hwkilehb1342_List_Select
  * 
- *   WidgetName:    JOIN_TABLE_2
+ *   WidgetName:    JoinTable2
  *
  *   Event Name:    LIST_SELECT
  *
@@ -296,49 +296,6 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pABHI);
 
 FndGenRC = DZIO014xJoinTbl2LstSlct( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Hwkilehb1393_Click
- * 
- *   WidgetName:    OKPB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Hwkilehb1393_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = DZIO014xOkPbClk( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -441,7 +398,7 @@ return 0;
  *
  *   Callback Name: Hwkilehb1297_Field_Change
  * 
- *   WidgetName:    PRIM_TBL_LST
+ *   WidgetName:    PrimTblLst
  *
  *   Event Name:    FIELD_CHANGE
  *
@@ -484,7 +441,7 @@ return 0;
  *
  *   Callback Name: Hwkilehb1310_Field_Change
  * 
- *   WidgetName:    SEC_TBL_LST
+ *   WidgetName:    SecTblLst
  *
  *   Event Name:    FIELD_CHANGE
  *
@@ -527,7 +484,7 @@ return 0;
  *
  *   Callback Name: Hwkilehb1351_List_Select
  * 
- *   WidgetName:    MAIN_JOIN_LB
+ *   WidgetName:    MainJoinLB
  *
  *   Event Name:    LIST_SELECT
  *
@@ -633,6 +590,49 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pABHI);
 
 FndGenRC = DZIO014xUndelPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Hwkilehb1300_Click
+ * 
+ *   WidgetName:    OKPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hwkilehb1300_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO014xOkPbClk( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,

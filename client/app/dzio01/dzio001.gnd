@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZIO001                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -26,6 +26,7 @@ WCBFWD (Ncqnrdhl8096_Predisplay)
 WCBFWD (Ncqnrdhl8191_Help_Requested)
 WCBFWD (Ncqnrdhl9475_Field_Change)
 WCBFWD (Ncqnrdhl9733_Field_Nowinvalid)
+WCBFWD (Ncqnrdhl5241_Click)
 WCBFWD (Ncqnrdhl9065_Click)
 WCBFWD (Ncqnrdhl9917_Click)
 WCBFWD (Ncqnrdhl9636_Field_Change)
@@ -41,7 +42,6 @@ WCBFWD (Ncqnrdhl8954_Field_Change)
 WCBFWD (Ncqnrdhl8715_Field_Change)
 WCBFWD (Ncqnrdhl5644_List_Select)
 WCBFWD (Ncqnrdhl7284_Double_Click)
-WCBFWD (Ncqnrdhl5241_Click)
 WCBFWD (Ncqnrdhl6984_Click)
 WCBFWD (Ncqnrdhl3063_Click)
 WCBFWD (Ncqnrdhl3440_Click)
@@ -76,6 +76,7 @@ WDGDISPTBL DZIO001WidgDisp[] =
 {
     {PrimTab_FID, FIELD_CHANGE, Ncqnrdhl9475_Field_Change},
     {PrimTab_FID, FIELD_NOWINVALID, Ncqnrdhl9733_Field_Nowinvalid},
+    {FolderPB_CMD, BUTTON_CLICK, Ncqnrdhl5241_Click},
     {FindPB1_CMD, BUTTON_CLICK, Ncqnrdhl9065_Click},
     {VIEW1_CMD, BUTTON_CLICK, Ncqnrdhl9917_Click},
     {Alrcbook_FID, FIELD_CHANGE, Ncqnrdhl9636_Field_Change},
@@ -91,7 +92,6 @@ WDGDISPTBL DZIO001WidgDisp[] =
     {Sum_FID, FIELD_CHANGE, Ncqnrdhl8715_Field_Change},
     {TaskList_FID, LIST_SELECT, Ncqnrdhl5644_List_Select},
     {TaskList_FID, FND_DOUBLE_CLICK, Ncqnrdhl7284_Double_Click},
-    {FolderPB_CMD, BUTTON_CLICK, Ncqnrdhl5241_Click},
     {MntmNew_CMD, BUTTON_CLICK, Ncqnrdhl6984_Click},
     {MntmOpen_CMD, BUTTON_CLICK, Ncqnrdhl3063_Click},
     {MntSave_CMD, BUTTON_CLICK, Ncqnrdhl3440_Click},
@@ -142,11 +142,11 @@ FLDDEFTBLENTRY DZIO001FieldDefTbl[] =
 
 CMDDEFTBLENTRY DZIO001CommandDefTbl[] =
 {
+    { "FolderPB", FolderPB_CMD },
     { "FindPB1", FindPB1_CMD },
     { "VIEW1", VIEW1_CMD },
     { "FindPB2", FindPB2_CMD },
     { "VIEW2", VIEW2_CMD },
-    { "FolderPB", FolderPB_CMD },
     { "MntmNew", MntmNew_CMD },
     { "MntmOpen", MntmOpen_CMD },
     { "MntSave", MntSave_CMD },
@@ -417,6 +417,9 @@ WCTFIELD DZIO001WCTFieldTbl[] =
 WCTCOMMAND DZIO001WCTCommandTbl[] =
 {
 
+    { WTP_PUSHBUTTON, "FolderPB", FolderPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
     { WTP_PUSHBUTTON, "FindPB1", FindPB1_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
@@ -427,9 +430,6 @@ WCTCOMMAND DZIO001WCTCommandTbl[] =
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "VIEW2", VIEW2_CMD,
-      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
-
-    { WTP_PUSHBUTTON, "FolderPB", FolderPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_MENU, "IoMod", IoMod_CMD,

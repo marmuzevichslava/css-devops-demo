@@ -81,6 +81,13 @@
 #define DEDTABLE  "DEDTABLE"
 #define DECOPYBK  "DECOPYBK"
 
+#define SECTABB_Char 'B'
+#define SECTABC_Char 'C'
+
+#define SECTABB   "SECTABB"
+#define SECTABC   "SECTABC"
+
+
 #define TITLE1	  "Select I/O Module"
 #define TITLE2	  "Select Primary Table"
 #define TITLE3	  "Select ALR Copybook"

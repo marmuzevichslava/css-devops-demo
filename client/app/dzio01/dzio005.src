@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZIO005                           *
- *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                         Generated on: Mon Nov 04 17:40:03 1996          *
  *                                   by: IPEREZAR                          *
  *                                                                         *
  ***************************************************************************/
@@ -476,42 +476,6 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Ncqnsnpl6874_Click
- * 
- *   WidgetName:    CancelPB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Ncqnsnpl6874_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
  *   Callback Name: Ncqnsnpl0823_Click
  * 
  *   WidgetName:    OKPB
@@ -534,6 +498,42 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pABHI);
 
 FndGenRC = DZIO005BusPbOkClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnsnpl6874_Click
+ * 
+ *   WidgetName:    CancelPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnsnpl6874_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,

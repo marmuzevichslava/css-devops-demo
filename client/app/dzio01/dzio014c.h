@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZIO014C                            *
-*                        Generated on: Tue Oct 01 09:25:43 1996            *
+*                        Generated on: Mon Nov 04 17:40:03 1996            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -167,17 +167,23 @@ typedef struct __DZIO014Rqst
 /***************************************************************************
 * Definition for Record.DZIO014C
 ***************************************************************************/
-#ifndef _DZIO014C_z
-#define _DZIO014C_z
+#ifndef _WCDDZIO014C_z
+#define _WCDDZIO014C_z
 
-typedef struct __Dzio014c
+typedef struct __WCDDzio014c
 {
    _ARCHDATA             ArchData;
    _ENTITYDATA           EntityData;
    _REQUESTHDR           RequestHdr;
    _REPLYHDR             ReplyHdr;
    _DZIO014RQST          DZIO014Rqst;
-}  _DZIO014C;
+}  _WCDDZIO014C;
 #endif
 
+#define  WCD_ArchData          pWindContextData->ArchData
+#define  WCD_EntityData        pWindContextData->EntityData
+#define  WCD_RequestHdr        pWindContextData->RequestHdr
+#define  WCD_ReplyHdr          pWindContextData->ReplyHdr
+#define  WCD_DZIO014Rqst       pWindContextData->DZIO014Rqst
+#define  WINCONTEXTNAME        _WCDDZIO014C
 

@@ -184,19 +184,9 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
 
 AEXPROC( ExitWktCloseAfterSave )
 {
-  //---------------------------------------------------
-  //  S H E L L   I N S T R U C T I O N S
-  //
-  //  Replace <CUFFnnnOutput>, <WesField>, and <ChildField>
-  //  with the appropriate values for all possible OUT
-  //  layouts.
-  //
-  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
-  //
-  //---------------------------------------------------
 
 
-//    USHORT	      FndGenRC = 0;
+//   USHORT	      FndGenRC = 0;
 //    _FND_ERROR_BLOCK FndGenErrorBlock;
 
 

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZIO005                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -26,8 +26,8 @@ WCBFWD (Ncqnsnpl4089_Window_Close)
 WCBFWD (Ncqnsnpl7367_Field_Change)
 WCBFWD (Ncqnsnpl8230_Field_Nowinvalid)
 WCBFWD (Ncqnsnpl7084_Click)
-WCBFWD (Ncqnsnpl6874_Click)
 WCBFWD (Ncqnsnpl0823_Click)
+WCBFWD (Ncqnsnpl6874_Click)
 WCBFWD (Ncqnsnpl3371_Click)
 WCBFWD (Ncqnsnpl3355_Click)
 WCBFWD (Ncqnsnpl3378_Click)
@@ -56,8 +56,8 @@ WDGDISPTBL DZIO005WidgDisp[] =
     {Iomodnm_FID, FIELD_CHANGE, Ncqnsnpl7367_Field_Change},
     {Iomodnm_FID, FIELD_NOWINVALID, Ncqnsnpl8230_Field_Nowinvalid},
     {FindPB_CMD, BUTTON_CLICK, Ncqnsnpl7084_Click},
-    {CancelPB_CMD, BUTTON_CLICK, Ncqnsnpl6874_Click},
     {OKPB_CMD, BUTTON_CLICK, Ncqnsnpl0823_Click},
+    {CancelPB_CMD, BUTTON_CLICK, Ncqnsnpl6874_Click},
     {Cut_CMD, BUTTON_CLICK, Ncqnsnpl3371_Click},
     {Copy_CMD, BUTTON_CLICK, Ncqnsnpl3355_Click},
     {Paste_CMD, BUTTON_CLICK, Ncqnsnpl3378_Click},
@@ -82,8 +82,8 @@ FLDDEFTBLENTRY DZIO005FieldDefTbl[] =
 CMDDEFTBLENTRY DZIO005CommandDefTbl[] =
 {
     { "FindPB", FindPB_CMD },
-    { "CancelPB", CancelPB_CMD },
     { "OKPB", OKPB_CMD },
+    { "CancelPB", CancelPB_CMD },
     { "Cut", Cut_CMD },
     { "Copy", Copy_CMD },
     { "Paste", Paste_CMD },
@@ -139,10 +139,10 @@ WCTCOMMAND DZIO005WCTCommandTbl[] =
     { WTP_PUSHBUTTON, "FindPB", FindPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_MENU, "EditMN", EditMN_CMD,

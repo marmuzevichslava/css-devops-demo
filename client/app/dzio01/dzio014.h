@@ -22,6 +22,17 @@
 #define ALRPREFIX "ALRPrefix"
 #define NULL_STR  ""
 
+_MainJoinLBRow DeleteMainJoinLBRow;
+
+USHORT  JoinTable1Counter = 0; 
+USHORT  JoinTable2Counter = 0; 
+
+USHORT  MainJoinLBCounter = 0;
+
+#define    DotFill  "."
+#define    RelatEq  "EQUAL"
+
+
 
 SHORT	DZIO01FieldSetValue( void * FieldSetName,
                             void * FieldSetValue,
@@ -46,3 +57,8 @@ SHORT	DZIO01FieldQueryValue( void * FieldQryName,
                               USHORT FieldQrySize,
                               CMN_ARCH_PARM_TYPES);
 
+SHORT DZIO007PopulateJoinTable1( _ENTITYDATA *pEntityDataTable,
+                                 _REPLYHDR *pReplyHdr,
+                                 CMN_ARCH_PARM_TYPES );
+
+#include "viewsett.h"

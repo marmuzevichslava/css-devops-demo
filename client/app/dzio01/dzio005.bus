@@ -10,6 +10,7 @@
 **		       DZIO005BusFindPbClk
 **		       DZIO005BusPbOkClk
 **		       DZIO005BusPrdis
+**             DZIO005BusFldChg
 **
 **
 ** REVISION HISTORY
@@ -159,9 +160,9 @@ WCBPROC( DZIO005BusPrdis )
     _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT FndGenRC = 0;
 
-    FndGenRC = FndWindowCenter(CBI_hwnd,
-			       FND_WINDOW_OWNER,
-			       &FndGenErrorBlock);
+    FndGenRC = DZIO01CommandDisable( PBOK,
+					CMN_ARCH_PARMS);
+
 
     if (strcmp(pBFCD->DZIO01Hdr.FuncNm, SAVEAS) == 0)
     {
@@ -229,6 +230,16 @@ WCBPROC( DZIO005BusFldChg )
     {
        FndGenRC = DZIO01CommandDisable( FINDPB,
 					CMN_ARCH_PARMS);
+
+       FndGenRC = DZIO01CommandDisable( PBOK,
+					CMN_ARCH_PARMS);
+
+    }
+    else
+    {
+       FndGenRC = DZIO01CommandEnable( PBOK,
+					CMN_ARCH_PARMS);
+
     }
 
     return CMN_SUCCESS;

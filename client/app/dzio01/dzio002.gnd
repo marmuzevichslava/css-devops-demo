@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZIO002                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 11 11:44:39 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -29,6 +29,7 @@ WCBFWD (Ncqnskfl5397_Window_Nowinvalid)
 WCBFWD (Ncqnskfl5413_Dde_Event)
 WCBFWD (Ncqnskfl5419_Dde_Notification)
 WCBFWD (Ncqnskfl9488_Click)
+WCBFWD (Ncqnskfl5397_List_Select)
 WCBFWD (Ncqnskfl0635_Click)
 WCBFWD (Ncqnskfl3146_Click)
 
@@ -59,6 +60,7 @@ WNDDISPTBL DZIO002WindDisp[] =
 WDGDISPTBL DZIO002WidgDisp[] =
 {
     {CancelPB_CMD, BUTTON_CLICK, Ncqnskfl9488_Click},
+    {ImpObjNmLB_FID, LIST_SELECT, Ncqnskfl5397_List_Select},
     {OKPB_CMD, BUTTON_CLICK, Ncqnskfl0635_Click},
     {Copy_CMD, BUTTON_CLICK, Ncqnskfl3146_Click},
     {0,0,0}
@@ -191,7 +193,7 @@ WCTCOMMAND DZIO002WCTCommandTbl[] =
 WINDEFTBLENTRY DZIO002IDWindowDefn =
 {
     "30", DZIO002ID, "", WTP_WESWINDOW,
-    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO002ID,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_HIDDEN | WCR_NON_PROPORTIONAL, DZIO002ID,
     DZIO002AccelID, DZIO002MenuID, WOP_NOICON, 0,
     DZIO002WidgDisp, DZIO002WindDisp, FND_WINCONTEXT_LEN,
     0, 0, &DZIO002WCTHeader, DZIO002WCTFieldTbl, 

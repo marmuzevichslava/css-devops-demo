@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO005                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -30,8 +30,8 @@
 ****************************************************************************/
 
 #define FindPB_CMD                                     1000
-#define CancelPB_CMD                                   1001
-#define OKPB_CMD                                       1002
+#define OKPB_CMD                                       1001
+#define CancelPB_CMD                                   1002
 #define EditMN_CMD                                     200
 #define Cut_CMD                                        3001
 #define Copy_CMD                                       3002

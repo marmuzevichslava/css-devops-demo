@@ -102,12 +102,8 @@ WCBPROC( DZIO009BusPbOkClk )
 WCBPROC( DZIO009BusPreDis )
 {
 
-    _FND_ERROR_BLOCK FndGenErrorBlock;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
     USHORT FndGenRC = 0;
-
-    FndGenRC = FndWindowCenter(CBI_hwnd,
-			       FND_WINDOW_OWNER,
-			       &FndGenErrorBlock);
 
     if (strcmp(pBFCD->DZIO01Hdr.PrimTabNm,NULL_STR) != 0)
     {

@@ -7,16 +7,15 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO008                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 11 11:54:38 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZIO008ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,299,157
+DZIO008ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,299,156
     STYLE 0 
      | WS_CAPTION
-     | WS_MAXIMIZEBOX
      | DS_MODALFRAME
     CAPTION "View"
     
@@ -24,38 +23,38 @@ Begin  /* controls */
    CONTROL "Entity ID :",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,7,10,38,8
+              ,7,5,38,12
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,47,6,63,0
+              ,47,5,63,0
 
    CONTROL "Entity Type :",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,174,10,47,8
+              ,174,5,48,12
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,224,6,60,0
+              ,225,5,60,0
 
    CONTROL "&OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,9,120,45,12
+              ,9,119,45,12
 
    CONTROL "",5200,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,7,135,224,12
+              ,7,134,224,12
 
    CONTROL "Repository Data",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,9,32,279,82
+              ,9,31,279,82
 
 End /* controls */
 

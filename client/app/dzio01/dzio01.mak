@@ -7,7 +7,7 @@
 #***************************************************************************
 #                                                                          *
 #                         Make file for: DZIO01                            *
-#                          Generated on: Tue Oct 01 09:25:43 1996          *
+#                          Generated on: Mon Nov 04 17:40:03 1996          *
 #                                    by: IPEREZAR                          *
 #                     Short Description:                                   *
 #                                                                          *
@@ -73,6 +73,8 @@ DZIO001X_DEP = DZIO001X.c	\
 		DZIO005I.h	\
 		DZIO005O.h	\
 		DZIO007O.h	\
+		DZIO012I.h	\
+		DZIO012O.h	\
 		.\AZDI0400.C	\
 		.\DZIO001.BUS    \
                 DZIO001.aex     \
@@ -164,8 +166,8 @@ DZIO009X_DEP = DZIO009X.c	\
 # Make C window module DZIO012X
 DZIO012X_DEP = DZIO012X.c	\
 		DZIO01B.gnb	\
-		AZRP001M.h	\
 		DZIO012C.h	\
+		AZRP001M.h	\
 		DZIO012I.h	\
 		DZIO012O.h	\
 		.\AZDI0400.C	\
@@ -181,8 +183,8 @@ DZIO012X_DEP = DZIO012X.c	\
 # Make C window module DZIO013X
 DZIO013X_DEP = DZIO013X.c	\
 		DZIO01B.gnb	\
-		AZRP001M.h	\
 		DZIO013C.h	\
+		AZRP001M.h	\
 		DZIO013I.h	\
 		DZIO013O.h	\
 		.\AZDI0400.C	\
@@ -198,8 +200,8 @@ DZIO013X_DEP = DZIO013X.c	\
 # Make C window module DZIO014X
 DZIO014X_DEP = DZIO014X.c	\
 		DZIO01B.gnb	\
-		AZRP001M.h	\
 		DZIO014C.h	\
+		AZRP001M.h	\
 		DZIO014I.h	\
 		DZIO014O.h	\
 		.\DZIO014.BUS	\

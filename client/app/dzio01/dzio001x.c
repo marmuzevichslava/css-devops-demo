@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZIO001X TOP WINDOW               *
- *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                         Generated on: Mon Nov 04 17:40:03 1996          *
  *                                   by: IPEREZAR                          *
  *                    Short Description:                                   *
  *                                                                         *
@@ -124,6 +124,8 @@
 #include "dzio005i.h"
 #include "dzio005o.h"
 #include "dzio007o.h"
+#include "dzio012i.h"
+#include "dzio012o.h"
 
 
 /***************************************************************************

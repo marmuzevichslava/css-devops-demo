@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZIO01B                             *
-*                        Generated on: Tue Oct 01 09:25:43 1996            *
+*                        Generated on: Mon Nov 04 17:40:03 1996            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -264,12 +264,8 @@ typedef struct __DZIO012Luw
 }  _DZIO012LUW;
 #endif
 /***************************************************************************
-* Definition for Record Group.DZIO013L
+* Definition for Record Group.DZIO013A
 ***************************************************************************/
-#ifndef   DZ00732_VIEW_NAME_LEN
-#define   DZ00732_VIEW_NAME_LEN                 19
-#define   VW_NM_LEN                             19
-#endif
 #ifndef   DZ00804_ELM_TBL_NM_LEN
 #define   DZ00804_ELM_TBL_NM_LEN                19
 #define   ELMTBLNM_LEN                          19
@@ -278,31 +274,61 @@ typedef struct __DZIO012Luw
 #define   DZ00805_ELM_ID_LEN                    9
 #define   ELMID_LEN                             9
 #endif
+#ifndef _DZIO013ASELECT_z
+#define _DZIO013ASELECT_z
+
+typedef struct __DZIO013ASelect
+{
+   char                  ElmTblNm[19];
+   char                  ElmId[9];
+}  _DZIO013ASELECT;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZIO013B
+***************************************************************************/
+#ifndef   DZ00804_ELM_TBL_NM_LEN
+#define   DZ00804_ELM_TBL_NM_LEN                19
+#define   ELMTBLNM_LEN                          19
+#endif
+#ifndef   DZ00805_ELM_ID_LEN
+#define   DZ00805_ELM_ID_LEN                    9
+#define   ELMID_LEN                             9
+#endif
+#ifndef _DZIO013BSELECT_z
+#define _DZIO013BSELECT_z
+
+typedef struct __DZIO013BSelect
+{
+   char                  ElmTblNm[19];
+   char                  ElmId[9];
+}  _DZIO013BSELECT;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZIO013L
+***************************************************************************/
+#ifndef   DZ00732_VIEW_NAME_LEN
+#define   DZ00732_VIEW_NAME_LEN                 19
+#define   VW_NM_LEN                             19
+#endif
+#ifndef   _DZIO013LUW__DZIO013ASELECT_SIZE
+#define   _DZIO013LUW__DZIO013ASELECT_SIZE      100
+#endif
+#ifndef   _DZIO013LUW__DZIO013BSELECT_SIZE
+#define   _DZIO013LUW__DZIO013BSELECT_SIZE      100
+#endif
 #ifndef _DZIO013LUW_z
 #define _DZIO013LUW_z
 
 typedef struct __DZIO013Luw
 {
    char                  Vw_Nm[19];
-   char                  ElmTblNm[19];
-   char                  ElmId[9];
+   _DZIO013ASELECT       DZIO013ASelect[100];
+   _DZIO013BSELECT       DZIO013BSelect[100];
 }  _DZIO013LUW;
 #endif
 /***************************************************************************
-* Definition for Record Group.DZIO014L
+* Definition for Record Group.DZIO014A
 ***************************************************************************/
-#ifndef   DZ00732_VIEW_NAME_LEN
-#define   DZ00732_VIEW_NAME_LEN                 19
-#define   VW_NM_LEN                             19
-#endif
-#ifndef   DZ00806_ELM_TBL_ID_LEN
-#define   DZ00806_ELM_TBL_ID_LEN                19
-#define   ELMTBLID_LEN                          19
-#endif
-#ifndef   DZ00805_ELM_ID_LEN
-#define   DZ00805_ELM_ID_LEN                    9
-#define   ELMID_LEN                             9
-#endif
 #ifndef   DZ00807_JOIN_ELM_TBL_NM_LEN
 #define   DZ00807_JOIN_ELM_TBL_NM_LEN           19
 #define   JOINELMTBLNM_LEN                      19
@@ -311,17 +337,56 @@ typedef struct __DZIO013Luw
 #define   DZ00808_JOIN_ELM_ID_LEN               9
 #define   JOINELMID_LEN                         9
 #endif
+#ifndef _DZIO014AJOIN_z
+#define _DZIO014AJOIN_z
+
+typedef struct __DZIO014AJoin
+{
+   char                  JoinElmTblNm[19];
+   char                  JoinElmId[9];
+}  _DZIO014AJOIN;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZIO014B
+***************************************************************************/
+#ifndef   DZ00807_JOIN_ELM_TBL_NM_LEN
+#define   DZ00807_JOIN_ELM_TBL_NM_LEN           19
+#define   JOINELMTBLNM_LEN                      19
+#endif
+#ifndef   DZ00808_JOIN_ELM_ID_LEN
+#define   DZ00808_JOIN_ELM_ID_LEN               9
+#define   JOINELMID_LEN                         9
+#endif
+#ifndef _DZIO014BJOIN_z
+#define _DZIO014BJOIN_z
+
+typedef struct __DZIO014BJoin
+{
+   char                  JoinElmTblNm[19];
+   char                  JoinElmId[9];
+}  _DZIO014BJOIN;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZIO014L
+***************************************************************************/
+#ifndef   DZ00732_VIEW_NAME_LEN
+#define   DZ00732_VIEW_NAME_LEN                 19
+#define   VW_NM_LEN                             19
+#endif
+#ifndef   _DZIO014LUW__DZIO014AJOIN_SIZE
+#define   _DZIO014LUW__DZIO014AJOIN_SIZE        100
+#endif
+#ifndef   _DZIO014LUW__DZIO014BJOIN_SIZE
+#define   _DZIO014LUW__DZIO014BJOIN_SIZE        100
+#endif
 #ifndef _DZIO014LUW_z
 #define _DZIO014LUW_z
 
 typedef struct __DZIO014Luw
 {
-   unsigned long         QyJoins;
    char                  Vw_Nm[19];
-   char                  ElmTblId[19];
-   char                  ElmId[9];
-   char                  JoinElmTblNm[19];
-   char                  JoinElmId[9];
+   _DZIO014AJOIN         DZIO014AJoin[100];
+   _DZIO014BJOIN         DZIO014BJoin[100];
 }  _DZIO014LUW;
 #endif
 /***************************************************************************

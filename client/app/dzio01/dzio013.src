@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZIO013                           *
- *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                         Generated on: Mon Nov 04 17:40:03 1996          *
  *                                   by: IPEREZAR                          *
  *                                                                         *
  ***************************************************************************/
@@ -38,6 +38,78 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pABHI);
 
 FndGenRC = DZIO013xPredisplay( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Hwjgrirh1624_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hwjgrirh1624_Window_Close)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Hwjgrirh1638_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hwjgrirh1638_Msg_Notification)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -129,17 +201,17 @@ return 0;
 }
 /***************************************************************************
  *
- *   Window-Level Event
+ *   Widget-Level Event
  *
- *   Callback Name: Hwjgrirh1638_Msg_Notification
+ *   Callback Name: Hwjgrirh1889_List_Select
  * 
+ *   WidgetName:    ReposDataLB
  *
- *
- *   Event Name:    MSG_NOTIFICATION
+ *   Event Name:    LIST_SELECT
  *
  *
  ***************************************************************************/
-static WCBPROC(Hwjgrirh1638_Msg_Notification)
+static WCBPROC(Hwjgrirh1889_List_Select)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -152,36 +224,7 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Hwjgrirh1624_Window_Close
- * 
- *
- *
- *   Event Name:    WINDOW_CLOSE
- *
- *
- ***************************************************************************/
-static WCBPROC(Hwjgrirh1624_Window_Close)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
+FndGenRC = DZIO013xMainLbSelect( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -246,15 +289,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Hwjgrirh1889_List_Select
+ *   Callback Name: Hwjgrirh1832_List_Select
  * 
- *   WidgetName:    ReposDataLB
+ *   WidgetName:    DZ00751
  *
  *   Event Name:    LIST_SELECT
  *
  *
  ***************************************************************************/
-static WCBPROC(Hwjgrirh1889_List_Select)
+static WCBPROC(Hwjgrirh1832_List_Select)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -267,7 +310,7 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = DZIO013xMainLbSelect( pEventInfo,
+FndGenRC = DZIO013xSecLbSelect( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -311,49 +354,6 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pABHI);
 
 FndGenRC = DZIO013xSecLbDblCkl( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Hwjgrirh1832_List_Select
- * 
- *   WidgetName:    DZ00751
- *
- *   Event Name:    LIST_SELECT
- *
- *
- ***************************************************************************/
-static WCBPROC(Hwjgrirh1832_List_Select)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = DZIO013xSecLbSelect( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -461,15 +461,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Hwjgrirh3252_Click
+ *   Callback Name: Hwjgrirh3259_Click
  * 
- *   WidgetName:    OKPB
+ *   WidgetName:    CancelPB
  *
  *   Event Name:    BUTTON_CLICK
  *
  *
  ***************************************************************************/
-static WCBPROC(Hwjgrirh3252_Click)
+static WCBPROC(Hwjgrirh3259_Click)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -497,21 +497,28 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Hwjgrirh3259_Click
+ *   Callback Name: Hwjgrirh1650_Click
  * 
- *   WidgetName:    CancelPB
+ *   WidgetName:    OKPB
  *
  *   Event Name:    BUTTON_CLICK
  *
  *
  ***************************************************************************/
-static WCBPROC(Hwjgrirh3259_Click)
+static WCBPROC(Hwjgrirh1650_Click)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
 
 FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO013xOkPbClk( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,

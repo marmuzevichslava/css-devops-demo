@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO014                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZIO014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,242,227
+DZIO014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,341,227
     STYLE 0 
      | WS_CAPTION
      | WS_SYSMENU
@@ -24,98 +24,97 @@ Begin  /* controls */
    CONTROL "Table Elements",100,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,5,22,72,82
+              ,5,21,137,82
 
    CONTROL "Table Elements",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,162,22,72,82
+              ,199,21,135,82
 
-   CONTROL "OK",1000,
+   CONTROL "Cancel",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_TABSTOP
               | BS_PUSHBUTTON
-     | BS_DEFPUSHBUTTON
-              ,5,192,37,12
+              ,53,191,37,12
 
-   CONTROL "Cancel",1001,
-              FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_TABSTOP
-              | BS_PUSHBUTTON
-              ,53,192,37,12
-
-   CONTROL "Apply",1002,
+   CONTROL "Apply",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,97,90,45,12
+              ,148,89,45,12
 
    CONTROL "",102,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,5,6,64,0
+              ,5,5,64,0
 
    CONTROL "",103,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,163,6,63,0
+              ,199,5,63,0
 
    CONTROL "Join Relationships",104,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,5,112,183,76
+              ,5,111,278,76
 
-   CONTROL "Delete",1003,
+   CONTROL "Delete",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,193,122,41,12
+              ,292,121,41,12
 
-   CONTROL "Undelete",1004,
+   CONTROL "Undelete",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,193,138,41,12
+              ,292,137,41,12
 
    CONTROL "Relation",8005,
               FND_RADIO_GROUP,
               WS_VISIBLE | WS_GROUP | BS_GROUPBOX
-              ,99,24,41,60
+              ,150,23,41,62
 
    CONTROL "EQ",106,
               FND_RADIO_BUTTON,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,99,24,0,0
+              ,150,23,0,0
 
    CONTROL "LE",107,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,99,24,0,0
+              ,150,23,0,0
 
    CONTROL "LT",108,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,99,24,0,0
+              ,150,23,0,0
 
    CONTROL "GE",109,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,99,24,0,0
+              ,150,23,0,0
 
    CONTROL "GT",110,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,99,24,0,0
+              ,150,23,0,0
 
    CONTROL "",5200,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,5,207,219,10
+              ,5,206,328,10
+
+   CONTROL "OK",1004,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,6,191,37,12
 
 End /* controls */
 
@@ -126,7 +125,7 @@ End /* controls */
 
 DZIO014ID 332
 Begin
-   /*  Control Data for List Box JOIN_TABLE_1  */
+   /*  Control Data for List Box JoinTable1  */
    FP_CONTROL_ID,                       "100\0"
    FP_CAPTION,                          "Table Elements\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
@@ -138,16 +137,16 @@ Begin
    FP_SHOW_TITLE,                       FPV_TRUE, "\0"
    FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
    FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
-   FP_COLUMNS_PER_LINE,                 "1\0"
+   FP_COLUMNS_PER_LINE,                 "2\0"
    FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
-   FP_LAST_STATIC_COL,                  "0\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
    FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
    FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
 
-   /*  Control Data for List Box Column TABLE_NAME_WIDGET  */
+   /*  Control Data for List Box Column EntityName  */
    FP_COLUMN_ID,                        "0\0"
-   FP_CAPTION,                          "Join Table\0"
-   FP_SCREEN_LENGTH,                    "18\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "36\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
@@ -156,15 +155,35 @@ Begin
    FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
-   /*  Control Data for List Box JOIN_TABLE_2  */
+   /*  Control Data for List Box Column DZ00707  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box JoinTable2  */
    FP_CONTROL_ID,                       "101\0"
    FP_CAPTION,                          "Table Elements\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
@@ -176,33 +195,41 @@ Begin
    FP_SHOW_TITLE,                       FPV_TRUE, "\0"
    FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
    FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
-   FP_COLUMNS_PER_LINE,                 "1\0"
+   FP_COLUMNS_PER_LINE,                 "2\0"
    FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
-   FP_LAST_STATIC_COL,                  "0\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
    FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
    FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
 
-   /*  Control Data for List Box Column TABLE_NAME_WIDGET  */
+   /*  Control Data for List Box Column EntityName  */
    FP_COLUMN_ID,                        "0\0"
-   FP_CAPTION,                          "Join Table\0"
-   FP_SCREEN_LENGTH,                    "18\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "36\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_CODE,                  "System Proportional\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
-   /*  Control Data for Combobox PRIM_TBL_LST  */
+   /*  Control Data for List Box Column DZ00707  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Combobox PrimTblLst  */
    FP_CONTROL_ID,                       "102\0"
    FP_SCREEN_LENGTH,                    "20\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
@@ -220,7 +247,7 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "5,6\0"
+   FP_LIST_POSITION,                    "5,5\0"
    FP_LIST_WIDTH,                       "72\0"
    FP_LIST_HEIGHT,                      "0\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
@@ -231,7 +258,7 @@ Begin
    FP_DECODE_LENGTH,                    "20\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Combobox SEC_TBL_LST  */
+   /*  Control Data for Combobox SecTblLst  */
    FP_CONTROL_ID,                       "103\0"
    FP_SCREEN_LENGTH,                    "20\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
@@ -249,7 +276,7 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "163,6\0"
+   FP_LIST_POSITION,                    "199,5\0"
    FP_LIST_WIDTH,                       "70\0"
    FP_LIST_HEIGHT,                      "0\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
@@ -260,43 +287,121 @@ Begin
    FP_DECODE_LENGTH,                    "20\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for List Box MAIN_JOIN_LB  */
+   /*  Control Data for List Box MainJoinLB  */
    FP_CONTROL_ID,                       "104\0"
    FP_CAPTION,                          "Join Relationships\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "50\0"
-   FP_DRAW_HORZ_LINES,                  FPV_FALSE, "\0"
-   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_FALSE, "\0"
    FP_SHOW_TITLE,                       FPV_TRUE, "\0"
    FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
    FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
-   FP_COLUMNS_PER_LINE,                 "1\0"
+   FP_COLUMNS_PER_LINE,                 "7\0"
    FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
    FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
    FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
    FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
 
-   /*  Control Data for List Box Column APPLIED_JOIN_ENTRY  */
+   /*  Control Data for List Box Column SecTabBNm  */
    FP_COLUMN_ID,                        "0\0"
-   FP_CAPTION,                          "Dz00815 Applied Join Entry\0"
-   FP_SCREEN_LENGTH,                    "50\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "18\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_CODE,                  "System Proportional\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column DotFill1  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column ELM_ID  */
+   FP_COLUMN_ID,                        "2\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column RelationalOperator  */
+   FP_COLUMN_ID,                        "3\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "12\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "System Proportional\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column SecTabCNm  */
+   FP_COLUMN_ID,                        "4\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "18\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column DotFill2  */
+   FP_COLUMN_ID,                        "5\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column JOIN_ELM_ID  */
+   FP_COLUMN_ID,                        "6\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for Radio Group DZ00820_RELATIONAL_OPERATORS  */
    FP_CONTROL_ID,                       "8005\0"
@@ -364,7 +469,7 @@ End  /*  menus  */
 
 DZIO014AccelID ACCELERATORS PRELOAD
 Begin
-VK_ESCAPE,1001,VIRTKEY
+VK_ESCAPE,1000,VIRTKEY
 VK_DELETE,3001,SHIFT,VIRTKEY
 VK_INSERT,3002,CONTROL,VIRTKEY
 VK_INSERT,3003,SHIFT,VIRTKEY

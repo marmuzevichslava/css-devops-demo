@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZIO013                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -28,8 +28,8 @@ WCBFWD (Hwjgrirh1832_List_Select)
 WCBFWD (Hwjgrirh1840_Double_Click)
 WCBFWD (Hwjgrirh1916_Click)
 WCBFWD (Hwjgrirh1929_Click)
-WCBFWD (Hwjgrirh3252_Click)
 WCBFWD (Hwjgrirh3259_Click)
+WCBFWD (Hwjgrirh1650_Click)
 
 /****************************************************************************
  Window Dispatch Table
@@ -57,8 +57,8 @@ WDGDISPTBL DZIO013WidgDisp[] =
     {Dz00751_FID, FND_DOUBLE_CLICK, Hwjgrirh1840_Double_Click},
     {AddPB_CMD, BUTTON_CLICK, Hwjgrirh1916_Click},
     {DeletePB_CMD, BUTTON_CLICK, Hwjgrirh1929_Click},
-    {OKPB_CMD, BUTTON_CLICK, Hwjgrirh3252_Click},
     {CancelPB_CMD, BUTTON_CLICK, Hwjgrirh3259_Click},
+    {OKPB_CMD, BUTTON_CLICK, Hwjgrirh1650_Click},
     {0,0,0}
 };
 
@@ -70,7 +70,7 @@ FLDDEFTBLENTRY DZIO013FieldDefTbl[] =
 {
     { "ReposDataLB", ReposDataLB_FID },
     { "DZ00751", Dz00751_FID },
-    { "TABLE_NAME_WIDGET", TableNameWidget_FID },
+    { "TableName", TableNameWidget_FID },
     { "", 0}
 };
 
@@ -83,8 +83,8 @@ CMDDEFTBLENTRY DZIO013CommandDefTbl[] =
 {
     { "AddPB", AddPB_CMD },
     { "DeletePB", DeletePB_CMD },
-    { "OKPB", OKPB_CMD },
     { "CancelPB", CancelPB_CMD },
+    { "OKPB", OKPB_CMD },
     { "Cut", Cut_CMD },
     { "Copy", Copy_CMD },
     { "Paste", Paste_CMD },
@@ -204,7 +204,7 @@ WCTFIELD DZIO013WCTFieldTbl[] =
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_FNDENTRYFLD, "TABLE_NAME_WIDGET", TableNameWidget_FID,
+    { WTP_FNDENTRYFLD, "TableName", TableNameWidget_FID,
       TableNameWidget_WID, FND_IT_CHAR,
       SIZEOF(struct _DZIO013WesMap, _TableNameWidgetData),
       18, 0, offsetof(struct _DZIO013WesMap, _TableNameWidgetData),
@@ -229,10 +229,10 @@ WCTCOMMAND DZIO013WCTCommandTbl[] =
     { WTP_PUSHBUTTON, "DeletePB", DeletePB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
-      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
-
     { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_MENU, "EditMN", EditMN_CMD,
@@ -276,7 +276,7 @@ WCTCOMMAND DZIO013WCTCommandTbl[] =
 WINDEFTBLENTRY DZIO013IDWindowDefn =
 {
     "30", DZIO013ID, "", WTP_WESWINDOW,
-    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO013ID,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_HIDDEN | WCR_NON_PROPORTIONAL, DZIO013ID,
     DZIO013AccelID, DZIO013MenuID, WOP_NOICON, 0,
     DZIO013WidgDisp, DZIO013WindDisp, FND_WINCONTEXT_LEN,
     0, 0, &DZIO013WCTHeader, DZIO013WCTFieldTbl, 

@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO013                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZIO013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,297,135
+DZIO013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,329,134
     STYLE 0 
      | WS_CAPTION
      | WS_SYSMENU
@@ -21,54 +21,54 @@ DZIO013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,297,135
     CAPTION "Element Select"
     
 Begin  /* controls */
-   CONTROL "Key Name",100,
+   CONTROL "Table Elements",100,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,18,97,76
+              ,5,17,138,76
 
    CONTROL "Selected Elements",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,173,18,119,76
+              ,205,17,119,76
 
    CONTROL "&Add >>",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,116,32,41,12
+              ,153,31,41,12
 
    CONTROL "<< &Delete",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,116,60,41,12
+              ,153,59,41,12
 
    CONTROL "",5200,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,3,116,276,10
+              ,5,115,276,10
 
    CONTROL "Table:",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,3,6,22,8
+              ,5,1,24,12
 
    CONTROL "",102,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,28,2,82,0
+              ,30,1,82,0
 
-   CONTROL "OK",1002,
+   CONTROL "Cancel",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,2,100,45,12
+              ,55,99,46,12
 
-   CONTROL "Cancel",1003,
+   CONTROL "OK",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,53,100,46,12
+              ,6,99,43,12
 
 End /* controls */
 
@@ -81,11 +81,11 @@ DZIO013ID 332
 Begin
    /*  Control Data for List Box ReposDataLB  */
    FP_CONTROL_ID,                       "100\0"
-   FP_CAPTION,                          "Key Name\0"
+   FP_CAPTION,                          "Table Elements\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
    FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
    FP_SHOW_TITLE,                       FPV_TRUE, "\0"
@@ -106,13 +106,13 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_CODE,                  "Courier\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_CODE,                        "Courier\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
@@ -143,7 +143,7 @@ Begin
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
    FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
    FP_SHOW_TITLE,                       FPV_TRUE, "\0"
@@ -281,7 +281,7 @@ Begin
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
-   /*  Control Data for Entry Field TABLE_NAME_WIDGET  */
+   /*  Control Data for Entry Field TableName  */
    FP_CONTROL_ID,                       "102\0"
    FP_SCREEN_LENGTH,                    "18\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
@@ -331,7 +331,7 @@ End  /*  menus  */
 
 DZIO013AccelID ACCELERATORS PRELOAD
 Begin
-VK_ESCAPE,1003,VIRTKEY
+VK_ESCAPE,1002,VIRTKEY
 VK_DELETE,3001,SHIFT,VIRTKEY
 VK_INSERT,3002,CONTROL,VIRTKEY
 VK_INSERT,3003,SHIFT,VIRTKEY

@@ -232,12 +232,6 @@ SHORT DZIO007RetrieveLayout( _REQUESTHDR *pRequestHdr,
   _FND_ERROR_BLOCK  FndGenErrorBlock;
   _MSG_PARM_BLOCK   ParmBlock;
 
-//  _LAYOUT_REC *pLayoutRecTable;
-//  _ENTITYDATA *pEntityDataTable;
-//  USHORT OffsetTable[ 20 ];
-//  USHORT GroupCLength;
-
-//  USHORT i;
 
   /* JSH: 07/24/93 MODIFIED */
   _MESSAGEOUTPUT  *pMessageInput;
@@ -389,3 +383,6 @@ SHORT DZIO007RetrieveLayout( _REQUESTHDR *pRequestHdr,
 
   return ReturnCode;
 }
+
+
+

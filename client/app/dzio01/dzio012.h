@@ -18,11 +18,22 @@
 **
 ***************************************************************************/
 
+
+char OpenWindow;
+
 #define PRIMTABNM "PrimTabNm"
 #define ALRPREFIX "ALRPrefix"
 #define NULL_STR  ""
 
+#define SECTABB_Char 'B'
+#define SECTABC_Char 'C'
+
+#define SECTABB   "SECTABB"
+#define SECTABC   "SECTABC"
+
 #define INST1	  "INST1"
+
+#define DZIO002X  "DZIO002X"
 
 #define DZIO012X  "DZIO012X"
 #define DZIO013X  "DZIO013X"
@@ -32,7 +43,7 @@
 SHORT	DZIO01FieldSetValue( void * FieldSetName,
                             void * FieldSetValue,
                             USHORT FieldSetSize,
-			    CMN_ARCH_PARM_TYPES);
+			                CMN_ARCH_PARM_TYPES);
 
 SHORT	DZIO01FieldEnable( void * FieldName,
 			    CMN_ARCH_PARM_TYPES);
@@ -53,3 +64,5 @@ SHORT	DZIO01FieldQueryValue( void * FieldQryName,
                               CMN_ARCH_PARM_TYPES);
 
 
+
+WCBFWD( DZIO012XEnableOkPb )

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO005                           *
-*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                          Generated on: Mon Nov 04 17:40:03 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -37,7 +37,14 @@ Begin  /* controls */
               | BS_PUSHBUTTON
               ,120,5,35,12
 
-   CONTROL "Cancel",1001,
+   CONTROL "OK",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+     | BS_DEFPUSHBUTTON
+              ,3,23,38,12
+
+   CONTROL "Cancel",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
@@ -47,12 +54,6 @@ Begin  /* controls */
               FND_ENTRYFIELD,
               WS_VISIBLE
               ,3,36,156,12
-
-   CONTROL "OK",1002,
-              FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
-              | BS_PUSHBUTTON
-              ,3,23,38,12
 
 End /* controls */
 

@@ -47,6 +47,7 @@
 #define NULL_STR  ""
 
 #define FINDPB	  "FindPB"
+#define PBOK	  "OKPB"
 
 #define BOX_TITLE "Key Check"
 

@@ -61,14 +61,12 @@ WCBPROC( DZIO001BusPrdis )
 {
 
     USHORT FndGenRC = 0;
-    _FND_ERROR_BLOCK FndGenErrorBlock;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
 
 
     memset(pBFCD,  0,sizeof(_BFCD) );
 
-    FndGenRC = FndWindowCenter(CBI_hwnd,
-			       FND_WINDOW_DESKTOP,
-			       &FndGenErrorBlock);
+    memset(&(pBFCD->DZIO014Luw), 0, sizeof(pBFCD->DZIO014Luw) );
 
     return FndGenRC;
 }
@@ -114,6 +112,7 @@ WCBPROC( DZIO001BusSaveAsMnClk )
 				NULL,
 				NULL,
 				CMN_ARCH_PARMS);
+
 
 
     return FndGenRC;
@@ -730,16 +729,46 @@ WCBPROC( DZIO001BusSaveMnClk )
 
 /**************************************************************************
 *									  *
-*   Formatting the Primary Table Name and ALR Prefix			  *
+*   Formatting the Table Names and ALR Prefix			  *
 *									  *
 ***************************************************************************/
 
 
-    strncpy(MessageInput->Hdr_DZ0202.PrimTabNm,pBFCD->DZIO01Hdr.PrimTabNm,
-				   sizeof(MessageInput->Hdr_DZ0202.PrimTabNm));
+    strncpy(MessageInput->Hdr_DZ0202.PrimTabNm,
+            pBFCD->DZIO01Hdr.PrimTabNm,
+			sizeof(MessageInput->Hdr_DZ0202.PrimTabNm));
 
-    strncpy(MessageInput->Hdr_DZ0101.Vw_Nm,pBFCD->DZIO01Luw.Dz00713,
-				   sizeof(MessageInput->Hdr_DZ0101.Vw_Nm));
+    strncpy(MessageInput->Hdr_DZ0101.Vw_Nm,
+            pBFCD->DZIO01Luw.Dz00713,
+			sizeof(MessageInput->Hdr_DZ0101.Vw_Nm));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabB ,
+            pBFCD->DZIO012Luw.SecTabB,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabB ));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabBNm ,
+            pBFCD->DZIO012Luw.SecTabBNm ,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabBNm ));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabC ,
+            pBFCD->DZIO012Luw.SecTabC,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabC ));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabCNm ,
+            pBFCD->DZIO012Luw.SecTabCNm ,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabCNm ));
+
+
+/**************************************************************************
+*		                                     							  *
+* Formatting the parameters of tables DZ01TB03 and DZ01TB04               *
+*                                                                         *
+***************************************************************************/
+
+
+    memcpy( &(MessageInput->DZIO013Luw), &(pBFCD->DZIO013Luw), sizeof(_DZIO013LUW) );
+
+    memcpy( &(MessageInput->DZIO014Luw), &(pBFCD->DZIO014Luw), sizeof(_DZIO014LUW) );
 
 
 /**************************************************************************
@@ -922,8 +951,6 @@ WCBPROC( DZIO001BusPrimFindPbClk )
 {
 
     USHORT FndGenRC = 0;
-
-
 
     FndGenRC = DZIO01FieldQueryValue(PRIMTAB,
 				     pBFCD->DZIO01Hdr.PrimTab,
