@@ -1,8 +1,4 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-static WCBPROC(User_Predisplay)
+static WCBPROC(AZCS010BUSUserPredisplay)
 {
 unsigned short FndGenRC = FND_SUCCESS;
 unsigned short ix;
@@ -26,7 +22,7 @@ USHORT usFileCount = 0xFFFF;
 
 /* Get the drive letter for the Generation Path directory */
 
-pColon = strchr(BFCD_CSRMapBFCD->CsrMapGenPath,':');
+pColon = strchr(BFCD_pCSRMapBFCD->CsrMapGenPath,':');
 if(pColon)
   {
    DriveLetter = *(pColon-1);
@@ -35,7 +31,7 @@ if(pColon)
 else
   {
    DriveLetter = 'C';
-   strcpy(szPath, BFCD_CSRMapBFCD->CsrMapGenPath);
+   strcpy(szPath, BFCD_pCSRMapBFCD->CsrMapGenPath);
   }
 
 /* Calculate the Drive Number A=1, B=2 ... */
@@ -77,7 +73,7 @@ while (Continue)
                      *pchTemp = '\0';
 
                  /* Move the filename without extension into the List Box */
-                 LBox._MapLBCdStatusIconicData = CMN_LBROW_STATUS_AVAILABLE;
+                 /*LBox._MapLBCdStatusIconicData = CMN_LBROW_STATUS_AVAILABLE;*/
                  strcpy(LBox._MapLBRequestIDData, FindBuf.achName);
                  FndGenRC = FndLstBoxRowAdd(CBI_hwnd,
                                  "MapLB",
@@ -110,7 +106,7 @@ while (Continue)
      } /* end of while (Continue) loop */
 
  return(CMN_SUCCESS);
-} /* End of function User_Predisplay */
+} /* End of function AZCS010BUSUserPredisplay */
 
 static WCBPROC(LdAZCS010O)
 {
@@ -118,7 +114,7 @@ unsigned short FndGenRC = FND_SUCCESS;
 unsigned short ix=0;
 _FND_ERROR_BLOCK ErrorBlock;
 int RowNumber;
-_SDMapName *pSDMapName;
+_SDMAPNAME *pSDMapName;
 _MapLBRow LBox;
 
 RowNumber = FND_LSTBOX_START;
@@ -159,4 +155,31 @@ pSDMapName = EAB_pWdtOutData;
 
  return(CMN_SUCCESS);
 }
-
+/***********************************************************************
+**
+**  FUNCTION:	AZCS010BUSInitLB
+**
+**  DESCRIPTION:	This function sets the OK pushbutton to default when a row is 
+**                      selected from the listbox.
+**
+**  HISTORY:
+**
+** 03/07/96  mconner  Created
+**
+***********************************************************************/
+
+static WCBPROC(AZCS010BUSInitLB)
+{
+    USHORT FndGenRC = CMN_SUCCESS;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+	FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
+
+	FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                                      "OKPB",
+                                                       &FndGenErrorBlock);
+
+	return (CMN_SUCCESS);
+
+}/*end of AZCS010BUSInitLB */
+

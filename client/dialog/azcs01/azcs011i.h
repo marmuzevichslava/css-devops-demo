@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /******************************************************************************/
 /*                                                                            */
 /*   Header name  :   AZCS004I                                                */
@@ -76,3 +72,4 @@ typedef struct __Services
       _RELATE        *pRelate;                                                  
    }  _AZCS004I;
 #endif                                                                          
+

@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /***********************************************************************
 **
 **                  CUSTOMER SERVICE SYSTEM CSR MODULE
@@ -56,6 +52,8 @@
 
 #include "csrcmn.h"
 #include "mapgen.h"
+/*mdc 1-31-96 must include this for BuildVersionNumber prototype*/
+#include "version.h"
 
 #define  DataType_len 15
 #define _LITERAL_DATA_TYPES enum LITERAL_DATA_TYPES
@@ -298,7 +296,7 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 
       HEAP_CHECK
 
-      BuildVersionNumber(pMessageOutput->EntityData,
+      ReturnCode = BuildVersionNumber(pMessageOutput->EntityData,
                          pMessageOutput->ReplyHdr.RowsReturned,
                          pVersionNumber);
 
@@ -510,7 +508,9 @@ USHORT CsrMapInitItem( _ENTITYDATA *pEntityData, _LAYOUT_REC *pLayoutRec,
                        CMN_ARCH_PARM_TYPES )
 {
   USHORT FndGenRC = 0;
+/*mdc 1-31-96 this var not included in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
+*/
   SHORT i = 0;
 
   /* JSH: 07/01/93 ADDED */
@@ -823,3 +823,4 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
 //  "E0000032", 'E', "E0000032", "E0000032", 't', 'N', -1, -1, "FL",  1, CSR_LONG, 48,  0,  0, -1, 49, 0,
 //  "E0000033", 'E', "E0000033", "E0000033", 't', 'N', -1, -1, "F2",  1, CSR_LONG, 49,  0,  0, -1, 50, 0,
 //};
+

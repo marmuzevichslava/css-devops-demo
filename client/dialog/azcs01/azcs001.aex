@@ -1,8 +1,4 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 **
 **               Customer Service System Architecture Module
 **
@@ -20,6 +16,10 @@
 ** 03/12/93    L. Misfeldt          Modified ELB exit functions to contain
 **                                     example code.
 ** 04/08/93    C.Crampton           Changed function names to 23 characters.
+**
+** 03/19/96    mconner               Changed BFCD_CSRMapBFCD to BFCD_pCSRMapBFCD
+**                                        This syncs the code with the generated copybook.
+**
 ***************************************************************************/
 /***************************************************************************/
 /* Forward declarations for Architecture Exit functions                    */
@@ -514,7 +514,7 @@ AEXPROC (ExitWktCloseAfterSave)
       strcmp( pChildWinInfo->WindowName, "AZCS007" ) == 0 ||
       strcmp( pChildWinInfo->WindowName, "AZCS011" ) == 0 )
   {
-      BFCD_CSRMapBFCD->ChangeFlag = 'Y';
+      BFCD_pCSRMapBFCD->ChangeFlag = 'Y';
   }
 
   /* Open Request Information Window */
@@ -663,11 +663,11 @@ AEXPROC (ExitWktCloseAfterSave)
       /* New map being created so initialize */
       else
       {
-          BFCD_CSRMapBFCD->CKTaskListComplete   = 'N';
-          BFCD_CSRMapBFCD->RDTaskListComplete   = 'N';
-          BFCD_CSRMapBFCD->LKTaskListComplete   = 'N';
-          BFCD_CSRMapBFCD->LDTaskListComplete   = 'N';
-          BFCD_CSRMapBFCD->RPMHTaskListComplete = 'N';
+          BFCD_pCSRMapBFCD->CKTaskListComplete   = 'N';
+          BFCD_pCSRMapBFCD->RDTaskListComplete   = 'N';
+          BFCD_pCSRMapBFCD->LKTaskListComplete   = 'N';
+          BFCD_pCSRMapBFCD->LDTaskListComplete   = 'N';
+          BFCD_pCSRMapBFCD->RPMHTaskListComplete = 'N';
 
       } /* end of else:  New map being created */
 
@@ -726,11 +726,11 @@ AEXPROC (ExitWktCloseAfterSave)
         */
 
        /* A Task List Item has been previously completed */
-       if ( BFCD_CSRMapBFCD->CKTaskListComplete   == 'Y' ||
-            BFCD_CSRMapBFCD->RDTaskListComplete   == 'Y' ||
-            BFCD_CSRMapBFCD->LKTaskListComplete   == 'Y' ||
-            BFCD_CSRMapBFCD->LDTaskListComplete   == 'Y' ||
-            BFCD_CSRMapBFCD->RPMHTaskListComplete == 'Y'  )
+       if ( BFCD_pCSRMapBFCD->CKTaskListComplete   == 'Y' ||
+            BFCD_pCSRMapBFCD->RDTaskListComplete   == 'Y' ||
+            BFCD_pCSRMapBFCD->LKTaskListComplete   == 'Y' ||
+            BFCD_pCSRMapBFCD->LDTaskListComplete   == 'Y' ||
+            BFCD_pCSRMapBFCD->RPMHTaskListComplete == 'Y'  )
        {
            /* Create the Map Comparison window */
            FndGenRC = CmnWindowCreate( "AZCS013",
@@ -1426,3 +1426,4 @@ AEXPROC( CmnArchExitInitialize )
 
   return CMN_SUCCESS;
 } /* End of CmnArchExitInitialize */
+

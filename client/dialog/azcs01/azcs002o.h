@@ -1,15 +1,11 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /******************************************************************************/
 /*                                                                            */
 /*   Header name  :   AZCS002O                                                */
 /*                                                                            */
 /*   Description  :                                                           */
 /*                                                                            */
-/*   Generation Date: 05/23/93                                                */
-/*              Time: 18:47:17                                                */
+/*   Generation Date: 03/18/96                                                */
+/*              Time: 14:42:24                                                */
 /******************************************************************************/
                                                                                 
 /******************************************************************************/
@@ -18,12 +14,15 @@
                                                                                 
 #ifndef   ARC00301_LEN                                                          
 #define   ARC00301_LEN                         10                               
+#define   REQUESTID_LEN                        10                               
 #endif                                                                          
 #ifndef   ARC00302_LEN                                                          
 #define   ARC00302_LEN                         12                               
+#define   REQUESTTYPE_LEN                      12                               
 #endif                                                                          
 #ifndef   ARC00303_LEN                                                          
 #define   ARC00303_LEN                         33                               
+#define   CLIENTLAYOUT_LEN                     33                               
 #endif                                                                          
                                                                                 
 #ifndef _REQUESTINFO_z                                                          
@@ -31,9 +30,10 @@
                                                                                 
    typedef struct __RequestInfo                                                 
    {                                                                            
-      char            RequestID[ARC00301_LEN];                                  
-      char            RequestType[ARC00302_LEN];                                
-      char            ClientLayout[ARC00303_LEN];                               
+      char                RequestID[10];                                        
+      char                RequestType[12];                                      
+      char                ClientLayout[33];                                     
    }  _REQUESTINFO;                                                             
 #endif                                                                          
                                                                                 
+

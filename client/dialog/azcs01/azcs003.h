@@ -1,7 +1,5 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
+#include <malloc.h>
+
 WCBFWD (LdAZCS3O);
 WCBFWD (UnLdAZCS3I);
 WCBFWD (VerifyTranMap);
@@ -21,3 +19,10 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 #define CHANGE_OBJECT_TYPE "CSR Request ID"
 
 #define ADD_TITLE "Add Server/Service Information"
+
+#ifndef LT_RequestTypeUP
+#define LT_RequestTypeUP                    "2"
+#endif
+
+
+

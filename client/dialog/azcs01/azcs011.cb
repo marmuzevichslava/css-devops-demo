@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
  short FillGroupLB(char *LBName,
                    _LAYOUT_REC *pLayout,
                    short NumRec,
@@ -9,16 +5,70 @@
                    CMN_ARCH_PARM_TYPES);
 
 
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS011BUSAboutMNClick}
+**
+**  DESCRIPTION      : This function creates the About window for the applicaition.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Michael D. Conner
+**
+**  DATE CREATED     : 03/11/96
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  03/15/96  mconner                   Copied from AZCS001BUSAboutMNClick
+**
+***************************************************************************/
+static WCBPROC(AZCS011BUSAboutMNClick)
+{
+    SHORT FndGenRC = CMN_SUCCESS;
+    SHORT nRC      = CMN_SUCCESS;
+    CHAR WindowName[]   = "AZCS014";
+    CHAR InstanceName[] = "";
+
+    HEAP_CHECK
+
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                NULL,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* End of AZCS011BUSAboutMNClick */
+
+
+
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  UserPredisplay                                                   */
+/*  AZCS011BUSUserPredisplay                                                   */
 /*                                                                   */
+/* HISTORY:                                                                              
+**
+** 03/06/96 mconner  Replaced strcpy to WES field with FndFieldSetValue
+**
+**/
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (UserPredisplay)
+static WCBPROC (AZCS011BUSUserPredisplay)
 {
      unsigned short           FndGenRC = FND_SUCCESS;
      _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -33,9 +83,27 @@ static WCBPROC (UserPredisplay)
 /* Fill the WES fields for client and server layout names            */
 /*********************************************************************/
 
-
+/*mdc - 03/06/96 - Changed for standards compliance
   strcpy(ClientLayoutData, pAzcs004i->ClientLayout);
+*/
+FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                 "CLIENTLAYOUT",
+                                 strlen(pAzcs004i->ClientLayout),
+                                 pAzcs004i->ClientLayout,
+                                 &FndGenErrorBlock);
+
+/*mdc - 03/06/96 - Changed for standards compliance
   strcpy(ServiceLayoutNameData,pAzcs004i->Services[0].ServerLayout);
+*/
+FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                 "ServiceLayoutName",
+                                 strlen(pAzcs004i->Services[0].ServerLayout),
+                                 pAzcs004i->Services[0].ServerLayout,
+                                 &FndGenErrorBlock);
+
+
+
+
   pWindContextData->WCD.CurrentServiceIndex = 0;
 
   FndGenRC = FndValueInit( CBI_hwnd,
@@ -117,12 +185,12 @@ static WCBPROC (UserPredisplay)
   /* Setup the Relationship stuff                                      */
   /*********************************************************************/
 
-
+/*mdc 03/04/96 do not want ApplyPB default here */
    /* Make the apply pushbutton the default */
-   FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+ /*  FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
                                           "ApplyPB",
                                           &FndGenErrorBlock);
-
+ */
 
   /*
   ** Make the List Box Offsets 0
@@ -155,12 +223,10 @@ static WCBPROC (UserPredisplay)
                                        &FndGenErrorBlock);
       }
 
-
-  FndGenRC = FndFieldSetStatus( CBI_hwnd,
-                                "StatFlag",
-                                STS_INVALID,
-                                &FndGenErrorBlock);
-
+  /*mdc 03/04/96 Changed to this and added Fl Window Mod field
+                      to azcs011 window to monitor window validation
+  */
+  FndGenRC = CmnWindowSetApplInvalid (CMN_ARCH_PARMS );
 
   FndGenRC = ServiceDataComplete(pEventInfo,
                            pEAIA,
@@ -168,6 +234,18 @@ static WCBPROC (UserPredisplay)
                            pWesMap,
                            pWindContextData,
                            pABHI );
+
+ /***************************************************************************************
+   * Set the window to valid by calling CmnWindowSetDataModified
+   * mdc - 03/04/96 - Added this because Architecture Validation field was added to
+   *                  window.
+   ***************************************************************************************/
+   FndGenRC = CmnWindowSetDataModified ( CMN_ARCH_PARMS );
+
+   if (FndGenRC != CMN_SUCCESS )
+   {
+	return(CMN_FAIL);
+   }
 
 
   return(CMN_SUCCESS);
@@ -177,13 +255,13 @@ static WCBPROC (UserPredisplay)
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*        MoveLB1                                                    */
+/*        AZCS011BusMoveLB1                                                    */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (MoveLB1)
+static WCBPROC (AZCS011BUSMoveLB1)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 unsigned short           RowNum;
@@ -282,18 +360,18 @@ return(CMN_SUCCESS);
 
 
 
-} /* end of MoveLB1() */
+} /* end of AZCS011BUSMoveLB1() */
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*    MoveLB2                                                        */
+/*    AZCS011BUSMoveLB2                                                        */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (MoveLB2)
+static WCBPROC (AZCS011BUSMoveLB2)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 unsigned short           RowNum;
@@ -394,13 +472,13 @@ return(CMN_SUCCESS);
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*       NewService                                                  */
+/*       AZCS011BUSNewService                                                  */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (NewService)
+static WCBPROC (AZCS011BUSNewService)
 {
   int index=0;
   int ServiceIndex=-1;
@@ -433,19 +511,19 @@ static WCBPROC (NewService)
 
 return(CMN_SUCCESS);
 
-} /* end of NewService*/
+} /* end of AZCS011BUSNewService*/
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*   RemoveRelationship                                              */
+/*   AZCS011BUSRemoveRelationship                                              */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (RemoveRelationship)
+static WCBPROC (AZCS011BUSRemoveRelationship)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -559,18 +637,18 @@ ServiceDataComplete(pEventInfo,
                     pABHI);
 
  return(CMN_SUCCESS);
-} /* end of function RemoveRelationship */
+} /* end of function AZCS011BUSRemoveRelationship */
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*       CreateRelationship                                          */
+/*       AZCS011BUSCreateRelationship                                          */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(CreateRelationship)
+static WCBPROC(AZCS011BUSCreateRelationship)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -687,7 +765,7 @@ else
                            pABHI);
 
  return(CMN_SUCCESS);
-} /* end of function RemoveRelationship */
+} /* end of function AZCS011BUSRemoveRelationship */
 
 /*********************************************************************/
 /*********************************************************************/
@@ -1029,6 +1107,12 @@ short                    ClientElmnt;
                                  "RemovePB",
                                  &FndGenErrorBlock);
 
+        /* mdc - 03/04/96 - make the Remove pushbutton the default.*/
+        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "RemovePB",
+                                          &FndGenErrorBlock);
+
+
         FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
@@ -1043,6 +1127,13 @@ short                    ClientElmnt;
         FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
+
+        /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
        }
 
 
@@ -1114,6 +1205,12 @@ int                     *pCellData;
             FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
+
+            /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+            FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
 
             FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "RemovePB",
@@ -1220,9 +1317,16 @@ short                    FndGenRBValueShort = 0;
                             pABHI );
 */
 
-            FndGenRC = FndCommandEnable(CBI_hwnd,
+          FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
+
+
+           FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
 
             FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "RemovePB",
@@ -1234,6 +1338,13 @@ short                    FndGenRBValueShort = 0;
             FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
+
+             /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+             FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
 
             FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "RemovePB",
@@ -1289,13 +1400,13 @@ short                    FndGenRBValueShort = 0;
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/* SaveToBFCD                                                        */
+/* AZCS011BUSSaveToBFCD                                                        */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(SaveToBFCD)
+static WCBPROC(AZCS011BUSSaveToBFCD)
 {
  int ix;
  _RELATE_RPMH *pOldBFCD;
@@ -1329,7 +1440,7 @@ static WCBPROC(SaveToBFCD)
 
 return(CMN_SUCCESS);
 
-} /* end of function SaveToBFCD  */
+} /* end of function AZCS011BUSSaveToBFCD  */
 
 /*********************************************************************/
 /*********************************************************************/
@@ -1638,13 +1749,13 @@ return(CMN_FAIL);
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/* ChangeClientType                                                  */
+/* AZCS011BUSChangeClientType                                                  */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(ChangeClientType)
+static WCBPROC(AZCS011BUSChangeClientType)
 {
 
 unsigned short           FndGenRC = FND_SUCCESS;
@@ -1669,18 +1780,18 @@ short                    FndGenRBValueShort = 0;
 
 
 return(CMN_SUCCESS);
-} /* END OF FUNCTION ChangeClientType */
+} /* END OF FUNCTION AZCS011BUSChangeClientType */
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/* ChangeServiceType                                                 */
+/* AZCS011BUSChangeServiceType                                                 */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(ChangeServiceType)
+static WCBPROC(AZCS011BUSChangeServiceType)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -1713,9 +1824,16 @@ for (ix=0; ix < pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows; ix++)
 
     Occurs1Data = 0;
 
-    FndGenRC = FndCommandEnable(CBI_hwnd,
+ /*mdcmdc   FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
+
+   
+    FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+*/
 
     FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "RemovePB",
@@ -1723,20 +1841,20 @@ for (ix=0; ix < pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows; ix++)
 
 
 return(CMN_SUCCESS);
-} /* END OF FUNCTION ChangeClientType */
+} /* END OF FUNCTION AZCS011BUSChangeClientType */
 
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  ClntLng                                                          */
+/*  AZCS011BUSClntLng                                                          */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (ClntLng)
+static WCBPROC (AZCS011BUSClntLng)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -1758,7 +1876,7 @@ else
      return(CMN_FAIL);
     }
 
-FndGenRC = FillClientLB(pEventInfo,
+FndGenRC = AZCS011BUSFillClientLB(pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -1775,20 +1893,20 @@ FndGenRC = FillStatusRM(pEventInfo,
 
 
 return(CMN_SUCCESS);
-} /* end of function ClntLng */
+} /* end of function AZCS011BUSClntLng */
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  SrvLng                                                           */
+/*  AZCS011BUSSrvLng                                                           */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
 
-static WCBPROC (SrvLng)
+static WCBPROC (AZCS011BUSSrvLng)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -1830,19 +1948,19 @@ FndGenRC = FillStatusRM(pEventInfo,
 
 return(CMN_SUCCESS);
 
-}/* end of function SrvLng */
+}/* end of function AZCS011BUSSrvLng */
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  FillClientLB                                                     */
+/*  AZCS011BUSFillClientLB                                                     */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(FillClientLB)
+static WCBPROC(AZCS011BUSFillClientLB)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 unsigned short   usNumRows;
@@ -1906,7 +2024,7 @@ else
 
 
 return(CMN_SUCCESS);
-} /* end of function FillClientLB */
+} /* end of function AZCS011BUSFillClientLB */
 
 
 /*********************************************************************/
@@ -2255,6 +2373,7 @@ static WCBPROC(ServiceDataComplete)
  short FndGenRC;
  _FND_ERROR_BLOCK FndGenErrorBlock;
 
+
  for(servx=0; servx < pBFCD->pCSRMapBFCD->NumServices; servx++)
     {
      for (elmntx=0; elmntx < pBFCD->pCSRMapBFCD->ServiceInfoTable[servx].NumReposServiceRows; elmntx++)
@@ -2273,21 +2392,25 @@ static WCBPROC(ServiceDataComplete)
                 pWindContextData->WCD.ServiceInfoTable[servx].pRepeatingMaps[elmntx].SingleOccurence != 'Y' &&
                 pBFCD->pCSRMapBFCD->ServiceInfoTable[servx].DeleteFlag == FALSE)
               {
-                FndGenRC = FndFieldSetStatus( CBI_hwnd,
-                                  "StatFlag",
-                                  STS_INVALID,
-                                  &FndGenErrorBlock);
+                /*mdc 03/04/96 changed call to this and added Fl Window Mod
+                                    to azcs011 window to monitor window validation
+                */
+                FndGenRC = CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
 
                 return(CMN_SUCCESS);
                }
 
           }
     }
+/*mdc 03/04/96 Same as above on line 2270 */
+FndGenRC = CmnWindowSetApplValid ( CMN_ARCH_PARMS );
 
-FndGenRC = FndFieldSetStatus( CBI_hwnd,
-                              "StatFlag",
-                              STS_VALID,
-                              &FndGenErrorBlock);
+/* mdc - 03/04/96 - make the OK pushbutton the default.*/
+ FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "OKPB",
+                                          &FndGenErrorBlock);
+
+
 
 return(CMN_SUCCESS);
 
@@ -2339,7 +2462,7 @@ static WCBPROC(Azcs011busrlb01elbpagedown)
        {
         pWindContextData->WCD.ClientLBOffset += NUMRLB01ELBROWS;
 
-        FndGenRC = FillClientLB(pEventInfo,
+        FndGenRC = AZCS011BUSFillClientLB(pEventInfo,
                                 pEAIA,
                                 pBFCD,
                                 pWesMap,
@@ -2399,7 +2522,7 @@ static WCBPROC(Azcs011busrlb01elbpageup)
        {
         pWindContextData->WCD.ClientLBOffset -= NUMRLB01ELBROWS;
 
-        FndGenRC = FillClientLB(pEventInfo,
+        FndGenRC = AZCS011BUSFillClientLB(pEventInfo,
                                 pEAIA,
                                 pBFCD,
                                 pWesMap,
@@ -2792,7 +2915,7 @@ static short LoadClientElmnt(short ClientElmnt, CMN_ARCH_PARM_TYPES)
       /*
       ** Fill the listbox
       */
-      FndGenRC =  FillClientLB (pEventInfo,
+      FndGenRC =  AZCS011BUSFillClientLB (pEventInfo,
                                 pEAIA,
                                 pBFCD,
                                 pWesMap,
@@ -2892,4 +3015,4 @@ static short LoadServiceElmnt(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
 
 
 
-
+

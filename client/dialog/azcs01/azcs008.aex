@@ -1,8 +1,4 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 **
 **               Customer Service System Architecture Module
 **
@@ -299,7 +295,9 @@ AEXPROC (ExitWktCloseAfterCancel)
 AEXPROC (ExitElbRegister)
 {
  unsigned short FndGenRC;
+/*mdc 1-31-96 this var not used in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
+*/
  short rc=0;
  _CMNELBREGPARMS Parms;
 
@@ -381,7 +379,9 @@ AEXPROC (ExitElbRegister)
 AEXPROC (ExitElb1CloseAfterSave)
 {
  short FndGenRC = FND_SUCCESS;
+/*MDC 1-31-96 THIS VAR NOT USED IN THIS FUNCTION
   _FND_ERROR_BLOCK FndGenErrorBlock;
+*/
  _MapLBRow NewRow;
  short ix=0;
 
@@ -389,7 +389,7 @@ AEXPROC (ExitElb1CloseAfterSave)
 /* Put the data that was added in window AZCS010 into the Listbox */
 /******************************************************************/
 
-    _SDMapName *pSDMapName;
+    _SDMAPNAME *pSDMapName;
 
 
     pSDMapName = CMN_ELB_CHILD_DATA;
@@ -496,8 +496,9 @@ AEXPROC (ExitElb1CloseAfterCncl)
 
 AEXPROC (ExitElb1BuildInstName)
 {
-
+/*mdc 1-31-96 this var not used in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
+*/
   short FndGenRC=0;
 
   FndGenRC = CmnElbAssignChgWinInstName ("INST1", CMN_ARCH_PARMS);
@@ -545,7 +546,9 @@ AEXPROC (ExitElb1BuildInitData)
 
  char Init[] = "GoodLuck";
  USHORT FndGenRC=0;
+/*mdc 1-31-96 this var not used in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
+*/
 
   /* CSC: ADDED 06/18/93 */
   HEAP_CHECK
@@ -597,7 +600,9 @@ AEXPROC (ExitElb1BuildInitData)
 AEXPROC (ExitElb1BuildDelData)
 {
   SHORT FndGenRC;
+/*mdc 1-31-96 this var not used in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
+*/
   _MapLBRow Row;
 
 
@@ -669,3 +674,4 @@ AEXPROC( CmnArchExitInitialize )
 
   return (CMN_SUCCESS);
 } /* End of CmnArchExitInitialize */
+

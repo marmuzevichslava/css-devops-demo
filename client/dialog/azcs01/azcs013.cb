@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 #define STACKSIZE 51200
 VOID FileOut( CHAR *Text );
 
@@ -208,7 +204,7 @@ static WCBPROC(AZCS013BusPredisplay)
 
     nRC = _beginthread( (void (_cdecl _FAR_ *) (void _FAR_ *))CompareLayouts,
                          NULL,
-                         STACKSIZE,
+			 (USHORT) STACKSIZE,
                          (VOID *) pSTDParms );
 
     HEAP_CHECK
@@ -527,7 +523,9 @@ VOID CompareLayouts(_STDParms *pSTDParms)
     _LAYOUT_REC *pSavedLayout;
     _BFCD * pBFCD;
     _FND_ERROR_BLOCK  FndGenErrorBlock;
+/*mdc 1-31-96 this var not used in this funtion
     FILE *fptr;
+*/
 
 //    HEAP_CHECK_BEEP
     if (_heapchk() != _HEAPOK) { DosBeep(55,100); }
@@ -3325,3 +3323,4 @@ VOID FileOut( CHAR *Text )
   DosSleep( 100 );
   return;
 }
+

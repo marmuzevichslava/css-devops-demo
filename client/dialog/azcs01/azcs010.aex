@@ -1,8 +1,4 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 **
 **               Customer Service System Architecture Module
 **
@@ -98,7 +94,7 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
 AEXPROC (ExitWdtSetDataLength)
 {
 
-  EAB_pAwdList->DataLength = sizeof( _SDMapName) * MAX_SD;
+  EAB_pAwdList->DataLength = sizeof( _SDMAPNAME) * MAX_SD;
 
 
   return CMN_SUCCESS;

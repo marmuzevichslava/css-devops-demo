@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /*****************************************************************
 **
 **        CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -52,8 +48,10 @@
 **
 **  07/18/94    CCRAMPTO               Add INCL_AGRWN01 so C1CPRIV will not
 **					get errors.
-**  01/10/96	CWOODS		       Modify GenerateMap to remove
-**				       temp file created.
+**
+** 01-31-96    MCONNER		      moved CSSr map includes to precede
+**				      Architecture includes to prevent
+**				      redefinition of _BFCD
 ******************************************************************/
 
 /**************************************************************************
@@ -62,6 +60,7 @@
 **
 ***************************************************************************/
 #define  INCL_DOS
+#define WINDOWMOD
 #include <os2.h>
 
 /**************************************************************************
@@ -95,6 +94,18 @@
 
 /**************************************************************************
 **
+**   CSR Map Generator #includes
+**
+***************************************************************************/
+/*mdc 03/20/96 these are already included in azcs01b.gnb
+#include "csrcmn.h"
+#include "mapgen.h"
+*/
+#include "azcs01b.gnb"
+#include "AZCS003.GNH"
+
+/**************************************************************************
+**
 **   C1/C Architecture #include
 **
 ***************************************************************************/
@@ -104,15 +115,6 @@
 #define  INCL_AGRWN01
 #include <c1c.h>
 
-/**************************************************************************
-**
-**   CSR Map Generator #includes
-**
-***************************************************************************/
-#include "csrcmn.h"
-#include "mapgen.h"
-#include "azcs01b.gnb"
-#include "AZCS003.GNH"
 
 /**************************************************************************
 **
@@ -153,14 +155,12 @@ SHORT MapDataLength;
 **    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
 **  --------      ----------     -----     ---------------------
 **  06/09/93      J. Looney                Original Code
-**  01/10/96	  CWOODS		   Add Remove Command to
-**					   delete temp file created.
+**
 ******************************************************************/
 
 USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 {
     CHAR CopyCommand[_COPY_COMMAND_LEN];
-    CHAR RmCommand[_RM_COMMAND_LEN];
     SHORT NumberClosed;
     SHORT i;
     SHORT j;
@@ -175,7 +175,7 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 
     MapDataLength = 0;
 
-    sprintf(TmpFileNm, "%s\\%s", BFCD_CSRMapBFCD->CsrMapGenPath, MAP_TMP_FILE);
+    sprintf(TmpFileNm, "%s\\%s", BFCD_pCSRMapBFCD->CsrMapGenPath, MAP_TMP_FILE);
 
     /* Open the temporary map file. */
     if (( TmpFile = fopen( TmpFileNm,"w" )) == NULL )
@@ -196,48 +196,48 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
     }
 
 
-    for ( i = 0; i < BFCD_CSRMapBFCD->NumServices; i++ )
+    for ( i = 0; i < BFCD_pCSRMapBFCD->NumServices; i++ )
     {
       /* Check if Service is deleted */
-      if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
+      if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
       {
          /* if deleted, continue onto the next service */
          continue;
       }
 
-      if ( strcmp( BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceType,
+      if ( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceType,
                    LT_Primary ) == 0 )
       {
 
-         FndGenRC = GenerateService ( BFCD_CSRMapBFCD->ServiceInfoTable[i].pReposServiceLayoutTable,
-                                      BFCD_CSRMapBFCD->ClientInfo.pReposClientLayoutTable,
-                                      BFCD_CSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps,
-                                      BFCD_CSRMapBFCD->ServiceInfoTable[i].pCompareKeys,
-                                      BFCD_CSRMapBFCD->ServiceInfoTable[i].pReturnData,
-                                      BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadKeys,
-                                      BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadData,
+         FndGenRC = GenerateService ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReposServiceLayoutTable,
+                                      BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable,
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps,
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].pCompareKeys,
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReturnData,
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys,
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData,
                                       i,
-                                      BFCD_CSRMapBFCD->ServiceInfoTable );
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable );
 
-         if (( strcmp( BFCD_CSRMapBFCD->ServiceInfoTable[i].AlternateService,
+         if (( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService,
                "NULL" ) != 0 ))
          {
             /* Search for Alternate Service */
-            for ( j = 0; j < BFCD_CSRMapBFCD->NumServices; j++ )
+            for ( j = 0; j < BFCD_pCSRMapBFCD->NumServices; j++ )
             {
-                if (( strcmp( BFCD_CSRMapBFCD->ServiceInfoTable[j].ServiceLayoutName,
-                      BFCD_CSRMapBFCD->ServiceInfoTable[i].AlternateService )
+                if (( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[j].ServiceLayoutName,
+                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService )
                       == 0 ))
                 {
-                  FndGenRC = GenerateService ( BFCD_CSRMapBFCD->ServiceInfoTable[j].pReposServiceLayoutTable,
-                                               BFCD_CSRMapBFCD->ClientInfo.pReposClientLayoutTable,
-                                               BFCD_CSRMapBFCD->ServiceInfoTable[j].pRepeatingMaps,
-                                               BFCD_CSRMapBFCD->ServiceInfoTable[j].pCompareKeys,
-                                               BFCD_CSRMapBFCD->ServiceInfoTable[j].pReturnData,
-                                               BFCD_CSRMapBFCD->ServiceInfoTable[j].pLoadKeys,
-                                               BFCD_CSRMapBFCD->ServiceInfoTable[j].pLoadData,
+                  FndGenRC = GenerateService ( BFCD_pCSRMapBFCD->ServiceInfoTable[j].pReposServiceLayoutTable,
+                                               BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable,
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable[j].pRepeatingMaps,
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable[j].pCompareKeys,
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable[j].pReturnData,
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable[j].pLoadKeys,
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable[j].pLoadData,
                                                j,
-                                               BFCD_CSRMapBFCD->ServiceInfoTable );
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable );
                   break;
                 } /* end of 3rd if */
 
@@ -249,7 +249,7 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 
     } /* end of outer for loop */
 
-    if ( BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy > 0 )
+    if ( BFCD_pCSRMapBFCD->ClientInfo.NumSearchDestroy > 0 )
     {
        WriteSDM( CMN_ARCH_PARMS );
     }
@@ -275,17 +275,6 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                           FileNm );
 
    FndGenRC = system(CopyCommand);
-
-    /* CWOODS 01/10/96 : Remove temp file */
-    FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
-			  RmCommand,
-			  _RM_COMMAND_LEN,
-			  2,
-			  "RM ",
-			  TmpFileNm);
-
-   FndGenRC = system(RmCommand);
-
 
 } /* end of GenerateMap */
 
@@ -607,7 +596,7 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(CK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -668,7 +657,7 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(CK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -971,7 +960,7 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -1023,7 +1012,7 @@ USHORT WriteLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -1234,7 +1223,7 @@ USHORT WriteLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LD[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -1286,7 +1275,7 @@ USHORT WriteLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LD[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -1720,7 +1709,7 @@ USHORT WriteRPCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(CK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -1784,7 +1773,7 @@ USHORT WriteRPCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(CK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -2102,7 +2091,7 @@ USHORT WriteRPLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -2157,7 +2146,7 @@ USHORT WriteRPLK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LK[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LK[Index].LiteralValue) + 1)),
                                  LK[Index].LiteralUsed,
                                  LK[Index].LiteralValue,
                                  DataType );
@@ -2380,7 +2369,7 @@ USHORT WriteRPLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LD[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -2435,7 +2424,7 @@ USHORT WriteRPLD( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-                                     strlen(LD[Index].LiteralValue) + 1),
+				     ((SHORT) strlen(LD[Index].LiteralValue) + 1)),
                                  LD[Index].LiteralUsed,
                                  LD[Index].LiteralValue,
                                  DataType );
@@ -2590,9 +2579,9 @@ USHORT WriteRMH( CMN_ARCH_PARM_TYPES )
                             FileNm,
                             _CSR_MAP_FILENAME_LEN,
                             5,
-                            BFCD_CSRMapBFCD->CsrMapGenPath,
+                            BFCD_pCSRMapBFCD->CsrMapGenPath,
                             "\\",
-                            BFCD_CSRMapBFCD->ClientInfo.ReqId,
+                            BFCD_pCSRMapBFCD->ClientInfo.ReqId,
                             ".",
                             CSR_MAP_GEN_FILE_EXT );
 
@@ -2615,11 +2604,11 @@ USHORT WriteRMH( CMN_ARCH_PARM_TYPES )
        return( CMN_FAIL );
     }
 
-    if ( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "1" ) == 0 )
+    if ( strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "1" ) == 0 )
     {
         strncpy( ReqType, "INQUIRY", _REQ_TYPE_LEN );
     }
-    else if ( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "2" ) == 0 )
+    else if ( strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "2" ) == 0 )
     {
         strncpy( ReqType, "LUW", _REQ_TYPE_LEN );
     }
@@ -2629,11 +2618,11 @@ USHORT WriteRMH( CMN_ARCH_PARM_TYPES )
     fprintf( Stream, RMH_LINE_2 );
     fprintf( Stream, RMH_LINE_3 );
     fprintf( Stream, RMH_LINE_4,
-             BFCD_CSRMapBFCD->ClientInfo.ReqId,
+             BFCD_pCSRMapBFCD->ClientInfo.ReqId,
              ReqType,
-             BFCD_CSRMapBFCD->ClientInfo.pReposClientLayoutTable[0].ItemCLength,
+             BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable[0].ItemCLength,
              MapDataLength,
-             BFCD_CSRMapBFCD->ClientInfo.Version );
+             BFCD_pCSRMapBFCD->ClientInfo.Version );
 
     return( CMN_SUCCESS );
 
@@ -2779,3 +2768,4 @@ if (ServiceLayout.Precision > 0)
 return( CMN_SUCCESS );
 
 } /* End of function FormatHighValues */
+

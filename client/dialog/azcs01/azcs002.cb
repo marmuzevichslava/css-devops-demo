@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 
 /***************************************************************************
 **
@@ -94,7 +90,7 @@ static WCBPROC (ChkForMap)
                           FileNm,
                           _CSR_MAP_FILENAME_LEN,
                           5,
-                          BFCD_CSRMapBFCD->CsrMapSavePath,
+                          BFCD_pCSRMapBFCD->CsrMapSavePath,
                           "\\",
                           RequestIDData,
                           ".",
@@ -113,13 +109,13 @@ static WCBPROC (ChkForMap)
         fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
 
         sscanf( CurLine,CSR_MAP_REQ_HEADER_FORMAT_STR,
-                d1,d2,BFCD_CSRMapBFCD->ClientInfo.ReqId,
-                d3,BFCD_CSRMapBFCD->ClientInfo.ClientLayoutName,
-                d4,BFCD_CSRMapBFCD->ClientInfo.ReqType,
-                d5,&BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy,
-                d6,&BFCD_CSRMapBFCD->ClientInfo.NumClientRows,
-                d7,&BFCD_CSRMapBFCD->NumServices,
-                d8,&BFCD_CSRMapBFCD->ClientInfo.Version );
+                d1,d2,BFCD_pCSRMapBFCD->ClientInfo.ReqId,
+                d3,BFCD_pCSRMapBFCD->ClientInfo.ClientLayoutName,
+                d4,BFCD_pCSRMapBFCD->ClientInfo.ReqType,
+                d5,&BFCD_pCSRMapBFCD->ClientInfo.NumSearchDestroy,
+                d6,&BFCD_pCSRMapBFCD->ClientInfo.NumClientRows,
+                d7,&BFCD_pCSRMapBFCD->NumServices,
+                d8,&BFCD_pCSRMapBFCD->ClientInfo.Version );
 
 
         /* Close the file */
@@ -128,10 +124,10 @@ static WCBPROC (ChkForMap)
         FndGenRC = FndFieldSetValue( CBI_hwnd,
                                      "CLIENTLAYOUT",
                                      sizeof( ClientLayoutData ),
-                                     BFCD_CSRMapBFCD->ClientInfo.ClientLayoutName,
+                                     BFCD_pCSRMapBFCD->ClientInfo.ClientLayoutName,
                                      &FndGenErrorBlock );
 /* CSC: CHANGED 07/21/93 */
-        if( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "INQUIRY" ) == 0 )
+        if( strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "INQUIRY" ) == 0 )
           {
           FndGenRC = FndValueEnableItem( CBI_hwnd,
                                          "REQUESTTYPE",
@@ -195,4 +191,4 @@ static WCBPROC (ChkForMap)
 
 }
 
-
+

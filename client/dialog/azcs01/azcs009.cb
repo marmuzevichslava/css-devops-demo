@@ -1,11 +1,7 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-static WCBPROC (UserPredisplay)
+static WCBPROC (AZCS009BUSUserPredisplay)
 {
- strcpy(SaveDirData, BFCD_CSRMapBFCD->CsrMapSavePath);
- strcpy(GenDirData, BFCD_CSRMapBFCD->CsrMapGenPath);
+ strcpy(SaveDirData, BFCD_pCSRMapBFCD->CsrMapSavePath);
+ strcpy(GenDirData, BFCD_pCSRMapBFCD->CsrMapGenPath);
 
  return(CMN_SUCCESS);
 }
@@ -16,21 +12,33 @@ static WCBPROC (ChkSaveDir)
   FILE *Stream;
   _FND_ERROR_BLOCK  ErrorBlock;
   short FndGenRC;
+/*mdc 1-31-96 this var is not used in this function
   USHORT SelectedButton;
+*/
   CHAR FileNm[_CSR_MAP_FILENAME_LEN] = "";
+  CHAR sPath[_PATH_LEN + 1] = "";
 
+/*mdc  03/14/96 - This code pops the path into the BFCD right or wrong.
+                       Changed to more closely follow standards
   FndGenRC = FndFieldQueryValue( CBI_hwnd,
                       "SaveDir",
                       _PATH_LEN,
-                      BFCD_CSRMapBFCD->CsrMapSavePath,
+                      BFCD_pCSRMapBFCD->CsrMapSavePath,
                       &ErrorBlock );
+*/
+
+   FndGenRC = FndFieldQueryValue(CBI_hwnd,
+                                      "SaveDir",
+                                      _PATH_LEN,
+                                      (void *) sPath,
+                                      &ErrorBlock);
 
   /* Obtain file name */
   FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
                         FileNm,
                         _CSR_MAP_FILENAME_LEN,
                         3,
-                        BFCD_CSRMapBFCD->CsrMapSavePath,
+                        sPath,
                         "\\",
                         MAP_TMP_FILE );
 
@@ -48,20 +56,25 @@ static WCBPROC (ChkSaveDir)
                            &ErrorBlock );
 */
 
-     FndFieldSetStatus( CBI_hwnd,
+     FndGenRC = FndFieldSetStatus( CBI_hwnd,
                         "SaveDir",
                         STS_INVALID,
                         &ErrorBlock );
+
 
      return( CMN_FAIL );
 
   }
   else
   {
-     FndFieldSetStatus( CBI_hwnd,
+     FndGenRC = FndFieldSetStatus( CBI_hwnd,
                         "SaveDir",
                         STS_VALID,
                         &ErrorBlock );
+
+    FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+                                                 "OKPB",
+                                                 &ErrorBlock);
 
      fclose( Stream );
      remove( FileNm );
@@ -75,14 +88,28 @@ static WCBPROC (ChkGenDir)
   _FND_ERROR_BLOCK  ErrorBlock;
   short FndGenRC;
   CHAR FileNm[_CSR_MAP_FILENAME_LEN] = "";
+  CHAR sPath[_PATH_LEN + 1] = "";
+
+/*mdc 1-31-96 this var not used in this function
   USHORT SelectedButton;
+*/
   FILE *Stream;
 
+/*mdc 03/14/96 This code pops the directory path into the BFCD right or wrong.
+                    Changed to more closely follow standards.
   FndGenRC = FndFieldQueryValue( CBI_hwnd,
                       "GenDir",
                       _PATH_LEN,
-                      BFCD_CSRMapBFCD->CsrMapGenPath,
+                      BFCD_pCSRMapBFCD->CsrMapGenPath,
                       &ErrorBlock );
+*/
+
+   FndGenRC = FndFieldQueryValue(CBI_hwnd,
+                                      "GenDir",
+                                      _PATH_LEN,
+                                      (void *) sPath,
+                                      &ErrorBlock);
+
 
 
   /* Obtain file name */
@@ -90,7 +117,7 @@ static WCBPROC (ChkGenDir)
                         FileNm,
                         _CSR_MAP_FILENAME_LEN,
                         3,
-                        BFCD_CSRMapBFCD->CsrMapGenPath,
+                        sPath,
                         "\\",
                         MAP_TMP_FILE );
 
@@ -107,7 +134,7 @@ static WCBPROC (ChkGenDir)
                            &SelectedButton,
                            &ErrorBlock );
 */
-     FndFieldSetStatus( CBI_hwnd,
+     FndGenRC = FndFieldSetStatus( CBI_hwnd,
                         "GenDir",
                         STS_INVALID,
                         &ErrorBlock );
@@ -117,10 +144,14 @@ static WCBPROC (ChkGenDir)
   }
   else
   {
-     FndFieldSetStatus( CBI_hwnd,
+     FndGenRC = FndFieldSetStatus( CBI_hwnd,
                         "GenDir",
                         STS_VALID,
                         &ErrorBlock );
+
+    FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+                                                 "OKPB",
+                                                  &ErrorBlock);
 
      fclose( Stream );
      remove( FileNm );
@@ -129,11 +160,65 @@ static WCBPROC (ChkGenDir)
 
   return(CMN_SUCCESS);
 }
+/**F*************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS009BUSSaveToBFCD
+**
+**  DESCRIPTION      : This function saves the directory information to csrmap.cfg
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Michael D. Conner
+**
+**  DATE CREATED     : 03/14/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/14/96  mconner                    Changed to not save to BFCD
+**
+****************************************************************************/
 
-static WCBPROC (SaveToBFCD)
+static WCBPROC (AZCS009BUSSaveToBFCD)
 {
   FILE *Stream;
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT                FndGenRC = 0;
+  CHAR sSavePath[_PATH_LEN + 1 ] = "";
+  CHAR sGenPath[_PATH_LEN + 1] = "";
 
+/*mdc 03/14/96 get the SaveDir path */
+  FndGenRC = FndFieldQueryValue(CBI_hwnd,
+                                     "SaveDir",
+                                     _PATH_LEN,
+                                     (void *) sSavePath,
+                                     &FndGenErrorBlock);
+
+/*mdc 03/14/96 Get the GenDir path */
+  FndGenRC = FndFieldQueryValue(CBI_hwnd,
+                                     "GenDir",
+                                     _PATH_LEN,
+                                     (void *) sGenPath,
+                                     &FndGenErrorBlock);
+ 
+/*mdc 03/14/96 Write paths to WCD */
+  FndGenRC = CmnStrCopy(BFCD_pCSRMapBFCD->CsrMapSavePath,
+                             sSavePath,
+                             _PATH_LEN,
+                             CMN_ARCH_PARMS);
+
+  FndGenRC = CmnStrCopy(BFCD_pCSRMapBFCD->CsrMapGenPath,
+                              sGenPath,
+                             _PATH_LEN,
+                             CMN_ARCH_PARMS);
 
   /* Open the csrmap.cfg */
   if (( Stream = fopen( CSR_MAP_CFG_FILE,"w" )) == NULL )
@@ -144,12 +229,12 @@ static WCBPROC (SaveToBFCD)
   fprintf( Stream,
            "%s %s\n",
            "SAVE: ",
-           BFCD_CSRMapBFCD->CsrMapSavePath );
+           sSavePath );
 
   fprintf( Stream,
            "%s %s\n",
            "GENERATE: ",
-           BFCD_CSRMapBFCD->CsrMapGenPath );
+           sGenPath );
 
   fclose( Stream );
 
@@ -157,4 +242,4 @@ static WCBPROC (SaveToBFCD)
 return(CMN_SUCCESS);
 
 }
-
+

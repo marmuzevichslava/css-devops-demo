@@ -1,15 +1,11 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /******************************************************************************/
 /*                                                                            */
 /*   Header name  :   AZCS003I                                                */
 /*                                                                            */
 /*   Description  :                                                           */
 /*                                                                            */
-/*   Generation Date: 08/11/94                                                */
-/*              Time: 13:33:24                                                */
+/*   Generation Date: 03/18/96                                                */
+/*              Time: 14:42:48                                                */
 /******************************************************************************/
                                                                                 
 /******************************************************************************/
@@ -18,21 +14,27 @@
                                                                                 
 #ifndef   ARC00305_LEN                                                          
 #define   ARC00305_LEN                         10                               
+#define   TRANMAP_LEN                          10                               
 #endif                                                                          
 #ifndef   ARC00307_LEN                                                          
 #define   ARC00307_LEN                         11                               
+#define   ANTICMODULE_LEN                      11                               
 #endif                                                                          
 #ifndef   ARC00329_LEN                                                          
 #define   ARC00329_LEN                         2                                
+#define   FLUSH_LEN                            2                                
 #endif                                                                          
 #ifndef   ARC00330_LEN                                                          
 #define   ARC00330_LEN                         10                               
+#define   ALTMAP_LEN                           10                               
 #endif                                                                          
 #ifndef   ARC00335_LEN                                                          
 #define   ARC00335_LEN                         3                                
+#define   SERVICEMAPTYPE_LEN                   3                                
 #endif                                                                          
 #ifndef   ARC00452_LEN                                                          
 #define   ARC00452_LEN                         2                                
+#define   FORCECALL_LEN                        2                                
 #endif                                                                          
                                                                                 
 #ifndef _AZCS003I_z                                                             
@@ -43,13 +45,14 @@
       unsigned long       Arc00321;                                             
       unsigned long       Server;                                               
       unsigned short      ServiceID;                                            
-      char                TranMap[ARC00305_LEN];                                
+      char                TranMap[10];                                          
       unsigned long       ServiceAge;                                           
-      char                AnticModule[ARC00307_LEN];                            
-      char                Flush[ARC00329_LEN];                                  
-      char                AltMap[ARC00330_LEN];                                 
-      char                ServiceMapType[ARC00335_LEN];                         
-      char                ForceCall[ARC00452_LEN];                              
+      char                AnticModule[11];                                      
+      char                Flush[2];                                             
+      char                AltMap[10];                                           
+      char                ServiceMapType[3];                                    
+      char                ForceCall[2];                                         
    }  _AZCS003I;                                                                
 #endif                                                                          
                                                                                 
+

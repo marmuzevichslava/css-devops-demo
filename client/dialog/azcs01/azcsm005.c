@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /***********************************************************************
 **
 **         CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -24,6 +20,7 @@
 #define  INCL_WIN
 #define  INCL_DOS
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
+#define WINDOWMOD
 
 #include <os2.h>
 #include <string.h>
@@ -46,9 +43,10 @@
 #define  FND_VERSION2
 
 #include <kglzk000.h>
-
+/*mdc 03/20/96 These are already included in azcs01b.gnb
 #include "csrcmn.h"
 #include "mapgen.h"
+*/
 #include "azcs01b.gnb"
 #include "AZCS003.GNH"
 
@@ -103,9 +101,9 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
                            FileNm,
                            _CSR_MAP_FILENAME_LEN,
                            5,
-                           BFCD_CSRMapBFCD->CsrMapSavePath,
+                           BFCD_pCSRMapBFCD->CsrMapSavePath,
                            "\\",
-                           BFCD_CSRMapBFCD->ClientInfo.ReqId,
+                           BFCD_pCSRMapBFCD->ClientInfo.ReqId,
                            ".",
                            CSR_MAP_SAVE_FILE_EXT );
 
@@ -126,13 +124,13 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
         return(CMN_FAIL);
     }
 
-    if ( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "1" ) == 0 ||
-         strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "INQUIRY") == 0)
+    if ( strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "1" ) == 0 ||
+         strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "INQUIRY") == 0)
     {
         strncpy( ReqType, "INQUIRY", _REQ_TYPE_LEN );
     }
-    else if ( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "2" ) == 0 ||
-              strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType, "LUW" ) == 0 )
+    else if ( strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "2" ) == 0 ||
+              strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "LUW" ) == 0 )
     {
         strncpy( ReqType, "LUW", _REQ_TYPE_LEN );
     }
@@ -144,9 +142,9 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
     ** CSC: 09/17/93
     */
 
-    for ( i = 0; i < BFCD_CSRMapBFCD->NumServices; i++ )
+    for ( i = 0; i < BFCD_pCSRMapBFCD->NumServices; i++ )
     {
-       if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
+       if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
           {
             /* if deleted, continue onto the next service */
             continue;
@@ -159,50 +157,50 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
              CSR_MAP_REQ_HEADER_WRITE_STR,
              "REQUESTHEADER",
              "***RequestID= ",
-             BFCD_CSRMapBFCD->ClientInfo.ReqId,
+             BFCD_pCSRMapBFCD->ClientInfo.ReqId,
              "***ClientLayoutName= ",
-             BFCD_CSRMapBFCD->ClientInfo.ClientLayoutName,
+             BFCD_pCSRMapBFCD->ClientInfo.ClientLayoutName,
              "***RequestType= ",
              ReqType,
              "***NumSearchDestroys= ",
-             BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy,
+             BFCD_pCSRMapBFCD->ClientInfo.NumSearchDestroy,
              "***NumClientRows= ",
-             BFCD_CSRMapBFCD->ClientInfo.NumReposClientRows,
+             BFCD_pCSRMapBFCD->ClientInfo.NumReposClientRows,
              "***NumServices= ",
              usNumValidServices,
              "***ClientVersion=",
-             BFCD_CSRMapBFCD->ClientInfo.Version);
+             BFCD_pCSRMapBFCD->ClientInfo.Version);
 
     /* Write the Task List Completion Status to the file. */
     fprintf( Stream,
              CSR_MAP_TL_STATUS_WRITE_STR,
              "TASKLISTCOMPLETIONS",
              "***CompareKeys= ",
-             BFCD_CSRMapBFCD->CKTaskListComplete,
+             BFCD_pCSRMapBFCD->CKTaskListComplete,
              "***ReturnData= ",
-             BFCD_CSRMapBFCD->RDTaskListComplete,
+             BFCD_pCSRMapBFCD->RDTaskListComplete,
              "***LoadKeys= ",
-             BFCD_CSRMapBFCD->LKTaskListComplete,
+             BFCD_pCSRMapBFCD->LKTaskListComplete,
              "***LoadData= ",
-             BFCD_CSRMapBFCD->LDTaskListComplete,
+             BFCD_pCSRMapBFCD->LDTaskListComplete,
              "***RepeatingMaps= ",
-             BFCD_CSRMapBFCD->RPMHTaskListComplete );
+             BFCD_pCSRMapBFCD->RPMHTaskListComplete );
 
 
     /* Write the SearchDestroys to the file */
-    for ( i = 0; i < BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy; i++ )
+    for ( i = 0; i < BFCD_pCSRMapBFCD->ClientInfo.NumSearchDestroy; i++ )
     {
          fprintf( Stream,
                   CSR_MAP_SD_WRITE_STR,
                   "SEARCHDESTROY",
                   "***RequestId= ",
-                  BFCD_CSRMapBFCD->ClientInfo.SearchDestroyTable[i].ReqId );
+                  BFCD_pCSRMapBFCD->ClientInfo.SearchDestroyTable[i].ReqId );
     }
 
 
     /* Write the Client Layouts to the file */
-    for ( i = 0, pCurRec = BFCD_CSRMapBFCD->ClientInfo.pReposClientLayoutTable ;
-          i < BFCD_CSRMapBFCD->ClientInfo.NumReposClientRows;
+    for ( i = 0, pCurRec = BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable ;
+          i < BFCD_pCSRMapBFCD->ClientInfo.NumReposClientRows;
           i++, pCurRec++ )
     {
          if ( pCurRec->ItemType != 'E' )
@@ -269,20 +267,20 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
 
 
     /* Process each Service */
-    for ( i = 0; i < BFCD_CSRMapBFCD->NumServices; i++ )
+    for ( i = 0; i < BFCD_pCSRMapBFCD->NumServices; i++ )
     {
          CHAR Flush[_FLUSH_LEN];
          CHAR ServiceType[2];
 
          /* Check if Service is deleted */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
          {
             /* if deleted, continue onto the next service */
             continue;
          }
 
          /* Write the Service Header to the file */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].FlushFlag )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].FlushFlag )
          {
             strncpy( Flush, "TRUE", _FLUSH_LEN );
          }
@@ -291,12 +289,12 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
             strncpy( Flush, "FALSE", _FLUSH_LEN );
          }
 
-         if ( strcmp( BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceType,
+         if ( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceType,
               LT_Primary ) == 0 )
          {
             strncpy( ServiceType, "P", 2 );
          }
-         else if ( strcmp( BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceType,
+         else if ( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceType,
                    LT_Alternate ) == 0 )
          {
             strncpy( ServiceType, "A", 2 );
@@ -306,32 +304,32 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
                   CSR_MAP_SERVICE_HDR_WRITE_STR,
                   "SERVICEHEADER",
                   "***ServiceLayoutName= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceLayoutName,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceLayoutName,
                   "***Server= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].Server,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].Server,
                   "***ServiceId= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceId,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceId,
                   "***ServiceAgeLimit= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceAgeLimit,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceAgeLimit,
                   "***AnticCallModule= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].AnticCallModule,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].AnticCallModule,
                   "***FlushFlag= ",
                   Flush,
                   "***ServiceType= ",
                   ServiceType,
                   "***AlternateService= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].AlternateService,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService,
                   "***NumServiceRows= ",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows,
                   "***Version=",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].Version,
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].Version,
                   "***ForceCall=",
-                  BFCD_CSRMapBFCD->ServiceInfoTable[i].ForceCall);
+                  BFCD_pCSRMapBFCD->ServiceInfoTable[i].ForceCall);
 
          /* Write the Service Layout Row to the file */
 
-         for ( j = 0, pCurRec = BFCD_CSRMapBFCD->ServiceInfoTable[i].pReposServiceLayoutTable;
-               j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
+         for ( j = 0, pCurRec = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReposServiceLayoutTable;
+               j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
                j++, pCurRec++ )
          {
               if ( pCurRec->ItemType != 'E' )
@@ -400,10 +398,10 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
 
 
          /* Write the Repeating Map Header Relationships to the file */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps != NULL )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps != NULL )
          {
-            for ( j = 0, pCurRPMH = BFCD_CSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps;
-                  j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
+            for ( j = 0, pCurRPMH = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps;
+                  j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
                   j++, pCurRPMH++ )
             {
                 fprintf( Stream,
@@ -418,10 +416,10 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
 
 
          /* Write the Compare Key Relationships to the file */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].pCompareKeys != NULL )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pCompareKeys != NULL )
          {
-            for ( j = 0, pCurCK = BFCD_CSRMapBFCD->ServiceInfoTable[i].pCompareKeys;
-                  j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
+            for ( j = 0, pCurCK = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pCompareKeys;
+                  j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
                   j++, pCurCK++ )
             {
                   fprintf( Stream,
@@ -444,10 +442,10 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
          } /* end of if */
 
          /* Write the Return Data Relationships to the file */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].pReturnData != NULL )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReturnData != NULL )
          {
-            for ( j = 0, pCurRD = BFCD_CSRMapBFCD->ServiceInfoTable[i].pReturnData;
-                  j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
+            for ( j = 0, pCurRD = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReturnData;
+                  j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
                   j++, pCurRD++ )
            {
                 fprintf( Stream,
@@ -460,10 +458,10 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
          }  /* end of if */
 
          /* Write the Load Key Relationships to the file */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadKeys != NULL )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys != NULL )
          {
-            for ( j = 0, pCurLK = BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadKeys;
-                  j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
+            for ( j = 0, pCurLK = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys;
+                  j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
                   j++, pCurLK++)
             {
                  fprintf( Stream,
@@ -479,10 +477,10 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
          } /* end of if */
 
          /* Write the Load Data Relationships to the file */
-         if ( BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadData != NULL )
+         if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData != NULL )
          {
-            for ( j = 0, pCurLD = BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadData;
-                  j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
+            for ( j = 0, pCurLD = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData;
+                  j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumReposServiceRows;
                   j++, pCurLD++ )
             {
                 fprintf( Stream,
@@ -510,3 +508,4 @@ USHORT CsrMapWriteMapFile( CMN_ARCH_PARM_TYPES )
     return(CMN_SUCCESS);
 
 }
+

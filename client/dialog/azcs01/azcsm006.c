@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /***********************************************************************
 **
 **         CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -22,6 +18,7 @@
 #define  INCL_WIN
 #define  INCL_DOS
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
+#define WINDOWMOD
 
 #include <os2.h>
 #include <string.h>
@@ -45,9 +42,10 @@
 
 #include <kglzk000.h>
 
-
+/*mdc 03/20/96 already included in azcs01b.gnb
 #include "csrcmn.h"
 #include "mapgen.h"
+*/
 #include "azcs01b.gnb"
 #include "AZCS003.GNH"
 
@@ -131,9 +129,9 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
                           FileNm,
                           _CSR_MAP_FILENAME_LEN,
                           5,
-                          BFCD_CSRMapBFCD->CsrMapSavePath,
+                          BFCD_pCSRMapBFCD->CsrMapSavePath,
                           "\\",
-                          BFCD_CSRMapBFCD->ClientInfo.ReqId,
+                          BFCD_pCSRMapBFCD->ClientInfo.ReqId,
                           ".",
                           CSR_MAP_SAVE_FILE_EXT );
 
@@ -151,21 +149,21 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
     fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
 
     sscanf( CurLine,CSR_MAP_REQ_HEADER_FORMAT_STR,
-            d1,d2,BFCD_CSRMapBFCD->ClientInfo.ReqId,
-            d3,BFCD_CSRMapBFCD->ClientInfo.ClientLayoutName,
+            d1,d2,BFCD_pCSRMapBFCD->ClientInfo.ReqId,
+            d3,BFCD_pCSRMapBFCD->ClientInfo.ClientLayoutName,
             d4,ReqType,
-            d5,&BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy,
-            d6,&BFCD_CSRMapBFCD->ClientInfo.NumClientRows,
-            d7,&BFCD_CSRMapBFCD->NumServices,
-            d8,&BFCD_CSRMapBFCD->ClientInfo.Version);
+            d5,&BFCD_pCSRMapBFCD->ClientInfo.NumSearchDestroy,
+            d6,&BFCD_pCSRMapBFCD->ClientInfo.NumClientRows,
+            d7,&BFCD_pCSRMapBFCD->NumServices,
+            d8,&BFCD_pCSRMapBFCD->ClientInfo.Version);
 
     if ( strcmp( ReqType, "INQUIRY" ) == 0 )
     {
-       strcpy( BFCD_CSRMapBFCD->ClientInfo.ReqType, "1" );
+       strcpy( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "1" );
     }
     else
     {
-       strcpy( BFCD_CSRMapBFCD->ClientInfo.ReqType, "2" );
+       strcpy( BFCD_pCSRMapBFCD->ClientInfo.ReqType, "2" );
     }
 
     /* Format the Task List Completions */
@@ -176,37 +174,37 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
     sscanf( CurLine,
             CSR_MAP_TL_STATUS_FORMAT_STR,
             d1, d2,
-            &(BFCD_CSRMapBFCD->CKTaskListComplete),
+            &(BFCD_pCSRMapBFCD->CKTaskListComplete),
             d3,
-            &(BFCD_CSRMapBFCD->RDTaskListComplete),
+            &(BFCD_pCSRMapBFCD->RDTaskListComplete),
             d4,
-            &(BFCD_CSRMapBFCD->LKTaskListComplete),
+            &(BFCD_pCSRMapBFCD->LKTaskListComplete),
             d5,
-            &(BFCD_CSRMapBFCD->LDTaskListComplete),
+            &(BFCD_pCSRMapBFCD->LDTaskListComplete),
             d6,
-            &(BFCD_CSRMapBFCD->RPMHTaskListComplete) );
+            &(BFCD_pCSRMapBFCD->RPMHTaskListComplete) );
 
     /* Format SearchDestroys */
-    for ( i = 0; i < BFCD_CSRMapBFCD->ClientInfo.NumSearchDestroy; i++ )
+    for ( i = 0; i < BFCD_pCSRMapBFCD->ClientInfo.NumSearchDestroy; i++ )
     {
          fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
          sscanf( CurLine,CSR_MAP_SD_FORMAT_STR,
-                 d1,d2,BFCD_CSRMapBFCD->ClientInfo.SearchDestroyTable[i].ReqId );
+                 d1,d2,BFCD_pCSRMapBFCD->ClientInfo.SearchDestroyTable[i].ReqId );
     }
 
 
     /* Format Client Layouts */
-    BFCD_CSRMapBFCD->ClientInfo.pClientLayoutTable =
+    BFCD_pCSRMapBFCD->ClientInfo.pClientLayoutTable =
                          (_LAYOUT_REC *)malloc((sizeof(_LAYOUT_REC)*
                           MAXCLIENTROWS));
 
     /* Clear it out before reading in any data */
-    memset(BFCD_CSRMapBFCD->ClientInfo.pClientLayoutTable,
+    memset(BFCD_pCSRMapBFCD->ClientInfo.pClientLayoutTable,
            0,
            sizeof(_LAYOUT_REC)*MAXCLIENTROWS);
 
-    for ( i = 0, pCurRec = BFCD_CSRMapBFCD->ClientInfo.pClientLayoutTable;
-              i < BFCD_CSRMapBFCD->ClientInfo.NumClientRows; i++, pCurRec++ )
+    for ( i = 0, pCurRec = BFCD_pCSRMapBFCD->ClientInfo.pClientLayoutTable;
+              i < BFCD_pCSRMapBFCD->ClientInfo.NumClientRows; i++, pCurRec++ )
     {
          fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
          sscanf( CurLine,CSR_MAP_LAYOUT_FORMAT_STR,
@@ -251,7 +249,7 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
 
 
     /* Process each Service (Format Service Layout) */
-    for ( i = 0; i < BFCD_CSRMapBFCD->NumServices; i++ )
+    for ( i = 0; i < BFCD_pCSRMapBFCD->NumServices; i++ )
     {
          /* Format Service Header */
 
@@ -260,52 +258,52 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
 
          fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
          sscanf( CurLine,CSR_MAP_SERVICE_HDR_FORMAT_STR,
-                 d1,d2,BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceLayoutName,
-                 d3,&(BFCD_CSRMapBFCD->ServiceInfoTable[i].Server),
-                 d4,&(BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceId),
-                 d5,&(BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceAgeLimit),
-                 d6,BFCD_CSRMapBFCD->ServiceInfoTable[i].AnticCallModule,
+                 d1,d2,BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceLayoutName,
+                 d3,&(BFCD_pCSRMapBFCD->ServiceInfoTable[i].Server),
+                 d4,&(BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceId),
+                 d5,&(BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceAgeLimit),
+                 d6,BFCD_pCSRMapBFCD->ServiceInfoTable[i].AnticCallModule,
                  d7,Flush,
                  d8,ServiceType,
-                 d9,BFCD_CSRMapBFCD->ServiceInfoTable[i].AlternateService,
-                 d10,&(BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows),
-                 d11,&(BFCD_CSRMapBFCD->ServiceInfoTable[i].Version),
-                 d12,BFCD_CSRMapBFCD->ServiceInfoTable[i].ForceCall );
+                 d9,BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService,
+                 d10,&(BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows),
+                 d11,&(BFCD_pCSRMapBFCD->ServiceInfoTable[i].Version),
+                 d12,BFCD_pCSRMapBFCD->ServiceInfoTable[i].ForceCall );
 
          if ( stricmp(Flush,"FALSE") == 0 )
          {
-              BFCD_CSRMapBFCD->ServiceInfoTable[i].FlushFlag = 0;
+              BFCD_pCSRMapBFCD->ServiceInfoTable[i].FlushFlag = 0;
          }
          else
          {
-              BFCD_CSRMapBFCD->ServiceInfoTable[i].FlushFlag = 1;
+              BFCD_pCSRMapBFCD->ServiceInfoTable[i].FlushFlag = 1;
          }
 
          if ( strncmp(ServiceType, "P", 1 ) == 0 )
          {
-              strncpy( BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceType,
+              strncpy( BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceType,
                        LT_Primary, 2 );
          }
          else
          {
-              strncpy( BFCD_CSRMapBFCD->ServiceInfoTable[i].ServiceType,
+              strncpy( BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceType,
                        LT_Alternate, 2 );
          }
 
          /* Format Service Layout */
-         BFCD_CSRMapBFCD->ServiceInfoTable[i].pServiceLayoutTable =
+         BFCD_pCSRMapBFCD->ServiceInfoTable[i].pServiceLayoutTable =
                           (_LAYOUT_REC *)malloc((sizeof(_LAYOUT_REC)*
                           MAXSERVICEROWS));
 
 
          /* Clear it out before reading in any data */
-         memset(BFCD_CSRMapBFCD->ServiceInfoTable[i].pServiceLayoutTable,
+         memset(BFCD_pCSRMapBFCD->ServiceInfoTable[i].pServiceLayoutTable,
            0,
            sizeof(_LAYOUT_REC)*MAXSERVICEROWS);
 
 
-         for ( j = 0, pCurRec = BFCD_CSRMapBFCD->ServiceInfoTable[i].pServiceLayoutTable;
-                   j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows; j++, pCurRec++)
+         for ( j = 0, pCurRec = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pServiceLayoutTable;
+                   j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows; j++, pCurRec++)
 
          {
               fgets( CurLine,_MAPGN_MAX_MAP_LINE_LEN,Stream );
@@ -355,21 +353,21 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
             strcpy( d1, "\0" );
             sscanf( CurLine, "%s", d1 );
 
-            if (( BFCD_CSRMapBFCD->RPMHTaskListComplete == 'Y' )
+            if (( BFCD_pCSRMapBFCD->RPMHTaskListComplete == 'Y' )
                 && (( strcmp( d1, "RELATE-RPMH" ) == 0 )))
             {
                /* Format Repeating Map Header Relationships */
-               BFCD_CSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps =
+               BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps =
                               (_RELATE_RPMH *)malloc((sizeof(_RELATE_RPMH)*
                               MAXSERVICEROWS));
 
                /* Clear out the memory before adding data */
-               memset(BFCD_CSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps,
+               memset(BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps,
                       0,
                       sizeof(_RELATE_RPMH)*MAXSERVICEROWS);
 
                /* Read in the first line of RPMH */
-               pCurRPMH = BFCD_CSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps;
+               pCurRPMH = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps;
                sscanf( CurLine,CSR_MAP_RELATE_RPMH_FORMAT_STR,
                        d1,d2,&(pCurRPMH->ClientLayoutIndex),
                        d3,&(pCurRPMH->SingleOccurence) );
@@ -377,7 +375,7 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
 
                /* Retrieve the remaining lines of Repeating Maps. */
                for ( j = 1;
-                     j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
+                     j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
                      j++, pCurRPMH++ )
                {
                  fgets( CurLine, _MAPGN_MAX_MAP_LINE_LEN, Stream );
@@ -387,21 +385,21 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
                }
             } /* end of outer if */
 
-            else if (( BFCD_CSRMapBFCD->CKTaskListComplete == 'Y' )
+            else if (( BFCD_pCSRMapBFCD->CKTaskListComplete == 'Y' )
                     && (( strcmp( d1, "RELATE-CK" ) == 0 )))
             {
                /* Format Compare Key Relationships */
-               BFCD_CSRMapBFCD->ServiceInfoTable[i].pCompareKeys =
+               BFCD_pCSRMapBFCD->ServiceInfoTable[i].pCompareKeys =
                               (_RELATE_CK *)malloc((sizeof(_RELATE_CK)*
                               MAXSERVICEROWS));
 
                /* Clear out the memory before adding data */
-               memset(BFCD_CSRMapBFCD->ServiceInfoTable[i].pCompareKeys,
+               memset(BFCD_pCSRMapBFCD->ServiceInfoTable[i].pCompareKeys,
                       0,
                       sizeof(_RELATE_CK)*MAXSERVICEROWS);
 
                /* Read in the first line of Compare Keys */
-               pCurCK = BFCD_CSRMapBFCD->ServiceInfoTable[i].pCompareKeys;
+               pCurCK = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pCompareKeys;
                sscanf( CurLine,CSR_MAP_RELATE_CK_FORMAT_STR,
                        d1,d2,&(pCurCK->ClientLayoutIndex),
                        d3,&(pCurCK->LiteralUsed),
@@ -429,7 +427,7 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
 
                /* Retrieve the remaining lines of Compare Keys. */
                for ( j = 1;
-                     j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
+                     j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
                      j++, pCurCK++ )
                {
                  fgets( CurLine, _MAPGN_MAX_MAP_LINE_LEN, Stream );
@@ -461,28 +459,28 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
             } /* end of else if */
 
 
-            else if (( BFCD_CSRMapBFCD->RDTaskListComplete == 'Y')
+            else if (( BFCD_pCSRMapBFCD->RDTaskListComplete == 'Y')
                     && (( strcmp( d1, "RELATE-RD" ) == 0 )))
             {
                /* Format Return Data Relationships */
-               BFCD_CSRMapBFCD->ServiceInfoTable[i].pReturnData =
+               BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReturnData =
                               (_RELATE_RD *)malloc((sizeof(_RELATE_RD)*
                               MAXSERVICEROWS));
 
                /* Clear out the area before adding data */
-               memset(BFCD_CSRMapBFCD->ServiceInfoTable[i].pReturnData,
+               memset(BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReturnData,
                       0,
                       sizeof(_RELATE_RD)*MAXSERVICEROWS);
 
                /* Read in the first line of Return Data */
-               pCurRD = BFCD_CSRMapBFCD->ServiceInfoTable[i].pReturnData;
+               pCurRD = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReturnData;
                sscanf( CurLine,CSR_MAP_RELATE_RD_FORMAT_STR,
                        d1,d2,&(pCurRD->ClientLayoutIndex) );
                pCurRD++;
 
                /* Retrieve the remaining lines of Return Data. */
                for ( j = 1;
-                     j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
+                     j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
                      j++,pCurRD++ )
                {
                  fgets( CurLine, _MAPGN_MAX_MAP_LINE_LEN, Stream );
@@ -492,22 +490,22 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
                }
             } /* end of else if */
 
-            else if (( BFCD_CSRMapBFCD->LKTaskListComplete  == 'Y' )
+            else if (( BFCD_pCSRMapBFCD->LKTaskListComplete  == 'Y' )
                     && (( strcmp( d1, "RELATE-LK" ) == 0 )))
             {
                /* Format Load Key Relationships */
-               BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadKeys =
+               BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys =
                               (_RELATE_LK *)malloc((sizeof(_RELATE_LK)*
                               MAXSERVICEROWS));
 
                /* Clear out the area before adding data */
-               memset(BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadKeys,
+               memset(BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys,
                       0,
                       sizeof(_RELATE_LK)*MAXSERVICEROWS);
 
 
                /* Read in the first line of Load Keys */
-               pCurLK = BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadKeys;
+               pCurLK = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys;
                sscanf( CurLine,CSR_MAP_RELATE_LK_FORMAT_STR,
                        d1,d2,&(pCurLK->ClientLayoutIndex),
                        d3,&(pCurLK->LiteralUsed),
@@ -524,7 +522,7 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
 
                /* Retrieve the remaining lines of Load Keys. */
                for ( j = 1;
-                     j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
+                     j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
                      j++, pCurLK++ )
                {
                  fgets( CurLine, _MAPGN_MAX_MAP_LINE_LEN, Stream );
@@ -544,22 +542,22 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
                }
             } /* end of else if */
 
-            else if (( BFCD_CSRMapBFCD->LDTaskListComplete == 'Y' )
+            else if (( BFCD_pCSRMapBFCD->LDTaskListComplete == 'Y' )
                     && (( strcmp( d1, "RELATE-LD" ) == 0 )))
             {
                /* Format Load Data Relationships */
-               BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadData =
+               BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData =
                               (_RELATE_LD *)malloc((sizeof(_RELATE_LD)*
                               MAXSERVICEROWS));
 
                /* Clear out the area before adding data */
-               memset(BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadData,
+               memset(BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData,
                       0,
                       sizeof(_RELATE_LD)*MAXSERVICEROWS);
 
 
                /* Read in the first line of Load Data */
-               pCurLD = BFCD_CSRMapBFCD->ServiceInfoTable[i].pLoadData;
+               pCurLD = BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData;
                sscanf( CurLine,CSR_MAP_RELATE_LD_FORMAT_STR,
                        d1,d2,&(pCurLD->ClientLayoutIndex),
                        d3,&(pCurLD->LiteralUsed),
@@ -577,7 +575,7 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
 
                /* Retrieve the remaining lines of Load Data. */
                for ( j = 1;
-                     j < BFCD_CSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
+                     j < BFCD_pCSRMapBFCD->ServiceInfoTable[i].NumServiceRows;
                      j++, pCurLD++ )
                {
                  fgets( CurLine, _MAPGN_MAX_MAP_LINE_LEN, Stream );
@@ -612,3 +610,4 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
     return(CMN_SUCCESS);
 
 }
+

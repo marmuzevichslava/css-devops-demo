@@ -1,13 +1,58 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 short FindClientMatch(CMN_ARCH_PARM_TYPES);
 short FillLayoutLB(char *LBName,
                    _LAYOUT_REC *pLayout,
                    unsigned short NumRec,
                    enum LANGUAGE_TYPE Language,
                    CMN_ARCH_PARM_TYPES);
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS006BUSAboutMNClick}
+**
+**  DESCRIPTION      : This function creates the About window for the applicaition.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : Michael D. Conner
+**
+**  DATE CREATED     : 03/11/96
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  03/15/96  mconner                   Copied from AZCS001BUSAboutMNClick
+**
+***************************************************************************/
+static WCBPROC(AZCS006BUSAboutMNClick)
+{
+    SHORT FndGenRC = CMN_SUCCESS;
+    SHORT nRC      = CMN_SUCCESS;
+    CHAR WindowName[]   = "AZCS014";
+    CHAR InstanceName[] = "";
+
+    HEAP_CHECK
+
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                NULL,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+
+    return CMN_SUCCESS;
+
+} /* End of AZCS006BUSAboutMNClick */
+
+
 
 /***************************************************************************
 **
@@ -35,6 +80,9 @@ short FillLayoutLB(char *LBName,
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
 **
+**    03/06/96  mconner               Replaced strcpy to WES fields with
+**                                         FndFieldSetValue
+**
 ***************************************************************************/
 
 static WCBPROC (UnLdAZCS6I)
@@ -48,8 +96,26 @@ static WCBPROC (UnLdAZCS6I)
 
   pAzcs004i = (_AZCS004I *)CBI_pInitData;
 
+ /*mdc -03/06/96 - Change for standards compliance
   strcpy(ClientLayoutData, pAzcs004i->ClientLayout);
+ */
+FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                 "CLIENTLAYOUT",
+                                 strlen(pAzcs004i->ClientLayout),
+                                 pAzcs004i->ClientLayout,
+                                 &FndGenErrorBlock);
+
+/*mdc -03/06/96 -Changed for standards compliance
   strcpy(ServiceLayoutNameData,pAzcs004i->Services[0].ServerLayout);
+*/
+FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                 "ServiceLayoutName",
+                                 strlen(pAzcs004i->Services[0].ServerLayout),
+                                 pAzcs004i->Services[0].ServerLayout,
+                                 &FndGenErrorBlock);
+
+
+
   pWindContextData->WCD.CurrentServiceIndex = 0;
 
   FndGenRC = FndValueInit( CBI_hwnd,
@@ -134,17 +200,42 @@ static WCBPROC (UnLdAZCS6I)
   /* Setup the Relationship stuff                                      */
   /*********************************************************************/
 
-
+   /* mdc - 03/04/96 - do not want appl pb defaulted here*/
    /* Make the apply pushbutton the default */
-   FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+   /*FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
                                           "ApplyPB",
                                           &FndGenErrorBlock);
+   */
 
   /*
   ** Make the List Box Offsets 0
   */
      pWindContextData->WCD.ClientLBOffset = 0;
      pWindContextData->WCD.ServiceLBOffset = 0;
+
+/***************************************************************************************
+   * Set the window to valid by calling CmnWindowSetDataModified
+   * mdc - 03/04/96 - Added this because Architecture Validation field was added to
+   *                  window.
+   ***************************************************************************************/
+   FndGenRC = CmnWindowSetDataModified ( CMN_ARCH_PARMS );
+
+   if (FndGenRC != CMN_SUCCESS )
+   {
+	return(CMN_FAIL);
+   }
+
+/* mdc - 03/04/96 - make the OK pushbutton the default.*/
+  FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "OKPB",
+                                          &FndGenErrorBlock);
+
+  if ( FndGenRC != CMN_SUCCESS )
+  {
+       return ( CMN_FAIL );
+  }
+
+
 
 
   return(CMN_SUCCESS);
@@ -155,7 +246,7 @@ static WCBPROC (UnLdAZCS6I)
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         : MoveLB1
+**  FUNCTION         : AZCS006BUSMoveLB1
 **
 **  DESCRIPTION      : The function is invoked by the List_Select event for the
 **                     Client List Box. It controls the flow of control depending
@@ -180,7 +271,7 @@ static WCBPROC (UnLdAZCS6I)
 **
 ***************************************************************************/
 
-static WCBPROC (MoveLB1)
+static WCBPROC (AZCS006BUSMoveLB1)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 unsigned short           RowNum;
@@ -279,13 +370,13 @@ return(CMN_SUCCESS);
 
 
 
-} /* end of MoveLB1() */
+} /* end of AZCS006BUSMoveLB1() */
 
 /***************************************************************************
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         : MoveLB2
+**  FUNCTION         : AZCS006BUSMoveLB2
 **
 **  DESCRIPTION      : This function is invoked by a List_Select event on the
 **                     service listbox. It controls the logic flow depending
@@ -310,7 +401,7 @@ return(CMN_SUCCESS);
 **
 ***************************************************************************/
 
-static WCBPROC (MoveLB2)
+static WCBPROC (AZCS006BUSMoveLB2)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 unsigned short           RowNum;
@@ -413,7 +504,7 @@ return(CMN_SUCCESS);
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         : NewService
+**  FUNCTION         : AZCS006BUSNewService
 **
 **  DESCRIPTION      : This function is invoked by a field_change event on the
 **                      service combo-box. It handles any processing that is
@@ -439,7 +530,7 @@ return(CMN_SUCCESS);
 **
 ***************************************************************************/
 
-static WCBPROC (NewService)
+static WCBPROC (AZCS006BUSNewService)
 {
   int index=0;
   int ServiceIndex=-1;
@@ -478,13 +569,13 @@ static WCBPROC (NewService)
 
 return(CMN_SUCCESS);
 
-} /* end of NewService*/
+} /* end of AZCS006BUSNewService*/
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*   RemoveRelationship                                              */
+/*   AZCS006BUSRemoveRelationship                                              */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
@@ -493,7 +584,7 @@ return(CMN_SUCCESS);
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         : RemoveRelationship
+**  FUNCTION         : AZCS006BUSRemoveRelationship
 **
 **  DESCRIPTION      : This function remove a relationship between a client and
 **                     service or a service and a literal.
@@ -518,7 +609,7 @@ return(CMN_SUCCESS);
 ***************************************************************************/
 
 
-static WCBPROC (RemoveRelationship)
+static WCBPROC (AZCS006BUSRemoveRelationship)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -651,8 +742,21 @@ InitClient(pEventInfo,
                            pWindContextData,
                            pABHI);
 
+/* mdc - 03/04/96 - make the OK pushbutton the default.*/
+  FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "OKPB",
+                                          &FndGenErrorBlock);
+
+  if ( FndGenRC != CMN_SUCCESS )
+  {
+       return ( CMN_FAIL );
+  }
+
+
+
+
  return(CMN_SUCCESS);
-} /* end of function RemoveRelationship */
+} /* end of function AZCS006BUSRemoveRelationship */
 
 
 
@@ -660,7 +764,7 @@ InitClient(pEventInfo,
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         : CreateRelationhsip
+**  FUNCTION         : AZCS006BUSCreateRelationship
 **
 **  DESCRIPTION      : This function defines a relationship between a client and
 **                      service element or between a service and a literal value.
@@ -685,7 +789,7 @@ InitClient(pEventInfo,
 **
 ***************************************************************************/
 
-static WCBPROC(CreateRelationship)
+static WCBPROC(AZCS006BUSCreateRelationship)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -813,8 +917,20 @@ FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
                            pWindContextData,
                            pABHI);
 
+/* mdc - 03/04/96 - make the OK pushbutton the default.*/
+  FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "OKPB",
+                                          &FndGenErrorBlock);
+
+  if ( FndGenRC != CMN_SUCCESS )
+  {
+       return ( CMN_FAIL );
+  }
+
+
+
  return(CMN_SUCCESS);
-} /* end of function CreateRelationship */
+} /* end of function AZCS006BUSCreateRelationship */
 
 
 /***************************************************************************
@@ -1320,6 +1436,13 @@ ix = pWindContextData->WCD.CurrentServiceIndex;
                                  "RemovePB",
                                  &FndGenErrorBlock);
 
+        /* mdc - 03/04/96 - make the Remove pushbutton the default.*/
+        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "RemovePB",
+                                          &FndGenErrorBlock);
+
+
+
         FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
@@ -1334,6 +1457,14 @@ ix = pWindContextData->WCD.CurrentServiceIndex;
         FndGenRC = FndCommandEnable(CBI_hwnd,
                                  "ApplyPB",
                                  &FndGenErrorBlock);
+
+        /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
+
        }
 
 
@@ -1434,6 +1565,13 @@ if (FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
                                  "ApplyPB",
                                  &FndGenErrorBlock);
 
+            /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+             FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
+
             FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "RemovePB",
                                  &FndGenErrorBlock);
@@ -1511,6 +1649,7 @@ short                    RowNum = -1;
 int                      CellData;
 int                     *pCellData;
 short                    ClientIndex;
+/*USHORT                FndGenRBValueShort; no longer used - mdc*/
 
      pCellData = &CellData;
 
@@ -1536,18 +1675,28 @@ short                    ClientIndex;
                                     "ApplyPB",
                                     &FndGenErrorBlock);
 
+        /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
+
         FndGenRC = FndCommandDisable(CBI_hwnd,
                                      "RemovePB",
                                      &FndGenErrorBlock);
        }
     else
         {
+      /*mdc 03/12/96 - removed so that literals can be inserted before service
+                             choice.
          InitClient(pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
                            pWindContextData,
                            pABHI );
+       */
          /*
          ** Look for a matching name
          */
@@ -1562,7 +1711,73 @@ short                    ClientIndex;
            {
             FndGenRC = LoadClientElmnt(ClientIndex, CMN_ARCH_PARMS);
            }
-        }
+	/*mdc 03/11/96 - added to enable rest of radio button to allow user
+                                   to select other than element if there is no match
+        */
+        else
+	   {
+		
+	    if(strcmp(ClntLiteralData,"") == 0 && ClntTypeData == LT_ClntLiteralRB)
+	    {
+                InitClient(pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI );
+
+              /*mdc - 03/13/96 - this logic is in InitClient 
+		FndGenRBValueShort = LT_ClntLiteralRB;
+		FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+                FndGenRBValueShort = LT_ClntHvRB;
+                FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+			
+		FndGenRBValueShort = LT_ClntLVRB;
+		FndGenRC = FndValueEnableItem( CBI_hwnd,
+                            "CLNTTYPE",
+                            (VOID *) &FndGenRBValueShort,
+                            &FndGenErrorBlock);
+
+		FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CLNTLITERAL",
+                             &FndGenErrorBlock);
+
+
+		FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "RemovePB",
+                                 &FndGenErrorBlock);
+
+		FndGenRC = FndCommandDisable(CBI_hwnd,
+                                 "ApplyPB",
+                                 &FndGenErrorBlock);
+               */
+            }/*end of if ClntLiteralData*/
+            else if (ClntTypeData == LT_ClntElementRB && strcmp(ClntElementData,"") == 0)
+            {
+                 FndGenRC = FndCommandDisable(CBI_hwnd,
+                                                     "ApplyPB",
+                                                     &FndGenErrorBlock);
+            }
+            else
+            {
+                 FndGenRC = FndCommandEnable(CBI_hwnd,
+                                                    "ApplyPB",
+                                                    &FndGenErrorBlock);
+
+                 FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+                                                              "ApplyPB",
+                                                              &FndGenErrorBlock);
+             }
+           }/*end of else client name match not found*/
+        }/*end of else - cllient row not selected */
 
 
     FndGenRC = MoveService(pEventInfo,
@@ -1573,18 +1788,18 @@ short                    ClientIndex;
                            pABHI );
  return(CMN_SUCCESS);
 
-}
+}/*end of CellDataNotCompleteService*/
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/* SaveToBFCD                                                        */
+/* AZCS006BUSSaveToBFCD                                                        */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(SaveToBFCD)
+static WCBPROC(AZCS006BUSSaveToBFCD)
 {
  int ix;
  _RELATE_LK *pOldBFCD;
@@ -1617,7 +1832,7 @@ static WCBPROC(SaveToBFCD)
 
 return(CMN_SUCCESS);
 
-} /* end of function SaveToBFCD  */
+} /* end of function AZCS006BUSSaveToBFCD  */
 
 /*********************************************************************/
 /*********************************************************************/
@@ -1984,13 +2199,13 @@ return(CMN_FAIL);
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/* ChangeClientType                                                  */
+/* AZCS006BUSChangeClientType                                                  */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(ChangeClientType)
+static WCBPROC(AZCS006BUSChangeClientType)
 {
 
 unsigned short           FndGenRC = FND_SUCCESS;
@@ -2015,18 +2230,18 @@ short                    FndGenRBValueShort = 0;
 
 
 return(CMN_SUCCESS);
-} /* END OF FUNCTION ChangeClientType */
+} /* END OF FUNCTION AZCS006BUSChangeClientType */
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/* ChangeServiceType                                                 */
+/* AZCS006BUSChangeServiceType                                                 */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC(ChangeServiceType)
+static WCBPROC(AZCS006BUSChangeServiceType)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -2039,30 +2254,59 @@ for (ix=0; ix < NUMRLB01ELBROWS; ix++)
      Rlb01ELBSelIndData[ix] = FALSE;
     }
 
-FndGenRC = FndCommandEnable(CBI_hwnd,
-                            "ApplyPB",
-                            &FndGenErrorBlock);
+/*mdc - 03/07/96 - Added to disable Apply if literal rb selected */
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
+
+if ( ClntTypeData == LT_ClntLiteralRB )
+{
+	FndGenRC = FndCommandDisable( CBI_hwnd,
+                                             "ApplyPB",
+                                             &FndGenErrorBlock);
+
+	FndGenRC = FndCommandDisable(CBI_hwnd,
                              "RemovePB",
                              &FndGenErrorBlock);
 
+  FndGenRC = FndFieldSetCursor( CBI_hwnd,
+                             "CLNTLITERAL",
+                             CUR_MAKECURRENT,
+                             &FndGenErrorBlock);
+
+}
+else
+{
+
+	FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "ApplyPB",
+                            &FndGenErrorBlock);
+
+	 /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
+	FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB",
+                                          &FndGenErrorBlock);
+
+
+	FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "RemovePB",
+                             &FndGenErrorBlock);
+
+}
 
 return(CMN_SUCCESS);
-} /* END OF FUNCTION ChangeClientType */
+} /* END OF FUNCTION AZCS006BUSChangeServiceType */
 
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  ClntLng                                                          */
+/*  AZCS006BUSClntLng                                                          */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
-static WCBPROC (ClntLng)
+static WCBPROC (AZCS006BUSClntLng)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -2084,27 +2328,27 @@ else
      return(CMN_FAIL);
     }
 
-FndGenRC = FillClientLB(pEventInfo,
+FndGenRC = AZCS006BUSFillClientLB(pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
                            pWindContextData,
                            pABHI);
 return(CMN_SUCCESS);
-} /* end of function ClntLng */
+} /* end of function AZCS006BUSClntLng */
 
 
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  SrvLng                                                           */
+/*  AZCS006BUSSrvLng                                                           */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
 
 
-static WCBPROC (SrvLng)
+static WCBPROC (AZCS006BUSSrvLng)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
@@ -2136,7 +2380,7 @@ FndGenRC = FillServiceLB(pEventInfo,
 
 return(CMN_SUCCESS);
 
-}/* end of function SrvLng */
+}/* end of function AZCS006BUSSrvLng */
 
 
 
@@ -2263,12 +2507,12 @@ for (index=0; index < NumRecords; index++)
 /*********************************************************************/
 /*********************************************************************/
 /*                                                                   */
-/*  FillClientLB                                                     */
+/*  AZCS006BUSFillClientLB                                                     */
 /*                                                                   */
 /*********************************************************************/
 /*********************************************************************/
 
-static WCBPROC(FillClientLB)
+static WCBPROC(AZCS006BUSFillClientLB)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 unsigned short           usNumRows;
@@ -2333,7 +2577,7 @@ else
     }
 
 return(CMN_SUCCESS);
-} /* end of function FillClientLB */
+} /* end of function AZCS006BUSFillClientLB */
 
 
 
@@ -2459,7 +2703,7 @@ static WCBPROC(Azcs006busrlb01elbpagedown)
        {
         pWindContextData->WCD.ClientLBOffset += NUMRLB01ELBROWS;
 
-        FndGenRC = FillClientLB(pEventInfo,
+        FndGenRC = AZCS006BUSFillClientLB(pEventInfo,
                                 pEAIA,
                                 pBFCD,
                                 pWesMap,
@@ -2518,7 +2762,7 @@ static WCBPROC(Azcs006busrlb01elbpageup)
        {
         pWindContextData->WCD.ClientLBOffset -= NUMRLB01ELBROWS;
 
-        FndGenRC = FillClientLB(pEventInfo,
+        FndGenRC = AZCS006BUSFillClientLB(pEventInfo,
                                 pEAIA,
                                 pBFCD,
                                 pWesMap,
@@ -2747,6 +2991,65 @@ return(CMN_FAIL);   /* Did not find a match so return fail */
 
 }/* end of function  LookForClientName */
 
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : AZCS006BUSSetCLNTLITERALStaus
+**
+**  DESCRIPTION      :This function sets the CLNTLITERAL field to required if "literal"
+**                        is selected in the CLNTTYPE radio button.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : FOUNDATION APIs
+**
+**  AUTHOR           : Michael Conner
+**
+**  DATE CREATED     : o3/07/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/07/96  mconner                    Original code.
+**
+***************************************************************************/
+
+static WCBPROC(AZCS006BUSSetCLNTLITERALStatus)
+{
+    USHORT FndGenRC = FND_SUCCESS;
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    /*USHORT usSelectedButton;*/
+
+	FndGenRC = FndFieldSetStatus(CBI_hwnd,
+                                          "CLNTLITERAL",
+                                           STS_INCOMPLETE,
+                                           &FndGenErrorBlock);
+
+/*mdc 03-11-96 - removed for nondebug
+       FndGenRC = FndMsgBoxDisplayCode( FndGenRC,
+                                      NULL,
+                                      CBI_hwnd,
+                                      FND_MSGBOX_OK,
+                                      FND_MSGBOX_INFORMATION,
+                                      FND_MSGBOX_IDOK,
+                                      NULL,
+                                      &usSelectedButton,
+                                      &FndGenErrorBlock);
+
+*/
+
+	FndGenRC = FndCommandDisable( CBI_hwnd,
+                               "ApplyPB",
+                               &FndGenErrorBlock);
+
+	return( CMN_SUCCESS );
+
+}/*end AZCS006BUSSetCLNTLITERALStatus */
 
 /***************************************************************************
 **
@@ -2929,7 +3232,7 @@ static short LoadClientElmnt(short ClientElmnt, CMN_ARCH_PARM_TYPES)
       /*
       ** Fill the listbox
       */
-      FndGenRC =  FillClientLB (pEventInfo,
+      FndGenRC =  AZCS006BUSFillClientLB (pEventInfo,
                                 pEAIA,
                                 pBFCD,
                                 pWesMap,
@@ -3128,4 +3431,4 @@ static short ServiceElmntToRow(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
 } /* end of function ServiceElmntToRow */
 
 
-
+

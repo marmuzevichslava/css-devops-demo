@@ -1,7 +1,5 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
+#include <malloc.h>
+
 #define CMN_MAPGEN_NAME "CSR Map Generator"
 
 WCBFWD (AZCS001BusAboutMNClick);
@@ -43,3 +41,4 @@ short GetServiceIndex(unsigned long Server,
 #define VMI                   "\033&l5.6C"  // 5.6
 
 #define RESET_PRINTER "\033E"
+

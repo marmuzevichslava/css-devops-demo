@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /*------------------------------------------------------------------------
 |
 |   AZVS01 Post-Generation Service Copybook Processor
@@ -74,3 +70,4 @@ SHORT LocateCVerField (FILE *pInputFile, FILE *pOutputFile,
 SHORT StrTrimTrailBlanks (char *Target, USHORT nSize);
 
 SHORT ReportError (char *ErrorText);
+

@@ -1,8 +1,4 @@
 /***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
-/***************************************************************************
 **
 **               CUSTOMER SERVICE SYSTEM Business Logic Function
 **
@@ -835,14 +831,14 @@ static WCBPROC (SetupBFCD)
     sscanf( CurLine,
             "%s %s",
             dummy,
-            BFCD_CSRMapBFCD->CsrMapSavePath );
+            BFCD_pCSRMapBFCD->CsrMapSavePath );
 
     /* Read in the Generate Directory */
     fgets( CurLine,_CSR_MAX_MAP_LINE_LEN, Stream );
     sscanf( CurLine,
             "%s %s",
             dummy,
-            BFCD_CSRMapBFCD->CsrMapGenPath );
+            BFCD_pCSRMapBFCD->CsrMapGenPath );
 
     /* Close the csrmap.cfg file */
     fclose( Stream );
@@ -871,7 +867,7 @@ static WCBPROC (SetupBFCD)
                                   &ErrorBlock);
 
     /* Set the ChangeFlag to No. */
-    BFCD_CSRMapBFCD->ChangeFlag = 'N';
+    BFCD_pCSRMapBFCD->ChangeFlag = 'N';
 
     FndGenRC = FndCommandDisable(CBI_hwnd,
                                  "AMNDUMP",
@@ -1009,55 +1005,55 @@ static WCBPROC( AZCS001BusAmnSaveClk )
     if ( TaskListCdStatusIconicData[TL_CK_ROW_NUM] ==
          CMN_LBROW_STATUS_COMPLETED )
     {
-        BFCD_CSRMapBFCD->CKTaskListComplete = 'Y';
+        BFCD_pCSRMapBFCD->CKTaskListComplete = 'Y';
     }
     else
     {
-        BFCD_CSRMapBFCD->CKTaskListComplete = 'N';
+        BFCD_pCSRMapBFCD->CKTaskListComplete = 'N';
     }
 
     /* JLL: 07/02/93 ADDED */
     if ( TaskListCdStatusIconicData[TL_RD_ROW_NUM] ==
          CMN_LBROW_STATUS_COMPLETED )
     {
-        BFCD_CSRMapBFCD->RDTaskListComplete = 'Y';
+        BFCD_pCSRMapBFCD->RDTaskListComplete = 'Y';
     }
     else
     {
-        BFCD_CSRMapBFCD->RDTaskListComplete = 'N';
+        BFCD_pCSRMapBFCD->RDTaskListComplete = 'N';
     }
 
     /* JLL: 07/02/93 ADDED */
     if ( TaskListCdStatusIconicData[TL_LK_ROW_NUM] ==
          CMN_LBROW_STATUS_COMPLETED )
     {
-        BFCD_CSRMapBFCD->LKTaskListComplete = 'Y';
+        BFCD_pCSRMapBFCD->LKTaskListComplete = 'Y';
     }
     else
     {
-        BFCD_CSRMapBFCD->LKTaskListComplete = 'N';
+        BFCD_pCSRMapBFCD->LKTaskListComplete = 'N';
     }
 
     /* JLL: 07/02/93 ADDED */
     if ( TaskListCdStatusIconicData[TL_LD_ROW_NUM] ==
          CMN_LBROW_STATUS_COMPLETED )
     {
-        BFCD_CSRMapBFCD->LDTaskListComplete = 'Y';
+        BFCD_pCSRMapBFCD->LDTaskListComplete = 'Y';
     }
     else
     {
-        BFCD_CSRMapBFCD->LDTaskListComplete = 'N';
+        BFCD_pCSRMapBFCD->LDTaskListComplete = 'N';
     }
 
     /* JLL: 07/12/93 ADDED */
     if ( TaskListCdStatusIconicData[TL_RM_ROW_NUM] ==
          CMN_LBROW_STATUS_COMPLETED )
     {
-        BFCD_CSRMapBFCD->RPMHTaskListComplete = 'Y';
+        BFCD_pCSRMapBFCD->RPMHTaskListComplete = 'Y';
     }
     else
     {
-        BFCD_CSRMapBFCD->RPMHTaskListComplete = 'N';
+        BFCD_pCSRMapBFCD->RPMHTaskListComplete = 'N';
     }
 
     /* JLL: 07/06/93 ADDED */
@@ -1257,7 +1253,7 @@ static WCBPROC (RestoreTaskList)
          *  See if any Compare Key relationships exist
          *  Should be unavailable for Updates
          */
-        if ( strcmp( BFCD_CSRMapBFCD->ClientInfo.ReqType,"2") == 0)
+        if ( strcmp( BFCD_pCSRMapBFCD->ClientInfo.ReqType,"2") == 0)
         {
             TaskListCdStatusIconicData[TL_CK_ROW_NUM] =
                                                  CMN_LBROW_STATUS_AVAILABLE;
@@ -1268,7 +1264,7 @@ static WCBPROC (RestoreTaskList)
                                             &FndGenErrorBlock );
         } /* end of if */
 
-        else if ( BFCD_CSRMapBFCD->CKTaskListComplete == 'Y' )
+        else if ( BFCD_pCSRMapBFCD->CKTaskListComplete == 'Y' )
         {
             TaskListCdStatusIconicData[TL_CK_ROW_NUM] =
                                                   CMN_LBROW_STATUS_COMPLETED;
@@ -1291,7 +1287,7 @@ static WCBPROC (RestoreTaskList)
         } /* end of else */
 
         /* See if any Return Data relationships exist */
-        if ( BFCD_CSRMapBFCD->RDTaskListComplete == 'Y' )
+        if ( BFCD_pCSRMapBFCD->RDTaskListComplete == 'Y' )
         {
             TaskListCdStatusIconicData[TL_RD_ROW_NUM] =
                                                   CMN_LBROW_STATUS_COMPLETED;
@@ -1314,7 +1310,7 @@ static WCBPROC (RestoreTaskList)
         } /* end of else */
 
         /* See if any Load Keys relationships exist */
-        if ( BFCD_CSRMapBFCD->LKTaskListComplete == 'Y' )
+        if ( BFCD_pCSRMapBFCD->LKTaskListComplete == 'Y' )
         {
             TaskListCdStatusIconicData[TL_LK_ROW_NUM] =
                                                  CMN_LBROW_STATUS_COMPLETED;
@@ -1337,7 +1333,7 @@ static WCBPROC (RestoreTaskList)
         } /* end of else */
 
         /* See if any Load Data relationships exist */
-        if ( BFCD_CSRMapBFCD->LDTaskListComplete == 'Y' )
+        if ( BFCD_pCSRMapBFCD->LDTaskListComplete == 'Y' )
         {
             TaskListCdStatusIconicData[TL_LD_ROW_NUM] =
                                                   CMN_LBROW_STATUS_COMPLETED;
@@ -1371,7 +1367,7 @@ static WCBPROC (RestoreTaskList)
         } /* end of else */
 
         /* See if any Search and Destroy references exist */
-        if (strcmp(BFCD_CSRMapBFCD->ClientInfo.ReqType,"2") == 0)
+        if (strcmp(BFCD_pCSRMapBFCD->ClientInfo.ReqType,"2") == 0)
         {
             if (pBFCD->pCSRMapBFCD->ClientInfo.NumSearchDestroy > 0)
             {
@@ -2345,3 +2341,4 @@ WCBPROC(ResetDeleteFlag)
     return CMN_SUCCESS;
 
 }/* end of ResetDeleteFlag */
+

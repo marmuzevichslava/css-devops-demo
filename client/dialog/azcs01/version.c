@@ -1,7 +1,3 @@
-/***************************************************************************
-**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
-**  This work is protected by copyright law as an unpublished work.       **
-****************************************************************************/
 /***********************************************************************
 **
 **         CUSTOMER SERVICE SYSTEM CSR MAP GENERATOR MODULE
@@ -48,8 +44,10 @@
 #include "version.h"
 #include <azrp001m.h>
 
+/*mdc 03/21/96 these are already included in azcs01b.gnb
 #include "csrcmn.h"
 #include "mapgen.h"
+*/
 #include "azcs01b.gnb"
 #include "AZCS003.GNH"
 
@@ -62,7 +60,8 @@
 BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
                      double *pVersion)
 {
-    USHORT   i, j, nLenPrecisOcc, nTypeVal;
+    USHORT   i, j,  nTypeVal;
+    ULONG nLenPrecisOcc;
     LONG    nCharSum;
     double  dSubTotal, dLineTotal;
 
@@ -113,7 +112,7 @@ BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
         {
             nLenPrecisOcc =
              (((pEntityData+i)->RelatOccFact < 1)
-                    ? 1 : (pEntityData+i)->RelatOccFact)
+		    ? 1L : (pEntityData+i)->RelatOccFact)
                           + (pEntityData+i)->DteIntLength
                           + (pEntityData+i)->DteIntPrecision;
 
@@ -196,30 +195,42 @@ BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
 
 SHORT StrTrimTrailBlanks (char *Target, USHORT nSize)
 {
+    /*mdc 1-31-96 this code rep[laces the code commented out below*/
+    char *s = Target + nSize;
+
+    while (isspace(*s) || *s == '\0')
+    {
+	*s = '\0';
+	--s;
+    }
+
+    /*mdc
     USHORT i;
 
-    /*
+
     |   Set the last position of the target to null
-    */
+
     Target[nSize - 1] = 0;
 
-    /*
+
     |   Scan backwards replacing spaces with nulls until the first
     |       non-null character is encountered.
-    */
+
     for (i = (nSize - 2);
          ((i >= 0)
            &&
           ((Target[i] == ' ')
             ||
-           (Target[i] == 0)));
-         i--)
+	   (Target[i] == '\0')));
+    i--)
+
     {
         if (Target [i] == ' ')
         {
-            Target [i] = 0;
+	    Target [i] = '\0';
         }
-    }
+    }	 end of comment of old code */
 
     return (0);
 }
+
