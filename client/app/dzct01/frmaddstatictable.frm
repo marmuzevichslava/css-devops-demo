@@ -31,9 +31,11 @@ Begin VB.Form frmAddStaticTable
             Object.Width           =   9410
             MinWidth        =   9410
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frmaddstatictable.frx":030A
    End
    Begin VB.CommandButton Command2 
       BackColor       =   &H8000000D&

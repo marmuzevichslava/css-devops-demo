@@ -81,6 +81,7 @@ Begin VB.Form frmImportStatus
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      MouseIcon       =   "frmimportstatus.frx":030A
       NumItems        =   0
    End
    Begin VB.Label txtFinalStatus 

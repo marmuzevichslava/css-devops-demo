@@ -57,6 +57,7 @@ Begin VB.Form frmTableLoad
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
+      MouseIcon       =   "frmloadtable.frx":030A
    End
    Begin VB.Frame Frame1 
       Caption         =   "Environment Settings:"
@@ -113,13 +114,16 @@ Begin VB.Form frmTableLoad
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frmloadtable.frx":0326
    End
    Begin VB.Menu mnuFile 
       Caption         =   "&File"
@@ -171,12 +175,12 @@ Const TOTAL_STEPS_NO_DAT = 9
 Const TOTAL_STEPS_NO_XLT = 7
 Const TEMP_PATH = "c:\temp"
 Const USER = "pvcs"
-Const PWD = "frog42"
 Const DAT_LOAD_EXE = "c:\dev\fnd32\bin\cdtupdat.exe"
 Const MAP_LOAD_EXE = "c:\dev\fnd32\bin\mapload.exe"
 Const MAP_LOAD_CFG = "c:\temp\mapload.cfg"
 Const MAP_LOAD_LOG = "c:\temp\mapload.log"
 
+Public sFTPParameter As String
 Public sRemoteKcodFile As String
 Public sLocalKcodFile As String
 Public sArchiveKcodFile As String
@@ -194,6 +198,45 @@ Public sInputStamp As String
 Public sInputUser As String
 Public mywdj As New wdj
 Public myftp As New FTP
+
+'************************************************************
+'**                       GetFTPParameters                 **
+'************************************************************
+Public Function GetFTPParameters()
+
+    Dim strsql As String
+    Dim msg As String
+    Dim DaoRS As Recordset
+  
+    On Error GoTo SQLError
+    
+    'Find out what server the project resides on.
+    strsql = "Select Value " _
+           & "From tblFTPParameter"
+             
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+        sFTPParameter = DaoRS(0).Value
+    Else
+        Err.Raise 15, PutTblFile, "No more records in recordset."
+    End If
+    
+    DaoRS.Close
+    
+    GetFTPParameters = True
+    
+    Exit Function
+    
+SQLError:
+    GetFTPParameters = False
+    msg = "An error occurred while trying to get the FTP parameter." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    Screen.MousePointer = vbNormal
+    RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
+End Function
 
 '***************************************************************************************************************
 Private Sub Form_Load()
@@ -254,7 +297,8 @@ Private Sub Form_Load()
     pBar.Height = sbStatusBar.Height - 42
     pBar.Width = sbStatusBar.Panels(2).Width - 50
     
-    End Sub
+End Sub
+
 '***************************************************************************************************************
 Private Sub mnuClose_Click()
 '***************************************************************************************************************
@@ -288,6 +332,12 @@ Private Sub mnuLoad_Click()
     End With
     
     Screen.MousePointer = vbHourglass
+    
+    'Get Parameters for FTP functions.
+    If Not GetFTPParameters Then
+        Unload Me
+        Exit Sub
+    End If
     
     'Set path and server settings
     pBar.Value = pBar.Value + 1
@@ -474,7 +524,7 @@ Function PutTblFile() As Boolean
     With myftp
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = sRemoteKcodFile
         .LocalFile = sLocalKcodFile
         .ErrorMessageBox = True
@@ -579,7 +629,7 @@ Function LoadCodesTables() As Boolean
         With myftp
             .HostName = sServer
             .UserName = USER
-            .Password = PWD
+            .Password = sFTPParameter
             .RemoteFile = sRemoteDatLoadFile
             .LocalFile = sLoadLogFile
             .ErrorMessageBox = True
@@ -596,7 +646,7 @@ Function LoadCodesTables() As Boolean
              .ErrorMessageBox = True
              .HostName = sServer
              .UserName = USER
-             .Password = PWD
+             .Password = sFTPParameter
              .RemoteDirectory = sRemoteDatLogDir
              .RemoteFile = DAT_LOG_FILE & "*"
              .DeleteDirectory
@@ -693,7 +743,7 @@ Function GetCodesTables() As Boolean
             With myftp
                 .HostName = sServer
                 .UserName = USER
-                .Password = PWD
+                .Password = sFTPParameter
                 .RemoteFile = sRemoteDatFile
                 .LocalFile = sLocalDatFile
                 .ErrorMessageBox = True
@@ -752,7 +802,7 @@ Function GetDatLogFile() As Boolean
     With myftp
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = sRemoteDatLogFile
         .LocalFile = sLocalDatLogFile
         .ErrorMessageBox = True
@@ -900,7 +950,7 @@ Function LoadXltMaps() As Boolean
         With myftp
             .HostName = sServer
             .UserName = USER
-            .Password = PWD
+            .Password = sFTPParameter
             .RemoteFile = sRemoteMapLog
             .LocalFile = sLoadLogFile
             .ErrorMessageBox = True
@@ -917,7 +967,7 @@ Function LoadXltMaps() As Boolean
              .ErrorMessageBox = True
              .HostName = sServer
              .UserName = USER
-             .Password = PWD
+             .Password = sFTPParameter
              .RemoteDirectory = sRemoteXltLogDir
              .RemoteFile = XLT_LOG_FILE & "*"
              .DeleteDirectory
@@ -1015,7 +1065,7 @@ Function GetXltMaps() As Boolean
             With myftp
                 .HostName = sServer
                 .UserName = USER
-                .Password = PWD
+                .Password = sFTPParameter
                 .RemoteFile = sRemoteXltFile
                 .LocalFile = sLocalXltFile
                 .ErrorMessageBox = True
@@ -1074,7 +1124,7 @@ Function GetXltLogFile() As Boolean
     With myftp
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = sRemoteXltLogFile
         .LocalFile = sLocalXltLogFile
         .ErrorMessageBox = True
@@ -1127,7 +1177,7 @@ Function GetTblFile() As Boolean
     With myftp
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = sRemoteKcodFile
         .LocalFile = sLocalKcodFile
         .ErrorMessageBox = True
@@ -1142,7 +1192,7 @@ Function GetTblFile() As Boolean
     With myftp
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = sArchiveKcodFile
         .LocalFile = sLocalKcodFile
         .ErrorMessageBox = True
