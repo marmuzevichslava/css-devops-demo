@@ -43,6 +43,7 @@
 #define ITEM_NAME_LEN          32
 #define WILDCARD_LEN           21
 #define SERVICE_NAME_LEN       12
+#define CONTROL_NAME_LEN       34  /*mdc 01-11-96 added */
 #define _PATH_LEN              70         /* JLL: 06/09/93 ADDED */
 #define _USAGE_LEN              3         /* JLL: 06/11/93 ADDED */
 #define _FLUSH_LEN              6         /* JLL: 06/17/93 ADDED */
@@ -171,14 +172,14 @@ typedef struct __LAYOUT_REC
   short ItemLength;                 /* Length of item */
   short Precision;
   char  Usage[_USAGE_LEN];
-  short ItemOccurs;
+  USHORT ItemOccurs;
 
   enum LITERAL_DATA_TYPES DataType;
 
   /* Calculated fields */
   short  ItemLevel;           /* Determined by service */
   USHORT ItemOffset;          /* Calculated from lengths of preceding fields */
-  short  ItemCLength;         /* Calculated from repository information */
+  USHORT ItemCLength;         /* Calculated from repository information */
 
   /* Indexes of other records */
   short ChildIndex;                /* Index of child record (for groups) */
