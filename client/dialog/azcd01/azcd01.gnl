@@ -1,3 +1,7 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
 {T215.AZCD01} (O)  No parent def.              azcd01.c     client                                                         
 {T215.AZCD01} (O)  No parent def.              azcd01.c     server                                                         
 {T215.AZCD01} (O)  No parent def.              azcd01.gnv   pgm msg tbl COBOL                                              
