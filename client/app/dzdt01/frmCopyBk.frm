@@ -480,11 +480,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
+Option Explicit
 
 Private Sub cboCpyBkType_Change()
-    
+On Error GoTo Err_cboCpyBkType_Change
+
     If cboCpyBkType.Text = "" Then
         cboCpyBkType.BackColor = &HFFFF&
     Else
@@ -495,10 +495,19 @@ Private Sub cboCpyBkType_Change()
         cboCpyBkType.Refresh
     End If
     
+Exit_cboCpyBkType_Change:
+    Exit Sub
+    
+Err_cboCpyBkType_Change:
+    MsgBox Error$
+    GoTo Exit_cboCpyBkType_Change
+
+    
 End Sub
 
 Private Sub cboCpyBkType_Click()
-    
+On Error GoTo Err_cboCpyBkType_Click
+
     With cboCpyBkType
         .BackColor = &HFFFFFF
        
@@ -506,11 +515,18 @@ Private Sub cboCpyBkType_Click()
     
      'update global string compare item
     gblsComp = ""
-    
+Exit_cboCpyBkType_Click:
+    Exit Sub
+
+Err_cboCpyBkType_Click:
+    MsgBox Error$
+    GoTo Exit_cboCpyBkType_Click
     
 End Sub
 
 Private Sub cboCpyBkType_LostFocus()
+On Error GoTo Err_cboCpyBkType_LostFocus
+
     
     If cboCpyBkType.Text = "" Then
         cboCpyBkType.BackColor = &HFFFF&
@@ -521,9 +537,18 @@ Private Sub cboCpyBkType_LostFocus()
         cboCpyBkType.Refresh
     End If
     
+Exit_cboCpyBkType_LostFocus:
+    Exit Sub
+    
+Err_cboCpyBkType_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboCpyBkType_LostFocus
+    
 End Sub
 
 Private Sub cboDestination_Change()
+On Error GoTo Err_cboDestination_Change
+
     
     If cboDestination.Text = "" Then
         cboDestination.BackColor = &HFFFF&
@@ -535,14 +560,26 @@ Private Sub cboDestination_Change()
         cboDestination.Refresh
     End If
     
+Exit_cboDestination_Change:
+    Exit Sub
+
+Err_cboDestination_Change:
+    MsgBox Error$
+    GoTo Exit_cboDestination_Change
+    
 End Sub
 
 Private Sub cboDestination_Click()
+On Error GoTo Err_cboDestination_Click
+    
+    Dim tempString As String
+    
         
+    tempString = cboDestination.Text
+    tempString = Mid(tempString, 2, 2)
     
-    
-    
-    
+    zSir = tempString
+        
     'update global string compare item
     gblsComp = ""
     
@@ -551,9 +588,19 @@ Private Sub cboDestination_Click()
         .BackColor = &HFFFFFF
     End With
     
+Exit_cboDestination_Click:
+    Exit Sub
+
+
+Err_cboDestination_Click:
+    MsgBox Error$
+    GoTo Exit_cboDestination_Click
+    
+    
 End Sub
 
 Private Sub cboDestination_LostFocus()
+On Error GoTo Err_cboDestination_LostFocus
     
     If cboDestination.Text = "" Then
         cboDestination.BackColor = &HFFFF&
@@ -564,9 +611,17 @@ Private Sub cboDestination_LostFocus()
         cboDestination.Refresh
     End If
     
+Exit_cboDestination_LostFocus:
+    Exit Sub
+
+Err_cboDestination_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboDestination_LostFocus
+    
 End Sub
 
 Private Sub cboEntity_Change()
+On Error GoTo Err_cboEntity_Change
     
     If cboEntity.Text = "" Then
         cboEntity.BackColor = &HFFFF&
@@ -578,9 +633,18 @@ Private Sub cboEntity_Change()
         cboEntity.Refresh
     End If
     
+Exit_cboEntity_Change:
+    Exit Sub
+    
+Err_cboEntity_Change:
+    MsgBox Error$
+    GoTo Exit_cboEntity_Change
+    
+    
 End Sub
 
 Private Sub cboEntity_Click()
+On Error GoTo Err_cboEntity_Click
     
     With cboEntity
         .BackColor = &HFFFFFF
@@ -589,11 +653,18 @@ Private Sub cboEntity_Click()
     
     'set gblsComp value
     gblsComp = ""
+
+Exit_cboEntity_Click:
+    Exit Sub
     
+Err_cboEntity_Click:
+    MsgBox Error$
+    GoTo Exit_cboEntity_Click
     
 End Sub
 
 Private Sub cboEntity_LostFocus()
+On Error GoTo Err_cboEntity_LostFocus
     
     If cboEntity.Text = "" Then
         cboEntity.BackColor = &HFFFF&
@@ -603,6 +674,14 @@ Private Sub cboEntity_LostFocus()
         cboEntity.SetFocus
         cboEntity.Refresh
     End If
+    
+Exit_cboEntity_LostFocus:
+    Exit Sub
+    
+Err_cboEntity_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboEntity_LostFocus
+    
     
 End Sub
 
@@ -636,12 +715,20 @@ Err_cboIncrement_Change:
 End Sub
 
 Private Sub cboIncrement_Click()
+On Error GoTo Err_cboIncrement_Click
     
     'set gblsComp to nothing
     gblsComp = ""
     gblBClick = True
     
     cboIncrement.BackColor = &HFFFFFF   'set background to white
+
+Exit_cboIncrement_Click:
+    Exit Sub
+
+Err_cboIncrement_Click:
+    MsgBox Error$
+    GoTo Exit_cboIncrement_Click
     
 End Sub
 
@@ -795,6 +882,7 @@ Err_cboInitial_LostFocus:
 End Sub
 
 Private Sub cboLanguage_Change()
+On Error GoTo Err_cboLanguage_Change
     
     If cboLanguage.Text = "" Then
         cboLanguage.BackColor = &HFFFF&
@@ -806,9 +894,18 @@ Private Sub cboLanguage_Change()
         cboLanguage.Refresh
     End If
     
+Exit_cboLanguage_Change:
+    Exit Sub
+
+Err_cboLanguage_Change:
+    MsgBox Error$
+    GoTo Exit_cboLanguage_Change
+    
+    
 End Sub
 
 Private Sub cboLanguage_Click()
+On Error GoTo Err_cboLanguage_Click
     
     With cboLanguage
         .BackColor = &HFFFFFF
@@ -817,11 +914,20 @@ Private Sub cboLanguage_Click()
     
     'set gblsComp to nothing
     gblsComp = ""
+
+Exit_cboLanguage_Click:
+    Exit Sub
+    
+Err_cboLanguage_Click:
+    MsgBox Error$
+    GoTo Exit_cboLanguage_Click
+    
     
     
 End Sub
 
 Private Sub cboLanguage_LostFocus()
+On Error GoTo Err_cboLanguage_LostFocus
     
     If cboLanguage.Text = "" Then
         cboLanguage.BackColor = &HFFFF&
@@ -831,10 +937,19 @@ Private Sub cboLanguage_LostFocus()
         cboLanguage.SetFocus
         cboLanguage.Refresh
     End If
+
+Exit_cboLanguage_LostFocus:
+    Exit Sub
+
+Err_cboLanguage_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboLanguage_LostFocus
     
 End Sub
 
 Private Sub cboOriging_Change()
+On Error GoTo Err_cboOriging_Change
+
 
     If cboOriging.Text = "" Then
         cboOriging.BackColor = &HFFFF&
@@ -846,33 +961,43 @@ Private Sub cboOriging_Change()
         cboOriging.Refresh
     End If
     
+Exit_cboOriging_Change:
+    Exit Sub
+
+Err_cboOriging_Change:
+    MsgBox Error$
+    GoTo Exit_cboOriging_Change
+    
+    
     
         
 End Sub
 
 Private Sub cboOriging_Click()
+On Error GoTo Err_cboOriging_Click
     
-    Dim tempString As String
-    
+   
     With cboOriging
         .BackColor = &HFFFFFF
     End With
     
-    tempString = cboOriging.Text
-    tempString = Mid(tempString, 2, 2)
-    
-    zSir = tempString
-    
+       
     'update global string compare item
     gblsComp = ""
     
-    tempString = Left(tempString, 3)
+
+Exit_cboOriging_Click:
+    Exit Sub
+
+Err_cboOriging_Click:
+    MsgBox Error$
+    GoTo Exit_cboOriging_Click
     
-    xSir = tempString
            
 End Sub
 
 Private Sub cboOriging_LostFocus()
+On Error GoTo Err_cboOriging_LostFocus
     
     If cboOriging.Text = "" Then
         cboOriging.BackColor = &HFFFF&
@@ -882,62 +1007,109 @@ Private Sub cboOriging_LostFocus()
         cboOriging.SetFocus
         cboOriging.Refresh
     End If
+
+Exit_cboOriging_LostFocus:
+    Exit Sub
+
+Err_cboOriging_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboOriging_LostFocus
    
 End Sub
 
 
 Private Sub cboPrefix_Change()
+On Error GoTo Err_cboPrefix_Change
         
     cboPrefix.BackColor = &HFFFFFF 'set the background color to white
     
     'test for an entry greate than 5 characters - there is no maxlength property
     'you can set at design time - must be done at runtime
-    If Len(cboPrefix.Text) > 4 Then
-        MsgBox "Entry cannot be greater than 4 characters. Please re-enter Prefix", vbOKOnly, "Request Copybook Template"
+    If Len(cboPrefix.Text) > 5 Then
+        MsgBox "Entry cannot be greater than 5 characters. Please re-enter Prefix", vbOKOnly, "Request Copybook Template"
         cboPrefix.SetFocus
         cboPrefix.SelStart = 0
         cboPrefix.SelLength = Len(cboPrefix.Text)
     End If
+    
+Exit_cboPrefix_Change:
+    Exit Sub
+
+Err_cboPrefix_Change:
+    MsgBox Error$
+    GoTo Exit_cboPrefix_Change
+    
     
     
 End Sub
 
 Private Sub cboPrefix_Click()
+On Error GoTo Err_cboPrefix_Click
         
     With cboPrefix
         .BackColor = &HFFFFFF
         
     End With
+
+Exit_cboPrefix_Click:
+    Exit Sub
+
+Err_cboPrefix_Click:
+    MsgBox Error$
+    GoTo Exit_cboPrefix_Click
+    
     
 End Sub
 
 Private Sub cboPrefix_LostFocus()
+On Error GoTo Err_cboPrefix_LostFocus
+
     
     'check for value - if value exists make sure value is not greater than 5 characters
-    If Len(cboPrefix.Text) > 4 Then
-        MsgBox "Entry cannot be greater than 4 characters. Please re-enter Prefix", vbOKOnly, "Request Copybook Template"
+    If Len(cboPrefix.Text) > 5 Then
+        MsgBox "Entry cannot be greater than 5 characters. Please re-enter Prefix", vbOKOnly, "Request Copybook Template"
         cboPrefix.SetFocus
         cboPrefix.SelStart = 0
         cboPrefix.SelLength = Len(cboPrefix.Text)
     End If
+
+Exit_cboPrefix_LostFocus:
+    Exit Sub
+    
+Err_cboPrefix_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboPrefix_LostFocus
     
 End Sub
 
 Private Sub cboValues_Change()
+On Error GoTo Err_cboValues_Change
+
+
     
     If cboValues.Text = "" Then
         cboValues.BackColor = &HFFFF&
     Else
-        MsgBox "Please select a value from the list.", vbOKOnly, "Request Copybook Template"
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         'set global string compare item
         gblsComp = cboValues.Text
         cboValues.BackColor = &HFF&
         cboValues.Refresh
     End If
+
+Exit_cboValues_Change:
+    Exit Sub
+
+Err_cboValues_Change:
+    MsgBox Error$
+    GoTo Exit_cboValues_Change
+    
     
 End Sub
 
 Private Sub cboValues_Click()
+On Error GoTo Err_cboValues_Click
+
     
     With cboValues
         .BackColor = &HFFFFFF
@@ -946,10 +1118,18 @@ Private Sub cboValues_Click()
      'update global string compare item
     gblsComp = ""
     
+Exit_cboValues_Click:
+    Exit Sub
+    
+Err_cboValues_Click:
+    MsgBox Error$
+    GoTo Exit_cboValues_Click
+    
     
 End Sub
 
 Private Sub cboValues_LostFocus()
+On Error GoTo Err_cboValues_LostFocus
     
     If cboValues.Text = "" Then
         cboValues.BackColor = &HFFFF&
@@ -960,11 +1140,20 @@ Private Sub cboValues_LostFocus()
         cboValues.Refresh
     End If
     
+Exit_cboValues_LostFocus:
+    Exit Sub
+
+Err_cboValues_LostFocus:
+    MsgBox Error$
+    GoTo Exit_cboValues_LostFocus
+    
+    
 End Sub
 
 
 
 Private Sub chkImplied_Click()
+On Error GoTo Err_chkImplied_Click
     
     If chkImplied.Value = 1 Then
         strImplied = "Yes"
@@ -972,19 +1161,37 @@ Private Sub chkImplied_Click()
         strImplied = "No"
     End If
     
+Exit_chkImplied_Click:
+    Exit Sub
+
+Err_chkImplied_Click:
+    MsgBox Error$
+    GoTo Exit_chkImplied_Click
+    
+    
 End Sub
 
 Private Sub chkPrefix88_Click()
+On Error GoTo Err_chkPrefix88_Click
     
     If chkPrefix88.Value = 1 Then
         strPrefix88 = "Yes"
     Else
         strPrefix88 = "No"
     End If
+    
+Exit_chkPrefix88_Click:
+    Exit Sub
+
+Err_chkPrefix88_Click:
+    MsgBox Error$
+    GoTo Exit_chkPrefix88_Click
+    
    
 End Sub
 
 Private Sub Form_Load()
+On Error GoTo Err_Form_Load
     
     
     'set variables
@@ -998,30 +1205,69 @@ Private Sub Form_Load()
      
      'Load required data into appropriate combo boxes
      Call DataLoad
+     
+Exit_Form_Load:
+    Exit Sub
+
+Err_Form_Load:
+    MsgBox Error$
+    GoTo Exit_Form_Load
+    
  
 End Sub
 
 Private Sub mnuAddCpyBk_Click()
+On Error GoTo Err_mnuAddCpyBk_Click
+
+    Dim strTemp As String
+    Dim intI As Integer
+    
+    strTemp = txtSirNo.Text
+    
+    If Len(txtSirNo.Text) <= 5 And Len(txtSirNo.Text) > 0 And IsNumeric(strTemp) Then
+        
+        For intI = Len(strTemp) + 1 To 5
+            strTemp = "0" & strTemp
+        Next intI
+                    
+        'display 5 digit number
+        txtSirNo.Text = strTemp
+            
+        'assign the YYYYY portion of the SIR number
+        ySir = txtSirNo.Text
+    
+    End If
+    
      
     CheckFields
 
     If CheckFields = True Then
     
-        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
         Call WriteSirInfo
         
     Else
     
         Beep
-        MsgBox "Not all required fields have been entered.", vbOKOnly, "Request CopyBook Template"
+        MsgBox "Please complete all required field before adding this template.", vbOKOnly, "Request CopyBook Template"
         
    End If
 
+Exit_mnuAddCpyBk_Click:
+    Exit Sub
+    
+Err_mnuAddCpyBk_Click:
+    MsgBox Error$
+    GoTo Exit_mnuAddCpyBk_Click
+    
    
    
 End Sub
 
 Private Sub mnuExit_Click()
+On Error GoTo Err_mnuExit_Click
+
     
     Dim Msg As String, Title As String
     Dim style, Response
@@ -1060,18 +1306,35 @@ Private Sub mnuExit_Click()
         End If
         
     End If
+    
+Exit_mnuExit_Click:
+    Exit Sub
+
+Err_mnuExit_Click:
+    MsgBox Error$
+    GoTo Exit_mnuExit_Click
+    
         
 End Sub
 
 
 
 Private Sub txtCpyBkNam_Change()
+On Error GoTo Err_txtCpyBkNam_Change
+
         
     If txtCpyBkNam.Text = "" Then
         txtCpyBkNam.BackColor = &HFFFF&
     Else
         txtCpyBkNam.BackColor = &HFFFFFF
     End If
+    
+Exit_txtCpyBkNam_Change:
+    Exit Sub
+    
+Err_txtCpyBkNam_Change:
+    MsgBox Error$
+    GoTo Exit_txtCpyBkNam_Change
     
     
 End Sub
@@ -1111,17 +1374,22 @@ Err_txtCpyBkNam_LostFocus:
         
 End Sub
 
-
-
-
-
 Private Sub txtImage_Click()
+On Error GoTo Err_txtImage_Click
 
     Beep
+
+Exit_txtImage_Click:
+    Exit Sub
+    
+Err_txtImage_Click:
+    MsgBox Error$
+    GoTo Exit_txtImage_Click
     
 End Sub
 
 Private Sub txtLongDesc_Change()
+On Error GoTo Err_txtLongDesc_Change
 
     If txtLongDesc.Text = "" Then
         txtLongDesc.BackColor = &HFFFF&
@@ -1129,19 +1397,38 @@ Private Sub txtLongDesc_Change()
         txtLongDesc.BackColor = &HFFFFFF 'set background to white when user enters text
     End If
     
+Exit_txtLongDesc_Change:
+    Exit Sub
+    
+Err_txtLongDesc_Change:
+    MsgBox Error$
+    GoTo Exit_txtLongDesc_Change
+    
+    
      
 End Sub
 
 Private Sub txtLongDesc_LostFocus()
+On Error GoTo Err_txtLongDesc_LostFocus
     
     'make sure that the user has entered a value, set it to yellow if nothing there
     If txtLongDesc = "" Then
         txtLongDesc.BackColor = &HFFFF&
     End If
     
+Exit_txtLongDesc_LostFocus:
+    Exit Sub
+
+Err_txtLongDesc_LostFocus:
+    MsgBox Error$
+    GoTo Err_txtLongDesc_LostFocus
+    
+    
 End Sub
 
 Private Sub txtShortDesc_Change()
+On Error GoTo Err_txtShortDesc_Change
+
     
     If txtShortDesc.Text = "" Then
         txtShortDesc.BackColor = &HFFFF&
@@ -1149,17 +1436,37 @@ Private Sub txtShortDesc_Change()
         txtShortDesc.BackColor = &HFFFFFF ' set background to white
     End If
     
+Exit_txtShortDesc_Change:
+    Exit Sub
+    
+Err_txtShortDesc_Change:
+    MsgBox Error$
+    GoTo Exit_txtShortDesc_Change
+    
+    
 End Sub
 
 Private Sub txtShortDesc_LostFocus()
+On Error GoTo Err_txtShortDesc_LostFocus
+
     
     If txtShortDesc = "" Then
         txtShortDesc.BackColor = &HFFFF&
     End If
     
+Exit_txtShortDesc_LostFocus:
+    Exit Sub
+
+Err_txtShortDesc_LostFocus:
+    MsgBox Error$
+    GoTo Exit_txtShortDesc_LostFocus
+    
+    
 End Sub
 
 Private Sub txtSirNo_Change()
+On Error GoTo Err_txtSirNo_Change
+
 
     Dim tempString As String
     
@@ -1183,10 +1490,20 @@ Private Sub txtSirNo_Change()
             txtSirNo.SelLength = Len(tempString)
         End If
     End If
+    
+Exit_txtSirNo_Change:
+    Exit Sub
+
+Err_txtSirNo_Change:
+    MsgBox Error$
+    GoTo Exit_txtSirNo_Change
+    
         
 End Sub
 
 Private Sub txtSirNo_LostFocus()
+On Error GoTo Err_txtSirNo_LostFocus
+
     
     Dim tempString As String
     Dim i As Integer
@@ -1212,7 +1529,7 @@ Private Sub txtSirNo_LostFocus()
         txtSirNo.BackColor = &HFF&
         txtSirNo.SelStart = 0
         txtSirNo.SelLength = Len(tempString)
-        MsgBox "You must enter a number, no letters are in this number", vbOKOnly, "Request Copybook Template"
+        MsgBox "Please enter a five digit numeric value.", vbOKOnly, "Request Copybook Template"
         Exit Sub
         
     End If
@@ -1249,11 +1566,19 @@ Private Sub txtSirNo_LostFocus()
                         
     End If
        
+Exit_txtSirNo_LostFocus:
+    Exit Sub
+    
+Err_txtSirNo_LostFocus:
+    MsgBox Error$
+    GoTo Exit_txtSirNo_LostFocus
     
         
 End Sub
 
 Public Sub DataLoad()
+On Error GoTo Err_DataLoad
+
     
     Dim counter As Integer
     Dim myCodestable As New CodesTable
@@ -1277,12 +1602,19 @@ Public Sub DataLoad()
     Call LoadProc(myDatabase, cboInitial, "tblInitial", "InitialCd", "InitialDcd", "")
     Call LoadProc(myDatabase, cboIncrement, "tblIncrement", "IncrementCd", "IncrementDcd", "")
     
+Exit_DataLoad:
+    Exit Sub
+    
+Err_DataLoad:
+    MsgBox Error$
+    GoTo Exit_DataLoad
     
     
     
 End Sub
 
 Public Function CheckFields() As Boolean
+On Error GoTo Err_CheckFields
     
     If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
         Or (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (txtCpyBkNam.Text = "") _
@@ -1293,6 +1625,14 @@ Public Function CheckFields() As Boolean
     
               CheckFields = True
     End If
+
+Exit_CheckFields:
+    Exit Function
+
+Err_CheckFields:
+    MsgBox Error$
+    GoTo Exit_CheckFields
+    
       
 End Function
 
@@ -1477,6 +1817,7 @@ End Sub
 
 
 Private Sub txtSuffix_Change()
+On Error GoTo Err_txtSuffix_Change
     
     Dim tempString As String
        
@@ -1487,6 +1828,15 @@ Private Sub txtSuffix_Change()
         txtSuffix.SelStart = 0
         txtSuffix.SelLength = Len(tempString)
     End If
+    
+Exit_txtSuffix_Change:
+    Exit Sub
+    
+Err_txtSuffix_Change:
+    MsgBox Error$
+    GoTo Exit_txtSuffix_Change
+    
+    
     
 End Sub
 
