@@ -1,0 +1,326 @@
+/***************************************************************************
+ *                                                                         *
+ *     W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N         *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *             Symbolic Definitions for: DZSF002                           *
+ *                         Generated on: Tue Feb 03 10:15:18 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ **************************************************************************/
+
+DZSF002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,241,110
+    STYLE 0 
+     | WS_CAPTION
+     | WS_MINIMIZEBOX
+     | WS_MAXIMIZEBOX
+     | WS_SYSMENU
+     | WS_THICKFRAME
+     | DS_ABSALIGN
+    CAPTION "TABLOAD"
+    
+Begin  /* controls */
+   CONTROL "Tabload Input Parameters",9000,
+              FND_GROUP_BOX,
+              WS_VISIBLE | BS_GROUPBOX
+              ,3,3,234,71
+
+   CONTROL "&Output Directory:",500,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,8,14,64,12
+
+   CONTROL "",100,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,74,14,158,0
+
+   CONTROL "&CSR Dump File:",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,8,28,60,12
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,74,28,158,0
+
+   CONTROL "&Data File:",502,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,9,42,37,12
+
+   CONTROL "",102,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,74,42,158,0
+
+   CONTROL "&Start Number:",503,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,8,56,61,12
+
+   CONTROL "",103,
+              FND_NUMERICFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,74,56,34,0
+
+   CONTROL "&Finish Number:",504,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,130,56,58,12
+
+   CONTROL "",104,
+              FND_NUMERICFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,191,56,41,0
+
+   CONTROL "Clear All",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,130,79,0,0
+
+   CONTROL "Generate",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+     | BS_DEFPUSHBUTTON
+              ,186,79,0,0
+
+   CONTROL "Duplicate Files Only",105,
+              FND_CHECK_BOX,
+              WS_VISIBLE | WS_TABSTOP  | BS_CHECKBOX
+              ,3,81,0,0
+
+   CONTROL "",106,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,95,81,0,0
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+DZSF002ID 332
+Begin
+   /*  Control Data for Static Text ~Output Directory:  */
+   FP_CONTROL_ID,                       "500\0"
+   FP_SCREEN_LENGTH,                    "18\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field OutputDir  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text ~CSR Dump File:  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "15\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field CsrDmpFile  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text ~Data File:  */
+   FP_CONTROL_ID,                       "502\0"
+   FP_SCREEN_LENGTH,                    "11\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field DataFile  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text ~Start Number:  */
+   FP_CONTROL_ID,                       "503\0"
+   FP_SCREEN_LENGTH,                    "14\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Numeric Field StartNum  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_VALID_CONDITION,                  ">=,0\0"
+   FP_VALID_CONDITION,                  "<=,10000\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_INTEGRAL_DIGITS,                  "8\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for Static Text ~Finish Number:  */
+   FP_CONTROL_ID,                       "504\0"
+   FP_SCREEN_LENGTH,                    "15\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Numeric Field FinishNum  */
+   FP_CONTROL_ID,                       "104\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_TRUE, "\0"
+   FP_VALID_CONDITION,                  ">=,1\0"
+   FP_VALID_CONDITION,                  "<=,10000\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_INTEGRAL_DIGITS,                  "8\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+   FP_CURRENCY,                         FPV_NULL, "\0"
+
+   /*  Control Data for Checkbox DupChk  */
+   FP_CONTROL_ID,                       "105\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "106\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+DZSF002MenuID MENU PRELOAD
+Begin  /*  menus  */
+     POPUP "&Action"
+Begin
+     MENUITEM "&Generate",1002
+     MENUITEM "E&xit\tCtrl+X",1003
+End
+     POPUP "&Help"
+Begin
+     MENUITEM "&About TABLoad",1004
+End
+End  /*  menus  */
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+DZSF002AccelID ACCELERATORS PRELOAD
+Begin
+"X",1003,CONTROL,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+DZSF002IconID ICON TABLOAD.ICO
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

@@ -1,0 +1,1400 @@
+ /***********************************************************************
+**
+**                  CUSTOMER SERVICE SYSTEM CSR MODULE
+**
+**
+**  FILENAME          : TABLOAD.BUS
+**
+**  DESCRIPTION       : LOADS MESSAGE FILES WITH SPUFI DATA FOR TAB
+**
+**  FUNCTIONS         :
+**
+**  DATE CREATED      : 08/19/94
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**  08/19/94    ERIC RAS                   Original File.
+**
+**  08/25/94    ABURDEN                    Added Starting Message Number
+**                                         & Logic for Checking Function
+**                                         CODE of Input Message
+**
+**  12/13/96    EHEMMER        SoCo Rel    Modified code to compile with 
+**                                         the Discovery release of 
+**                                         Foundation as well as the latest
+**                                         architecture.
+**
+**  12/16/96    EHEMMER        SoCo Rel    Altered directory paths and added
+**                                         comments to code.
+***********************************************************************/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : Dzsf002Predis
+**
+**  DESCRIPTION      : PRE-DISPLAY - Populate fields and set attributes
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : ABURDEN
+**
+**  DATE CREATED     : 07/24/94
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    07/24/94  ABURDEN               Original code.
+**
+**    12/04/96  EHEMMER      SoCo Enhancement    
+**                                    Removed Error Log between Executions.
+**
+**
+***************************************************************************/
+WCBPROC( DZSF002BusPredis )
+{
+	_FND_ERROR_BLOCK	FndGenErrorBlock;
+	SHORT               FndGenRC = 0;
+	USHORT              StartNum = 0;
+	USHORT              FinishNum = 0;
+
+
+	/*
+	** Initialize fields - this is non-standard because calls to FndFieldSetValue
+	** created unpredictable results with numeric fields.
+	*/
+	StartNumData = 	DZSF002_DEFAULT_START_NUMBER;
+	FinishNumData = DZSF002_DEFAULT_FINISH_NUMBER;
+
+	/*
+	** Set initail field values
+	*/
+	/*
+    FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_START_FIELD,
+            sizeof(USHORT),
+            &StartNum,
+            &FndGenErrorBlock);
+            
+    FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_FINISH_FIELD,
+            sizeof(USHORT),
+            &FinishNum,
+            &FndGenErrorBlock);
+	*/
+	/*
+	** Display the window
+	*/
+	FndWindowShow(
+		CBI_hwnd,
+		&FndGenErrorBlock);
+
+
+return ( CMN_SUCCESS );
+
+} /* end of Predis */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : Dzsf002BusGeneratePBClk
+**
+**  DESCRIPTION      : Generates the new files for TAB
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : ABURDEN
+**
+**  DATE CREATED     : 07/24/94
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    07/24/94  ABURDEN               Original code.
+**
+**    01/30/97  EHEMMER      SoCo Enhancement    
+**
+**
+***************************************************************************/
+WCBPROC( DZSF002BusGeneratePBClk )
+{
+	
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+    _MSG_PARM_BLOCK     MsgPB;
+    SHORT               FndGenRC = 0;
+    VOID                *pMessage = NULL;
+    FILE                *fptr;
+    FILE                *fMessagePtr;
+    CHAR                DataFilePathAndName[_PATH_LEN] = "";
+    CHAR                OutputFilePathAndName[_PATH_LEN] = "";
+    CHAR                GeneratedFilePathAndName[_PATH_LEN] = "";
+	CHAR                CSRDumpFilePathAndName[_PATH_LEN] = "";
+    USHORT              LocalPerfFiles = 0,
+    					TotalGen = 0,
+						StopNum = 0,
+						StartNum = 0;
+
+    USHORT              FilesWritten = 0;
+
+    CHAR                Value[DZSF002_VALUE_LEN] = "";
+    USHORT              StartNumber;
+	USHORT              FinishNumber;
+	CHAR				lfunctioncode[DZSF002_FUNCTION_CODE_LEN];
+    CHAR                CdCoStr[DZSF002_NAME_LEN] = "";
+    CHAR                FinalName[DZSF002_NAME_LEN] = "";
+    SHORT               i = 0;
+    SHORT               j = 0;
+	BOOL                WriteFile = TRUE;
+	USHORT	            SelectedButton;
+    CHAR                DuplicateChkBoxStatus[DZSF002_DUP_CHK_BX_LEN];
+    SHORT               TempLockPrem = 0;
+    USHORT              FieldSize = 0; 
+	USHORT				FieldOffset = 0;
+	USHORT				NumElements = 0;
+	USHORT              RepeatNum = 0;
+	VOID				*pOffset = NULL;
+	CHAR				*pValue;
+	CHAR                *pTMID;
+	CHAR                TranMapID[DZSF002_TRAN_ID_LEN + 1];
+	FILE                *fpElemData;
+	SHORT               rc = 0;
+	CHAR                ElementCfgStr[DZSF002_ELEM_CFG_STR_NUM]
+										[DZSF002_ELEM_CFG_STR_LEN];
+	CHAR                OffsetKeyWord[DZSF002_OFFSET_KY_WORD_LEN];
+	CHAR                ElemKeyWord[DZSF002_ELEM_KEY_WORD_LEN];
+	CHAR                format[DZSF002_FORMAT_STR_LEN];
+	CHAR                ElementValue[DZSF002_ELEM_VALUE_LEN];
+	CHAR                ElemName[DZSF002_ELEM_NAME_LEN];
+	CHAR                DialogID[DZSF002_DIALOG_ID_LEN + 1];
+	CHAR                ErrMsg[DZSF002_ERR_MSG_LEN];
+
+
+
+	
+    /* Allocate the Message area */
+    ( VOID * )pMessage = malloc( DZSF002_MESSAGE_LEN );
+	 /*
+	 **# put memory allocation check here
+	 */
+	if (pMessage == NULL )
+	{
+	    FndMsgBoxDisplayText(
+						DZSF002_ERR_MEM_ALLOC_MSG,
+						DZSF002_APPL_NAME,
+						CBI_hwnd,					
+						FND_MSGBOX_OK,
+						FND_MSGBOX_INFORMATION,
+						FND_MSGBOX_OK,
+						NULL,
+						&SelectedButton,
+						&FndGenErrorBlock );
+
+		return( CMN_FAIL );
+	}
+	
+	/*
+	** Initialize
+	*/
+	memset(format, 0,DZSF002_FORMAT_STR_LEN);
+	memset(ElemName, 0, DZSF002_ELEM_NAME_LEN);
+	memset(ElemKeyWord, 0, DZSF002_ELEM_KEY_WORD_LEN);
+	memset(OffsetKeyWord, 0, DZSF002_OFFSET_KY_WORD_LEN);
+	memset(ElementValue, 0, DZSF002_ELEM_VALUE_LEN);
+	memset(pMessage, 0, DZSF002_MESSAGE_LEN);
+	memset(TranMapID, 0, DZSF002_TRAN_ID_LEN + 1);
+	memset(DialogID, 0, DZSF002_DIALOG_ID_LEN + 1);
+
+	for ( i = 0; i < DZSF002_ELEM_CFG_STR_NUM; ++i)
+	{
+		 memset( ElementCfgStr[i], 0, DZSF002_ELEM_CFG_STR_LEN);
+	}
+
+
+	/*
+    ** Query all the fields to get the input parameters.
+    **/
+    /* Output Directory */
+    FndFieldQueryValue(
+            CBI_hwnd,
+            DZSF002_OUTPUT_FIELD,
+            sizeof( OutputFilePathAndName),
+            OutputFilePathAndName,
+            &FndGenErrorBlock);
+	
+    /* CSR Dump File */
+    FndFieldQueryValue(
+            CBI_hwnd,
+            DZSF002_CSR_DUMP_FIELD,
+            sizeof(CSRDumpFilePathAndName),
+            CSRDumpFilePathAndName,
+            &FndGenErrorBlock);
+	
+    /* Spufi file */
+    FndFieldQueryValue(
+            CBI_hwnd,
+            DZSF002_DATA_FIELD,
+            sizeof( DataFilePathAndName),
+            DataFilePathAndName,
+            &FndGenErrorBlock);
+	
+    /* Start Number */
+    FndFieldQueryValue(
+            CBI_hwnd,
+            DZSF002_START_FIELD,
+            sizeof( StartNumber),
+            &StartNumber,
+            &FndGenErrorBlock);
+	
+    /* Finish Number */
+    FndFieldQueryValue(
+            CBI_hwnd,
+            DZSF002_FINISH_FIELD,
+            sizeof( FinishNumber),
+            &FinishNumber,
+            &FndGenErrorBlock);
+
+    /* 
+    ** 
+    ** Verify Finish number and start loop that creates message clones
+    **/
+    if( FinishNumber <= 0 )
+    {
+		FndFieldSetStatus( CBI_hwnd,
+						DZSF002_START_FIELD,
+						STS_INVALID,
+						&FndGenErrorBlock );
+
+		FndFieldSetStatus( CBI_hwnd,
+						DZSF002_FINISH_FIELD,
+						STS_INVALID,
+						&FndGenErrorBlock );
+
+
+	    FndMsgBoxDisplayText(
+            DZSF002_ERR_START_GT_FINISH_MSG,
+			DZSF002_APPL_NAME,
+			CBI_hwnd,					
+			FND_MSGBOX_OK,
+			FND_MSGBOX_INFORMATION,
+			FND_MSGBOX_OK,
+			NULL,
+			&SelectedButton,
+		    &FndGenErrorBlock );
+
+        return ( CMN_SUCCESS );
+    }
+    else /* A correct start and finish number exist */
+    {
+
+        LocalPerfFiles =  StartNumber;
+        FilesWritten = StartNumber;
+
+	    StartNum =  StartNumber;
+    
+        TotalGen = FinishNumber;
+
+        /* 
+        ** Query the duplicate check box. If it is NO, read the
+        ** SPUFI file.
+        **/
+        FndFieldQueryValue(
+                CBI_hwnd,
+                DZSF002_DUPLICATE_CHK_BOX,
+                sizeof( DuplicateChkBoxStatus),
+                DuplicateChkBoxStatus,
+                &FndGenErrorBlock);
+
+        /* The user wants to create duplicate files */
+        if( strcmp( DuplicateChkBoxStatus, CMN_NO_STR) == 0)
+        {
+
+            /*
+            ** This segment of code opens the data file 
+            **/
+            /* Open file */
+	        if (( fptr = fopen( DataFilePathAndName, "r" ) ) != NULL )
+	        {
+		        memset( &MsgPB,   '\0', sizeof(_MSG_PARM_BLOCK ));
+		        memset( pMessage, '\0', DZSF002_MESSAGE_LEN);
+
+		        /* Read in dumped CSR file */
+		        FndGenRC = CsrGetPBAndMessage( &MsgPB, &((BYTE *)pMessage ),
+												CSRDumpFilePathAndName);
+
+                if( FndGenRC != CMN_SUCCESS)
+                {
+	                FndMsgBoxDisplayText(
+                        DZSF002_ERR_CSR_DMP_OPEN_FAIL_MSG,
+			            DZSF002_APPL_NAME,
+			            CBI_hwnd,					
+			            FND_MSGBOX_OK,
+			            FND_MSGBOX_INFORMATION,
+			            FND_MSGBOX_OK,
+			            NULL,
+			            &SelectedButton,
+			            &FndGenErrorBlock );
+                }
+                else /* The return code is CMN_SUCCESS */
+                {
+					/*
+					** get the Translation Map ID and Dialog from the message
+					*/
+					pTMID = (CHAR *)&MsgPB;
+					pTMID += DZSF002_TRAN_MAP_OFFSET;
+					memcpy(TranMapID, pTMID, DZSF002_TRAN_ID_LEN);
+
+					pTMID = (CHAR *)pMessage;
+					pTMID += DZSF002_DIALOG_OFFSET;
+					memcpy(DialogID, pTMID, DZSF002_DIALOG_ID_LEN);
+
+					/*
+					** get number of Elements
+					*/
+					if ((fpElemData = fopen(DZSF002_ELEM_DATA_FILE, "r")) != NULL )
+					{
+						rc = DZSF002GetElemCfg(ElementCfgStr, 
+												TranMapID,
+												DialogID,
+												&NumElements,
+												fpElemData);
+
+						if ( rc != CMN_SUCCESS )
+						{
+							memset(ErrMsg, 0, DZSF002_ERR_MSG_LEN);
+							sprintf(ErrMsg,DZSF002_ERR_ID_NOT_FOUND, TranMapID, DialogID);
+							
+							FndMsgBoxDisplayText(
+									ErrMsg,
+									DZSF002_APPL_NAME,
+									CBI_hwnd,					
+									FND_MSGBOX_OK,
+									FND_MSGBOX_CRITICAL,
+									FND_MSGBOX_OK,
+									NULL,
+									&SelectedButton,
+									&FndGenErrorBlock );
+
+							return CMN_FAIL;
+						}
+
+						fclose(fpElemData);
+					}
+					else
+					{
+						FndMsgBoxDisplayText(
+									DZSF002_ERR_DAT_FILE_MSG,
+									DZSF002_APPL_NAME,
+									CBI_hwnd,					
+									FND_MSGBOX_OK,
+									FND_MSGBOX_CRITICAL,
+									FND_MSGBOX_OK,
+									NULL,
+									&SelectedButton,
+									&FndGenErrorBlock );
+
+						return CMN_FAIL;
+					}
+
+					/*
+					** set function code in message
+					*/
+		            memcpy (lfunctioncode, pMessage, DZSF002_FUNCTION_CODE_LEN);
+
+		            while ( TRUE )
+     	            {
+	 		            NumCreated++;
+
+      		            /* Read in Keys to the MessageLayout from the data file*/
+      		            memset (Value, 0, DZSF002_VALUE_LEN );
+
+      		            if ( fgets( Value, DZSF002_VALUE_LEN, fptr )  != NULL )
+        	            {
+
+/*
+** mdc 1/22/98
+** New approach test. 
+*/	
+							pValue = Value;
+							i = 0;
+							while (strcmp( ElementCfgStr[i], DZSF002_NT_CARRIAGE_RTRN) != 0)
+							{
+								/*
+								** Extract the config data for the element
+								*/
+								rc = 0;
+								rc = sscanf(ElementCfgStr[i], "%s %s %s %d %d", 
+											ElemKeyWord,
+											ElemName,
+											format, 
+											&FieldSize,
+											&RepeatNum);
+
+								if (rc != DZSF002_NUM_ELEMS_SCAN || rc == EOF)
+								{
+									return CMN_FAIL;
+								}
+
+								/*
+								** put the first datum in the string field
+								*/
+								memset(ElementValue, 0, DZSF002_ELEM_VALUE_LEN);
+								memcpy(ElementValue, pValue, FieldSize);
+
+
+								/*
+								** increment the pointer to the next value
+								*/
+								pValue += FieldSize;
+
+								/*
+								** loop for each offset of an element
+								*/
+								for (j = 0; j < RepeatNum; ++j)
+								{
+									/*
+									** get the offset from the cfg array
+									*/
+									++i;
+									if (sscanf(ElementCfgStr[i], "%s %d", OffsetKeyWord,
+												&FieldOffset) == 0 )
+									{
+										return CMN_FAIL;
+									}
+
+
+									/*
+									** set offset in the message
+									*/
+									pOffset = (char *)pMessage + FieldOffset;
+
+									/*
+									** scan in the value to the message
+									*/
+									sscanf(ElementValue, format, pOffset);
+								
+								}/*end of for (j = 0; j < RepeatNum; ++j)*/
+								++i;
+							}/*end of while (ElemCfgStr[i] != NULL) */
+
+				                    
+                            /* Create GeneratedFilePathAndName */
+				           sprintf( GeneratedFilePathAndName, "%s\\CS%u", 
+								OutputFilePathAndName, FilesWritten ); 
+
+				            /* Increment Counter */
+				            LocalPerfFiles++;
+				                                        
+                            /* Successful fopen */
+                            if (( fMessagePtr = 
+								fopen( GeneratedFilePathAndName, "wb" )) != NULL )
+                            {
+				                if(WriteFile)
+                                {
+                                    FilesWritten++;
+
+                                    /* Write the MsgParmBlock to file */
+                                    fwrite( &MsgPB, sizeof( _MSG_PARM_BLOCK ),
+										1, fMessagePtr );
+
+					                /* Write the Message to file */
+                                    fwrite( pMessage, 
+										(size_t) MsgPB.actual_length_send,
+										1, fMessagePtr );
+                                }
+
+					            /* Close the file */
+					            StopNum = (StartNum + TotalGen);
+
+					            fclose( fMessagePtr );
+
+
+					            if (LocalPerfFiles == StopNum)
+					            {
+						            break;
+					            }
+
+				            }	/* end of if:  Successful fopen */
+
+				            else /* Error from fopen of created file */
+				            {
+	                            FndMsgBoxDisplayText(
+                                    DZSF002_ERR_OUT_FILE_OPEN_FAIL_MSG,
+							        DZSF002_APPL_NAME,
+							        CBI_hwnd,					
+							        FND_MSGBOX_OK,
+							        FND_MSGBOX_INFORMATION,
+							        FND_MSGBOX_OK,
+							        NULL,
+							        &SelectedButton,
+							        &FndGenErrorBlock );
+
+						        FndGenRC = CMN_FAIL;
+						        break;
+
+				            } /* end of else:  Error from fopen */
+
+			            } /* end of if:  Not EOF */
+
+			            else /* EOF */
+			            {
+				            break;
+			            } /* EOF */
+
+		            } /* end of while */
+            
+                } /* end else the return code is CMN_SUCCESS */
+
+                /* Close file */
+
+		        fclose( fptr );
+
+                /* Free the memory malloc'ed for pMessage */
+                if( pMessage != NULL)
+                {
+                    free ( pMessage);
+                }
+
+	        } /* end of if:  Successful fopen */
+            else /* unsuccessful open of data file */
+            {
+	            FndMsgBoxDisplayText(   DZSF002_ERR_DATA_FILE_OPEN_FAIL_MSG,
+							            DZSF002_APPL_NAME,
+							            CBI_hwnd,					
+							            FND_MSGBOX_OK,
+							            FND_MSGBOX_INFORMATION,
+							            FND_MSGBOX_OK,
+							            NULL,
+							            &SelectedButton,
+							            &FndGenErrorBlock );
+
+			    FndGenRC = CMN_FAIL;
+            }
+
+        }
+        else /* The user only wants duplicate files */
+        {
+		    memset( &MsgPB,   0, sizeof(_MSG_PARM_BLOCK ));
+		    memset( pMessage, 0, DZSF002_MESSAGE_LEN);
+
+		    /* Read in dumped CSR file */
+		    FndGenRC = CsrGetPBAndMessage( &MsgPB, &((BYTE *)pMessage ),
+											CSRDumpFilePathAndName);
+        
+            if( FndGenRC != CMN_SUCCESS)
+            {
+	            FndMsgBoxDisplayText(
+								DZSF002_ERR_CSR_DMP_OPEN_FAIL_MSG,
+								DZSF002_APPL_NAME,
+								CBI_hwnd,					
+								FND_MSGBOX_OK,
+								FND_MSGBOX_INFORMATION,
+								FND_MSGBOX_OK,
+								NULL,
+								&SelectedButton,
+								&FndGenErrorBlock );
+            }
+            else /* The return code is CMN_SUCCESS */
+            {
+		        memcpy (lfunctioncode, pMessage, DZSF002_FUNCTION_CODE_LEN);
+
+		        while ( TRUE )
+     	        {
+	 		        NumCreated++;
+
+                    /* Create GeneratedFilePathAndName */
+			       sprintf( GeneratedFilePathAndName, "%s\\CS%u", 
+							OutputFilePathAndName, 
+							LocalPerfFiles );
+					 
+			        /* Increment Counter */
+			        LocalPerfFiles++;
+				            
+			        /* Successful fopen */
+                    if (( fMessagePtr = fopen( GeneratedFilePathAndName, "wb" )) != NULL )
+			        {
+			            /* Write the MsgParmBlock to file */
+                        fwrite( &MsgPB, sizeof( _MSG_PARM_BLOCK ), 1, fMessagePtr );
+
+				        /* Write the Message to file */
+                        fwrite( pMessage, (size_t) MsgPB.actual_length_send, 1, fMessagePtr );
+
+				        /* Close the file */
+				        StopNum = (StartNum + TotalGen);
+
+				        fclose( fMessagePtr );
+
+				        if (LocalPerfFiles == StopNum)
+				        {
+					        break;
+				        }
+                    }
+			        else /* Error from fopen */
+			        {
+	                    FndMsgBoxDisplayText(
+										DZSF002_ERR_OUT_FILE_OPEN_FAIL_MSG,
+										DZSF002_APPL_NAME,
+										CBI_hwnd,					
+										FND_MSGBOX_OK,
+										FND_MSGBOX_CRITICAL,
+										FND_MSGBOX_OK,
+										NULL,
+										&SelectedButton,
+										&FndGenErrorBlock );
+
+				        FndGenRC = CMN_FAIL;
+
+			        } /* end of else:  Error from fopen */
+
+		        } /* end of while */
+
+            } /* end else return code is CMN_SUCCESS */
+
+            /* Free the memory malloc'ed for pMessage */
+            if( pMessage != NULL)
+            {
+                free ( pMessage);
+            }
+
+
+        } /* end else the user wants duplicate files */
+
+    } /* end of start and finish number specified */
+
+	if( FndGenRC == CMN_SUCCESS)
+    {
+
+        FndMsgBoxDisplayText( DZSF002_GEN_COMPLETE_MSG,
+							    DZSF002_APPL_NAME,
+							    CBI_hwnd,					
+							    FND_MSGBOX_OK,
+							    FND_MSGBOX_INFORMATION,
+							    FND_MSGBOX_OK,
+							    NULL,
+							    &SelectedButton,
+							    &FndGenErrorBlock );
+    }
+
+
+	/*
+	** set clear button to default
+	*/
+	FndCommandSetDefaultButton( CBI_hwnd,
+								DZSF002_CLEAR_ALL_PB,
+								&FndGenErrorBlock );
+
+
+    return ( CMN_SUCCESS );
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : Dzsf002BusClearAllPBClk
+**
+**  DESCRIPTION      : Clears the fields on the window.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : EHEMMER
+**
+**  DATE CREATED     : 01/30/97
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    01/30/97  EHEMMER               Original code.
+**
+**
+**
+***************************************************************************/
+WCBPROC( DZSF002BusClearAllPBClk )
+{
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+    CHAR                DataFilePathAndName[_PATH_LEN] = "";
+    CHAR                OutputFilePathAndName[_PATH_LEN] = "";
+	SHORT               FndGenRC = 0;
+	USHORT              StartNum = 0;
+	USHORT              FinishNum = 0;
+
+
+    /* Clear the values from all the window fields */
+    FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_OUTPUT_FIELD,
+            _PATH_LEN,
+            "",
+            &FndGenErrorBlock);
+            
+    FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_CSR_DUMP_FIELD,
+            _PATH_LEN,
+            "",
+            &FndGenErrorBlock);
+            
+    FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_DATA_FIELD,
+            _PATH_LEN,
+            "",
+            &FndGenErrorBlock);
+            
+   /* 
+   ** Deleted because thiese calls were putting garbase in the fields
+     FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_START_FIELD,
+            8,
+            (void *)&StartNum,
+            &FndGenErrorBlock);
+            
+    FndFieldSetValue(
+            CBI_hwnd,
+            DZSF002_FINISH_FIELD,
+            8,
+            (void *)&FinishNum,
+            &FndGenErrorBlock);
+	 */
+
+	/*
+	** Initialize numeric fields
+	*/
+	StartNumData = DZSF002_DEFAULT_START_NUMBER;
+	FinishNumData = DZSF002_DEFAULT_FINISH_NUMBER;
+
+    return ( CMN_SUCCESS );
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZSF002BusEnableGeneratePB
+**
+**  DESCRIPTION      : Enables the Generate PB when the required fields are
+**                     populated. Also controls the Attributes of the SPUFI
+**                     field.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : EHEMMER
+**
+**  DATE CREATED     : 03/06/97
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/06/97  EHEMMER      SoCo Enhancement    
+**
+**
+***************************************************************************/
+WCBPROC( DZSF002BusEnableGeneratePB )
+{
+    _FND_ERROR_BLOCK	FndGenErrorBlock;
+    SHORT               StatusOfOutputField;
+    SHORT               StatusOfCSRDumpField;
+    SHORT               StatusOfSPUFIField;
+    SHORT               StatusOfStartField;
+    SHORT               StatusOfFinishField;
+    CHAR                DuplicateChkBoxStatus[DZSF002_DUP_CHK_BX_LEN] = "";
+    CHAR                OutputFilePathAndName[_PATH_LEN] = "";
+	CHAR                CSRDumpFilePathAndName[_PATH_LEN] = "";
+	CHAR                DataFilePathAndName[_PATH_LEN] = "";
+	SHORT               FndGenRC = 0;
+
+
+
+    
+    /* Query the attribute of all the fields */
+    FndFieldQueryAttr(
+        CBI_hwnd,
+        DZSF002_OUTPUT_FIELD,
+        &StatusOfOutputField,
+        &FndGenErrorBlock);
+  
+    FndFieldQueryAttr(
+        CBI_hwnd,
+        DZSF002_CSR_DUMP_FIELD,
+        &StatusOfCSRDumpField,
+        &FndGenErrorBlock);
+
+    FndFieldQueryAttr(
+        CBI_hwnd,
+        DZSF002_DATA_FIELD,
+        &StatusOfSPUFIField,
+        &FndGenErrorBlock);
+
+    FndFieldQueryAttr(
+        CBI_hwnd,
+        DZSF002_START_FIELD,
+        &StatusOfStartField,
+        &FndGenErrorBlock);
+
+    FndFieldQueryAttr(
+        CBI_hwnd,
+        DZSF002_FINISH_FIELD,
+        &StatusOfFinishField,
+        &FndGenErrorBlock);
+    
+    /* if any of the statuses are normal, set the Data Modification Required Flag to 'Y'*/
+    if( ( StatusOfOutputField  == AT_NORMAL ) &&
+        ( StatusOfCSRDumpField == AT_NORMAL ) &&
+        ( StatusOfSPUFIField   == AT_NORMAL ) &&
+        ( StatusOfStartField   == AT_NORMAL ) &&
+        ( StatusOfFinishField  == AT_NORMAL ) )
+    {
+		FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
+
+    }
+    
+    
+    return ( CMN_SUCCESS );
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZSF002BusDuplicateChk
+**
+**  DESCRIPTION      : If this checkbox is checked, then TABLOAD will produce
+**                     duplicate files of the original.  No Spufi file will
+**                     be required.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : EHEMMER
+**
+**  DATE CREATED     : 03/06/97
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    02/06/97  EHEMMER      SoCo Enhancement    
+**
+**
+***************************************************************************/
+WCBPROC( DZSF002BusDuplicateChk )
+{
+    _FND_ERROR_BLOCK	FndGenErrorBlock;
+    CHAR                DuplicateChkBoxStatus[DZSF002_DUP_CHK_BX_LEN] = "";
+	SHORT               FndGenRC = 0;
+
+    /* Query Status of Duplicate check box */
+    FndFieldQueryValue(
+            CBI_hwnd,
+            DZSF002_DUPLICATE_CHK_BOX,
+            sizeof( DuplicateChkBoxStatus),
+            DuplicateChkBoxStatus,
+            &FndGenErrorBlock);
+
+    /* The user wants to create duplicate files */
+    if( strcmp( DuplicateChkBoxStatus, CMN_YES_STR) == 0)
+    {
+        FndFieldSetAttr(
+            CBI_hwnd,
+            DZSF002_DATA_FIELD,
+            AT_NORMAL,
+            &FndGenErrorBlock);
+        
+        FndFieldDisable(
+            CBI_hwnd,
+            DZSF002_DATA_FIELD,
+            &FndGenErrorBlock);
+
+    }
+    else /* The check box is unchecked */
+    {
+        FndFieldEnable(
+            CBI_hwnd,
+            DZSF002_DATA_FIELD,
+            &FndGenErrorBlock);
+
+    }
+        
+    return ( CMN_SUCCESS );
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZSF002BusPreDestroy
+**
+**  DESCRIPTION      : Frees the memory
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : EHEMMER
+**
+**  DATE CREATED     : 01/30/97
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    01/30/97  EHEMMER      SoCo Enhancement    
+**
+**
+***************************************************************************/
+WCBPROC( DZSF002BusPreDestroy )
+{
+    /*
+    ** 01/30/97  EHEMMER
+    ** The memory malloc'ed for pMessage is freed after the while loop.
+    **/
+
+    return ( CMN_SUCCESS );
+}
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM CSR FUNCTION
+**
+**  FUNCTION         :  CsrGetPBAndMessage
+**
+**  DESCRIPTION      :  This function reads the Message Parm Block and
+**                      Service Message Layout supplied by the modified CSR
+**                      in the directory: TABTEST_CSR_DUMP_FILE_PATH.
+**
+**  INPUTS           :
+**
+**  OUTPUTS          :
+**
+**  AUTHOR           :  ANDERSEN CONSULTING & FLORIDA POWER CORP.
+**
+**  DATE CREATED     :  07/22/94
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**  07/22/94    J. Looney                  Original Code
+**
+************************************************************************/
+
+SHORT CsrGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB, 
+						 BYTE **ppMessage, 
+						 CHAR *CSRDumpFilePathAndName)
+{
+    FILE                *fptr;
+   	SHORT               FndGenRC = CMN_SUCCESS;
+   	BYTE                *pMessage = *(ppMessage);
+
+    /* 
+    ** Open the CSR dump file designated by the Second Aurgument,
+    **/
+    if (( fptr = fopen( CSRDumpFilePathAndName, "rb" )) != NULL )
+    {
+
+        /* Read the MsgParmBlock from the file */
+        fread( pMsgPB, sizeof( _MSG_PARM_BLOCK ), 1, fptr );
+        
+        /* Read the Message to file */
+        //fread( (VOID *)pMessage,(size_t) pMsgPB->actual_length_send, 1, fptr );
+        
+        fread( pMessage,(size_t) pMsgPB->actual_length_send, 1, fptr );
+        
+        /* Close the file */
+        fclose( fptr );
+
+    }  /* end of if:  Successful fopen */
+
+    else /* Error from fopen */
+    {
+        FndGenRC = CMN_FAIL;
+
+    } /* end of else:  Error from fopen */
+
+    
+    return FndGenRC;
+
+} /* End of CsrGetPBAndMessage */
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM CSR FUNCTION
+**
+**  FUNCTION         :  DZSF002GetElemCfg
+**
+**  DESCRIPTION      : 
+**
+**  INPUTS           :
+**
+**  OUTPUTS          :
+**
+**  AUTHOR           :  ANDERSEN CONSULTING & FLORIDA POWER CORP.
+**
+**  DATE CREATED     :  07/22/94
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**
+************************************************************************/
+SHORT DZSF002GetElemCfg( CHAR ElemCfgStr[DZSF002_ELEM_CFG_STR_NUM][DZSF002_ELEM_CFG_STR_LEN], 
+						CHAR * TranMapID,
+						CHAR * DialogID,
+						USHORT *NumElements,
+						FILE *fp )
+{
+	CHAR               Line[DZSF002_ELEM_CFG_STR_LEN];
+	SHORT              i = 0;
+
+	memset(Line, 0, DZSF002_ELEM_CFG_STR_LEN);
+
+
+	/*
+	** Locate file pointer at correct paragraph
+	*/
+	while (( strstr(Line, TranMapID) == NULL ) || (strstr(Line, DialogID) == NULL))
+	{
+		memset(Line, 0, DZSF002_ELEM_CFG_STR_LEN);
+		if (fgets(Line, DZSF002_ELEM_CFG_STR_LEN, fp) == NULL)
+		{
+			return CMN_FAIL;
+		}
+	}
+	
+	/*
+	** read the element configuration for this translation map
+	*/
+	i = 0;
+	if( fgets(ElemCfgStr[i], DZSF002_ELEM_CFG_STR_LEN, fp) == NULL)
+	{
+			return CMN_FAIL;
+	}
+
+	while (strcmp( ElemCfgStr[i], DZSF002_NT_CARRIAGE_RTRN) != 0)
+	{
+
+		if (strncmp( ElemCfgStr[i], DZSF002_ELEM_KEY_WORD, 
+									DZSF002_ELEM_KEY_WORD_LEN) == 0)
+		{
+			++(*NumElements);
+		}
+
+		++i;
+
+		if( fgets(ElemCfgStr[i], DZSF002_ELEM_CFG_STR_LEN, fp) == NULL)
+		{
+			if( feof(fp) )
+			{
+				break;
+			}
+			return CMN_FAIL;
+		}
+		
+	}
+	
+	return( CMN_SUCCESS );
+
+}/*end of DZSF002GetElemCfg */
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM TABLOAD FUNCTION
+**
+**  FUNCTION         :  DZSF002BusVerifyDir
+**
+**  DESCRIPTION      :  This function tests for a vallid directory path.
+**
+**  INPUTS           :
+**
+**  OUTPUTS          :
+**
+**  AUTHOR           :  ANDERSEN CONSULTING 
+**
+**  DATE CREATED     :  01/27/98
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**  01/27/98    M. Conner                     Original Code
+**
+************************************************************************/
+WCBPROC( DZSF002BusVerifyDir )
+{
+  FILE *Stream;
+  _FND_ERROR_BLOCK  FndGenErrorBlock;
+  short FndGenRC = 0;
+  CHAR FileNm[TABLOAD_FILENAME_LEN] = "";
+  CHAR sPath[_PATH_LEN + 1] = "";
+
+
+   FndFieldQueryValue(CBI_hwnd,
+                     DZSF002_OUTPUT_FIELD,
+                     _PATH_LEN,
+                     (void *) sPath,
+                     &FndGenErrorBlock);
+ 
+  /* Obtain file name */
+  FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
+                        FileNm,
+                        TABLOAD_FILENAME_LEN,
+                        3,
+                        sPath,
+                        "\\",
+                        TABLOAD_TMP_FILE );
+
+  if (( Stream = fopen( FileNm,"w" )) == NULL )
+  {
+
+
+     FndFieldSetStatus( CBI_hwnd,
+                        DZSF002_OUTPUT_FIELD,
+                        STS_INVALID,
+                        &FndGenErrorBlock );
+
+
+     return( CMN_FAIL );
+
+  }
+  else
+  {
+     FndFieldSetStatus( CBI_hwnd,
+                        DZSF002_OUTPUT_FIELD,
+                        STS_VALID,
+                        &FndGenErrorBlock );
+
+    
+     fclose( Stream );
+     remove( FileNm );
+  }
+
+  return(CMN_SUCCESS);
+
+}/*end of DZSF002BusVerifyDir */
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM TABLOAD FUNCTION
+**
+**  FUNCTION         :  DZSF002BusVerifyDataFile
+**
+**  DESCRIPTION      :  This function tests for a valid data file.
+**
+**  INPUTS           :
+**
+**  OUTPUTS          :
+**
+**  AUTHOR           :  ANDERSEN CONSULTING 
+**
+**  DATE CREATED     :  01/27/98
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**  01/27/98    M. Conner                     Original Code
+**
+************************************************************************/
+WCBPROC( DZSF002BusVerifyDataFile )
+{
+  _FND_ERROR_BLOCK  ErrorBlock;
+  USHORT FndGenRC = 0;
+  CHAR FullNm[TABLOAD_FILENAME_LEN + _PATH_LEN + 1] = ""; 
+
+  FILE *Stream;
+
+
+   FndFieldQueryValue(CBI_hwnd,
+                      DZSF002_DATA_FIELD,
+                      _PATH_LEN,
+                      (void *) FullNm,
+                      &ErrorBlock);
+
+
+  if ( strcmp(FullNm, "") != 0)
+  {
+
+      if (( Stream = fopen( FullNm,"r" )) == NULL )
+      {
+         FndFieldSetStatus( CBI_hwnd,
+                            DZSF002_DATA_FIELD,
+                            STS_INVALID,
+                            &ErrorBlock );
+
+         return( CMN_FAIL );
+
+      }
+      else
+      {
+         FndFieldSetStatus( CBI_hwnd,
+                            DZSF002_DATA_FIELD,
+                            STS_VALID,
+                            &ErrorBlock );
+
+
+         fclose( Stream );
+      }
+  } /*end of if ( strcmp(FullNm, "") != 0)*/
+
+
+  return(CMN_SUCCESS);
+
+
+}/*end of DZSF002BusVerifyDataFile */
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM TABLOAD FUNCTION
+**
+**  FUNCTION         :  DZSF002BusVerifyDumpFile
+**
+**  DESCRIPTION      :  This function tests for a valid data file.
+**
+**  INPUTS           :
+**
+**  OUTPUTS          :
+**
+**  AUTHOR           :  ANDERSEN CONSULTING 
+**
+**  DATE CREATED     :  01/27/98
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**  01/27/98    M. Conner                     Original Code
+**
+************************************************************************/
+WCBPROC( DZSF002BusVerifyDumpFile )
+{
+  _FND_ERROR_BLOCK  ErrorBlock;
+  USHORT FndGenRC = 0;
+  CHAR FullNm[TABLOAD_FILENAME_LEN + _PATH_LEN + 1] = ""; 
+
+  FILE *Stream;
+
+
+   FndFieldQueryValue(CBI_hwnd,
+                      DZSF002_CSR_DUMP_FIELD,
+                      _PATH_LEN,
+                      (void *) FullNm,
+                      &ErrorBlock);
+
+
+  if ( strcmp(FullNm, "") != 0)
+  {
+
+      if (( Stream = fopen( FullNm,"r" )) == NULL )
+      {
+         FndFieldSetStatus( CBI_hwnd,
+                            DZSF002_CSR_DUMP_FIELD,
+                            STS_INVALID,
+                            &ErrorBlock );
+
+         return( CMN_FAIL );
+
+      }
+      else
+      {
+         FndFieldSetStatus( CBI_hwnd,
+                            DZSF002_CSR_DUMP_FIELD,
+                            STS_VALID,
+                            &ErrorBlock );
+
+
+         fclose( Stream );
+      }
+  } /*end of if ( strcmp(FullNm, "") != 0)*/
+
+
+  return( CMN_SUCCESS );
+
+}/*end of DZSF002BusVerifyDumpFile */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : DZSF002BusAboutMnuClk
+**
+**  DESCRIPTION      : This function creates the About window for the applicaition.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 02/02/98
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**
+***************************************************************************/
+static WCBPROC(DZSF002BusAboutMnuClk)
+{
+   /* SHORT FndGenRC = CMN_SUCCESS;
+    SHORT nRC      = CMN_SUCCESS;
+    CHAR WindowName[]   = "DZSF003";
+    CHAR InstanceName[] = "";
+
+    HEAP_CHECK
+
+    FndGenRC = CmnWindowCreate( WindowName,
+                                InstanceName,
+                                NULL,
+                                NULL,
+                                CMN_ARCH_PARMS );
+
+    HEAP_CHECK
+*/
+    return CMN_SUCCESS;
+
+} /* End of AZCS001BusAboutMNClick */
+

@@ -1,0 +1,239 @@
+/***************************************************************************
+ *                                                                         *
+ *            W I N D O W S   N T   D I S P A T C H   T A B L E            *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                   Dispatch Table for: DZSF002                           *
+ *                         Generated on: Tue Feb 03 10:15:18 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ ***************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Ddeoffgh6343_Window_Close)
+WCBFWD (Ddeoffgh6353_Other_Gui_Event)
+WCBFWD (Ddeoffgh6547_Msg_Notification)
+WCBFWD (Ddeoffgh6587_Interwindow_Msg)
+WCBFWD (Ddeoffgh9151_Predisplay)
+WCBFWD (Ddeoffgh9448_Predestroy)
+WCBFWD (Ddeoffgh5713_Field_Change)
+WCBFWD (Ddeoffgh6983_Field_Exit)
+WCBFWD (Ddeoffgh5898_Field_Change)
+WCBFWD (Ddeoffgh6865_Field_Exit)
+WCBFWD (Ddeoffgh5981_Field_Change)
+WCBFWD (Ddeoffgh6913_Field_Exit)
+WCBFWD (Ddeoffgh6591_Field_Change)
+WCBFWD (Ddeoffgh6685_Field_Exit)
+WCBFWD (Ddeoffgh6800_Field_Exit)
+WCBFWD (Ddeoffgh5555_Click)
+WCBFWD (Ddeoffgh5307_Click)
+WCBFWD (Ddeoffgh4110_Click)
+WCBFWD (Ddeoffgh6694_Click)
+WCBFWD (Ddeoffgh4752_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZSF002WindDisp[] =
+{
+    {WINDOW_CLOSE, Ddeoffgh6343_Window_Close},
+    {OTHER_GUI_EVENT, Ddeoffgh6353_Other_Gui_Event},
+    {MSG_NOTIFICATION, Ddeoffgh6547_Msg_Notification},
+    {INTERWINDOW_MSG, Ddeoffgh6587_Interwindow_Msg},
+    {PREDISPLAY, Ddeoffgh9151_Predisplay},
+    {PREDESTROY, Ddeoffgh9448_Predestroy},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZSF002WidgDisp[] =
+{
+    {OutputDir_FID, FIELD_CHANGE, Ddeoffgh5713_Field_Change},
+    {OutputDir_FID, FIELD_EXIT, Ddeoffgh6983_Field_Exit},
+    {CsrDmpFile_FID, FIELD_CHANGE, Ddeoffgh5898_Field_Change},
+    {CsrDmpFile_FID, FIELD_EXIT, Ddeoffgh6865_Field_Exit},
+    {DataFile_FID, FIELD_CHANGE, Ddeoffgh5981_Field_Change},
+    {DataFile_FID, FIELD_EXIT, Ddeoffgh6913_Field_Exit},
+    {StartNum_FID, FIELD_CHANGE, Ddeoffgh6591_Field_Change},
+    {StartNum_FID, FIELD_EXIT, Ddeoffgh6685_Field_Exit},
+    {FinishNum_FID, FIELD_EXIT, Ddeoffgh6800_Field_Exit},
+    {ClearAllPB_CMD, BUTTON_CLICK, Ddeoffgh5555_Click},
+    {GeneratePB_CMD, BUTTON_CLICK, Ddeoffgh5307_Click},
+    {DMNU1004_TABLOAD_GENERATE_CMD, BUTTON_CLICK, Ddeoffgh4110_Click},
+    {ExitMN_CMD, BUTTON_CLICK, Ddeoffgh6694_Click},
+    {DMNU1003_ABOUTTBLD_CMD, BUTTON_CLICK, Ddeoffgh4752_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZSF002FieldDefTbl[] =
+{
+    { "groupBoxWidget", groupBoxWidget_WID },
+    { "OutputDir", OutputDir_FID },
+    { "CsrDmpFile", CsrDmpFile_FID },
+    { "DataFile", DataFile_FID },
+    { "StartNum", StartNum_FID },
+    { "FinishNum", FinishNum_FID },
+    { "DupChk", DupChk_FID },
+    { "FlWindowMod", FlWindowMod_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZSF002CommandDefTbl[] =
+{
+    { "ClearAllPB", ClearAllPB_CMD },
+    { "GeneratePB", GeneratePB_CMD },
+    { "DMNU1004_TABLOAD_GENERATE", DMNU1004_TABLOAD_GENERATE_CMD },
+    { "ExitMN", ExitMN_CMD },
+    { "DMNU1003_ABOUTTBLD", DMNU1003_ABOUTTBLD_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZSF002WCTHeader =
+{ 
+    "30", 7, 7, 7,
+    sizeof(struct _DZSF002WesMap),
+    offsetof(struct _DZSF002WesMap, _OutputDirData),
+    offsetof(struct _DZSF002WesMap, _OutputDirCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZSF002WCTFieldTbl[] =
+{
+  
+    { WTP_FNDENTRYFLD, "OutputDir", OutputDir_FID,
+      OutputDir_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF002WesMap, _OutputDirData),
+      255, 0, offsetof(struct _DZSF002WesMap, _OutputDirData),
+      offsetof(struct _DZSF002WesMap, _OutputDirCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "CsrDmpFile", CsrDmpFile_FID,
+      CsrDmpFile_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF002WesMap, _CsrDmpFileData),
+      255, 0, offsetof(struct _DZSF002WesMap, _CsrDmpFileData),
+      offsetof(struct _DZSF002WesMap, _CsrDmpFileCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "DataFile", DataFile_FID,
+      DataFile_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF002WesMap, _DataFileData),
+      255, 0, offsetof(struct _DZSF002WesMap, _DataFileData),
+      offsetof(struct _DZSF002WesMap, _DataFileCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDNUMENTRYFLD, "StartNum", StartNum_FID,
+      StartNum_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZSF002WesMap, _StartNumData),
+      8, 0, offsetof(struct _DZSF002WesMap, _StartNumData),
+      offsetof(struct _DZSF002WesMap, _StartNumCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDNUMENTRYFLD, "FinishNum", FinishNum_FID,
+      FinishNum_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZSF002WesMap, _FinishNumData),
+      8, 0, offsetof(struct _DZSF002WesMap, _FinishNumData),
+      offsetof(struct _DZSF002WesMap, _FinishNumCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "DupChk", DupChk_FID,
+      DupChk_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF002WesMap, _DupChkData),
+      1, 0, offsetof(struct _DZSF002WesMap, _DupChkData),
+      offsetof(struct _DZSF002WesMap, _DupChkCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "FlWindowMod", FlWindowMod_FID,
+      FlWindowMod_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF002WesMap, _FlWindowModData),
+      1, 0, offsetof(struct _DZSF002WesMap, _FlWindowModData),
+      offsetof(struct _DZSF002WesMap, _FlWindowModCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZSF002WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "ClearAllPB", ClearAllPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "GeneratePB", GeneratePB_CMD,
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "TABLoad_Action", TABLoad_Action_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "DMNU1004_TABLOAD_GENERATE", DMNU1004_TABLOAD_GENERATE_CMD,
+      TABLoad_Action_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExitMN", ExitMN_CMD,
+      TABLoad_Action_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "DMNU1007_HELP", DMNU1007_HELP_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "DMNU1003_ABOUTTBLD", DMNU1003_ABOUTTBLD_CMD,
+      DMNU1007_HELP_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZSF002IDWindowDefn =
+{
+    "30", DZSF002ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_TOP | WCR_NON_PROPORTIONAL, DZSF002ID,
+    DZSF002AccelID, DZSF002MenuID, DZSF002IconID, 0,
+    DZSF002WidgDisp, DZSF002WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZSF002WCTHeader, DZSF002WCTFieldTbl, 
+    DZSF002WCTCommandTbl, NULL, 24, DZSF002FieldDefTbl, 0
+};
+
