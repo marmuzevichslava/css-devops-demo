@@ -41,6 +41,9 @@
 **                                  flag from the sessdata.txt file.
 **
 **  02/11/95  J. Looney				Changed to compile in OS/2 or NT.
+**  09/17/96  CWOODS                Removed Resource ID and Resource Rights
+**                                  from Session Data.  This has been added
+**                                  to the Security Application.
 ***************************************************************************/
 /**************************************************************************
 **
@@ -376,23 +379,23 @@ SHORT LoadSessionData (CMN_HMEM     hSessionData,
     fgets( CurLine,_CUR_LINE_LEN, Stream );
     sscanf( CurLine,
             "%s %s %s",
-            Dummy1,     /* SESSARCHDATA */
+            Dummy1,     /* SESSAzrcsm01ArchData */
             Dummy2,     /* ***CdPrinter */
-            pSessionData->ArchData.CdPrinter );
+            pSessionData->Azrcsm01ArchData.CdPrinter );
 
     /* Format Nodomain */
     fgets( CurLine,_CUR_LINE_LEN, Stream );
     sscanf( CurLine,
             "%s %lD",
             Dummy1,     /* ***Nodomain */
-            &(pSessionData->ArchData.Nodomain) );
+            &(pSessionData->Azrcsm01ArchData.Nodomain) );
 
     /* Format NoStation */
     fgets( CurLine,_CUR_LINE_LEN, Stream );
     sscanf( CurLine,
             "%s %lD",
             Dummy1,     /* ***NoStation */
-            &(pSessionData->ArchData.NoStation) );
+            &(pSessionData->Azrcsm01ArchData.NoStation) );
 
     /* Format TxLanId - now ignored obtained from PMF*/
     fgets( CurLine,_CUR_LINE_LEN, Stream );
@@ -400,8 +403,8 @@ SHORT LoadSessionData (CMN_HMEM     hSessionData,
     sscanf( CurLine,
             "%s %s",
             Dummy1,     /* ***TxLanId */
-            pSessionData->ArchData.TxLanId );
-    //strcpy (pSessionData->ArchData.TxLanId,
+            pSessionData->Azrcsm01ArchData.TxLanId );
+    //strcpy (pSessionData->Azrcsm01ArchData.TxLanId,
     //        UidPassInfo->LanID);
 
 
@@ -419,17 +422,23 @@ SHORT LoadSessionData (CMN_HMEM     hSessionData,
 
         /* Format CdResourceId */
         fgets( CurLine,_CUR_LINE_LEN, Stream );
-        sscanf( CurLine,
-                "%s %s",
-                Dummy1,     /* ***CdResourceId */
-                pSessionData->ArchData.RsrceRgts[i].CdResourceId );
+
+        /* CWOODS 09/17/96:  Resource Rights removed
+           from Session Data */
+        //sscanf( CurLine,
+        //        "%s %s",
+        //        Dummy1,     /* ***CdResourceId */
+        //        pSessionData->Azrcsm01ArchData.RsrceRgts[i].CdResourceId );
 
         /* Format CdAccessRights */
         fgets( CurLine,_CUR_LINE_LEN, Stream );
-        sscanf( CurLine,
-                "%s %s",
-                Dummy1,     /* ***CdAccessRights */
-                pSessionData->ArchData.RsrceRgts[i].CdAccessRights );
+
+        /* CWOODS 09/17/96:  Resource Rights removed
+           from Session Data */
+        //sscanf( CurLine,
+        //        "%s %s",
+        //        Dummy1,     /* ***CdAccessRights */
+        //        pSessionData->Azrcsm01ArchData.RsrceRgts[i].CdAccessRights );
 
      } /* End of For Loop: Format the RsrceRgts */
 
@@ -551,7 +560,7 @@ SHORT LoadSessionData (CMN_HMEM     hSessionData,
     /*
     |   Locate the strict security flag and update it
     */
-    pSessionData->ArchData.StrictSecFlag = 'N';
+    pSessionData->Azrcsm01ArchData.FlStrictSecurity[0] = 'N';
     fDone = FALSE;
     while ((fgets (CurLine, _CUR_LINE_LEN, Stream))
              &&
@@ -566,7 +575,7 @@ SHORT LoadSessionData (CMN_HMEM     hSessionData,
                     "%s %s",
                     Dummy1,
                     StrictSecFlag);
-            pSessionData->ArchData.StrictSecFlag = StrictSecFlag[0];
+            pSessionData->Azrcsm01ArchData.FlStrictSecurity[0] = StrictSecFlag[0];
             fDone = TRUE;
         }
     }
