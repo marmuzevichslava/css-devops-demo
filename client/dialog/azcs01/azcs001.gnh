@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS001                           *
-*                          Generated on: Wed Sep 25 13:30:28 1996          *
+*                          Generated on: Mon Oct 28 11:26:26 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS001X                          *
 *                                                                          *
@@ -63,22 +63,23 @@
 #define AMNMAP_CMD                                     200
 #define AMNOPEN_CMD                                    1004
 #define AMNGENERATE_CMD                                1005
-#define AMNSAVE_CMD                                    1006
-#define AMNSAVEAS_CMD                                  1007
-#define ExitMN_CMD                                     1008
+#define AMNMASSGEN_CMD                                 1006
+#define AMNSAVE_CMD                                    1007
+#define AMNSAVEAS_CMD                                  1008
+#define ExitMN_CMD                                     1009
 #define EditMN_CMD                                     201
 #define Cut_CMD                                        3001
 #define Copy_CMD                                       3002
 #define Paste_CMD                                      3003
 #define AMNCSOPT_CMD                                   202
-#define AMNDEFDIR_CMD                                  1009
-#define AMNDUMP_CMD                                    1010
+#define AMNDEFDIR_CMD                                  1010
+#define AMNDUMP_CMD                                    1011
 #define HelpMN_CMD                                     203
-#define HelpforHelpMN_CMD                              1011
-#define ExtendedHelpMN_CMD                             1012
-#define KeysHelpMN_CMD                                 1013
-#define HelpIndexMN_CMD                                1014
-#define AboutMN_CMD                                    1015
+#define HelpforHelpMN_CMD                              1012
+#define ExtendedHelpMN_CMD                             1013
+#define KeysHelpMN_CMD                                 1014
+#define HelpIndexMN_CMD                                1015
+#define AboutMN_CMD                                    1016
 
 /***************************************************************************
 *  Radio Button Literals                                                   *
