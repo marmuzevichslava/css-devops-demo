@@ -134,7 +134,7 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
              return (CMN_FAIL);
             }
 
-       } /* end of while loop for filling Services combo box */
+       } /* end of for loop for filling Services combo box */
 
       /* SET THE DEFAULTS */
       /*   1. WINDOW LANGUAGES IN WCD */
@@ -155,7 +155,7 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
           {
             memcpy(&(pWindContextData->WCD.ServiceInfoTable[ix]),
                    &(pBFCD->pCSRMapBFCD->ServiceInfoTable[ix]),
-                   sizeof(_SERVICE_INFO) );
+                  sizeof(_SERVICE_INFO) );
             pWindContextData->WCD.ServiceInfoTable[ix].pRepeatingMaps =
                (_RELATE_RPMH *) malloc(MAXSERVICEROWS * sizeof(_RELATE_RPMH) );
 
@@ -1515,7 +1515,7 @@ for (ix=0; ix < pWindContextData->WCD.ServiceInfoTable[ServNum].NumReposServiceR
              Rlb01ELBCdStatusIconicData[ClientRow] = CMN_LBROW_STATUS_COMPLETED;
             }
          if (ix >= pWindContextData->WCD.ServiceLBOffset &&
-             ix < pWindContextData->WCD.ServiceLBOffset + NUMRLB02ELBROWS)
+            ix < pWindContextData->WCD.ServiceLBOffset + NUMRLB02ELBROWS)
             {
              ServiceRow = ServiceElmntToRow(ix, CMN_ARCH_PARMS);
              Rlb02ELBCdStatusIconicData[ServiceRow] = CMN_LBROW_STATUS_COMPLETED;
@@ -2421,7 +2421,7 @@ static WCBPROC(ServiceDataComplete)
           {
            /* if the element is a group with more than one occurence and
            **  it does not have a relationship defined yet set the status
-           **  of serviceLaoutName to STS_INVALID. This will disable the OK
+           **  of serviceLayoutName to STS_INVALID. This will disable the OK
            **  pushbutton. The user cannot ok this window until all valid
            **  occuring groups have a relationsip defined.
            */
