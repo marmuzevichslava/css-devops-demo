@@ -468,8 +468,8 @@ Public Sub PopulateStaticCodesListView()
                Set itmX = frmMain.lvListView.ListItems.Add(, , CStr(DaoRS(0).Value))
 
                'Get the codes table COBOL name.
-               strsql2 = "SELECT DISTINCTROW tblCodesLookup.TableName, tblCodesLookup.CISCOBOLName" _
-                       & " FROM tblTables INNER JOIN tblCodesLookup ON tblTables.TableName = tblCodesLookup.TableName;"
+               strsql2 = "SELECT DISTINCTROW tblCodesLookup.CISName, tblCodesLookup.CISCOBOLName" _
+                       & " FROM tblCodesLookup INNER JOIN tblStaticCodesEntries ON tblCodesLookup.CISName = tblStaticCodesEntries.CISName;"
                        
                Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
                     If Not DaoRS2.EOF Then
