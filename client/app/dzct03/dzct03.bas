@@ -312,7 +312,7 @@ Public Function PutTblFile() As Boolean
     'Check to see if put was successful.
     If myftp.Error Then
         PutTblFile = False
-        Err.Raise 23, PutTblFile, "The FTP failed because" & fFTPOutFile & "does not exist."
+        Err.Raise 23, PutTblFile, "The FTP failed because " & fFTPOutFile & " does not exist."
     Else
         PutTblFile = True
     End If
@@ -405,7 +405,7 @@ Public Function GetTblFile() As Boolean
     'Check to see if get was successful.
     If myftp.Error Then
         GetTblFile = False
-        Err.Raise 24, GetTblFile, "The FTP failed because" & fFTPInFile & " does not exist."
+        Err.Raise 24, GetTblFile, "The FTP failed because " & fFTPInFile & " does not exist."
     Else
         GetTblFile = True
     End If
@@ -471,6 +471,7 @@ Public Function UpdateProcess() As Boolean
     Dim iKeyOccurs  As Integer
     Dim CurLine As String
     Dim Count As Integer
+    Dim ErrorCounter As Long
     Dim CurDateTime As String
     Dim sCheckSysUsage As String
     Dim iCheckNum As Integer
@@ -564,23 +565,27 @@ Public Function UpdateProcess() As Boolean
         If dbCTM.RecordsAffected = 0 Then
             Err.Raise 3, "UpdateProcess", "The record was not updated."
             wsCTM.Rollback
-        Else
-            'Set SQL string.
-            SQLUpdate = "UPDATE tblTables " _
-                      & "SET FlagUpdateTS = " & Chr(34) & sTimestamp & Chr(34) & " " _
-                      & "WHERE TableName = " & Chr(34) & sTableName & Chr(34) & ";"
-            'Execute SQL.
-            dbCTM.Execute SQLUpdate, dbFailOnError
-        
-            If dbCTM.RecordsAffected = 0 Then
-                Err.Raise 3, "UpdateProcess", "The record to be updated was unsuccessful."
-                wsCTM.Rollback
-            Else
-                'Commit DAO transaction.
-                wsCTM.CommitTrans
-            End If
+            Counter = Counter + 1
         End If
+            
+        'Set SQL string.
+        SQLUpdate = "UPDATE tblTables " _
+                  & "SET FlagUpdateTS = " & Chr(34) & sTimestamp & Chr(34) & " " _
+                  & "WHERE TableName = " & Chr(34) & sTableName & Chr(34) & ";"
         
+        'Begin DAO transaction.
+        wsCTM.BeginTrans
+        'Execute SQL.
+        dbCTM.Execute SQLUpdate, dbFailOnError
+    
+        If dbCTM.RecordsAffected = 0 Then
+            Err.Raise 4, "UpdateProcess", "tblTables was not updated for " & sTableName & "."
+            wsCTM.Rollback
+        Else
+            'Commit DAO transaction.
+            wsCTM.CommitTrans
+        End If
+         
         TotalRecords = TotalRecords + 1
         'Get the next line.
         Line Input #iFileNum, CurLine
@@ -615,10 +620,10 @@ SQLError:
 Exit Function
 
 ProcessingRecordError:
-    Counter = Counter + 1
+    ErrorCounter = ErrorCounter + 1
     UpdateProcess = False
     LogError = True
-    msg = Counter & ": An error occured while loading " & sTableName & " with " & sTableKey & " on " & CurDateTime & " in UpdateProcess." & _
+    msg = ErrorCounter & ": An error occured while loading " & sTableName & " with " & sTableKey & " on " & CurDateTime & " in UpdateProcess." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
