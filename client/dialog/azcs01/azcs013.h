@@ -46,24 +46,12 @@
 #define CMN_MAPGEN_MSG_ERROR CMN_MAPGEN_MSG_BASE + 3
 #define CMN_MAPGEN_MSG_DONE  CMN_MAPGEN_MSG_BASE + 4
 #define CMN_MAPGEN_NAME "CSR Map Generator"
-#define CMN_SEM_TIMEOUT SEM_INDEFINITE_WAIT
 
 #define SET_LANDSCAPE   "\033&l1O"
 #define LINE_PRINTER "\033(0N\033(s0p16.67h8.5v0s0b0T"
 #define VMI                   "\033&l5.6C"  // 5.6
 
 #define RESET_PRINTER "\033E"
-
-#define POSTMSG                                            \
-                 FndGenRC = CmnOsSignalSet(hsemLock);  \
-                 FndGenRC = FndWndMsgPost( hwnd,   \
-                                           MsgID,  \
-                                           &MsgData,\
-                                           &FndGenErrorBlock); \
-                 FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);  \
-                 if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)           \
-                    _endthread();                                         \
-
 
 #define CHECKINDEX if (pBFCD->pCSRMapBFCD->ClientInfo.pClientLayoutTable[sCurrentIndex].ParentIndex > \
                        pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows ||    \

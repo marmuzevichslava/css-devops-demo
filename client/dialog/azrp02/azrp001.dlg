@@ -1,57 +1,58 @@
 /***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZRP001                           *
-*                          Generated on: Tue Jun 11 14:18:27 1996          *
+*                          Generated on: Fri Jul 12 15:55:18 1996          *
 *                                    by: MCONNER                           *
+*                     Short Description: AZRP004X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZRP001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,350,191
+AZRP001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,305,191
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
      | WS_SYSMENU
-     | WS_DLGFRAME
+     | DS_MODALFRAME
     CAPTION "Segment Reporter"
+    
 Begin  /* controls */
    CONTROL "Entity Id:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,6,-2,40,8
+              ,5,10,35,8
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,47,6,69,0
+              ,41,6,60,0
 
    CONTROL "Entity Type:",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,149,-2,44,8
+              ,129,10,38,8
 
    CONTROL "",101,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,195,6,57,0
+              ,170,6,50,0
 
    CONTROL "&Find",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,305,6,35,0
+              ,266,6,31,0
 
    CONTROL "Long Desc:",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,6,25,40,8
+              ,5,25,35,8
 
    CONTROL "",102,
               FND_MLE,
@@ -60,42 +61,42 @@ Begin  /* controls */
               | ES_AUTOVSCROLL
               | ES_READONLY
               | WS_BORDER
-              ,47,24,294,36
+              ,41,24,256,36
 
    CONTROL "Repository Data",103,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,68,338,92
+              ,3,68,294,92
 
    CONTROL "C Length:",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,211,158,34,8
+              ,182,170,29,8
 
    CONTROL "",104,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,247,166,0,0
+              ,215,166,0,0
 
    CONTROL "Cobol Length:",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,128,158,48,8
+              ,110,170,42,8
 
    CONTROL "",105,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,178,166,0,0
+              ,155,166,0,0
 
    CONTROL "DB2 Length:",506,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,285,158,44,8
+              ,246,170,38,8
 
    CONTROL "",106,
               FND_NUMERICFIELD,
               WS_VISIBLE
-              ,330,166,0,0
+              ,287,166,0,0
 
 End /* controls */
 
@@ -113,11 +114,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field EntityId  */
    FP_CONTROL_ID,                       "100\0"
@@ -126,15 +127,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_TRUE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Entity Type:  */
    FP_CONTROL_ID,                       "501\0"
@@ -143,11 +144,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Combobox EntityType  */
    FP_CONTROL_ID,                       "101\0"
@@ -156,10 +157,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_TRUE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
@@ -168,13 +168,16 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "195,6\0"
-   FP_LIST_WIDTH,                       "84\0"
+   FP_LIST_POSITION,                    "170,6\0"
+   FP_LIST_WIDTH,                       "0\0"
    FP_LIST_HEIGHT,                      "44\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
    FP_LINK_FIELD,                       FPV_NONE, "\0"
    FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "8\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Long Desc:  */
    FP_CONTROL_ID,                       "502\0"
@@ -183,11 +186,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Multiline Entry Field LongDesc  */
    FP_CONTROL_ID,                       "102\0"
@@ -196,27 +199,22 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_CHARS_PER_LINE,                   "80\0"
    FP_TAB_INTERVAL,                     "5\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for List Box ReposDataLB  */
    FP_CONTROL_ID,                       "103\0"
    FP_CAPTION,                          "Repository Data\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -239,17 +237,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column EntityType  */
@@ -261,17 +257,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column EntityName  */
@@ -283,17 +277,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Format  */
@@ -305,17 +297,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Length  */
@@ -327,17 +317,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Precision  */
@@ -349,17 +337,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Usage  */
@@ -371,17 +357,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Occurs  */
@@ -393,17 +377,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Bytes  */
@@ -415,17 +397,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Other  */
@@ -437,17 +417,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column Other2  */
@@ -459,17 +437,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_HELVETICA, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_HELVETICA, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for Static Text C Length:  */
@@ -479,11 +455,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field CLength  */
    FP_CONTROL_ID,                       "104\0"
@@ -492,10 +468,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -516,11 +491,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field CobolLength  */
    FP_CONTROL_ID,                       "105\0"
@@ -529,10 +504,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -553,11 +527,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Numeric Field Db2Length  */
    FP_CONTROL_ID,                       "106\0"
@@ -566,10 +540,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_RIGHTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
@@ -609,13 +582,9 @@ End  /*  menus  */
 AZRP001AccelID ACCELERATORS PRELOAD
 Begin
 "F",1000,CONTROL,VIRTKEY
-"f",1000,CONTROL,VIRTKEY
 "P",1001,CONTROL,VIRTKEY
-"p",1001,CONTROL,VIRTKEY
 "B",1002,CONTROL,VIRTKEY
-"b",1002,CONTROL,VIRTKEY
 "X",1003,CONTROL,VIRTKEY
-"x",1003,CONTROL,VIRTKEY
 End
 
 
@@ -625,6 +594,7 @@ End
 
 
 AZRP001IconID ICON SEGRPT.ICO
+
 
 
 /**********************************************

@@ -523,6 +523,9 @@ AEXPROC (ExitWktCloseAfterSave)
   /* Open Request Information Window */
   if ( strcmp( pChildWinInfo->WindowName, "AZCS002" ) == 0 )
   {
+	   
+
+	   
       /* Clean up all variables from previous CSR Map */
       FndGenRC = AZCS001BusCleanupBFCD( pEventInfo,
                                         pEAIA,
@@ -741,7 +744,10 @@ AEXPROC (ExitWktCloseAfterSave)
                                        NULL,
                                        NULL,
                                        CMN_ARCH_PARMS );
+
+		   HEAP_CHECK
        } /* end of if:  A Task List Item has been previously completed */
+
 
   } /* end of if: Open Request Information Window */
 
@@ -1434,6 +1440,9 @@ AEXPROC( CmnArchExitInitialize )
   /* Allocate space for Common Architecture Block, then Initialize */
   pCmnArchBlock = (_CMN_ARCH_BLOCK *) malloc( sizeof( _CMN_ARCH_BLOCK ));
   memset( pCmnArchBlock, 0, sizeof( _CMN_ARCH_BLOCK ));
+
+  // cool here
+  //free( pCmnArchBlock );
 
   /* Set WCD pointer to Arch Exit Table equal to global table */
   ((_CMN_ARCH_BLOCK *) pWindContextData->ArchData.pArchBlock)->pArchExitTable = ArchExitTable;

@@ -81,6 +81,7 @@ static WCBPROC(AZCS001BusAboutMNClick)
 ***************************************************************************/
 static WCBPROC(OpnAZCS2)
 {
+
     CHAR WindowName[]   = "AZCS002";
     CHAR InstanceName[] = "REQUEST";
     SHORT nRC      = CMN_SUCCESS;
@@ -799,6 +800,7 @@ static WCBPROC(ChkTLStatus)
 ***************************************************************************/
 static WCBPROC (SetupBFCD)
 {
+
     USHORT FndGenRC;
     _FND_ERROR_BLOCK ErrorBlock;
     FILE *Stream;
@@ -821,7 +823,7 @@ static WCBPROC (SetupBFCD)
             0,
             sizeof(_LAYOUT_REC) );
 
-    strcpy(dummy, CSR_MAP_CFG_FILE );
+    strncpy(dummy, CSR_MAP_CFG_FILE, sizeof(dummy));
 
     /* JLL: 07/16/93 ADDED */
     /* Open the csrmap.cfg to determine the save and generate directories. */

@@ -29,11 +29,9 @@
 **    99/99/99  C. Crampton           Original code.
 **
 ***************************************************************************/
-
-
-
 static WCBPROC (LdAZCS2O)
 {
+
  _REQUESTINFO *pLdAzcs002o;
 
   pLdAzcs002o = EAB_pWdtOutData;
@@ -41,6 +39,8 @@ static WCBPROC (LdAZCS2O)
  strcpy(pLdAzcs002o->RequestID   , RequestIDData);
  strcpy(pLdAzcs002o->RequestType , RequestTypeData);
  strcpy(pLdAzcs002o->ClientLayout, ClientLayoutData);
+
+ HEAP_CHECK
  return(CMN_SUCCESS);
 
 }
@@ -190,7 +190,7 @@ static WCBPROC (ChkForMap)
 
     }
 
-
+ HEAP_CHECK
  return(CMN_SUCCESS);
 
 }

@@ -1,52 +1,53 @@
 /***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZRP003                           *
-*                          Generated on: Fri Mar 29 09:26:24 1996          *
+*                          Generated on: Fri Jul 12 15:55:18 1996          *
 *                                    by: MCONNER                           *
+*                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZRP003ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,253,69
+AZRP003ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,220,69
     STYLE 0 
      | WS_CAPTION
      | WS_SYSMENU
      | DS_MODALFRAME
     CAPTION "Batch Segment Reports"
+    
 Begin  /* controls */
    CONTROL "Batch List File",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,9,1,60,8
+              ,7,13,52,8
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,70,9,171,0
+              ,61,9,149,0
 
    CONTROL "Duplex",101,
               FND_CHECK_BOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP  | BS_CHECKBOX
-              ,8,29,0,0
+              ,7,29,0,0
 
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,8,51,37,12
+              ,7,51,32,12
 
    CONTROL "Cancel",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,61,51,37,12
+              ,53,51,32,12
 
 End /* controls */
 
@@ -64,11 +65,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field BatchListFile  */
    FP_CONTROL_ID,                       "100\0"
@@ -77,15 +78,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_TRUE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Checkbox Duplex  */
    FP_CONTROL_ID,                       "101\0"

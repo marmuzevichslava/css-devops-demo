@@ -2,14 +2,14 @@
  *                                                                         *
  *                     P R O G R A M   F R O N T   E N D                   *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                Program Front End for: AZRP02                            *
- *                         Generated on: Fri Mar 29 09:26:24 1996          *
+ *                         Generated on: Fri Jul 12 15:55:18 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 

@@ -1,15 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *          C   W I N D O W S   N T   R E S O U R C E   F I L E            *
+ *          C  W I N D O W S   N T   R E S O U R C E   F I L E              *
  *                                                                         *
- *                Copyright (C) 1994 Andersen Consulting.                  *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                    Resource file for: AZRP02                            *
- *                         Generated on: Fri Mar 29 09:26:24 1996          *
+ *                         Generated on: Fri Jul 12 15:55:18 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 #include <windows.h>

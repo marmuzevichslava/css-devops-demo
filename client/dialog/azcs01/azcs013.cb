@@ -2,19 +2,35 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-
-
 #define STACKSIZE 51200
-/*mdc 03/22/96 no longer used in this cb
-VOID FileOut( CHAR *Text );
-*/
-
-
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
 **  FUNCTION         : AZCS013BusPredisplay
+**					   AZCS013BUSPredistroy
+**					   ProcessMsg
+**					   CompareLayouts
+**					   CheckIt
+**					   PrintLog	
+**					   SaveLog
+**					   Azcs013BusUseOldMap
+**					   Remap
+**					   ChangeIt
+**					   FindFullName
+**					   DropClient
+**					   ChangeLK
+**					   ChangeCK
+**					   ChangeLD
+**					   ChangeRD
+**					   ChangeRPMH
+**					   DropClientLK
+**					   DropClientLD
+**					   DropClientRD
+**					   DropClientCK
+**					   DropClientRPMH
+**					   BuildFullName
+**					   
 **
 **  DESCRIPTION      : This function is invoked at predisplay of the Saved Map
 **                       and Repository Comparision window.
@@ -34,26 +50,31 @@ VOID FileOut( CHAR *Text );
 **
 **  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **  --------  -----------  -------  -------------------------------------
-**  11/08/93  C. Crampton           Added code for dealing with saved relationship
+**  11/08/93	C. Crampton         Added code for dealing with saved relationship
 **                                  layouts.
 **
-**  08/03/94  C. Crampton           Added EXCLUDE_FND_WRAPPERS and logic for
+**  08/03/94	C. Crampton         Added EXCLUDE_FND_WRAPPERS and logic for
 **                                  more messages than listbox can handle.
 **
-**  10/18/94  J. Looney             Clean Up.
+**  10/18/94	J. Looney           Clean Up.
 **
-**  04/16/96  mconner              Pointer Focus defined in FCP restricts the
-**                                 FndCommandSetDefaultButton in NT.  These 
-**                                 defs were removed from the repository
-**                                 and calls added to the program where needed
-**                                 to retain the "default button" functionality
+**  04/16/96	mconner				Pointer Focus defined in FCP restricts the
+**									FndCommandSetDefaultButton in NT.  These 
+**									defs were removed from the repository
+**									and calls added to the program where needed
+**									to retain the "default button" functionality
 **
-**  04/22/96 mconner               re-engineered semaphore calls to work in 
+**  04/22/96	mconner				re-engineered semaphore calls to work in 
 **                                  both NT and OS/2.
 **
+**	07/29/96	J. Looney			Clean up again.  Removed FileOut function
+**									Replaced all POSTMSG with the actual code.
 ***************************************************************************/
 static WCBPROC(AZCS013BusPredisplay)
 {
+
+
+
     SHORT nRC = 0;
     /*mdc 03/22/96 Added for new NT begin thread call return code*/
     #ifdef FND_WIN32
@@ -252,6 +273,9 @@ if (sSignalRC != CMN_SUCCESS)
                          (VOID *) pSTDParms );
 
 #endif
+
+HEAP_CHECK
+
 /*mdc Close semaphore */
 /*sSignalRC = CmnOsSignalClose( hsemLock );
 if(sSignalRC != CMN_SUCCESS)
@@ -320,6 +344,8 @@ static WCBPROC(AZCS013BUSPredistroy)
 {
     SHORT FndGenRC = CMN_SUCCESS;
 
+	HEAP_CHECK
+
 	/*mdc 04/24/96 Close semaphore before leaving application*/
 	FndGenRC = CmnOsSignalClose( hsemLock );
 
@@ -363,20 +389,19 @@ static WCBPROC(AZCS013BUSPredistroy)
 **
 **  10/18/94  J. Looney             Clean up.
 **
+**  07/29/96  J. Looney				Clean up again.
 ***************************************************************************/
 WCBPROC(ProcessMsg)
 {
-    SHORT FndGenRC;
-    USHORT SelectedButton;
-    CHAR *pInputMsg = "Function Process InterWindow Msg Activated";
-    _FND_ERROR_BLOCK FndGenErrorBlock;
-    _MsgLBRow MsgLB;
-    static ULONG ulNumRows=0;
+
+    SHORT				FndGenRC;
+    USHORT				SelectedButton;
+    CHAR				*pInputMsg = "Function Process InterWindow Msg Activated";
+    _FND_ERROR_BLOCK	FndGenErrorBlock;
+    _MsgLBRow			MsgLB;
+    static ULONG		ulNumRows=0;
 
     HEAP_CHECK
-	/*mdc 03/22/96 no longer used
-    FileOut( "Entering ProcessMsg\n" );
-	*/
 
     /* Process only messages within the mapgen event id range */
     if( CBI_IWApplMsg < CMN_MAPGEN_MSG_BASE ||
@@ -393,9 +418,6 @@ WCBPROC(ProcessMsg)
 
     if ( CBI_IWApplMsg == CMN_MAPGEN_MSG_DONE )
     {
-	/*mdc 03/22/96 changed for NT
-        DosSemClear( hsemLock );
-	*/
 	    CmnOsSignalClear( hsemLock );
 
         /*
@@ -472,9 +494,6 @@ WCBPROC(ProcessMsg)
                  CBI_IWApplParm,
                  sizeof( MsgLB._MsgLBDataBufferData )); /* 256 */
 
-       /* strcpy( MsgLB._MsgLBDataBufferData,
-                 CBI_IWApplParm);*/ /* 256 */
-
         FndGenRC = CmnErrOverrides(NULL,
                                    CMN_OVERRIDE_FATAL,
                                    CMN_ERR_LOGGING_DEFAULT,
@@ -489,10 +508,6 @@ WCBPROC(ProcessMsg)
                                     &MsgLB,
                                     &FndGenErrorBlock);
 
-		/*mdc 03/22/96 no longer used
-        FileOut( MsgLB._MsgLBDataBufferData );
-		*/
-
         /* Check the return code from the add */
         if ( FndGenRC != FND_SUCCESS )
         {
@@ -506,10 +521,7 @@ WCBPROC(ProcessMsg)
                               CMN_MAPGEN_NAME,
                               &SelectedButton,
                               &FndGenErrorBlock );
-            /* Clear the semaphore that was set by the calling routine */
-			/*mdc 03/22/96 changed for NT
-            DosSemClear( hsemLock );
-			*/
+
 			CmnOsSignalClear(hsemLock);
 
             return CMN_FAIL;
@@ -521,11 +533,7 @@ WCBPROC(ProcessMsg)
     {
 
         /* Clear the semaphore that was set by the calling routine */
-/*mdc 03/22/96 changed for NT	
-        DosSemClear(hsemLock);
-		*/
 		FndGenRC = CmnOsSignalClear(hsemLock);
-
 
         FndGenRC = FndMsgBoxDisplayText(
               "More errors have occurred than can fit in the Listbox\n\n"
@@ -545,15 +553,12 @@ WCBPROC(ProcessMsg)
     /* More message than the message box can handle have occured. */
     else
     {
-	/*mdc 03/22/96 chnage for NT
-        DosSemClear(hsemLock);
-		*/
 		FndGenRC = CmnOsSignalClear( hsemLock);
     }
 
     /*
      * Display a message box if its an error but only for the first one
-     */
+     */					  
 
     if( CBI_IWApplMsg == CMN_MAPGEN_MSG_ERROR )
     {
@@ -599,16 +604,13 @@ WCBPROC(ProcessMsg)
           }
      }
 
-    /* Clear the semaphore that was set by the calling routine */
-	/*mdc 03/22/96 changed for NT
-    DosSemClear( hsemLock );
-	*/
 	CmnOsSignalClear( hsemLock);
 
     HEAP_CHECK
 
     return CMN_SUCCESS;
 
+	
 } /* end of ProcessMsg */
 
 /***************************************************************************
@@ -643,13 +645,18 @@ WCBPROC(ProcessMsg)
 **  10/18/94  JLOONEY               Clean Up.
 **
 **  03/22/96  mconner               Changed all semaphore calls to CmnOs calls
+**
 **  03/22/96  mconner               Commented out all HEAP_CHECK_BEEP calls
 **
+**  07/29/96  JLOONEY				Clean up again.
 ***************************************************************************/
 VOID CompareLayouts(_STDParms *pSTDParms)
 {
+
+
     SHORT nServiceIndex;
     SHORT sNumRows;
+	SHORT rc = 0;
     USHORT FndGenRC;
     USHORT MsgID;
     HWND hwnd;
@@ -662,15 +669,6 @@ VOID CompareLayouts(_STDParms *pSTDParms)
     _BFCD * pBFCD;
     _FND_ERROR_BLOCK  FndGenErrorBlock;
 	LONG LastError = 0;
-	SHORT rc = 0;
-
-/*mdc 1-31-96 this var not used in this funtion
-    FILE *fptr;
-*/
-
-//    HEAP_CHECK_BEEP
-//mdc 03/25/96 removed for comile resolve pEventInfo issue later
-//    if (_heapchk() != _HEAPOK) {CmnOsBeep(55L,100L, CMN_ARCH_PARMS); }
 
     /* Save off the STDParm values */
     pBFCD            = pSTDParms->pBFCD;
@@ -683,26 +681,33 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              "Data Layouts *****",
              sizeof( MsgData ));
 
-//  POSTMSG;
+	FndGenRC = CmnOsSignalSet(hsemLock);
 
+	/*mdc 04/22/96 used for test only
+	if( !ResetEvent( hsemLock ))
+	{
+		LastError = GetLastError();
+		rc = CMN_ERR_OS_SIGNAL_SET_FAILED;
+	}*/
 
-                FndGenRC = CmnOsSignalSet(hsemLock);
-  /*mdc 04/22/96 used for test only
-  if( !ResetEvent( hsemLock ))
-  {
+    FndGenRC = FndWndMsgPost( hwnd,
+                              MsgID,
+                              &MsgData,
+                              &FndGenErrorBlock);
 
-	LastError = GetLastError();
-	rc = CMN_ERR_OS_SIGNAL_SET_FAILED;
-  }*/
+    if (_heapchk() != _HEAPOK) {Beep(400L,1000L); }
 
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);
 
-                 FndGenRC = FndWndMsgPost( hwnd,
-                                           MsgID,
-                                           &MsgData,
-                                           &FndGenErrorBlock);
-                 FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
-                 if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)
-                    _endthread();
+//Heap is corrupt at this point!!
+
+	//if (!_CrtCheckMemory()) {Beep(300L, 1000L);}
+	if (_heapchk() != _HEAPOK) {Beep(300L,1000L); }
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)
+	{
+		_endthread();
+	}
 
     /* Check the Client map first */
     MsgID = CMN_MAPGEN_MSG_INFO;
@@ -711,7 +716,19 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              "Checking Client Layout %s.",
              pBFCD->pCSRMapBFCD->ClientInfo.ClientLayoutName );  /*   9 */
 
-    POSTMSG; /*mdc 03/22/96 semaphore functions are defined in azcs013.h*/
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     /* Error if the number of client rows have changed */
     if( pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows !=
@@ -726,7 +743,19 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                  "same as in the Saved Map",
                  sizeof( MsgData ));
 
-        POSTMSG;
+		FndGenRC = CmnOsSignalSet(hsemLock);  
+
+		FndGenRC = FndWndMsgPost( hwnd,   
+								MsgID,  
+								&MsgData,
+								&FndGenErrorBlock); 
+
+		FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+		if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+		{
+			_endthread();
+		}
     } /* end of if:  Error, the number of client rows have changed */
 
     /* Populate local vars for easier use */
@@ -745,7 +774,7 @@ VOID CompareLayouts(_STDParms *pSTDParms)
         sNumRows = pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows;
     }
 
-    /*HEAP_CHECK_BEEP*/
+    //HEAP_CHECK_BEEP
 
     CheckIt( MAP_GEN_CLIENT_LAYOUT,
              0,
@@ -754,7 +783,7 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              pSavedLayout,
              pSTDParms );
 
-    /*HEAP_CHECK_BEEP*/
+	//HEAP_CHECK_BEEP
 
     if( bRemap )
     {
@@ -764,9 +793,9 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                                   &MsgData,
                                   &FndGenErrorBlock);
 
-        FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
+        FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);
 
-        /*HEAP_CHECK_BEEP*/
+        //HEAP_CHECK_BEEP
 
         return;
     }
@@ -776,7 +805,19 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              "Finished Checking Client Layout %s.",
              pBFCD->pCSRMapBFCD->ClientInfo.ClientLayoutName );    /*   9 */
 
-    POSTMSG;
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     /* Check each of the service maps next */
     for( nServiceIndex = 0;
@@ -788,7 +829,20 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                  "Checking Service Layout %s.",
                  pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
                         ServiceLayoutName );                        /*  12 */
-        POSTMSG;
+
+		FndGenRC = CmnOsSignalSet(hsemLock);  
+
+		FndGenRC = FndWndMsgPost( hwnd,   
+								MsgID,  
+								&MsgData,
+								&FndGenErrorBlock); 
+
+		FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+		if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+		{
+			_endthread();
+		}
 
         pReposLayout = pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
                               pReposServiceLayoutTable;
@@ -811,7 +865,20 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                      " You must regenerate to correct this problem",
                      pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
                             ServiceLayoutName );                    /*  12 */
-           POSTMSG;
+
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
 
         }
 
@@ -845,7 +912,7 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                                       &MsgData,
                                       &FndGenErrorBlock );
 
-            FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
+            FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);
 
             /*HEAP_CHECK_BEEP*/
 
@@ -858,7 +925,19 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                  pBFCD->pCSRMapBFCD->ServiceInfoTable[nServiceIndex].
                         ServiceLayoutName );                        /*  12 */
 
-        POSTMSG;
+		FndGenRC = CmnOsSignalSet(hsemLock);  
+
+		FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+		FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+		if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+		{
+			_endthread();
+		}
 
     } /* end of for loop thru NumServices */
 
@@ -869,9 +948,10 @@ VOID CompareLayouts(_STDParms *pSTDParms)
                               &MsgData,
                               &FndGenErrorBlock );
 
-    FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);
 
-    /*HEAP_CHECK_BEEP*/
+    if (_heapchk() != _HEAPOK) {Beep(300L,1000L); }
+
 
 } /* end of CompareLayouts */
 
@@ -957,7 +1037,19 @@ static SHORT CheckIt( CHAR cLayoutType,
                          sIndex,
                          pReposLayout[sIndex].ItemId );
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 bMisAligned = TRUE;
             }
@@ -988,7 +1080,19 @@ static SHORT CheckIt( CHAR cLayoutType,
                      pSavedLayout[sIndex].ItemType,             /*   1 */
                      pReposLayout[sIndex].ItemType );           /*   1 */
 
-            POSTMSG;
+					FndGenRC = CmnOsSignalSet(hsemLock);  
+
+					FndGenRC = FndWndMsgPost( hwnd,   
+												MsgID,  
+												&MsgData,
+												&FndGenErrorBlock); 
+
+					FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+					if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+					{
+						_endthread();
+					}			
 
         }
 
@@ -1005,7 +1109,19 @@ static SHORT CheckIt( CHAR cLayoutType,
                      pSavedLayout[sIndex].Format,                /*   1 */
                      pReposLayout[sIndex].Format);               /*   1 */
 
-            POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
 
         }
 
@@ -1022,7 +1138,19 @@ static SHORT CheckIt( CHAR cLayoutType,
                      pSavedLayout[sIndex].ItemLength,           /*   4 */
                      pReposLayout[sIndex].ItemLength);          /*   4 */
 
-            POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
 
         }
 
@@ -1040,7 +1168,19 @@ static SHORT CheckIt( CHAR cLayoutType,
                      pSavedLayout[sIndex].Usage,                /*   3 */
                      pReposLayout[sIndex].Usage );              /*   3 */
 
-              POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+									
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{	
+				_endthread();
+			}
         }
 
         if ( 'G' == pReposLayout[sIndex].ItemType  &&
@@ -1057,7 +1197,19 @@ static SHORT CheckIt( CHAR cLayoutType,
                        pSavedLayout[sIndex].ItemOccurs,         /*   4 */
                        pReposLayout[sIndex].ItemOccurs );       /*   4 */
 
-              POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
         }
     } /* END OF LOOP THRU ALL ROWS */
 
@@ -1615,7 +1767,19 @@ SHORT Remap(_STDParms *pSTDParms)
 
         MsgID = CMN_MAPGEN_MSG_INFO;
 
-        POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
 
         /* Loop thru each of the rows in this service layout record */
         for ( sRowx = 1;
@@ -1661,7 +1825,19 @@ SHORT Remap(_STDParms *pSTDParms)
 
                     MsgID = CMN_MAPGEN_MSG_INFO;
 
-                    POSTMSG;
+					FndGenRC = CmnOsSignalSet(hsemLock);  
+
+					FndGenRC = FndWndMsgPost( hwnd,   
+											MsgID,  
+											&MsgData,
+											&FndGenErrorBlock); 
+
+					FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+					if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+					{
+						_endthread();
+					}
 
                     continue;
                 }  /* end of case 0 */
@@ -1677,7 +1853,19 @@ SHORT Remap(_STDParms *pSTDParms)
 
         MsgID = CMN_MAPGEN_MSG_INFO;
 
-        POSTMSG;
+		FndGenRC = CmnOsSignalSet(hsemLock);  
+
+		FndGenRC = FndWndMsgPost( hwnd,   
+								MsgID,  
+								&MsgData,
+								&FndGenErrorBlock); 
+
+		FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+		if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+		{
+			_endthread();
+		}
 
     } /* end of for loop thru each of the services */
 
@@ -2186,7 +2374,19 @@ SHORT ChangeLK( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 DropClient( sClientx, sServ, 1, pSTDParms );
 
@@ -2220,7 +2420,19 @@ SHORT ChangeLK( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 break;
 
@@ -2341,7 +2553,19 @@ SHORT ChangeCK( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 DropClient( sClientx, sServ, 2, pSTDParms );
 
@@ -2376,7 +2600,19 @@ SHORT ChangeCK( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 break;
 
@@ -2491,7 +2727,19 @@ SHORT ChangeLD( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 DropClient(sClientx, sServ, 3, pSTDParms);
 
@@ -2525,7 +2773,19 @@ SHORT ChangeLD( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 break;
 
@@ -2641,7 +2901,19 @@ SHORT ChangeRD( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 DropClient(sClientx, sServ, 4, pSTDParms);
 
@@ -2676,7 +2948,19 @@ SHORT ChangeRD( SHORT sServ,
 
                  MsgID = CMN_MAPGEN_MSG_INFO;
 
-                 POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                  break;
 
@@ -2786,7 +3070,19 @@ SHORT ChangeRPMH( SHORT sServ,
 
             MsgID = CMN_MAPGEN_MSG_WARN;
 
-            POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+									MsgID,  
+									&MsgData,
+									&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
 
             sprintf( MsgData,                               /* 255 */
                      "Dropping relationships for Group %s.",
@@ -2798,7 +3094,19 @@ SHORT ChangeRPMH( SHORT sServ,
 
             MsgID = CMN_MAPGEN_MSG_WARN;
 
-            POSTMSG;
+			FndGenRC = CmnOsSignalSet(hsemLock);  
+
+			FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+			FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+			if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+			{
+				_endthread();
+			}
 
             pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                    pRepeatingMaps[sNewReposIx].ClientLayoutIndex = -1;
@@ -2832,7 +3140,19 @@ SHORT ChangeRPMH( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 DropClient(sClientx, sServ, 5, pSTDParms);
 
@@ -2867,7 +3187,19 @@ SHORT ChangeRPMH( SHORT sServ,
 
                 MsgID = CMN_MAPGEN_MSG_INFO;
 
-                POSTMSG;
+				FndGenRC = CmnOsSignalSet(hsemLock);  
+
+				FndGenRC = FndWndMsgPost( hwnd,   
+										MsgID,  
+										&MsgData,
+										&FndGenErrorBlock); 
+
+				FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+				if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+				{
+					_endthread();
+				}
 
                 break;
 
@@ -2975,7 +3307,19 @@ SHORT DropClientLK( SHORT sServ,
 
     MsgID = CMN_MAPGEN_MSG_WARN;
 
-    POSTMSG;
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     /*HEAP_CHECK_BEEP*/
 
@@ -3073,7 +3417,19 @@ SHORT DropClientLD( SHORT sServ,
 
     MsgID = CMN_MAPGEN_MSG_WARN;
 
-    POSTMSG;
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     /*HEAP_CHECK_BEEP*/
 
@@ -3161,7 +3517,19 @@ SHORT DropClientRD( SHORT sServ,
 
     MsgID = CMN_MAPGEN_MSG_WARN;
 
-    POSTMSG;
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData[sNewServIndex].
             ClientLayoutIndex = -1;
@@ -3254,7 +3622,19 @@ SHORT DropClientCK( SHORT sServ,
 
     MsgID = CMN_MAPGEN_MSG_WARN;
 
-    POSTMSG;
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                           pCompareKeys[sNewServIndex].ClientLayoutIndex = -1;
@@ -3364,7 +3744,19 @@ SHORT DropClientRPMH( SHORT sServ,
 
     MsgID = CMN_MAPGEN_MSG_WARN;
 
-    POSTMSG;
+    FndGenRC = CmnOsSignalSet(hsemLock);  
+
+    FndGenRC = FndWndMsgPost( hwnd,   
+                              MsgID,  
+                              &MsgData,
+                              &FndGenErrorBlock); 
+
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_WAIT_INFINITE);  
+
+    if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)   
+	{
+		_endthread();
+	}
 
     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
            pRepeatingMaps[sNewServIndex].ClientLayoutIndex = -1;
@@ -3491,19 +3883,3 @@ CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
 
 
 
-/*mdc 03/2/96 REmoved 
-VOID FileOut( CHAR *Text )
-{
-  
-  FILE *fp;
-
-  if( fp = fopen( "bug", "a" ))
-  {
-    fprintf( fp, "%s", Text );
-    fclose( fp );
-  }
-  
-    CmnOsSleep( 100L, CMN_ARCH_PARMS );
-  DosSleep( 100 );
-  return;
-}					  */

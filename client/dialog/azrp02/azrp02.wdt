@@ -1,15 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *      C   O S / 2    W I N D O W   D E F I N I T I O N   T A B L E S     *
+ * C  W I N D O W S   N T   W I N D O W   D E F I N I T I O N   T A B L E S *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *            Window Dispatch Table for: AZRP02                            *
- *                         Generated on: Fri Mar 29 09:26:24 1996          *
+ *                         Generated on: Fri Jul 12 15:55:18 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************
 
@@ -69,7 +69,7 @@ CBLWINSETUPENTRY CBLwindowSetupTable[] =
 /***************************************************************************
  * Table of DLLs referenced in this EXE                                    *
  ***************************************************************************/
-DLLWINDOWINFO *pWindowsInDLLs[] =
+DLLWINDOWINFO  *pWindowsInDLLs[] =
 {
 
         0

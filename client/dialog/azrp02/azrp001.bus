@@ -717,7 +717,7 @@ while (*pszStr)
                                 &FndGenErrorBlock );
   }
 
-  /*mdc 05/09/96 Let the user know if all the rows are not displayedin the LB */
+  /*mdc 05/09/96 Let the user know if all the rows are not displayed in the LB */
   if (pReplyHdr->RowsReturned > NUMREPOSDATALBROWS)
   {
 	FndGenRC = FndMsgBoxDisplayMdlssText( "\n\nThe number of rows retrieved exceeds the number of displayable rows.",
@@ -849,13 +849,18 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
 
   if( pfPrinter )
   {
-    while( CurrRow < pReplyHdr->RowsReturned )
+  /*mdc 07/08/96 Changed to keep rows beyond 200 from printing garbage*/
+  /*mdc 07/08/96 NUMREPOSDATALBROWS repalces pReplyHdr->RowsReturned throughout this function*/
+    /*while( CurrRow < pReplyHdr->RowsReturned ) */
+    while ( CurrRow < NUMREPOSDATALBROWS && 
+            CurrRow < pReplyHdr->RowsReturned )
     {
       /* Print Header Information */
       PrintHeader( pfPrinter, pRequestHdr, pReplyHdr, pEntityDataTable,
                    CurrPage, &CurrLine, CMN_ARCH_PARMS );
 
       while( CurrLine < MAX_LINES_PER_PAGE &&
+             CurrRow < NUMREPOSDATALBROWS &&
              CurrRow < pReplyHdr->RowsReturned )
       {
         /* Print Current Row */
@@ -926,12 +931,28 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
 
       /* Check why loop terminated */
       if( CurrLine >= MAX_LINES_PER_PAGE &&
+          CurrRow < NUMREPOSDATALBROWS &&
           CurrRow < pReplyHdr->RowsReturned )
       {
         /* Lines per page exceeded, but still more data */
         fprintf( pfPrinter, "\f" );
         CurrPage++;
       }
+    }/*end of while CurrRow <= MAX_RPT_LINES */
+    /*mdc 07/08/96 if there are more lines print a message*/
+    if ( CurrRow >= NUMREPOSDATALBROWS )
+    {
+        if (CurrLine >= MAX_LINES_PER_PAGE - 3 )
+        {
+            fprintf(pfPrinter, "\f" );
+            ++CurrPage;
+            /* Print Header Information */
+            PrintHeader( pfPrinter, pRequestHdr, pReplyHdr, pEntityDataTable,
+                   CurrPage, &CurrLine, CMN_ARCH_PARMS );
+
+        }
+        fprintf(pfPrinter, "\n\n\tThe maximum number of printable lines is %d.", NUMREPOSDATALBROWS);
+        fprintf(pfPrinter, "\n\tThere are additional lines of data that will not be printed.");
     }
 
     /* Reset printer and close */
