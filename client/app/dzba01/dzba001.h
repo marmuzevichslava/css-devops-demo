@@ -27,10 +27,10 @@
 /***************************************************************************/
 
 /* Report file path */
-#define REPORT_FILE "c:\\data\\BAEXT.LOG"
+#define REPORT_FILE "C:\\DATA\\BAEXT.LOG"
 
-#define LOG_HEADER  "\t\tBILL ACCOUNT EXTRACT LOG\n"
-#define LOG_COLUMNS "\t Account Id \tTable \tTransaction \t\tRows Returned\n"
+#define LOG_HEADER  "\t\tBILL ACCOUNT EXTRACT ERROR LOG\n"
+#define LOG_COLUMNS "\t Account Id \tTable \t\tJob Type     Sql Error \n"
 
 /* defined for RB Mode Field Change Strcmp statements */
 #define LT_Extract_Mode  "01"
@@ -55,13 +55,13 @@
 /* Bad password literal */
 #define NOCONN             "NOCONN"
 #define NODATA             "NODATA"
-
+#define NOFILE             "NOFILE"
 
 #define BAD_DATA           "There are now rows to process."
 #define BAD_EXT_PW         "Incorrect Password on Extraction Criteria."
 #define BAD_INS_PW         "Incorrect Password on Insertion Criteria."
 #define NO_DATA_FOUND      "Account Not Found."
-
+#define NO_FILE_FOUND      "File name not found in directory."
 
 #define BaseDecodeLength 21
 
