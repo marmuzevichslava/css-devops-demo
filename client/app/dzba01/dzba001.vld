@@ -433,6 +433,15 @@ WCBPROC( DZBA001VldExtPasswdFC )
 	/* Determine the length of the inputted password */
 	InputSize = strlen(InputPassword);
 
+    if (InputSize == 0)
+	{
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxExtractPsswdId",
+                            STS_INCOMPLETE,
+                            &FndGenErrorBlock);
+
+	}
+
 	/* Determine the length of the globally held password */
 	HoldPasswordSize = strlen(GlobalHoldPassword);
 
@@ -635,6 +644,15 @@ WCBPROC( DZBA001VldInsPasswdFC )
 
 	/* Determine the length of the inputted password */
 	InputSize = strlen(InputPassword);
+
+    if (InputSize == 0)
+	{
+         FndFieldSetStatus(CBI_hwnd,
+                            "TxInsertPsswdId",
+                            STS_INCOMPLETE,
+                            &FndGenErrorBlock);
+
+	}
 
 	/* Determine the length of the globally held password */
 	HoldPasswordSize = strlen(GlobalHoldPasswordB);

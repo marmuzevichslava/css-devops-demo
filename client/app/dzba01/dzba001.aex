@@ -347,6 +347,98 @@ AEXPROC( ExitCsrNotification )
 		| previous CSR service call.
 		*/
 
+
+			if ((BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode != 0) &&
+			    (BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode != 100) &&
+				(strcmp(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType,LT_First_Pass) == 0))
+			{													
+			/*
+			** If a bad table access is made on a first pass, make the user aware of it
+			**/
+
+                FndMsgBoxDisplayText( "Table Access Error encountered. Continue present transaction?",
+                                      "DZBA001Y",
+                                      CBI_hwnd,
+                                      FND_MSGBOX_YESNOCANCEL,
+                                      FND_MSGBOX_WARNING,
+                                      FND_MSGBOX_IDYES,
+                                      "Bill Account Extract",
+                                      &SelectedButton,
+				                      &FndGenErrorBlock );
+
+				if (SelectedButton == FND_MSGBOX_IDYES)
+				{
+				  /*
+				  ** If the user chooses yes, set up the transaction's second
+				  ** pass and make the same exact CSR call.
+				  **/
+
+                   CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_Second_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
+
+                   CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                LT_Second_Pass,
+                                sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                CMN_ARCH_PARMS);
+
+				   memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+			                         sizeof(_ACCESSRESULTS) );
+
+
+			    /* call the CSR with the LUW layout SWAT01L */
+			       CmnCsrCall(	(BYTE *)&(BFCD_SWAT01Luw),
+				        		(ULONG)sizeof(_SWAT01LUW),
+						        CMN_FORCECALL_YES,
+						        "DZBA01L",
+						        CMN_ARCH_PARMS);
+
+                   return CMN_SUCCESS;
+
+
+				}
+				else if (SelectedButton == FND_MSGBOX_IDNO)
+				{
+				  /*
+				  ** If the user chooses no, format the log file with a detailed
+				  ** explanation of what happened and continue processing any other
+				  ** transactions the user may have pending.
+				  **/
+
+					fprintf(LogFile, "\nError %d encountered accessing table %s.\n",
+				            BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode,
+				            BFCD_SWAT01Luw.AccessResults[0].TableAccessed);
+
+			        fflush(LogFile);
+
+
+
+				}
+				else if	(SelectedButton == FND_MSGBOX_IDCANCEL)
+				{
+				  /*
+				  ** If the user chooses 'cancel', format the log file with a detailed
+				  ** explanation of what happened and exit the application.
+				  **/
+
+					fprintf(LogFile, "Error %d encountered accessing table %s.\n",
+				            BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode,
+				            BFCD_SWAT01Luw.AccessResults[0].TableAccessed);
+
+			        fflush(LogFile);
+
+					CMN_WN_CL_AFTER_SUCCESS_PROCESS
+
+                    return CMN_SUCCESS;
+
+				}
+
+			}
+			else
+			{
+
 		    nTableCounter = 0;
 
 			while (nTableCounter < TableCountLimit)
@@ -358,12 +450,25 @@ AEXPROC( ExitCsrNotification )
 					}
 					else
 					{
+
+			            if ((BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnSqlcode != 0) &&
+			                (BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnSqlcode != 100))
+						{
+						fprintf(LogFile, "%d  \t%0.0lf \t%s \tFA \t\t%d\n",
+				                  nTableCounter,
+				                  BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo,
+								  BFCD_SWAT01Luw.AccessResults[nTableCounter].TableAccessed,
+								  BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows);
+						}
+						else
+						{
+				 
 						fprintf(LogFile, "%d  \t%0.0lf \t%s \tEX \t\t%d\n",
 				                  nTableCounter,
 				                  BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo,
 								  BFCD_SWAT01Luw.AccessResults[nTableCounter].TableAccessed,
 								  BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows);
-
+						}
 				        fflush(LogFile);
 
 						nTotalReturnCounter =  nTotalReturnCounter + 
@@ -384,8 +489,9 @@ AEXPROC( ExitCsrNotification )
 
 			fflush(LogFile);
 
-			} /* if the account was found */   
+			} /* end else */   
 
+			} /* if the account was found */
 		/*
 		| If the function type is Extract/Insert, another CSR service call should be 
 		| made to the Insert service. Otherwise, the processing is done and a "done"
@@ -396,10 +502,20 @@ AEXPROC( ExitCsrNotification )
 			   &&  (strcmp(BFCD_SWAT01Luw.SWAT01BData[0].TsKyExtract, NODATA) != 0) )
 			{
 
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_First_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
                 CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
                             LT_Insert_Mode,
                             sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
                             CMN_ARCH_PARMS );
+
+                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                         LT_First_Pass,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                         CMN_ARCH_PARMS);
 
 				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 			                         sizeof(_ACCESSRESULTS) );
@@ -526,6 +642,12 @@ AEXPROC( ExitCsrNotification )
 	                            sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
                     {
 
+                                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                         LT_First_Pass,
+                                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                         CMN_ARCH_PARMS);
+
+
 								memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 								                         sizeof(_ACCESSRESULTS) );
 
@@ -542,11 +664,21 @@ AEXPROC( ExitCsrNotification )
 	                        sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
                     {
 
-	
+
+                                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                                            LT_First_Pass,
+                                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                                            CMN_ARCH_PARMS );
+
                                 CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
                                         LT_Insert_Mode,
                                         sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
                                         CMN_ARCH_PARMS );
+
+                                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                             LT_First_Pass,
+                                             sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                             CMN_ARCH_PARMS);
 
 								memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 								                         sizeof(_ACCESSRESULTS) );
@@ -623,12 +755,105 @@ AEXPROC( ExitCsrNotification )
            else
            {
 
+
+
         /*
 		| Populate the log file with the results of the table accesses of the
 		| previous CSR service call.
 		*/
 
-			nTableCounter = 0;
+			if ((BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode != 0) &&
+			    (BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode != 100) &&
+				(strcmp(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract, LT_First_Pass) == 0))
+			{													
+			/*
+			** If a bad table access is made on a first pass, make the user aware of it
+			**/
+
+                FndMsgBoxDisplayText( "Table Access Error encountered. Continue present transaction?",
+                                      "DZBA001Y",
+                                      CBI_hwnd,
+                                      FND_MSGBOX_YESNOCANCEL,
+                                      FND_MSGBOX_WARNING,
+                                      FND_MSGBOX_IDYES,
+                                      "Bill Account Extract",
+                                      &SelectedButton,
+				                      &FndGenErrorBlock );
+
+				if (SelectedButton == FND_MSGBOX_IDYES)
+				{
+				  /*
+				  ** If the user chooses yes, set up the transaction's second
+				  ** pass and make the same exact CSR call.
+				  **/
+
+                   CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_Second_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
+
+                   CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                LT_Second_Pass,
+                                sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                CMN_ARCH_PARMS);
+
+				   memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+			                         sizeof(_ACCESSRESULTS) );
+
+
+			    /* call the CSR with the LUW layout SWAT01L */
+			       CmnCsrCall(	(BYTE *)&(BFCD_SWAT01Luw),
+				        		(ULONG)sizeof(_SWAT01LUW),
+						        CMN_FORCECALL_YES,
+						        "DZBA01M",
+						        CMN_ARCH_PARMS);
+
+                   return CMN_SUCCESS;
+
+
+				}
+				else if (SelectedButton == FND_MSGBOX_IDNO)
+				{
+				  /*
+				  ** If the user chooses no, format the log file with a detailed
+				  ** explanation of what happened and continue processing any other
+				  ** transactions the user may have pending.
+				  **/
+
+					fprintf(LogFile, "\nError %d encountered accessing table %s.\n",
+				            BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode,
+				            BFCD_SWAT01Luw.AccessResults[0].TableAccessed);
+
+			        fflush(LogFile);
+
+
+
+				}
+				else if	(SelectedButton == FND_MSGBOX_IDCANCEL)
+				{
+				  /*
+				  ** If the user chooses 'cancel', format the log file with a detailed
+				  ** explanation of what happened and exit the application.
+				  **/
+
+					fprintf(LogFile, "Error %d encountered accessing table %s.\n",
+				            BFCD_SWAT01Luw.AccessResults[0].ReturnSqlcode,
+				            BFCD_SWAT01Luw.AccessResults[0].TableAccessed);
+
+			        fflush(LogFile);
+
+					CMN_WN_CL_AFTER_SUCCESS_PROCESS
+
+                    return CMN_SUCCESS;
+
+				}
+
+			}
+			else
+			{
+
+			nTableCounter = 1;
 
 			while (nTableCounter < TableCountLimit)
 			{
@@ -639,12 +864,25 @@ AEXPROC( ExitCsrNotification )
 				}
 				else
 				{
-					fprintf(LogFile, "%d  \t%0.0lf \t%s \tIR \t\t%d\n",
+
+
+		            if (BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows == 0) 
+					{
+						fprintf(LogFile, "%d  \t%0.0lf \t%s \tFA \t\t%d\n",
 				                  nTableCounter,
 				                  BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo,
 								  BFCD_SWAT01Luw.AccessResults[nTableCounter].TableAccessed,
 								  BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows);
-
+					}
+					else
+					{
+				 
+						fprintf(LogFile, "%d  \t%0.0lf \t%s \tIR \t\t%d\n",
+				                  nTableCounter,
+				                  BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo,
+								  BFCD_SWAT01Luw.AccessResults[nTableCounter].TableAccessed,
+								  BFCD_SWAT01Luw.AccessResults[nTableCounter].ReturnedRows);
+					}
 					fflush(LogFile);
 
 					nTotalReturnCounter =  nTotalReturnCounter + 
@@ -652,7 +890,11 @@ AEXPROC( ExitCsrNotification )
 				}
 
 					nTableCounter++;
-				}
+
+			 }
+
+             } /* end else */
+
 
 				fprintf( LogFile, "\n\nRows Inserted for account %0.0lf = %d\n\n\n",
 		                  BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo,
@@ -776,6 +1018,11 @@ AEXPROC( ExitCsrNotification )
 	                    sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
                     {
 
+                                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                         LT_First_Pass,
+                                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                         CMN_ARCH_PARMS);
+
 								memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 								                         sizeof(_ACCESSRESULTS) );
 
@@ -791,10 +1038,18 @@ AEXPROC( ExitCsrNotification )
 	                            sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
                     {
 
-	
+                            CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                                        LT_First_Pass,
+                                        sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                                        CMN_ARCH_PARMS );
+
+                            CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                         LT_First_Pass,
+                                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                         CMN_ARCH_PARMS);
+
 							memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 								                         sizeof(_ACCESSRESULTS) );
-
 
 			                /* call the CSR with the LUW layout SWAT01M */
                             CmnCsrCall((BYTE *)&(BFCD_SWAT01Luw),
@@ -808,6 +1063,17 @@ AEXPROC( ExitCsrNotification )
                     else if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Insert_Mode,
 	                            sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
                     {
+
+                            CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                                        LT_First_Pass,
+                                        sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                                        CMN_ARCH_PARMS );
+
+
+                            CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                                         LT_First_Pass,
+                                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                                         CMN_ARCH_PARMS);
 
 	
 							memset(&BFCD_SWAT01Luw.AccessResults, 0, 

@@ -366,6 +366,15 @@ WCBPROC( DZBA001BusProcessMNClick )
                         sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
                         CMN_ARCH_PARMS );
 
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_First_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
+                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                         LT_First_Pass,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                         CMN_ARCH_PARMS);
 
 				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 				                         sizeof(_ACCESSRESULTS) );
@@ -476,6 +485,19 @@ WCBPROC( DZBA001BusProcessMNClick )
 	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
        {
 
+                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                         LT_First_Pass,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                         CMN_ARCH_PARMS);
+
+
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_First_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
+
+
 				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 			                         sizeof(_ACCESSRESULTS) );
 
@@ -492,11 +514,21 @@ WCBPROC( DZBA001BusProcessMNClick )
 	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
         {
 
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_First_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
 	
                 CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
                         LT_Insert_Mode,
                         sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
                         CMN_ARCH_PARMS );
+
+                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                         LT_First_Pass,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                         CMN_ARCH_PARMS);
 
 				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 				                         sizeof(_ACCESSRESULTS) );
@@ -527,6 +559,16 @@ WCBPROC( DZBA001BusProcessMNClick )
                         sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
                         CMN_ARCH_PARMS );
 
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_First_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
+
+                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                         LT_First_Pass,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                         CMN_ARCH_PARMS);
+
 				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 				                         sizeof(_ACCESSRESULTS) );
 
@@ -552,6 +594,15 @@ WCBPROC( DZBA001BusProcessMNClick )
                         sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
                         CMN_ARCH_PARMS );
 
+                CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType, 
+                         LT_First_Pass,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[1].CdAccessType),
+                         CMN_ARCH_PARMS);
+
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract ,
+                            LT_First_Pass,
+                            sizeof(BFCD_SWAT01Luw.SWAT01BData[1].TsKyExtract),
+                            CMN_ARCH_PARMS );
 
 				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
 				                         sizeof(_ACCESSRESULTS) );

@@ -1053,6 +1053,11 @@ WCBPROC( DZBA002BusValidatePBClick )
 
     memset(szTxExtractRemarks2, 0, sizeof(szTxExtractRemarks2) );
 
+	FndCommandDisable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
+
 	CmnStrCopy( CdAccessType,
 		        WCD_SWAT01BRqst.SWAT01BData.CdAccessType,
 			    sizeof(CdAccessType),

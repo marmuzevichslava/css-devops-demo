@@ -336,6 +336,13 @@ AEXPROC( ExitWktCloseAfterSave )
 
 AEXPROC( ExitWktCloseAfterCancel )
 {
+    _FND_ERROR_BLOCK    FndGenErrorBlock;
+    USHORT             FndGenRC = 0;
+
+	FndCommandEnable(CBI_hwnd,
+	                  "ValidPB",
+					  &FndGenErrorBlock);
+
 
     return CMN_SUCCESS;
 

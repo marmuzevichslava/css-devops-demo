@@ -44,6 +44,11 @@
 #define LT_Prem_P         "P"
 #define LT_Bldg_B         "B"
 
+/* Literals defining the Pass Order */
+#define LT_First_Pass   "01"
+#define LT_Second_Pass  "02"
+
+
 #define MX_PART_ACCT_PROC   99999
 
 
