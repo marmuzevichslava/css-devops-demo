@@ -17,6 +17,9 @@
 /* (C is used for mainframe compatibility) by the script       */
 /* calling the calling the parent process.  Theis module       */
 /* returns a "B" or a "C".                                     */
+/*                                                             */
+/*(c) COPYRIGHT 1995 ANDERSEN CONSULTING - ALL RIGHTS RESERVED.*/
+/*THIS WORK IS PROTECTED BY COPYRIGHT LAW AS AN UNPUBLISHED WORK.*/
 /***************************************************************/
 
 #include <stdlib.h>
