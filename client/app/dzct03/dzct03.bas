@@ -159,11 +159,16 @@ Public Function ExportCodesTable() As Boolean
   
     On Error GoTo SQLError
     
-    'Set SQL string.
-        SQLQuery = "SELECT TableName" _
-                 & " FROM tblTables" _
-                 & " WHERE TableName Like " & Chr(34) & "CIS*" & Chr(34) _
+    'Set SQL string to only select tables which have records in tblEntries.
+        SQLQuery = "SELECT DISTINCTROW tblTables.TableName" _
+                 & " FROM tblTables INNER JOIN tblEntries ON tblTables.TableName = tblEntries.TableName" _
+                 & " Where (((tblTables.TableName) Like " & Chr(34) & "CIS*" & Chr(34) & "))" _
                  & " ORDER BY FlagUpdateTS ASC;"
+        
+        'SQLQuery = "SELECT TableName" _
+                  & " FROM tblTables" _
+                  & " WHERE TableName Like " & Chr(34) & "CIS*" & Chr(34) _
+                  & " ORDER BY FlagUpdateTS ASC;"
          
         On Error GoTo RecordsetError
         
