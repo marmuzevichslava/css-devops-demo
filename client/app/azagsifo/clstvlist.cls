@@ -13,7 +13,8 @@ Attribute VB_Exposed = False
 '*
 '*  CLASS NAME       : clsTvList
 '*
-'*  DESCRIPTION      : clsTvList...
+'*  DESCRIPTION      : clsTvList is a linked list created from one or more
+'*                     clsTvPairs
 '*
 '*  PROPERTIES       : none
 '*

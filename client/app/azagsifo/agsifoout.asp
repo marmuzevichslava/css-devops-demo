@@ -1,7 +1,11 @@
+<%
+DISPLAY_COLUMN_WIDTH = 32
+%>
+
 <html>
 
 <head>
-<title>AGS Interface Object Stub</title>
+<title>AGS IFO Output page</title>
 </head>
 
 <body>
@@ -12,8 +16,6 @@
 TxID = request.querystring( "TxID" )
 
 if TxID > 0 then
-
-i = 1
 
 'create instance of activex control
 Set AZAGSIFO = Server.CreateObject("AZAGSIFO.AGSIFO")
@@ -57,16 +59,21 @@ rc = AzAgsIFO.SendMsg( request.querystring( "AGSTxID" ), _
 <div align="center"><center>
 <table border="1">
 
-    <% while i <= AzAgsIFO.NumTvPair %>
+    <% 
+       i = 1
+       while i <= AzAgsIFO.NumTvPair 
+    %>
 
     <tr>
-        <td><% =Mid( AzAgsIFO.GetTvPairByIndex( i ),   1, 32 ) %></td>
-        <td><% =Mid( AzAgsIFO.GetTvPairByIndex( i+1 ), 1, 32 ) %></td>
-        <td><% =Mid( AzAgsIFO.GetTvPairByIndex( i+2 ), 1, 32 ) %></td>
+        <td><% =Mid( AzAgsIFO.GetTvPairByIndex( i ),   1, DISPLAY_COLUMN_WIDTH ) %></td>
+        <td><% =Mid( AzAgsIFO.GetTvPairByIndex( i+1 ), 1, DISPLAY_COLUMN_WIDTH ) %></td>
+        <td><% =Mid( AzAgsIFO.GetTvPairByIndex( i+2 ), 1, DISPLAY_COLUMN_WIDTH ) %></td>
     </tr>
 
-    <% i=i+3 %>
-    <% wend %>
+    <% 
+        i=i+3
+        wend
+    %>
 
 </table>
 </center></div>

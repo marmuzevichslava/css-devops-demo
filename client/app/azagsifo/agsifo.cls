@@ -29,15 +29,15 @@ Attribute VB_Exposed = True
 '*                     TcpTimeout           ( Get )
 '*                     TcpTimeout           ( Let )
 '*
-'*  METHODS          : BuildTvList          PRIVATE
+'*  METHODS          : BuildTagByArray      PUBLIC
+'*                     BuildTvList          PRIVATE
 '*                     BuildTvString        PRIVATE
 '*                     FindTvPair           PRIVATE
-'*                     GetAllTvPairs        PUBLIC
 '*                     GetTvPair            PUBLIC
+'*                     GetTvPairAll         PUBLIC
 '*                     GetTvPairByIndex     PUBLIC
 '*                     InitTcpPipe          PUBLIC
 '*                     InitTvList           PUBLIC
-'*                     SetArrayTvPair       PUBLIC
 '*                     SendMsg              PUBLIC
 '*                     SetTvPair            PUBLIC
 '*
@@ -49,17 +49,19 @@ Attribute VB_Exposed = True
 '*
 '*  02/03/97    B Lucas              added GetTvPairByIndex
 '*
+'*  03/11/98    B Lucas              added BuildTagByArray
+'*
 '***************************************************************************
 
 'options
 Option Explicit
 
 'constants
-Const DEF_HOST_NAME As String = "c1proxyhost"
-Const DEF_SERV_NAME As String = "c1proxy"
-Const DEF_TCP_TIMEOUT As Integer = 0
-Const TV_SEP As String = "="
-Const TV_PAIR_SEP As String = "|"
+Private Const TV_SEP As String = "="
+Private Const TV_PAIR_SEP As String = "|"
+Private Const DEF_HOST_NAME As String = "c1proxyhost"
+Private Const DEF_SERV_NAME As String = "c1proxy"
+Private Const DEF_TCP_TIMEOUT As Integer = 0
 
 'global variables
 Dim TvList As clsTvList
@@ -278,6 +280,88 @@ End Property
 
 '**************************************************************************
 '*
+'* FUNCTION:        BuildTagByArray()
+'*
+'* DESCRIPTION:     string concatenation, especially when it is done by
+'*                  interpreted languages ( like vbscript on an .asp web
+'*                  page ) is an extremely time consuming operation.  to
+'*                  help with performance, and to keep scripting to a
+'*                  minimum, BuildTagByArray was created.  The assumption
+'*                  is that building the string here ( compiled native
+'*                  code ) is quicker that on the .asp page ( interpreted
+'*                  code ).
+'*
+'*                  BuildTagByArray is intended to eliminate the need to
+'*                  'build' tags that contain arrays with subscripts.
+'*                  instead of building the 'tag' on the client, pass the
+'*                  pieces of the 'tag' ( called SubTags ) and this
+'*                  function will build it for you.
+'*
+'*                  when building a 'tag' with this function, there are two
+'*                  rules to follow:  one, element names must passed as
+'*                  strings ( encompassed by "" ). two, array subscripts
+'*                  must be passed as numerics.
+'*
+'*                  Example:
+'*                      BuildTagByArray( "Tag1", 2, "Tag3", "4", "Tag5", 6 )
+'*                      will build "Tag1[2].Tag3.4.Tag5[6]"
+'*
+'* INPUTS:          SubTag()
+'*                      array containing multiple subtags
+'*
+'* OUTPUTS:         complete 'tag' built from the SubTag array
+'*
+'* FUNCTION CALLS:  none
+'*
+'* AUTHOR:          Brian Lucas
+'*
+'* DATE CREATED:    March 11, 1998
+'*
+'* REVISION HISTORY
+'*
+'* DATE      REVISED BY  SIR #  DESCRIPTION OF CHANGE
+'* --------  ----------  -----  -------------------------------------------
+'* 03/11/98  B Lucas            original code.
+'*
+'**************************************************************************
+Public Function BuildTagByArray(ParamArray SubTag()) _
+                                As String
+
+    Dim Curr As Integer
+    Dim UpperBoundary As Integer
+    Dim Tag As String
+    
+    'check formal parameters.  first member of array can not be numeric
+    If Not (IsNumeric(SubTag(Curr))) Then
+    
+        'build first subtag
+        Tag = Tag & SubTag(Curr)
+        Curr = Curr + 1
+        
+        'build remaining subtags
+        UpperBoundary = UBound(SubTag)
+        While (Curr <= UpperBoundary)
+        
+            'if SubTag is numeric, assume it is an array subscript
+            If IsNumeric(SubTag(Curr)) Then
+                Tag = Tag & ".[" & SubTag(Curr) & "]"
+            Else
+                Tag = Tag & "." & SubTag(Curr)
+            End If
+        
+            'increment counter
+            Curr = Curr + 1
+        
+        Wend
+    End If
+    
+    BuildTagByArray = Tag
+        
+End Function
+
+
+'**************************************************************************
+'*
 '* FUNCTION:        BuildTvList()
 '*
 '* DESCRIPTION:     this function is used to build a visual basic linked
@@ -329,19 +413,20 @@ Dim SubStr As String
 Dim Tag As String
 Dim Value As String
 Dim InString() As Byte
-Dim UpperBoundry As Integer
+Dim UpperBoundary As Integer
 
 'init variables
 Curr = 1
 InString() = TvString
-UpperBoundry = UBound(InString)
+UpperBoundary = UBound(InString)
 
 'loop through array boundry
-While (LenB(Left$(InString(), Curr)) < UpperBoundry)
+While (LenB(Left$(InString(), Curr)) < UpperBoundary)
 
     'get length of next tag-value pair
     SubStrLen = InStr(1, Mid$(InString(), Curr), TV_PAIR_SEP)
         
+    'if len is 0, the end of the tvstring has been reached
     If SubStrLen = 0 Then
     
         'last tag value pair
@@ -358,8 +443,10 @@ While (LenB(Left$(InString(), Curr)) < UpperBoundry)
         
     End If
 
-    'parse tag and value from sub string
+    'set position of next tvpair
     StartPosition = InStr(1, SubStr, TV_SEP)
+    
+    'parse tag and value from sub string
     If StartPosition Then
     
         Tag = Left$(SubStr, (StartPosition - 1))
@@ -369,7 +456,6 @@ While (LenB(Left$(InString(), Curr)) < UpperBoundry)
         rc = SetTvPair(Tag, Value)
         
     End If
-        
 Wend
 
 End Function
@@ -420,7 +506,6 @@ Private Function BuildTvString(ByRef InData As String) As Integer
             Set pCurr = pCurr.pNext
         
         Wend
-    
     End If
 
 End Function
@@ -488,47 +573,8 @@ Private Function FindTvPair(ByVal Tag As String, _
                 Set Curr = Curr.pNext
             
             End If
-        
         Wend
-    
     End If
-
-End Function
-
-
-'**************************************************************************
-'*
-'* FUNCTION:        GetAllTvPairs()
-'*
-'* DESCRIPTION:     this function will return a tag-value string representing
-'*                  all nodes contained in the tag-value linked list
-'*
-'* INPUTS:          none
-'*
-'* OUTPUTS:         none
-'*
-'* FUNCTION CALLS:  BuildTvString()
-'*                      builds a tag-value string from a linked list
-'*
-'* AUTHOR:          Brian Lucas
-'*
-'* DATE CREATED:    December 30, 1997
-'*
-'* REVISION HISTORY
-'*
-'* DATE      REVISED BY  SIR #  DESCRIPTION OF CHANGE
-'* --------  ----------  -----  -------------------------------------------
-'* 01/05/97  B Lucas            original code.
-'*
-'**************************************************************************
-Public Function GetAllTvPairs() As Variant
-
-    Dim TvString As String
-    Dim rc As Integer
-    
-    rc = BuildTvString(TvString)
-    
-    GetAllTvPairs = TvString
 
 End Function
 
@@ -570,10 +616,49 @@ Public Function GetTvPair(ByVal Tag As String) As Variant
     
     If Not (pCurr Is Nothing) Then
     
-        'return value associtated with given tag
+        'return value associated with given tag
         GetTvPair = pCurr.Value
             
     End If
+
+End Function
+
+
+'**************************************************************************
+'*
+'* FUNCTION:        GetTvPairAll()
+'*
+'* DESCRIPTION:     this function will return a tag-value string representing
+'*                  all nodes contained in the tag-value linked list
+'*
+'* INPUTS:          none
+'*
+'* OUTPUTS:         none
+'*
+'* FUNCTION CALLS:  BuildTvString()
+'*                      builds a tag-value string from a linked list
+'*
+'* AUTHOR:          Brian Lucas
+'*
+'* DATE CREATED:    December 30, 1997
+'*
+'* REVISION HISTORY
+'*
+'* DATE      REVISED BY  SIR #  DESCRIPTION OF CHANGE
+'* --------  ----------  -----  -------------------------------------------
+'* 01/05/97  B Lucas            original code.
+'*
+'**************************************************************************
+Public Function GetTvPairAll() As Variant
+
+    Dim TvString As String
+    Dim rc As Integer
+    
+    'build tvstring
+    rc = BuildTvString(TvString)
+    
+    'return tvstring
+    GetTvPairAll = TvString
 
 End Function
 
@@ -608,33 +693,31 @@ Public Function GetTvPairByIndex(ByVal Index As Integer) As Variant
     Dim i As Integer
     Dim rc As Integer
     Dim pCurr As clsTvPair
-    
-    'start with 1st tvpair
-    i = 1
        
-    'check for tvlist and verify index exists
-    If (Not (TvList.pHead Is Nothing)) And _
-       (Index <= TvList.NumTvPair) And _
-       (Index > 0) Then
-    
-        'start at head of list
-        Set pCurr = TvList.pHead
-    
-        'move to index
-        While (i < Index) And (Not (pCurr Is Nothing))
+    'check for list
+    If Not (TvList Is Nothing) Then
+       
+        'check for tvlist and verify index exists
+        If (Not (TvList.pHead Is Nothing)) And _
+           (Index <= TvList.NumTvPair) And _
+           (Index > 0) Then
         
-            Set pCurr = pCurr.pNext
-            i = i + 1
+            'start at head of list and 1st tvpair
+            Set pCurr = TvList.pHead
+            i = 1
         
-        Wend
-        
-        'return tvpair associtated with index
-        If Not (pCurr Is Nothing) Then
-        
-            GetTvPairByIndex = pCurr.Tag & TV_SEP & pCurr.Value
+            'move to index
+            While (i < Index) And (Not (pCurr Is Nothing))
+                Set pCurr = pCurr.pNext
+                i = i + 1
+            Wend
+            
+            'return tvpair associated with index
+            If Not (pCurr Is Nothing) Then
+                GetTvPairByIndex = pCurr.Tag & TV_SEP & pCurr.Value
+            End If
             
         End If
-            
     End If
 
 End Function
@@ -718,67 +801,19 @@ End Function
 
 '**************************************************************************
 '*
-'* FUNCTION:        SetArrayTvPair()
-'*
-'* DESCRIPTION:     this function addds a 'tag' and 'value' to the tag-value
-'*                  linked list
-'*
-'* INPUTS:          Tag   ( ByVal )
-'*                      string containing a 'tag'
-'*                  Value ( ByVal )
-'*                      string containing a 'value'
-'*
-'* OUTPUTS:         none
-'*
-'* FUNCTION CALLS:  SetTvPair()
-'*                      adds a node to a tvlist
-'*
-'* AUTHOR:          Brian Lucas
-'*
-'* DATE CREATED:    January 15, 1998
-'*
-'* REVISION HISTORY
-'*
-'* DATE      REVISED BY  SIR #  DESCRIPTION OF CHANGE
-'* --------  ----------  -----  -------------------------------------------
-'* 01/15/98  B Lucas            original code.
-'*
-'**************************************************************************
-Public Function SetArrayTvPair(ByVal ArrayName As String, _
-                               ByVal Subscript As Integer, _
-                               ByVal ElementName As String, _
-                               ByVal Value As Variant) _
-                               As Integer
-
-    Dim rc As Integer
-
-    If Len(ArrayName) > 0 Then
-    
-        If Len(ElementName) = 0 Then
-            rc = SetTvPair(ArrayName, Value)
-        Else
-            rc = SetTvPair((ArrayName & "[" & _
-                            Subscript & "]." & _
-                            ElementName), _
-                            Value)
-        End If
-
-    End If
-    
-End Function
-
-
-'**************************************************************************
-'*
 '* FUNCTION:        SendMsg()
 '*
 '* DESCRIPTION:     this function is used to send and receive transactions
-'*                  from the ags
+'*                  from the ags.
 '*
 '*                  SendMsg first calls BuildTvString to build the input
 '*                  tag-value string from the linked list.  next,
 '*                  AGSSendData and AGSRecvData are used to handle the
 '*                  inter-process communication with the AGS.
+'*
+'*                  there are detailed comments in the code for AGSSendData
+'*                  and AGSRecvData that can answer specific question about
+'*                  their functionality and parameters.
 '*
 '* INPUTS:          AgsTxID      ( ByVal )
 '*                      ags transaction id
@@ -791,7 +826,7 @@ End Function
 '*                  ForceCall    ( ByVal )
 '*                      bypass any cached data
 '*                  ForceCache   ( ByVal )
-'*                      force the trasaction to be cached
+'*                      force the transaction to be cached
 '*
 '* OUTPUTS:         none
 '*
@@ -881,7 +916,7 @@ End Function
 '*
 '* FUNCTION:        SetTvPair()
 '*
-'* DESCRIPTION:     this function addds a 'tag' and 'value' to the tag-value
+'* DESCRIPTION:     this function adds a 'tag' and 'value' to the tag-value
 '*                  linked list
 '*
 '* INPUTS:          Tag   ( ByVal )
@@ -917,9 +952,7 @@ Public Function SetTvPair(ByVal Tag As String, _
     
         ' check if tvlist has been created
         If TvList Is Nothing Then
-        
             rc = InitTvList
-        
         End If
     
         'search for existing tvpair
@@ -957,7 +990,3 @@ Public Function SetTvPair(ByVal Tag As String, _
     End If
 
 End Function
-
-
-
-

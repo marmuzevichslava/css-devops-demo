@@ -348,6 +348,9 @@ Private Sub cmdSubmit_Click()
     Dim ForceCache As Boolean
     Dim StartTime As Long
     Dim i As Integer
+    Dim AGSIFO As AGSIFO
+    
+    Set AGSIFO = New AGSIFO
     
     StartTime = GetTickCount()
     
@@ -356,24 +359,33 @@ Private Sub cmdSubmit_Click()
     Me.cmdSubmit.Enabled = False
     Me.lstOutput.Clear
     
-    rc = InitTvList()
+    'rc = AGSIFO.InitTvList()
     'rc = InitTcpPipe("c1proxyhost", _
     '                 "c1proxy", 5)
-    rc = SetTvPair(Me.txtTag1, _
+    rc = AGSIFO.SetTvPair(AGSIFO.BuildTagByArray("Value", _
+                                                 5, _
+                                                 "Tag1", _
+                                                 1, _
+                                                 "Tag2", _
+                                                 "Tag3", _
+                                                 3), _
+                          "Value1")
+                                                 
+    rc = AGSIFO.SetTvPair(Me.txtTag1, _
                    Me.TxtValue1)
-    rc = SetTvPair(Me.txtTag2, _
+    rc = AGSIFO.SetTvPair(Me.txtTag2, _
                    Me.TxtValue2)
-    rc = SetTvPair(Me.txtTag3, _
+    rc = AGSIFO.SetTvPair(Me.txtTag3, _
                    Me.TxtValue3)
-    rc = SetTvPair(Me.txtTag4, _
+    rc = AGSIFO.SetTvPair(Me.txtTag4, _
                    Me.TxtValue4)
-    rc = SetTvPair(Me.txtTag5, _
+    rc = AGSIFO.SetTvPair(Me.txtTag5, _
                    Me.TxtValue5)
     
     ForceCall = Me.cmbForceCall
     ForceCache = Me.cmbForceCache
     
-    Me.txtRC = SendMsg(0, _
+    Me.txtRC = AGSIFO.SendMsg(0, _
                        Me.txtTxID, _
                        Me.txtTxVer, _
                        Me.txtCacheTimeLen, _
@@ -382,11 +394,11 @@ Private Sub cmdSubmit_Click()
 
     Me.txtElapTime = Format((GetTickCount - StartTime) / 1000, "0.000")
     
-    For i = 1 To NumTvPair
-        Me.lstOutput.AddItem ("   " & GetTvPairByIndex(i))
+    For i = 1 To AGSIFO.NumTvPair
+        Me.lstOutput.AddItem ("   " & AGSIFO.GetTvPairByIndex(i))
     Next i
     
-    Me.TxtNumTvPairs = NumTvPair
+    Me.TxtNumTvPairs = AGSIFO.NumTvPair
     
     Me.cmdSubmit.Enabled = True
     cmdSubmit.SetFocus
@@ -398,6 +410,7 @@ Private Sub Form_Load()
     Call mnuCustomerRetrieval_Click
 
 End Sub
+
 
 Private Sub mnuCodesTable_Click()
 
@@ -451,7 +464,7 @@ End Sub
 
 Private Sub mnuExit_Click()
 
-    End
+    'End
     
 End Sub
 

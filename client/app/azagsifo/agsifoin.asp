@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type"
 content="text/html; charset=iso-8859-1">
 <meta name="GENERATOR" content="Microsoft FrontPage 2.0">
-<title>AGS Interface Object Stub</title>
+<title>AGS IFO Input page</title>
 <base target="footnotes">
 </head>
 

@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '*
 '*  CLASS NAME       : clsTvPair
 '*
-'*  DESCRIPTION      : clsTvPair...
+'*  DESCRIPTION      : clsTvPair is used to represent a 'node' on clsTvList
 '*
 '*  PROPERTIES       : none
 '*
