@@ -590,6 +590,7 @@ Public Sub RefreshCodeDecodeLB()
     End If
     
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
+    frmMain.Refresh
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
     If Not DaoRS.EOF Then
@@ -634,16 +635,13 @@ Public Sub RefreshCodeDecodeLB()
                 KeyCntr = KeyCntr + 1
                 DaoRS.MoveNext
         Wend
-    
-        DaoRS.Close
-        frmMain.sbStatusBar.Panels(1).Text = " "
         
-        'Update the total number of keys.
-        frmMain.txtTotalKeys.Text = KeyCntr
-        frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
-    Else
-        frmMain.txtTotalKeys.Text = 0
     End If
+    
+    frmMain.sbStatusBar.Panels(1).Text = " "
+    frmMain.txtTotalKeys.Text = KeyCntr
+    
+    DaoRS.Close
     
 Exit Sub
 

@@ -861,7 +861,6 @@ Public Function ModifyRecord() As Boolean
     'Make sure that there is at least a space within each text field.
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     
-'add logic to format decode text
 '    hDecode = CheckForSpecialChars(txtDecode.Text)
     
     'Put together the base update SQL
@@ -917,7 +916,6 @@ Public Function ModifyRecord() As Boolean
         CurKey = txtKey.Text
         ModifyRecord = True
     Else
-    
         wsCTM.Rollback
         ModifyRecord = False
     End If

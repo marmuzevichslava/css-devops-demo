@@ -245,7 +245,7 @@ Private Sub Form_Load()
     txtFinalStatus.Caption = "A total of " & ImportCntr & " records were successfully modified. " & _
                              "The following " & UBound(ImportErrArray) & " record(s) failed during processing:"
     
-    
+    If UBound(ImportErrArray) = 0 Then cmdPrint.Enabled = False
     
     lvErrorList.ColumnHeaders.Add , , "Table", 800, 0
     lvErrorList.ColumnHeaders.Add , , "Key", 800, 0

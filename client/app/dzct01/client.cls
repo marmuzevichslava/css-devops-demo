@@ -22,26 +22,29 @@ Property Let Code(C)
             
     If Not DaoRS.EOF Then
         sDecode = DaoRS(0)
-        DaoRS.Close
     Else
         sDecode = SQL_NOT_FOUND
     End If
+
+    DaoRS.Close
 
 End Property
 
 
 Property Let Decode(D)
     sDecode = D
+    
     mysql = "select Code From tblClients where Client = " & Chr(34) & sDecode & Chr(34)
                 
     Set DaoRS = dbCTM.OpenRecordset(mysql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             
     If Not DaoRS.EOF Then
         iCode = DaoRS(0)
-        DaoRS.Close
     Else
         iCode = SQL_NOT_FOUND
     End If
+
+    DaoRS.Close
 
 End Property
 

@@ -21,10 +21,11 @@ Property Let Code(C)
             
     If Not DaoRS.EOF Then
         sDecode = DaoRS(0)
-        DaoRS.Close
     Else
         sDecode = SQL_NOT_FOUND
     End If
+
+    DaoRS.Close
 
 End Property
 
@@ -38,10 +39,11 @@ Property Let Decode(D)
             
     If Not DaoRS.EOF Then
         iCode = DaoRS(0)
-        DaoRS.Close
     Else
         iCode = SQL_NOT_FOUND
     End If
+
+    DaoRS.Close
 
 End Property
 

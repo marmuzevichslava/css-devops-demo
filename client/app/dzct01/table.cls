@@ -15,18 +15,18 @@ Private sqlstr As String
 Property Let Name(N)
     sTableName = N
     
-    sqlstr = "SELECT DISTINCTROW tblTables.TableType" _
-             & " FROM tblTables" _
-             & " WHERE (((tblTables.TableName)= " & Chr(34) & sTableName & Chr(34) & "));"
+    sqlstr = "SELECT TableType FROM tblTables " & _
+             " WHERE TableName = " & Chr(34) & sTableName & Chr(34) & ";"
     
-        Set DaoRS = dbCTM.OpenRecordset(sqlstr, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    Set DaoRS = dbCTM.OpenRecordset(sqlstr, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             
     If Not DaoRS.EOF Then
         iTableType = DaoRS(0)
-        DaoRS.Close
     Else
         iTableType = SQL_NOT_FOUND
     End If
+
+    DaoRS.Close
 
 End Property
 
