@@ -1,0 +1,1114 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  <CUffnnn>.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**                     <List Functions here>
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+//#define CMN_SUCCESS 0
+//#define PERF 0
+
+#include <azpm0400.h>
+#include <C1CBASE.H> 
+#include <C1CERROR.H>
+#include <time.h>
+#include <cu1040am.h>
+#include <cu1040bm.h>
+#include <cu1040cm.h>
+
+/* Global Data Structures */
+
+  SHORT              LbRowCounter = 0;
+ _PMFUIDPASS         PmfData;
+
+/* Application # Defines */
+#define APPL_ID 1000
+#define SRVC_ID 1000
+#define SRVC_VER "01"
+#define MAP_NAME "CU1040AM"
+#define MAP_VER "01"
+
+/*
+ * Function Prototypes
+*/
+
+SHORT SlamReportError( CHAR *FileName,
+                      SHORT Severity,
+                      SHORT ErrorNumber,
+                      CHAR *FunctionName,
+                      CHAR *ErrorText );
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusControlEvent
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( Dzsm001buspredisplay )
+{
+    SHORT FndGenRC    = CMN_SUCCESS;
+	LONG  ErrNum      = 0,
+	      ComputerNameLength = MAX_COMPUTERNAME_LENGTH + 1;
+	CHAR ComputerName[ MAX_COMPUTERNAME_LENGTH + 1 ] = "";
+	_FND_ERROR_BLOCK     ErrorBlock;
+
+/* Read OT Number & LanID from PMF for Population in Fields */
+
+	/* Initialize the Pmf data structure */
+	memset( &PmfData, 0, sizeof( _PMFUIDPASS ));
+
+    /* Retrieve LanId, OT Number, and Password */
+    FndGenRC = PmfGetUidPass( NULL, &PmfData, &ErrNum );
+
+/* Read PC Name for Population in WES Map */
+    GetComputerName( ComputerName, 
+ 				     &ComputerNameLength );
+
+    strcpy ( PcNameData, ComputerName);
+	strncpy( OTNumberData, PmfData.OTNumber, PMF_OTNUM_LEN );
+	strncpy( LanIdData, PmfData.LanID, PMF_LANID_LEN );
+
+/* Make Find the Default Pushbutton */
+
+    FndGenRC = FndCommandSetDefaultButton (CBI_hwnd,
+										   "GetPB",
+										   &ErrorBlock);
+
+/* Change the Title to Client Performance Monitor (req by DSH) */
+
+	FndGenRC = FndWindowSetText (CBI_hwnd,
+								  "Client Performance Monitor",
+								  &ErrorBlock);
+
+return FndGenRC;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusControlEvent
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( Dzsm001findpbclick )
+{
+   SHORT FndGenRC    = CMN_SUCCESS,
+	     OsSignalRC  = CMN_SUCCESS,
+		 i           = 0;
+	CMN_HMEM          hAccumRecord;
+	HANDLE            Signal;
+	_ACCUMULATION_RECORD *pAccumRecord;
+	_CMNINT3DATE         Date;
+	_Dev00600SmAccumulationRecordRow RowData;
+	_FND_ERROR_BLOCK     ErrorBlock;
+    SYSTEMTIME  SystemTime;
+	char                 TempHour[3];
+	char                 TempMinute[3];
+	SHORT                SelectedButton;
+	int                  NotDone = 1;
+	int                  rowcounter = 0;
+    FILE                *fptr;
+	CHAR                *UpperCaseString;
+    CHAR                 FileInput[64] = "c:\\data\\slapm.dat";
+    CHAR                 Value[300] = "";
+	CHAR                 TimeBuffer[9];
+	CHAR                 DateBuffer[9];
+	CHAR                 TempData[2];
+	CHAR                 DB2DateBuffer[11];
+	_CU1040AMTRANREC    *pSendData = NULL;
+	_CU1040AMTRANREC 	*pReturnData = NULL;
+	_CU1040AMTRANREC    *p1040ai = NULL;
+	_CU1040AMTRANREC 	*p1040ao = NULL;
+	_CU1040BTRANREC		*p1040bi = NULL;
+	_CU1040BTRANREC		*p1040bo = NULL;
+	_CU1040CTRANREC		*p1040ci = NULL;
+	_CU1040CTRANREC     *p1040co = NULL;
+
+	_MSG_PARM_BLOCK         ParmBlock;
+	_ABHI					ABHI;
+
+
+	/* Disable the Window from Input Until Function Exits */
+
+	FndGenRC = FndWindowDisable ( CBI_hwnd,
+								  &ErrorBlock );
+
+
+	/* Get the system (local) time using native NT API */
+  	/* Note: this function returns VOID.               */
+
+
+  	GetLocalTime( &SystemTime );
+
+    memset( &Date, 0, sizeof( _CMNINT3DATE ));
+    Date.year  = SystemTime.wYear;
+    Date.month = SystemTime.wMonth;
+    Date.day   = SystemTime.wDay;
+
+    _strtime (TimeBuffer);
+	memcpy ( TempHour, TimeBuffer, 2 );
+	memcpy ( TempMinute, TimeBuffer + 3, 2 );
+
+/*    itoa ( SystemTime.wHour, TempHour, 10);
+	if (SystemTime.wMinute > 9)
+	{
+    	itoa ( SystemTime.wMinute, TempMinute, 10);
+	}
+	else
+	{
+		strcpy (TempMinute, "0");
+		strcat ( TempMinute, itoa ( SystemTime.wMinute, TempMinute, 10));
+	}
+*/
+   	/* Check to See if Type = Memory, Local, or Remote */
+	if  ( strcmp(QueryTypeData, LT_Memory) == 0 )
+   	{
+
+		if (LbRowCounter > 48)
+		{
+		  //  Clear The Listbox
+        FndGenRC =    FndMsgBoxDisplayText( "List Box Full - All Rows Will Be Deleted",
+                          					"TEST ",
+                           					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01BusFindPBClick",
+                           					&SelectedButton,
+                           					&ErrorBlock);
+
+
+	     FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
+      									  "DEV00600_SM_ACCUMULATION_RECORD",
+										  &ErrorBlock );
+		 // Reset The Counter
+		 LbRowCounter = 0;
+		}
+		else
+		{
+		 LbRowCounter++;
+		}
+   		/* Obtain a Handle to the Name Shared Memory CMN_ACCUMRECORD_MEM_NAME */
+	    FndGenRC = CmnMemGetNamedHandle (CMN_ACCUMRECORD_MEM_NAME,
+    	                                 &hAccumRecord,
+        	                             CMN_NULL_ARCH_PARMS);
+
+	   	if ( FndGenRC == CMN_SUCCESS )
+    	{
+			FndGenRC = CmnMemGetPointer (hAccumRecord, 
+	  			  					     &pAccumRecord,
+	                               		 CMN_NULL_ARCH_PARMS);
+
+		   	if ( FndGenRC == CMN_SUCCESS )
+     		{
+        		/* Wait Until Signal Can Be Set for Initialization using CmnOsSignalSet */
+		 		FndGenRC = CmnOsSignalCreate( "UpdateAccumRecord", FALSE , &Signal );
+
+	   			if (( FndGenRC == CMN_SUCCESS ) || ( FndGenRC == CMN_ERR_OS_ALREADY_EXISTS ))
+	   			{
+					if ( FndGenRC == CMN_ERR_OS_ALREADY_EXISTS )
+	    			{
+		  				OsSignalRC = CMN_FAIL;
+	    			}
+					else
+	    			{
+		  				OsSignalRC = CMN_SUCCESS; 
+	    			}
+
+					/* Go into the while loop if signal already exists */
+					if ( OsSignalRC != CMN_SUCCESS ) 
+					{
+						FndGenRC = CMN_FAIL;
+						OsSignalRC = CmnOsSignalWait( Signal, 100 );
+
+						/* Successful CmnOsSignalWait */
+						if ( OsSignalRC == CMN_SUCCESS )
+						{
+							FndGenRC = CmnOsSignalSet( Signal );
+
+						} /* End of if:  Successful CmnOsSignalWait */
+
+					} /* End of if */
+
+ 				    /* Error from CmnOsSignalSet */
+					if ( FndGenRC != CMN_SUCCESS )
+					{
+			        	FndGenRC =    FndMsgBoxDisplayText( "Could Not Set Signal for Shared Memory - Try Again",
+                         									"TEST ",
+                         					   				CBI_hwnd,
+                           									FND_MSGBOX_OK,
+                           									FND_MSGBOX_CRITICAL,
+                           									FND_MSGBOX_OK,
+                           									"DZSM01BusFindPBClick",
+                           									&SelectedButton,
+                           									&ErrorBlock);
+
+						FndGenRC = FndWindowEnable (CBI_hwnd,
+													&ErrorBlock);
+
+			    		return (FndGenRC);
+
+	   				} /* End of if: Error from CmnOsSignalSet */
+
+
+
+     				/* Copy All Data While Signal is Set*/
+					memcpy ( &RowData._Dev00600SmAccumulationRecordSmDateData, 
+							 &Date,
+			            	 sizeof ( _CMNINT3DATE ) );
+					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData, TempHour, 2 );
+					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 2, ":", 1);
+					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 3, TempMinute, 2 );
+					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 5, "\0", 1);
+
+					strncpy( RowData._Dev00600SmAccumulationRecordPcNameData,
+			        		 pAccumRecord->ComputerName, 
+			         		 9 );
+					strncpy( RowData._Dev00600SmAccumulationRecordOTNumberData,
+			        		 pAccumRecord->AZPM02UserInfo.OTNumber,
+			         		 PMF_OTNUM_LEN );
+					strncpy( RowData._Dev00600SmAccumulationRecordLanIdData,
+			         		 pAccumRecord->AZPM02UserInfo.LanID,
+			         		 PMF_LANID_LEN );
+
+      				RowData._Dev00600SmAccumulationRecordFiveTenthData = 
+      				 		pAccumRecord->WindowDisplay.TimeInterval[0];
+      				RowData._Dev00600SmAccumulationRecordOneData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[1];
+      				RowData._Dev00600SmAccumulationRecordOne_Point_FiveData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[2];
+      				RowData._Dev00600SmAccumulationRecordTwoData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[3];
+      				RowData._Dev00600SmAccumulationRecordTwo_Point_FiveData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[4];
+      				RowData._Dev00600SmAccumulationRecordThreeData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[5];
+      				RowData._Dev00600SmAccumulationRecordThree_Point_FiveData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[6];
+      				RowData._Dev00600SmAccumulationRecordFourData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[7];
+      				RowData._Dev00600SmAccumulationRecordFour_Point_FiveData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[8];
+      				RowData._Dev00600SmAccumulationRecordFiveData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[9];
+      				RowData._Dev00600SmAccumulationRecordOverFiveData = 
+      						pAccumRecord->WindowDisplay.TimeInterval[10];
+      				RowData._Dev00600SmAccumulationRecordUnknownWindowEventData = 
+      						pAccumRecord->WindowDisplayOtherEvent;
+      				RowData._Dev00600SmAccumulationRecordSFiveTenthData = 
+      						pAccumRecord->ServiceCall.TimeInterval[0];
+      				RowData._Dev00600SmAccumulationRecordSOneData = 
+      						pAccumRecord->ServiceCall.TimeInterval[1];
+      				RowData._Dev00600SmAccumulationRecordSOne_Point_FiveData = 
+      						pAccumRecord->ServiceCall.TimeInterval[2];
+      				RowData._Dev00600SmAccumulationRecordSTwoData = 
+      						pAccumRecord->ServiceCall.TimeInterval[3];
+      				RowData._Dev00600SmAccumulationRecordSTwo_Point_FiveData = 
+      						pAccumRecord->ServiceCall.TimeInterval[4];
+      				RowData._Dev00600SmAccumulationRecordSThreeData = 
+      						pAccumRecord->ServiceCall.TimeInterval[5];
+      				RowData._Dev00600SmAccumulationRecordSThree_Point_FiveData = 
+      						pAccumRecord->ServiceCall.TimeInterval[6];
+      				RowData._Dev00600SmAccumulationRecordSFourData = 
+      						pAccumRecord->ServiceCall.TimeInterval[7];
+      				RowData._Dev00600SmAccumulationRecordSFour_Point_FiveData = 
+      						pAccumRecord->ServiceCall.TimeInterval[8];
+      				RowData._Dev00600SmAccumulationRecordSFiveData = 
+      						pAccumRecord->ServiceCall.TimeInterval[9];
+      				RowData._Dev00600SmAccumulationRecordSOverFiveData = 
+      						pAccumRecord->ServiceCall.TimeInterval[10];
+      				RowData._Dev00600SmAccumulationRecordUnknownSvcEventData = 
+      						pAccumRecord->ServiceCallOtherEvent;
+      				RowData._Dev00600SmAccumulationRecordErrorInServiceCallData = 
+      						pAccumRecord->ServiceCallErrors;
+      				RowData._Dev00600SmAccumulationRecordMessageConvErrorsData = 
+      						pAccumRecord->ServiceMsgConvErrors;
+      				RowData._Dev00600SmAccumulationRecordTotalServiceCallsData = 
+      						pAccumRecord->TotalServiceCalls;
+
+					FndGenRC = FndLstBoxRowAdd ( CBI_hwnd,
+			        		                     "DEV00600_SM_ACCUMULATION_RECORD",
+												 FND_LSTBOX_START,
+												 sizeof( _Dev00600SmAccumulationRecordRow ),
+										 		( void * ) &RowData,
+										 		&ErrorBlock );
+
+					FndGenRC = CmnOsSignalClear( Signal );
+
+				} /* End of if:  CreateSignal */
+
+    		} /* End of if:  GetMemPointer */
+
+    	} /* End of if:  GetMemoryHandle */
+
+   	} /* End if  ( strcmp(QueryTypeData, LT_Memory) == 0 ) */
+
+	if  ( strcmp(QueryTypeData, LT_Local) == 0 )
+	{
+//  	Open Local Data File
+    	if (( fptr = fopen( FileInput, "rb" ) ) != NULL )
+      	{
+
+//  Clear The Listbox
+	    	FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
+      										  "DEV00600_SM_ACCUMULATION_RECORD",
+											  &ErrorBlock );
+       
+			while ( NotDone )
+        	{
+        		memset (Value, '\0', 300 );
+          		if ( fgets( Value, 300, fptr )  != NULL )
+		    	{
+					rowcounter++;
+	        		sscanf( Value, "%s %s %s %s %s %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu "   
+			        	    "%hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %d\n", 
+            				DateBuffer,
+            				RowData._Dev00600SmAccumulationRecordSmTimeData,
+            		 		RowData._Dev00600SmAccumulationRecordPcNameData,
+            				RowData._Dev00600SmAccumulationRecordLanIdData,
+            				RowData._Dev00600SmAccumulationRecordOTNumberData,
+            				&RowData._Dev00600SmAccumulationRecordFiveTenthData,
+            				&RowData._Dev00600SmAccumulationRecordOneData,
+            				&RowData._Dev00600SmAccumulationRecordOne_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordTwoData,
+            				&RowData._Dev00600SmAccumulationRecordTwo_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordThreeData,
+            				&RowData._Dev00600SmAccumulationRecordThree_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordFourData,
+            				&RowData._Dev00600SmAccumulationRecordFour_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordFiveData,
+            				&RowData._Dev00600SmAccumulationRecordOverFiveData,
+            				&RowData._Dev00600SmAccumulationRecordUnknownWindowEventData,
+            				&RowData._Dev00600SmAccumulationRecordSFiveTenthData,
+            				&RowData._Dev00600SmAccumulationRecordSOneData,
+            				&RowData._Dev00600SmAccumulationRecordSOne_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordSTwoData,
+            				&RowData._Dev00600SmAccumulationRecordSTwo_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordSThreeData,
+            				&RowData._Dev00600SmAccumulationRecordSThree_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordSFourData,
+            				&RowData._Dev00600SmAccumulationRecordSFour_Point_FiveData,
+            				&RowData._Dev00600SmAccumulationRecordSFiveData,
+            				&RowData._Dev00600SmAccumulationRecordSOverFiveData,
+            				&RowData._Dev00600SmAccumulationRecordUnknownSvcEventData,
+            				&RowData._Dev00600SmAccumulationRecordErrorInServiceCallData,
+            				&RowData._Dev00600SmAccumulationRecordMessageConvErrorsData,
+            				&RowData._Dev00600SmAccumulationRecordTotalServiceCallsData);
+
+						    memset( &Date, 0, sizeof( _CMNINT3DATE ));
+						    memcpy( TempData, DateBuffer, 2);
+							Date.month = atoi( TempData );
+							memcpy ( TempData, DateBuffer + 3, 2);
+							Date.day = atoi( TempData );
+							memcpy( TempData, DateBuffer + 6, 2);
+							Date.year = atoi(TempData);
+
+
+							memcpy ( &RowData._Dev00600SmAccumulationRecordSmDateData, 
+									 &Date,
+			    		        	 sizeof ( _CMNINT3DATE ) );
+
+  					        FndGenRC = FndLstBoxRowAdd ( CBI_hwnd,
+			        		                     "DEV00600_SM_ACCUMULATION_RECORD",
+							   					  FND_LSTBOX_START,
+												  sizeof( _Dev00600SmAccumulationRecordRow ),
+										 		  ( void * ) &RowData,
+										 		  &ErrorBlock );
+
+		    			if (rowcounter > 49)
+			 			{
+			  				NotDone = 0;
+					       	FndGenRC =    FndMsgBoxDisplayText( "All Rows Not Displayed - Initialize C:\\DATA\\SLAPM.DAT",
+                           										"TEST ",
+                        					   					CBI_hwnd,
+                           										FND_MSGBOX_OK,
+                           										FND_MSGBOX_CRITICAL,
+                           										FND_MSGBOX_OK,
+                           										"DZSM01BusFindPBClick",
+                           										&SelectedButton,
+                           										&ErrorBlock);
+			 			}
+                
+                } /* end-if Value != NULL */
+
+		   		else
+		    	{
+		    		NotDone = 0;
+		    	}
+		          
+			} /* end While */
+
+			LbRowCounter = rowcounter;
+			fclose(fptr);
+
+		} /* end-if File Ptr != Null */
+		else
+		{
+        	FndGenRC =    FndMsgBoxDisplayText( "Local Log File Empty",
+           										"TEST ",
+           					   					CBI_hwnd,
+           										FND_MSGBOX_OK,
+           										FND_MSGBOX_CRITICAL,
+           										FND_MSGBOX_OK,
+          										"DZSM01BusFindPBClick",
+           										&SelectedButton,
+           										&ErrorBlock);
+	    	FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
+      										  "DEV00600_SM_ACCUMULATION_RECORD",
+											  &ErrorBlock );
+
+	   } // End of Else - File Pointer = Null
+	} /* End of if:  Local */
+
+	if  ( strcmp(QueryTypeData, LT_Remote) == 0 )
+	{
+
+  	FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
+     							      "DEV00600_SM_ACCUMULATION_RECORD",
+									  &ErrorBlock );
+	rowcounter = 0;
+	FndGenRC = CMN_FAIL;
+    /* malloc's for Send Message Area and Receive Message Area  */
+
+	pSendData = malloc( sizeof( _CU1040AMTRANREC ));
+	pReturnData = malloc( sizeof( _CU1040AMTRANREC ));
+    memset(pSendData, '\0', sizeof(_CU1040AMTRANREC));
+
+	if ((strlen(PcNameData) == 8))
+	   {
+       strncpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
+  	  		     PcNameData, TXPCNAME_LEN);
+       strncpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
+  	  		     PcNameData, TXPCNAME_LEN);
+	   FndGenRC = CMN_SUCCESS;
+	   }
+    else
+	   {
+       strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
+  	  		    "        \0");
+       strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
+  	  		    "99999999\0");
+	   }
+	if (strlen(OTNumberData) > 6) 
+	   {
+		UpperCaseString = _strupr (_strdup (OTNumberData));
+  	    strncpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
+		  	      UpperCaseString, KYUSERID_LEN);
+  	    strncpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
+		  	      UpperCaseString, KYUSERID_LEN);
+	    FndGenRC = CMN_SUCCESS;
+	   }
+	 else 
+	   {
+  	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
+		  	      "        \0");
+  	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
+		  	      "99999999\0");
+	   }
+	 if (strlen(LanIdData) !=0)
+	   {
+  	    strncpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId, 
+  			      LanIdData, TXLANID_LEN);
+  	    strncpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId, 
+  			      LanIdData, TXLANID_LEN);
+		FndGenRC = CMN_SUCCESS;
+	   }
+	  else
+	   {
+  	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId, 
+  			      "        \0");
+  	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId, 
+  			      "99999999\0");
+	   }
+	if (FndGenRC == CMN_SUCCESS)
+	   {
+	     memset(&ParmBlock, '\0', sizeof(_MSG_PARM_BLOCK));
+    	 ParmBlock.src.service_id.appl = 101;
+	     memcpy(ParmBlock.environ, "D1", _ENVIRONMENT_LEN);
+	     memcpy (ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN);
+
+  	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest, 
+  			      "0001-01-01\0");
+  	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest, 
+  			      "9999-12-31\0");
+
+  	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 
+  			      "00:00:01\0");
+  	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 
+  			      "23:59:59\0");
+  
+		/* Initiate a FOUNDATION Message Queue */
+
+	    FndGenRC = MSGInit(&ParmBlock, &ABHI);
+
+		if (FndGenRC != MSGIO_SUCCESS)
+
+	  	{
+		    SlamReportError( "DZSM01",
+    	                      FND_SEVERITY_FATAL,
+        	            	  CMN_ERR_SLAM_CREATE_MUTEX,
+            	              "MsgInit",
+                	          "DZSM01 Cannot Initiate Message Queue" );
+		}
+		else
+		{
+
+	/* Populate Parm Block Fields with Generic LUW Service Call Data */
+
+	     memcpy (ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN);
+	     ParmBlock.commarea.function_code = MSGIO_CONVERSE;
+	     ParmBlock.timeout_interval = MS_DEFAULT_TIMEOUT;
+	     ParmBlock.priority = MSGIO_PRIORITY_NONE;
+	     ParmBlock.request_or_reply = FND_REQUEST_MSG_FLG;
+	     ParmBlock.reply_requested = FND_REPLY_FLG;
+	     ParmBlock.syst_or_appl_msg = FND_APPL_MSG_FLG;
+	     ParmBlock.buffer_size = sizeof (_CU1040AMTRANREC);
+
+		/* Truncate the Outbound Message */
+
+	     ParmBlock.actual_length_send = sizeof (_CU1040AMTRANREC) -
+    	 								sizeof (_CU1040AGALRGRP);
+	     ParmBlock.dest.service_id.appl = APPL_ID;
+	     ParmBlock.dest.service_id.srvc = SRVC_ID;
+	  	 memcpy (ParmBlock.dest.service_id.service_ver, SRVC_VER, _VER_LEN);
+	     ParmBlock.src.language = FND_LANGUAGE_C;
+	     memcpy (ParmBlock.translation.map_name, MAP_NAME, _FND_MAP_NAME_LEN);
+	  	 memcpy (ParmBlock.translation.map_version, MAP_VER, _VER_LEN);
+     	 memcpy( ParmBlock.secur.user_id, PmfData.OTNumber, 8);
+     	 memcpy( ParmBlock.secur.user_pw, PmfData.Password, 8);
+
+		/* Populate Data Send Area with Accumulation Record Totals */
+
+    	 strcpy (pSendData->DatAcsCpg.CdIOModId, "CU1040A ");
+     	 strcpy (pSendData->DatAcsCpg.CdAcsCmd, "F ");
+      	 strcpy (pSendData->DatAcsCpg.CdModTypeId, "CUCG001\n");
+		 strcpy (pSendData->DatAcsCpg.CdRngQal, "GELE\n");
+		 pSendData->DatAcsCpg.QyRowsRequested = 48;
+
+		 /* Produce Beep to Indicate Service Call Issued */
+		 Beep (1200, 20);
+         FndGenRC = MSGConvUI (&ParmBlock, (_MSG_SEND_AREA) pSendData,
+  						      (_MSG_RECV_AREA) pReturnData, &ABHI);
+
+		 if (FndGenRC ==CMN_SUCCESS)
+		 
+		 {
+			NotDone = 1;
+			rowcounter = 0;
+			if (pReturnData->DatAcsCpg.QyALRAclCnt == 0)
+			   {
+					  FndGenRC =    FndMsgBoxDisplayText( "No Data Selected for Query",
+                           									"TEST ",
+                        					   				CBI_hwnd,
+                           									FND_MSGBOX_OK,
+                           									FND_MSGBOX_CRITICAL,
+                           									FND_MSGBOX_OK,
+                           									"DZSM01BusFindPBClick",
+                           									&SelectedButton,
+                           									&ErrorBlock);
+					  NotDone = 0;
+				}
+
+			while ( NotDone )
+        	{
+  	                strcpy ( DB2DateBuffer, pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest);
+			        memset( &Date, 0, sizeof( _CMNINT3DATE ));
+					memcpy( TempData, DB2DateBuffer + 5, 2);
+					Date.month = atoi( TempData );
+					memcpy ( TempData, DB2DateBuffer + 8, 2);
+					Date.day = atoi( TempData );
+					memcpy( TempData, DB2DateBuffer + 2, 2);
+					Date.year = atoi(TempData);
+					memcpy ( &RowData._Dev00600SmAccumulationRecordSmDateData, 
+						     &Date,
+	    		        	 sizeof ( _CMNINT3DATE ) );
+					
+					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData,pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 5 );
+					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 5, "\0", 1);
+
+
+					strncpy( RowData._Dev00600SmAccumulationRecordPcNameData,
+			        		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
+			         		 9 );
+					strncpy( RowData._Dev00600SmAccumulationRecordOTNumberData,
+			        		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId,
+			         		 PMF_OTNUM_LEN );
+					strncpy( RowData._Dev00600SmAccumulationRecordLanIdData,
+			         		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId,
+			         		 PMF_LANID_LEN );
+
+      				RowData._Dev00600SmAccumulationRecordFiveTenthData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFiveTenth;
+      				RowData._Dev00600SmAccumulationRecordOneData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOne;
+      				RowData._Dev00600SmAccumulationRecordOne_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOnePointFive;
+      				RowData._Dev00600SmAccumulationRecordTwoData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyTwo;       
+      				RowData._Dev00600SmAccumulationRecordTwo_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyTwoPointFive;
+      				RowData._Dev00600SmAccumulationRecordThreeData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyThree; 
+      				RowData._Dev00600SmAccumulationRecordThree_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyThreePtFive;
+      				RowData._Dev00600SmAccumulationRecordFourData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFour;     
+      				RowData._Dev00600SmAccumulationRecordFour_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFourPointFive;
+      				RowData._Dev00600SmAccumulationRecordFiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFive;
+      				RowData._Dev00600SmAccumulationRecordOverFiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOverFive;
+      				RowData._Dev00600SmAccumulationRecordUnknownWindowEventData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyUnknWndwEv;
+      				RowData._Dev00600SmAccumulationRecordSFiveTenthData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFiveTenth;
+      				RowData._Dev00600SmAccumulationRecordSOneData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySOne;
+      				RowData._Dev00600SmAccumulationRecordSOne_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySOnePointFive;;
+      				RowData._Dev00600SmAccumulationRecordSTwoData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySTwo;          
+      				RowData._Dev00600SmAccumulationRecordSTwo_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySTwoPointFive;
+      				RowData._Dev00600SmAccumulationRecordSThreeData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySThree;    
+      				RowData._Dev00600SmAccumulationRecordSThree_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySThreePtFive;
+      				RowData._Dev00600SmAccumulationRecordSFourData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFour;
+      				RowData._Dev00600SmAccumulationRecordSFour_Point_FiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFourPtFive;
+      				RowData._Dev00600SmAccumulationRecordSFiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFive;
+      				RowData._Dev00600SmAccumulationRecordSOverFiveData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOverFive;
+      				RowData._Dev00600SmAccumulationRecordUnknownSvcEventData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyUnknSvcEvent;
+      				RowData._Dev00600SmAccumulationRecordErrorInServiceCallData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyErrInSvcCall;
+      				RowData._Dev00600SmAccumulationRecordMessageConvErrorsData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyMsgConvErr;
+      				RowData._Dev00600SmAccumulationRecordTotalServiceCallsData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QtTotSvcCalls;
+
+					FndGenRC = FndLstBoxRowAdd ( CBI_hwnd,
+			        		                     "DEV00600_SM_ACCUMULATION_RECORD",
+												 FND_LSTBOX_START,
+												 sizeof( _Dev00600SmAccumulationRecordRow ),
+										 		( void * ) &RowData,
+										 		&ErrorBlock );
+
+					rowcounter++;
+                    pReturnData->DatAcsCpg.QyALRAclCnt--;
+					if (pReturnData->DatAcsCpg.QyALRAclCnt == 0)
+		          	   {
+		          	   NotDone = 0;
+		          	   }
+
+			} /* end While */
+
+			LbRowCounter = rowcounter;
+
+
+		 } /* End if FndGenRC = CMN_SUCCESS for MSGConvUI*/
+	     else
+	     {
+       	   FndGenRC =    FndMsgBoxDisplayText( "Message Converse Failed - Examine STLOG",
+                           					   "TEST ",
+                           					   CBI_hwnd,
+                           					   FND_MSGBOX_OK,
+                           					   FND_MSGBOX_CRITICAL,
+                           					   FND_MSGBOX_OK,
+                           					   "DZSM01BusFindPBClick",
+                           					   &SelectedButton,
+                           					   &ErrorBlock);
+	     }
+	   } /* End ELSE FndGenRC = CMN_SUCCESS for MSGInit*/
+
+	   } /* End if FndGenRC = CMN_SUCCESS */
+
+	   else
+	   {
+       	FndGenRC =    FndMsgBoxDisplayText( "Search Criteria Validation Failed - Please Re-Enter",
+                           					"TEST ",
+                           					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01BusFindPBClick",
+                           					&SelectedButton,
+                           					&ErrorBlock);
+	   }
+
+	 free (pReturnData);
+	 free (pSendData);
+	}
+
+
+    if (FndGenRC != CMN_SUCCESS)
+    { 
+       	FndGenRC =    FndMsgBoxDisplayText( "Row Insertion Failed",
+                           					"TEST ",
+                           					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01BusFindPBClick",
+                           					&SelectedButton,
+                           					&ErrorBlock);
+
+    }
+//	CMN_UPDATE_ACCUM_RECORD( CPM_WINDOW_STOP_EVENT_TYPE );
+//	CMN_UPDATE_ACCUM_RECORD( CPM_SERVICE_STOP_EVENT );
+//	CMN_UPDATE_ACCUM_RECORD( CPM_SERVICE_STOP_EVENT );
+//	CMN_UPDATE_ACCUM_RECORD( CPM_WINDOW_START_EVENT_TYPE );
+	FndGenRC = FndWindowEnable (CBI_hwnd,
+								&ErrorBlock);
+
+	return( FndGenRC );
+
+} /* End Find PB Click */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusControlEvent
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( Dzsm001resetpbclick )
+{
+	SHORT FndGenRC = CMN_SUCCESS;
+	SHORT SelectedButton;
+	_FND_ERROR_BLOCK  FndGenErrorBlock;
+
+
+
+	FndGenRC = CmnInitializePerfSharedMem( );
+
+//	CMN_UPDATE_ACCUM_RECORD(CPM_TOTAL_SERVICE_CALLS);
+//	CMN_UPDATE_ACCUM_RECORD(CPM_SERVICE_MSG_CONV_ERRORS);
+//	CMN_UPDATE_ACCUM_RECORD(CPM_SERVICE_CALL_ERRORS);
+
+	if ( FndGenRC != CMN_SUCCESS )
+	{
+
+        FndGenRC =    FndMsgBoxDisplayText
+                          ( "Cannot Initialize Accumulation Record Name Shared Memory",
+                            "TEST ",
+                            CBI_hwnd,
+                            FND_MSGBOX_OK,
+                            FND_MSGBOX_CRITICAL,
+                            FND_MSGBOX_OK,
+                            "CmnInitializePerfSharedMem",
+                            &SelectedButton,
+                            &FndGenErrorBlock);
+
+        FndGenRC =    FndClientQuit(&FndGenErrorBlock);
+
+	}
+	return 0;
+}
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM AZPM02
+**
+**  AUTHOR           :  ANDERSEN CONSULTING & FLORIDA POWER CORP.
+**
+**  DESCRIPTION      :  This function formats the appropriate parameters to
+**                      call the FOUNDATION API STLogAndDisplay to log
+**                      error information in KZSTLOG.TXT and in Session
+**                      Transcript.
+**
+**  INPUTS           :  CHAR *FileName    : The name of the file in which
+**                                          the error occurred.
+**
+**                      SHORT Severity    : The severity of the error.
+**
+**                      SHORT ErrorNumber : The error number as listed in
+**                                          c1cerror.h
+**
+**                      CHAR *FunctionName: The name of the function in which
+**                                          the error occurred.
+**
+**                      CHAR *ErrorText   : Free form text describing the
+**                                          error.
+**
+**  OUTPUTS          :  CMN_SUCCESS
+**
+**  AUTHOR           :  ANDERSEN CONSULTING & FLORIDA POWER CORP.
+**
+**  DATE CREATED     :  02/24/94
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY    SIR #    DESCRIPTION OF CHANGE
+**  --------    ----------    -----    ---------------------
+**  02/24/94    JLOONEY                Original Code
+**
+**  03/01/94    JLOONEY                Changed code to handle informational
+**                                     messages.
+************************************************************************/
+SHORT SlamReportError( CHAR *FileName,
+                      SHORT Severity,
+                      SHORT ErrorNumber,
+                      CHAR *FunctionName,
+                      CHAR *ErrorText )
+{
+   USHORT             rc = 0;
+   _FND_STANDARD_PB   ParmBlock;
+   _ST_FMT_DATA_BLOCK FormatDataBlock;
+   _DESCR             UnformatDataBlock;
+   _ABHI              Abhi;
+
+   /* Initialize the local variables */
+   memset( &ParmBlock,         '\0', sizeof( _FND_STANDARD_PB   ));
+   memset( &FormatDataBlock,   '\0', sizeof( _ST_FMT_DATA_BLOCK ));
+   memset( &UnformatDataBlock, '\0', sizeof( _DESCR             ));
+   memset( &Abhi,              '\0', sizeof( _ABHI              ));
+
+   /* Format the Parm Block */
+
+   /* This field is used to distinguish between levels or type of
+    * functions/services provided by FOUNDATION.  Most functions/
+    * services do not use this field because they provide only one
+    * level of service.
+    */
+   ParmBlock.function_code = 0;
+   memcpy( ParmBlock.ver, FND_ST_VER, _VER_LEN );
+
+   /* Message number used to identify the error that occurred. */
+   ParmBlock.status.explan_code = 0;
+
+   /* Severity of any error that occurred within the call. */
+   ParmBlock.status.severity    = Severity;
+
+   /* Additional error code */
+   Abhi.abhi_explanation_code = 0;
+
+   /* Copy Abhi to the FormatDataBlock */
+   memcpy( &( FormatDataBlock.ApplErrorBlock ), &Abhi, sizeof( _ABHI ));
+
+   /* Format the ApplErrorBlock */
+   /* Platform-dependent error number */
+   FormatDataBlock.ApplErrorBlock.FndDepMsgNum = 0;
+
+   /* Type of error that has occurred */
+   if ( Severity > FND_SEVERITY_OK )
+   {
+      FormatDataBlock.ApplErrorBlock.FndErrorTypeCode = FND_ERR_TYPE_APPL;
+   }
+
+   else
+   {
+      FormatDataBlock.ApplErrorBlock.FndErrorTypeCode = FND_ERR_TYPE_INFO;
+
+   }
+
+   /* Type of program where the error occurred */
+   FormatDataBlock.ApplErrorBlock.FndErrorApplType = FND_APPL_TYPE_CLIENT;
+
+   /* Name of the window where the error occurred */
+   /* FND 2.0 is not currently pulling FndWinName from here to display
+    * in Session Transcript even though the ASR FND 2.0 manual says it will.
+    */
+   memcpy( &( FormatDataBlock.ApplErrorBlock.FndWinName ),
+           FileName,
+           _WINDOW_NAME_LEN );
+
+   /* Populating this field to have the window name displayed in
+    * Session Transcript.  FND 2.0 pulls the name from here and not from
+    * FndWinName.
+    */
+   memcpy( &( FormatDataBlock.ApplErrorBlock.abhi_filler ),
+           FileName,
+           _ABHI_FILLER_LENGTH );
+
+
+   /* Severity can be any one of the following:
+    *           FND_SEVERITY_OK        0
+    *           FND_SEVERITY_WARNING   4
+    *           FND_SEVERITY_ERROR     8
+    *           FND_SEVERITY_FATAL     16
+    */
+   FormatDataBlock.ApplErrorBlock.FndSevereErrorCode = Severity;
+
+   /* Error message number */
+   FormatDataBlock.ApplErrorBlock.FndErrorMsgNum = ErrorNumber;
+
+   /* Program ID */
+   memcpy( FormatDataBlock.ApplErrorBlock.FndPgmID, "DZSM01", _PROG_NAME_LEN );
+   memcpy( FormatDataBlock.ApplErrorBlock.FndLoadImageName,
+           "DZSM01",
+           _PROG_NAME_LEN );
+
+   /* Name of function where error occurred */
+   memcpy( FormatDataBlock.ApplErrorBlock.FndErrorTagData,
+           FunctionName,
+           _ERROR_TAG_DATA_LEN );
+
+   FormatDataBlock.SendTimeStamp = 0;
+
+   /* Format the description */
+   if ( ErrorText != NULL )
+   {
+      UnformatDataBlock.desc_length  = 100;
+      UnformatDataBlock.data_pointer = ErrorText;
+   }
+
+   else /* No description */
+   {
+      UnformatDataBlock.desc_length  = 0;
+      UnformatDataBlock.data_pointer = ErrorText;
+   }
+
+   rc = STLogAndDisplay( &ParmBlock,
+                         &Abhi,
+                         &FormatDataBlock,
+                         UnformatDataBlock );
+
+   return CMN_SUCCESS;
+
+} /* end of SlamReportError */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusApplicationDefined
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : Parameter1 - description
+**
+**                     Parameter2 - description
+**
+**                     ParameterN - description
+**
+**                     CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+//SHORT CUffnnnBusApplicationDefined( TYPE Parameter1,
+//                                    TYPE Parameter2,
+//                                    TYPE ParameterN,
+//                                    CMN_ARCH_PARM_TYPES)
+//{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Business logic
+  //  function.  This shell is used for application-
+  //  defined functions, rather than RAB-specified
+  //  functions.
+  //
+  //  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUffnnn>Bus<Application-DefinedName>
+  //
+  //  Then, add business logic as required.
+  //
+  //  Note: Place forward declaration for this function
+  //  in the windowname.h file.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //  USHORT FndGenRC = 0;
+
+  //  Place Application Business Logic here
+
+  //  return CMN_SUCCESS;
+//}

@@ -1,0 +1,201 @@
+/***************************************************************************
+ *                                                                         *
+ *       C   O S / 2   W I N D O W   A P P L I C A T I O N   L O G I C     *
+ *                                                                         *
+ *              Copyright (C) 1994, Andersen Consulting.                   *
+ *                        All rights reserved.                             *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: DZSM001                           *
+ *                         Generated on: Wed Jan 18 11:43:32 1995          *
+ *                                   by: ABURDEN                           *
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Hhongvvh3112_Predisplay
+ * 
+ *
+ *
+ *   Event Name:    PREDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hhongvvh3112_Predisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "LanId",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "OTNumber",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "PcName",
+                             &FndGenErrorBlock);
+
+FndGenRC = Dzsm001buspredisplay( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Hhongvvh8119_Field_Change
+ * 
+ *   WidgetName:    QUERY_TYPE
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hhongvvh8119_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+char                     spaces[9] = "\0";
+
+
+if ( ( strcmp(QueryTypeData, LT_Memory) == 0 ) || ( strcmp(QueryTypeData, LT_Local) == 0 ) )
+   {
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "LanId",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "OTNumber",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "PcName",
+                             &FndGenErrorBlock);
+
+   FndGenRC = Dzsm001buspredisplay( pEventInfo,
+                                    pEAIA,
+                                    pBFCD,
+                                    pWesMap,
+                          			pWindContextData,
+                           			pABHI);
+
+
+   }
+else
+   {
+
+   FndGenRC = FndFieldSetValue(CBI_hwnd,
+   							   "LanId",
+							   9,
+							   &spaces,
+							   &FndGenErrorBlock);
+
+   FndGenRC = FndFieldSetValue(CBI_hwnd,
+   							   "OTNumber",
+							   9,
+							   &spaces,
+							   &FndGenErrorBlock);
+
+   FndGenRC = FndFieldSetValue(CBI_hwnd,
+   							   "PcName",
+							   9,
+							   &spaces,
+							   &FndGenErrorBlock);
+
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "LanId",
+                            &FndGenErrorBlock);
+  
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "OTNumber",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldSetCursor(CBI_hwnd,
+   								"PcName",
+								CUR_MAKECURRENT,
+								&FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "PcName",
+                            &FndGenErrorBlock);
+  
+   } /* end if */
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Hhongvvh2535_Click
+ * 
+ *   WidgetName:    ClearAllPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hhongvvh2535_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+
+FndGenRC = Dzsm001resetpbclick( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Hhongvvh1405_Click
+ * 
+ *   WidgetName:    GetPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Hhongvvh1405_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+
+FndGenRC = Dzsm001findpbclick( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+

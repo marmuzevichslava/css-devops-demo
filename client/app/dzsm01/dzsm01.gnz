@@ -1,0 +1,21 @@
+/***************************************************************************
+ *                                                                         *
+ *             C   O S /2    W I N D O W   I D E N T I F I E R S           *
+ *                                                                         *
+ *                 Copyright (C) 1994 Andersen Consulting.                 *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *               Window Identifiers for: DZSM01                            *
+ *                         Generated on: Mon Jan 16 14:01:47 1995          *
+ *                                   by: ABURDEN                           *
+ *                                                                         *
+ ***************************************************************************/
+#define DZSM001ID                501
+#define DZSM001MenuID                501
+#define DZSM001IconID                501
+#define DZSM001AccelID               501
+#define DZSM001WctID                 501
+
+

@@ -1,0 +1,146 @@
+/***************************************************************************
+**
+**               Customer Service System Validation Logic Module
+**
+** FILENAME         :  CUffnnn.VLD
+**
+** DESCRIPTION      :  Validation Logic functions for window CUffnnnX,
+**                     includes:
+**
+**                     <List Functions here>
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+
+
+/***************************************************************************
+**
+**               Customer Service System Validation Logic Function
+**
+**  FUNCTION         : CUffnnnVldControlEvent
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+//WCBPROC( CUffnnnVldControlEvent )
+//{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Validation logic
+  //  function.  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUffnnn>Vld<ControlName><Event>
+  //
+  //  Then, add validation logic as required.
+  //
+  //  Note that for window-level events, the ControlName
+  //  will be omitted from the function name.
+  //
+  //  Note: Place forward declaration for this function
+  //  in the windowname.h file.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //  USHORT FndGenRC = 0;
+
+  //  Place Application Validation Logic here
+
+  //  return CMN_SUCCESS;
+//}
+
+
+/***************************************************************************
+**
+**               Customer Service System Validation Logic Function
+**
+**  FUNCTION         : CUffnnnVldApplicationDefined
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : Parameter1 - description
+**
+**                     Parameter2 - description
+**
+**                     ParameterN - description
+**
+**                     CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+//SHORT CUffnnnVldApplicationDefined( TYPE Parameter1,
+//                                    TYPE Parameter2,
+//                                    TYPE ParameterN,
+//                                    CMN_ARCH_PARM_TYPES)
+//{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Application Validation logic
+  //  function.  This shell is used for application-
+  //  defined functions, rather than RAB-specified
+  //  functions.
+  //
+  //  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUffnnn>Val<Application-DefinedName>
+  //
+  //  Then, add validation logic as required.
+  //
+  //  Note: Place forward declaration for this function
+  //  in the windowname.h file.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //  USHORT FndGenRC = 0;
+
+  //  Place Application Validation Logic here
+
+  //  return CMN_SUCCESS;
+//}
