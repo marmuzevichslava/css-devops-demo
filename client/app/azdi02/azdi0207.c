@@ -16,8 +16,15 @@
 **
 **  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 **  --------    ----------  ------  ---------------------------------------
-*************************************************************************/
-
+**                                  original code
+** 08/11/97     B Lucas             Added 
+**                                      Win95InitToolhelp32 function
+**                                      Win95GetRunningProcess function
+**                                  Modified 
+**                                      GetActiveProcs to check OS.
+**                                      If Win95, call above Win95 function
+**                                  
+************************************************************************/
 
 #include <windows.h>
 #include <stdio.h>
@@ -25,26 +32,297 @@
 #include "AZDI02.h"
 #include "azdi0207.h"
 
+/***************************************************************************
+**
+**               Customer Service System Utility Function
+**
+**  FUNCTION         : CompareProcNames 
+**
+**  DESCRIPTION      : This function defines how qsort should sort the 
+**                     processes in GetActiveProcs().
+**
+**
+**  INPUTS           : 
+**
+**  OUTPUTS          : 
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**                                  original code
+**
+***************************************************************************/
 int CompareProcNames( const _ACTIVEPROCS_DTL *pDtl1, const _ACTIVEPROCS_DTL *pDtl2 )
 {
   return stricmp( pDtl1->ActiveProcess, pDtl2->ActiveProcess );
 }
 
-/********************************************************
-*														
-*  GetActiveProcs											
-*														
-*      						
-*														
-********************************************************/
-short GetActiveProcs   ( _ACTIVEPROCS_HDR *pActiveProcsHdr ) 
-{
-  GetPerfIndex ();
-  GetProcessList (gpProcessObject, pActiveProcsHdr);
+/***************************************************************************
+**
+**               Customer Service System Utility Function
+**
+**  FUNCTION         : Win95InitToolhelp32 - Win95 Only
+**
+**  DESCRIPTION      : Function that initializes tool help functions.
+**
+**
+**  INPUTS           : NONE
+**
+**  OUTPUTS          : Return Code - BOOL (Success: TRUE or FALSE).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : MEVANS
+**
+**  DATE CREATED     : 04/28/97
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  04/28/97  MEVANS                Original code - based on Tools Help
+**                                  API sample code.
+**
+***************************************************************************/
+BOOL Win95InitToolhelp32( VOID ) 
+{ 
+    BOOL   ReturnCode  = FALSE; 
+    HANDLE Kernel      = NULL; 
+ 
+    /* Obtain the module handle of the kernel to retrieve addresses of 
+    ** the tool helper functions. 
+    */
+    Kernel = GetModuleHandle("KERNEL32.DLL"); 
+ 
+    if( Kernel )
+    { 
+        pCreateToolhelp32Snapshot = 
+            (CREATESNAPSHOT)GetProcAddress(Kernel, 
+            "CreateToolhelp32Snapshot"); 
+  
+        pProcess32First = (PROCESSWALK)GetProcAddress(Kernel, "Process32First"); 
+        pProcess32Next  = (PROCESSWALK)GetProcAddress(Kernel, "Process32Next"); 
+ 
+        /* All addresses must be non-NULL to be successful.  If one of 
+        ** these addresses is NULL, one of the needed lists cannot be walked. 
+        */
+        ReturnCode = pProcess32First && 
+					 pProcess32Next  &&  
+                     pCreateToolhelp32Snapshot; 
+    } 
+    /* Could not get the module handle of kernel*/
+    else 
+    {
+        ReturnCode = FALSE;  
+    }
+ 
+    return ReturnCode; 
 
-  qsort( pActiveProcsHdr->ActiveProcsDtl, pActiveProcsHdr->CmnHdrInfo.DtlCount,
-         sizeof( pActiveProcsHdr->ActiveProcsDtl[0].ActiveProcess),
-		 CompareProcNames );
+} /* End Win95InitToolhelp32() */
+
+/***************************************************************************
+**
+**               Customer Service System Utility Function
+**
+**  FUNCTION         : Win95GetRunningProcess - Win95 Only
+**
+**  DESCRIPTION      : The following function takes a snapshot of the 
+**                     currently executing processes in the system and walks 
+**                     through the list recorded in the snapshot
+**
+**                     Snapshots are at the core of the tool help functions. 
+**                     A snapshot is a read-only copy of the current state of 
+**                     one or more of the following lists that reside in 
+**                     system memory: processes, threads, modules, and heaps. 
+**                     
+**                     Processes that use tool help functions access these 
+**                     lists from snapshots instead of directly from the 
+**                     operating system. The lists in system memory change 
+**                     when processes are started and ended, threads are 
+**                     created and destroyed, executable modules are loaded 
+**                     and unloaded from system memory, and heaps are created 
+**                     and destroyed. The use of information from a snapshot 
+**                     prevents inconsistencies. Otherwise, changes to a list 
+**                     could possibly cause a thread to incorrectly traverse 
+**                     the list or cause an access violation (a GP fault). 
+**                     For example, if an application traverses the thread 
+**                     list while other threads are created or terminated, 
+**                     information that the application is using to traverse 
+**                     the thread list might become outdated and could cause 
+**                     an error for the application traversing the list.
+**
+**                     A snapshot that includes the process list contains 
+**                     information about each currently executing process. 
+**                     You can retrieve information for the first process in 
+**                     the list by using the Process32First function. After 
+**                     retrieving the first process in the list, you can 
+**                     traverse the process list for subsequent entries by 
+**                     using the Process32Next function. Process32First and 
+**                     Process32Next fill a PROCESSENTRY32 structure with 
+**                     information about a process in the snapshot. 
+**
+**  INPUTS           : NONE
+**
+**  OUTPUTS          : Return Code - BOOL (Success: TRUE or FALSE).
+**                       TRUE  = Walked the process list and retrieved 
+**                               information about the associated module 
+**                       FALSE = it could not walk the process list or 
+**                               the module is not found in the process. 
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : B. Lucas
+**
+**  DATE CREATED     : 08/11/97
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  08/11/97  B. Lucas              Original code - based (almost entirely )
+**                                  on code developed by MEVANS
+**
+***************************************************************************/
+BOOL Win95GetRunningProcess ( _ACTIVEPROCS_HDR *pActiveProcsHdr ) 
+{ 
+    HANDLE         Snapshot       = NULL; 
+    BOOL           ReturnCode     = FALSE;
+    PROCESSENTRY32 ProcessEntry32 = {0}; 
+    SHORT          i              = 0; 
+
+    /*  Take a snapshot of all processes currently in the system. */
+    Snapshot = pCreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, 0 ); 
+    if( Snapshot == (HANDLE)-1 ) 
+    {
+        return (FALSE); 
+    }
+ 
+    /*  Fill in the size of the structure before using it. */
+    ProcessEntry32.dwSize = sizeof(PROCESSENTRY32); 
+ 
+    /*  Walk the snapshot of the processes, and for each process, get 
+    **  information to display. 
+    */
+    if( pProcess32First( Snapshot, &ProcessEntry32 )) 
+    { 
+        BOOL GotModule               = FALSE; 
+        MODULEENTRY32 ModuleEntry32  = {0}; 
+		CHAR path_buffer[_MAX_PATH]  = "";
+		CHAR drive      [_MAX_DRIVE] = "";
+		CHAR dir        [_MAX_DIR]   = "";
+		CHAR ext        [_MAX_EXT]   = "";
+		CHAR *pProcessName           = NULL;
+		CHAR *pTail                  = NULL;
+		INT	 i                       = 0;
+		 
+        do 
+        { 
+			/* return the filename to the pActiveProcsHdr structure */
+			_splitpath( ProcessEntry32.szExeFile, 
+				        drive, 
+						dir, 
+						pActiveProcsHdr->ActiveProcsDtl[pActiveProcsHdr->CmnHdrInfo.DtlCount].ActiveProcess, 
+						ext );
+			
+			pActiveProcsHdr->CmnHdrInfo.DtlCount++;
+
+        } 
+        while( pProcess32Next( Snapshot, &ProcessEntry32 )); 
+    } 
+
+    /* Could not walk the list of processes */
+    else 
+    {
+        ReturnCode = FALSE;     
+    }
+
+    /* Do not forget to clean up the snapshot object. */
+    CloseHandle (Snapshot); 
+
+    return (ReturnCode); 
+
+} /* End Win95GetRunningProcess () */
+
+
+/***************************************************************************
+**
+**               Customer Service System Utility Function
+**
+**  FUNCTION         : GetActiveProcs 
+**
+**  DESCRIPTION      : Populates pActiveProcsHdr with a list of active
+**                     processes running on local machine.  depending
+**                     on the operating system (95 or nt) different 
+**                     functions will be called to get the list.
+**
+**
+**  INPUTS           : NONE
+**
+**  OUTPUTS          : Return Code
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**                                  original code.
+**
+**  08/12/97  B. Lucas              added check to operating system type. 
+**                                  if nt, process original code.  if 95
+**                                  call newly added functions to get
+**                                  list of active processes..
+**
+***************************************************************************/
+short GetActiveProcs ( _ACTIVEPROCS_HDR *pActiveProcsHdr )
+{
+	BOOL             FlagGetVersionEx = TRUE; 
+	OSVERSIONINFO    VersionInformation;
+
+	/* bdl 08/12/97
+	** The GetVersionEx function obtains extended information about 
+	** the version of the operating system that is currently running.
+	*/
+	VersionInformation.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
+	FlagGetVersionEx = GetVersionEx( &VersionInformation );
+
+	/* Operating System - Win95 
+	** call win95 specific functions
+	*/
+	if( VersionInformation.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS )
+	{
+        /* Initialize the tool help functions */
+        if( Win95InitToolhelp32() == TRUE)
+        {
+			/* populate ActiveProcsHdr with active process info */
+			Win95GetRunningProcess( pActiveProcsHdr );	
+		}
+	}
+	/* Operating System - Win NT 
+	** process original code
+	*/
+	else if( VersionInformation.dwPlatformId == VER_PLATFORM_WIN32_NT )
+	{
+		GetPerfIndex ();
+		GetProcessList (gpProcessObject, pActiveProcsHdr);
+	}
+		
+	qsort( pActiveProcsHdr->ActiveProcsDtl, pActiveProcsHdr->CmnHdrInfo.DtlCount,
+			   sizeof( pActiveProcsHdr->ActiveProcsDtl[0].ActiveProcess),
+			   CompareProcNames );
 
   return 0;
  }
@@ -130,14 +408,33 @@ INT             InstanceIndex = 0;
 
      }
 }
-
-/********************************************************
-*														*
-*  GetPerfIndex											*
-*														*
-*      Setup the perf data indexes.						*
-*														*
-********************************************************/
+/***************************************************************************
+**
+**               Customer Service System Utility Function
+**
+**  FUNCTION         : GetPerfIndex
+**
+**  DESCRIPTION      : Setup the perf data indexes.
+**
+**
+**  INPUTS           : 
+**
+**  OUTPUTS          : 
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**                                  original code
+**
+***************************************************************************/
 void    GetPerfIndex (void)
 {
 LPTSTR  TitleBuffer;
@@ -172,14 +469,33 @@ DWORD   dwR;
 }
 
 
-/*************************************************************
-*															 *
-*  GetTitleIdx												 *
-*															 *
-*      Searches Titles[] for Name.  Returns the index found. *
-*															 *
-*************************************************************/
-
+/***************************************************************************
+**
+**               Customer Service System Utility Function
+**
+**  FUNCTION         : GetTitleIdx
+**
+**  DESCRIPTION      : Searches Titles[] for Name.  Returns the index found.
+**
+**
+**  INPUTS           : 
+**
+**  OUTPUTS          : 
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**                                  original code
+**
+***************************************************************************/
 DWORD   GetTitleIdx ( LPTSTR Title[], DWORD LastIndex, LPTSTR Name )
 {
 DWORD   Index;
@@ -400,7 +716,6 @@ DWORD   Type;
     return dwR;
 
  }
-
 
 
 /***********************************************************************

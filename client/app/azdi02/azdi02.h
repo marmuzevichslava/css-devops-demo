@@ -34,7 +34,10 @@
 //#include "KSTA0001.H"  
 
 /* PMF Header file */
-#include "pmf.h" 
+#include "pmf.h"
+
+#include <windows.h>
+#include <tlhelp32.h> /* Win95 - needed for tool help declarations */
 
 /*************************************************************************
 **
@@ -70,7 +73,11 @@
 #define 	TRUE			1
 #define 	FALSE			0
 
-
+/* Win95 specific */
+/* Type definitions for pointers to call tool help functions. */
+typedef BOOL (WINAPI *MODULEWALK)(HANDLE hSnapshot, LPMODULEENTRY32 lpme); 
+typedef BOOL (WINAPI *PROCESSWALK)(HANDLE hSnapshot, LPPROCESSENTRY32 lppe); 
+typedef HANDLE (WINAPI *CREATESNAPSHOT)(DWORD dwFlags, DWORD th32ProcessID); 
 
 /*************************************************************************
 **
@@ -262,6 +269,17 @@ typedef struct __ACTIVEPROCS_HDR
   _ACTIVEPROCS_DTL ActiveProcsDtl[100];
 } _ACTIVEPROCS_HDR;
 
+
+/* Win95 specific */
+/* File scope globals. These pointers are declared because of the need 
+** to dynamically link to the functions.  They are exported only by 
+** the Windows 95 kernel. Explicitly linking to them will make this 
+** application unloadable in Microsoft(R) Windows NT(TM) and will 
+** produce an ugly system dialog box. 
+*/
+static CREATESNAPSHOT pCreateToolhelp32Snapshot = NULL; 
+static PROCESSWALK pProcess32First = NULL; 
+static PROCESSWALK pProcess32Next  = NULL; 
 
 /*************************************************************************
 **
