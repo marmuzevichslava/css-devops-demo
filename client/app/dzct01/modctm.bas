@@ -170,9 +170,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.txtKeyLength.Text = ""
     frmMain.txtCenturyDelim.Text = ""
     frmMain.txtTotalKeys = ""
-    frmMain.chkSystem.Value = False
     frmMain.chkStatic.Value = False
-    frmMain.chkCodes.Value = False
         
     frmMain.mnuPrintTable.Enabled = False
     frmMain.mnuDeleteTable.Enabled = False
@@ -228,66 +226,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         frmMain.mnuPrintTable.Enabled = True
         frmMain.mnuGenerate.Enabled = True
     End If
-    
-    'Enable the check boxes.
-    frmMain.chkSystem.Enabled = True
-    frmMain.chkStatic.Enabled = True
-    frmMain.chkCodes.Enabled = True
-        
-    strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
-             "DataLen, KeyLen, SystemUse, StaticTableUse, CodesTableUse, CenturyDelim " & _
-             "from tblTables where TableName = " & Chr(34) & Node.Text & Chr(34)
-        
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-    If Not DaoRS.EOF Then
-    
-        frmMain.famTable.Caption = "Table " & Node.Text & ":"
-        
-        If Not (DaoRS(0).Value = vbNullChar) Then
-            frmMain.sbStatusBar.Panels(1).Text = DaoRS(0)
-        Else
-            frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
-        End If
-                    
-        frmMain.txtDecodeLength.Text = CStr(DaoRS(1).Value)
-            
-        If (IsNull(DaoRS(2).Value)) Then
-            frmMain.txtDecodeDisplacement.Text = " "
-        Else
-            frmMain.txtDecodeDisplacement.Text = CStr(DaoRS(2).Value)
-        End If
-            
-        frmMain.txtDataLength.Text = CStr(DaoRS(3).Value)
-        frmMain.txtKeyLength.Text = CStr(DaoRS(4).Value)
-            
-        If DaoRS(5).Value Then
-            frmMain.chkSystem.Value = 1
-        Else
-            frmMain.chkSystem.Value = 0
-        End If
-            
-        If DaoRS(6).Value Then
-            frmMain.chkStatic.Value = 1
-        Else
-            frmMain.chkStatic.Value = 0
-        End If
-            
-        If DaoRS(7).Value Then
-            frmMain.chkCodes.Value = 1
-        Else
-            frmMain.chkCodes.Value = 0
-        End If
-        
-        If (IsNull(DaoRS(8).Value)) Then
-            frmMain.txtCenturyDelim.Text = ""
-        Else
-            frmMain.txtCenturyDelim.Text = DaoRS(8).Value
-        End If
-        
-        DaoRS.Close
-    End If
-    
+  
     'refresh the screen.
     Screen.MousePointer = vbNormal
     frmMain.Refresh
@@ -513,7 +452,7 @@ Public Sub RefreshCodeDecodeLB()
     On Error GoTo ODBCError
     
     If (CurTableType = CODES_TABLE) Then
-        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.SystemUse, tblEntries.StaticTableUse, tblEntries.CodesTableUse, tblEntries.Comments, tblEntries.Description" _
+        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.SystemUse, tblEntries.Comments, tblEntries.Description" _
                  & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
                  & " WHERE (((tblEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
                  & " ORDER BY tblEntries.Key;"
@@ -527,16 +466,13 @@ Public Sub RefreshCodeDecodeLB()
         frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "SystemUse", 1300, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "StaticTableUse", 1300, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "CodesTableUse", 1300, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Drives System Logic", 1400, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
 
         'UnHide Check boxes
-        frmMain.chkCodes.Visible = True
         frmMain.chkStatic.Visible = True
-        frmMain.chkSystem.Visible = True
+        frmMain.txtStatic.Visible = True
 
     ElseIf (CurTableType = MSG_BOX) Then
         strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
@@ -559,9 +495,8 @@ Public Sub RefreshCodeDecodeLB()
         frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
         
         'Hide Check boxes
-        frmMain.chkCodes.Visible = False
         frmMain.chkStatic.Visible = False
-        frmMain.chkSystem.Visible = False
+        frmMain.txtStatic.Visible = False
 
     Else
         strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
@@ -583,10 +518,9 @@ Public Sub RefreshCodeDecodeLB()
         frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
 
         'Hide Check boxes
-        frmMain.chkCodes.Visible = False
         frmMain.chkStatic.Visible = False
-        frmMain.chkSystem.Visible = False
-
+        frmMain.txtStatic.Visible = False
+        
     End If
     
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
@@ -610,24 +544,46 @@ Public Sub RefreshCodeDecodeLB()
                 itmX.SubItems(4) = DaoRS(4).Value
                 itmX.SubItems(5) = DaoRS(5).Value
                 itmX.SubItems(6) = DaoRS(6).Value
-                itmX.SubItems(7) = DaoRS(7).Value
-                itmX.SubItems(8) = DaoRS(8).Value
-  
-                If (CurTableType <> WES_CODE) Then
                 
+                If (CurTableType = CODES_TABLE) Then
+                
+                    If ((Not DaoRS(7).Value = vbNullChar) And (Not DaoRS(7).Value = "Null")) Then
+                        itmX.SubItems(7) = CStr(DaoRS(7).Value)
+                    Else
+                        itmX.SubItems(7) = " "
+                    End If
+                    
+                    If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
+                        itmX.SubItems(8) = CStr(DaoRS(8).Value)
+                    Else
+                        itmX.SubItems(8) = " "
+                    End If
+                
+                End If
+                
+                If (CurTableType = MSG_BOX) Then
+                
+                    itmX.SubItems(7) = DaoRS(7).Value
+                    itmX.SubItems(8) = DaoRS(8).Value
+                    
                     If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
                         itmX.SubItems(9) = CStr(DaoRS(9).Value)
                     Else
                         itmX.SubItems(9) = " "
                     End If
+                
+                End If
+                
+                If (CurTableType = WES_CODE) Then
+                
+                    itmX.SubItems(7) = DaoRS(7).Value
                     
-                    If (CurTableType = CODES_TABLE) Then
-                        If ((Not DaoRS(10).Value = vbNullChar) And (Not DaoRS(10).Value = "Null")) Then
-                            itmX.SubItems(10) = CStr(DaoRS(10).Value)
-                        Else
-                            itmX.SubItems(10) = " "
-                        End If
+                    If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
+                        itmX.SubItems(8) = CStr(DaoRS(8).Value)
+                    Else
+                        itmX.SubItems(8) = " "
                     End If
+                
                 End If
                 
                 frmMain.sbStatusBar.Refresh
@@ -642,6 +598,51 @@ Public Sub RefreshCodeDecodeLB()
     frmMain.txtTotalKeys.Text = KeyCntr
     
     DaoRS.Close
+    
+    'Reset the status bar and current table group box with current table information
+    
+    strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
+             "DataLen, KeyLen, StaticTableUse, CenturyDelim " & _
+             "from tblTables where TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
+        
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+    
+        frmMain.famTable.Caption = "Table " & frmMain.tvTreeView.SelectedItem.Text & ":"
+        
+        If Not (DaoRS(0).Value = vbNullChar) Then
+            frmMain.sbStatusBar.Panels(1).Text = DaoRS(0)
+        Else
+            frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
+        End If
+                    
+        frmMain.txtDecodeLength.Text = CStr(DaoRS(1).Value)
+            
+        If (IsNull(DaoRS(2).Value)) Then
+            frmMain.txtDecodeDisplacement.Text = " "
+        Else
+            frmMain.txtDecodeDisplacement.Text = CStr(DaoRS(2).Value)
+        End If
+            
+        frmMain.txtDataLength.Text = CStr(DaoRS(3).Value)
+        frmMain.txtKeyLength.Text = CStr(DaoRS(4).Value)
+            
+        If DaoRS(5).Value Then
+            frmMain.chkStatic.Value = 1
+        Else
+            frmMain.chkStatic.Value = 0
+        End If
+            
+        If (IsNull(DaoRS(6).Value)) Then
+            frmMain.txtCenturyDelim.Text = ""
+        Else
+            frmMain.txtCenturyDelim.Text = DaoRS(6).Value
+        End If
+        
+        DaoRS.Close
+    End If
+     
     
 Exit Sub
 

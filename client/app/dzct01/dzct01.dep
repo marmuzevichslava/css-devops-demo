@@ -1,5 +1,5 @@
 [Version]
-Version=1.8.0.6
+Version=1.10.0.0
 
 [MSVBVM50.DLL <0009>]
 Register=$(DLLSelfRegister)
@@ -91,8 +91,8 @@ Uses1=
 [COMDLG32.OCX <0009>]
 Register=$(DLLSelfRegister)
 Dest=$(WinSysPath)
-Date=1/16/1997
-Time=0:00:00
+Date=8/12/1997
+Time=14:19:54
 Version=5.0.37.14
 CABFilename=ComDlg32.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -104,8 +104,8 @@ Uses2=
 [COMCTL32.OCX <0009>]
 Register=$(DLLSelfRegister)
 Dest=$(WinSysPath)
-Date=2/28/1997
-Time=16:52:34
+Date=8/12/1997
+Time=14:20:04
 Version=5.0.38.28
 CABFilename=ComCtl32.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -168,8 +168,8 @@ Uses1=
 [MSJET35.DLL <0009>]
 Register=$(DLLSelfRegister)
 Dest=$(WinSysPathSysFile)
-Date=12/21/1996
-Time=0:00:00
+Date=8/12/1997
+Time=14:20:06
 Version=3.50.3602.4
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -189,8 +189,8 @@ Uses10=
 [VBAJET32.DLL <0009>]
 Register=
 Dest=$(WinSysPathSysFile)
-Date=1/22/1997
-Time=0:00:00
+Date=8/12/1997
+Time=14:20:08
 Version=5.0.0.7122
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -201,8 +201,8 @@ Uses1=
 [VB5DB.DLL <0009>]
 Register=
 Dest=$(WinSysPath)
-Date=1/24/1997
-Time=0:00:00
+Date=8/12/1997
+Time=14:20:00
 Version=5.0.37.24
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -213,8 +213,8 @@ Uses1=
 [MSRD2X35.DLL <0009>]
 Register=$(DLLSelfRegister)
 Dest=$(WinSysPathSysFile)
-Date=12/5/1996
-Time=0:00:00
+Date=8/12/1997
+Time=14:19:58
 Version=3.50.3602.0
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -225,8 +225,8 @@ Uses1=
 [MSREPL35.DLL <0009>]
 Register=
 Dest=$(WinSysPathSysFile)
-Date=12/5/1996
-Time=0:00:00
+Date=8/12/1997
+Time=14:19:58
 Version=3.50.3602.0
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -237,8 +237,8 @@ Uses1=
 [ODBCJT32.DLL <0009>]
 Register=
 Dest=$(WinSysPathSysFile)
-Date=12/5/1996
-Time=0:00:00
+Date=8/12/1997
+Time=14:20:08
 Version=3.50.3602.0
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -249,8 +249,8 @@ Uses1=
 [ODBCJI32.DLL <0009>]
 Register=
 Dest=$(WinSysPathSysFile)
-Date=12/5/1996
-Time=0:00:00
+Date=8/12/1997
+Time=14:20:06
 Version=3.50.3602.0
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -261,8 +261,8 @@ Uses1=
 [ODBCTL32.DLL <0009>]
 Register=
 Dest=$(WinSysPathSysFile)
-Date=12/5/1996
-Time=0:00:00
+Date=8/12/1997
+Time=14:20:08
 Version=3.50.3602.0
 CABFilename=MSJet35.cab
 CABDefaultURL=http://activex.microsoft.com/controls/vb5
@@ -273,9 +273,9 @@ Uses1=
 [DZCT01.EXE <0009>]
 Register=
 Dest=$(AppPath)
-Date=7/30/1997
-Time=17:11:06
-Version=1.8.0.6
+Date=8/12/1997
+Time=16:43:50
+Version=1.10.0.0
 CABFilename= ; If you are going to compress this file into a Cabinet (.cab) file, you should add the name of that file here.
 CABDefaultURL= ; If you specified a CABFileName, then you can put URL location here, where Internet users can locate your Cabinet file for download.
 CABINFFile= ; If you specified a CABFileName that processes an INF file, you should put the name of the inf file contained in that Cabinet file, here.  This is ignored if a Run= key is also present
@@ -287,9 +287,9 @@ Uses4=OlePro32.dll
 Uses5=AsycFilt.dll
 Uses6=Ctl3d32.dll
 Uses7=ComCat.dll
-Uses8=comdlg32.ocx
+Uses8=COMDLG32.OCX
 Uses9=comctl32.ocx
-Uses10=dao350.dll
+Uses10=DAO350.DLL
 Uses11=MSJtEr35.dll
 Uses12=MSJInt35.dll
 Uses13=MSVCRT40.dll
@@ -301,4 +301,30 @@ Uses18=MsRepl35.dll
 Uses19=ODBCJt32.dll
 Uses20=ODBCJI32.dll
 Uses21=ODBCTL32.dll
-Uses22=
+Uses22=dzct01.DEP
+Uses23=CTRequest.xlt
+Uses24=
+
+[DZCT01.DEP <0009>]
+Register=
+Dest=$(AppPath)
+Date=8/12/1997
+Time=16:48:20
+Version=1.10.0.0
+CABFilename=
+CABDefaultURL=
+CABINFFile=
+CABRunFile=
+Uses1=
+
+[CTREQUEST.XLT <0009>]
+Register=
+Dest=$(AppPath)
+Date=7/15/1997
+Time=17:02:02
+Version=
+CABFilename=
+CABDefaultURL=
+CABINFFile=
+CABRunFile=
+Uses1=

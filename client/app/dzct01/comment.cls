@@ -18,13 +18,17 @@ Property Let Text(T)
     sInComment = T
     
     If (Len(sInComment) = 0) Then
-        sOutComment = "Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser)
-    ElseIf (InStr(sInComment, "Last Updated") > 0) Then
-        lFromLen = InStr(sInComment, "Last Updated") - 1
+        sOutComment = "[Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser) & "]"
+    ElseIf (InStr(sInComment, "[Last Updated") = 1) Then
+        lFromLen = InStr(sInComment, "[Last Updated") - 1
         sCommentsTemp = Left(sInComment, lFromLen)
-        sOutComment = sCommentsTemp & " Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser)
+        sOutComment = sCommentsTemp & "[Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser) & "]"
+    ElseIf (InStr(sInComment, "[Last Updated") > 0) Then
+        lFromLen = InStr(sInComment, "[Last Updated") - 2
+        sCommentsTemp = Left(sInComment, lFromLen)
+        sOutComment = sCommentsTemp & " [Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser) & "]"
     Else
-        sOutComment = sInComment & " Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser)
+        sOutComment = sInComment & " [Last Updated " & Date & " - " & Time & " by " & UCase(CurrentUser) & "]"
     End If
 
 End Property
