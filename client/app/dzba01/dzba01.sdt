@@ -1,33 +1,51 @@
 /***************************************************************************
  *                                                                         *
- *    W I N D O W S   N T   S E R V I C E   D I S P A T C H   T A B L E     *
+ *                S E R V I C E   D I S P A T C H   T A B L E              *
  *                                                                         *
- *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                  Copyright (C) 1994 Andersen Consulting.                *
+ *                         All rights reserved.                            *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
- *           Service Dispatch Table for: DZBA01                            *
- *                         Generated on: Thu Aug 29 17:59:08 1996          *
+ *           Service Dispatch Table for: dzba01                            *
+ *                         Generated on: Sun Jul  7 15:23:39 1996          *
  *                                   by: IPEREZAR                          *
- *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 
 /***************************************************************************
- * Default Server Name                                                     *
+ * Server Name                                                             *
  ***************************************************************************/
-#define   FND_APPL_ID                   0
+#define   FND_APPL_ID                   9500
 
 /***************************************************************************
  * Custom Initialization And Termination Declarations                      *
  ***************************************************************************/
-#define   FND_PROGRAM_INIT_ROUTINE      NULL
-#define   FND_PROGRAM_TERM_ROUTINE      NULL
+#ifdef BUILD_ENV
+	#define   FND_PROGRAM_INIT_ROUTINE      NULL
+	#define   FND_PROGRAM_TERM_ROUTINE      NULL
+#else
+	#define   FND_PROGRAM_INIT_ROUTINE      NULL
+	#define   FND_PROGRAM_TERM_ROUTINE      NULL
+#endif
 
 /***************************************************************************
- *  Default Service Dispatch Table                                         *
+ *  Service Dispatch Table Message Codes                                   *
+ ***************************************************************************/
+#define DZBA001_ID                     9500
+#define DZBA001_VERSION               "01"
+
+
+/***************************************************************************
+ *  Service Dispatch Table                                                 *
  ***************************************************************************/
 static _FE_MSG_DISPATCH_RECORD dispatchTable[] =
 {
-    0
+
+   /* Dispatch table record for dzba001 */
+   {FND_DISPATCH_REC_VER, DZBA001_ID, DZBA001_VERSION, 
+   DZBA001, FND_APPL_MSG_FLG, FND_SINGLE_THRD_FLG, 
+   FND_GLOBAL_SERVICE_FLG, FALSE, TRUE, 11993, 
+   FND_C_CALL, FND_PERFORM_SECURITY, "", "" }
+
 };
