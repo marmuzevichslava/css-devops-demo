@@ -42,7 +42,8 @@ LIBS_WIN32 = msvcrt.lib kernel32.lib user32.lib gdi32.lib \
              winspool.lib comdlg32.lib \
              advapi32.lib shell32.lib wsock32.lib \
              ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib \
-             ktmsgapi.lib ktddeapi.lib c1cfunc.lib pmfapi32.lib mpr.lib
+             ktmsgapi.lib ktddeapi.lib c1cfunc.lib pmfapi32.lib mpr.lib \
+			 azdiext.lib
 
 #--------------------------------------------------------------------------
 #

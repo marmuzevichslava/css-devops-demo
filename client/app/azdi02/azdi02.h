@@ -17,6 +17,9 @@
 **  --------    ----------  ------  ---------------------------------------
 **  02/12/97    GHOWELL     16116    Added macros, changed Burst timeout,
 **                                     changed Max. # windows
+**
+**  10/28/97    B Lucas             added defines for default user/pass
+**                                  added include for security struct
 *************************************************************************/
 
 /*************************************************************************
@@ -38,6 +41,12 @@
 
 #include <windows.h>
 #include <tlhelp32.h> /* Win95 - needed for tool help declarations */
+
+/* 
+** bdl 10/28/97
+** added includes for security struct
+*/
+#include "azdiext.h"
 
 /*************************************************************************
 **
@@ -122,6 +131,14 @@ typedef struct __BURST_HDR
 #define BURST_XLT_NAME     "BURST2"
 #define BURST_XLT_VERSION  "01"
 
+/*
+** bdl 10/28/97
+** added defines for default username/password. both defines can be no 
+** longer than AZDIEXT_KYUSERID_LEN and AZDIEXT_PASSWORD_LEN and must be 
+** padded with spaces for their respective defined lengths.
+*/
+#define AZDI0201_DEFAULT_USERNAME "USERID  "
+#define AZDI0201_DEFAULT_PASSWORD "PASSWORD"
 
 /*************************************************************************
 **

@@ -17,6 +17,7 @@
 **  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 **  --------    ----------  ------  ---------------------------------------
 **  02/13/97    GHOWELL     16116   Replaced hardcodes with macros defined in header file
+**  10/28/97    B Lucas             added security exit for burst
 *************************************************************************/
 
 #include <windows.h>
@@ -95,6 +96,13 @@ SHORT SendBurstMsg( _BURST_HDR *pBurstHdr, _APPL Appl )
   USHORT j, k, m, n, p, q;
   USHORT rc;
 
+  /* 
+  ** bdl 10/28/97
+  ** added security struct.  memset with spaces. 
+  */
+  _AZDIEXT_SEC_DATA_BLOCK  AzdiSecBlock;
+  memset( &AzdiSecBlock, ' ', sizeof( _AZDIEXT_SEC_DATA_BLOCK ));
+
   /* Initialize Parm Block */
   memset( &ParmBlock, 0, sizeof( _MSG_PARM_BLOCK ));
   memcpy( ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN);
@@ -127,9 +135,37 @@ SHORT SendBurstMsg( _BURST_HDR *pBurstHdr, _APPL Appl )
   memcpy( ParmBlock.translation.map_version, BURST_XLT_VERSION, \
                  sizeof(ParmBlock.translation.map_version));
 
-  /* Populate userid/password */
-  memcpy( ParmBlock.secur.user_id, "USERID  ", 8);
-  memcpy( ParmBlock.secur.user_pw, "PASSWORD", 8);
+  /* 
+  ** bdl 10/28/97
+  ** call security exit to retrieve userid & password 
+  ** if the call fails, use default values
+  */
+
+  /* call diagnostics security exit */
+  rc = ExitDiagCustomLogon( AZDIEXT_FUNC_GET_USER_INFO, &AzdiSecBlock );
+
+  if(( !rc )                               &&
+	 !( AzdiSecBlock.UserId[0]   == ' ' )  &&
+	 !( AzdiSecBlock.Password[0] == ' ' ))
+  {
+	  /* use values from security exit */
+      memcpy( ParmBlock.secur.user_id, 
+		      &AzdiSecBlock.UserId, 
+			  AZDIEXT_KYUSERID_LEN );
+      memcpy( ParmBlock.secur.user_pw, 
+		      &AzdiSecBlock.Password, 
+			  AZDIEXT_PASSWORD_LEN );
+  }
+  else
+  {
+	  /* use default values */
+      memcpy( ParmBlock.secur.user_id, 
+		      AZDI0201_DEFAULT_USERNAME, 
+			  AZDIEXT_KYUSERID_LEN );
+      memcpy( ParmBlock.secur.user_pw, 
+		      AZDI0201_DEFAULT_PASSWORD, 
+			  AZDIEXT_PASSWORD_LEN );
+  }
 
   /* Populate Data Block */
   memset( SendDataBlock.char1, 'a', 80 );
