@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS009                           *
- *                         Generated on: Wed Sep 25 13:28:52 1996          *
+ *                         Generated on: Wed Nov 20 11:22:14 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -244,85 +244,6 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Lapzivat9544_Click
- * 
- *   WidgetName:    OKPB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Lapzivat9544_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = AZCS009BUSSaveToBFCD( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Lapzivat9547_Click
- * 
- *   WidgetName:    CancelPB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Lapzivat9547_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
  *   Callback Name: Lapzivat8232_Field_Change
  * 
  *   WidgetName:    SaveDir
@@ -388,6 +309,171 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pABHI);
 
 FndGenRC = ChkGenDir( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Lapzivat7080_Field_Change
+ * 
+ *   WidgetName:    FLMassGen
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Lapzivat7080_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = Azcs009BusFLMassGenChkBxSelect( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Lapzivat7731_Field_Change
+ * 
+ *   WidgetName:    MapLstFile
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Lapzivat7731_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = ChkMapLstFile( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Lapzivat9544_Click
+ * 
+ *   WidgetName:    OKPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Lapzivat9544_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = AZCS009BUSSaveToBFCD( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Lapzivat9547_Click
+ * 
+ *   WidgetName:    CancelPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Lapzivat9547_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
