@@ -796,6 +796,10 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
    'A', 'N',  "F2" ,  -1 ,  -1 ,  -1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
 
    '\0', '\0', "P" ,   4 ,  4  ,  0  ,  0  , CSR_POINTER  ,  4 , /* pointer */
+	
+   /*mdc 02/05/97 Added pointer data type for graphic */
+   'A',  'N',  "P" ,   4 ,  4  ,  0  ,  0  , CSR_POINTER  ,  4 , /* pointer */
+
   };
 
     USHORT MaxEltTypeEntries = sizeof(EltTypeTable)/sizeof(_ELEMENT_TYPE);
