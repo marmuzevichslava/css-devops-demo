@@ -311,7 +311,7 @@ if(sSignalRC != CMN_SUCCESS)
 
     HEAP_CHECK
 
-    return CMN_SUCCESS;
+    return( CMN_SUCCESS );
 
 } /* end of function AZCS013BusPredisplay  */
 
@@ -390,9 +390,6 @@ static WCBPROC(AZCS013BUSPredistroy)
 **  10/18/94  J. Looney             Clean up.
 **
 **  07/29/96  J. Looney				Clean up again.
-**  
-**  10/06/96  M. Conner             Added warnings to logic for giving user
-**                                  option of using new layout.
 ***************************************************************************/
 WCBPROC(ProcessMsg)
 {
@@ -441,9 +438,7 @@ WCBPROC(ProcessMsg)
 		                                      "OKPB",
 											  &FndGenErrorBlock);
 
-	   /*mdc 10/06/96 This is Sunday work - added so that warnings would give user
-	                  the chance to use the new layout.
-	   */
+
         if (bError || bWarn)
         {
             /*
@@ -593,7 +588,7 @@ WCBPROC(ProcessMsg)
             bWarn = TRUE;
 
             FndGenRC = FndMsgBoxDisplayText(
-                            "Warings were issued comparing the saved map "
+                            "Warnngs were issued comparing the saved map "
                             "data and the repository data !!\n\n Inspect "
                             "the log carefully.",
                             NULL,
@@ -2053,9 +2048,10 @@ SHORT ChangeIt( SHORT sServ,
 **
 **  10/18/94  J. Looney             Clean Up
 **  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**  11/21/96  mconner               Moved to azcsm010.c
 **
 ***************************************************************************/
-SHORT FindFullName(SHORT sSavedIndex,
+/*SHORT FindFullName(SHORT sSavedIndex,
                    _LAYOUT_REC *pSavedLayout,
                    _LAYOUT_REC *pReposLayout,
                    SHORT sNumReposRows,
@@ -2064,21 +2060,21 @@ SHORT FindFullName(SHORT sSavedIndex,
     SHORT sIndex;
     CHAR szBuildName[255];
     CHAR szTempName[255];
-
+*/
     /*HEAP_CHECK_BEEP*/
 
     /* Build the full name for the saved element */
-    strncpy( szBuildName,
+/*    strncpy( szBuildName,
              BuildFullName(sSavedIndex, pSavedLayout),
              sizeof( szBuildName ));
-
+*/
     /*
      * Loop thru all of the layout records looking for a match on the group
      * and element name.  Only check records that have a non negative
      * parent index.  A match occurs if the parent index matches the group
      * and ItemId matches the element name
      */
-    for ( sIndex = 0; sIndex < sNumReposRows; sIndex++ )
+/*    for ( sIndex = 0; sIndex < sNumReposRows; sIndex++ )
     {
         strncpy( szTempName,
                  BuildFullName(sIndex, pReposLayout),
@@ -2087,20 +2083,20 @@ SHORT FindFullName(SHORT sSavedIndex,
         if (strcmp(szBuildName, szTempName) == 0 )
         {
             *sReposIndex = sIndex;
-
+*/
             /*HEAP_CHECK_BEEP*/
 
-            return(1);
+/*            return(1);
 
-        } /* End of if element data type */
-
-    } /* end of for loop thru each layout record */
+        }*/ /* End of if element data type */
+/*
+    }*/ /* end of for loop thru each layout record */
 
     /*HEAP_CHECK_BEEP*/
 
-    return(0);
+/*    return(0);
 
-} /* End of FindFullName */
+} *//* End of FindFullName */
 
 /***************************************************************************
 **
@@ -3811,25 +3807,26 @@ SHORT DropClientRPMH( SHORT sServ,
 **
 **  10/18/94  J. Looney             Clean Up.
 **	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**  11/21/96  mconner               Moved to azcsm010.c asa global function
 **
 ***************************************************************************/
-CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
+/*CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
 {
     static CHAR szFullName[255];
     CHAR *pszTemp;
     SHORT sParentx;
     static SHORT sNestedLevel=0;
-
+ */
     /*HEAP_CHECK_BEEP*/
 
     /*
      * sParentx will be -1 when you are at the top of the hierarchy
      */
-    sParentx = pLayout[sElementx].ParentIndex;
-
+  /*  sParentx = pLayout[sElementx].ParentIndex;
+   */
     /* if not at top call yourself again, Also keep track of how deep in */
     /*   the hierarchy you are. */
-    if ( sParentx != -1 )
+/*    if ( sParentx != -1 )
     {
         sNestedLevel++;
 
@@ -3843,10 +3840,10 @@ CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
 
         sElementx = 0;
     }
-
+*/
     /* Concatenate the C name onto the end of szFullName */
-    strcat( szFullName, pLayout[sElementx].ItemCName );
-
+/*    strcat( szFullName, pLayout[sElementx].ItemCName );
+*/
     /*
      * Find out if the end of the field is blank filled. If it is then
      * we want to put a null where the first blank field is. pszTemp
@@ -3854,37 +3851,37 @@ CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
      * A  period is placed between each level in the hierarchy, but
      * not at the end of the name.
      */
-    pszTemp = strchr(szFullName, ' ');
-
+/*    pszTemp = strchr(szFullName, ' ');
+*/
     /* Blank filled and not at the end */
-    if ( pszTemp && sNestedLevel != 0 )
+/*    if ( pszTemp && sNestedLevel != 0 )
     {
         strcpy(pszTemp,".");
     }
-
+*/
     /* blank filled and at the end */
-    else if ( pszTemp && sNestedLevel == 0 )
+/*    else if ( pszTemp && sNestedLevel == 0 )
     {
         strcpy( pszTemp, "" );
     }
-
+*/
     /* Not Blank filled and not at end */
-    else if ( !pszTemp && sNestedLevel != 0 )
+/*    else if ( !pszTemp && sNestedLevel != 0 )
     {
         strcat(szFullName, ".");
     }
-
+*/
     /* Not Blank filled and at the end */
-    else
+/*    else
     {
         strcat(szFullName, "");
     }
-
+*/
     /*HEAP_CHECK_BEEP*/
 
-    return( szFullName );
+/*    return( szFullName );
 
-} /* end of BuildFullName */
+}*/ /* end of BuildFullName */
 
 
 
