@@ -25,6 +25,13 @@
 /***************************************************************************/
 /* Application #defines                                                    */
 /***************************************************************************/
+
+/* Report file path */
+#define REPORT_FILE "c:\\data\\BAEXT.LOG"
+
+#define LOG_HEADER  "\t\tBILL ACCOUNT EXTRACT LOG\n"
+#define LOG_COLUMNS "\t Account Id \tTable \tTransaction \t\tRows Returned\n"
+
 /* defined for RB Mode Field Change Strcmp statements */
 #define LT_Extract_Mode  "01"
 #define LT_Insert_Mode   "02"
@@ -40,9 +47,11 @@
 
 /* Bad password literal */
 #define NOCONN             "NOCONN"
+#define NODATA             "NODATA"
 
-#define BAD_EXT_PW         "Incorrect Password on Extraction Criteria"
-#define BAD_INS_PW         "Incorrect Password on Inserion Criteria"
+#define BAD_EXT_PW         "Incorrect Password on Extraction Criteria."
+#define BAD_INS_PW         "Incorrect Password on Insertion Criteria."
+#define NO_DATA_FOUND      "Account Not Found."
 
 
 
@@ -61,6 +70,9 @@
 /***************************************************************************/
 /* Application global variables                                            */
 /***************************************************************************/
+
+USHORT NumberOfRows = 0;
+USHORT RowQueryNumber = 0;
 
 // This clobal character array will hold the Extract Database Password
 CHAR GlobalHoldPassword[TXEXTRACTPSSWDID_LEN];
@@ -88,6 +100,16 @@ typedef struct __WindowData
 /***************************************************************************/
 WCBFWD( DZBA001VldCDExtInsFC )
 WCBFWD( DZBA001BusProcessMNEnable )
+
+
+/***************************************************************************/
+/* Application global variables                                            */
+/***************************************************************************/
+
+FILE *LogFile;
+
+const unsigned short TableCountLimit = 500;
+char NullString[] = "";
 
 //WCBFWD( SWAT01AVldExtDbFC )
 //WCBFWD( SWAT01AVldInsDbFC)

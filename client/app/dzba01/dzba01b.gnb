@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZBA01B                             *
-*                        Generated on: Thu Aug 29 17:59:08 1996            *
+*                        Generated on: Sat Oct 05 16:51:30 1996            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -19,6 +19,10 @@
 #ifndef   DEV00808_CD_EXTRACT_INSERT_ACT_LEN
 #define   DEV00808_CD_EXTRACT_INSERT_ACT_LEN    3
 #define   CDEXTRACTINSERTACT_LEN                3
+#endif
+#ifndef   DEV00820_USERNAME_LEN
+#define   DEV00820_USERNAME_LEN                 9
+#define   TXUSERNM_LEN                          9
 #endif
 #ifndef   DEV00809_TX_EXTRACT_DB_ID_LEN
 #define   DEV00809_TX_EXTRACT_DB_ID_LEN         11
@@ -54,6 +58,7 @@
 typedef struct __SWAT01AData
 {
    char                  CdExtractInsertAct[3];
+   char                  TxUserNm[9];
    char                  TxExtractDbId[11];
    char                  TxInsertDbId[11];
    char                  TxExtractOwnerId[31];
@@ -100,10 +105,30 @@ typedef struct __SWAT01BData
 }  _SWAT01BDATA;
 #endif
 /***************************************************************************
-* Definition for Record Group.SWAT01L
+* Definition for Record Group.DZCBA010
+***************************************************************************/
+#ifndef   DEV00835_TABLE_ACCESSED_LEN
+#define   DEV00835_TABLE_ACCESSED_LEN           9
+#define   TABLEACCESSED_LEN                     9
+#endif
+#ifndef _ACCESSRESULTS_z
+#define _ACCESSRESULTS_z
+
+typedef struct __AccessResults
+{
+   char                  TableAccessed[9];
+   long                  ReturnSqlcode;
+   long                  ReturnedRows;
+}  _ACCESSRESULTS;
+#endif
+/***************************************************************************
+* Definition for Record Group.DZBA01L
 ***************************************************************************/
 #ifndef   _SWAT01LUW__SWAT01BDATA_SIZE
 #define   _SWAT01LUW__SWAT01BDATA_SIZE          100
+#endif
+#ifndef   _SWAT01LUW__ACCESSRESULTS_SIZE
+#define   _SWAT01LUW__ACCESSRESULTS_SIZE        500
 #endif
 #ifndef _SWAT01LUW_z
 #define _SWAT01LUW_z
@@ -114,6 +139,7 @@ typedef struct __SWAT01Luw
    unsigned short        CdServErrMsg;
    _SWAT01ADATA          SWAT01AData;
    _SWAT01BDATA          SWAT01BData[100];
+   _ACCESSRESULTS        AccessResults[500];
 }  _SWAT01LUW;
 #endif
 /***************************************************************************

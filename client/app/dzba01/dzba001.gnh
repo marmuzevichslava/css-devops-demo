@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA001                           *
-*                          Generated on: Thu Aug 29 18:21:02 1996          *
+*                          Generated on: Mon Oct 07 18:02:43 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -18,13 +18,13 @@
 ****************************************************************************/
 
 #define CdExtractInsertAct_FID                         0
-#define TxExtractDbId_FID                              1
-#define TxExtractOwnerId_FID                           2
-#define TxExtractPsswdId_FID                           3
-#define TxInsertPsswdId_FID                            4
+#define TxUserNm_FID                                   1
+#define TxExtractDbId_FID                              2
+#define TxExtractOwnerId_FID                           3
+#define TxExtractPsswdId_FID                           4
 #define TxInsertDbId_FID                               5
 #define TxInsertOwnerId_FID                            6
-#define TxUserNm_FID                                   7
+#define TxInsertPsswdId_FID                            7
 #define ExtractInsertLB_FID                            8
 #define TxExtractRemarks2_FID                          9
 #define TxGenDecode4_FID                               10
@@ -47,24 +47,24 @@
 ****************************************************************************/
 
 #define CdExtractInsertAct_WID                         8000
-#define TxExtractDbId_WID                              101
-#define TxExtractOwnerId_WID                           102
+#define TxUserNm_WID                                   101
+#define staticWidget1_WID                              10000
+#define TxExtractDbId_WID                              102
+#define TxExtractOwnerId_WID                           103
+#define TxExtractPsswdId_WID                           104
 #define groupBoxWidget_WID                             9000
-#define TxExtractPsswdId_WID                           103
 #define groupBoxWidget1_WID                            9001
-#define TxInsertPsswdId_WID                            104
 #define TxInsertDbId_WID                               105
 #define TxInsertOwnerId_WID                            106
-#define TxUserNm_WID                                   107
-#define staticWidget_WID                               10006
+#define TxInsertPsswdId_WID                            107
 #define ExtractInsertLB_WID                            108
+#define staticWidget_WID                               10007
 #define TxExtractRemarks2_WID                          109
 #define TxGenDecode4_WID                               110
 #define TxGenDecode3_WID                               111
 #define TxGenDecode2_WID                               112
 #define TxGenDecode1_WID                               113
 #define FlWindowMod_WID                                114
-#define staticWidget1_WID                              10007
 #define TxGenDecode5_WID                               115
 #define groupBoxWidget2_WID                            9002
 

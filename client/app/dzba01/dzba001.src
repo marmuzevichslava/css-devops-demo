@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZBA001                           *
- *                         Generated on: Thu Aug 29 18:21:02 1996          *
+ *                         Generated on: Mon Oct 07 18:02:43 1996          *
  *                                   by: IPEREZAR                          *
  *                                                                         *
  ***************************************************************************/
@@ -1376,6 +1376,200 @@ return 0;
  *
  *   Widget-Level Event
  *
+ *   Callback Name: Vtwrueox7697_Help_Requested
+ * 
+ *   WidgetName:    TxUserNm
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7697_Help_Requested)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7689_Field_Enter
+ * 
+ *   WidgetName:    TxUserNm
+ *
+ *   Event Name:    FIELD_ENTER
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7689_Field_Enter)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7684_Field_Exit
+ * 
+ *   WidgetName:    TxUserNm
+ *
+ *   Event Name:    FIELD_EXIT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7684_Field_Exit)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7678_Field_Change
+ * 
+ *   WidgetName:    TxUserNm
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7678_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZBA001VldUserNmFC( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7694_Field_Nowinvalid
+ * 
+ *   WidgetName:    TxUserNm
+ *
+ *   Event Name:    FIELD_NOWINVALID
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7694_Field_Nowinvalid)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
  *   Callback Name: Vtwrueox7485_Help_Requested
  * 
  *   WidgetName:    TxExtractDbId
@@ -2066,308 +2260,6 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Vtwrueox7397_Field_Spinup
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_SPINUP
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7397_Field_Spinup)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7410_Help_Requested
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FND_HELP_REQUESTED
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7410_Help_Requested)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7388_Field_Enter
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_ENTER
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7388_Field_Enter)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7382_Field_Exit
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_EXIT
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7382_Field_Exit)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7406_Field_Spinend
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_SPINEND
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7406_Field_Spinend)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7402_Field_Spindown
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_SPINDOWN
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7402_Field_Spindown)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7377_Field_Change
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_CHANGE
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7377_Field_Change)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = DZBA001VldInsPasswdFC( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7393_Field_Nowinvalid
- * 
- *   WidgetName:    TxInsertPsswdId
- *
- *   Event Name:    FIELD_NOWINVALID
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7393_Field_Nowinvalid)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
  *   Callback Name: Vtwrueox7566_Help_Requested
  * 
  *   WidgetName:    TxInsertDbId
@@ -2756,15 +2648,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Vtwrueox7697_Help_Requested
+ *   Callback Name: Vtwrueox7397_Field_Spinup
  * 
- *   WidgetName:    TxUserNm
+ *   WidgetName:    TxInsertPsswdId
  *
- *   Event Name:    FND_HELP_REQUESTED
+ *   Event Name:    FIELD_SPINUP
  *
  *
  ***************************************************************************/
-static WCBPROC(Vtwrueox7697_Help_Requested)
+static WCBPROC(Vtwrueox7397_Field_Spinup)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -2792,15 +2684,51 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Vtwrueox7689_Field_Enter
+ *   Callback Name: Vtwrueox7410_Help_Requested
  * 
- *   WidgetName:    TxUserNm
+ *   WidgetName:    TxInsertPsswdId
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7410_Help_Requested)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7388_Field_Enter
+ * 
+ *   WidgetName:    TxInsertPsswdId
  *
  *   Event Name:    FIELD_ENTER
  *
  *
  ***************************************************************************/
-static WCBPROC(Vtwrueox7689_Field_Enter)
+static WCBPROC(Vtwrueox7388_Field_Enter)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -2828,15 +2756,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Vtwrueox7684_Field_Exit
+ *   Callback Name: Vtwrueox7382_Field_Exit
  * 
- *   WidgetName:    TxUserNm
+ *   WidgetName:    TxInsertPsswdId
  *
  *   Event Name:    FIELD_EXIT
  *
  *
  ***************************************************************************/
-static WCBPROC(Vtwrueox7684_Field_Exit)
+static WCBPROC(Vtwrueox7382_Field_Exit)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -2864,15 +2792,87 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Vtwrueox7678_Field_Change
+ *   Callback Name: Vtwrueox7406_Field_Spinend
  * 
- *   WidgetName:    TxUserNm
+ *   WidgetName:    TxInsertPsswdId
+ *
+ *   Event Name:    FIELD_SPINEND
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7406_Field_Spinend)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7402_Field_Spindown
+ * 
+ *   WidgetName:    TxInsertPsswdId
+ *
+ *   Event Name:    FIELD_SPINDOWN
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7402_Field_Spindown)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7377_Field_Change
+ * 
+ *   WidgetName:    TxInsertPsswdId
  *
  *   Event Name:    FIELD_CHANGE
  *
  *
  ***************************************************************************/
-static WCBPROC(Vtwrueox7678_Field_Change)
+static WCBPROC(Vtwrueox7377_Field_Change)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -2885,7 +2885,14 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
-FndGenRC = DZBA001VldUserNmFC( pEventInfo,
+FndGenRC = DZBA001VldInsPasswdFC( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -2907,303 +2914,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Vtwrueox7694_Field_Nowinvalid
+ *   Callback Name: Vtwrueox7393_Field_Nowinvalid
  * 
- *   WidgetName:    TxUserNm
+ *   WidgetName:    TxInsertPsswdId
  *
  *   Event Name:    FIELD_NOWINVALID
  *
  *
  ***************************************************************************/
-static WCBPROC(Vtwrueox7694_Field_Nowinvalid)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7749_Click
- * 
- *   WidgetName:    AddPB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7749_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7754_Help_Requested
- * 
- *   WidgetName:    AddPB
- *
- *   Event Name:    FND_HELP_REQUESTED
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7754_Help_Requested)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7763_Click
- * 
- *   WidgetName:    ChangePB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7763_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7769_Help_Requested
- * 
- *   WidgetName:    ChangePB
- *
- *   Event Name:    FND_HELP_REQUESTED
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7769_Help_Requested)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7778_Click
- * 
- *   WidgetName:    DeletePB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7778_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7785_Help_Requested
- * 
- *   WidgetName:    DeletePB
- *
- *   Event Name:    FND_HELP_REQUESTED
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7785_Help_Requested)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7799_Click
- * 
- *   WidgetName:    UndeletePB
- *
- *   Event Name:    BUTTON_CLICK
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7799_Click)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-
-CMN_ARCH_EXIT_INITIALIZE
-
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Widget-Level Event
- *
- *   Callback Name: Vtwrueox7805_Help_Requested
- * 
- *   WidgetName:    UndeletePB
- *
- *   Event Name:    FND_HELP_REQUESTED
- *
- *
- ***************************************************************************/
-static WCBPROC(Vtwrueox7805_Help_Requested)
+static WCBPROC(Vtwrueox7393_Field_Nowinvalid)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -3463,6 +3182,301 @@ return 0;
  *
  ***************************************************************************/
 static WCBPROC(Vtwrueox7715_Double_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7749_Click
+ * 
+ *   WidgetName:    AddPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7749_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7754_Help_Requested
+ * 
+ *   WidgetName:    AddPB
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7754_Help_Requested)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7763_Click
+ * 
+ *   WidgetName:    ChangePB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7763_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7769_Help_Requested
+ * 
+ *   WidgetName:    ChangePB
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7769_Help_Requested)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7778_Click
+ * 
+ *   WidgetName:    DeletePB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7778_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZBA001DelPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7785_Help_Requested
+ * 
+ *   WidgetName:    DeletePB
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7785_Help_Requested)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7799_Click
+ * 
+ *   WidgetName:    UndeletePB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7799_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Vtwrueox7805_Help_Requested
+ * 
+ *   WidgetName:    UndeletePB
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Vtwrueox7805_Help_Requested)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 

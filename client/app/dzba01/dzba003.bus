@@ -79,27 +79,11 @@ WCBPROC( DZBA003BusWindowPredisp )
 
       BFCD_DZBA003Rqst.DZCBA02Keys.KyPremNo = pDZBA003INPUT->DZCBA03Keys.KyPremNo;
 
-
-//	  CmnStrCopy(WCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
-//				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract,
-//			     sizeof(WCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract),
-//                 CMN_ARCH_PARMS);
-
 	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TsKyExtract,
 				 pDZBA003INPUT->DZCBA03Keys.TsKyExtract );
 
-//	  CmnStrCopy(WCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
-//				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2,
-//			     sizeof(WCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2),
-//                 CMN_ARCH_PARMS);
-
 	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.TxExtractRemarks2,
 				 pDZBA003INPUT->DZCBA03Keys.TxExtractRemarks2 );
-
-//	  CmnStrCopy(WCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
-//				 pDZBA003INPUT->DZCBA03Keys.CdAccessType,
-//			     sizeof(WCD_DZBA003Rqst.DZCBA02Keys.CdAccessType),
-//                 CMN_ARCH_PARMS);
 
 	  strcpy(BFCD_DZBA003Rqst.DZCBA02Keys.CdAccessType,
 				 pDZBA003INPUT->DZCBA03Keys.CdAccessType );
@@ -197,8 +181,6 @@ WCBPROC( DZBA003BusOkPBClick )
 
 	pDZBA003OUTPUT = EAB_pWdtOutData;
 
-//	memset(&pDZBA003OUTPUT , 0 , sizeof(_DZBA003OUTPUT) );
-
     FndLstBoxRowQuerySelection ( CBI_hwnd,
 	                          "ExtractInsertHdrLb",
 							  StartRowNum,
@@ -224,8 +206,6 @@ WCBPROC( DZBA003BusOkPBClick )
 	     	   RowData._ExtractInsertHdrLbTxExtractRemarks2Data ,
 			   sizeof(pDZBA003OUTPUT->DZCBA02Data.TxExtractRemarks2 ),
                CMN_ARCH_PARMS);
-
-
 
 
     return CMN_SUCCESS;

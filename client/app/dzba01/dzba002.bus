@@ -61,7 +61,6 @@ WCBPROC( DZBA002BusWindowPredisp )
 
     USHORT             FndGenRC = 0,
                        i = 0;
-//    CHAR              KyBaStr[KYBA_STR_LEN]; /* Target for CmnStrFromInt */
 	CHAR                KyBaStrMask[KYEXTRACTNOA_LEN]; /* Masked String Format */
 	long              KyPremNo;	/* Used as target in atol from String Format */
 	long              KyBldgNo;	/* Used as target in atol from String Format */
@@ -89,8 +88,34 @@ WCBPROC( DZBA002BusWindowPredisp )
     /* initialize the Request area of the WCD */
     memset(&WCD_SWAT01BRqst, 0, sizeof(WCD_SWAT01BRqst));
 
+    /*
+     | Set GlobalMode with the type of account involved.
+     */
 
-    /* Disable the timestamp field when the access type is not Insert */
+    memset(GlobalMode, 0, sizeof(GlobalMode));
+
+    CmnStrCopy(GlobalMode,
+               pSWAT01BInput->SWAT01BData.CdExtractInsertAct,
+               sizeof(GlobalMode),
+               CMN_ARCH_PARMS);
+
+    if (strcmp(GlobalMode, LT_Insert_Mode) == 0)
+    {
+	    
+        FndFieldSetStatus( CBI_hwnd,
+                         "TsKyExtract",
+                          STS_INCOMPLETE,
+                          &FndGenErrorBlock);
+
+    }
+
+
+
+    /* 
+     | Disable the timestamp field and the FIND pushbutton when the access type is 
+     | not Insert 
+     */
+
 
 	if (strcmp(pSWAT01BInput->SWAT01BData.CdExtractInsertAct, LT_Insert_Mode) == 0)
 	{
@@ -98,13 +123,13 @@ WCBPROC( DZBA002BusWindowPredisp )
 		                "TsKyExtract",
 						&FndGenErrorBlock);
 
-
 	}
 	else
 	{
 		FndFieldDisable (CBI_hwnd,
 		                "TsKyExtract",
 						&FndGenErrorBlock);
+
 
 	   /*  Set appropriate Status for each of the 3 fields. If the mode is
 	    |  Insert mode, then a timestamp is sufficient input and the other fields
@@ -431,13 +456,23 @@ WCBPROC( DZBA002BusKyPremNoFC )
 	{
 		/* Enable the command pushbuttons */
 
-		FndCommandEnable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
+	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
+	    {
+		    FndCommandEnable(CBI_hwnd,
+			        		 "OKPB",
+					         &FndGenErrorBlock);
+        }
 
-		FndCommandEnable(CBI_hwnd,
+		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
+		                                "TsKyExtract",
+						                &FndGenErrorBlock);
+
+        if (FndGenRC == FND_SUCCESS)
+        {
+		    FndCommandEnable(CBI_hwnd,
 	                  "ValidPB",
 					  &FndGenErrorBlock);
+        }
 
 	}
 	else
@@ -537,13 +572,23 @@ WCBPROC( DZBA002BusKyBldgNoFC )
 	{
 		/* Enable the command pushbuttons */
 
-		FndCommandEnable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
+	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
+	    {
+		    FndCommandEnable(CBI_hwnd,
+			        		 "OKPB",
+					         &FndGenErrorBlock);
+        }
 
-		FndCommandEnable(CBI_hwnd,
+		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
+		                                "TsKyExtract",
+						                &FndGenErrorBlock);
+
+        if (FndGenRC == FND_SUCCESS)
+        {
+		    FndCommandEnable(CBI_hwnd,
 	                  "ValidPB",
 					  &FndGenErrorBlock);
+        }
 
 	}
 	else
@@ -650,13 +695,23 @@ WCBPROC( DZBA002BusKyBaFC )
 	{
 		/* Enable the command pushbuttons */
 
-		FndCommandEnable(CBI_hwnd,
-					  "OKPB",
-					  &FndGenErrorBlock);
+	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
+	    {
+		    FndCommandEnable(CBI_hwnd,
+			        		 "OKPB",
+					         &FndGenErrorBlock);
+        }
 
-		FndCommandEnable(CBI_hwnd,
+		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
+		                                "TsKyExtract",
+						                &FndGenErrorBlock);
+
+        if (FndGenRC == FND_SUCCESS)
+        {
+		    FndCommandEnable(CBI_hwnd,
 	                  "ValidPB",
 					  &FndGenErrorBlock);
+        }
 
 	}
 	else
@@ -727,14 +782,28 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
 	{
 		/* Enable the command pushbuttons */
 
-		FndCommandEnable(CBI_hwnd,
-	                  "OKPB",
-					  &FndGenErrorBlock);
+	    if (strcmp(GlobalMode, LT_Insert_Mode) != 0)
+	    {
+		    FndCommandEnable(CBI_hwnd,
+			        		 "OKPB",
+					         &FndGenErrorBlock);
+        }
 
+		FndGenRC = FndFieldQueryEnabled(CBI_hwnd,
+		                                "TsKyExtract",
+						                &FndGenErrorBlock);
 
-		FndCommandEnable(CBI_hwnd,
+        if (FndGenRC == FND_SUCCESS)
+        {
+		    FndCommandEnable(CBI_hwnd,
 	                  "ValidPB",
 					  &FndGenErrorBlock);
+        }
+
+        FndFieldSetStatus( CBI_hwnd,
+                         "TsKyExtract",
+                          STS_VALID,
+                          &FndGenErrorBlock);
 
 	}
 	else
@@ -744,6 +813,12 @@ WCBPROC( DZBA002BusKyTsKyExtFC )
 		FndCommandDisable(CBI_hwnd,
 	                  "ValidPB",
 					  &FndGenErrorBlock);
+
+        FndFieldSetStatus( CBI_hwnd,
+                         "TsKyExtract",
+                          STS_INCOMPLETE,
+                          &FndGenErrorBlock);
+
 
 		FndCommandDisable(CBI_hwnd,
 	                  "OKPB",

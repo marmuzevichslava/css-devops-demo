@@ -493,10 +493,9 @@ AEXPROC( ExitCsrNotification )
                       	              CMN_NULL_RETURN_BUTTON,
                         	          CMN_NULL_MSGBOX_NAME,
                             	      CMN_ARCH_PARMS );
+
+					CMN_WN_CL_AFTER_SUCCESS_PROCESS
                 }                 
-
-/*            	CMN_WN_CL_AFTER_SUCCESS_PROCESS	    */
-
 			}
 		  }
         }
@@ -699,11 +698,13 @@ AEXPROC( ExitCsrNotification )
                                       CMN_NULL_RETURN_BUTTON,
                                       CMN_NULL_MSGBOX_NAME,
                                       CMN_ARCH_PARMS );
+
+				    CMN_WN_CL_AFTER_SUCCESS_PROCESS
                 }
 
                 
 
-         /*   CMN_WN_CL_AFTER_SUCCESS_PROCESS   */
+               
 
 			}
 
@@ -1436,14 +1437,6 @@ AEXPROC( ExitElb1CloseAfterSave )
                     CMN_ARCH_PARMS);
  
 
-		/* Format in Masked Field Format */
-//        for( i = 6; (i < (sizeof(KyBaStrMask))); i++)
-//        {
-//            KyBaStrMask[i] = pSWAT01BOutput->SWAT01BData.KyExtractNoA[i-1];
-//        }
-        
-        /* Format the Masked Field Character */
-//        KyBaStrMask[5] = '-';
         
 	    /*Format KyExtractNoA */
         CmnStrCopy (ExtractInsertLBRow._ExtractInsertLBKyExtractNoAData,

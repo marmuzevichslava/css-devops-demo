@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZBA001                           *
-*                          Generated on: Thu Aug 29 18:21:02 1996          *
+*                          Generated on: Mon Oct 07 18:02:43 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -34,6 +34,11 @@ WCBFWD (Vtwrueox6411_Dde_Notification)
 WCBFWD (Vtwrueox7420_Field_Change)
 WCBFWD (Vtwrueox7437_Button_Click)
 WCBFWD (Vtwrueox7442_Help_Requested)
+WCBFWD (Vtwrueox7678_Field_Change)
+WCBFWD (Vtwrueox7684_Field_Exit)
+WCBFWD (Vtwrueox7689_Field_Enter)
+WCBFWD (Vtwrueox7694_Field_Nowinvalid)
+WCBFWD (Vtwrueox7697_Help_Requested)
 WCBFWD (Vtwrueox7457_Field_Change)
 WCBFWD (Vtwrueox7467_Field_Exit)
 WCBFWD (Vtwrueox7472_Field_Enter)
@@ -52,14 +57,6 @@ WCBFWD (Vtwrueox7000_Field_Spinup)
 WCBFWD (Vtwrueox7004_Field_Spindown)
 WCBFWD (Vtwrueox7011_Field_Spinend)
 WCBFWD (Vtwrueox7016_Help_Requested)
-WCBFWD (Vtwrueox7377_Field_Change)
-WCBFWD (Vtwrueox7382_Field_Exit)
-WCBFWD (Vtwrueox7388_Field_Enter)
-WCBFWD (Vtwrueox7393_Field_Nowinvalid)
-WCBFWD (Vtwrueox7397_Field_Spinup)
-WCBFWD (Vtwrueox7402_Field_Spindown)
-WCBFWD (Vtwrueox7406_Field_Spinend)
-WCBFWD (Vtwrueox7410_Help_Requested)
 WCBFWD (Vtwrueox7544_Field_Change)
 WCBFWD (Vtwrueox7550_Field_Exit)
 WCBFWD (Vtwrueox7556_Field_Enter)
@@ -70,11 +67,21 @@ WCBFWD (Vtwrueox7598_Field_Exit)
 WCBFWD (Vtwrueox7603_Field_Enter)
 WCBFWD (Vtwrueox7607_Field_Nowinvalid)
 WCBFWD (Vtwrueox7612_Help_Requested)
-WCBFWD (Vtwrueox7678_Field_Change)
-WCBFWD (Vtwrueox7684_Field_Exit)
-WCBFWD (Vtwrueox7689_Field_Enter)
-WCBFWD (Vtwrueox7694_Field_Nowinvalid)
-WCBFWD (Vtwrueox7697_Help_Requested)
+WCBFWD (Vtwrueox7377_Field_Change)
+WCBFWD (Vtwrueox7382_Field_Exit)
+WCBFWD (Vtwrueox7388_Field_Enter)
+WCBFWD (Vtwrueox7393_Field_Nowinvalid)
+WCBFWD (Vtwrueox7397_Field_Spinup)
+WCBFWD (Vtwrueox7402_Field_Spindown)
+WCBFWD (Vtwrueox7406_Field_Spinend)
+WCBFWD (Vtwrueox7410_Help_Requested)
+WCBFWD (Vtwrueox7709_List_Select)
+WCBFWD (Vtwrueox7715_Double_Click)
+WCBFWD (Vtwrueox7720_List_Pageup)
+WCBFWD (Vtwrueox7725_List_Pagedown)
+WCBFWD (Vtwrueox7731_List_Deselect)
+WCBFWD (Vtwrueox7735_List_Noselect)
+WCBFWD (Vtwrueox7740_Help_Requested)
 WCBFWD (Vtwrueox7749_Click)
 WCBFWD (Vtwrueox7754_Help_Requested)
 WCBFWD (Vtwrueox7763_Click)
@@ -83,13 +90,6 @@ WCBFWD (Vtwrueox7778_Click)
 WCBFWD (Vtwrueox7785_Help_Requested)
 WCBFWD (Vtwrueox7799_Click)
 WCBFWD (Vtwrueox7805_Help_Requested)
-WCBFWD (Vtwrueox7709_List_Select)
-WCBFWD (Vtwrueox7715_Double_Click)
-WCBFWD (Vtwrueox7720_List_Pageup)
-WCBFWD (Vtwrueox7725_List_Pagedown)
-WCBFWD (Vtwrueox7731_List_Deselect)
-WCBFWD (Vtwrueox7735_List_Noselect)
-WCBFWD (Vtwrueox7740_Help_Requested)
 WCBFWD (Vtwrueox7037_Field_Change)
 WCBFWD (Vtwrueox7042_Field_Exit)
 WCBFWD (Vtwrueox7046_Field_Enter)
@@ -192,6 +192,11 @@ WDGDISPTBL DZBA001WidgDisp[] =
     {CdExtractInsertAct_FID, FIELD_CHANGE, Vtwrueox7420_Field_Change},
     {CdExtractInsertAct_FID, BUTTON_CLICK, Vtwrueox7437_Button_Click},
     {CdExtractInsertAct_FID, FND_HELP_REQUESTED, Vtwrueox7442_Help_Requested},
+    {TxUserNm_FID, FIELD_CHANGE, Vtwrueox7678_Field_Change},
+    {TxUserNm_FID, FIELD_EXIT, Vtwrueox7684_Field_Exit},
+    {TxUserNm_FID, FIELD_ENTER, Vtwrueox7689_Field_Enter},
+    {TxUserNm_FID, FIELD_NOWINVALID, Vtwrueox7694_Field_Nowinvalid},
+    {TxUserNm_FID, FND_HELP_REQUESTED, Vtwrueox7697_Help_Requested},
     {TxExtractDbId_FID, FIELD_CHANGE, Vtwrueox7457_Field_Change},
     {TxExtractDbId_FID, FIELD_EXIT, Vtwrueox7467_Field_Exit},
     {TxExtractDbId_FID, FIELD_ENTER, Vtwrueox7472_Field_Enter},
@@ -210,14 +215,6 @@ WDGDISPTBL DZBA001WidgDisp[] =
     {TxExtractPsswdId_FID, FIELD_SPINDOWN, Vtwrueox7004_Field_Spindown},
     {TxExtractPsswdId_FID, FIELD_SPINEND, Vtwrueox7011_Field_Spinend},
     {TxExtractPsswdId_FID, FND_HELP_REQUESTED, Vtwrueox7016_Help_Requested},
-    {TxInsertPsswdId_FID, FIELD_CHANGE, Vtwrueox7377_Field_Change},
-    {TxInsertPsswdId_FID, FIELD_EXIT, Vtwrueox7382_Field_Exit},
-    {TxInsertPsswdId_FID, FIELD_ENTER, Vtwrueox7388_Field_Enter},
-    {TxInsertPsswdId_FID, FIELD_NOWINVALID, Vtwrueox7393_Field_Nowinvalid},
-    {TxInsertPsswdId_FID, FIELD_SPINUP, Vtwrueox7397_Field_Spinup},
-    {TxInsertPsswdId_FID, FIELD_SPINDOWN, Vtwrueox7402_Field_Spindown},
-    {TxInsertPsswdId_FID, FIELD_SPINEND, Vtwrueox7406_Field_Spinend},
-    {TxInsertPsswdId_FID, FND_HELP_REQUESTED, Vtwrueox7410_Help_Requested},
     {TxInsertDbId_FID, FIELD_CHANGE, Vtwrueox7544_Field_Change},
     {TxInsertDbId_FID, FIELD_EXIT, Vtwrueox7550_Field_Exit},
     {TxInsertDbId_FID, FIELD_ENTER, Vtwrueox7556_Field_Enter},
@@ -228,11 +225,21 @@ WDGDISPTBL DZBA001WidgDisp[] =
     {TxInsertOwnerId_FID, FIELD_ENTER, Vtwrueox7603_Field_Enter},
     {TxInsertOwnerId_FID, FIELD_NOWINVALID, Vtwrueox7607_Field_Nowinvalid},
     {TxInsertOwnerId_FID, FND_HELP_REQUESTED, Vtwrueox7612_Help_Requested},
-    {TxUserNm_FID, FIELD_CHANGE, Vtwrueox7678_Field_Change},
-    {TxUserNm_FID, FIELD_EXIT, Vtwrueox7684_Field_Exit},
-    {TxUserNm_FID, FIELD_ENTER, Vtwrueox7689_Field_Enter},
-    {TxUserNm_FID, FIELD_NOWINVALID, Vtwrueox7694_Field_Nowinvalid},
-    {TxUserNm_FID, FND_HELP_REQUESTED, Vtwrueox7697_Help_Requested},
+    {TxInsertPsswdId_FID, FIELD_CHANGE, Vtwrueox7377_Field_Change},
+    {TxInsertPsswdId_FID, FIELD_EXIT, Vtwrueox7382_Field_Exit},
+    {TxInsertPsswdId_FID, FIELD_ENTER, Vtwrueox7388_Field_Enter},
+    {TxInsertPsswdId_FID, FIELD_NOWINVALID, Vtwrueox7393_Field_Nowinvalid},
+    {TxInsertPsswdId_FID, FIELD_SPINUP, Vtwrueox7397_Field_Spinup},
+    {TxInsertPsswdId_FID, FIELD_SPINDOWN, Vtwrueox7402_Field_Spindown},
+    {TxInsertPsswdId_FID, FIELD_SPINEND, Vtwrueox7406_Field_Spinend},
+    {TxInsertPsswdId_FID, FND_HELP_REQUESTED, Vtwrueox7410_Help_Requested},
+    {ExtractInsertLB_FID, LIST_SELECT, Vtwrueox7709_List_Select},
+    {ExtractInsertLB_FID, FND_DOUBLE_CLICK, Vtwrueox7715_Double_Click},
+    {ExtractInsertLB_FID, LIST_PAGEUP, Vtwrueox7720_List_Pageup},
+    {ExtractInsertLB_FID, LIST_PAGEDOWN, Vtwrueox7725_List_Pagedown},
+    {ExtractInsertLB_FID, LIST_DESELECT, Vtwrueox7731_List_Deselect},
+    {ExtractInsertLB_FID, LIST_NO_SELECTION, Vtwrueox7735_List_Noselect},
+    {ExtractInsertLB_FID, FND_HELP_REQUESTED, Vtwrueox7740_Help_Requested},
     {AddPB_CMD, BUTTON_CLICK, Vtwrueox7749_Click},
     {AddPB_CMD, FND_HELP_REQUESTED, Vtwrueox7754_Help_Requested},
     {ChangePB_CMD, BUTTON_CLICK, Vtwrueox7763_Click},
@@ -241,13 +248,6 @@ WDGDISPTBL DZBA001WidgDisp[] =
     {DeletePB_CMD, FND_HELP_REQUESTED, Vtwrueox7785_Help_Requested},
     {UndeletePB_CMD, BUTTON_CLICK, Vtwrueox7799_Click},
     {UndeletePB_CMD, FND_HELP_REQUESTED, Vtwrueox7805_Help_Requested},
-    {ExtractInsertLB_FID, LIST_SELECT, Vtwrueox7709_List_Select},
-    {ExtractInsertLB_FID, FND_DOUBLE_CLICK, Vtwrueox7715_Double_Click},
-    {ExtractInsertLB_FID, LIST_PAGEUP, Vtwrueox7720_List_Pageup},
-    {ExtractInsertLB_FID, LIST_PAGEDOWN, Vtwrueox7725_List_Pagedown},
-    {ExtractInsertLB_FID, LIST_DESELECT, Vtwrueox7731_List_Deselect},
-    {ExtractInsertLB_FID, LIST_NO_SELECTION, Vtwrueox7735_List_Noselect},
-    {ExtractInsertLB_FID, FND_HELP_REQUESTED, Vtwrueox7740_Help_Requested},
     {TxExtractRemarks2_FID, FIELD_CHANGE, Vtwrueox7037_Field_Change},
     {TxExtractRemarks2_FID, FIELD_EXIT, Vtwrueox7042_Field_Exit},
     {TxExtractRemarks2_FID, FIELD_ENTER, Vtwrueox7046_Field_Enter},
@@ -327,13 +327,13 @@ WDGDISPTBL DZBA001WidgDisp[] =
 FLDDEFTBLENTRY DZBA001FieldDefTbl[] =
 {
     { "CdExtractInsertAct", CdExtractInsertAct_FID },
+    { "TxUserNm", TxUserNm_FID },
     { "TxExtractDbId", TxExtractDbId_FID },
     { "TxExtractOwnerId", TxExtractOwnerId_FID },
     { "TxExtractPsswdId", TxExtractPsswdId_FID },
-    { "TxInsertPsswdId", TxInsertPsswdId_FID },
     { "TxInsertDbId", TxInsertDbId_FID },
     { "TxInsertOwnerId", TxInsertOwnerId_FID },
-    { "TxUserNm", TxUserNm_FID },
+    { "TxInsertPsswdId", TxInsertPsswdId_FID },
     { "ExtractInsertLB", ExtractInsertLB_FID },
     { "TxExtractRemarks2", TxExtractRemarks2_FID },
     { "TxGenDecode4", TxGenDecode4_FID },
@@ -399,6 +399,14 @@ WCTFIELD DZBA001WCTFieldTbl[] =
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
+    { WTP_FNDENTRYFLD, "TxUserNm", TxUserNm_FID,
+      TxUserNm_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZBA001WesMap, _TxUserNmData),
+      8, 0, offsetof(struct _DZBA001WesMap, _TxUserNmData),
+      offsetof(struct _DZBA001WesMap, _TxUserNmCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
     { WTP_FNDENTRYFLD, "TxExtractDbId", TxExtractDbId_FID,
       TxExtractDbId_WID, FND_IT_CHAR,
       SIZEOF(struct _DZBA001WesMap, _TxExtractDbIdData),
@@ -423,14 +431,6 @@ WCTFIELD DZBA001WCTFieldTbl[] =
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_FNDENTRYFLD, "TxInsertPsswdId", TxInsertPsswdId_FID,
-      TxInsertPsswdId_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZBA001WesMap, _TxInsertPsswdIdData),
-      30, 0, offsetof(struct _DZBA001WesMap, _TxInsertPsswdIdData),
-      offsetof(struct _DZBA001WesMap, _TxInsertPsswdIdCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD},
-  
     { WTP_FNDENTRYFLD, "TxInsertDbId", TxInsertDbId_FID,
       TxInsertDbId_WID, FND_IT_CHAR,
       SIZEOF(struct _DZBA001WesMap, _TxInsertDbIdData),
@@ -447,11 +447,11 @@ WCTFIELD DZBA001WCTFieldTbl[] =
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_FNDENTRYFLD, "TxUserNm", TxUserNm_FID,
-      TxUserNm_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZBA001WesMap, _TxUserNmData),
-      30, 0, offsetof(struct _DZBA001WesMap, _TxUserNmData),
-      offsetof(struct _DZBA001WesMap, _TxUserNmCtl),
+    { WTP_FNDENTRYFLD, "TxInsertPsswdId", TxInsertPsswdId_FID,
+      TxInsertPsswdId_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZBA001WesMap, _TxInsertPsswdIdData),
+      30, 0, offsetof(struct _DZBA001WesMap, _TxInsertPsswdIdData),
+      offsetof(struct _DZBA001WesMap, _TxInsertPsswdIdCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   

@@ -12,7 +12,8 @@
 **                     DZBA001BusProcessMNClick
 **                     DZBA001BusLBSelect
 **					   DZBA001BusProcessMNEnable
-*
+**                     DZBA001DelPbClk
+**
 **
 ** REVISION HISTORY
 **
@@ -622,12 +623,8 @@ WCBPROC( DZBA001BusProcessMNEnable )
 						  CMN_RESULT_DEFAULT,
 		                  CMN_ARCH_PARMS);
 						    
-	    FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
-		                    "ExtractInsertLB",
-		                     NumRows,
-						     &FndGenErrorBlock);
 
-		if ( FndGenRC != LBOX_ROW_EMPTY )
+		if ( NumberOfRows > 0 )
 		{
 
 		      FndCommandEnable( CBI_hwnd,
@@ -681,7 +678,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 		                     NumRows,
 						     &FndGenErrorBlock);
 
-		if ( FndGenRC != LBOX_ROW_EMPTY )
+		if ( NumberOfRows > 0 )
 		{
 
 		      FndCommandEnable( CBI_hwnd,
@@ -736,7 +733,8 @@ WCBPROC( DZBA001BusProcessMNEnable )
 		                     NumRows,
 						     &FndGenErrorBlock);
 
-		if ( FndGenRC != LBOX_ROW_EMPTY )
+
+		if ( NumberOfRows > 0 )
 		{
 
 		      FndCommandEnable( CBI_hwnd,
@@ -751,6 +749,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 						        &FndGenErrorBlock);
 
 		}
+
 	}
 	else
 	{
@@ -820,6 +819,8 @@ WCBPROC( DZBA001DelPbClk )
                                      RowNumber,
                                      &FndGenErrorBlock);
 
+	/* Decrement the number of rows. */
+    NumberOfRows--;
 
     return CMN_SUCCESS;
 }

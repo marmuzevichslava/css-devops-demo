@@ -234,7 +234,7 @@ AEXPROC( ExitWktCloseAfterSave )
 	                   sizeof(szTempLong),
 	                   pDZBA003OUTPUT->DZCBA02Data.KyBa,
 					   0,
-					   CMN_LEADING_ZEROES_YES,
+					   CMN_LEADING_ZEROES_NO,
 					   CMN_ARCH_PARMS);
 
 
@@ -276,6 +276,21 @@ AEXPROC( ExitWktCloseAfterSave )
 
 
   }
+
+    if (strcmp(GlobalMode, LT_Insert_Mode) == 0)
+    {
+	    FndCommandEnable(CBI_hwnd,
+			        	 "OKPB",
+					     &FndGenErrorBlock);
+
+        FndFieldSetStatus( CBI_hwnd,
+                         "TsKyExtract",
+                          STS_VALID,
+                          &FndGenErrorBlock);
+
+
+    }
+
 
     return CMN_SUCCESS;
 
@@ -759,12 +774,11 @@ AEXPROC( ExitDomDrop )
                           KYBA_STR_LEN,
                           KyBa,
                           0,
-                          CMN_LEADING_ZEROES_YES,
+                          CMN_LEADING_ZEROES_NO,
                           CMN_ARCH_PARMS );
 
 		   /* Populate Window Field */
-           FndFieldSetValue(
-                            CBI_hwnd,
+           FndFieldSetValue(CBI_hwnd,
                             "KyBa",
                             sizeof(KyBaStr),
                             KyBaStr,
