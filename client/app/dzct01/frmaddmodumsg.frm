@@ -221,6 +221,7 @@ Public bDecodeOK As Boolean
 Public bKeyOK As Boolean
 Public bSeqOK As Boolean
 Public bChangeKey As Boolean
+Const DEFVALUE = 0
 
 Private Sub cbxClients_Click()
 
@@ -243,9 +244,9 @@ End Sub
 Public Function AddNewUMsgRecord() As Boolean
 '***************************************************************************************************************
     Dim myClient As New Client
-   ' Dim myApplication As New Application
-   ' Dim myPlatform As New Platform
-   ' Dim myRelease As New Release
+    Dim myApplication As New Application
+    Dim myPlatform As New Platform
+    Dim myRelease As New Release
     Dim myComment As New Comment
     
     myClient.Decode = Me.cbxClients.Text
@@ -256,7 +257,7 @@ Public Function AddNewUMsgRecord() As Boolean
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
     
-    strsql = "INSERT INTO tblUserErrorMsgEntries (TableName, ErrorNumber, ErrorCode, Client, SequenceNumber, Language, Coments,)" _
+    strsql = "INSERT INTO tblUserErrorMsgEntries (TableName, ErrorNumber, ErrorCode, Client, SequenceNumber, Language, Coments, Application, Platform, CSSRelease)" _
              & " VALUES (" _
              & Chr(34) & CurTable & Chr(34) & ", " _
              & Me.txtKey & ", " _
@@ -265,7 +266,9 @@ Public Function AddNewUMsgRecord() As Boolean
              & Me.txtSeqNumber & ", " _
              & Chr(34) & Me.txtLanguage & Chr(34) & ", " _
              & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
-        
+             & DEFVALUE & ", " _
+             & DEFVALUE & ", " _
+             & DEFVALUE & ");"
     'Set up the error handling.
     On Error GoTo InsertError
     
@@ -542,10 +545,11 @@ Private Sub Form_Load()
         
         myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
         
-        strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.SequenceNumber, tblClients.Client, tblUserErrorMsgEntries.ErrorCode, tblUserErrorMsgEntries.Coments, " _
-                  & " FROM ((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) " _
-                  & " WHERE (((tblUserErrorMsgEntries.ErrorNumber)= " & CurKey & ") AND ((tblUserErrorMsgEntries.SequenceNumber)= " & frmMain.lvListView.SelectedItem.SubItems(6) & ") AND ((tblUserErrorMsgEntries.Client)= " & myClient.Displaycode & ") AND ((tblUserErrorMsgEntries.TableName)= " & Chr(34) & CurTable & Chr(34) & "));"
-                    
+         strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.SequenceNumber, tblClients.Client, tblUserErrorMsgEntries.ErrorCode, tblUserErrorMsgEntries.Coments " _
+                  & " FROM (tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) " _
+                  & " WHERE (((tblUserErrorMsgEntries.ErrorNumber)= " & CurKey & ") AND ((tblUserErrorMsgEntries.SequenceNumber)= " & frmMain.lvListView.SelectedItem.SubItems(3) & ") AND ((tblUserErrorMsgEntries.Client)= " & myClient.Displaycode & ") AND ((tblUserErrorMsgEntries.TableName)= " & Chr(34) & CurTable & Chr(34) & "));"
+        
+        
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
         If Not DaoRS.EOF Then

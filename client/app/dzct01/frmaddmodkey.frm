@@ -265,7 +265,7 @@ Public bDecodeOK As Boolean
 Public bKeyOK As Boolean
 Public bSeqOK As Boolean
 Public bChangeKey As Boolean
-
+Const DEFVALUE = 0
 
 '***************************************************************************************************************
 Private Sub cbxClients_Click()
@@ -463,7 +463,7 @@ Private Sub Form_Load()
         strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblEntries.Comments, tblEntries.Description, tblEntries.HostSystemUse, tblEntries.HostOccurs, tblEntries.ClientSystemUse, tblEntries.ClientOccurs" _
                & " FROM (tblEntries INNER JOIN tblClients ON tblEntries.Client = tblClients.Code)" _
                & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & CurKey & Chr(34) & " and tblEntries.Client = " & myClient.Displaycode
-        
+                
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
         If Not DaoRS.EOF Then
@@ -709,16 +709,16 @@ End Sub
 Public Function AddNewRecord() As Boolean
 '***************************************************************************************************************
     Dim myClient As New Client
-    'Dim myApplication As New Application
-    'Dim myPlatform As New Platform
-    'Dim myRelease As New Release
+    Dim myApplication As New Application
+    Dim myPlatform As New Platform
+    Dim myRelease As New Release
     Dim myComment As New Comment
     Dim hDecode As String
     
     myClient.Decode = Me.cbxClients.Text
-    'myApplication.Decode = Me.cbxApplication.Text
-    'myPlatform.Decode = Me.cbxPlatform.Text
-    'myRelease.Decode = Me.cbxRelease.Text
+'    myApplication.Decode = Me.cbxApplication.Text
+'    myPlatform.Decode = Me.cbxPlatform.Text
+'    myRelease.Decode = Me.cbxRelease.Text
 
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
@@ -735,19 +735,18 @@ Public Function AddNewRecord() As Boolean
 '    hDecode = CheckForSpecialChars(txtDecode.Text)
     
     strsql = "INSERT INTO tblEntries" _
-            & " (TableName, Key, Decode, Client, Description, Comments) " _
+            & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease) " _
             & "VALUES (" _
             & Chr(34) & CurTable & Chr(34) & ", " _
             & Chr(34) & txtKey.Text & Chr(34) & ", " _
             & Chr(34) & txtDecode.Text & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
             & Chr(34) & txtDesc.Text & Chr(34) & ", " _
-            & Chr(34) & myComment.DisplayComment & Chr(34) & ");"
-            
-'            & myApplication.Displaycode & ", " _
-'            & myPlatform.Displaycode & ", " _
-'            & myRelease.Displaycode & ");"
-    
+            & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
+            & DEFVALUE & ", " _
+            & DEFVALUE & ", " _
+            & DEFVALUE & ");"
+        
     'Set up the error handling.
     On Error GoTo InsertError
     
@@ -878,7 +877,6 @@ Public Function ModifyRecord() As Boolean
 Exit Function
 
 UpdateError:
-    Debug.Print strsql
     Dim msg As String, RC As Integer
     msg = "An error has occured within ModifyRecord of frmAddModKey" & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _

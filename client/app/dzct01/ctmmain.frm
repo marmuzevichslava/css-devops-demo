@@ -41,7 +41,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":030A
       NumItems        =   0
    End
    Begin VB.Frame famTable 
@@ -308,7 +307,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0326
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -329,7 +327,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0342
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -350,11 +347,9 @@ Begin VB.Form frmMain
             Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "ctmmain.frx":035E
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -844,7 +839,7 @@ Private Sub mnuDeleteKey_Click()
                 ElseIf (CurTableType = WES_CODE) Then
                     strsql = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(34) & tvTreeView.SelectedItem.Text & Chr(34) & _
                              " AND ErrorNumber = " & Val(lvListView.ListItems.Item(x).Text) & _
-                             " AND SequenceNumber = " & Val(lvListView.ListItems.Item(x).SubItems(6)) & _
+                             " AND SequenceNumber = " & Val(lvListView.ListItems.Item(x).SubItems(3)) & _
                              " AND Client = " & myClient.Displaycode
                 
                 End If

@@ -263,16 +263,16 @@ Public bResidency As Boolean
 '***************************************************************************************************************
 ' Private Sub chkEffDate_Click()
 '***************************************************************************************************************
- '  If (chkEffDate.Value = 0) Then bEffDate = False
-  ' If (chkEffDate.Value = 1) Then bEffDate = True
- 'End Sub
+'   If (chkEffDate.Value = 0) Then bEffDate = False
+'   If (chkEffDate.Value = 1) Then bEffDate = True
+' End Sub
 
 '***************************************************************************************************************
 ' Private Sub chkResidency_Click()
 '***************************************************************************************************************
- '  If (chkResidency.Value = 0) Then bResidency = False
-  ' If (chkResidency.Value = 1) Then bResidency = True
- 'End Sub
+'   If (chkResidency.Value = 0) Then bResidency = False
+'   If (chkResidency.Value = 1) Then bResidency = True
+' End Sub
 
 '***************************************************************************************************************
 Private Sub cmdAddTbl_Click()
@@ -310,8 +310,11 @@ Private Sub cmdAddTbl_Click()
                                     "TableType, " & _
                                     "DecodeLen, " & _
                                     "DecodeDisplacement, " & _
+                                    "EffDate, " & _
+                                    "Residency, " & _
                                     "DataLen, " & _
                                     "KeyLen, " & _
+                                    "CenturyDelim, " & _
                                     "Class, " & _
                                     "Description) " & _
              "VALUES (" & Chr(34) & txtTblName.Text & Chr(34) & ", " & _

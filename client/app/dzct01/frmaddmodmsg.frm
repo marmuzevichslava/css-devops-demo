@@ -235,6 +235,7 @@ Public bModified As Boolean
 Public bDecodeOK As Boolean
 Public bKeyOK As Boolean
 Public bChangeKey As Boolean
+Const DEFVALUE = 0
 
 '***************************************************************************************************************
 Private Sub cbxClients_Click()
@@ -360,8 +361,8 @@ Private Sub Form_Load()
            ' Next
 
             'Get the comments.
-            If (Len(DaoRS(7).Value) > 0) Then
-                txtComments.Text = RTrim(DaoRS(7).Value)
+            If (Len(DaoRS(4).Value) > 0) Then
+                txtComments.Text = RTrim(DaoRS(4).Value)
             Else
                 txtComments.Text = " "
             End If
@@ -522,9 +523,9 @@ Public Function AddNewRecord() As Boolean
     Dim myMsgButtons As New MsgButtons
     Dim myMsgIcon As New MsgIcon
     Dim myMsgDefaultButton As New MsgDefaultButtons
-   ' Dim myApplication As New Application
-   ' Dim myPlatform As New Platform
-   ' Dim myRelease As New Release
+    Dim myApplication As New Application
+    Dim myPlatform As New Platform
+    Dim myRelease As New Release
     Dim myComment As New Comment
     
     myClient.Decode = Me.cbxClients.Text
@@ -539,7 +540,7 @@ Public Function AddNewRecord() As Boolean
     myComment.Text = Me.txtComments.Text
     
     strsql = "INSERT INTO tblMsgBoxEntries " _
-            & " (TableName, Client, Code, Buttons, Icon, DefaultButton, MsgBoxText, Comments) " _
+            & " (TableName, Client, Code, Buttons, Icon, DefaultButton, MsgBoxText, Comments, Application, Platform, CSSRelease) " _
             & "VALUES (" _
             & Chr(34) & CurTable & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
@@ -548,8 +549,10 @@ Public Function AddNewRecord() As Boolean
             & myMsgIcon.Displaycode & ", " _
             & myMsgDefaultButton.Displaycode & ", " _
             & Chr(34) & txtDecode.Text & Chr(34) & ", " _
-            & Chr(34) & myComment.DisplayComment & Chr(34) & ");"
-    
+            & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
+            & DEFVALUE & ", " _
+            & DEFVALUE & ", " _
+            & DEFVALUE & ");"
     'Set up the error handling.
     On Error GoTo InsertError
     

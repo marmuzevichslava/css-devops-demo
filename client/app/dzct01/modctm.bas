@@ -276,7 +276,7 @@ Public Sub PopulateMessageBoxListView()
         frmMain.lvListView.ColumnHeaders.Add , , "Icon", 2500, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Default Button", 2500, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Buttons", 2500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 4000, 0
 
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
     frmMain.Refresh
@@ -354,7 +354,7 @@ Public Sub PopulateUerrMessagesListView()
         frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Seq. No.", 700, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Language", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 4000, 0
 
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
     frmMain.Refresh
