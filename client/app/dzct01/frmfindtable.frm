@@ -29,6 +29,7 @@ Begin VB.Form frmFindTable
       Height          =   330
       Left            =   1785
       TabIndex        =   2
+      ToolTipText     =   "Return to main"
       Top             =   735
       Width           =   1215
    End
@@ -47,6 +48,7 @@ Begin VB.Form frmFindTable
       Height          =   330
       Left            =   435
       TabIndex        =   1
+      ToolTipText     =   "Find codes table"
       Top             =   735
       Width           =   1215
    End

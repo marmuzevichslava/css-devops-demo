@@ -29,6 +29,7 @@ Begin VB.Form frmExportTable
       Height          =   330
       Left            =   3960
       TabIndex        =   7
+      ToolTipText     =   "Find a codes table"
       Top             =   2385
       Width           =   1215
    End
@@ -68,7 +69,7 @@ Begin VB.Form frmExportTable
       End
    End
    Begin VB.CommandButton pbCancel 
-      Caption         =   "&Cancel"
+      Caption         =   "&Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -81,6 +82,7 @@ Begin VB.Form frmExportTable
       Height          =   330
       Left            =   3960
       TabIndex        =   14
+      ToolTipText     =   "Return to main"
       Top             =   4005
       Width           =   1215
    End
@@ -99,7 +101,7 @@ Begin VB.Form frmExportTable
       Height          =   330
       Left            =   2625
       TabIndex        =   13
-      ToolTipText     =   "Perform"
+      ToolTipText     =   "Export table"
       Top             =   4005
       Width           =   1215
    End

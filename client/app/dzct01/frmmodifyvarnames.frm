@@ -30,6 +30,7 @@ Begin VB.Form frmModifyVarNames
       Height          =   315
       Left            =   2137
       TabIndex        =   3
+      ToolTipText     =   "Return to generate"
       Top             =   930
       Width           =   1215
    End
@@ -49,7 +50,7 @@ Begin VB.Form frmModifyVarNames
       Height          =   315
       Left            =   742
       TabIndex        =   2
-      ToolTipText     =   "Add the current user id"
+      ToolTipText     =   "Add variable names"
       Top             =   930
       Width           =   1215
    End

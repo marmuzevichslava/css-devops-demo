@@ -65,14 +65,14 @@ Begin VB.Form frmImportStatus
       Width           =   1215
    End
    Begin ComctlLib.ListView lvErrorList 
-      Height          =   1515
+      Height          =   1995
       Left            =   150
       TabIndex        =   3
       TabStop         =   0   'False
-      Top             =   1200
+      Top             =   720
       Width           =   6015
       _ExtentX        =   10610
-      _ExtentY        =   2672
+      _ExtentY        =   3519
       View            =   3
       LabelWrap       =   -1  'True
       HideSelection   =   -1  'True

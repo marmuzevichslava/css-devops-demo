@@ -35,6 +35,7 @@ Begin VB.Form frmFindExportTable
       Height          =   330
       Left            =   405
       TabIndex        =   1
+      ToolTipText     =   "Return to main"
       Top             =   750
       Width           =   1215
    End
@@ -52,6 +53,7 @@ Begin VB.Form frmFindExportTable
       Height          =   330
       Left            =   1755
       TabIndex        =   2
+      ToolTipText     =   "Return to export"
       Top             =   735
       Width           =   1215
    End

@@ -53,6 +53,7 @@ Begin VB.Form frmAddModUMsg
       Height          =   330
       Left            =   2573
       TabIndex        =   9
+      ToolTipText     =   "Add/Modify error message"
       Top             =   2940
       Width           =   1215
    End
@@ -69,7 +70,6 @@ Begin VB.Form frmAddModUMsg
       Height          =   315
       Left            =   5085
       TabIndex        =   2
-      ToolTipText     =   "Key Code to Add/Modify"
       Top             =   615
       Width           =   450
    End
@@ -80,7 +80,6 @@ Begin VB.Form frmAddModUMsg
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   8
-      ToolTipText     =   "Key Code to Add/Modify"
       Top             =   1725
       Width           =   2325
    End
@@ -89,7 +88,6 @@ Begin VB.Form frmAddModUMsg
       Height          =   315
       Left            =   6780
       TabIndex        =   3
-      ToolTipText     =   "Key Code to Add/Modify"
       Top             =   615
       Width           =   330
    End
@@ -98,7 +96,6 @@ Begin VB.Form frmAddModUMsg
       Height          =   675
       Left            =   1425
       TabIndex        =   4
-      ToolTipText     =   "Key Code to Add/Modify"
       Top             =   984
       Width           =   5730
    End
@@ -112,7 +109,7 @@ Begin VB.Form frmAddModUMsg
       Width           =   1650
    End
    Begin VB.CommandButton cmdCancel 
-      Caption         =   "&Close"
+      Caption         =   "&Cancel"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -125,6 +122,7 @@ Begin VB.Form frmAddModUMsg
       Height          =   330
       Left            =   4013
       TabIndex        =   10
+      ToolTipText     =   "Return to main"
       Top             =   2940
       Width           =   1215
    End
@@ -508,7 +506,12 @@ Dim myClient As New Client
     End If
     
     'Refresh the list box on the main window.
+    Screen.MousePointer = vbHourglass
+    
     RefreshCodeDecodeLB
+    
+    Screen.MousePointer = vbDefault
+    
     bModified = False
 
 End Sub

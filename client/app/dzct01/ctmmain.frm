@@ -13,7 +13,7 @@ Begin VB.Form frmMain
    MouseIcon       =   "CTMMain.frx":030A
    ScaleHeight     =   6000
    ScaleWidth      =   11760
-   Begin VB.Frame Frame1 
+   Begin VB.Frame famTable 
       Caption         =   "Current Table:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -217,6 +217,7 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
+      MouseIcon       =   "CTMMain.frx":0614
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -237,6 +238,7 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      MouseIcon       =   "CTMMain.frx":0630
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -254,12 +256,14 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   20241
+            Object.Width           =   20320
             Text            =   "Status"
             TextSave        =   "Status"
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "CTMMain.frx":064C
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -615,15 +619,15 @@ Sub SizeControls(x As Single)
     lvListView.Left = x + 40
     lvListView.Width = Me.Width - (tvTreeView.Width + 140)
     
-    Frame1.Width = Me.Width - 400
+    famTable.Width = Me.Width - 400
 
 
     'set the top
-    tvTreeView.Top = Frame1.Height + 300
+    tvTreeView.Top = famTable.Height + 300
     lvListView.Top = tvTreeView.Top
 
     'set the height
-     tvTreeView.Height = Me.ScaleHeight - (Frame1.Top + Frame1.Height + sbStatusBar.Height + 200)
+     tvTreeView.Height = Me.ScaleHeight - (famTable.Top + famTable.Height + sbStatusBar.Height + 200)
 
     lvListView.Height = tvTreeView.Height
     imgSplitter.Top = tvTreeView.Top
@@ -886,7 +890,11 @@ Private Sub mnuModifyKey_Click()
     End If
     
     'Get all the Keys and decodes.
+    Screen.MousePointer = vbHourglass
+    
     Call RefreshCodeDecodeLB
+    
+    Screen.MousePointer = vbDefault
     
     lvListView.ListItems(iSelected).Selected = True
     Set lvListView.SelectedItem = lvListView.ListItems(iSelected)

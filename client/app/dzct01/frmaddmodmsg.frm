@@ -7,6 +7,8 @@ Begin VB.Form frmAddModMsg
    Icon            =   "frmAddModMsg.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
    ScaleHeight     =   3285
    ScaleWidth      =   8295
    StartUpPosition =   2  'CenterScreen
@@ -67,7 +69,7 @@ Begin VB.Form frmAddModMsg
       Height          =   315
       Left            =   1440
       TabIndex        =   0
-      ToolTipText     =   "Key Code to Add/Modify"
+      ToolTipText     =   "Message Code to Add/Modify"
       Top             =   240
       Width           =   1680
    End
@@ -84,7 +86,6 @@ Begin VB.Form frmAddModMsg
       Height          =   315
       Left            =   1395
       TabIndex        =   9
-      ToolTipText     =   "Comments for current Key"
       Top             =   2430
       Width           =   6765
    End
@@ -104,12 +105,12 @@ Begin VB.Form frmAddModMsg
       Height          =   330
       Left            =   2955
       TabIndex        =   10
-      ToolTipText     =   "Add the current user id"
+      ToolTipText     =   "Add/Modify Message"
       Top             =   2850
       Width           =   1215
    End
    Begin VB.CommandButton cmdCancel 
-      Caption         =   "&Close"
+      Caption         =   "&Cancel"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -122,7 +123,7 @@ Begin VB.Form frmAddModMsg
       Height          =   330
       Left            =   4605
       TabIndex        =   11
-      ToolTipText     =   "Add the current user id"
+      ToolTipText     =   "Return to main"
       Top             =   2850
       Width           =   1215
    End
@@ -580,7 +581,12 @@ Private Sub cmdProcess_Click()
     End If
 
     'Refresh the list box on the main window.
+    Screen.MousePointer = vbHourglass
+    
     RefreshCodeDecodeLB
+    
+    Screen.MousePointer = vbDefault
+    
     bModified = False
     
 End Sub

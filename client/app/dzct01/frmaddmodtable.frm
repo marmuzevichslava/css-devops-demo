@@ -172,7 +172,7 @@ Begin VB.Form frmAddModTable
       Height          =   330
       Left            =   3000
       TabIndex        =   13
-      ToolTipText     =   "Cancel"
+      ToolTipText     =   "Return to main"
       Top             =   4080
       Width           =   1215
    End

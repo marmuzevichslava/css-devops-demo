@@ -187,6 +187,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         frmMain.sbStatusBar.Panels(1).Text = ""
         frmMain.txtTotalKeys.Text = ""
         Screen.MousePointer = vbNormal
+        frmMain.famTable.Caption = "Current Table"
         frmMain.Refresh
         Exit Sub
     End If
@@ -195,6 +196,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     For x = 0 To UBound(TableTypes)
         If (Node.Key = TableTypes(x).TableTypeName) Then
             frmMain.lvListView.ListItems.Clear
+            frmMain.famTable.Caption = "Current Table"
             frmMain.sbStatusBar.Panels(1).Text = ""
             frmMain.txtTotalKeys.Text = ""
             Screen.MousePointer = vbNormal
@@ -239,6 +241,8 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
     If Not DaoRS.EOF Then
+    
+        frmMain.famTable.Caption = "Table " & Node.Text & ":"
         
         If Not (DaoRS(0).Value = vbNullChar) Then
             frmMain.sbStatusBar.Panels(1).Text = DaoRS(0)

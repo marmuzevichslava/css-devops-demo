@@ -25,7 +25,7 @@ Begin VB.Form frmSourceFileGenerator
       _Version        =   327680
    End
    Begin VB.CommandButton pbExit 
-      Caption         =   "E&xit"
+      Caption         =   "&Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -38,6 +38,7 @@ Begin VB.Form frmSourceFileGenerator
       Height          =   330
       Left            =   5318
       TabIndex        =   11
+      ToolTipText     =   "Return to main"
       Top             =   3975
       Width           =   1215
    End
@@ -394,7 +395,9 @@ End Sub
             cbSigned.Enabled = True
             lblIntType.Enabled = True
         Else
+            Me.cboComp.Text = "Not Compressed"
             cboComp.Enabled = False
+            cbSigned.Value = 0
             cbSigned.Enabled = False
             lblIntType.Enabled = False
         End If
@@ -600,10 +603,6 @@ Private Sub Form_Load()
     
 End Sub
 
-Private Sub Label5_Click()
-
-End Sub
-
 '***************************************************************************************************************
 Private Sub lvSrcGenerate_DblClick()
 '***************************************************************************************************************
@@ -726,7 +725,7 @@ Private Sub pbGenerate_Click()
     End If
        
     If (Len(cboComp.Text) = 0) Then
-        CompType = " "
+        CompType = "0"
     End If
     
     strsql = "UPDATE DISTINCTROW tblCUVHeaderData SET tblCUVHeaderData.DataType = " & Chr(39) & DataType & Chr(39)

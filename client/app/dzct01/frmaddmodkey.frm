@@ -30,12 +30,12 @@ Begin VB.Form frmAddModKey
       Height          =   330
       Left            =   2475
       TabIndex        =   11
-      ToolTipText     =   "Add the current user id"
+      ToolTipText     =   "Add/Modify Key"
       Top             =   3015
       Width           =   1215
    End
    Begin VB.CommandButton cmdCancel 
-      Caption         =   "&Close"
+      Caption         =   "&Cancel"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -48,7 +48,7 @@ Begin VB.Form frmAddModKey
       Height          =   330
       Left            =   4020
       TabIndex        =   12
-      ToolTipText     =   "Add the current user id"
+      ToolTipText     =   "Return to main"
       Top             =   3015
       Width           =   1215
    End
@@ -456,7 +456,12 @@ Private Sub cmdProcess_Click()
     End If
 
     'Refresh the list box on the main window.
+    Screen.MousePointer = vbHourglass
+    
     RefreshCodeDecodeLB
+    
+    Screen.MousePointer = vbDefault
+    
     bModified = False
     
 End Sub
@@ -550,7 +555,7 @@ Private Sub Form_Load()
             'Set up the Platform combo box.
             For x = 0 To UBound(PlatformArray)
                 If (DaoRS(5).Value = PlatformArray(x).Platform) Then
-                    cbxClients.ListIndex = x
+                    cbxPlatform.ListIndex = x
                     Exit For
                 End If
             Next

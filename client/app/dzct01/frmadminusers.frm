@@ -29,6 +29,7 @@ Begin VB.Form frmAdminUsers
       Height          =   330
       Left            =   3112
       TabIndex        =   3
+      ToolTipText     =   "Return to main"
       Top             =   1170
       Width           =   1215
    End

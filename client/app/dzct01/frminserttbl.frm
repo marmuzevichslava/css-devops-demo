@@ -77,6 +77,7 @@ Begin VB.Form frmInsertTbl
       Height          =   315
       Left            =   3030
       TabIndex        =   1
+      ToolTipText     =   "Return to main"
       Top             =   3090
       Width           =   1215
    End
