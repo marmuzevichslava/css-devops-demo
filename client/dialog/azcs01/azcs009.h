@@ -54,4 +54,6 @@ WCBFWD(ACS009BUSSaveToBFCD);
 WCBFWD(ChkSaveDir);
 WCBFWD(ChkGenDir);
 WCBFWD(AZCS009BUSUserPredisplay);
+WCBFWD(ChkMapLstFile);
+WCBFWD(Azcs009BusFLMassGenChkBxSelect);
 
