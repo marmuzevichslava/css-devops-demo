@@ -188,8 +188,52 @@ SOURCE=.\azgsstub.c
 !IF  "$(CFG)" == "azgsstub - Win32 Release"
 
 DEP_CPP_AZGSS=\
+	"..\archinc\datatypes.h"\
 	".\azgsstub.h"\
-	{$(INCLUDE)}"\sys\TIMEB.H"\
+	{$(INCLUDE)}"\azgscmn.h"\
+	{$(INCLUDE)}"\azrcsm01.h"\
+	{$(INCLUDE)}"\c1cbase.h"\
+	{$(INCLUDE)}"\c1ceab.h"\
+	{$(INCLUDE)}"\c1cerror.h"\
+	{$(INCLUDE)}"\kcfxk010.h"\
+	{$(INCLUDE)}"\kcfxk012.h"\
+	{$(INCLUDE)}"\kcgxk012.h"\
+	{$(INCLUDE)}"\kctxk010.h"\
+	{$(INCLUDE)}"\kctxk012.h"\
+	{$(INCLUDE)}"\kdswk000.h"\
+	{$(INCLUDE)}"\kdswk012.h"\
+	{$(INCLUDE)}"\kehxk010.h"\
+	{$(INCLUDE)}"\kehxk012.h"\
+	{$(INCLUDE)}"\kelxk012.h"\
+	{$(INCLUDE)}"\kfexk010.h"\
+	{$(INCLUDE)}"\kfexk012.h"\
+	{$(INCLUDE)}"\kglxk000.h"\
+	{$(INCLUDE)}"\kglxk001.h"\
+	{$(INCLUDE)}"\kglxk010.h"\
+	{$(INCLUDE)}"\kglxk012.h"\
+	{$(INCLUDE)}"\kimzk010.h"\
+	{$(INCLUDE)}"\kimzk012.h"\
+	{$(INCLUDE)}"\kioxk010.h"\
+	{$(INCLUDE)}"\kioxk012.h"\
+	{$(INCLUDE)}"\klszk012.h"\
+	{$(INCLUDE)}"\kmnxk012.h"\
+	{$(INCLUDE)}"\kmszk010.h"\
+	{$(INCLUDE)}"\kmszk012.h"\
+	{$(INCLUDE)}"\kpsxk010.h"\
+	{$(INCLUDE)}"\kpsxk012.h"\
+	{$(INCLUDE)}"\kscxk010.h"\
+	{$(INCLUDE)}"\kscxk012.h"\
+	{$(INCLUDE)}"\ksdxk010.h"\
+	{$(INCLUDE)}"\ksdxk012.h"\
+	{$(INCLUDE)}"\kstxk010.h"\
+	{$(INCLUDE)}"\kstxk012.h"\
+	{$(INCLUDE)}"\ktszk012.h"\
+	{$(INCLUDE)}"\kwdxk010.h"\
+	{$(INCLUDE)}"\kxwesatr.h"\
+	{$(INCLUDE)}"\pctcp.h"\
+	{$(INCLUDE)}"\sys\timeb.h"\
+	{$(INCLUDE)}"\sys\types.h"\
+	{$(INCLUDE)}"\tcppipe.h"\
 	
 
 "$(INTDIR)\azgsstub.obj" : $(SOURCE) $(DEP_CPP_AZGSS) "$(INTDIR)"
@@ -199,15 +243,7 @@ DEP_CPP_AZGSS=\
 
 DEP_CPP_AZGSS=\
 	".\azgsstub.h"\
-	{$(INCLUDE)}"\c1cerror.h"\
-	{$(INCLUDE)}"\pctcp.h"\
-	{$(INCLUDE)}"\sys\TIMEB.H"\
-	{$(INCLUDE)}"\sys\types.h"\
 	{$(INCLUDE)}"\tcppipe.h"\
-	
-NODEP_CPP_AZGSS=\
-	"..\data\includes\c1cerror.h"\
-	"..\data\includes\datatypes.h"\
 	
 
 "$(INTDIR)\azgsstub.obj" : $(SOURCE) $(DEP_CPP_AZGSS) "$(INTDIR)"

@@ -1,6 +1,7 @@
 #include "azgsstub.h"
 
-/***/
+/*
+
 #include <sys/timeb.h>
 
 FILE *pFile = NULL;
@@ -23,7 +24,7 @@ VOID LogTime( char *Event, struct _timeb StartTime, struct _timeb EndTime )
 	return;
 }
 
-/***/
+*/
 
 int displaymsg ()
 {
@@ -58,9 +59,9 @@ int main( int argc, char *argv[] )
 	PIPE_HANDLE		hPipe;
 	MESSAGE_HDR		MsgHeader;
 
-/****/
-//struct _timeb StartTime, EndTime;
-/***/
+/*
+struct _timeb StartTime, EndTime;
+*/
 
 	memset( &hPipe, 0, sizeof( PIPE_HANDLE ));
 	memset( &MsgHeader, 0, sizeof( MESSAGE_HDR ));
@@ -126,7 +127,9 @@ int main( int argc, char *argv[] )
 		}
 	}
 
-//	MsgHeader.AgsTxID = 1;
+	/*
+	MsgHeader.AgsTxID = 1;
+	*/
 
 	/* use default info if none are provided */
 	if( strlen( HostName ) == 0 )
@@ -141,66 +144,86 @@ int main( int argc, char *argv[] )
 
 	if( strlen( InData ) == 0 )
 	{
+/*
 		strcpy( InData, "KyBa=0656390004" );
-//		strcpy( InData, "KyBa=0135710139|TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
-//		strcpy( InData, "TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
-//		strcpy( InData, "TblName=CIS00059|NumRecReq=15" );
-//		strcpy( InData, "TblName=C1CMBMSG|TblKey=10000" );
-//		strcpy( InData, "TblName=C1CMBMSG|NumRecReq=200" );
-//		strcpy( InData, "TblName=CIS00059|TblKey=E0004" );
+		strcpy( InData, "KyBa=0135710139|TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
+		strcpy( InData, "TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
+*/
+		strcpy( InData, "TblName=CIS00059|NumRecReq=15" );
+/*
+		strcpy( InData, "TblName=C1CMBMSG|TblKey=10000" );
+		strcpy( InData, "TblName=C1CMBMSG|NumRecReq=200" );
+		strcpy( InData, "TblName=CIS00059|TblKey=E0004" );
+*/
 	}
-
-//	if( MsgHeader.DataLen == 0 )
-//	{
-
-//	}
 
 	if( MsgHeader.TxID == 0 )
 	{
+/*
 		MsgHeader.TxID = 1;
-//		MsgHeader.TxID = 51;
+*/
+		MsgHeader.TxID = 51;
 	}
 
 	if( MsgHeader.TxVersion == 0 )
 	{
 		MsgHeader.TxVersion = 1;
-//		MsgHeader.TxVersion = 2;
+/*
+		MsgHeader.TxVersion = 2;
+*/
 	}
 
 	/*
 	** bdl 10/29/97
 	** data caching settings
 	*/
-	MsgHeader.CacheTimeLen = 60;			
-	MsgHeader.ForceCall    = FALSE;
-	MsgHeader.ForceCache   = TRUE;
+	MsgHeader.CacheTimeLen = 10;			
+	MsgHeader.ForceCall    = TRUE;
+	MsgHeader.ForceCache   = FALSE;
 
    for ( j = 1; j <= Repeat; ++j )
-   {				 
-		sprintf( PipeName, "\\\\%s\\%s", HostName, ServiceName );
-		
+   {			
+
+		sprintf( PipeName, 
+			     "%c%c%s%c%s", 
+				 PIPE_SEPERATOR,
+				 PIPE_SEPERATOR,
+			     HostName, 
+				 PIPE_SEPERATOR,
+				 ServiceName );
+/*
+		sprintf( PipeName, 
+			     "%c%c%s%c%s", 
+				 PIPE_SEPERATOR,
+				 PIPE_SEPERATOR,
+			     "127.0.0.1", 
+				 PIPE_SEPERATOR,
+				 "11001" );
+*/
+
+
 		/* open pipe */
 		printf( "\nTcpPipeOpen... \n" );
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 
 		rc = TcpPipeOpen ( PipeName, &hPipe); 
 
-/***/
-//_ftime( &EndTime );
-//LogTime( ",", StartTime, EndTime );
-/***/
+/*
+_ftime( &EndTime );
+LogTime( ",", StartTime, EndTime );
+*/
 
 		if (!rc)
 		{
 			/* write pipe header */
 			printf( "\nTcpPipeWrite MsgHeader... \n" );
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 			/* data length */
 			MsgHeader.DataLen = 1 + strlen( InData );
 
@@ -208,26 +231,26 @@ int main( int argc, char *argv[] )
 			AZGS02FormatMsgHdr( ORDER_TO_NET, 
 						        &MsgHeader ); 
 
-/***/
-//_ftime( &EndTime );
-//LogTime( ",", StartTime, EndTime );
-/***/
+/*
+_ftime( &EndTime );
+LogTime( ",", StartTime, EndTime );
+*/
 
 			DataLen = sizeof( MESSAGE_HDR );
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 
 			rc = TcpPipeWrite( hPipe,
 							   &MsgHeader,
 							   &DataLen,
 							   0 );
 
-/***/
-//_ftime( &EndTime );
-//LogTime( ",", StartTime, EndTime );
-/***/
+/*
+_ftime( &EndTime );
+LogTime( ",", StartTime, EndTime );
+*/
 
 			if ( !rc )
 			{
@@ -236,19 +259,19 @@ int main( int argc, char *argv[] )
 
 				DataLen = 1 + strlen( InData );
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 
 				rc = TcpPipeWrite( hPipe,
 								   &InData,
 								   &DataLen,
 								   0 );
 
-/***/
-//_ftime( &EndTime );
-//LogTime( ",", StartTime, EndTime );
-/***/
+/*
+_ftime( &EndTime );
+LogTime( ",", StartTime, EndTime );
+*/
 
 				if (!rc)
 				{
@@ -257,19 +280,19 @@ int main( int argc, char *argv[] )
 
 					DataLen = sizeof( MESSAGE_HDR );
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 
 					rc = TcpPipeRead ( hPipe,
 									   &MsgHeader,
 									   &DataLen,
 									   0 );
 
-/***/
-//_ftime( &EndTime );
-//LogTime( ",", StartTime, EndTime );
-/***/
+/*
+_ftime( &EndTime );
+LogTime( ",", StartTime, EndTime );
+*/
 
 
 					if (!rc)
@@ -285,31 +308,28 @@ int main( int argc, char *argv[] )
 						/* read retrun data header from pipe */
 						printf( "\nTcpPipeRead Data... \n" );
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 						
 						rc = TcpPipeRead ( hPipe,
 										   pOutData,
 										   &DataLen,
 										   0 );
-/***/
-//_ftime( &EndTime );
-//LogTime( ",", StartTime, EndTime );
-/***/
+/*
+_ftime( &EndTime );
+LogTime( ",", StartTime, EndTime );
+*/
 
-/***/
-//_ftime( &StartTime );
-/***/	
+/*
+_ftime( &StartTime );
+*/	
 						
 						rc = TcpPipeClose ( hPipe );
-/***/
-//_ftime( &EndTime );
-//LogTime( "\n", StartTime, EndTime );
-/***/
-
-
-
+/*
+_ftime( &EndTime );
+LogTime( "\n", StartTime, EndTime );
+*/
 					
 						if (!rc)
 						{
