@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA002                           *
-*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                          Generated on: Sat Nov 02 10:40:24 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -18,32 +18,40 @@
 ****************************************************************************/
 
 #define CdAccessType_FID                               0
-#define KyBldgNo_FID                                   1
-#define TsKyExtract_FID                                2
-#define TxExtractRemarks2_FID                          3
-#define KyPremNo_FID                                   4
-#define FlWindowMod_FID                                5
-#define KyBa_FID                                       6
+#define KyBa_FID                                       1
+#define KyPremNo_FID                                   2
+#define KyBldgNo_FID                                   3
+#define TsKyExtract_FID                                4
+#define TxExtractRemarks2_FID                          5
+#define FlWindowMod_FID                                6
 
 /***************************************************************************
 *  Widget IDs                                                              *
 ****************************************************************************/
 
 #define CdAccessType_WID                               8000
-#define KyBldgNo_WID                                   101
-#define TsKyExtract_WID                                102
-#define TxExtractRemarks2_WID                          103
-#define KyPremNo_WID                                   104
-#define FlWindowMod_WID                                105
-#define KyBa_WID                                       106
+#define KyBa_WID                                       101
+#define KyPremNo_WID                                   102
+#define KyBldgNo_WID                                   103
+#define TsKyExtract_WID                                104
+#define TxExtractRemarks2_WID                          105
+#define FlWindowMod_WID                                106
 
 /***************************************************************************
 *  Command IDs                                                             *
 ****************************************************************************/
 
-#define CancelPB_CMD                                   1000
+#define ValidPB_CMD                                    1000
 #define OKPB_CMD                                       1001
-#define ValidPB_CMD                                    1002
+#define CancelPB_CMD                                   1002
+#define EditMN_CMD                                     200
+#define Copy_CMD                                       3002
+#define HelpMN_CMD                                     201
+#define HelpforHelpMN_CMD                              1003
+#define ExtendedHelpMN_CMD                             1004
+#define KeysHelpMN_CMD                                 1005
+#define HelpIndexMN_CMD                                1006
+#define AboutMN_CMD                                    1007
 
 /***************************************************************************
 *  Radio Button Literals                                                   *

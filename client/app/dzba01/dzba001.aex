@@ -345,9 +345,13 @@ AEXPROC( ExitCsrNotification )
 			nTableCounter++;
 		}
 
-		fprintf( LogFile, "\n\nRows Returned for account %0.0lf = %d\n\n\n",
+		fprintf( LogFile, "\n\nRows Returned for account %0.0lf = %d\n\n",
 		                  BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo,
 				          nTotalReturnCounter);
+
+		fprintf( LogFile, "Extraction timestamp = %s\n\n\n",
+		                  BFCD_SWAT01Luw.SWAT01BData[0].TsKyExtract);
+
 
         fflush(LogFile);
 
@@ -1312,17 +1316,17 @@ AEXPROC( ExitElbRegister )
          CMN_WIDGET_NAME_LEN,
          CMN_ARCH_PARMS);
 
-    CmnStrCopy
-        (ElbRegParms.szElbDeletePbName,
-         "DeletePB",
-         CMN_WIDGET_NAME_LEN,
-         CMN_ARCH_PARMS);
+//    CmnStrCopy
+//        (ElbRegParms.szElbDeletePbName,
+//        "DeletePB",
+//         CMN_WIDGET_NAME_LEN,
+//         CMN_ARCH_PARMS);
 
-    CmnStrCopy
-       (ElbRegParms.szElbUndeletePbName,
-         "UndeletePB",
-         CMN_WIDGET_NAME_LEN,
-         CMN_ARCH_PARMS);
+//    CmnStrCopy
+//       (ElbRegParms.szElbUndeletePbName,
+//         "UndeletePB",
+//         CMN_WIDGET_NAME_LEN,
+//         CMN_ARCH_PARMS);
 
 
 
@@ -1381,6 +1385,7 @@ AEXPROC( ExitElb1CloseAfterSave )
     _ExtractInsertLBRow ExtractInsertLBRow; /* Instance of LB Row */
     USHORT              i = 0;
 	CHAR                KyBaStrMask[12]; /* Masked String Format */
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
 
     /* Set up pointer to child window OUT layout _SWAT01BOUTPUT */
     _SWAT01BOUTPUT *pSWAT01BOutput;
@@ -1459,13 +1464,20 @@ AEXPROC( ExitElb1CloseAfterSave )
 
     /* Add the row to the ELB */
 
-    NumberOfRows++;
+	if (ChangeFlag == FALSE)
+	{
+       NumberOfRows++;
+	}
 
     CmnElbAssignRowData( "ExtractInsertLB",
                           EAB_CurrElbRowNumber,
                           &ExtractInsertLBRow,
                           NULL,
                           CMN_ARCH_PARMS);
+
+    FndCommandEnable( CBI_hwnd,
+                       "DeletePB",
+    		           &FndGenErrorBlock);
 
 	FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
                            pEAIA,
@@ -1558,44 +1570,11 @@ AEXPROC( ExitElb1CloseAfterCncl )
 
 AEXPROC( ExitElb1BuildInstName )
 {
-    USHORT           FndGenRC = 0,
-                     i = 0;
- //   _FND_ERROR_BLOCK FndGenErrorBlock;
-    _ExtractInsertLBRow  ExtractInsertLBRow;   /* Instance of LB Row */
+    USHORT            FndGenRC = 0;
+//    _FND_ERROR_BLOCK  FndGenErrorBlock;
 
 
-    /* Declare a character array to contain the instance name to build. */
 
-    CHAR       InstName[KYEXTRACTNOA_LEN - 1 +
-                        TSKYEXTRACT_LEN];
-
-
-    /* Initialize InstName */
-    memset ( &InstName, 0, sizeof(InstName));
-
-    /* Query LB columns for mpt number */
-    
-    CmnElbRowQueryData(    EAB_CurrElbWidgetName,
-                           EAB_CurrElbRowNumber,
-                           sizeof(_ExtractInsertLBRow),
-                           &ExtractInsertLBRow,
-                           CMN_ARCH_PARMS );
-
-    CmnStrBuildStr(
-                 CMN_ARCH_PARMS,
-                 InstName,
-                 sizeof(InstName),
-                 CMN_NUM_SOURCES_2,
-                 CMN_TYPE_STRING,
-                   KYEXTRACTNOA_LEN,
-                   ExtractInsertLBRow._ExtractInsertLBKyExtractNoAData,
-                 CMN_TYPE_STRING,
-                   TSKYEXTRACT_LEN,
-                   ExtractInsertLBRow._ExtractInsertLBTsKyExtractData);
-
-
-    /* Call CmnElbAssignChgWinInstName passing the instance name built */
-    CmnElbAssignChgWinInstName (InstName, CMN_ARCH_PARMS);
 
     return CMN_SUCCESS;
 

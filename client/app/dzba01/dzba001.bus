@@ -13,7 +13,9 @@
 **                     DZBA001BusLBSelect
 **					   DZBA001BusProcessMNEnable
 **                     DZBA001DelPbClk
-**
+**                     DZBA001UndelPbClk
+**                     DZBA001AddPbClk
+**                     DZBA001ChgPbClk
 **
 ** REVISION HISTORY
 **
@@ -75,6 +77,8 @@ WCBPROC( DZBA001BusWindowPredisp )
 	/* The Global variable that will hold the password is cleared */
     memset(GlobalHoldPassword, 0, sizeof(GlobalHoldPassword));
 
+    memset(&DeletedRows, 0, sizeof(DeletedRows) );
+
     /* Open the report file */
 
 	LogFile = fopen( REPORT_FILE , "w");
@@ -110,6 +114,14 @@ WCBPROC( DZBA001BusWindowPredisp )
                      LT_Ext_Ins_Mode,
                      &FndGenErrorBlock);
 
+    /* Disable the nonarchitected pushbuttons */
+    FndCommandDisable( CBI_hwnd,
+                       "UndeletePB",
+    		           &FndGenErrorBlock);
+
+    FndCommandDisable( CBI_hwnd,
+                       "DeletePB",
+    		           &FndGenErrorBlock);
 
 
     /* SET THE VALUE OF THE COMBO BOXES */
@@ -154,21 +166,6 @@ WCBPROC( DZBA001BusWindowPredisp )
                  CMN_ARCH_PARMS );
 
 
-
-     /* Default the Extract DB to the first DB in the Codes Table */
-//    CmnComboSetValue("TxExtractDbId",
-//                     "TxGenDecode1",
-//                     "CIS34014",
-//                     CdExtractDbId,
-//                     CMN_ARCH_PARMS);
-
-    /* Default the Insert DB to the first DB in the Codes Table */
-//    CmnComboSetValue("TxInsertDbId",
-//                     "TxGenDecode2",
-//                     "CIS34015",
-//                     CdInsertDbId,
-//                     CMN_ARCH_PARMS);
-
 	/* Call Vld Function to Set Correct Attributes for each DB Info Combo Box */
     FndGenRC = DZBA001VldCDExtInsFC( pEventInfo,
                                     pEAIA,
@@ -187,11 +184,6 @@ WCBPROC( DZBA001BusWindowPredisp )
                           CMN_ARCH_PARMS );
 
     /* Show the actual window */
-
-	FndWindowCenter ( CBI_hwnd,
-                      FND_WINDOW_DESKTOP,
-                      &FndGenErrorBlock);
-
 
     FndWindowShow( CBI_hwnd,
                    &FndGenErrorBlock);
@@ -345,16 +337,37 @@ WCBPROC( DZBA001BusProcessMNClick )
 		| that have been holding them.
 		*/
 
+       
        CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId,
 	               GlobalHoldPassword,
 				   sizeof(BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId),
 				   CMN_ARCH_PARMS);
+       
 
        CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId,
 	               GlobalHoldPasswordB,
 				   sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
 				   CMN_ARCH_PARMS);
+       
+       /*
+       CmnStrCat( CMN_ARCH_PARMS,
+                  BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId,
+			      sizeof(BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId),
+                  3,
+                  GlobalHoldPassword,
+                  AT_STRING,
+                  BFCD_SWAT01Luw.SWAT01AData.TxExtractDbId);
 
+
+       CmnStrCat( CMN_ARCH_PARMS,
+                  BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId,
+			      sizeof(BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId),
+                  3,
+                  GlobalHoldPasswordB,
+                  AT_STRING,
+                  BFCD_SWAT01Luw.SWAT01AData.TxInsertDbId);
+
+       */
 
        FndFieldQueryValue(CBI_hwnd,
                     "TxExtractRemarks2",
@@ -813,6 +826,20 @@ WCBPROC( DZBA001DelPbClk )
                                             &RowNumber,
                                             &FndGenErrorBlock);
 
+    /* The structure holding all deleted material is populated */
+
+    DeletedIndex = DeletedIndex + 1;     
+
+    memset(&DeletedRows[DeletedIndex], 0, sizeof(_ExtractInsertLBRow) );
+
+    FndGenRC = FndLstBoxRowQueryData ( CBI_hwnd,
+                                       "ExtractInsertLB",
+                                         RowNumber,
+                                         sizeof(_ExtractInsertLBRow),
+                                         &DeletedRows[DeletedIndex],
+                                         &FndGenErrorBlock);
+
+
     /* Delete the selected row. */
     FndGenRC = FndLstBoxRowDelete ( CBI_hwnd,
                                     "ExtractInsertLB",
@@ -831,6 +858,154 @@ WCBPROC( DZBA001DelPbClk )
                            pWindContextData,
                            pABHI);
 
+    /* Enable undelete pushbutton */
+    FndCommandEnable( CBI_hwnd,
+                       "UndeletePB",
+    		           &FndGenErrorBlock);
+
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001UndelPbClk
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : CmnStrCopy
+**                     CmnCsrCall
+**                     FndFieldQueryValue
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  KCHASE                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001UndelPbClk )
+{
+
+    USHORT            FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+
+    CmnElbAssignRowData( "ExtractInsertLB",
+                          NumberOfRows,
+                          &DeletedRows[DeletedIndex],
+                          NULL,
+                          CMN_ARCH_PARMS);
+
+    NumberOfRows++;
+
+    DeletedIndex = DeletedIndex - 1;
+
+    if (DeletedIndex == 0)
+    {
+		      FndCommandDisable( CBI_hwnd,
+		                         "UndeletePB",
+						         &FndGenErrorBlock);
+    }
+
+
+    return CMN_SUCCESS;
+}
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001AddPbClk
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  KCHASE                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001AddPbClk )
+{
+
+    USHORT            FndGenRC = 0;
+//    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+    ChangeFlag = FALSE;
+
+
+    return CMN_SUCCESS;
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001AddPbClk
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : 
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  KCHASE                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001ChgPbClk )
+{
+
+    USHORT            FndGenRC = 0;
+//    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+
+
+	ChangeFlag = TRUE;
 
 
     return CMN_SUCCESS;

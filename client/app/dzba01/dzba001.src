@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZBA001                           *
- *                         Generated on: Mon Oct 07 18:02:43 1996          *
+ *                         Generated on: Mon Nov 04 09:56:04 1996          *
  *                                   by: IPEREZAR                          *
  *                                                                         *
  ***************************************************************************/
@@ -3230,6 +3230,13 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
+FndGenRC = DZBA001AddPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
 FndGenRC = CmnArchTerm( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -3296,6 +3303,13 @@ unsigned short           FndGenRC = FND_SUCCESS;
 CMN_ARCH_EXIT_INITIALIZE
 
 FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZBA001ChgPbClk( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -3447,6 +3461,13 @@ unsigned short           FndGenRC = FND_SUCCESS;
 CMN_ARCH_EXIT_INITIALIZE
 
 FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZBA001UndelPbClk( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,

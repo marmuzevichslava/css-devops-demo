@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA001                           *
-*                          Generated on: Mon Oct 07 18:02:43 1996          *
+*                          Generated on: Mon Nov 04 09:02:22 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -158,7 +158,7 @@ Begin  /* controls */
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,148,139,35,12
+              ,147,139,35,12
 
    CONTROL "",109,
               FND_ENTRYFIELD,
@@ -814,9 +814,9 @@ End
 
 DZBA001MenuID MENU PRELOAD
 Begin  /*  menus  */
-     POPUP "Order"
+     POPUP "&Account"
 Begin
-     MENUITEM "&Process\tCtrl P",1004
+     MENUITEM "&Process\tCtrl+P",1004
      MENUITEM "E&xit\tCtrl+X",1005
 End
      POPUP "&Edit"

@@ -67,12 +67,29 @@
 /* This character appears on the password field when the user keys in */
 #define AZSS001_PASSWORD_CHAR   '*'
 
+/* Concatenation of password and target database */
+#define AT_STRING "@"
+
+
 /***************************************************************************/
 /* Application global variables                                            */
 /***************************************************************************/
 
 USHORT NumberOfRows = 0;
 USHORT RowQueryNumber = 0;
+
+/* The following are an array of structures that hold all deleted items, and the
+** index of that structure.
+**/
+
+BOOL   ChangeFlag = FALSE;
+
+
+BOOL   DeleteFlag = FALSE;
+USHORT DeletedIndex = 0;
+
+_ExtractInsertLBRow DeletedRows[NUMEXTRACTINSERTLBROWS];
+
 
 // This clobal character array will hold the Extract Database Password
 CHAR GlobalHoldPassword[TXEXTRACTPSSWDID_LEN];

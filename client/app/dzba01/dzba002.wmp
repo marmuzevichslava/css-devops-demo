@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZBA002                           *
-*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                          Generated on: Sat Nov 02 10:40:24 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -38,6 +38,12 @@ unsigned char _grpFiller;
    char _CdAccessTypeData[3];
 #define CdAccessTypeData              pWesMap->_CdAccessTypeData
 
+   char _KyBaData[11];
+#define KyBaData              pWesMap->_KyBaData
+
+   unsigned long _KyPremNoData;
+#define KyPremNoData              pWesMap->_KyPremNoData
+
    unsigned long _KyBldgNoData;
 #define KyBldgNoData              pWesMap->_KyBldgNoData
 
@@ -47,14 +53,8 @@ unsigned char _grpFiller;
    char _TxExtractRemarks2Data[81];
 #define TxExtractRemarks2Data              pWesMap->_TxExtractRemarks2Data
 
-   unsigned long _KyPremNoData;
-#define KyPremNoData              pWesMap->_KyPremNoData
-
    char _FlWindowModData[2];
 #define FlWindowModData              pWesMap->_FlWindowModData
-
-   char _KyBaData[11];
-#define KyBaData              pWesMap->_KyBaData
 
 
     WESFLDCTL _CdAccessTypeCtl;
@@ -63,6 +63,20 @@ unsigned char _grpFiller;
 #define CdAccessTypeRights                     pWesMap->_CdAccessTypeCtl.Rights
 #define CdAccessTypeMsg                        pWesMap->_CdAccessTypeCtl.Msg
 #define CdAccessTypeCursor                     pWesMap->_CdAccessTypeCtl.Cursor
+
+    WESFLDCTL _KyBaCtl;
+#define KyBaAttr                       pWesMap->_KyBaCtl.Attr
+#define KyBaStatus                     pWesMap->_KyBaCtl.Status
+#define KyBaRights                     pWesMap->_KyBaCtl.Rights
+#define KyBaMsg                        pWesMap->_KyBaCtl.Msg
+#define KyBaCursor                     pWesMap->_KyBaCtl.Cursor
+
+    WESFLDCTL _KyPremNoCtl;
+#define KyPremNoAttr                       pWesMap->_KyPremNoCtl.Attr
+#define KyPremNoStatus                     pWesMap->_KyPremNoCtl.Status
+#define KyPremNoRights                     pWesMap->_KyPremNoCtl.Rights
+#define KyPremNoMsg                        pWesMap->_KyPremNoCtl.Msg
+#define KyPremNoCursor                     pWesMap->_KyPremNoCtl.Cursor
 
     WESFLDCTL _KyBldgNoCtl;
 #define KyBldgNoAttr                       pWesMap->_KyBldgNoCtl.Attr
@@ -85,25 +99,11 @@ unsigned char _grpFiller;
 #define TxExtractRemarks2Msg                        pWesMap->_TxExtractRemarks2Ctl.Msg
 #define TxExtractRemarks2Cursor                     pWesMap->_TxExtractRemarks2Ctl.Cursor
 
-    WESFLDCTL _KyPremNoCtl;
-#define KyPremNoAttr                       pWesMap->_KyPremNoCtl.Attr
-#define KyPremNoStatus                     pWesMap->_KyPremNoCtl.Status
-#define KyPremNoRights                     pWesMap->_KyPremNoCtl.Rights
-#define KyPremNoMsg                        pWesMap->_KyPremNoCtl.Msg
-#define KyPremNoCursor                     pWesMap->_KyPremNoCtl.Cursor
-
     WESFLDCTL _FlWindowModCtl;
 #define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
 #define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
 #define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
 #define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
 #define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
-
-    WESFLDCTL _KyBaCtl;
-#define KyBaAttr                       pWesMap->_KyBaCtl.Attr
-#define KyBaStatus                     pWesMap->_KyBaCtl.Status
-#define KyBaRights                     pWesMap->_KyBaCtl.Rights
-#define KyBaMsg                        pWesMap->_KyBaCtl.Msg
-#define KyBaCursor                     pWesMap->_KyBaCtl.Cursor
 };
 

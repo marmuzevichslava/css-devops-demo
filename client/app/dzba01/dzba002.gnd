@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: DZBA002                           *
-*                          Generated on: Thu Aug 29 17:59:08 1996          *
+*                          Generated on: Sat Nov 02 10:40:24 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -34,6 +34,15 @@ WCBFWD (Wiiikhia1001_Dde_Notification)
 WCBFWD (Wiiikhia1335_Field_Change)
 WCBFWD (Wiiikhia1342_Button_Click)
 WCBFWD (Wiiikhia1347_Help_Requested)
+WCBFWD (Wiiikhia5628_Field_Change)
+WCBFWD (Wiiikhia1171_Field_Change)
+WCBFWD (Wiiikhia1177_Field_Exit)
+WCBFWD (Wiiikhia1182_Field_Enter)
+WCBFWD (Wiiikhia1185_Field_Nowinvalid)
+WCBFWD (Wiiikhia1190_Field_Spinup)
+WCBFWD (Wiiikhia1193_Field_Spindown)
+WCBFWD (Wiiikhia1199_Field_Spinend)
+WCBFWD (Wiiikhia1209_Help_Requested)
 WCBFWD (Wiiikhia1116_Field_Change)
 WCBFWD (Wiiikhia1124_Field_Exit)
 WCBFWD (Wiiikhia1128_Field_Enter)
@@ -58,18 +67,8 @@ WCBFWD (Wiiikhia1296_Field_Spinup)
 WCBFWD (Wiiikhia1301_Field_Spindown)
 WCBFWD (Wiiikhia1307_Field_Spinend)
 WCBFWD (Wiiikhia1315_Help_Requested)
-WCBFWD (Wiiikhia1365_Click)
-WCBFWD (Wiiikhia1372_Help_Requested)
-WCBFWD (Wiiikhia1391_Click)
-WCBFWD (Wiiikhia1396_Help_Requested)
-WCBFWD (Wiiikhia1171_Field_Change)
-WCBFWD (Wiiikhia1177_Field_Exit)
-WCBFWD (Wiiikhia1182_Field_Enter)
-WCBFWD (Wiiikhia1185_Field_Nowinvalid)
-WCBFWD (Wiiikhia1190_Field_Spinup)
-WCBFWD (Wiiikhia1193_Field_Spindown)
-WCBFWD (Wiiikhia1199_Field_Spinend)
-WCBFWD (Wiiikhia1209_Help_Requested)
+WCBFWD (Wiiikhia9589_Click)
+WCBFWD (Wiiikhia9615_Help_Requested)
 WCBFWD (Wiiikhia0944_Field_Change)
 WCBFWD (Wiiikhia1014_Field_Exit)
 WCBFWD (Wiiikhia1018_Field_Enter)
@@ -78,9 +77,9 @@ WCBFWD (Wiiikhia1026_Field_Spinup)
 WCBFWD (Wiiikhia1030_Field_Spindown)
 WCBFWD (Wiiikhia1034_Field_Spinend)
 WCBFWD (Wiiikhia1037_Help_Requested)
-WCBFWD (Wiiikhia9589_Click)
-WCBFWD (Wiiikhia9615_Help_Requested)
-WCBFWD (Wiiikhia5628_Field_Change)
+WCBFWD (Wiiikhia0762_Click)
+WCBFWD (Wiiikhia1365_Click)
+WCBFWD (Wiiikhia1372_Help_Requested)
 
 /****************************************************************************
  Window Dispatch Table
@@ -114,6 +113,15 @@ WDGDISPTBL DZBA002WidgDisp[] =
     {CdAccessType_FID, FIELD_CHANGE, Wiiikhia1335_Field_Change},
     {CdAccessType_FID, BUTTON_CLICK, Wiiikhia1342_Button_Click},
     {CdAccessType_FID, FND_HELP_REQUESTED, Wiiikhia1347_Help_Requested},
+    {KyBa_FID, FIELD_CHANGE, Wiiikhia5628_Field_Change},
+    {KyPremNo_FID, FIELD_CHANGE, Wiiikhia1171_Field_Change},
+    {KyPremNo_FID, FIELD_EXIT, Wiiikhia1177_Field_Exit},
+    {KyPremNo_FID, FIELD_ENTER, Wiiikhia1182_Field_Enter},
+    {KyPremNo_FID, FIELD_NOWINVALID, Wiiikhia1185_Field_Nowinvalid},
+    {KyPremNo_FID, FIELD_SPINUP, Wiiikhia1190_Field_Spinup},
+    {KyPremNo_FID, FIELD_SPINDOWN, Wiiikhia1193_Field_Spindown},
+    {KyPremNo_FID, FIELD_SPINEND, Wiiikhia1199_Field_Spinend},
+    {KyPremNo_FID, FND_HELP_REQUESTED, Wiiikhia1209_Help_Requested},
     {KyBldgNo_FID, FIELD_CHANGE, Wiiikhia1116_Field_Change},
     {KyBldgNo_FID, FIELD_EXIT, Wiiikhia1124_Field_Exit},
     {KyBldgNo_FID, FIELD_ENTER, Wiiikhia1128_Field_Enter},
@@ -138,18 +146,8 @@ WDGDISPTBL DZBA002WidgDisp[] =
     {TxExtractRemarks2_FID, FIELD_SPINDOWN, Wiiikhia1301_Field_Spindown},
     {TxExtractRemarks2_FID, FIELD_SPINEND, Wiiikhia1307_Field_Spinend},
     {TxExtractRemarks2_FID, FND_HELP_REQUESTED, Wiiikhia1315_Help_Requested},
-    {CancelPB_CMD, BUTTON_CLICK, Wiiikhia1365_Click},
-    {CancelPB_CMD, FND_HELP_REQUESTED, Wiiikhia1372_Help_Requested},
-    {OKPB_CMD, BUTTON_CLICK, Wiiikhia1391_Click},
-    {OKPB_CMD, FND_HELP_REQUESTED, Wiiikhia1396_Help_Requested},
-    {KyPremNo_FID, FIELD_CHANGE, Wiiikhia1171_Field_Change},
-    {KyPremNo_FID, FIELD_EXIT, Wiiikhia1177_Field_Exit},
-    {KyPremNo_FID, FIELD_ENTER, Wiiikhia1182_Field_Enter},
-    {KyPremNo_FID, FIELD_NOWINVALID, Wiiikhia1185_Field_Nowinvalid},
-    {KyPremNo_FID, FIELD_SPINUP, Wiiikhia1190_Field_Spinup},
-    {KyPremNo_FID, FIELD_SPINDOWN, Wiiikhia1193_Field_Spindown},
-    {KyPremNo_FID, FIELD_SPINEND, Wiiikhia1199_Field_Spinend},
-    {KyPremNo_FID, FND_HELP_REQUESTED, Wiiikhia1209_Help_Requested},
+    {ValidPB_CMD, BUTTON_CLICK, Wiiikhia9589_Click},
+    {ValidPB_CMD, FND_HELP_REQUESTED, Wiiikhia9615_Help_Requested},
     {FlWindowMod_FID, FIELD_CHANGE, Wiiikhia0944_Field_Change},
     {FlWindowMod_FID, FIELD_EXIT, Wiiikhia1014_Field_Exit},
     {FlWindowMod_FID, FIELD_ENTER, Wiiikhia1018_Field_Enter},
@@ -158,9 +156,9 @@ WDGDISPTBL DZBA002WidgDisp[] =
     {FlWindowMod_FID, FIELD_SPINDOWN, Wiiikhia1030_Field_Spindown},
     {FlWindowMod_FID, FIELD_SPINEND, Wiiikhia1034_Field_Spinend},
     {FlWindowMod_FID, FND_HELP_REQUESTED, Wiiikhia1037_Help_Requested},
-    {ValidPB_CMD, BUTTON_CLICK, Wiiikhia9589_Click},
-    {ValidPB_CMD, FND_HELP_REQUESTED, Wiiikhia9615_Help_Requested},
-    {KyBa_FID, FIELD_CHANGE, Wiiikhia5628_Field_Change},
+    {OKPB_CMD, BUTTON_CLICK, Wiiikhia0762_Click},
+    {CancelPB_CMD, BUTTON_CLICK, Wiiikhia1365_Click},
+    {CancelPB_CMD, FND_HELP_REQUESTED, Wiiikhia1372_Help_Requested},
     {0,0,0}
 };
 
@@ -171,12 +169,12 @@ WDGDISPTBL DZBA002WidgDisp[] =
 FLDDEFTBLENTRY DZBA002FieldDefTbl[] =
 {
     { "CdAccessType", CdAccessType_FID },
+    { "KyBa", KyBa_FID },
+    { "KyPremNo", KyPremNo_FID },
     { "KyBldgNo", KyBldgNo_FID },
     { "TsKyExtract", TsKyExtract_FID },
     { "TxExtractRemarks2", TxExtractRemarks2_FID },
-    { "KyPremNo", KyPremNo_FID },
     { "FlWindowMod", FlWindowMod_FID },
-    { "KyBa", KyBa_FID },
     { "", 0}
 };
 
@@ -187,9 +185,15 @@ FLDDEFTBLENTRY DZBA002FieldDefTbl[] =
 
 CMDDEFTBLENTRY DZBA002CommandDefTbl[] =
 {
-    { "CancelPB", CancelPB_CMD },
-    { "OKPB", OKPB_CMD },
     { "ValidPB", ValidPB_CMD },
+    { "OKPB", OKPB_CMD },
+    { "CancelPB", CancelPB_CMD },
+    { "Copy", Copy_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
     { "", 0}
 };
 
@@ -200,7 +204,7 @@ CMDDEFTBLENTRY DZBA002CommandDefTbl[] =
 
 WCTHEADER  DZBA002WCTHeader =
 { 
-    "30", 7, 7, 3,
+    "30", 7, 7, 11,
     sizeof(struct _DZBA002WesMap),
     offsetof(struct _DZBA002WesMap, _CdAccessTypeData),
     offsetof(struct _DZBA002WesMap, _CdAccessTypeCtl),
@@ -222,6 +226,22 @@ WCTFIELD DZBA002WCTFieldTbl[] =
       offsetof(struct _DZBA002WesMap, _CdAccessTypeCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "KyBa", KyBa_FID,
+      KyBa_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZBA002WesMap, _KyBaData),
+      10, 0, offsetof(struct _DZBA002WesMap, _KyBaData),
+      offsetof(struct _DZBA002WesMap, _KyBaCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDNUMENTRYFLD, "KyPremNo", KyPremNo_FID,
+      KyPremNo_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZBA002WesMap, _KyPremNoData),
+      9, 0, offsetof(struct _DZBA002WesMap, _KyPremNoData),
+      offsetof(struct _DZBA002WesMap, _KyPremNoCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
   
     { WTP_FNDNUMENTRYFLD, "KyBldgNo", KyBldgNo_FID,
       KyBldgNo_WID, FND_IT_ULONG,
@@ -247,14 +267,6 @@ WCTFIELD DZBA002WCTFieldTbl[] =
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_FNDNUMENTRYFLD, "KyPremNo", KyPremNo_FID,
-      KyPremNo_WID, FND_IT_ULONG,
-      SIZEOF(struct _DZBA002WesMap, _KyPremNoData),
-      9, 0, offsetof(struct _DZBA002WesMap, _KyPremNoData),
-      offsetof(struct _DZBA002WesMap, _KyPremNoCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD | RGT_HIDDEN_BIT},
-  
     { WTP_FNDENTRYFLD, "FlWindowMod", FlWindowMod_FID,
       FlWindowMod_WID, FND_IT_CHAR,
       SIZEOF(struct _DZBA002WesMap, _FlWindowModData),
@@ -262,14 +274,6 @@ WCTFIELD DZBA002WCTFieldTbl[] =
       offsetof(struct _DZBA002WesMap, _FlWindowModCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD | RGT_HIDDEN_BIT},
-  
-    { WTP_FNDENTRYFLD, "KyBa", KyBa_FID,
-      KyBa_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZBA002WesMap, _KyBaData),
-      10, 0, offsetof(struct _DZBA002WesMap, _KyBaData),
-      offsetof(struct _DZBA002WesMap, _KyBaCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
@@ -282,14 +286,38 @@ WCTFIELD DZBA002WCTFieldTbl[] =
 WCTCOMMAND DZBA002WCTCommandTbl[] =
 {
 
-    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+    { WTP_PUSHBUTTON, "ValidPB", ValidPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_PUSHBUTTON, "ValidPB", ValidPB_CMD,
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
 };
@@ -303,7 +331,7 @@ WINDEFTBLENTRY DZBA002IDWindowDefn =
 {
     "30", DZBA002ID, "", WTP_WESWINDOW,
     WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZBA002ID,
-    DZBA002AccelID, WOP_NOMENU, WOP_NOICON, 0,
+    DZBA002AccelID, DZBA002MenuID, WOP_NOICON, 0,
     DZBA002WidgDisp, DZBA002WindDisp, FND_WINCONTEXT_LEN,
     0, 0, &DZBA002WCTHeader, DZBA002WCTFieldTbl, 
     DZBA002WCTCommandTbl, NULL, 24, 0, 0
