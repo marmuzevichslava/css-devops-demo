@@ -314,8 +314,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Public OldPath As String
 
-
-
 '***************************************************************************************************************
 Private Sub efPath_Change()
 '***************************************************************************************************************
@@ -478,7 +476,8 @@ Private Sub optExportCISOnly_Click()
     cbClient.Enabled = False
     SelectTable.Enabled = False
     
-    efExportFile.Text = "TCODF010.DAT"
+    efExportFile.Text = "Multiple Export - Filename Will Be Provided."
+    efExportFile.Enabled = False
     
     'cmdFind.Enabled = False
     mnuFind.Enabled = False
@@ -515,9 +514,6 @@ Private Sub optExportCustom_Click()
     
 End Sub
 
-
-
-
 '***************************************************************************************************************
 Public Sub LoadClients()
 '***************************************************************************************************************
@@ -542,7 +538,6 @@ Public Sub LoadClients()
 
 End Sub
 
-
 '***************************************************************************************************************
 Public Sub LoadReleases()
 '***************************************************************************************************************
@@ -565,7 +560,6 @@ Public Sub LoadReleases()
     cbRelease.Enabled = True
 
 End Sub
-
 
 '***************************************************************************************************************
 Public Sub LoadApplications()
@@ -620,9 +614,6 @@ Public Sub LoadPlatforms()
 
 End Sub
 
-
-
-
 '***************************************************************************************************************
 Private Sub SelectTable_Click()
 '***************************************************************************************************************
@@ -632,11 +623,13 @@ Private Sub SelectTable_Click()
         
     'One item selected
     ElseIf (SelectTable.SelCount = 1) Then
+        efExportFile.Enabled = True
         efExportFile.Text = Trim$(SelectTable.Text) & ".DAT"
     
     'Multiple tables selected.
     Else
-        efExportFile.Text = "TCODF010.DAT"
+        efExportFile.Text = "Multiple Export - Filename Will Be Provided."
+        efExportFile.Enabled = False
     End If
     
     Call SetExportButtonState
@@ -645,13 +638,13 @@ End Sub
 '***************************************************************************************************************
 Public Sub SetExportButtonState()
 '***************************************************************************************************************
-
+    
     If ((Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
         mnuExport.Enabled = True
     Else
         mnuExport.Enabled = False
     End If
-
+       
     If (optExportCISOnly = True) Then
         mnuFind.Enabled = False
     Else

@@ -186,11 +186,7 @@ Public Sub PopulateCodesTableListView()
     frmMain.lvListView.ColumnHeaders.Add , , "Drives Client Logic", 1400, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
-    
-    'UnHide Check boxes
-    frmMain.chkStatic.Visible = True
-    frmMain.txtStatic.Visible = True
-
+      
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
     frmMain.Refresh
 
@@ -290,10 +286,6 @@ Public Sub PopulateMessageBoxListView()
         frmMain.lvListView.ColumnHeaders.Add , , "Buttons", 2500, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
 
-    'Hide Check boxes
-        frmMain.chkStatic.Visible = False
-        frmMain.txtStatic.Visible = False
-
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
     frmMain.Refresh
 
@@ -378,10 +370,6 @@ Public Sub PopulateUerrMessagesListView()
         frmMain.lvListView.ColumnHeaders.Add , , "Language", 700, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
 
-    'Hide Check boxes
-        frmMain.chkStatic.Visible = False
-        frmMain.txtStatic.Visible = False
-
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
     frmMain.Refresh
 
@@ -455,7 +443,7 @@ Public Sub PopulateStaticCodesListView()
     frmMain.lvListView.ColumnHeaders.Clear
 
     'Add the column headings.
-    frmMain.lvListView.ColumnHeaders.Add , , "Codes Table Name", 3000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Codes Table Name", 1500, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Codes Table COBOL Name", 3000, 0
     
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
@@ -474,10 +462,13 @@ Public Sub PopulateStaticCodesListView()
                Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
                     If Not DaoRS2.EOF Then
                         While Not DaoRS2.EOF
-                            If DaoRS(0).Value = DaoRS2(0).Value Then
-                                itmX.SubItems(1) = DaoRS2(1).Value
+                            If Not IsNull(DaoRS2(0).Value) Then
+                                If DaoRS(0).Value = DaoRS2(0).Value Then
+                                    itmX.SubItems(1) = DaoRS2(1).Value
+                                End If
+                            Else
+                                itmX.SubItems(1) = " "
                             End If
-                            
                             DaoRS2.MoveNext
                         Wend
                     End If
@@ -499,7 +490,7 @@ Exit Sub
 ODBCError:
     Dim msg As String, RC As Integer
 
-    msg = "An error has occured while trying to populate the Static Table List View." & vbCrLf & _
+    msg = "An error has occured while trying to populate the Static/Cdoes List View." & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
@@ -527,7 +518,7 @@ Public Sub PopulateStaticBFAListView()
     frmMain.lvListView1.ColumnHeaders.Clear
 
     'Add the column headings.
-    frmMain.lvListView1.ColumnHeaders.Add , , "Copybook Name", 3000, 0
+    frmMain.lvListView1.ColumnHeaders.Add , , "Copybook Name", 1500, 0
     frmMain.lvListView1.ColumnHeaders.Add , , "Business Function Area", 3000, 0
     
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
@@ -549,10 +540,13 @@ Public Sub PopulateStaticBFAListView()
                Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
                     If Not DaoRS2.EOF Then
                         While Not DaoRS2.EOF
-                            If DaoRS(0).Value = DaoRS2(0).Value Then
-                                itmX.SubItems(1) = DaoRS2(1).Value
+                            If Not IsNull(DaoRS2(0).Value) Then
+                                If DaoRS(0).Value = DaoRS2(0).Value Then
+                                    itmX.SubItems(1) = DaoRS2(1).Value
+                                End If
+                            Else
+                                itmX.SubItems(1) = " "
                             End If
-                            
                             DaoRS2.MoveNext
                         Wend
                     End If
@@ -575,7 +569,7 @@ Exit Sub
 ODBCError:
     Dim msg As String, RC As Integer
 
-    msg = "An error has occured while trying to populate the Codes Table List View." & vbCrLf & _
+    msg = "An error has occured while trying to populate the Static/BFA List View." & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
@@ -600,8 +594,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.txtKeyLength.Text = ""
     frmMain.txtCenturyDelim.Text = ""
     frmMain.txtTotalKeys = ""
-    frmMain.chkStatic.Value = False
-        
+            
     frmMain.mnuPrintTable.Enabled = False
     frmMain.mnuDeleteTable.Enabled = False
     frmMain.mnuModifyTable.Enabled = False
@@ -620,6 +613,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         frmMain.txtTotalKeys.Text = ""
         Screen.MousePointer = vbNormal
         frmMain.famTable.Caption = "Current Table"
+        frmMain.StaticNames.Visible = False
         frmMain.Refresh
         Exit Sub
     End If
@@ -631,6 +625,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
             frmMain.famTable.Caption = "Current Table"
             frmMain.sbStatusBar.Panels(1).Text = ""
             frmMain.txtTotalKeys.Text = ""
+            frmMain.StaticNames.Visible = False
             Screen.MousePointer = vbNormal
             frmMain.Refresh
             Exit Sub
@@ -879,6 +874,7 @@ Public Sub RefreshCodeDecodeLB()
 '*********************************************************************************************************
     Dim itmX As ListItem, cnt As Integer
     Dim x As Integer
+    Dim StaticListBox As Boolean
     
     KeyCntr = 0
     
@@ -890,8 +886,8 @@ Public Sub RefreshCodeDecodeLB()
     frmMain.Label4.Visible = True
     frmMain.Label5.Visible = True
     frmMain.Label6.Visible = True
-    frmMain.txtStatic.Visible = True
-    frmMain.chkStatic.Visible = True
+    frmMain.StaticNames.Visible = False
+    frmMain.Label7.Visible = False
 
     On Error GoTo ODBCError
     
@@ -909,17 +905,11 @@ Public Sub RefreshCodeDecodeLB()
     End If
         
     'Reset the status bar and current table group box with current table information
-    
-    'strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
-             "DataLen, KeyLen, StaticTableUse, CenturyDelim, TableDecode " & _
-             "from tblTables where TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
-        
     strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
-             "DataLen, KeyLen, CenturyDelim, TableDecode " & _
+             "DataLen, KeyLen, CenturyDelim " & _
              "from tblTables where TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
             
-        
-    'Status bar for Static Table type
+    'Set value for Static Table checkbox.
     strsql2 = "SELECT DISTINCTROW tblStaticCodesEntries.CISName" _
             & " FROM tblStaticCodesEntries;"
             
@@ -951,7 +941,7 @@ Public Sub RefreshCodeDecodeLB()
             If Not DaoRS2.EOF Then
                 While Not DaoRS2.EOF
                     If DaoRS2(0).Value = frmMain.tvTreeView.SelectedItem.Text Then
-                        frmMain.chkStatic.Value = 1
+                        StaticListBox = True
                     End If
                             
                     DaoRS2.MoveNext
@@ -959,13 +949,32 @@ Public Sub RefreshCodeDecodeLB()
             End If
             
             DaoRS2.Close
-            
-'            If DaoRS(5).Value Then
-'                frmMain.chkStatic.Value = 1
-'            Else
-'                frmMain.chkStatic.Value = 0
-'            End If
-            
+                        
+            If StaticListBox Then
+                frmMain.StaticNames.Visible = True
+                frmMain.Label7.Visible = True
+                
+                frmMain.StaticNames.Clear
+                
+                strsql2 = "SELECT tblStaticCodesEntries.TableName" _
+                        & " FROM tblStaticCodesEntries" _
+                        & " WHERE tblStaticCodesEntries.CISName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
+                
+                Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+                
+                If Not DaoRS2.EOF Then
+                    While Not DaoRS2.EOF
+                        frmMain.StaticNames.AddItem DaoRS2(0).Value
+                        DaoRS2.MoveNext
+                    Wend
+                    DaoRS2.Close
+                End If
+                 frmMain.StaticNames.ListIndex = 0
+                 For x = 0 To frmMain.StaticNames.ListCount - 1
+                    frmMain.StaticNames.Selected(x) = False
+                 Next
+            End If
+          
             If (IsNull(DaoRS(5).Value)) Then
                 frmMain.txtCenturyDelim.Text = ""
             Else
@@ -976,11 +985,21 @@ Public Sub RefreshCodeDecodeLB()
             frmMain.Label1.Caption = "Table Name:"
             frmMain.txtDataLength.Width = 4000
             
-            If Not DaoRS(6).Value = "Null" Then
-                frmMain.txtDataLength.Text = DaoRS(6).Value
-            Else
-                frmMain.txtDataLength.Text = " "
+            strsql2 = "SELECT tblRelTables.TableDecode" _
+                    & " FROM tblRelTables" _
+                    & " WHERE tblRelTables.TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
+                    
+            Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+            If Not DaoRS2.EOF Then
+                If Not DaoRS2(0).Value = "Null" Then
+                    frmMain.txtDataLength.Text = DaoRS2(0).Value
+                Else
+                    frmMain.txtDataLength.Text = " "
+                End If
             End If
+            
+            DaoRS2.Close
             
             frmMain.txtDataLength.ToolTipText = "Static Table Name"
             frmMain.Label2.Visible = False
@@ -988,8 +1007,6 @@ Public Sub RefreshCodeDecodeLB()
             frmMain.Label4.Visible = False
             frmMain.Label5.Visible = False
             frmMain.Label6.Visible = False
-            frmMain.txtStatic.Visible = False
-            frmMain.chkStatic.Visible = False
        End If
        
        DaoRS.Close

@@ -88,7 +88,7 @@ End Sub
 Private Sub cmdFind_Click()
 
     Dim SearchTable As String, SetValue As String, SQLquery As String, MsgLine As String, SQLquery2 As String
-    Dim X As Integer
+    Dim x As Integer
     Dim DaoRS2 As Recordset
     Const Title = "Search Table"
     Dim LeftTableSelected As Boolean
@@ -100,33 +100,33 @@ Private Sub cmdFind_Click()
     SetValue = UCase$(SearchTable)
     SearchTable = UCase$(SearchTable)
    
-    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        frmAddStaticTable.SelectTable.Selected(X) = False
+    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        frmAddStaticTable.SelectTable.Selected(x) = False
     Next
         
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        frmAddStaticTable.StaticTables.Selected(X) = False
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        frmAddStaticTable.StaticTables.Selected(x) = False
     Next
         
-    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.List(X) = SearchTable) Then
-            frmAddStaticTable.SelectTable.Selected(X) = True
+    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.List(x) = SearchTable) Then
+            frmAddStaticTable.SelectTable.Selected(x) = True
             frmAddStaticTable.sbStatusBar.Panels(1).Text = "Found " & SearchTable & "..."
             frmAddStaticTable.sbStatusBar.Refresh
             LeftTableSelected = True
         Else
-            frmAddStaticTable.SelectTable.Selected(X) = False
+            frmAddStaticTable.SelectTable.Selected(x) = False
         End If
     Next
      
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.List(X) = SearchTable) Then
-            frmAddStaticTable.StaticTables.Selected(X) = True
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.List(x) = SearchTable) Then
+            frmAddStaticTable.StaticTables.Selected(x) = True
             frmAddStaticTable.sbStatusBar.Panels(1).Text = "Found " & SearchTable & "..."
             frmAddStaticTable.sbStatusBar.Refresh
             RightTableSelected = True
         Else
-            frmAddStaticTable.StaticTables.Selected(X) = False
+            frmAddStaticTable.StaticTables.Selected(x) = False
         End If
     Next
              

@@ -9,10 +9,20 @@ Begin VB.Form frmMain
    ForeColor       =   &H80000008&
    Icon            =   "ctmmain.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    ScaleHeight     =   6000
    ScaleWidth      =   10380
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ListBox StaticNames 
+      Height          =   650
+      ItemData        =   "ctmmain.frx":030A
+      Left            =   7320
+      List            =   "ctmmain.frx":030C
+      Sorted          =   -1  'True
+      TabIndex        =   18
+      Top             =   480
+      Visible         =   0   'False
+      Width           =   1250
+   End
    Begin ComctlLib.ListView lvListView1 
       Height          =   2040
       Left            =   3015
@@ -32,7 +42,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":030A
       NumItems        =   0
    End
    Begin VB.Frame famTable 
@@ -52,17 +61,6 @@ Begin VB.Form frmMain
       TabIndex        =   5
       Top             =   135
       Width           =   8895
-      Begin VB.CheckBox chkStatic 
-         Enabled         =   0   'False
-         Height          =   270
-         Left            =   7380
-         MaskColor       =   &H80000012&
-         TabIndex        =   18
-         TabStop         =   0   'False
-         Top             =   285
-         UseMaskColor    =   -1  'True
-         Width           =   255
-      End
       Begin VB.TextBox txtCenturyDelim 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
@@ -81,7 +79,7 @@ Begin VB.Form frmMain
          Locked          =   -1  'True
          TabIndex        =   16
          TabStop         =   0   'False
-         ToolTipText     =   "Length of the current tables Decodes"
+         ToolTipText     =   "Length of the current table's Decodes"
          Top             =   645
          Width           =   495
       End
@@ -103,7 +101,7 @@ Begin VB.Form frmMain
          Locked          =   -1  'True
          TabIndex        =   14
          TabStop         =   0   'False
-         ToolTipText     =   "Number of keys found in the current table"
+         ToolTipText     =   "Number of Keys found in the current table"
          Top             =   285
          Width           =   495
       End
@@ -125,7 +123,7 @@ Begin VB.Form frmMain
          Locked          =   -1  'True
          TabIndex        =   12
          TabStop         =   0   'False
-         ToolTipText     =   "Length of the current tables Decodes"
+         ToolTipText     =   "Length of the current table's Decodes"
          Top             =   645
          Width           =   495
       End
@@ -147,7 +145,7 @@ Begin VB.Form frmMain
          Locked          =   -1  'True
          TabIndex        =   10
          TabStop         =   0   'False
-         ToolTipText     =   "Length of the decode displacement"
+         ToolTipText     =   "Length of the Decode displacement"
          Top             =   285
          Width           =   495
       End
@@ -195,8 +193,8 @@ Begin VB.Form frmMain
          Top             =   285
          Width           =   495
       End
-      Begin VB.Label txtStatic 
-         Caption         =   "Static Table"
+      Begin VB.Label Label7 
+         Caption         =   "Static Tables:"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -207,10 +205,11 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   7650
+         Left            =   7220
          TabIndex        =   19
-         Top             =   300
-         Width           =   1140
+         Top             =   120
+         Visible         =   0   'False
+         Width           =   1200
       End
       Begin VB.Label Label6 
          Alignment       =   1  'Right Justify
@@ -349,7 +348,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0326
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -370,7 +368,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0342
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -391,11 +388,9 @@ Begin VB.Form frmMain
             Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "ctmmain.frx":035E
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -1110,7 +1105,6 @@ Private Sub mnuAddKey_Click()
 
 End Sub
 
-
 Private Sub mnuModifyTable_Click()
     frmAddModTable.Show vbModal
 End Sub
@@ -1187,7 +1181,7 @@ Private Sub mnuPrintTable_Click()
             
             Printer.CurrentX = 0
             Printer.Line Step(5, 5)-Step(15000, 50), , BF
-            Printer.FontName = "System"
+            Printer.FontName = "Times New Roman"
             Printer.FontBold = True
             Printer.FontSize = 15
             Printer.Print vbLf & "Codes Table: " & CurTable & vbLf
@@ -1306,6 +1300,15 @@ End Sub
 
 Private Sub mnuTableLoad_Click()
     frmTableLoad.Show
+End Sub
+
+Private Sub StaticNames_Click()
+    Dim x As Integer
+    
+    For x = 0 To frmMain.StaticNames.ListCount - 1
+        frmMain.StaticNames.Selected(x) = False
+    Next
+    
 End Sub
 
 '***************************************************************************************************************

@@ -7,7 +7,6 @@ Begin VB.Form frmAddModTable
    ClientWidth     =   5790
    Icon            =   "frmaddmodtable.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3645
@@ -67,20 +66,11 @@ Begin VB.Form frmAddModTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1230
-      Left            =   270
+      Height          =   1095
+      Left            =   240
       TabIndex        =   18
-      Top             =   645
+      Top             =   720
       Width           =   2310
-      Begin VB.CheckBox chkStaticTable 
-         Enabled         =   0   'False
-         Height          =   255
-         Left            =   150
-         TabIndex        =   19
-         TabStop         =   0   'False
-         Top             =   870
-         Width           =   255
-      End
       Begin VB.CheckBox chkEffDate 
          Caption         =   "Effective Date"
          BeginProperty Font 
@@ -93,9 +83,9 @@ Begin VB.Form frmAddModTable
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   150
+         Left            =   120
          TabIndex        =   1
-         Top             =   285
+         Top             =   360
          Width           =   1695
       End
       Begin VB.CheckBox chkResidency 
@@ -110,27 +100,10 @@ Begin VB.Form frmAddModTable
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   150
+         Left            =   120
          TabIndex        =   2
-         Top             =   585
+         Top             =   650
          Width           =   1695
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Static Tables"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   435
-         TabIndex        =   20
-         Top             =   900
-         Width           =   1425
       End
    End
    Begin VB.TextBox txtDescription 
@@ -319,9 +292,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
-
 Private Sub cmdAddTbl_Click()
 
     If (txtCenturyDelimeter.Text = "") Then txtCenturyDelimeter.Text = " "
@@ -331,9 +301,9 @@ Private Sub cmdAddTbl_Click()
     If (txtDescription.Text = "") Then txtDescription.Text = " "
     If (txtKeyLength.Text = "") Then txtKeyLength.Text = " "
     
-    For x = 0 To UBound(TableTypes)
-        If (cbxTblType.Text = TableTypes(x).TableTypeName) Then
-            CurrentTblType = TableTypes(x).TableTypeCode
+    For X = 0 To UBound(TableTypes)
+        If (cbxTblType.Text = TableTypes(X).TableTypeName) Then
+            CurrentTblType = TableTypes(X).TableTypeCode
         End If
     Next
         
@@ -368,7 +338,7 @@ Private Sub cmdAddTbl_Click()
         frmMain.txtDecodeDisplacement.Text = Me.txtDecodeDisplacement.Text
         frmMain.txtDecodeLength.Text = Me.txtDecodeLength.Text
         frmMain.txtCenturyDelim.Text = Me.txtCenturyDelimeter.Text
-        frmMain.chkStatic.Value = Me.chkStaticTable.Value
+        'frmMain.chkStatic.Value = Me.chkStaticTable.Value
         If (Len(Me.txtDescription.Text) = 0) Then
             frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
         Else
@@ -402,12 +372,12 @@ End Sub
 
 Private Sub Form_Load()
 
-    For x = 0 To UBound(TableTypes)
-        cbxTblType.AddItem (TableTypes(x).TableTypeName)
+    For X = 0 To UBound(TableTypes)
+        cbxTblType.AddItem (TableTypes(X).TableTypeName)
     Next
 
     strsql = "select TableType, DecodeLen, DecodeDisplacement, EffDate,  " & _
-             "Residency, DataLen, KeyLen, CenturyDelim, StaticTableUse, Description " & _
+             "Residency, DataLen, KeyLen, CenturyDelim, Description " & _
              "from tblTables where TableName = " & Chr(34) & CurTable & Chr(34)
         
          Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -418,9 +388,9 @@ Private Sub Form_Load()
             
             'Get the current table entries
             If Len(DaoRS(0).Value) > 0 Then
-                For x = 0 To UBound(TableTypes)
-                    If (RTrim(DaoRS(0).Value) = TableTypes(x).TableTypeCode) Then
-                        cbxTblType.Text = TableTypes(x).TableTypeName
+                For X = 0 To UBound(TableTypes)
+                    If (RTrim(DaoRS(0).Value) = TableTypes(X).TableTypeCode) Then
+                        cbxTblType.Text = TableTypes(X).TableTypeName
                     End If
                 Next
                 'cbxTblType.Text = RTrim(DaoRS(0).Value)
@@ -478,18 +448,18 @@ Private Sub Form_Load()
                 txtCenturyDelimeter.Text = " "
             End If
 
-            If Len(DaoRS(8).Value) > 0 Then
-                If (RTrim(DaoRS(8).Value) = False) Then
-                    chkStaticTable.Value = False
-                Else
-                    chkStaticTable.Value = 1
-                End If
-            Else
-                chkStaticTable.Value = False
-            End If
+'            If Len(DaoRS(8).Value) > 0 Then
+'                If (RTrim(DaoRS(8).Value) = False) Then
+'                    chkStaticTable.Value = False
+'                Else
+'                    chkStaticTable.Value = 1
+'                End If
+'            Else
+'                chkStaticTable.Value = False
+'            End If
 
-            If Len(DaoRS(9).Value) > 0 Then
-                txtDescription.Text = RTrim(DaoRS(9).Value)
+            If Len(DaoRS(8).Value) > 0 Then
+                txtDescription.Text = RTrim(DaoRS(8).Value)
             Else
                 txtDescription.Text = " "
             End If

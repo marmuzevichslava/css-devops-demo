@@ -9,7 +9,6 @@ Begin VB.Form frmAddStaticTable
    ClientWidth     =   5265
    Icon            =   "frmaddstatictable.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4065
@@ -32,9 +31,11 @@ Begin VB.Form frmAddStaticTable
             Object.Width           =   9410
             MinWidth        =   9410
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frmaddstatictable.frx":030A
    End
    Begin VB.CommandButton Command2 
       BackColor       =   &H8000000D&
@@ -43,7 +44,7 @@ Begin VB.Form frmAddStaticTable
       Left            =   2400
       TabIndex        =   5
       ToolTipText     =   "Delete static table..."
-      Top             =   2040
+      Top             =   2160
       Width           =   475
    End
    Begin VB.CommandButton Command1 
@@ -53,7 +54,7 @@ Begin VB.Form frmAddStaticTable
       Left            =   2400
       TabIndex        =   4
       ToolTipText     =   "Add static table..."
-      Top             =   840
+      Top             =   1080
       Width           =   475
    End
    Begin VB.Frame Frame1 
@@ -98,7 +99,7 @@ Begin VB.Form frmAddStaticTable
          Caption         =   "&Process"
          Shortcut        =   ^P
       End
-      Begin VB.Menu mnuSpaces 
+      Begin VB.Menu mnuBreak 
          Caption         =   "-"
       End
       Begin VB.Menu mnuClose 
@@ -107,6 +108,13 @@ Begin VB.Form frmAddStaticTable
    End
    Begin VB.Menu mnuTable 
       Caption         =   "&Table"
+      Begin VB.Menu mnuPrint 
+         Caption         =   "Print &Static Table List"
+         Shortcut        =   ^S
+      End
+      Begin VB.Menu mnuSpaces 
+         Caption         =   "-"
+      End
       Begin VB.Menu mnuFind 
          Caption         =   "&Find"
          Shortcut        =   ^F
@@ -126,13 +134,13 @@ Private Sub Command1_Click()
     Dim RelTabArray(1000) As String
     Dim NumListItems As Integer
     
-    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        frmAddStaticTable.StaticTables.Selected(x) = False
+    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        frmAddStaticTable.StaticTables.Selected(X) = False
     Next
     
     'Check to see if a relational table is selected.
-    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.Selected(x) = True) Then
+    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.Selected(X) = True) Then
             TableIsSelected = True
         End If
     Next
@@ -144,28 +152,28 @@ Private Sub Command1_Click()
         Exit Sub
     End If
     
-    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.Selected(x) = True) Then
+    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.Selected(X) = True) Then
             sbStatusBar.Panels(1).Text = "Added static table(s) to static list..."
             sbStatusBar.Refresh
             
-           frmAddStaticTable.StaticTables.AddItem Me.SelectTable.List(x)
+           frmAddStaticTable.StaticTables.AddItem Me.SelectTable.List(X)
         End If
     Next
     
     frmAddStaticTable.StaticTables.Refresh
             
-    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.Selected(x) = False) Then
-            RelTabArray(x) = frmAddStaticTable.SelectTable.List(x)
+    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.Selected(X) = False) Then
+            RelTabArray(X) = frmAddStaticTable.SelectTable.List(X)
         End If
     Next
         
     frmAddStaticTable.SelectTable.Clear
     
-    For x = 0 To 1000
-        If RelTabArray(x) <> "" Then
-            frmAddStaticTable.SelectTable.AddItem RelTabArray(x)
+    For X = 0 To 1000
+        If RelTabArray(X) <> "" Then
+            frmAddStaticTable.SelectTable.AddItem RelTabArray(X)
         End If
     Next
     
@@ -181,13 +189,13 @@ Private Sub Command2_Click()
     Dim RelTabArray(1000) As String
     Dim NumListItems As Integer
     
-    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        frmAddStaticTable.SelectTable.Selected(x) = False
+    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        frmAddStaticTable.SelectTable.Selected(X) = False
     Next
     
     'Check to see if a static table is selected.
-    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.Selected(x) = True) Then
+    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.Selected(X) = True) Then
             TableIsSelected = True
         End If
     Next
@@ -199,28 +207,28 @@ Private Sub Command2_Click()
         Exit Sub
     End If
     
-    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.Selected(x) = True) Then
+    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.Selected(X) = True) Then
             sbStatusBar.Panels(1).Text = "Deleted static table(s) from static list..."
             sbStatusBar.Refresh
             
-            frmAddStaticTable.SelectTable.AddItem Me.StaticTables.List(x)
+            frmAddStaticTable.SelectTable.AddItem Me.StaticTables.List(X)
         End If
     Next
     
     frmAddStaticTable.SelectTable.Refresh
             
-    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.Selected(x) = False) Then
-            RelTabArray(x) = frmAddStaticTable.StaticTables.List(x)
+    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.Selected(X) = False) Then
+            RelTabArray(X) = frmAddStaticTable.StaticTables.List(X)
         End If
     Next
         
     frmAddStaticTable.StaticTables.Clear
     
-    For x = 0 To 1000
-        If RelTabArray(x) <> "" Then
-            frmAddStaticTable.StaticTables.AddItem RelTabArray(x)
+    For X = 0 To 1000
+        If RelTabArray(X) <> "" Then
+            frmAddStaticTable.StaticTables.AddItem RelTabArray(X)
         End If
     Next
     
@@ -279,10 +287,187 @@ Private Sub mnuFind_Click()
     frmFindRelTable.Show vbModal
 End Sub
 
+'****************************************************************************************************************
+Private Sub mnuPrint_Click()
+'****************************************************************************************************************
+
+    Dim iStr As Integer, iPg As Integer
+    Dim strsql3 As String
+    Dim sTransfer As String
+    
+    On Error GoTo PrinterError
+    
+    Screen.MousePointer = vbHourglass
+    iPg = 1
+    
+    strsql3 = "select Project from tblProject where ProjectFlag = True"
+    Set DaoRS3 = dbCTM.OpenRecordset(strsql3, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    If Not DaoRS3.EOF Then
+        sTransfer = DaoRS3(0).Value
+        Me.Caption = "Codes Table Explorer - " & sTransfer
+        DaoRS3.Close
+    End If
+    
+    Printer.Orientation = vbPRORPortrait
+    Printer.PrintQuality = vbPRPQHigh
+    Printer.CurrentX = 0
+    Printer.Line Step(5, 5)-Step(15000, 50), , BF
+    Printer.FontName = "Times New Roman"
+    Printer.FontBold = True
+    Printer.FontSize = 15
+    Printer.Print vbLf & "Current Static Table Listing for " & sTransfer & vbLf
+    Printer.FontBold = False
+    Printer.FontSize = 10
+    Printer.Line Step(5, 5)-Step(15000, 10), , BF
+    Printer.CurrentY = Printer.CurrentY + 10
+    
+    Printer.FontBold = True
+    Printer.CurrentX = 0
+    Printer.Print "Static Table"
+    Printer.CurrentX = 1750
+    Printer.CurrentY = Printer.CurrentY - 234
+    Printer.Print "Static Table Name"
+    Printer.FontBold = False
+    
+    Printer.CurrentY = Printer.CurrentY + 10
+    
+    Printer.Line Step(5, 5)-Step(15000, 10), , BF
+    
+    Printer.CurrentY = Printer.CurrentY + 10
+    
+    strsql = "SELECT TableName" _
+           & " FROM tblTables" _
+           & " WHERE TableType = 4" _
+           & " ORDER BY tblTables.TableName;"
+           
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+        
+    If Not DaoRS.EOF Then
+        While Not DaoRS.EOF
+            If (Printer.CurrentY > 13600) Then
+                Printer.CurrentY = 13900
+                Printer.CurrentX = 0
+                Printer.Line Step(5, 5)-Step(15000, 50), , BF
+            
+                Printer.CurrentX = 0
+                Printer.Print Date & " - " & Time
+            
+                Printer.CurrentY = Printer.CurrentY - 234
+                Printer.CurrentX = 10000
+                Printer.Print "Page " & iPg
+                iPg = iPg + 1
+            
+                Printer.NewPage
+                                           
+                Printer.CurrentX = 0
+                Printer.Line Step(5, 5)-Step(15000, 50), , BF
+                Printer.FontName = "Times New Roman"
+                Printer.FontBold = True
+                Printer.FontSize = 15
+                Printer.Print vbLf & "Current Static Table Listing for " & sTransfer & vbLf
+                Printer.FontBold = False
+                Printer.FontSize = 10
+                Printer.Line Step(5, 5)-Step(15000, 10), , BF
+                Printer.CurrentY = Printer.CurrentY + 10
+            
+                Printer.FontBold = True
+                Printer.CurrentX = 0
+                Printer.Print "Static Table"
+                Printer.CurrentX = 1750
+                Printer.CurrentY = Printer.CurrentY - 234
+                Printer.Print "Static Table Name"
+                       
+                Printer.FontBold = False
+                Printer.CurrentY = Printer.CurrentY + 10
+                Printer.Line Step(5, 5)-Step(15000, 10), , BF
+                Printer.CurrentY = Printer.CurrentY + 10
+                Printer.CurrentX = 0
+                Printer.Print DaoRS(0).Value
+                Printer.CurrentX = 1750
+                Printer.CurrentY = Printer.CurrentY - 234
+                
+                strsql2 = "SELECT DISTINCTROW tblRelTables.TableName, tblRelTables.TableDecode" _
+                       & " FROM tblRelTables INNER JOIN tblTables ON tblRelTables.TableName = tblTables.TableName;"
+                       
+                Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+                    If Not DaoRS2.EOF Then
+                        While Not DaoRS2.EOF
+                            If Not IsNull(DaoRS2(0).Value) Then
+                                If DaoRS(0).Value = DaoRS2(0).Value Then
+                                    Printer.Print DaoRS2(1).Value
+                                End If
+                            Else
+                                itmX.SubItems(1) = " "
+                            End If
+                            DaoRS2.MoveNext
+                        Wend
+                    End If
+                    
+                    DaoRS2.Close
+                        
+            Else
+                Printer.CurrentX = 0
+                Printer.Print DaoRS(0).Value
+                Printer.CurrentX = 1750
+                Printer.CurrentY = Printer.CurrentY - 234
+                
+                strsql2 = "SELECT DISTINCTROW tblRelTables.TableName, tblRelTables.TableDecode" _
+                       & " FROM tblRelTables INNER JOIN tblTables ON tblRelTables.TableName = tblTables.TableName;"
+                       
+                Set DaoRS2 = dbCTM.OpenRecordset(strsql2, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+                    If Not DaoRS2.EOF Then
+                        While Not DaoRS2.EOF
+                            If Not IsNull(DaoRS2(0).Value) Then
+                                If DaoRS(0).Value = DaoRS2(0).Value Then
+                                    Printer.Print DaoRS2(1).Value
+                                End If
+                            Else
+                                itmX.SubItems(1) = " "
+                            End If
+                            DaoRS2.MoveNext
+                        Wend
+                    End If
+                    
+                    DaoRS2.Close
+                
+            End If
+            DaoRS.MoveNext
+        Wend
+        DaoRS.Close
+    End If
+        
+    Printer.CurrentY = 13900
+    Printer.CurrentX = 0
+    Printer.Line Step(5, 5)-Step(15000, 50), , BF
+            
+    Printer.CurrentX = 0
+    Printer.Print Date & " - " & Time
+            
+    Printer.CurrentY = Printer.CurrentY - 234
+    Printer.CurrentX = 10000
+    Printer.Print "Page " & iPg
+        
+    Printer.EndDoc
+    
+    Screen.MousePointer = vbNormal
+Exit Sub
+
+PrinterError:
+    Dim RC As Integer
+    Screen.MousePointer = vbNormal
+    RC = MsgBox("Unable to print to " & Printer.DeviceName & "." & vbCrLf & _
+                "Please check your print settings and the printer.", _
+                vbOKOnly + vbExclamation, "Codes Table Explorer")
+            
+End Sub
+
 '***************************************************************************************************************
 Public Sub mnuProcess_Click()
 '***************************************************************************************************************
 
+    Screen.MousePointer = vbHourglass
+    
     Dim SQLDelete As String
     Dim SQLquery As String
     Dim sTimestamp As String
@@ -326,10 +511,10 @@ Public Sub mnuProcess_Click()
         DaoRS.Close
     End If
 
-    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
         'Set SQL string.
         SQLInsert = "INSERT INTO tblTables " _
-                  & "SELECT " & Chr(34) & frmAddStaticTable.StaticTables.List(x) & Chr(34) & " As TableName," _
+                  & "SELECT " & Chr(34) & frmAddStaticTable.StaticTables.List(X) & Chr(34) & " As TableName," _
                   & Chr(34) & TABLE_TYPE & Chr(34) & " AS TableType," _
                   & Chr(34) & sTimestamp & Chr(34) & " AS FlagUpdateTS;"
         
@@ -405,6 +590,7 @@ Public Sub mnuProcess_Click()
     Exit Sub
 
 InsertError:
+    Screen.MousePointer = vbNormal
     msg = "An error has occured within Process of frmAddStatictable" & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
