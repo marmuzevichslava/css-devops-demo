@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZSM001C                            *
-*                        Generated on: Fri Apr 03 14:30:51 1998            *
+*                        Generated on: Fri Jul 31 15:39:21 1998            *
 *                                  by: MCONNER                             *
 *                   Short Description:                                     *
 *                                                                          *
@@ -101,8 +101,8 @@ typedef struct __StandardHeader
 * Definition for Record Group.DZSM001 SM SEARCH CRITERIA
 ***************************************************************************/
 #ifndef   CIS33525_TX_COMPUTER_NAME_LEN
-#define   CIS33525_TX_COMPUTER_NAME_LEN         9
-#define   TXPCNAME_LEN                          9
+#define   CIS33525_TX_COMPUTER_NAME_LEN         16
+#define   TXPCNAME_LEN                          16
 #endif
 #ifndef   CIS02898_KY_USER_ID_LEN
 #define   CIS02898_KY_USER_ID_LEN               9
@@ -113,7 +113,7 @@ typedef struct __StandardHeader
 
 typedef struct __SearchCriteria
 {
-   char                  TxPcName[9];
+   char                  TxPcName[16];
    char                  KyUserId[9];
 }  _SEARCHCRITERIA;
 #endif

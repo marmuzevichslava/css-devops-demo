@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *             Symbolic Definitions for: DZSM001                           *
- *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                         Generated on: Fri Jul 31 15:39:21 1998          *
  *                                   by: MCONNER                           *
  *                    Short Description:                                   *             
  *                                                                         *
@@ -54,7 +54,7 @@ unsigned char _grpFiller;
     char _Dev00600AccumRecKyUserIdData[50][9];
 #define Dev00600AccumRecKyUserIdData    pWesMap->_Dev00600AccumRecKyUserIdData
 
-    char _Dev00600AccumRecTxPcNameData[50][9];
+    char _Dev00600AccumRecTxPcNameData[50][16];
 #define Dev00600AccumRecTxPcNameData    pWesMap->_Dev00600AccumRecTxPcNameData
 
     char _Dev00600AccumRecTsSlamTmstmpData[50][27];
@@ -162,7 +162,7 @@ unsigned char _grpFiller;
    char _KyUserIdData[9];
 #define KyUserIdData              pWesMap->_KyUserIdData
 
-   char _TxPcNameData[9];
+   char _TxPcNameData[16];
 #define TxPcNameData              pWesMap->_TxPcNameData
 
    char _FlWindowModData[2];
@@ -328,7 +328,7 @@ typedef struct
     char  _Dev00600AccumRecDtTestData[11];
     char  _Dev00600AccumRecTmTimeData[9];
     char  _Dev00600AccumRecKyUserIdData[9];
-    char  _Dev00600AccumRecTxPcNameData[9];
+    char  _Dev00600AccumRecTxPcNameData[16];
     char  _Dev00600AccumRecTsSlamTmstmpData[27];
     short  _Dev00600AccumRecQyFiveTenthData;
     short  _Dev00600AccumRecQyOneData;

@@ -125,10 +125,13 @@
 #ifndef DZSM001_RANG_QUAL
 #define DZSM001_RANG_QUAL                           "GELE\n"
 #endif
+/*
+** Issue #12244
+** mdc 6/30/98 replaced DZSM001_HI_CHAR_VAL with CMN_HI_CHAR
 #ifndef DZSM001_HI_CHAR_VAL
 #define DZSM001_HI_CHAR_VAL                         255
 #endif
-
+*/
 
 
 

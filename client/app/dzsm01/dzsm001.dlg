@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *             Symbolic Definitions for: DZSM001                           *
- *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                         Generated on: Fri Jul 31 15:39:21 1998          *
  *                                   by: MCONNER                           *
  *                    Short Description:                                   *             
  *                                                                         *
@@ -33,25 +33,25 @@ Begin  /* controls */
    CONTROL "Query Type",8000,
               FND_RADIO_GROUP,
               WS_VISIBLE | WS_GROUP | BS_GROUPBOX
-              ,130,2,53,55
+              ,129,2,53,55
 
    CONTROL "&Memory",105,
               FND_RADIO_BUTTON,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,130,2,0,0
+              ,129,2,0,0
 
    CONTROL "&Local",106,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,130,2,0,0
+              ,129,2,0,0
 
    CONTROL "&Remote",107,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,130,2,0,0
+              ,129,2,0,0
 
    CONTROL "Perf Data",101,
               FND_LISTBOX,
@@ -83,22 +83,22 @@ Begin  /* controls */
    CONTROL "User ID:",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,11,26,45,12
+              ,7,26,32,12
 
    CONTROL "",102,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,58,26,59,0
+              ,47,26,80,0
 
    CONTROL "PC Name:",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,10,11,47,12
+              ,7,12,38,12
 
    CONTROL "",103,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,59,11,59,12
+              ,47,12,80,12
 
    CONTROL "",104,
               FND_ENTRYFIELD,
@@ -191,10 +191,10 @@ Begin
    /*  Control Data for List Box Column TxPcName  */
    FP_COLUMN_ID,                        "3\0"
    FP_CAPTION,                          "PC Name\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   FP_SCREEN_LENGTH,                    "15\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "57\0"
+   FP_COLUMN_FCUS,                      "81\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
@@ -1005,7 +1005,7 @@ Begin
 
    /*  Control Data for Entry Field TxPcName  */
    FP_CONTROL_ID,                       "103\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   FP_SCREEN_LENGTH,                    "15\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"

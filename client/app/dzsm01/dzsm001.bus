@@ -803,8 +803,12 @@ WCBPROC( DZSM001BusFindPbClick )
 		*/
        strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
   	  		    DZSM001_PC_NAME_LO_VALUE);
+	   /*
+	   ** Issue #12244
+	   ** mdc 6/30/98 replaced DZSM001_HI_CHAR_VAL with CMN_HI_CHAR
+	   */
        memset ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName,
-		        DZSM001_HI_CHAR_VAL,
+		        CMN_HI_CHAR,
   	  		    TXPCNAME_LEN);
    		FndGenRC = CMN_SUCCESS;
 
@@ -830,8 +834,12 @@ WCBPROC( DZSM001BusFindPbClick )
 		*/
   	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
 		  	      DZSM001_KYUSERID_LO_VAL);
+ 	   /*
+	   ** Issue #12244
+	   ** mdc 6/30/98 replaced DZSM001_HI_CHAR_VAL with CMN_HI_CHAR
+	   */
   	    memset ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId,
-			     DZSM001_HI_CHAR_VAL,
+			     CMN_HI_CHAR,
 				 AZSECEXT_KYUSERID_LEN );
 
 		FndGenRC = CMN_SUCCESS;

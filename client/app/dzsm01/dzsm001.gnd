@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *                   Dispatch Table for: DZSM001                           *
- *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                         Generated on: Fri Jul 31 15:39:21 1998          *
  *                                   by: MCONNER                           *
  *                    Short Description:                                   *             
  *                                                                         *
@@ -185,7 +185,7 @@ WCTFIELD DZSM001WCTFieldTbl[] =
     { WTP_LISTBOXCOLDEFN, "TxPcName", Dev00600AccumRecTxPcName_FID,
       0, FND_IT_CHAR,
       SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameData[0]),
-      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameData),
+      15, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameData),
       offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
@@ -473,7 +473,7 @@ WCTFIELD DZSM001WCTFieldTbl[] =
     { WTP_FNDENTRYFLD, "TxPcName", TxPcName_FID,
       TxPcName_WID, FND_IT_CHAR,
       SIZEOF(struct _DZSM001WesMap, _TxPcNameData),
-      8, 0, offsetof(struct _DZSM001WesMap, _TxPcNameData),
+      15, 0, offsetof(struct _DZSM001WesMap, _TxPcNameData),
       offsetof(struct _DZSM001WesMap, _TxPcNameCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
