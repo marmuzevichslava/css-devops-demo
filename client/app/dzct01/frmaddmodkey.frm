@@ -73,9 +73,7 @@ Begin VB.Form frmAddModKey
    End
    Begin VB.ComboBox cbxApplication 
       Height          =   315
-      ItemData        =   "frmAddModKey.frx":030A
       Left            =   1350
-      List            =   "frmAddModKey.frx":030C
       Style           =   2  'Dropdown List
       TabIndex        =   3
       Top             =   999

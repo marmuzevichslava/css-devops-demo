@@ -10,7 +10,6 @@ Begin VB.Form frmMain
    Icon            =   "CTMMain.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
-   MouseIcon       =   "CTMMain.frx":030A
    ScaleHeight     =   6000
    ScaleWidth      =   11760
    Begin VB.Frame famTable 
@@ -217,7 +216,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0614
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -238,7 +236,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0630
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -256,14 +253,12 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   20241
+            Object.Width           =   20320
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "CTMMain.frx":064C
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -389,7 +384,8 @@ Const WES_CODE = 3
 Private Sub Form_Load()
 '***************************************************************************************************************
     
-    Dim CTMDatabase As String, msg As String, RC As Integer, sTransfer As String, x As Integer
+    Dim sParameter As String, CTMDatabase As String, msg As String, RC As Integer, sTransfer As String, x As Integer
+    Dim iFileNum As Integer
     
     Me.Width = GetSetting(App.Title, "Settings", "MainWidth", (Screen.Width * 0.75))
     Me.Height = GetSetting(App.Title, "Settings", "MainHeight", (Screen.Height * 0.6))
@@ -411,19 +407,40 @@ Private Sub Form_Load()
     Me.Refresh
     
     'Get the passed in argument (the full path and name of the database to go against).
-    CTMDatabase = Command
+    sParameter = Command
     
     'Check to make sure that the proper arguments are passed in.
-    If (CTMDatabase = "") Then
+    If (Len(sParameter) = 0) Then
         msg = "To Run the Codes Table Explorer, the following argument must be passed:" _
-                    & vbCrLf & vbCrLf & "      - Path and name of CTM Database." & _
-                    vbCrLf & "        Ex. " & Chr(34) & "C:\DATA\CTMBrowser.exe T:\Codesdat.mdb" & Chr(34) & _
-                    vbCrLf & vbCrLf & "Contact " & AUTHOR & " at Solution Works for assistance."
+                    & vbCrLf & vbCrLf & "      - Path and name of CTM Database." _
+                    & vbCrLf & "        Ex. " & Chr(34) & "C:\DATA\CTMBrowser.exe T:\Codesdat.mdb" & Chr(34) _
+                    & vbCrLf & vbCrLf & "Contact " & AUTHOR & " at Solution Works for assistance."
         
         RC = MsgBox(msg, vbOKOnly + vbInformation + vbApplicationModal, "Codes Table Update")
         End
+    ElseIf (InStr(LCase(sParameter), ".mdb") <> 0) Then
+        CTMDatabase = sParameter
+    Else
+        If (Len(Dir(sParameter)) = 0) Then
+            msg = "The initialization file (" & sParameter & ") does not exist. " _
+                  & vbCrLf & vbCrLf & "Contact " & AUTHOR & " at Solution Works for assistance."
+            RC = MsgBox(msg, vbOKOnly + vbInformation + vbApplicationModal, "Codes Table Update")
+            End
+        Else
+            If (FileLen(sParameter) = 0) Then
+                msg = "The initialization file (" & sParameter & ") is empty. " _
+                      & vbCrLf & vbCrLf & "Contact " & AUTHOR & " at Solution Works for assistance."
+                RC = MsgBox(msg, vbOKOnly + vbInformation + vbApplicationModal, "Codes Table Update")
+                End
+            Else
+                iFileNum = FreeFile
+                Open sParameter For Input As #iFileNum
+                Line Input #iFileNum, CTMDatabase
+                Close #iFileNum
+            End If
+        End If
     End If
- 
+
     'Update the current status on the main form.
     sbStatusBar.Panels(1).Text = "Connecting to database..."
     Me.Refresh

@@ -281,9 +281,7 @@ Begin VB.Form frmExportTable
    End
    Begin VB.ListBox SelectTable 
       Height          =   1620
-      ItemData        =   "frmExportTbls.frx":030A
       Left            =   120
-      List            =   "frmExportTbls.frx":030C
       MultiSelect     =   2  'Extended
       Sorted          =   -1  'True
       TabIndex        =   0

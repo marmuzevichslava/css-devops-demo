@@ -21,9 +21,7 @@ Begin VB.Form frmAddModMsg
    End
    Begin VB.ComboBox cbxApplication 
       Height          =   315
-      ItemData        =   "frmAddModMsg.frx":030A
       Left            =   1410
-      List            =   "frmAddModMsg.frx":030C
       TabIndex        =   3
       Top             =   1335
       Width           =   2295

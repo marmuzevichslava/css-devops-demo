@@ -22,9 +22,7 @@ Begin VB.Form frmAddModUMsg
    End
    Begin VB.ComboBox cbxApplication 
       Height          =   315
-      ItemData        =   "frmAddModUMsg.frx":030A
       Left            =   1425
-      List            =   "frmAddModUMsg.frx":030C
       Style           =   2  'Dropdown List
       TabIndex        =   5
       Top             =   1716
