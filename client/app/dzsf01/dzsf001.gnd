@@ -1,0 +1,218 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZSF001                           *
+*                          Generated on: Tue Dec 03 08:58:31 1996          *
+*                                    by: LACKERBA                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Xtzytjhi6229_Predisplay)
+WCBFWD (Xtzytjhi6233_Interwindow_Msg)
+WCBFWD (Xtzytjhi2678_Click)
+WCBFWD (Xtzytjhi2756_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZSF001WindDisp[] =
+{
+    {PREDISPLAY, Xtzytjhi6229_Predisplay},
+    {INTERWINDOW_MSG, Xtzytjhi6233_Interwindow_Msg},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZSF001WidgDisp[] =
+{
+    {CMNPAUSE_CMD, BUTTON_CLICK, Xtzytjhi2678_Click},
+    {CMNCONT_CMD, BUTTON_CLICK, Xtzytjhi2756_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZSF001FieldDefTbl[] =
+{
+    { "IP_Address", IP_Address_FID },
+    { "DCMSGID", Dcmsgid_FID },
+    { "DCSERVNM", Dcservnm_FID },
+    { "Duration", Duration_FID },
+    { "Client_Message_Nbr1", Client_Message_Nbr1_FID },
+    { "DCAVGMSG", Dcavgmsg_FID },
+    { "DCPMSGID", Dcpmsgid_FID },
+    { "Client_Response_Time", Client_Response_Time_FID },
+    { "Client_Msg_Size", Client_Msg_Size_FID },
+    { "Service_Msg_Size", Service_Msg_Size_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZSF001CommandDefTbl[] =
+{
+    { "CMNPAUSE", CMNPAUSE_CMD },
+    { "CMNCONT", CMNCONT_CMD },
+    { "ResetPB", ResetPB_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZSF001WCTHeader =
+{ 
+    "30", 10, 10, 3,
+    sizeof(struct _DZSF001WesMap),
+    offsetof(struct _DZSF001WesMap, _IP_AddressData),
+    offsetof(struct _DZSF001WesMap, _IP_AddressCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZSF001WCTFieldTbl[] =
+{
+  
+    { WTP_FNDENTRYFLD, "IP_Address", IP_Address_FID,
+      IP_Address_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF001WesMap, _IP_AddressData),
+      15, 0, offsetof(struct _DZSF001WesMap, _IP_AddressData),
+      offsetof(struct _DZSF001WesMap, _IP_AddressCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDENTRYFLD, "DCMSGID", Dcmsgid_FID,
+      Dcmsgid_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF001WesMap, _DcmsgidData),
+      8, 0, offsetof(struct _DZSF001WesMap, _DcmsgidData),
+      offsetof(struct _DZSF001WesMap, _DcmsgidCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDENTRYFLD, "DCSERVNM", Dcservnm_FID,
+      Dcservnm_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF001WesMap, _DcservnmData),
+      8, 0, offsetof(struct _DZSF001WesMap, _DcservnmData),
+      offsetof(struct _DZSF001WesMap, _DcservnmCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDNUMENTRYFLD, "Duration", Duration_FID,
+      Duration_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZSF001WesMap, _DurationData),
+      8, 0, offsetof(struct _DZSF001WesMap, _DurationData),
+      offsetof(struct _DZSF001WesMap, _DurationCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDNUMENTRYFLD, "Client_Message_Nbr1", Client_Message_Nbr1_FID,
+      Client_Message_Nbr1_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZSF001WesMap, _Client_Message_Nbr1Data),
+      8, 0, offsetof(struct _DZSF001WesMap, _Client_Message_Nbr1Data),
+      offsetof(struct _DZSF001WesMap, _Client_Message_Nbr1Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDNUMENTRYFLD, "DCAVGMSG", Dcavgmsg_FID,
+      Dcavgmsg_WID, FND_IT_FLOAT,
+      SIZEOF(struct _DZSF001WesMap, _DcavgmsgData),
+      5, 2, offsetof(struct _DZSF001WesMap, _DcavgmsgData),
+      offsetof(struct _DZSF001WesMap, _DcavgmsgCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDENTRYFLD, "DCPMSGID", Dcpmsgid_FID,
+      Dcpmsgid_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSF001WesMap, _DcpmsgidData),
+      8, 0, offsetof(struct _DZSF001WesMap, _DcpmsgidData),
+      offsetof(struct _DZSF001WesMap, _DcpmsgidCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDNUMENTRYFLD, "Client_Response_Time", Client_Response_Time_FID,
+      Client_Response_Time_WID, FND_IT_FLOAT,
+      SIZEOF(struct _DZSF001WesMap, _Client_Response_TimeData),
+      4, 4, offsetof(struct _DZSF001WesMap, _Client_Response_TimeData),
+      offsetof(struct _DZSF001WesMap, _Client_Response_TimeCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDNUMENTRYFLD, "Client_Msg_Size", Client_Msg_Size_FID,
+      Client_Msg_Size_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZSF001WesMap, _Client_Msg_SizeData),
+      6, 0, offsetof(struct _DZSF001WesMap, _Client_Msg_SizeData),
+      offsetof(struct _DZSF001WesMap, _Client_Msg_SizeCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+  
+    { WTP_FNDNUMENTRYFLD, "Service_Msg_Size", Service_Msg_Size_FID,
+      Service_Msg_Size_WID, FND_IT_ULONG,
+      SIZEOF(struct _DZSF001WesMap, _Service_Msg_SizeData),
+      6, 0, offsetof(struct _DZSF001WesMap, _Service_Msg_SizeData),
+      offsetof(struct _DZSF001WesMap, _Service_Msg_SizeCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZSF001WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "CMNPAUSE", CMNPAUSE_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "CMNCONT", CMNCONT_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "ResetPB", ResetPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZSF001IDWindowDefn =
+{
+    "30", DZSF001ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_TOP | WCR_NON_PROPORTIONAL, DZSF001ID,
+    DZSF001AccelID, WOP_NOMENU, DZSF001IconID, 0,
+    DZSF001WidgDisp, DZSF001WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZSF001WCTHeader, DZSF001WCTFieldTbl, 
+    DZSF001WCTCommandTbl, NULL, 24, 0, 0
+};
+

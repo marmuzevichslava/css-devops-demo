@@ -1,0 +1,177 @@
+/***************************************************************************
+ *                                                                         *
+ *                 C   A P P L I C A T I O N   L O G I C                   *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: DZSF001                           *
+ *                         Generated on: Tue Dec 03 08:58:31 1996          *
+ *                                   by: LACKERBA                          *
+ *                                                                         *
+ *              Modifications: Commented out all calls to the architecture *
+ *                             EHEMMER   12/03/96                          * 
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Xtzytjhi6229_Predisplay
+ * 
+ *
+ *
+ *   Event Name:    PREDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi6229_Predisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+/*
+** Compiling TAB w/Discovery   EHEMMER   12/03/96
+** Commented out CMN_ARCH_EXIT_INITIALIZE, to
+** remove the need to use the architecture
+**/
+//CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = Dzsf001xprdis( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "CMNCONT",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "ResetPB",
+                             &FndGenErrorBlock);
+
+return 0;
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Xtzytjhi6233_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi6233_Interwindow_Msg)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+/*
+** Compiling TAB w/Discovery   EHEMMER   12/03/96
+** Commented out CMN_ARCH_EXIT_INITIALIZE
+**/
+//CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = Dzsf001xrecvmsg( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Xtzytjhi2678_Click
+ * 
+ *   WidgetName:    CMNPAUSE
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi2678_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+/*
+** Compiling TAB w/Discovery   EHEMMER   12/03/96
+** Commented out CMN_ARCH_EXIT_INITIALIZE
+**/
+//CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "CMNCONT",
+                            &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "CMNPAUSE",
+                             &FndGenErrorBlock);
+
+FndGenRC = DZSF001BusPausePBClick( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Xtzytjhi2756_Click
+ * 
+ *   WidgetName:    CMNCONT
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi2756_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+/*
+** Compiling TAB w/Discovery   EHEMMER   12/03/96
+** Commented out CMN_ARCH_EXIT_INITIALIZE
+**/
+//CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "CMNPAUSE",
+                            &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "CMNCONT",
+                             &FndGenErrorBlock);
+
+FndGenRC = DZSF001BusContPBClick( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+

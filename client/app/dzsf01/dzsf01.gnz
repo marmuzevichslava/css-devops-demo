@@ -1,0 +1,21 @@
+/***************************************************************************
+ *                                                                         *
+ *         C  W I N D O W S   N T   W I N D O W   I D E N T I F I E R S     *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *               Window Identifiers for: DZSF01                            *
+ *                         Generated on: Tue Dec 03 08:58:31 1996          *
+ *                                   by: LACKERBA                          *
+ *                    Short Description:                                   *
+ *                                                                         *
+ ***************************************************************************/
+#define DZSF001ID                501
+#define DZSF001MenuID            501
+#define DZSF001IconID            501
+#define DZSF001AccelID           501
+#define DZSF001WctID             501
+
+

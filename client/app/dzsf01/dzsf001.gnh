@@ -1,0 +1,64 @@
+/***************************************************************************
+*                                                                          *
+*       W I N D O W S   N T   S Y M B O L I C   D E F I N I T I O N S       *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZSF001                           *
+*                          Generated on: Tue Dec 03 08:58:31 1996          *
+*                                    by: LACKERBA                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/***************************************************************************
+*  Field IDs                                                               *
+****************************************************************************/
+
+#define IP_Address_FID                                 0
+#define Dcmsgid_FID                                    1
+#define Dcservnm_FID                                   2
+#define Duration_FID                                   3
+#define Client_Message_Nbr1_FID                        4
+#define Dcavgmsg_FID                                   5
+#define Dcpmsgid_FID                                   6
+#define Client_Response_Time_FID                       7
+#define Client_Msg_Size_FID                            8
+#define Service_Msg_Size_FID                           9
+
+/***************************************************************************
+*  Widget IDs                                                              *
+****************************************************************************/
+
+#define IP_Address_WID                                 100
+#define Dcmsgid_WID                                    101
+#define Dcservnm_WID                                   102
+#define groupBoxWidget_WID                             9000
+#define Duration_WID                                   103
+#define Client_Message_Nbr1_WID                        104
+#define Dcavgmsg_WID                                   105
+#define groupBoxWidget1_WID                            9001
+#define Dcpmsgid_WID                                   106
+#define Client_Response_Time_WID                       107
+#define Client_Msg_Size_WID                            108
+#define Service_Msg_Size_WID                           109
+
+/***************************************************************************
+*  Command IDs                                                             *
+****************************************************************************/
+
+#define CMNPAUSE_CMD                                   1000
+#define CMNCONT_CMD                                    1001
+#define ResetPB_CMD                                    1002
+
+/***************************************************************************
+*  Radio Button Literals                                                   *
+****************************************************************************/
+
+
+/***************************************************************************
+*  List Box Column Literals                                                *
+****************************************************************************/
+

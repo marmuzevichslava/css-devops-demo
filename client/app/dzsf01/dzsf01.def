@@ -1,0 +1,23 @@
+;*****************************************************************************
+;
+;           C   C O M P I L E R   D E F I N I T I O N   F I L E
+;
+;    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.
+;
+;*****************************************************************************
+;
+;              Compiler Definitions for: DZSF01  
+;                          Generated on: Tue Dec 03 08:58:31 1996
+;                                    by: LACKERBA            
+;                     Short Description: 
+;
+;*****************************************************************************
+
+NAME           DZSF01  WINDOWAPI
+DESCRIPTION    'DZSF01'
+EXETYPE        WINDOWS
+STUB           'WINSTUB.EXE'
+CODE           PRELOAD MOVEABLE DISCARDABLE
+DATA           PRELOAD MOVEABLE MULTIPLE
+HEAPSIZE       1024
+STACKSIZE      20000

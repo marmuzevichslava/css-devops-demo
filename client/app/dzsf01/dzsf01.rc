@@ -1,0 +1,37 @@
+/***************************************************************************
+ *                                                                         *
+ *          C  W I N D O W S   N T   R E S O U R C E   F I L E             *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                    Resource file for: DZSF01                            *
+ *                         Generated on: Tue Dec 03 08:58:31 1996          *
+ *                                   by: LACKERBA                          *
+ *                    Short Description:                                   *
+ *                                                                         *
+ *     MODIFICATIONS: Commented out c1cptrs.rch - EHEMMER  12/04/96        *
+ *                                                                         *
+ ***************************************************************************/
+#include <windows.h>
+#include <kwdxk010.h>
+
+/***************************************************************************
+ * Window Identifier File                                                  * 
+ ***************************************************************************/
+#include "DZSF01.gnz"
+
+
+/***************************************************************************
+ * Window Resource Files                                                   * 
+ ***************************************************************************/
+/*
+** Compiling TAB w/Discovery   EHEMMER   12/03/96
+** Commented out "c1cptrs.rch" to remove the need to have Cursor (.CUR) and
+** (*.PTR) fles locally.
+**/
+//rcinclude c1cptrs.rch
+
+rcinclude dzsf001.dlg
+
