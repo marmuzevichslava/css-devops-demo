@@ -4,8 +4,8 @@
 /*                                                                            */
 /*   Description  :                                                           */
 /*                                                                            */
-/*   Generation Date: 03/29/96                                                */
-/*              Time: 09:27:06                                                */
+/*   Generation Date: 05/09/96                                                */
+/*              Time: 11:28:29                                                */
 /******************************************************************************/
                                                                                 
 /******************************************************************************/
@@ -32,7 +32,7 @@
 #define   TABNAME_LEN                          32                               
 #endif                                                                          
 #ifndef   _AZRP001C__ENTITYDATA_SIZE                                            
-#define   _AZRP001C__ENTITYDATA_SIZE           200                              
+#define   _AZRP001C__ENTITYDATA_SIZE           416                              
 #endif                                                                          
 #ifndef   ARC00401_LEN                                                          
 #define   ARC00401_LEN                         9                                
