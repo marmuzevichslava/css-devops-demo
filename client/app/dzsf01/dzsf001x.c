@@ -7,8 +7,8 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZSF001X                          *
- *                         Generated on: Tue Dec 03 08:58:31 1996          *
- *                                   by: LACKERBA                          *
+ *                         Generated on: Wed Feb 04 07:23:39 1998          *
+ *                                   by: MCONNER                           *
  *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************
@@ -16,11 +16,7 @@
  * in your window.                                                         *
  ***************************************************************************/
 
-/* 
-** Compile TAB w/Discovery  EHEMMER  12/03/96
-** Must use this to eclude the wrappers.  This is hand modified
-**/
-#define EXCLUDE_FND_WRAPPERS
+
 
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define WINDOWNAME DZSF001
@@ -79,6 +75,7 @@
 /***************************************************************************
  * Window Context Data
  ***************************************************************************/
+#include "dzsf001c.h"
 
 #if !defined(WINCONTEXTNAME)
 #define WINCONTEXTNAME       void
@@ -133,6 +130,8 @@
  ***************************************************************************/
 #include "dzsf001.aex"
 #include "archhelp.cb"
-//#include "azdi0400.c"
+#include "azdi0400.c"
 #include "dzsf001.bus"
+
+
 #include "dzsf001.src"

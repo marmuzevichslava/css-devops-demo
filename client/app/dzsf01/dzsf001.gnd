@@ -1,22 +1,26 @@
 /***************************************************************************
-*                                                                          *
-*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
-*                                                                          *
-*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
-*                                                                          *
-****************************************************************************
-*                                                                          *
-*                    Dispatch Table for: DZSF001                           *
-*                          Generated on: Tue Dec 03 08:58:31 1996          *
-*                                    by: LACKERBA                          *
-*                     Short Description:                                   *
-*                                                                          *
-****************************************************************************/
+ *                                                                         *
+ *            W I N D O W S   N T   D I S P A T C H   T A B L E            *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                   Dispatch Table for: DZSF001                           *
+ *                         Generated on: Wed Feb 04 14:22:17 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ ***************************************************************************/
 
 /****************************************************************************
  Window & Widget Function List
 ****************************************************************************/
 
+WCBFWD (Xtzytjhi5576_Predestroy)
+WCBFWD (Xtzytjhi5619_Other_Gui_Event)
+WCBFWD (Xtzytjhi5647_Window_Close)
 WCBFWD (Xtzytjhi6229_Predisplay)
 WCBFWD (Xtzytjhi6233_Interwindow_Msg)
 WCBFWD (Xtzytjhi2678_Click)
@@ -28,6 +32,9 @@ WCBFWD (Xtzytjhi2756_Click)
 
 WNDDISPTBL DZSF001WindDisp[] =
 {
+    {PREDESTROY, Xtzytjhi5576_Predestroy},
+    {OTHER_GUI_EVENT, Xtzytjhi5619_Other_Gui_Event},
+    {WINDOW_CLOSE, Xtzytjhi5647_Window_Close},
     {PREDISPLAY, Xtzytjhi6229_Predisplay},
     {INTERWINDOW_MSG, Xtzytjhi6233_Interwindow_Msg},
     {0,0}
@@ -53,9 +60,11 @@ FLDDEFTBLENTRY DZSF001FieldDefTbl[] =
     { "IP_Address", IP_Address_FID },
     { "DCMSGID", Dcmsgid_FID },
     { "DCSERVNM", Dcservnm_FID },
+    { "groupBoxWidget", groupBoxWidget_WID },
     { "Duration", Duration_FID },
     { "Client_Message_Nbr1", Client_Message_Nbr1_FID },
     { "DCAVGMSG", Dcavgmsg_FID },
+    { "groupBoxWidget1", groupBoxWidget1_WID },
     { "DCPMSGID", Dcpmsgid_FID },
     { "Client_Response_Time", Client_Response_Time_FID },
     { "Client_Msg_Size", Client_Msg_Size_FID },
@@ -213,6 +222,6 @@ WINDEFTBLENTRY DZSF001IDWindowDefn =
     DZSF001AccelID, WOP_NOMENU, DZSF001IconID, 0,
     DZSF001WidgDisp, DZSF001WindDisp, FND_WINCONTEXT_LEN,
     0, 0, &DZSF001WCTHeader, DZSF001WCTFieldTbl, 
-    DZSF001WCTCommandTbl, NULL, 24, 0, 0
+    DZSF001WCTCommandTbl, NULL, 24, DZSF001FieldDefTbl, 0
 };
 

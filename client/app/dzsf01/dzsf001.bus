@@ -43,6 +43,9 @@
 **
 ** 01/09/97    EHEMMER     SoCo Rel Added code to stop memmory leak.
 **
+** 02/04/98    mconner               Extensive rework to bring into Arch 
+**                                   standards.
+**
 ***************************************************************************/
 
 
@@ -50,7 +53,7 @@
 **
 **               Customer Service System Business Logic Function
 **
-**      FUNCTION         : Dzsf001recvmsg
+**      FUNCTION         : DZSF001BusRecvMsg
 **
 **      DESCRIPTION      : This function posts information about messages to
 **                         the TAB Stress Facility Window
@@ -75,7 +78,7 @@
 **                                         Changed directory written to.
 **
 ***************************************************************************/
-WCBPROC( Dzsf001xrecvmsg )
+WCBPROC( DZSF001BusRecvMsg )
 {
     _MSG_PARM_BLOCK     *pWndMsgPointer;
 
@@ -84,10 +87,12 @@ WCBPROC( Dzsf001xrecvmsg )
 
     struct tm *curtime;
     time_t bintime;
-
-    CHAR                File[30];
+	/*
+	** mdc 02/06/98 Unreferenced local variable
+    CHAR                File[DZSF001_FILE_LEN];
+	*/
     FILE                *fp;
-    CHAR                TimeString[24];
+    CHAR                TimeString[DZSF001_TIME_STR_LEN];
 
     /*
     **  This logic updates the Stress Facility Window with Current Message,
@@ -102,7 +107,7 @@ WCBPROC( Dzsf001xrecvmsg )
     
 	curtime = localtime(&bintime);
     
-	memcpy (TimeString, asctime(curtime), 24);
+	memcpy (TimeString, asctime(curtime), DZSF001_TIME_STR_LEN);
    
 	pWndMsgPointer = CBI_IWApplParm;
 
@@ -148,7 +153,7 @@ WCBPROC( Dzsf001xrecvmsg )
 
         {
 	        /* This is the Response Time as shown on the window */
-            Client_Response_TimeData  = lElapsedTime / 1000;
+            Client_Response_TimeData  = lElapsedTime / DZSF001_MSEC_PER_SEC;
             
 	        /* This is the Current Message ID as shown on the window */
 			strcpy (DcpmsgidData, lrandomfilename);
@@ -171,9 +176,11 @@ WCBPROC( Dzsf001xrecvmsg )
             ** messages are sent.  This displays a more meanigful number.
             ** This is the Average Per Minute as shown on the window.
             **/
-			if( (lClientMsgNbr % 20) == 0)
+			if( (lClientMsgNbr % DZSF001_AVG_NUM) == 0)
             {
-                DcavgmsgData = (float) lClientMsgNbr / ((float) lTotalTime / 60);
+                DcavgmsgData = 
+					(float) lClientMsgNbr / ((float) lTotalTime 
+						/ DZSF001_TOT_TIME_DIV);
             }
             /*
             ** When Statistics are updated, also update the History Log File
@@ -184,9 +191,11 @@ WCBPROC( Dzsf001xrecvmsg )
             **/
             if( (FileLog == 1) && (ErrorMessageID <= 0))
             {
+				/*
+				** mdc 02/08/98 removed for log file added to control.tab
                 sprintf( File, TAB_LOG_FILE );
-	            
-				fp = fopen( File, "a" );
+	            */
+				fp = fopen( TabLogPathAndFile, "a" );
   
 		        if( fp != NULL )
                 {        
@@ -198,33 +207,33 @@ WCBPROC( Dzsf001xrecvmsg )
                     /* if the first time through this loop */
                     if( DZSF001_FirstStat == TRUE)
                     {
-                        fprintf( fp, "%-24s, %-12s, %-11s, %-11.9s, %-17s, %-18s, %-18s, %-20s, %-20s, %-20s \n \n",
-                                 "Time",
-                                 "IP Address",
-                                 "XLT Map",
-                                 "File Name",
-                                 "Network Time",
-                                 "Function Code",
-                                 "Client Msg Num",
-                                 "Client Msg Len",
-                                 "Service Msg Len",
-                                 "Elapsed Time");
+                        fprintf( fp, DZSF001_STAT_LOG_HDR_FORMAT_STR,
+                                 DZSF001_HDR_1,
+                                 DZSF001_HDR_2,
+                                 DZSF001_HDR_3,
+                                 DZSF001_HDR_4,
+                                 DZSF001_HDR_5,
+                                 DZSF001_HDR_6,
+                                 DZSF001_HDR_7,
+                                 DZSF001_HDR_8,
+                                 DZSF001_HDR_9,
+                                 DZSF001_HDR_10);
 
                         DZSF001_FirstStat = FALSE;
 
                     }               
                     
-                    fprintf( fp, "%-.24s, %-12s, %-11.8s, %-11s, %-17f, %-18s, %-18ld, %-20ld, %-20ld, %-20f \n",
+                    fprintf( fp, DZSF001_DATA_FORMAT_STR,
 							 TimeString,
 							 SaveIPAddress, 
 							 pWndMsgPointer->translation.map_name,
 							 lrandomfilename, 
-							 lNetworkTime /1000, 
+							 lNetworkTime /DZSF001_MSEC_PER_SEC, 
 							 lfunctioncode,
 							 lClientMsgNbr, 
 							 lactuallengthsend,
 							 pWndMsgPointer->actual_length_recv, 
-							 lElapsedTime / 1000 );
+							 lElapsedTime / DZSF001_MSEC_PER_SEC );
 		            
 					fclose( fp );
                 }
@@ -237,10 +246,13 @@ WCBPROC( Dzsf001xrecvmsg )
 	            /* 
                 ** Mods   EHEMMMER   12/03/96
                 ** Changed from network directory to local directory,
-                ** TAB_ERROR_LOG.
+                ** TabErrPathAndFile.
                 **/
-                sprintf( File, TAB_ERROR_LOG );
-	            fp = fopen( File, "a" );
+                /*
+				** mdc 02/06/98 not needed
+				sprintf( File, TAB_ERROR_LOG );
+				*/
+	            fp = fopen( TabErrPathAndFile, "a" );
   
 		        if( fp != NULL )
 		        {  
@@ -252,34 +264,34 @@ WCBPROC( Dzsf001xrecvmsg )
                     /* if the first time through this loop */
                     if( DZSF001_FirstError == TRUE)
                     {
-                        fprintf( fp, "%-24s, %-13s, %-10s, %-12s, %-15s, %-12s, %-10s, %-19s, %-19s, %-17s, %-s \n \n",
-                                 "Time",
-                                 "IP Address",
-                                 "XLT Map",
-                                 "File Name",
-                                 "Network Time",
-                                 "Func Code",
-                                 "Msg Num",
-                                 "Client Msg Len",
-                                 "Service Msg Len",
-                                 "Elapsed Time",
-                                 "Error Message Num" );
+                        fprintf( fp, DZSF001_ERR_HDR_FORMAT_STR,
+                                 DZSF001_HDR_1,
+                                 DZSF001_HDR_2,
+                                 DZSF001_HDR_3,
+                                 DZSF001_HDR_4,
+                                 DZSF001_HDR_5,
+                                 DZSF001_HDR_11,
+                                 DZSF001_HSR_12,
+                                 DZSF001_HDR_8,
+                                 DZSF001_HDR_9,
+                                 DZSF001_HDR_10,
+                                 DZSF001_HDR_13 );
 
                         DZSF001_FirstError = FALSE;
 
                     }                                   
                     
-                    fprintf( fp, "%-.24s, %-13s, %-10.8s, %-12s, %-15f, %-12s, %-10ld, %-19ld, %-19ld, %-17f, %-d \n",
+                    fprintf( fp, DZSF001_ERR_DATA_FORMAT_STR,
 							 TimeString,
 							 SaveIPAddress, 
 							 pWndMsgPointer->translation.map_name,
 							 lrandomfilename, 
-							 lNetworkTime /1000, 
+							 lNetworkTime /DZSF001_MSEC_PER_SEC, 
 							 lfunctioncode,
 							 lClientMsgNbr, 
 							 lactuallengthsend,
 							 pWndMsgPointer->actual_length_recv, 
-							 lElapsedTime / 1000,
+							 lElapsedTime / DZSF001_MSEC_PER_SEC,
 							 ErrorMessageID );
                     
 					fclose( fp );
@@ -318,7 +330,7 @@ WCBPROC( Dzsf001xrecvmsg )
 //          break;
     }
 
-    return 0;
+    return ( CMN_SUCCESS );
 
 } /* End of Interwindow Message Receive */
 
@@ -354,23 +366,29 @@ WCBPROC( Dzsf001xrecvmsg )
 **                                    srand.
 **
 ***************************************************************************/
-unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
-
+USHORT APIENTRY TABThread( _APM_START far *pApm, ABHINAME *pABHI)
 {
     struct timeb timemilli;
 
     _FND_ERROR_BLOCK     FndGenErrorBlock;
-    _EAIA                *pEAIA;
+	PCALLBACKEVENTINFO   pEventInfo;
+    EAIANAME             *pEAIA;
+	_BFCD                *pBFCD;
+	WESMAPTYPE           *pWesMap;
+	WINCONTEXTNAME       *pWindContextData;
+	unsigned             LineNo;
+	void                 *FileName;
     HWND                 hwnd;
     _MY_PB far           *pThreadParmBlock;
     _MSG_PARM_BLOCK      MsgPB;
     _MSG_PARM_BLOCK      *pMsgPB;
-    _CUCR097I            DataArea;
+    _DATAAREA            DataArea;
 
     int           foundit = 0;
 
-    char          RandomFileName[9];
-    char          seps[] = " ";
+    CHAR          RandomFileName[DZSF001_RAND_FILE_NAME_LEN];
+	CHAR          *pRandomFileName;
+    CHAR          seps[] = DZSF001_FIELD_DELIMITER;
 
     float         TempRandom;
     short         RangeRandom;
@@ -384,31 +402,89 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
     BYTE *        pDataSend = NULL;
     BYTE *        pMsgRecvArea = NULL;
   
-    LONG          ComputerNameLength = 16;
+    LONG          ComputerNameLength = DZSF001_COMP_NAME_LEN;
+    
+    SHORT         FndGenRC = 0;
+	USHORT	      SelectedButton;
+
 
     /* Set Up Address Pointers */
     pThreadParmBlock = (_MY_PB far *)pApm->pParmBlock;
+
+	pEventInfo = pThreadParmBlock->pEventInfo;
     
 	pEAIA = pThreadParmBlock->pEAIA;
+
+	pBFCD = pThreadParmBlock->pBFCD;
+
+	pWesMap = pThreadParmBlock->pWesMap;
+
+	pWindContextData = pThreadParmBlock->pWindContextData;
+
+	LineNo = pThreadParmBlock->LineNo;
+
+	FileName = pThreadParmBlock->FileName;
     
 	hwnd = pThreadParmBlock->hwnd;
     
 	pMsgPB = &MsgPB;
 
     /* malloc the DataSend area to allow Message Block Entry */
-    pDataSend = malloc( 32000 );
-    
-	pMsgRecvArea = malloc (32000);
-  
+    pDataSend = malloc( DZSF001_MAX_MSG_LEN );
+	if (pDataSend == NULL)
+	{
+		FndMsgBoxDisplayText(
+                DZSF001_ERR_ALLOC_MEM_MSG,
+			    DZSF001_PROG_NAME,
+			    hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_CRITICAL,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+
+		return( CMN_FAIL );
+	}
+    memset(pDataSend, 0, DZSF001_MAX_MSG_LEN );
+
+	pMsgRecvArea = malloc (DZSF001_MAX_MSG_LEN);
+	if( pMsgRecvArea == NULL )
+	{
+		FndMsgBoxDisplayText(
+                DZSF001_ERR_ALLOC_MEM_MSG,
+			    DZSF001_PROG_NAME,
+			    hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_CRITICAL,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+
+		return( CMN_FAIL );
+	}
+  	memset( pMsgRecvArea, 0, DZSF001_MAX_MSG_LEN);
+
     /* This retrieves the IP address of the client workstation */
     GetComputerName(SaveIPAddress,
 	                &ComputerNameLength );
 
     /* Send the IP Address to the Window */
-	rc = FndWndMsgSend( hwnd,
+	/*rc = FndWndMsgSend( hwnd,
 	                    UPDATE_IP_ADDR,
 	                    &MsgPB,
 	                    &FndGenErrorBlock );
+	*/
+	/*
+	** replace with Arch function
+	*/
+	rc = CmnWndMsgSend( CMN_WIN_KEY_SELF,
+						CMN_WIN_KEY_SELF,
+						UPDATE_IP_ADDR,
+						&MsgPB,
+						CMN_ARCH_PARMS );
+
 
     /* 
 	** Get Current Time for Measuring Elapsed Time.
@@ -427,16 +503,15 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
         DZSF001_BeginTimeGotten = TRUE;
     }
 
-	srand(timemilli.millitm);
-
     /* 
-	** If Iterative Test, Set PoolCounter = Numpools to force 
+	** If Iterative Test, Set PoolCounter = Zero to force 
 	** first Random # Call. Iterative testing is determined by the
     ** seventh parameter in the TAB_CONTROL_INPUT_FILE.
 	**/
     if ( Iterative > 0 )
     {
-        PoolCounter = NumPools;
+        PoolCounter = 0;
+        RangeRandom = -1;
     }
 
     /*
@@ -450,26 +525,53 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
     ** Main Processing Loop to Send Messages and Determines Response 
     ** Change the while (1) as enhanced to allow Pause/Continue/Reset
     **/
-    while (DZSF001_Continue) 
+    while ( (DZSF001_Continue) && (FndGenRC == FND_SUCCESS) )
     {
         /* Determine Random File Name */
-        if ( (Iterative == 0) || (PoolCounter == NumPools ) )
+        if ( (Iterative == 0) )
         {
-	        InitialRandom = (float) rand();
+        
+            InitialRandom = (float) rand();
 	        
-			TempRandom = (InitialRandom/32767) * lTotalNumMessages;
+			TempRandom = (InitialRandom/DZSF001_RAND_NUM_DIV) * lTotalNumMessages;
         	
 			RangeRandom = (short) TempRandom;
             
-			sprintf(RandomFileName, "CS%u", RangeRandom);
-
-            /* Reset Pool Counter if Iterative & Inside Loop */
-            if ( Iterative > 0 )
-            {
-                PoolCounter = 0;
-            }
         }
 
+        /*
+        ** Increment Pool Counter if Iterative Feature is ON.
+        ** The Iterative feature is turned on by setting the seventh 
+        ** parameter of the TAB_CONTROL_INPUT_FILE to 1.
+        **/
+        else /* Process is iterative */
+        {
+            RangeRandom++;
+
+        }
+        if (( Iterative > 0) && (RangeRandom == PoolSize ) && ( PoolCounter < (NumPools - 1)))
+        {
+            PoolCounter++;
+            RangeRandom = 0;
+        }
+        else if (( Iterative > 0) && (RangeRandom == PoolSize ))
+        {
+	        FndMsgBoxDisplayText(
+                DZSF001_ERR_IT_TEST_DMP_FILES,
+			    DZSF001_PROG_NAME,
+			    hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_INFORMATION,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+        
+            FndGenRC = CMN_FAIL;
+
+        }
+
+        sprintf(RandomFileName, DZSF001_MSG_FILE_NM_FORMAT, RangeRandom);     
         /* 
         ** Record Current Time Before Network Read
         ** of CSR dump file.
@@ -480,204 +582,258 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
         ** This is the time immediately before the read of the CSR
         ** dump file.
         **/
-        dSaveStartTime = (1000 * (double) timemilli.time) +
+        dSaveStartTime = (DZSF001_MSEC_PER_SEC * (double) timemilli.time) +
 		(double) timemilli.millitm;
 
         /* 
 		** Retrieve the Parm Block and Message Data Area from 
 		** Random CSR Dump File 
 		**/
+		pRandomFileName = RandomFileName;
+
         rc = TABGetPBAndMessage( &MsgPB,
 		                	     &pDataSend,
-                                 RandomFileName);
-
-        /* Record Current Time After Network Read for CSR dump file */
-        ftime(&timemilli);
+                                 pRandomFileName,
+								 CMN_ARCH_PARMS);
         
-		/* 
-        ** This is the time immediately following the read of the CSR
-        ** dump file.
-        **/
-        dSaveEndTime = (1000 * (double) timemilli.time) +
-                       (double) timemilli.millitm;
-        
-		dTempTime    = dSaveEndTime - dSaveStartTime;
-        
-		/* 
-        ** This time represents the time that TAB used to read the CSR
-        ** dump file from the network drive. It is used to write to the log file.
-        **/
-        lNetworkTime = (float) dTempTime;
-
-        /* 
-		** Save the Function Code, Random File Name, 
-		** Actual Length Send for Log 
-		**/
-        /*
-        ** 01/16/97  EHEMMER
-        ** Moved the folowing line of code to TABGetMessage so that the 
-        ** first file read whould come from a random pool.
-        **/
-        //PrevRandom = InitialRandom;
-	    
-		memcpy (lfunctioncode, pDataSend, 3);
-        
-		sprintf(lrandomfilename, "%u%s", PoolCounter, RandomFileName);
-        
-		lactuallengthsend       = pMsgPB->actual_length_send;
-
-        /* Write a valid port address to the Parm Block */
-        memcpy (&pMsgPB->src, &InitialParmBlock.src, sizeof(_SERVICE_DESC));
-
-        /*
-        ** Increment Pool Counter if Iterative Feature is ON.
-        ** The Iterative feature is turned on by setting the seventh 
-        ** parameter of the TAB_CONTROL_INPUT_FILE to 1.
-        **/
-        if ( Iterative > 0 )
+        if(rc == FND_SUCCESS)
         {
-            PoolCounter++;
-        }
 
-        /* Get Current Time for Window Update of Elapsed Time */
-	    ftime(&timemilli);
-	    
-		dTempTime  = timemilli.time - DZSF001_TestBeginTime;
-	    
-        /*
-        ** This is the total elapsed time of the test so far. 
-        ** It is used to display the Elasped Time on the window.
-        **/
-        lTotalTime = ((unsigned long) (dTempTime - DZSF001_TotalPauseTime));
-
-        /* Write Name of Service and File to Window */
-        rc = FndWndMsgSend( hwnd,
-			                UPDATE_CURRENT_MSG,
-			                &MsgPB,
-			                &FndGenErrorBlock );
-
-        /*  Write SMF Record Stuff to Parm Block */
-        memcpy ( &DataArea.StandardHeader,
-                 pDataSend,
-                 sizeof (DataArea.StandardHeader ) );
-
-        DataArea.StandardHeader.PerfSubgrp2.NoPrevRespTime = lElapsedTime / 1000;
+            /* Record Current Time After Network Read for CSR dump file */
+            ftime(&timemilli);
         
-		memcpy (DataArea.StandardHeader.PerfSubgrp2.IdPrevMsgInst,
-                SaveIDPrevMsgInst, 
-                sizeof(SaveIDPrevMsgInst));
+		    /* 
+            ** This is the time immediately following the read of the CSR
+            ** dump file.
+            **/
+            dSaveEndTime = (DZSF001_MSEC_PER_SEC * (double) timemilli.time) +
+                           (double) timemilli.millitm;
         
-		strcpy (DataArea.StandardHeader.KyConvId, "TABNT\0");
+		    dTempTime    = dSaveEndTime - dSaveStartTime;
         
-		memcpy ( pDataSend, 
-                 &DataArea.StandardHeader, 
-                 sizeof (DataArea.StandardHeader ) );
+		    /* 
+            ** This time represents the time that TAB used to read the CSR
+            ** dump file from the network drive. It is used to write to the log file.
+            **/
+            lNetworkTime = (float) dTempTime;
 
-        /*
-        ** Record Current Time immediately before the message
-        ** is sent to the service.
-	    **/
-        ftime(&timemilli);
+            /* 
+		    ** Save the Function Code, Random File Name, 
+		    ** Actual Length Send for Log 
+		    **/
+            /*
+            ** 01/16/97  EHEMMER
+            ** Moved the folowing line of code to TABGetMessage so that the 
+            ** first file read would come from a random pool.
+            **/
+            //PrevRandom = InitialRandom;
+	        
+		    memcpy (lfunctioncode, pDataSend, DZSF001_FUNC_CODE_LEN);
         
-		/* This is the time recorded immediately before the message
-        ** is sent to the service 
-        **/
-        dSaveStartTime = (1000 * (double) timemilli.time) +
-		                 (double) timemilli.millitm;
-
-        rc = MSGConvUI( &MsgPB,
-		              ( _MSG_SEND_AREA )pDataSend,
-		              ( _MSG_RECV_AREA ) pMsgRecvArea,
-		                pABHI );
-
-        /* Record Time after MsgConv to Determine Response Time */
-        ftime(&timemilli);
+		    sprintf(lrandomfilename, DZSF001_RAND_FILE_NM_FORMAT_STR, 
+				PoolCounter, RandomFileName);
         
-		lClientMsgNbr++;
+		    lactuallengthsend       = pMsgPB->actual_length_send;
+
+            /* Write a valid port address to the Parm Block */
+            memcpy (&pMsgPB->src, &InitialParmBlock.src, sizeof(_SERVICE_DESC));
+
+
+            if(FndGenRC == FND_SUCCESS)
+            {
+
+                /* Get Current Time for Window Update of Elapsed Time */
+	            ftime(&timemilli);
+	            
+		        dTempTime  = timemilli.time - DZSF001_TestBeginTime;
+	            
+                /*
+                ** This is the total elapsed time of the test so far. 
+                ** It is used to display the Elasped Time on the window.
+                **/
+                lTotalTime = ((unsigned long) (dTempTime - DZSF001_TotalPauseTime));
+
+                /* Write Name of Service and File to Window 
+                rc = FndWndMsgSend( hwnd,
+			                        UPDATE_CURRENT_MSG,
+			                        &MsgPB,
+			                        &FndGenErrorBlock );
+
+					*/
+				/*
+				** replace with Arch function
+				*/
+				rc = CmnWndMsgSend( CMN_WIN_KEY_SELF,
+									CMN_WIN_KEY_SELF,
+									UPDATE_CURRENT_MSG,
+									&MsgPB,
+									CMN_ARCH_PARMS );
+
+
+
+                /*  Write SMF Record Stuff to Parm Block */
+                memcpy ( &DataArea.StandardHeader,
+                         pDataSend,
+                         sizeof (DataArea.StandardHeader ) );
+
+                DataArea.StandardHeader.PerfSubgrp2.NoPrevRespTime = 
+					lElapsedTime / DZSF001_MSEC_PER_SEC;
+        
+		        memcpy (DataArea.StandardHeader.PerfSubgrp2.IdPrevMsgInst,
+                        SaveIDPrevMsgInst, 
+                        sizeof(SaveIDPrevMsgInst));
+        
+		        strcpy (DataArea.StandardHeader.KyConvId, DZSF001_KY_CONV_ID_STR);
+        
+		        memcpy ( pDataSend, 
+                         &DataArea.StandardHeader, 
+                         sizeof (DataArea.StandardHeader ) );
+
+                /*
+                ** Record Current Time immediately before the message
+                ** is sent to the service.
+	            **/
+                ftime(&timemilli);
+        
+		        /* This is the time recorded immediately before the message
+                ** is sent to the service 
+                **/
+                dSaveStartTime = (DZSF001_MSEC_PER_SEC * (double) timemilli.time) +
+		                         (double) timemilli.millitm;
+
+                rc = MSGConvUI( &MsgPB,
+		                      ( _MSG_SEND_AREA )pDataSend,
+		                      ( _MSG_RECV_AREA ) pMsgRecvArea,
+		                        pABHI );
+
+                /* Record Time after MsgConv to Determine Response Time */
+                ftime(&timemilli);
+        
+		        lClientMsgNbr++;
        
-		RefreshCounter++;
+		        RefreshCounter++;
 
-        /*  Save the Previous Message ID for SMF */     
-        memcpy (SaveIDPrevMsgInst, MsgPB.syst_msg_id, sizeof(MsgPB.syst_msg_id));
+                /*  Save the Previous Message ID for SMF */     
+                memcpy (SaveIDPrevMsgInst, MsgPB.syst_msg_id, sizeof(MsgPB.syst_msg_id));
 
-        /* Save Error Message if Bad Return Code */
-        if (MsgPB.appl_status.severity > 0)
-        {
-            ErrorMessageID = MsgPB.appl_status.explan_code;
+                /* Save Error Message if Bad Return Code */
+                if (MsgPB.appl_status.severity > 0)
+                {
+                    ErrorMessageID = MsgPB.appl_status.explan_code;
 
-        }
+                }
         
-		/* This is the time recorded immediately after the message
-        ** is sent to the service 
-        **/
-        dSaveEndTime = (1000 * (double) timemilli.time) +
-			           (double) timemilli.millitm;
+		        /* This is the time recorded immediately after the message
+                ** is sent to the service 
+                **/
+                dSaveEndTime = (DZSF001_MSEC_PER_SEC * (double) timemilli.time) +
+			                   (double) timemilli.millitm;
         
-		dTempTime    = dSaveEndTime - dSaveStartTime;
+		        dTempTime    = dSaveEndTime - dSaveStartTime;
         
-		/* 
-        ** This is the time that it took for the message to go all
-        ** the way to the service and back.
-        **/
-        lElapsedTime = (float) dTempTime;
+		        /* 
+                ** This is the time that it took for the message to go all
+                ** the way to the service and back.
+                **/
+                lElapsedTime = (float) dTempTime;
         
-		dTempTime    = timemilli.time - DZSF001_TestBeginTime;
+		        dTempTime    = timemilli.time - DZSF001_TestBeginTime;
         
-        /*
-        ** This is the total elapsed time of the test so far. 
-        ** It is used to display the Elasped Time on the window
-        ** and to show the Average Per Minute on the window.
-        **/
-        lTotalTime   =  ( (unsigned long) (dTempTime - DZSF001_TotalPauseTime));
+                /*
+                ** This is the total elapsed time of the test so far. 
+                ** It is used to display the Elasped Time on the window
+                ** and to show the Average Per Minute on the window.
+                **/
+                lTotalTime   =  ( (unsigned long) (dTempTime - DZSF001_TotalPauseTime));
 
-        /* Update Window with Message Statistics */
-        rc = FndWndMsgSend( hwnd,
-			                UPDATE_STATS,
-			                &MsgPB,
-			                &FndGenErrorBlock );
+                /* Update Window with Message Statistics 
+                rc = FndWndMsgSend( hwnd,
+			                        UPDATE_STATS,
+			                        &MsgPB,
+			                        &FndGenErrorBlock );
 
-        /*
-        ** Check Refresh Counter.
-        ** The Refresh Rate is specified by the fourth parameter in the 
-        ** TAB_CONTROL_INPUT_FILE.
-        **/
-        if (RefreshCounter == RefreshRate)
-        {
-            rc = TABRefreshControl ( );
+					*/
+				/*
+				** replace with Arch function
+				*/
+				rc = CmnWndMsgSend( CMN_WIN_KEY_SELF,
+									CMN_WIN_KEY_SELF,
+									UPDATE_STATS,
+									&MsgPB,
+									CMN_ARCH_PARMS );
+
+
+
+                /*
+                ** Check Refresh Counter.
+                ** The Refresh Rate is specified by the fourth parameter in the 
+                ** TAB_CONTROL_INPUT_FILE.
+                **/
+                if (RefreshCounter == RefreshRate)
+                {
+                    rc = TABRefreshControl ( );
             
-			RefreshCounter = 0;
-        }
+			        RefreshCounter = 0;
+                }
 
-        /*  Beep if BeepFlag <> 0 */
-        if (BeepFlag > 0)
-        {
-            Beep(600, 50);
-        }
+                /*  Beep if BeepFlag <> 0 */
+                if (BeepFlag > 0)
+                {
+                    Beep(600, 50);
+                }
 
-        /* Throttle Timer for Delay */
-        if (ldelaytime > 0)
-        {
-            sprintf(NewWindowTitle, "TAB Throttle Active (Delay = %us)\0",
-                    DelayThrottle );
+                /* Throttle Timer for Delay */
+                if (ldelaytime > 0)
+                {
+                    sprintf(NewWindowTitle, DZSF001_DELAY_THROT_ACT_TITLE,
+                            DelayThrottle );
         
 
-            rc = FndWndMsgSend( hwnd,
-							    UPDATE_TITLE,
-							    &MsgPB,
-							    &FndGenErrorBlock );
+                   /* rc = FndWndMsgSend( hwnd,
+							            UPDATE_TITLE,
+							            &MsgPB,
+							            &FndGenErrorBlock );
 
-            Sleep(ldelaytime);
+						*/
+					/*
+					** replace with Arch function
+					*/
+					rc = CmnWndMsgSend( CMN_WIN_KEY_SELF,
+										CMN_WIN_KEY_SELF,
+										UPDATE_TITLE,
+										&MsgPB,
+										CMN_ARCH_PARMS );
 
-        }
-        else /* There is no delay period specified in the input file, Control.tab */
-        {
-            strcpy(NewWindowTitle, "TAB Stress Facility\0");
+
+
+                    Sleep(ldelaytime);
+
+                }
+                else /* There is no delay period specified in the input file, Control.tab */
+                {
+                    strcpy(NewWindowTitle, DZSF001_NORM_WIND_TITLE);
         
-            rc = FndWndMsgSend( hwnd,
-                                UPDATE_TITLE,
-                                &MsgPB,
-                                &FndGenErrorBlock );
-        }
+                    /*rc = FndWndMsgSend( hwnd,
+                                        UPDATE_TITLE,
+                                        &MsgPB,
+                                        &FndGenErrorBlock );
+
+						*/
+					/*
+					** replace with Arch function
+					*/
+					rc = CmnWndMsgSend( CMN_WIN_KEY_SELF,
+										CMN_WIN_KEY_SELF,
+										UPDATE_TITLE,
+										&MsgPB,
+										CMN_ARCH_PARMS );
+
+
+                }
+
+            }
+
+        } /* end if Successful read of dump file */
 
     } /* End of While Loop */
     
@@ -694,8 +850,9 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
     {
         free ( pMsgRecvArea);
     }
-    
-    return 0;
+
+   
+    return ( CMN_SUCCESS );
 
 } /*End of TABThread Function*/
 
@@ -703,7 +860,7 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : Dzsf001xprdis
+**  FUNCTION         : DZSF001BusPrdis
 **
 **  DESCRIPTION      :
 **
@@ -730,46 +887,132 @@ unsigned short APIENTRY TABThread( _APM_START far *pApm, _ABHI far *pABHI)
 **
 ***************************************************************************/
 /* PREDISPLAY for Stress Facility Client */
-/* Clients Calls Function for First Time Here */
-WCBPROC( Dzsf001xprdis )
+/* Client Calls Function for First Time Here */
+WCBPROC( DZSF001BusPrdis )
 {
     _FND_STANDARD_PB FND_PB;
     PC_APMFUNC       pFuncPtr;
     _MY_PB           ThreadParmBlock;
     _APM_START       Apmstart;
     USHORT           rc = 0;
-    _ABHI	         ABHI;
+    /*_ABHI	         ABHI;*/
+	FILE             *fp;
+	USHORT           FndGenRC = 0;
+	_FND_ERROR_BLOCK FndGenErrorBlock;
+	USHORT	         SelectedButton;
+	HWND             hwnd;
+
+	/*
+	** mdc 02/06/98 moved to here so that files could be defined in control.tab
+	*/
+    rc = TABRefreshControl ( );
+	if( rc != CMN_SUCCESS )
+	{
+	     FndMsgBoxDisplayText(
+						DZSF001_ERR_CNTLTAB_READ,
+						DZSF001_PROG_NAME,
+						hwnd,					
+						FND_MSGBOX_OK,
+						FND_MSGBOX_CRITICAL,
+						FND_MSGBOX_OK,
+						NULL,
+						&SelectedButton,
+						&FndGenErrorBlock );
+
+		return( CMN_FAIL );
+	}
+
+	/*
+	** mdc 02/05/98 Initialize parm block
+	*/
+	memset(&ThreadParmBlock, 0, sizeof(_MY_PB));
 
     /* apb 02-21-95 Added to Delete tab.prf log file at startup */
-    remove (TAB_LOG_FILE);
+	if ( (fp = fopen( TabLogPathAndFile, "r")) != NULL)
+	{
+		fclose(fp);
+		remove (TabLogPathAndFile);
+	}
+	
 
     /* 12/04/96  EHEMMER  Remove Error Log at Startup */
-    remove (TAB_ERROR_LOG);
-  
+	if ( (fp = fopen( TabErrPathAndFile, "r")) != NULL)
+	{
+		fclose (fp);
+        remove (TabErrPathAndFile);
+	}
+
     /* apb 02-21-95 Added to do MsgInitParmBlock */
-    rc = MSGInit(&InitialParmBlock, &ABHI);
+	memcpy(InitialParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN );
+    rc = MSGInit(&InitialParmBlock, pABHI);
+	if( rc != MSGIO_SUCCESS )
+	{
+		FndMsgBoxDisplayText(
+                DZSF001_ERR_INIT_MSP_Q,
+			    DZSF001_PROG_NAME,
+			    CBI_hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_CRITICAL,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+
+		return( CMN_FAIL );
+	}
   	
-    rc = TABRefreshControl ( );
 
     memcpy (FND_PB.ver, FND_APM_VER, _VER_LEN);
 
     pFuncPtr              = (PC_APMFUNC) &TABThread;
     
 	ThreadParmBlock.hwnd  = CBI_hwnd;
+
+	ThreadParmBlock.pEventInfo = pEventInfo;
     
 	ThreadParmBlock.pEAIA = pEAIA;
+
+	ThreadParmBlock.pBFCD = pBFCD;
+
+	ThreadParmBlock.pWesMap = pWesMap;
+
+	ThreadParmBlock.pWindContextData = pWindContextData;
+
+/*	ThreadParmBlock.LineNo = LineNo;
+
+	ThreadParmBlock.FileName = FileName;
+	*/
     
 	Apmstart.ParmBlockLen = sizeof(_MY_PB);
     
 	Apmstart.pParmBlock   = (void far *)&ThreadParmBlock;
     
-	Apmstart.DataBlockLen = 0;
+	Apmstart.DataBlockLen = DZSF001_DATA_BLK_LEN;
     
 	Apmstart.pDataBlock   = NULL;
 
     rc = APMstart (&FND_PB, pFuncPtr, &Apmstart, pABHI);
 
-    return 0;
+	if( rc != FND_SUCCESS )
+	{
+		FndMsgBoxDisplayText(
+                DZSF001_ERR_THREAD_STRT,
+			    DZSF001_PROG_NAME,
+			    hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_CRITICAL,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+
+
+		return ( CMN_FAIL );
+	}
+	else
+	{
+		return ( CMN_SUCCESS );
+	}
 
 } /* End of Predisplay for Stress Facility */
 
@@ -805,23 +1048,41 @@ WCBPROC( Dzsf001xprdis )
 **
 ************************************************************************/
 SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
-			   BYTE **ppMessage, CHAR *FileName )
+			   BYTE **ppMessage, CHAR *pRFileName, CMN_ARCH_PARM_TYPES )
 {
-    FILE *fptr;
-    SHORT FndGenRC = 0;
-    CHAR Path[25];
-    BYTE *pMessage = *(ppMessage);
-    float TempRandomPool;
+    
+    _FND_ERROR_BLOCK     FndGenErrorBlock;
+	USHORT	             SelectedButton;
+    FILE                 *fptr;
+    SHORT                FndGenRC = 0;
+	SHORT                ReturnCode = 0;
+    CHAR                 Path[_PATH_LEN];
+    BYTE                 *pMessage = *(ppMessage);
+    float                TempRandomPool;
+    CHAR                 StringPoolCounter[DZSF001_STR_POOL_CNTR_LEN] = "";
+    HWND                 hwnd;
+
 
     /* 01/16/97  EHEMMER   
     ** The first time through, the following line of code was not 
-    ** enccountered yet as it appears in the TABThread function.
+    ** encountered as it appears in the TABThread function.
     ** Therefore the first file read always came from the 0 pool.
     ** Moving the line of code here takes care of the problem.
     **/
-    PrevRandom = InitialRandom;
+
+    /* 
+    ** 04/16/97 EAHEMMER
+    ** The RandomPoolCounter must be generated from it's own random number.
+    ** basing it on the Initial Random number, forces the poolcounter to 
+    ** coorespond to the same ratio as the random file. For example, a random
+    ** file near the maximum will always induce the last pool and a random
+    ** file near the minimum will always induce the first pool.
+    **/
+    //PrevRandom = InitialRandom;
     
-    TempRandomPool = ( PrevRandom/32767 ) * NumPools;
+	PrevRandom = (float) rand();
+    
+    TempRandomPool = ( PrevRandom/DZSF001_RAND_NUM_DIV ) * NumPools;
 
     /* If not Iterative
     ** 
@@ -844,21 +1105,30 @@ SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
     ** This is the directory where the modified CSR dump files
     ** are read from. If different successive directories are utilized, 
     ** then use the PoolCounter.
-    **/
+    */
     if( NumPools > 1)
     {
-        sprintf(Path, TAB_CSR_DUMP_FILE_DIRECTORY"%u", PoolCounter);
+        /* Convert PoolCounter to a string in order to append to the Path */
+        strcpy(Path, TabCsrDumpFileDirectory);
+		strcat(	Path, "\\" );
+        strcat(Path, TabCsrDumpFileInput);
+        
+        itoa(PoolCounter, StringPoolCounter, 10);
+
+        strcat(Path, StringPoolCounter);
+        
+
     }
     else /* There is only one pool (directory) of CSR dump files */
     {
-        sprintf(Path, TAB_CSR_DUMP_FILE_DIRECTORY);
+        strcpy(Path, TabCsrDumpFileDirectory);
     }
     
     /* Go to specified directory */
     if ( !chdir( Path ))
     {
         /* Open File */
-	    if (( fptr = fopen( FileName, "rb" )) != NULL )
+	    if (( fptr = fopen( pRFileName, "rb" )) != NULL )
 	  	{
 
 		    /* Read the MsgParmBlock from the file */
@@ -875,21 +1145,45 @@ SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
 			** Password messages created with other OT numbers & Passwords
 			** that may have expired
             **/
-            memcpy ( pMsgPB->secur.user_id, TAB_USER_ID, 8);
+
+            memcpy ( pMsgPB->secur.user_id, TabUserID, DZSF001_USER_ID_LEN);
             
-			memcpy ( pMsgPB->secur.user_pw, TAB_USER_PSWD, 8);
+			memcpy ( pMsgPB->secur.user_pw, TabUserPW, DZSF001_USER_PSWD_LEN);
 
         }    /* end of if:  Successful fopen */
         else /* Error from fopen */
         {
-	        FndGenRC = CMN_FAIL;
+	        
+	        FndMsgBoxDisplayText(
+                DZSF001_ERR_DMP_FILE_OPN_MSG,
+			    DZSF001_PROG_NAME,
+			    hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_INFORMATION,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+
+            FndGenRC = CMN_FAIL;
 
         } /* end of else:  Error from fopen */
 
     }    /* End of if:  Successful chdir */
     else /* Error from chdir */
     {
-        FndGenRC = CMN_FAIL;
+	        FndMsgBoxDisplayText(
+                DZSF001_INVLD_DMP_FILE_PATH_MSG,
+			    DZSF001_PROG_NAME,
+			    hwnd,					
+			    FND_MSGBOX_OK,
+			    FND_MSGBOX_INFORMATION,
+			    FND_MSGBOX_OK,
+			    NULL,
+			    &SelectedButton,
+		        &FndGenErrorBlock );
+
+            FndGenRC = CMN_FAIL;
 
     } /* end of else:  Error from chdir */
 
@@ -914,7 +1208,7 @@ SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
 **
 **                     2. PoolSize - Total number of Input Messages created
 **                          by the modified CSR and TabLoad held in 
-**                          the input directory, TAB_CSR_DUMP_FILE_DIRECTORY
+**                          the input directory, TabCsrDumpFileDirectory
 **
 **                     3. NumPools - The number of consecutive input 
 **                          directories holing input files.
@@ -924,7 +1218,7 @@ SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
 **
 **                     5. Log - This parameter is either TRUE(1) or FALSE(0).
 **                          It tells Tab whether or not to  write the stats
-**                          to the TAB_LOG_FILE.
+**                          to the TabLogPathAndFile.
 **
 **                     6. Beep - This parameter is either TRUE(1) or FALSE(0).
 **                          This tells TAB whether or not to make annoying 
@@ -955,11 +1249,10 @@ SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
 **
 ************************************************************************/
 SHORT TABRefreshControl( )
-
 {
     USHORT           rc = 0;
     FILE            *fp;
-    CHAR            TabParms[100];
+    CHAR            TabParms[DZSF001_TAB_PARMS_LEN];
 
     /*  Read Control File for Test Parameters */
 
@@ -971,26 +1264,34 @@ SHORT TABRefreshControl( )
     **/
     fp = fopen(TAB_CONTROL_INPUT_FILE,"r");
     
-	memset (TabParms, '\0', 100);
+	memset (TabParms, '\0', DZSF001_TAB_PARMS_LEN);
     
-	if ( fgets( TabParms, 100, fp )  != NULL )
+	if ( fgets( TabParms, DZSF001_TAB_PARMS_LEN, fp )  != NULL )
     {
-        sscanf ( TabParms, "%d %d %d %d %d %d %d",
+        sscanf ( TabParms, DZSF001_TAB_PARMS_FORMAT_STR,
                  &DelayThrottle, &PoolSize, &NumPools,
-                 &RefreshRate, &FileLog, &BeepFlag, &Iterative );
+                 &RefreshRate, &FileLog, &BeepFlag, &Iterative, 
+				TabCsrDumpFileDirectory, TabCsrDumpFileInput,
+				TabLogPathAndFile, TabErrPathAndFile,
+				TabUserID, TabUserPW);
+
+		/*
+		** mdc 02/05/98 removed for new control.tab input
+        strcpy(TabCsrDumpFileDirectory, TabCsrDumpFileInput);
+		*/
         
 		lTotalNumMessages = ( float ) PoolSize;
         
-		ldelaytime        = ( unsigned long ) ( DelayThrottle * 1000 );
+		ldelaytime        = ( unsigned long ) ( DelayThrottle * DZSF001_MSEC_PER_SEC );
     }
     else
     {
-        return 1;
+        return ( DZSF001_REFRESH_FAIL );
     }
     
     fclose( fp );
 
-    return 0;
+    return ( CMN_SUCCESS );
 
 } /*End of TABRefreshControl*/
 
@@ -1050,8 +1351,21 @@ WCBPROC( DZSF001BusContPBClick)
     pFuncPtr              = (PC_APMFUNC) &TABThread;
     
 	ThreadParmBlock.hwnd  = CBI_hwnd;
+
+	ThreadParmBlock.pEventInfo = pEventInfo;
     
 	ThreadParmBlock.pEAIA = pEAIA;
+
+	ThreadParmBlock.pBFCD = pBFCD;
+
+	ThreadParmBlock.pWesMap = pWesMap;
+
+	ThreadParmBlock.pWindContextData = pWindContextData;
+
+/*	ThreadParmBlock.LineNo = LineNo;
+
+	ThreadParmBlock.FileName = FileName;
+	*/
     
 	Apmstart.ParmBlockLen = sizeof(_MY_PB);
     
@@ -1063,7 +1377,7 @@ WCBPROC( DZSF001BusContPBClick)
 
     rc = APMstart (&FND_PB, pFuncPtr, &Apmstart, pABHI);
 
-    return 0;
+    return ( CMN_SUCCESS );
 }
 
 /***********************************************************************
@@ -1101,6 +1415,6 @@ WCBPROC( DZSF001BusPausePBClick)
     /* Set the Continue Flag to FALSE */
     DZSF001_Continue = FALSE;
     
-    return 0;
+    return ( CMN_SUCCESS );
 }
 

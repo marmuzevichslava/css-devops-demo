@@ -1,19 +1,24 @@
 /***************************************************************************
  *                                                                         *
- *                 C   A P P L I C A T I O N   L O G I C                   *
+ *               C  A P P L I C A T I O N   L O G I C                      *
  *                                                                         *
- *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *              Copyright (C) 1996, Andersen Consulting.                   *
+ *                        All rights reserved.                             *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZSF001                           *
- *                         Generated on: Tue Dec 03 08:58:31 1996          *
- *                                   by: LACKERBA                          *
+ *                         Generated on: Wed Feb 04 14:22:17 1998          *
+ *                                   by: MCONNER                           *
  *                                                                         *
- *              Modifications: Commented out all calls to the architecture *
- *                             EHEMMER   12/03/96                          * 
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *   User API Prototypes:                                                  *
  *                                                                         *
  ***************************************************************************/
+
+
 
 /***************************************************************************
  *
@@ -29,34 +34,165 @@
  ***************************************************************************/
 static WCBPROC(Xtzytjhi6229_Predisplay)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
-/*
-** Compiling TAB w/Discovery   EHEMMER   12/03/96
-** Commented out CMN_ARCH_EXIT_INITIALIZE, to
-** remove the need to use the architecture
-**/
-//CMN_ARCH_EXIT_INITIALIZE
+CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = Dzsf001xprdis( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
-                             "CMNCONT",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
-                             "ResetPB",
-                             &FndGenErrorBlock);
+   FndGenRC = DZSF001BusPrdis( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = FndCommandDisable( CBI_hwnd,
+                                 "CMNCONT",
+                                 &FndGenErrorBlock);
+
+   FndGenRC = FndCommandDisable( CBI_hwnd,
+                                 "ResetPB",
+                                 &FndGenErrorBlock);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
 
 }
+
+
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Xtzytjhi5619_Other_Gui_Event
+ * 
+ *
+ *
+ *   Event Name:    OTHER_GUI_EVENT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi5619_Other_Gui_Event)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Xtzytjhi5647_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi5647_Window_Close)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Xtzytjhi5576_Predestroy
+ * 
+ *
+ *
+ *   Event Name:    PREDESTROY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Xtzytjhi5576_Predestroy)
+{
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
+
+}
+
+
+
 /***************************************************************************
  *
  *   Window-Level Event
@@ -71,25 +207,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Xtzytjhi6233_Interwindow_Msg)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
 
-/*
-** Compiling TAB w/Discovery   EHEMMER   12/03/96
-** Commented out CMN_ARCH_EXIT_INITIALIZE
-**/
-//CMN_ARCH_EXIT_INITIALIZE
+CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = Dzsf001xrecvmsg( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
 
-return 0;
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   FndGenRC = DZSF001BusRecvMsg( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -104,34 +253,48 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Xtzytjhi2678_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
-/*
-** Compiling TAB w/Discovery   EHEMMER   12/03/96
-** Commented out CMN_ARCH_EXIT_INITIALIZE
-**/
-//CMN_ARCH_EXIT_INITIALIZE
+CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = FndCommandEnable(CBI_hwnd,
-                            "CMNCONT",
-                            &FndGenErrorBlock);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
-                             "CMNPAUSE",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = DZSF001BusPausePBClick( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandEnable( CBI_hwnd,
+                                "CMNCONT",
+                                &FndGenErrorBlock);
 
-return 0;
+   FndGenRC = FndCommandDisable( CBI_hwnd,
+                                 "CMNPAUSE",
+                                 &FndGenErrorBlock);
 
+   FndGenRC = DZSF001BusPausePBClick( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -146,32 +309,43 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Xtzytjhi2756_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   _FND_ERROR_BLOCK      FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
 
-/*
-** Compiling TAB w/Discovery   EHEMMER   12/03/96
-** Commented out CMN_ARCH_EXIT_INITIALIZE
-**/
-//CMN_ARCH_EXIT_INITIALIZE
+CMN_ARCH_EXIT_INITIALIZE
 
-FndGenRC = FndCommandEnable(CBI_hwnd,
-                            "CMNPAUSE",
-                            &FndGenErrorBlock);
+   memset(&FndGenErrorBlock, '\0', sizeof(FndGenErrorBlock));
 
-FndGenRC = FndCommandDisable(CBI_hwnd,
-                             "CMNCONT",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = DZSF001BusContPBClick( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = FndCommandEnable( CBI_hwnd,
+                                "CMNPAUSE",
+                                &FndGenErrorBlock);
 
-return 0;
+   FndGenRC = FndCommandDisable( CBI_hwnd,
+                                 "CMNCONT",
+                                 &FndGenErrorBlock);
 
+   FndGenRC = DZSF001BusContPBClick( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
 
 }
 

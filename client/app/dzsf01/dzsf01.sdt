@@ -1,14 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *    W I N D O W S   N T   S E R V I C E   D I S P A T C H   T A B L E     *
+ *    W I N D O W S   N T   S E R V I C E   D I S P A T C H   T A B L E    *
  *                                                                         *
- *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                  Copyright (C) 1996 Andersen Consulting.                *
+ *                         All rights reserved.                            *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *           Service Dispatch Table for: DZSF01                            *
- *                         Generated on: Tue Dec 03 08:58:31 1996          *
- *                                   by: LACKERBA                          *
+ *                         Generated on: Wed Feb 04 07:23:39 1998          *
+ *                                   by: MCONNER                           *
  *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/

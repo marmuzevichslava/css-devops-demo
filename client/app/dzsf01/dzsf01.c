@@ -2,14 +2,16 @@
  *                                                                         *
  *                     P R O G R A M   F R O N T   E N D                   *
  *                                                                         *
- *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                  Copyright (C) 1996 Andersen Consulting.                *
+ *                         All rights reserved.                            *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
- *                Program Front End for: DZSF01                            *
- *                         Generated on: Tue Dec 03 08:58:31 1996          *
- *                                   by: LACKERBA                          *
- *                    Short Description:                                   *
+ *                Program Front End for: DZSF01                            *                        
+ *                         Generated on: Wed Feb 04 07:23:39 1998          *  
+ *                                   by: MCONNER                           *     
+ *                                                                         *
+ *                    Short Description:                                   *             
  *                                                                         *
  ***************************************************************************/
 
@@ -28,7 +30,7 @@
 #define  FND_PROGRAM_TYPE        FND_APPL_TYPE_CLIENT
 #define  FND_PROGRAM_LANG        FND_C_LANG
 #define  FND_DBMS                FND_DB_NONE
-#define  FND_PORTABILITY_FLAG    TRUE
+#define  FND_PORTABILITY_FLAG    FALSE
 #define  FND_WINDOW_NAME         ""
 
 /***************************************************************************
@@ -107,8 +109,8 @@ int WINAPI WinMain (HINSTANCE hInstance,      /* current instance handle        
    applInitData.initFlags.registerWithEL = REGISTER_WITH_EL;
    applInitData.initFlags.registerWithST = REGISTER_WITH_ST;
    applInitData.initFlags.registerWithMN = REGISTER_WITH_MN;
-   applInitData.initRoutine              = FND_PROGRAM_INIT_ROUTINE;
-   applInitData.termRoutine              = FND_PROGRAM_TERM_ROUTINE;
+   applInitData.initRoutine              = (SERVICE_FUNC_PTR) FND_PROGRAM_INIT_ROUTINE;
+   applInitData.termRoutine              = (SERVICE_FUNC_PTR) FND_PROGRAM_TERM_ROUTINE;
    applInitData.initUIRoutine            = (SERVICE_FUNC_PTR) FND_INTERFACE_INIT_ROUTINE;
    applInitData.termUIRoutine            = (SERVICE_FUNC_PTR) FND_INTERFACE_TERM_ROUTINE;
    applInitData.applDispatchTable        = dispatchTable;

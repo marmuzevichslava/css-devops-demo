@@ -1,17 +1,18 @@
 /***************************************************************************
-*                                                                          *
-*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
-*                                                                          *
-*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
-*                                                                          *
-****************************************************************************
-*                                                                          *
-*              Symbolic Definitions for: DZSF001                           *
-*                          Generated on: Tue Dec 03 08:58:31 1996          *
-*                                    by: LACKERBA                          *
-*                     Short Description:                                   *
-*                                                                          *
-****************************************************************************/
+ *                                                                         *
+ *         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N       *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *             Symbolic Definitions for: DZSF001                           *
+ *                         Generated on: Wed Feb 04 14:22:17 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ ***************************************************************************/
 
 struct _DZSF001WesMap {
 

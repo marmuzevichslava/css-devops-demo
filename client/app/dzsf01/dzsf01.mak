@@ -7,8 +7,8 @@
 #***************************************************************************
 #                                                                          *
 #                         Make file for: DZSF01                            *
-#                          Generated on: Tue Dec 03 08:58:31 1996          *
-#                                    by: LACKERBA                          *
+#                          Generated on: Wed Feb 04 07:23:39 1998          *
+#                                    by: MCONNER                           *
 #                     Short Description:                                   *
 #                                                                          *
 #***************************************************************************
@@ -48,12 +48,15 @@ LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.l
 NODBLIBS = kndbnul.lib
 OTHLIBS  = othelibs
 DLLLIBS  =
-USRLIBS  = 
+USRLIBS  = archdisp.LIB c1cfunc.LIB cssfunc.LIB
 ALL_LIBS = $(LIBS)   $(DLLLIBS) $(USRLIBS)
 
 #***************************************************************************
 #  Dependencies for each of the executable components
 #***************************************************************************
+
+
+!INCLUDE <azvars.h>
 
 
 # Make C frontend dependencies DZSF01
@@ -63,9 +66,11 @@ DZSF01_DEP =  DZSF01.sdt DZSF01.wdt
 
 # Make C window module DZSF001X
 DZSF001X_DEP = DZSF001X.c	\
-        .\DZSF001.H     \
+		.\DZSF001C.h	\
+		.\AZDI0400.C	\
 		.\DZSF001.BUS    \
                 DZSF001.aex     \
+                DZSF001.h       \
                 DZSF001.wmp     \
                 DZSF001.gnd     \
                 DZSF001.gnh     \
