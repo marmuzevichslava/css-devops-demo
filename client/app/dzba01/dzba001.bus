@@ -74,6 +74,16 @@ WCBPROC( DZBA001BusWindowPredisp )
 	/* The Global variable that will hold the password is cleared */
     memset(GlobalHoldPassword, 0, sizeof(GlobalHoldPassword));
 
+    /* Open the report file */
+
+	LogFile = fopen( REPORT_FILE , "w");
+
+	fprintf(LogFile, LOG_HEADER);
+	fprintf(LogFile, LOG_COLUMNS);
+
+	fflush(LogFile);
+
+
 	/* Disable the process menu item */
 	FndCommandDisable ( CBI_hwnd,
 	                    "ProcessMN",
@@ -89,6 +99,8 @@ WCBPROC( DZBA001BusWindowPredisp )
     memset(&WCD_SWAT01ARqst, 0, sizeof(WCD_SWAT01ARqst));
 
 
+    /* Initialize the number of accounts to process to 0 */
+    NumberOfRows = 0;
 
     /* Default the Process Mode to Extract & Insert */
     FndFieldSetValue(CBI_hwnd,
@@ -102,12 +114,12 @@ WCBPROC( DZBA001BusWindowPredisp )
     /* SET THE VALUE OF THE COMBO BOXES */
     /* Initialize the TxGenDecode1 field (TxExtractDbId) */
     CmnComboInit("TxExtractDbId",
-                 "DEV00800",
+                 "DEV00802",
 				 CMN_ARCH_PARMS);
 
     /* Initialize the TxGenDecode2 field (TxInsertDbId) */
     CmnComboInit("TxInsertDbId",
-                 "DEV00800",
+                 "DEV00802",
                  CMN_ARCH_PARMS);
 
     /* Initialize the TxGenDecode3 field (TxExtractOwnerId) */
@@ -224,6 +236,12 @@ WCBPROC( DZBA001BusWindowPredestroy )
 
     free ( pWCDStorage );
 
+    /* Close the report file */
+
+	fclose( LogFile );
+
+
+
     return CMN_SUCCESS;
 
 }  /* End of SWAT01ABusWindowPredestroy */
@@ -264,8 +282,10 @@ WCBPROC( DZBA001BusWindowPredestroy )
 
 WCBPROC( DZBA001BusProcessMNClick )
 {
-    USHORT              FndGenRC = 0;
+    USHORT              RowNumber = 0,
+                        FndGenRC = 0;
     _FND_ERROR_BLOCK    FndGenErrorBlock;
+    _ExtractInsertLBRow RowData;
 
     /* Declare a pointer of the Working Storage type */
     _WindowData         *pWCDStorage;
@@ -298,6 +318,14 @@ WCBPROC( DZBA001BusProcessMNClick )
 
 
        FndFieldQueryValue(CBI_hwnd,
+                    "TxUserNm",
+                    sizeof(BFCD_SWAT01Luw.SWAT01AData.TxUserNm),
+                    BFCD_SWAT01Luw.SWAT01AData.TxUserNm,
+                    &FndGenErrorBlock);
+
+
+
+       FndFieldQueryValue(CBI_hwnd,
                     "TxExtractOwnerId",
                     TXEXTRACTOWNERID_LEN,
                     BFCD_SWAT01Luw.SWAT01AData.TxExtractOwnerId,
@@ -309,20 +337,6 @@ WCBPROC( DZBA001BusProcessMNClick )
                     TXINSERTOWNERID_LEN,
                     BFCD_SWAT01Luw.SWAT01AData.TxInsertOwnerId,
                     &FndGenErrorBlock);
-
-
-//       FndFieldQueryValue(CBI_hwnd,
-//                    "TxExtractPsswdId",
-//                    TXEXTRACTPSSWDID_LEN,
-//                    BFCD_SWAT01Luw.SWAT01AData.TxExtractPsswdId,
-//                    &FndGenErrorBlock);
-
-
-//       FndFieldQueryValue(CBI_hwnd,
-//                    "TxInsertPsswdId",
-//                    TXINSERTPSSWDID_LEN,
-//                    BFCD_SWAT01Luw.SWAT01AData.TxInsertPsswdId,
-//                    &FndGenErrorBlock);
 
 
 	   /*
@@ -367,41 +381,90 @@ WCBPROC( DZBA001BusProcessMNClick )
 
 	   }
 
-	  if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Extract_Mode, 
-	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
-	  {
 
-			/* call the CSR with the LUW layout SWAT01L */
-			CmnCsrCall(	(BYTE *)&(BFCD_SWAT01Luw),
-						(ULONG)sizeof(BFCD_SWAT01Luw),
+      /* 
+       | Processing loop kicked off here 
+       */
+
+       RowQueryNumber = 0;
+
+       memset( &RowData, 0, sizeof(_ExtractInsertLBRow ) );
+
+       memset( &BFCD_SWAT01Luw.SWAT01BData, 0, sizeof(_SWAT01BDATA) );
+
+       FndGenRC = FndLstBoxRowSelect ( CBI_hwnd,
+                                            "ExtractInsertLB",
+                                            RowQueryNumber,
+                                            &FndGenErrorBlock);
+
+       FndGenRC = FndLstBoxRowQueryData ( CBI_hwnd,
+                                               "ExtractInsertLB",
+                                               RowQueryNumber,
+                                               sizeof(RowData),
+                                               &RowData,
+                                               &FndGenErrorBlock);
+
+                                            
+
+       BFCD_SWAT01Luw.SWAT01BData[0].KyExtractNo = RowData._ExtractInsertLBKyExtractNoData;
+
+       CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[0].CdAccessType, 
+                         RowData._ExtractInsertLBCdAccessTypeData,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[0].CdAccessType),
+                         CMN_ARCH_PARMS);
+
+       CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[0].TsKyExtract, 
+                         RowData._ExtractInsertLBTsKyExtractData,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[0].TsKyExtract),
+                         CMN_ARCH_PARMS);
+
+       CmnStrCopy ( BFCD_SWAT01Luw.SWAT01BData[0].TxExtractRemarks2, 
+                         RowData._ExtractInsertLBTxExtractRemarksData,
+                         sizeof(BFCD_SWAT01Luw.SWAT01BData[0].TxExtractRemarks2),
+                         CMN_ARCH_PARMS);
+
+
+       if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Extract_Mode, 
+	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
+       {
+
+				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+			                         sizeof(_ACCESSRESULTS) );
+
+
+			    /* call the CSR with the LUW layout SWAT01L */
+			    CmnCsrCall(	(BYTE *)&(BFCD_SWAT01Luw),
+						(ULONG)sizeof(_SWAT01LUW),
 						CMN_FORCECALL_YES,
 						"DZBA01L",
 						CMN_ARCH_PARMS);
 
-	  }
-	  else if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Insert_Mode,
+        }
+        else if ( strncmp(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct, LT_Insert_Mode,
 	              sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct) ) == 0)
-	  {
+        {
 
 	
-            CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
+                CmnStrCopy( BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct ,
                         LT_Insert_Mode,
                         sizeof(BFCD_SWAT01Luw.SWAT01AData.CdExtractInsertAct),
                         CMN_ARCH_PARMS );
 
+				memset(&BFCD_SWAT01Luw.AccessResults, 0, 
+				                         sizeof(_ACCESSRESULTS) );
 
-			/* call the CSR with the LUW layout SWAT01M */
-            CmnCsrCall((BYTE *)&(BFCD_SWAT01Luw),
-                           (ULONG)sizeof(BFCD_SWAT01Luw),
+			    /* call the CSR with the LUW layout SWAT01M */
+                CmnCsrCall((BYTE *)&(BFCD_SWAT01Luw),
+                           (ULONG)sizeof(_SWAT01LUW),
                             CMN_FORCECALL_YES,
                             "DZBA01M",
                             CMN_ARCH_PARMS);
 
 
-	  }
+        }  /* end if */
 
 
- 
+
     return CMN_SUCCESS;
 }
 
@@ -484,7 +547,9 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	CHAR               cStatusExtDb;
 	CHAR               cStatusExtOwn;
 	CHAR               cStatusExtPw;
+    CHAR               cStatusUserNm;
     CHAR               CdExtractInsertAct[3];
+
     _FND_ERROR_BLOCK   FndGenErrorBlock;
 
     memset(CdExtractInsertAct, 0 , sizeof(CdExtractInsertAct) );
@@ -504,6 +569,11 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	FndFieldQueryStatus ( CBI_hwnd,
 		                  "TxExtractOwnerId",
 						  &cStatusExtOwn,
+						  &FndGenErrorBlock);
+
+	FndFieldQueryStatus ( CBI_hwnd,
+		                  "TxUserNm",
+						  &cStatusUserNm,
 						  &FndGenErrorBlock);
 
 	FndFieldQueryStatus ( CBI_hwnd,
@@ -535,6 +605,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 		 ( (cStatusExtPw == 'R') || (cStatusExtPw == 'F') ) &&
 	     ( (cStatusInsOwn == 'R') || (cStatusInsOwn == 'F') ) &&
 		 ( (cStatusInsDb == 'R') || (cStatusInsDb == 'F') ) &&
+		 ( (cStatusUserNm == 'R') || (cStatusUserNm == 'F') ) &&
 		 ( (cStatusExtOwn == 'R') || (cStatusExtOwn == 'F') ) )
     {
 
@@ -588,6 +659,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	
     if ( ( (cStatusExtDb == 'R') || (cStatusExtDb == 'F') ) &&
 		 ( (cStatusExtPw == 'R') || (cStatusExtPw == 'F') ) &&
+         ( (cStatusUserNm == 'R') || (cStatusUserNm == 'F') ) &&
 		 ( (cStatusExtOwn == 'R') || (cStatusExtOwn == 'F') ) )
     {
 
@@ -642,6 +714,7 @@ WCBPROC( DZBA001BusProcessMNEnable )
 	
     if ( ( (cStatusInsDb == 'R') || (cStatusInsDb == 'F') ) &&
 		 ( (cStatusInsPw == 'R') || (cStatusInsPw == 'F') ) &&
+         ( (cStatusUserNm == 'R') || (cStatusUserNm == 'F') ) &&
 		 ( (cStatusInsOwn == 'R') || (cStatusInsOwn == 'F') ) )
     {
 
@@ -692,3 +765,62 @@ WCBPROC( DZBA001BusProcessMNEnable )
     return CMN_SUCCESS;
 
 }
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : DZBA001DelPbClk
+**
+**  DESCRIPTION      : This function is invoked whenever the process menu
+**                     item is clicked. It formats the LUW layout with the
+**                     window fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : CmnStrCopy
+**                     CmnCsrCall
+**                     FndFieldQueryValue
+**
+**  AUTHOR           : KCHASE
+**
+**  DATE CREATED     : 03/28/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/28/95  KCHASE                Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZBA001DelPbClk )
+{
+
+    USHORT            RowNumber = 0,
+                      FndGenRC = 0;
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+
+
+    /* Query the row selected for delete */
+    FndGenRC = FndLstBoxRowQuerySelection ( CBI_hwnd,
+                                            "ExtractInsertLB",
+                                            FND_LSTBOX_START,
+                                            &RowNumber,
+                                            &FndGenErrorBlock);
+
+    /* Delete the selected row. */
+    FndGenRC = FndLstBoxRowDelete ( CBI_hwnd,
+                                    "ExtractInsertLB",
+                                     RowNumber,
+                                     &FndGenErrorBlock);
+
+
+    return CMN_SUCCESS;
+}
+
