@@ -36,7 +36,11 @@
 **										   Added a row to the table for
 **										   a 'DT' usage to generate as
 **										   alpha 11.
-**
+**  10/06/97    PRUSCONI                   Removed the CSR_LONG_DBL type and
+**                                         modified the CSR_DOUBLE type to 
+**                                         include variables from length 8 and up, 
+**                                         since foudation ver.2.4 and above does
+**                                         not support the C long double type.
 **
 **
 ***********************************************************************/
@@ -720,6 +724,11 @@ HEAP_CHECK
 **										   Added a row to the table for
 **										   a 'DT' usage to generate as
 **										   alpha 11.
+**  10/06/97    PRUSCONI                   Removed the CSR_LONG_DBL type and
+**                                         modified the CSR_DOUBLE type to 
+**                                         include variables from length 8 and up, 
+**                                         since foudation ver.2.4 and above does
+**                                         not support the C long double type.
 ************************************************************************/
 
 USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
@@ -760,16 +769,24 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
    'A', 'N',  "DS" ,   5 ,   9 ,   0 ,   0 , CSR_LONG    ,   4 , /* long   */
    'A', 'N',  "DS" ,  10 ,  14 ,   0 ,   0 , CSR_DOUBLE  ,   8 , /* double */
    'A', 'N',  "DS" ,   1 ,   7 ,   1 ,  -1 , CSR_FLOAT   ,   4 , /* float  */
-   'A', 'N',  "DS" ,   8 ,  14 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
-   'A', 'N',  "DS" ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
+   'A', 'N',  "DS" ,   8 ,  -1 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
+
+/* PRUSCONI 10/06/97: Removed the CSR_LONG_DBL type since foundation does not
+** support the C long double type as of version 2.4                  
+*/
+//   'A', 'N',  "DS" ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
 
    'A', 'N',  "D"  ,   1 ,   1 ,   0 ,   0 , CSR_STRING  ,   1 , /* uchar  */
    'A', 'N',  "D"  ,   2 ,   4 ,   0 ,   0 , CSR_SHORT   ,   2 , /* ushort */
    'A', 'N',  "D"  ,   5 ,   9 ,   0 ,   0 , CSR_LONG    ,   4 , /* ulong  */
    'A', 'N',  "D"  ,  10 ,  14 ,   0 ,   0 , CSR_DOUBLE  ,   8 , /* double */
    'A', 'N',  "D"  ,   1 ,   7 ,   1 ,  -1 , CSR_FLOAT   ,   4 , /* float  */
-   'A', 'N',  "D"  ,   8 ,  14 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
-   'A', 'N',  "D"  ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
+   'A', 'N',  "D"  ,   8 ,  -1 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
+
+/* PRUSCONI 10/06/97: Removed the CSR_LONG_DBL type since foundation does not
+** support the C long double type as of version 2.4                  
+*/
+//  'A', 'N',  "D"  ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
 
    /* CWOODS 08/03/96:  Numeric Date Type generate as alpha 11 - This fixes
       the INT3DATE Discovery problem */
@@ -781,16 +798,24 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
    'A', 'N',  "C"  ,   5 ,   9 ,   0 ,   0 , CSR_ULONG   ,   4 , /* long   */
    'A', 'N',  "C"  ,  10 ,  14 ,   0 ,   0 , CSR_DOUBLE  ,   8 , /* double */
    'A', 'N',  "C"  ,   1 ,   7 ,   1 ,  -1 , CSR_FLOAT   ,   4 , /* float  */
-   'A', 'N',  "C"  ,   8 ,  14 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
-   'A', 'N',  "C"  ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
+   'A', 'N',  "C"  ,   8 ,  -1 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
+
+/* PRUSCONI 10/06/97: Removed the CSR_LONG_DBL type since foundation does not
+** support the C long double type as of version 2.4                  
+*/
+//   'A', 'N',  "C"  ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
 
    'A', 'N',  "C3" ,   1 ,   1 ,   0 ,   0 , CSR_BYTE    ,   1 , /* char   */
    'A', 'N',  "C3" ,   2 ,   4 ,   0 ,   0 , CSR_SHORT   ,   2 , /* short  */
    'A', 'N',  "C3" ,   5 ,   9 ,   0 ,   0 , CSR_LONG    ,   4 , /* long   */
    'A', 'N',  "C3" ,  10 ,  14 ,   0 ,   0 , CSR_DOUBLE  ,   8 , /* double */
    'A', 'N',  "C3" ,   1 ,   7 ,   1 ,  -1 , CSR_FLOAT   ,   4 , /* float  */
-   'A', 'N',  "C3" ,   8 ,  14 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
-   'A', 'N',  "C3" ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
+   'A', 'N',  "C3" ,   8 ,  -1 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
+
+/* PRUSCONI 10/06/97: Removed the CSR_LONG_DBL type since foundation does not
+** support the C long double type as of version 2.4                  
+*/   
+//   'A', 'N',  "C3" ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
 
    'A', 'N',  "FL" ,  -1 ,  -1 ,  -1 ,  -1 , CSR_FLOAT   ,   4 , /* float  */
 
