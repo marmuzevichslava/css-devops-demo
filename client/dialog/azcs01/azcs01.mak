@@ -13,9 +13,9 @@
 #                                                                          *
 #***************************************************************************
 
-PROJDIR = g:\data\archunit\nt\src\csrmapgn
-OBJDIR = g:\data\archunit\nt\bin\obj
-EXEDIR = g:\data\archunit\nt\bin\exe
+PROJDIR = n:\azcs01nt
+OBJDIR = r:\obj
+EXEDIR = r:\exe
 
 PROJ = AZCS01
 
@@ -69,7 +69,7 @@ AZCS001_DEP = AZCS001.c	\
 		$(PROJDIR)\AZCS003I.h	\
 		$(PROJDIR)\AZCS003O.h	\
 		$(PROJDIR)\AZCS004I.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS001.CB	\
 		$(PROJDIR)\AZCS001.C    \
@@ -85,7 +85,7 @@ AZCS002_DEP = AZCS002.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS002C.h	\
 		$(PROJDIR)\AZCS002O.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS002.CB    \
                 AZCS002.aex     \
@@ -100,7 +100,7 @@ AZCS006_DEP = AZCS006.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS006C.h	\
 		$(PROJDIR)\AZCS004I.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS006.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS006.aex     \
@@ -115,7 +115,7 @@ AZCS007_DEP = AZCS007.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS007C.h	\
 		$(PROJDIR)\AZCS004I.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS007.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS007.aex     \
@@ -130,7 +130,7 @@ AZCS004_DEP = AZCS004.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS004C.h	\
 		$(PROJDIR)\AZCS004I.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS004.CB	\
 		$(PROJDIR)\AZDI0400.C	\
                 AZCS004.aex     \
@@ -145,7 +145,7 @@ AZCS005_DEP = AZCS005.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS005C.h	\
 		$(PROJDIR)\AZCS004I.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS005.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS005.aex     \
@@ -159,7 +159,7 @@ AZCS005_DEP = AZCS005.c	\
 AZCS008_DEP = AZCS008.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS008C.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS008.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS008.aex     \
@@ -173,7 +173,7 @@ AZCS008_DEP = AZCS008.c	\
 AZCS009_DEP = AZCS009.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS009C.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS009.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS009.aex     \
@@ -187,7 +187,7 @@ AZCS009_DEP = AZCS009.c	\
 AZCS010_DEP = AZCS010.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS010C.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS010.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS010.aex     \
@@ -203,7 +203,7 @@ AZCS003_DEP = AZCS003.c	\
 		$(PROJDIR)\AZCS003C.h	\
 		$(PROJDIR)\AZCS003I.h	\
 		$(PROJDIR)\AZCS003O.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS003.CB    \
                 AZCS003.aex     \
@@ -218,7 +218,7 @@ AZCS011_DEP = AZCS011.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS011C.h	\
 		$(PROJDIR)\AZCS011I.h	\
-		$(PROJDIR)\MAPGEN.h	\
+		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS011.CB	\
 		$(PROJDIR)\AZDI0400.C    \
                 AZCS011.aex     \

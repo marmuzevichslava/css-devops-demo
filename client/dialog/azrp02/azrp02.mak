@@ -14,9 +14,9 @@
 #***************************************************************************
 
 PROJ = AZRP02
-EXEDIR = c:\data\archunit\nt\bin\exe
-OBJDIR = c:\data\archunit\nt\bin\obj
-PROJDIR = c:\data\archunit\nt\src\azrp02
+EXEDIR = r:\exe
+OBJDIR = r:\obj
+PROJDIR = n:\azrp02nt
 
 !ifndef DEBUG
 DEBUG = 1
@@ -63,7 +63,7 @@ AZRP02_DEP =  $(PROJDIR)\AZRP02.sdt $(PROJDIR)\AZRP02.wdt
 # Make C window module AZRP001X
 AZRP001X_DEP = $(PROJDIR)\AZRP001X.c	\
 		$(PROJDIR)\AZRP001C.h	\
-		$(PROJDIR)\AZRP001M.h	\
+		n:\archinc\AZRP001M.h	\
 		$(PROJDIR)\AZRP002O.h	\
 		$(PROJDIR)\AZRP003O.h	\
 		$(PROJDIR)\AZDI0400.C	\
