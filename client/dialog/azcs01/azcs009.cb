@@ -4,8 +4,14 @@
 ****************************************************************************/
 static WCBPROC (AZCS009BUSUserPredisplay)
 {
+USHORT FndGenRC = 0;
+
  strcpy(SaveDirData, BFCD_pCSRMapBFCD->CsrMapSavePath);
  strcpy(GenDirData, BFCD_pCSRMapBFCD->CsrMapGenPath);
+ if ((strcmp(SaveDirData, "") != 0) && (strcmp(GenDirData, "") != 0))
+ {
+    FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
+ }
 
  return(CMN_SUCCESS);
 }
