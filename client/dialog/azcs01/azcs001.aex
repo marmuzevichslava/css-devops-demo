@@ -21,9 +21,8 @@
 **                                     example code.
 ** 04/08/93    C.Crampton           Changed function names to 23 characters.
 **
-** 03/19/96    mconner               Changed BFCD_CSRMapBFCD to BFCD_pCSRMapBFCD
-**                                        This syncs the code with the generated copybook.
-**
+** 01/08/96    mconner             Replaced pCSRMAPBFCD w/ pCSRMapBFCD to match
+**                                 new generation of azcs01b.gnb
 ***************************************************************************/
 /***************************************************************************/
 /* Forward declarations for Architecture Exit functions                    */
@@ -1270,6 +1269,12 @@ AEXPROC ( ExitElb1BuildInstName )
 **  03/12/93  L. Misfeldt           Modified to contain shell code
 **
 **  10/14/94  J. Looney             Clean up.
+**
+**  04/23/96  mconner               Added logic to handle CMN_ELB_PBTYPE_ADD
+**                                  message from Architecture.  This message 
+**                                  is dispatched when user clicks the ADD..
+**                                  in window azcs001.
+**
 ***************************************************************************/
 AEXPROC (ExitElb1BuildInitData)
 {
@@ -1282,54 +1287,65 @@ AEXPROC (ExitElb1BuildInitData)
 
     /* CSC: ADDED 06/18/93 */
     HEAP_CHECK
+	/*mdc 04/23/96 added conditions for more accurate PB processing*/
+	if(EAB_ElbChildWinFunction == CMN_ELB_PBTYPE_ADD)
+	{
+		strncpy( Azcs003i.ServiceMapType,
+	             "1",
+	             sizeof( Azcs003i.ServiceMapType ));
 
-    nRow = CMN_ELB_ROW_PROCESSING;
+	}/*end of PBADD*/
+	if(EAB_ElbChildWinFunction == CMN_ELB_PBTYPE_CHANGE)
+	{
+	    nRow = CMN_ELB_ROW_PROCESSING;
 
-    /* Obtain the row data from the ELB */
-    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
-                                      "Rlb01ELB",
-                                      nRow,
-                                      sizeof(SelectedRow),
-                                      &SelectedRow,
-                                      &FndGenErrorBlock );
+	    /* Obtain the row data from the ELB */
+	    FndGenRC = FndLstBoxRowQueryData( CBI_hwnd,
+	                                      "Rlb01ELB",
+	                                      nRow,
+	                                      sizeof(SelectedRow),
+	                                      &SelectedRow,
+	                                      &FndGenErrorBlock );
 
-    /* Copy row data to input layout */
-    Azcs003i.Server     = SelectedRow._Rlb01ELBServerData;
-    Azcs003i.ServiceID  = SelectedRow._Rlb01ELBServiceIDData;
-    Azcs003i.ServiceAge = SelectedRow._Rlb01ELBServiceAgeData;
-    strncpy( Azcs003i.TranMap,
-             SelectedRow._Rlb01ELBTranMapData,
-             sizeof( Azcs003i.TranMap ));
-    strncpy( Azcs003i.AnticModule,
-             SelectedRow._Rlb01ELBAnticModuleData,
-             sizeof( Azcs003i.AnticModule ));
-    strncpy( Azcs003i.AltMap,
-             SelectedRow._Rlb01ELBAltMapData,
-             sizeof( Azcs003i.AltMap ));
-    strncpy( Azcs003i.Flush,
-             SelectedRow._Rlb01ELBFlushData,
-             sizeof( Azcs003i.Flush ));
-    strncpy( Azcs003i.ForceCall,
-             SelectedRow._Rlb01ELBForceCallData,
-             sizeof( Azcs003i.ForceCall ));
+	    /* Copy row data to input layout */
+	    Azcs003i.Server     = SelectedRow._Rlb01ELBServerData;
+	    Azcs003i.ServiceID  = SelectedRow._Rlb01ELBServiceIDData;
+	    Azcs003i.ServiceAge = SelectedRow._Rlb01ELBServiceAgeData;
+	    strncpy( Azcs003i.TranMap,
+	             SelectedRow._Rlb01ELBTranMapData,
+	             sizeof( Azcs003i.TranMap ));
+	    strncpy( Azcs003i.AnticModule,
+	             SelectedRow._Rlb01ELBAnticModuleData,
+	             sizeof( Azcs003i.AnticModule ));
+	    strncpy( Azcs003i.AltMap,
+	             SelectedRow._Rlb01ELBAltMapData,
+	             sizeof( Azcs003i.AltMap ));
+	    strncpy( Azcs003i.Flush,
+	             SelectedRow._Rlb01ELBFlushData,
+	             sizeof( Azcs003i.Flush ));
+	    strncpy( Azcs003i.ForceCall,
+	             SelectedRow._Rlb01ELBForceCallData,
+	             sizeof( Azcs003i.ForceCall ));
 
-    sIndex = GetServiceIndex( Azcs003i.Server,
-                              Azcs003i.ServiceID,
-                              Azcs003i.TranMap,
-                              CMN_ARCH_PARMS );
+	    sIndex = GetServiceIndex( Azcs003i.Server,
+	                              Azcs003i.ServiceID,
+	                              Azcs003i.TranMap,
+	                              CMN_ARCH_PARMS );
 
-    if ( sIndex > 0 )
-    {
-        strncpy( Azcs003i.ServiceMapType,
-                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].ServiceType,
-                 sizeof( Azcs003i.ServiceMapType ));
-    }
-    else
-    {
-        strncpy( Azcs003i.ServiceMapType,
-                 "1",
-                 sizeof( Azcs003i.ServiceMapType ));
-    }
+	    if ( sIndex > 0 )
+	    {
+	        strncpy( Azcs003i.ServiceMapType,
+	                 pBFCD->pCSRMapBFCD->ServiceInfoTable[sIndex].ServiceType,
+	                 sizeof( Azcs003i.ServiceMapType ));
+	    }
+	    else
+	    {
+	        strncpy( Azcs003i.ServiceMapType,
+	                 "1",
+	                 sizeof( Azcs003i.ServiceMapType ));
+	    }
+	}/*end of PBCHANGE*/
+
 
     CmnElbAssignInitialData ((void *) &Azcs003i,
                              sizeof (Azcs003i),
@@ -1337,7 +1353,6 @@ AEXPROC (ExitElb1BuildInitData)
 
     /* CSC: ADDED 06/18/93 */
     HEAP_CHECK
-
     return CMN_SUCCESS;
 
 } /* end of ExitElb1BuildInitData */
@@ -1412,7 +1427,7 @@ AEXPROC (ExitElb1BuildDelData)
 ***************************************************************************/
 AEXPROC( CmnArchExitInitialize )
 {
-  int ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
+  SHORT ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
 
   HEAP_CHECK;
 
@@ -1430,4 +1445,3 @@ AEXPROC( CmnArchExitInitialize )
 
   return CMN_SUCCESS;
 } /* End of CmnArchExitInitialize */
-

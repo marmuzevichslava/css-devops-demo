@@ -3,6 +3,16 @@
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
 /***************************************************************************
+**  04/23/96 mconner Receiving "segment too large" error in OS/2.  To overcome
+**                   this error three functions were created to replace
+**                   FndCommandSetDefaultButton
+**                   FndFieldSetValue
+**                   FndLstBoxRowQuerySelection
+**                   This moves all the macro wrapping to one place thus
+**                   reducing the size of the code at compile time.
+****************************************************************************/
+
+/***************************************************************************
 **
 **               CUSTOMER SERVICE SYSTEM Business Logic Function
 **
@@ -99,7 +109,7 @@ static WCBPROC(AZCS004BUSAboutMNClick)
 
 static WCBPROC (UnLdAZCS4I)
 {
-     USHORT           FndGenRC = FND_SUCCESS;
+     SHORT           FndGenRC = FND_SUCCESS;
      _FND_ERROR_BLOCK         FndGenErrorBlock;
      SHORT ix=0;
      SHORT iy=0;
@@ -115,21 +125,21 @@ static WCBPROC (UnLdAZCS4I)
 strcpy(ClientLayoutData, pAzcs004i->ClientLayout);
 */
 
-FndGenRC = FndFieldSetValue( CBI_hwnd,
+FndGenRC = AZCS004FndFieldSetValue( CBI_hwnd,
                                  "CLIENTLAYOUT",
-                                 strlen(pAzcs004i->ClientLayout),
-                                 pAzcs004i->ClientLayout,
-                                 &FndGenErrorBlock);
+                                 (USHORT)strlen(pAzcs004i->ClientLayout),
+                                 (void *)pAzcs004i->ClientLayout,
+                                 CMN_ARCH_PARMS);
 
 /*mdc - 03/12/96 - Changed for standards compliance
  strcpy(ServiceLayoutNameData,pAzcs004i->Services[0].ServerLayout);
 */
 
-FndGenRC = FndFieldSetValue( CBI_hwnd,
+FndGenRC = AZCS004FndFieldSetValue( CBI_hwnd,
                                  "ServiceLayoutName",
-                                 strlen(pAzcs004i->Services[0].ServerLayout),
-                                 pAzcs004i->Services[0].ServerLayout,
-                                 &FndGenErrorBlock);
+                                 (USHORT)strlen(pAzcs004i->Services[0].ServerLayout),
+                                 (void *)pAzcs004i->Services[0].ServerLayout,
+                                 CMN_ARCH_PARMS);
 
 
 
@@ -257,11 +267,11 @@ FndGenRC = FndValueAddItem( CBI_hwnd,
                             "EQUALS",
                             &FndGenErrorBlock);
 
-FndGenRC = FndFieldSetValue( CBI_hwnd,
+FndGenRC = AZCS004FndFieldSetValue( CBI_hwnd,
                                  "OPERATOR",
                                  7,
                                  "EQUALS",
-                                 &FndGenErrorBlock);
+                                 CMN_ARCH_PARMS);
 
   /*
   ** Make the List Box Offsets 0
@@ -307,9 +317,9 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
    }
 
  /* mdc - 03/04/96 - make the OK pushbutton the default.*/
-  FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+  FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
                                           "OKPB",
-                                          &FndGenErrorBlock);
+                                          CMN_ARCH_PARMS);
 
   if ( FndGenRC != CMN_SUCCESS )
   {
@@ -361,11 +371,11 @@ USHORT          *pCellData;
 /* Find out which row was selected */
 /***********************************/
 
-FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
                                        MAPGEN_CLIENT_LB_NAME,
                                        FND_LSTBOX_START,
                                        &RowNum,
-                                       &FndGenErrorBlock);
+                                       CMN_ARCH_PARMS);
 
 /***********************************************/
 /* Find out what the attributes of the row are */
@@ -488,11 +498,11 @@ USHORT          *pCellData;
 /* Find out which row was selected */
 /***********************************/
 
-FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
                                        MAPGEN_SERVICE_LB_NAME,
                             FND_LSTBOX_START,
                             &RowNum,
-                            &FndGenErrorBlock);
+                            CMN_ARCH_PARMS);
 
 /***********************************************/
 /* Find out what the attributes of the row are */
@@ -687,11 +697,11 @@ BOOL                     MultipleService;
 ix = pWindContextData->WCD.CurrentServiceIndex;
 
 
-FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_SERVICE_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ServiceRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
 if (FndGenRC != FND_SUCCESS)
     return(CMN_FAIL);
@@ -714,11 +724,11 @@ ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
 
 if (pWindContextData->WCD.ServiceInfoTable[ix].pCompareKeys[ServiceElmnt].LiteralUsed == 'N')
    {
-    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+    FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_CLIENT_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ClientRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
     if (FndGenRC != FND_SUCCESS)
         return(CMN_FAIL);
 
@@ -851,11 +861,11 @@ ix = pWindContextData->WCD.CurrentServiceIndex;
 /*** Find out which service row is selected ***/
 /**********************************************/
 
-FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_SERVICE_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ServiceRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
 /*
 ** Calculate the index into the memory table
@@ -873,11 +883,11 @@ if (ClntTypeData == LT_ClntElementRB)
 
     /* JLL: 06/30/93 CHANGED FROM "" to "NULL" */
     strcpy(pWindContextData->WCD.ServiceInfoTable[ix].pCompareKeys[ServiceElmnt].LiteralValue,"NULL");
-    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+    FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_CLIENT_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ClientRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
 
     /*
@@ -989,9 +999,9 @@ FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
                            pABHI);
 
  /* mdc - 03/04/96 - make the OK pushbutton the default.*/
-  FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+  FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
                                           "OKPB",
-                                          &FndGenErrorBlock);
+                                          CMN_ARCH_PARMS);
 
   if ( FndGenRC != CMN_SUCCESS )
   {
@@ -1036,7 +1046,9 @@ FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
 static SHORT FindClientMatch(CMN_ARCH_PARM_TYPES)
 {
 USHORT           FndGenRC = FND_SUCCESS;
+/*mdc 04/22/96 FCP call moved to function this no longer used
 _FND_ERROR_BLOCK         FndGenErrorBlock;
+*/
 SHORT index;
 SHORT ClientRow;
 SHORT ClientElmnt;
@@ -1044,11 +1056,11 @@ SHORT ix;
 
 ix = pWindContextData->WCD.CurrentServiceIndex;
 
-FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
                                     MAPGEN_CLIENT_LB_NAME,
                                     FND_LSTBOX_START,
                                     &ClientRow,
-                                    &FndGenErrorBlock);
+                                    CMN_ARCH_PARMS);
 
 if (FndGenRC != FND_SUCCESS)
    {
@@ -1239,11 +1251,11 @@ SHORT                    ServiceElmnt;
          ClientRow = CBI_ListRow;
          ClientElmnt = pWindContextData->WCD.ClientLBOffset + ClientRow;
 
-         FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+         FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
                                                 MAPGEN_SERVICE_LB_NAME,
                                                 FND_LSTBOX_START,
                                                 &ServiceRow,
-                                                &FndGenErrorBlock);
+                                                CMN_ARCH_PARMS);
 
        /*
        ** If there is no selected service
@@ -1256,6 +1268,14 @@ SHORT                    ServiceElmnt;
 
              FndGenRC =  LoadServiceElmnt(ServiceElmnt,
                                           CMN_ARCH_PARMS);
+
+			/*mdc 04/17/96 Assign the selected row to "ServiceRow"*/
+			FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
+                                                MAPGEN_SERVICE_LB_NAME,
+                                                FND_LSTBOX_START,
+                                                &ServiceRow,
+                                                CMN_ARCH_PARMS);
+
             }
          /*
          ** A service row is selected
@@ -1515,9 +1535,9 @@ SHORT                    ServiceElmnt;
                                  &FndGenErrorBlock);
 
         /* *mdc - 03/04/96 - make the Remove pushbutton the default.*/
-        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+        FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
                                           "RemovePB",
-                                          &FndGenErrorBlock);
+                                          CMN_ARCH_PARMS);
 
 
 
@@ -1537,9 +1557,9 @@ SHORT                    ServiceElmnt;
                                  &FndGenErrorBlock);
 
          /* *mdc - 03/04/96 - make the apply pushbutton the default.*/
-        FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+        FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
                                           "ApplyPB",
-                                          &FndGenErrorBlock);
+                                          CMN_ARCH_PARMS);
 
 
        }
@@ -1576,6 +1596,9 @@ SHORT                    ServiceElmnt;
 **    03/04/96  mconner               If a "non-checked" row is selected, make "ApplyPB"
 **                                         the default.
 **
+**    04/18/96  mconner				Added logic to fill in service element
+**                                  field and default apply pb.
+**
 ***************************************************************************/
 
 
@@ -1588,7 +1611,9 @@ _FND_ERROR_BLOCK         FndGenErrorBlock;
 SHORT                    RowNum = -1;
 SHORT                      CellData;
 SHORT                     *pCellData;
-SHORT                      ServiceIndex;
+/*mdc 04/18/96 added ix and changed data type of ServiceIndex to USHORT*/
+SHORT                      ix;
+USHORT                      ServiceIndex;
 
      pCellData = &CellData;
 
@@ -1600,11 +1625,11 @@ SHORT                      ServiceIndex;
                            pABHI );
 
     /* Find out if there is a selected Service row */
-    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+    FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
                                            MAPGEN_SERVICE_LB_NAME,
                                            FND_LSTBOX_START,
                                            &RowNum,
-                                           &FndGenErrorBlock);
+                                           CMN_ARCH_PARMS);
 
     if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
         {
@@ -1638,9 +1663,9 @@ SHORT                      ServiceIndex;
                                  &FndGenErrorBlock);
 
             /* *mdc - 03/04/96 - make the apply pushbutton the default.*/
-            FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+            FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
                                           "ApplyPB",
-                                          &FndGenErrorBlock);
+                                          CMN_ARCH_PARMS);
 
 
 
@@ -1670,6 +1695,57 @@ SHORT                      ServiceIndex;
         if (ServiceIndex != CMN_FAIL)
            {
             FndGenRC = LoadServiceElmnt(ServiceIndex, CMN_ARCH_PARMS);
+
+			/*mdc 04/18/96 aded to populate the service element field*/
+			ix = pWindContextData->WCD.CurrentServiceIndex;
+
+			FndGenRC = FndFieldEnable(CBI_hwnd,
+			                             "SRVCELEMENT",
+			                             &FndGenErrorBlock);
+
+
+			if (pWindContextData->WCD.ServiceLanguage == C_LANGUAGE)
+			    {
+					AZCS004FndFieldSetValue(CBI_hwnd,
+					                 "SRVCELEMENT",
+									 (USHORT)strlen((pBFCD->pCSRMapBFCD->
+									 	ServiceInfoTable[ix].
+									 	pReposServiceLayoutTable + 
+									 	ServiceIndex)->ItemCName),
+									(pBFCD->pCSRMapBFCD->
+										ServiceInfoTable[ix].
+										pReposServiceLayoutTable + 
+										ServiceIndex)->ItemCName,
+										CMN_ARCH_PARMS);
+
+			    }
+			else
+			    {
+					AZCS004FndFieldSetValue(CBI_hwnd,
+					                 "SRVCELEMENT",
+									 (USHORT)strlen((pBFCD->pCSRMapBFCD->
+									 	ServiceInfoTable[ix].
+									 	pReposServiceLayoutTable + 
+									 	ServiceIndex)->ItemCobolName),
+									(pBFCD->pCSRMapBFCD->
+										ServiceInfoTable[ix].
+										pReposServiceLayoutTable + 
+										ServiceIndex)->ItemCobolName,
+										CMN_ARCH_PARMS);
+					
+
+			    }
+
+
+ 			/*mdc 04/17/96 Enable and default ApplyPB*/
+			FndGenRC = FndCommandEnable(CBI_hwnd,
+	                           		 	"ApplyPB",
+										&FndGenErrorBlock);
+
+			FndGenRC = AZCS4FndCommandSetDefaultButton(CBI_hwnd,
+	                                      		"ApplyPB",
+	                                      		CMN_ARCH_PARMS);
+
            }
         }
 
@@ -1713,6 +1789,12 @@ SHORT                      ServiceIndex;
 **    03/04/96  mconner               Make 'ApplyPB" the default when a "non-checked"
 **                                         row is selected.
 **
+**	  04/18/96	mconner				  Canged data type of ClientIndex to USHORT
+**                                    CMN_FAIL is defined as (USHORT)
+**
+**	  04/18/96	mconner				  Added calls to select Element RB after
+**                                    Element is selected for client
+**
 ***************************************************************************/
 
 
@@ -1725,17 +1807,19 @@ _FND_ERROR_BLOCK         FndGenErrorBlock;
 SHORT                    RowNum = -1;
 SHORT                      CellData;
 SHORT                     *pCellData;
-SHORT                    ClientIndex;
+/*mdc 04/18/96 changed data type of ClientIndex and initialized it*/
+USHORT                    ClientIndex = 0;
+SHORT                  FndGenRBValueShort = 0;
 /*USHORT                FndGenRBValueShort;*/
 
      pCellData = &CellData;
 
     /* Find out if there is a selected Client row */
-    FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+    FndGenRC = AZCS4FndLstBxRowQuerySelect( CBI_hwnd,
                                            MAPGEN_CLIENT_LB_NAME,
                                            FND_LSTBOX_START,
                                            &RowNum,
-                                           &FndGenErrorBlock);
+                                           CMN_ARCH_PARMS);
 
     if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
         {
@@ -1753,9 +1837,9 @@ SHORT                    ClientIndex;
                                     &FndGenErrorBlock);
 
          /* *mdc - 03/04/96 - make the Apply pushbutton the default.*/
-         FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+         FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
                                           "ApplyPB",
-                                          &FndGenErrorBlock);
+                                          CMN_ARCH_PARMS);
 
 
 
@@ -1763,7 +1847,7 @@ SHORT                    ClientIndex;
                                      "RemovePB",
                                      &FndGenErrorBlock);
        }
-    else
+    else /*a client row is not selected*/
         {
        /*mdc 03/12/96 - removed so that literals can be inserted before service
                              choice.
@@ -1787,6 +1871,67 @@ SHORT                    ClientIndex;
         if (ClientIndex != CMN_FAIL)
            {
             FndGenRC = LoadClientElmnt(ClientIndex, CMN_ARCH_PARMS);
+
+
+			/* mdc 04/18/96
+			** Enable the client radio button and entry field
+			*/
+
+			FndGenRBValueShort = LT_ClntElementRB;
+			FndGenRC = FndValueEnableItem( CBI_hwnd,
+			                            "CLNTTYPE",
+			                            (VOID *) &FndGenRBValueShort,
+			                            &FndGenErrorBlock);
+
+/*mdc 04/23/96 set other place this causes an error*/
+			/*FndGenRC = FndFieldSetValue(CBI_hwnd,
+                                                         "CLNTTYPE",
+                                                         (USHORT)sizeof(FndGenRBValueShort),
+                                                         (VOID *) &FndGenRBValueShort,
+                                                         &FndGenErrorBlock); */
+
+			FndGenRC = FndFieldEnable(CBI_hwnd,
+			                             "CLNTELEMENT",
+			                             &FndGenErrorBlock);
+
+
+
+			/*mdc 04/17/96 populate client element field*/
+			if (pWindContextData->WCD.ClientLanguage == C_LANGUAGE)
+              {
+			  	FndGenRC = AZCS004FndFieldSetValue(CBI_hwnd,
+                                                                         "CLNTELEMENT",
+                                                                         (USHORT)strlen((pBFCD->pCSRMapBFCD->
+                                                                           ClientInfo.pReposClientLayoutTable +
+                                                                           ClientIndex)->ItemCName),
+                                                                         (pBFCD->pCSRMapBFCD->
+                                                                           ClientInfo.pReposClientLayoutTable +
+                                                                           ClientIndex)->ItemCName,
+                                                                         CMN_ARCH_PARMS);
+              }
+            else
+              {
+			  	FndGenRC = AZCS004FndFieldSetValue(CBI_hwnd,
+				                            "CLNTELEMENT",
+											(USHORT)strlen((pBFCD->pCSRMapBFCD->
+												ClientInfo.pReposClientLayoutTable + 
+												ClientIndex)->ItemCobolName),
+											 (pBFCD->pCSRMapBFCD->
+											 	ClientInfo.pReposClientLayoutTable + 
+											 	ClientIndex)->ItemCobolName,
+											 	CMN_ARCH_PARMS);
+
+              }
+
+			/*mdc 04/17/96 Enable and default ApplyPB*/
+			FndGenRC = FndCommandEnable(CBI_hwnd,
+	                           		 	"ApplyPB",
+										&FndGenErrorBlock);
+
+			FndGenRC = AZCS4FndCommandSetDefaultButton(CBI_hwnd,
+	                                      		"ApplyPB",
+	                                      		CMN_ARCH_PARMS);
+
            }
 
 	/*mdc 03/11/96 - added to enable rest of radio button to allow user
@@ -1836,7 +1981,27 @@ SHORT                    ClientIndex;
                                  &FndGenErrorBlock);
              */
             }/*end of if ClntLiteralData*/
+
+           /*mdc 05/02/96 removed to stop ApplyPB from being enabled if no
+		   client type selected
             else 
+            {
+                 FndGenRC = FndCommandEnable(CBI_hwnd,
+                                                    "ApplyPB",
+                                                    &FndGenErrorBlock);
+
+                 FndGenRC = AZCS4FndCommandSetDefaultButton(CBI_hwnd,
+                                                              "ApplyPB",
+                                                              CMN_ARCH_PARMS);
+             } */
+			 /*mdc 05/03/96 Added to enable ApplyPB if CLNTTYPE selected first*/
+            else if (ClntTypeData == LT_ClntElementRB && strcmp(ClntElementData,"") == 0)
+            {
+                 FndGenRC = FndCommandDisable(CBI_hwnd,
+                                                     "ApplyPB",
+                                                     &FndGenErrorBlock);
+            }
+            else
             {
                  FndGenRC = FndCommandEnable(CBI_hwnd,
                                                     "ApplyPB",
@@ -1846,7 +2011,7 @@ SHORT                    ClientIndex;
                                                               "ApplyPB",
                                                               &FndGenErrorBlock);
              }
-           
+          
         }/*end of else - client name match not found*/
           
      }/*end of else - client row not selected*/
@@ -2089,9 +2254,9 @@ SHORT                    FndGenRBValueShort = 0;
 ** Enable the radio button elements
 */
 
-ClntTypeData = FndGenRBValueShort;
 
 FndGenRBValueShort = LT_ClntElementRB;
+ClntTypeData = FndGenRBValueShort;
 FndGenRC = FndValueEnableItem( CBI_hwnd,
                             "CLNTTYPE",
                             (VOID *) &FndGenRBValueShort,
@@ -2564,7 +2729,12 @@ static WCBPROC(CellAttrNotNorm)
 /* USHORT           FndGenRC = FND_SUCCESS; */
 /*_FND_ERROR_BLOCK         FndGenErrorBlock; */
 
+  /*mdc 03/21/96 changed to Cmn Arch funtion
     DosBeep(440, 100);
+  */
+
+  CmnOsBeep(440L, 100L, CMN_ARCH_PARMS);
+
 
 return(CMN_FAIL);
 
@@ -2616,7 +2786,9 @@ USHORT index=0;
 char padding[]="   ";
 SHORT index2=0;
  _LAYOUT_REC *pTemp;
+ /*mdc 03/22/96 not used this function replaced by CONTROL_NAME_LEN in mapgen.h
 char ControlName[34];
+*/
 SHORT SelectedRow;
 
 /* See if the list box has a selected row */
@@ -2626,11 +2798,11 @@ FndGenRC = CmnErrOverrides(NULL,
                            CMN_RC_CONTINUE_PROCESSING,
                            CMN_ARCH_PARMS);
 
-FndGenRC = FndLstBoxRowQuerySelection (CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect (CBI_hwnd,
                                        LBName,
                                        FND_LSTBOX_START,
                                        &SelectedRow,
-                                       &FndGenErrorBlock);
+                                       CMN_ARCH_PARMS);
 
 if (FndGenRC != FND_SUCCESS)
    {
@@ -2666,7 +2838,7 @@ for (index=0; index < NumRecords; index++)
      strcpy(NewRow._Rlb01ELBControlNameData,"");
      for (index2=0; index2 < (pLayout+index)->IndentLevel &&
                     (index2 * strlen(padding)) <
-                             sizeof(ControlName); index2++)
+                             CONTROL_NAME_LEN; index2++)
          {
           strcat(NewRow._Rlb01ELBControlNameData, padding);
          }
@@ -2674,11 +2846,11 @@ for (index=0; index < NumRecords; index++)
      if (Language == C_LANGUAGE)
          strncat(NewRow._Rlb01ELBControlNameData,
                  (pLayout+index)->ItemCName,
-                 sizeof(ControlName) - strlen(NewRow._Rlb01ELBControlNameData) - 1);
+                 CONTROL_NAME_LEN - strlen(NewRow._Rlb01ELBControlNameData) - 1);
      else
         strncat(NewRow._Rlb01ELBControlNameData,
                 (pLayout+index)->ItemCobolName,
-                sizeof(ControlName) - strlen(NewRow._Rlb01ELBControlNameData) - 1);
+                CONTROL_NAME_LEN - strlen(NewRow._Rlb01ELBControlNameData) - 1);
 
 
      if (toupper((pLayout+index)->Format) == 'A')
@@ -2801,11 +2973,11 @@ ClntTypeData = LT_ClntElementRB;
 ** Find out what field is selected and calculate the element index
 */
 
-FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_CLIENT_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ClientRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
 ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
 
@@ -2874,6 +3046,16 @@ else
                                 "CLNTTYPE",
                             (VOID *) &FndGenRBValueShort,
                             &FndGenErrorBlock);
+
+	/*mdc 04/17/96 Enable and default ApplyPB*/
+	FndGenRC = FndCommandEnable(CBI_hwnd,
+	                            "ApplyPB",
+								&FndGenErrorBlock);
+
+	FndGenRC = AZCS4FndCommandSetDefaultButton(CBI_hwnd,
+	                                      "ApplyPB",
+	                                      CMN_ARCH_PARMS);
+
 }
 
 return(CMN_SUCCESS);
@@ -2926,11 +3108,11 @@ FndGenRC = FndFieldDisable(CBI_hwnd,
 ix = pWindContextData->WCD.CurrentServiceIndex;
 
 
-FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_SERVICE_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ServiceRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
 ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
 
@@ -3086,9 +3268,9 @@ else
                             &FndGenErrorBlock);
 
 	 /* mdc - 03/04/96 - make the Apply pushbutton the default.*/
-	FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
-                                          "ApplyPB",
-                                          &FndGenErrorBlock);
+	FndGenRC = AZCS4FndCommandSetDefaultButton( CBI_hwnd,
+                                          "ApplyPB", 
+                                          CMN_ARCH_PARMS);
 
 
 	FndGenRC = FndCommandDisable(CBI_hwnd,
@@ -3152,11 +3334,11 @@ SHORT ServiceRow;
                                     &FndGenErrorBlock);
 
 
-FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_SERVICE_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ServiceRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
 ServiceElmnt = ServiceRow + pWindContextData->WCD.ServiceLBOffset;
 
@@ -3365,11 +3547,11 @@ SHORT ClientElmnt;
                                     "AMNCLTC",
                                     &FndGenErrorBlock);
 
- FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+ FndGenRC = AZCS4FndLstBxRowQuerySelect(CBI_hwnd,
                                       MAPGEN_CLIENT_LB_NAME,
                                       FND_LSTBOX_START,
                                       &ClientRow,
-                                      &FndGenErrorBlock);
+                                      CMN_ARCH_PARMS);
 
  ClientElmnt = ClientRow + pWindContextData->WCD.ClientLBOffset;
 
@@ -4009,4 +4191,165 @@ FndGenRC = FndMsgBoxDisplayText( "You cannot map those two elements !\n\n"
 return(CMN_FAIL);
 
 } /* End of function CheckDataTypes */
-
+
+
+ /***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : Azcs004FndFieldSetValue
+**
+**  DESCRIPTION      : Calls FCP function. This limits the space taken by 
+**                     macro wrapping.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/22/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**	  04/22/96	mconner					created
+***************************************************************************/
+
+ SHORT  AZCS004FndFieldSetValue ( FND_HWND            WindowHandle,
+                                char                *pszFldName,
+                                unsigned short      DataLength,
+                                void                *pNewValue,
+                                CMN_ARCH_PARM_TYPES)
+
+
+{
+	SHORT FndGenRC = 0;
+	_FND_ERROR_BLOCK FndGenErrorBlock;
+	
+
+	FndGenRC = 	FndFieldSetValue (WindowHandle,
+                                  pszFldName,
+                                  DataLength,
+								  pNewValue,
+                                  &FndGenErrorBlock);
+                                 
+
+	if(FndGenRC != CMN_SUCCESS)
+	{
+		return CMN_FAIL;
+	}
+	else
+	{
+		return CMN_SUCCESS;
+	}
+}/*end of AZCS004FndFieldSetValue*/										
+
+ /***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS4FndCommandSetDefaultButton
+**
+**  DESCRIPTION      : Calls FCP function. This limits the space taken by 
+**                     macro wrapping.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/22/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**	  04/22/96	mconner					created
+***************************************************************************/
+SHORT  AZCS4FndCommandSetDefaultButton ( FND_HWND           WindowHandle,
+                                    char               CommandName[32],
+                                    CMN_ARCH_PARM_TYPES)
+                                    
+
+ {
+ 	SHORT FndGenRC = 0;
+	_FND_ERROR_BLOCK FndGenErrorBlock;
+
+	FndGenRC = FndCommandSetDefaultButton (WindowHandle,
+                                           CommandName,
+                                           &FndGenErrorBlock);
+
+    if (FndGenRC != CMN_SUCCESS)
+	{
+		return CMN_FAIL;
+	}
+	else
+	{
+		return CMN_SUCCESS;
+	}
+}/*end of FndCommandSetDefaultButton*/
+
+ /***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS4FndLstBxRowQuerySelect
+**
+**  DESCRIPTION      : Calls FCP function. This limits the space taken by 
+**                     macro wrapping.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/22/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**	  04/22/96	mconner					created
+***************************************************************************/
+SHORT  AZCS4FndLstBxRowQuerySelect ( FND_HWND           WindowHandle,
+                                          char               ListboxName[32],
+                                          short              StartRowNumber,
+                                          short             *pRowNumber,
+                                          CMN_ARCH_PARM_TYPES)
+
+{
+	SHORT FndGenRC = 0;
+	_FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+	FndGenRC = FndLstBoxRowQuerySelection (WindowHandle,
+                                           ListboxName,
+                                           StartRowNumber,
+                                           pRowNumber,
+                                          &FndGenErrorBlock);
+
+    
+	if (FndGenRC != CMN_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+	{
+		return CMN_FAIL;
+	}
+	else if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
+	{
+		return LBOX_NO_MORE_ROWS_SELECTED;
+	}
+	else
+	{
+		return CMN_SUCCESS;
+	}
+}/*end of  AZCS4FndLstBxRowQuerySelect */
+

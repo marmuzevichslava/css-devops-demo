@@ -21,10 +21,15 @@
 ***********************************************************************/
 #define  INCL_WIN
 #define  INCL_DOS
+
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define WINDOWMOD
-
+#ifdef FND_WIN32
+#include <windows.h>
+#endif
+#ifdef FND_OS2
 #include <os2.h>
+#endif
 #include <string.h>
 #include <stdio.h>
 #include <float.h>
@@ -44,9 +49,14 @@
 #define  FND_CTCONV_INCL
 #define  FND_VERSION2
 
+#ifdef FND_OS2
 #include <kglzk000.h>
+#endif
+#ifdef FND_WIN32
+#include <kglxk000.h>
+#endif
 
-/*mdc 03/20/96 already included in azcs01b.gnb
+/*mdc 03/21/96 already included in azcso1b.gnb
 #include "csrcmn.h"
 #include "mapgen.h"
 */

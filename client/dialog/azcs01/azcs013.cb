@@ -2,8 +2,12 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
+
+
 #define STACKSIZE 51200
+/*mdc 03/22/96 no longer used in this cb
 VOID FileOut( CHAR *Text );
+*/
 
 
 /***************************************************************************
@@ -37,10 +41,25 @@ VOID FileOut( CHAR *Text );
 **                                  more messages than listbox can handle.
 **
 **  10/18/94  J. Looney             Clean Up.
+**
+**  04/16/96  mconner              Pointer Focus defined in FCP restricts the
+**                                 FndCommandSetDefaultButton in NT.  These 
+**                                 defs were removed from the repository
+**                                 and calls added to the program where needed
+**                                 to retain the "default button" functionality
+**
+**  04/22/96 mconner               re-engineered semaphore calls to work in 
+**                                  both NT and OS/2.
+**
 ***************************************************************************/
 static WCBPROC(AZCS013BusPredisplay)
 {
     SHORT nRC = 0;
+    /*mdc 03/22/96 Added for new NT begin thread call return code*/
+    #ifdef FND_WIN32
+       LONG lRC = 0;
+    #endif
+	SHORT sSignalRC = 0;
     SHORT FndGenRC;
     SHORT sIndex;
     _FND_ERROR_BLOCK FndGenErrorBlock;
@@ -61,6 +80,7 @@ static WCBPROC(AZCS013BusPredisplay)
      */
     FndGenRC = CmnWindowDataModNotReqd(CMN_ARCH_PARMS);
     FndGenRC = CmnWindowSetApplInvalid(CMN_ARCH_PARMS);
+
 
     /*
      * Set the AbortFlag to FALSE, it will be set to true when the thread
@@ -205,15 +225,48 @@ static WCBPROC(AZCS013BusPredisplay)
     /* Start the thread to compare the repository and saved map data. */
 
     HEAP_CHECK
+/*mdc 04/16/96 add call to create signal*/
 
-    nRC = _beginthread( (void (_cdecl _FAR_ *) (void _FAR_ *))CompareLayouts,
+sSignalRC = CmnOsSignalCreate("CompareLayoutSig", TRUE, &hsemLock);
+if (sSignalRC != CMN_SUCCESS && sSignalRC != CMN_ERR_OS_ALREADY_EXISTS)
+{
+	return(sSignalRC);
+}
+
+sSignalRC = CmnOsSignalOpen( "CompareLayoutSig", &hsemLock);
+if (sSignalRC != CMN_SUCCESS)
+{
+	return(sSignalRC);
+}
+
+/*mdc 03/22/96 Changed for NT compatibility */
+#ifdef FND_OS2
+    nRC = _beginthread( (void (_cdecl _FAR_ *) (void  *))CompareLayouts,
                          NULL,
-			 (USHORT) STACKSIZE,
+			 			 (USHORT) STACKSIZE,
+                         (VOID *) pSTDParms );
+#endif
+#ifdef FND_WIN32
+    lRC = _beginthread( (void (_cdecl  *) (void  *))CompareLayouts,
+                         STACKSIZE,
                          (VOID *) pSTDParms );
 
-    HEAP_CHECK
+#endif
+/*mdc Close semaphore */
+/*sSignalRC = CmnOsSignalClose( hsemLock );
+if(sSignalRC != CMN_SUCCESS)
+{
+	return (sSignalRC);
+}*/
 
+    HEAP_CHECK
+	/*mdc 03/22/96 change return code to match new function call */
+#ifdef FND_OS2
     if (nRC < 0)
+#endif
+#ifdef FND_WIN32
+    if (lRC < 0)
+#endif
     {
         USHORT usSelectedButton;
 
@@ -237,6 +290,49 @@ static WCBPROC(AZCS013BusPredisplay)
     return CMN_SUCCESS;
 
 } /* end of function AZCS013BusPredisplay  */
+
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS013BUSPredistroy
+**
+**  DESCRIPTION      : This function takes care of predistroy activities.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : CmnOsSignalClose
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/24/96
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**	04/24/96  mconner               created
+***************************************************************************/
+static WCBPROC(AZCS013BUSPredistroy)
+{
+    SHORT FndGenRC = CMN_SUCCESS;
+
+	/*mdc 04/24/96 Close semaphore before leaving application*/
+	FndGenRC = CmnOsSignalClose( hsemLock );
+
+	if(FndGenRC != CMN_SUCCESS)
+	{
+		return (FndGenRC);
+	}
+	else
+	{
+		return CMN_SUCCESS;
+	}
+}
+
 
 /***************************************************************************
 **
@@ -278,8 +374,9 @@ WCBPROC(ProcessMsg)
     static ULONG ulNumRows=0;
 
     HEAP_CHECK
-
+	/*mdc 03/22/96 no longer used
     FileOut( "Entering ProcessMsg\n" );
+	*/
 
     /* Process only messages within the mapgen event id range */
     if( CBI_IWApplMsg < CMN_MAPGEN_MSG_BASE ||
@@ -296,13 +393,29 @@ WCBPROC(ProcessMsg)
 
     if ( CBI_IWApplMsg == CMN_MAPGEN_MSG_DONE )
     {
-        DosSemClear( &hsemLock );
+	/*mdc 03/22/96 changed for NT
+        DosSemClear( hsemLock );
+	*/
+	    CmnOsSignalClear( hsemLock );
 
         /*
          * Set the window to valid. This will make the ok pushbutton enabled.
          */
 
         FndGenRC = CmnWindowSetApplValid(CMN_ARCH_PARMS);
+
+		/*mdc 04/16/96 set the ok pushbutton to default*/
+		FndGenRC = FndWindowActivate("AZCS013",
+		                             "",
+									 CBI_hwnd,
+									 NULL,
+									 NULL,
+									 &FndGenErrorBlock);
+
+		FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+		                                      "OKPB",
+											  &FndGenErrorBlock);
+
 
         if (bError)
         {
@@ -355,9 +468,12 @@ WCBPROC(ProcessMsg)
     {
         MsgLB._MsgLBMsgTypeData = CBI_IWApplMsg - CMN_MAPGEN_MSG_BASE;
 
-        strncpy( MsgLB._MsgLBDataBufferData,
+       strncpy( MsgLB._MsgLBDataBufferData,
                  CBI_IWApplParm,
                  sizeof( MsgLB._MsgLBDataBufferData )); /* 256 */
+
+       /* strcpy( MsgLB._MsgLBDataBufferData,
+                 CBI_IWApplParm);*/ /* 256 */
 
         FndGenRC = CmnErrOverrides(NULL,
                                    CMN_OVERRIDE_FATAL,
@@ -373,8 +489,9 @@ WCBPROC(ProcessMsg)
                                     &MsgLB,
                                     &FndGenErrorBlock);
 
-
+		/*mdc 03/22/96 no longer used
         FileOut( MsgLB._MsgLBDataBufferData );
+		*/
 
         /* Check the return code from the add */
         if ( FndGenRC != FND_SUCCESS )
@@ -390,7 +507,10 @@ WCBPROC(ProcessMsg)
                               &SelectedButton,
                               &FndGenErrorBlock );
             /* Clear the semaphore that was set by the calling routine */
-            DosSemClear( &hsemLock );
+			/*mdc 03/22/96 changed for NT
+            DosSemClear( hsemLock );
+			*/
+			CmnOsSignalClear(hsemLock);
 
             return CMN_FAIL;
         }
@@ -401,7 +521,11 @@ WCBPROC(ProcessMsg)
     {
 
         /* Clear the semaphore that was set by the calling routine */
-        DosSemClear(&hsemLock);
+/*mdc 03/22/96 changed for NT	
+        DosSemClear(hsemLock);
+		*/
+		FndGenRC = CmnOsSignalClear(hsemLock);
+
 
         FndGenRC = FndMsgBoxDisplayText(
               "More errors have occurred than can fit in the Listbox\n\n"
@@ -421,7 +545,10 @@ WCBPROC(ProcessMsg)
     /* More message than the message box can handle have occured. */
     else
     {
-        DosSemClear(&hsemLock);
+	/*mdc 03/22/96 chnage for NT
+        DosSemClear(hsemLock);
+		*/
+		FndGenRC = CmnOsSignalClear( hsemLock);
     }
 
     /*
@@ -473,7 +600,10 @@ WCBPROC(ProcessMsg)
      }
 
     /* Clear the semaphore that was set by the calling routine */
-    DosSemClear( &hsemLock );
+	/*mdc 03/22/96 changed for NT
+    DosSemClear( hsemLock );
+	*/
+	CmnOsSignalClear( hsemLock);
 
     HEAP_CHECK
 
@@ -511,6 +641,10 @@ WCBPROC(ProcessMsg)
 **  11/21/93  CCRAMPTO              Original code.
 **
 **  10/18/94  JLOONEY               Clean Up.
+**
+**  03/22/96  mconner               Changed all semaphore calls to CmnOs calls
+**  03/22/96  mconner               Commented out all HEAP_CHECK_BEEP calls
+**
 ***************************************************************************/
 VOID CompareLayouts(_STDParms *pSTDParms)
 {
@@ -527,12 +661,16 @@ VOID CompareLayouts(_STDParms *pSTDParms)
     _LAYOUT_REC *pSavedLayout;
     _BFCD * pBFCD;
     _FND_ERROR_BLOCK  FndGenErrorBlock;
+	LONG LastError = 0;
+	SHORT rc = 0;
+
 /*mdc 1-31-96 this var not used in this funtion
     FILE *fptr;
 */
 
 //    HEAP_CHECK_BEEP
-    if (_heapchk() != _HEAPOK) { DosBeep(55,100); }
+//mdc 03/25/96 removed for comile resolve pEventInfo issue later
+//    if (_heapchk() != _HEAPOK) {CmnOsBeep(55L,100L, CMN_ARCH_PARMS); }
 
     /* Save off the STDParm values */
     pBFCD            = pSTDParms->pBFCD;
@@ -548,12 +686,21 @@ VOID CompareLayouts(_STDParms *pSTDParms)
 //  POSTMSG;
 
 
-                 FndGenRC = DosSemSet(&hsemLock);
+                FndGenRC = CmnOsSignalSet(hsemLock);
+  /*mdc 04/22/96 used for test only
+  if( !ResetEvent( hsemLock ))
+  {
+
+	LastError = GetLastError();
+	rc = CMN_ERR_OS_SIGNAL_SET_FAILED;
+  }*/
+
+
                  FndGenRC = FndWndMsgPost( hwnd,
                                            MsgID,
                                            &MsgData,
                                            &FndGenErrorBlock);
-                 FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+                 FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
                  if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)
                     _endthread();
 
@@ -564,7 +711,7 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              "Checking Client Layout %s.",
              pBFCD->pCSRMapBFCD->ClientInfo.ClientLayoutName );  /*   9 */
 
-    POSTMSG;
+    POSTMSG; /*mdc 03/22/96 semaphore functions are defined in azcs013.h*/
 
     /* Error if the number of client rows have changed */
     if( pBFCD->pCSRMapBFCD->ClientInfo.NumClientRows !=
@@ -598,7 +745,7 @@ VOID CompareLayouts(_STDParms *pSTDParms)
         sNumRows = pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows;
     }
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     CheckIt( MAP_GEN_CLIENT_LAYOUT,
              0,
@@ -607,19 +754,19 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              pSavedLayout,
              pSTDParms );
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     if( bRemap )
     {
-        FndGenRC = DosSemSet(&hsemLock);
+        FndGenRC = CmnOsSignalSet(hsemLock);
         FndGenRC = FndWndMsgPost( hwnd,
                                   CMN_MAPGEN_MSG_DONE,
                                   &MsgData,
                                   &FndGenErrorBlock);
 
-        FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+        FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
 
-        HEAP_CHECK_BEEP
+        /*HEAP_CHECK_BEEP*/
 
         return;
     }
@@ -692,15 +839,15 @@ VOID CompareLayouts(_STDParms *pSTDParms)
 
         if ( bRemap )
         {
-            FndGenRC = DosSemSet( &hsemLock );
+            FndGenRC = CmnOsSignalSet( hsemLock );
             FndGenRC = FndWndMsgPost( hwnd,
                                       CMN_MAPGEN_MSG_DONE,
                                       &MsgData,
                                       &FndGenErrorBlock );
 
-            FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+            FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
 
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return;
         }
@@ -716,15 +863,15 @@ VOID CompareLayouts(_STDParms *pSTDParms)
     } /* end of for loop thru NumServices */
 
     /* Tell the message handler that you are done */
-    FndGenRC = DosSemSet(&hsemLock);
+    FndGenRC = CmnOsSignalSet(hsemLock);
     FndGenRC = FndWndMsgPost( hwnd,
                               CMN_MAPGEN_MSG_DONE,
                               &MsgData,
                               &FndGenErrorBlock );
 
-    FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);
+    FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
 } /* end of CompareLayouts */
 
@@ -760,6 +907,9 @@ VOID CompareLayouts(_STDParms *pSTDParms)
 **
 **  10/18/94  JLOONEY               Clean Up.
 **
+**  03/22/96  mconner               Changed all semaphore calls to CmnOs calls
+**  03/22/96  mconner               Commented out all HEAP_CHAECK_BEEP calls
+**
 ***************************************************************************/
 static SHORT CheckIt( CHAR cLayoutType,
                       SHORT sServiceIndex,
@@ -781,7 +931,7 @@ static SHORT CheckIt( CHAR cLayoutType,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* Save off the STDParm values */
     pBFCD = pSTDParms->pBFCD;
@@ -818,7 +968,7 @@ static SHORT CheckIt( CHAR cLayoutType,
                 sRC = Remap( pSTDParms );
                 bRemap = TRUE;
 
-                HEAP_CHECK_BEEP
+                /*HEAP_CHECK_BEEP*/
 
                 return CMN_SUCCESS;
             }
@@ -911,7 +1061,7 @@ static SHORT CheckIt( CHAR cLayoutType,
         }
     } /* END OF LOOP THRU ALL ROWS */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -945,6 +1095,8 @@ static SHORT CheckIt( CHAR cLayoutType,
 **
 **  10/18/94  JLOONEY               Clean Up.
 **
+**  03/22/96  mconner               Commented out all calls to HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 static WCBPROC(PrintLog)
 {
@@ -958,7 +1110,7 @@ static WCBPROC(PrintLog)
     _FND_ERROR_BLOCK ErrorBlock;
     _MsgLBRow MsgBox;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* open a file handle for the printer */
 
@@ -980,7 +1132,7 @@ static WCBPROC(PrintLog)
                                          &usSelectedButton,
                                          &ErrorBlock );
 
-        HEAP_CHECK_BEEP
+        /*HEAP_CHECK_BEEP*/
 
         return CMN_FAIL;
     }
@@ -1027,7 +1179,7 @@ static WCBPROC(PrintLog)
 
         if ( FndGenRC != FND_SUCCESS && FndGenRC != LBOX_ROW_EMPTY )
         {
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return CMN_FAIL;
         }
@@ -1047,13 +1199,16 @@ static WCBPROC(PrintLog)
     FndGenRC = fprintf( fhndFilePtr, RESET_PRINTER );
 
     fclose( fhndFilePtr );
-
+/*mdc changed for NT
     FndGenRC = DosSleep(2000L);
+	*/
+    FndGenRC = CmnOsSleep(2000L, CMN_ARCH_PARMS);
+
 
     FndGenRC = FndMsgBoxDestroy( "PrintMsgBox",
                                  &ErrorBlock );
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -1086,6 +1241,9 @@ static WCBPROC(PrintLog)
 **  11/21/93  CCRAMPTO              Original code.
 **
 **  10/18/94  JLOONEY               Clean Up.
+**
+**  03/22/96  mconner               Commented out calls to HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 static WCBPROC(SaveLog)
 {
@@ -1099,7 +1257,7 @@ static WCBPROC(SaveLog)
     BOOL bMore=TRUE;
     _MsgLBRow MsgBox;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* Build the output filename */
     sprintf( szOutputFileName,                          /* 255 */
@@ -1125,7 +1283,7 @@ static WCBPROC(SaveLog)
                                          CMN_MAPGEN_NAME,
                                          &usSelectedButton,
                                          &ErrorBlock );
-        HEAP_CHECK_BEEP
+        /*HEAP_CHECK_BEEP*/
 
         return CMN_FAIL;
     }
@@ -1164,7 +1322,7 @@ static WCBPROC(SaveLog)
 
         if ( FndGenRC != FND_SUCCESS && FndGenRC != LBOX_ROW_EMPTY )
         {
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return CMN_FAIL;
         }
@@ -1181,13 +1339,15 @@ static WCBPROC(SaveLog)
     } /* end of while more rows in list box */
 
     fclose(fhndFilePtr);
+	/*mdc 03/22/96 changed for NT*/
+    /*DosSleep(3000L);*/ /* Make sure they can read it so sleep for 3 seconds */
 
-    DosSleep(3000L); /* Make sure they can read it so sleep for 3 seconds */
+	CmnOsSleep(3000L, CMN_ARCH_PARMS);
 
     FndGenRC = FndMsgBoxDestroy( "SaveMsgBox",
                                  &ErrorBlock );
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -1220,13 +1380,14 @@ static WCBPROC(SaveLog)
 **  09/20/93  C CRAMPTON            Original code.
 **
 **  10/18/94  J LOONEY              Clean Up.
+**	03/22/96  mconner               Comment out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 static WCBPROC(Azcs013BusUseOldMap)
 {
     SHORT ix;
 
-    HEAP_CHECK_BEEP
+   /* HEAP_CHECK_BEEP*/
 
     /*
      * Move the Client Stuff
@@ -1320,7 +1481,7 @@ static WCBPROC(Azcs013BusUseOldMap)
 
     } /* end of service loop */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -1353,6 +1514,8 @@ static WCBPROC(Azcs013BusUseOldMap)
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 SHORT Remap(_STDParms *pSTDParms)
 {
@@ -1371,7 +1534,7 @@ SHORT Remap(_STDParms *pSTDParms)
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD            = pSTDParms->pBFCD;
     hwnd             = pSTDParms->hwnd;
@@ -1518,7 +1681,7 @@ SHORT Remap(_STDParms *pSTDParms)
 
     } /* end of for loop thru each of the services */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -1563,6 +1726,8 @@ SHORT Remap(_STDParms *pSTDParms)
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean Up.
+**  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 SHORT ChangeIt( SHORT sServ,
                 SHORT sIndex,
@@ -1576,7 +1741,7 @@ SHORT ChangeIt( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* Assign the input parameters to local variables */
     pBFCD = pSTDParms->pBFCD;
@@ -1592,7 +1757,7 @@ SHORT ChangeIt( SHORT sServ,
         FndGenRC = ChangeLK( sServ, sIndex, sNewReposIx, pSTDParms );
         if ( FndGenRC != CMN_SUCCESS )
         {
-           HEAP_CHECK_BEEP
+           /*HEAP_CHECK_BEEP*/
 
            return FndGenRC;
 
@@ -1606,7 +1771,7 @@ SHORT ChangeIt( SHORT sServ,
 
         if ( FndGenRC != CMN_SUCCESS )
         {
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
             return(FndGenRC);
         }
 
@@ -1619,7 +1784,7 @@ SHORT ChangeIt( SHORT sServ,
 
         if ( FndGenRC != CMN_SUCCESS )
         {
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return(FndGenRC);
         }
@@ -1633,7 +1798,7 @@ SHORT ChangeIt( SHORT sServ,
 
         if ( FndGenRC != CMN_SUCCESS )
         {
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return(FndGenRC);
 
@@ -1650,7 +1815,7 @@ SHORT ChangeIt( SHORT sServ,
 
         if ( FndGenRC != CMN_SUCCESS )
         {
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return( FndGenRC );
 
@@ -1658,7 +1823,7 @@ SHORT ChangeIt( SHORT sServ,
 
     } /* End of Load Data logic */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -1694,6 +1859,8 @@ SHORT ChangeIt( SHORT sServ,
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean Up
+**  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 SHORT FindFullName(SHORT sSavedIndex,
                    _LAYOUT_REC *pSavedLayout,
@@ -1705,7 +1872,7 @@ SHORT FindFullName(SHORT sSavedIndex,
     CHAR szBuildName[255];
     CHAR szTempName[255];
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* Build the full name for the saved element */
     strncpy( szBuildName,
@@ -1728,7 +1895,7 @@ SHORT FindFullName(SHORT sSavedIndex,
         {
             *sReposIndex = sIndex;
 
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return(1);
 
@@ -1736,7 +1903,7 @@ SHORT FindFullName(SHORT sSavedIndex,
 
     } /* end of for loop thru each layout record */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return(0);
 
@@ -1777,6 +1944,7 @@ SHORT FindFullName(SHORT sSavedIndex,
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**	03/22/96   mconner              Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT DropClient( SHORT sClientx,
@@ -1792,7 +1960,7 @@ SHORT DropClient( SHORT sClientx,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD = pSTDParms->pBFCD;
     hwnd  = pSTDParms->hwnd;
@@ -1910,7 +2078,7 @@ SHORT DropClient( SHORT sClientx,
 
     } /* End of for loop for each row */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -1951,6 +2119,7 @@ SHORT DropClient( SHORT sClientx,
 **  11/15/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean Up
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT ChangeLK( SHORT sServ,
@@ -1973,7 +2142,7 @@ SHORT ChangeLK( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* Assign the input parameters to local variables */
     pBFCD            = pSTDParms->pBFCD;
@@ -2021,7 +2190,7 @@ SHORT ChangeLK( SHORT sServ,
 
                 DropClient( sClientx, sServ, 1, pSTDParms );
 
-                HEAP_CHECK_BEEP
+                /*HEAP_CHECK_BEEP*/
 
                 return CMN_FAIL;
             } /* end of case 0 */
@@ -2061,7 +2230,7 @@ SHORT ChangeLK( SHORT sServ,
 
     } /* end of if a relationship is defined */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -2102,6 +2271,7 @@ SHORT ChangeLK( SHORT sServ,
 **  11/15/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean Up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT ChangeCK( SHORT sServ,
@@ -2124,7 +2294,7 @@ SHORT ChangeCK( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /* Assign the input parameters to local variables */
     pBFCD            = pSTDParms->pBFCD;
@@ -2175,7 +2345,7 @@ SHORT ChangeCK( SHORT sServ,
 
                 DropClient( sClientx, sServ, 2, pSTDParms );
 
-                HEAP_CHECK_BEEP
+                /*HEAP_CHECK_BEEP*/
 
                 return CMN_FAIL;
 
@@ -2216,7 +2386,7 @@ SHORT ChangeCK( SHORT sServ,
 
     } /* end of if a relationship is defined */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -2255,6 +2425,7 @@ SHORT ChangeCK( SHORT sServ,
 **  11/15/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT ChangeLD( SHORT sServ,
@@ -2276,7 +2447,7 @@ SHORT ChangeLD( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*(HEAP_CHECK_BEEP*/
 
     /* Assign the input parameters to local variables */
     pBFCD            = pSTDParms->pBFCD;
@@ -2324,7 +2495,7 @@ SHORT ChangeLD( SHORT sServ,
 
                 DropClient(sClientx, sServ, 3, pSTDParms);
 
-                HEAP_CHECK_BEEP
+                /*HEAP_CHECK_BEEP*/
 
                 return(CMN_FAIL);
 
@@ -2364,7 +2535,7 @@ SHORT ChangeLD( SHORT sServ,
 
     } /* end of if a relationship is defined */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -2405,6 +2576,7 @@ SHORT ChangeLD( SHORT sServ,
 **  11/15/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT ChangeRD( SHORT sServ,
@@ -2473,7 +2645,7 @@ SHORT ChangeRD( SHORT sServ,
 
                 DropClient(sClientx, sServ, 4, pSTDParms);
 
-                HEAP_CHECK_BEEP
+                /*HEAP_CHECK_BEEP*/
 
                 return(CMN_FAIL);
 
@@ -2514,7 +2686,7 @@ SHORT ChangeRD( SHORT sServ,
 
     } /* end of if a relationship is defined */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return( CMN_SUCCESS );
 
@@ -2556,6 +2728,7 @@ SHORT ChangeRD( SHORT sServ,
 **  11/15/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT ChangeRPMH( SHORT sServ,
@@ -2630,7 +2803,7 @@ SHORT ChangeRPMH( SHORT sServ,
             pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                    pRepeatingMaps[sNewReposIx].ClientLayoutIndex = -1;
 
-            HEAP_CHECK_BEEP
+            /*HEAP_CHECK_BEEP*/
 
             return(CMN_FAIL);
 
@@ -2663,7 +2836,7 @@ SHORT ChangeRPMH( SHORT sServ,
 
                 DropClient(sClientx, sServ, 5, pSTDParms);
 
-                HEAP_CHECK_BEEP
+                /*HEAP_CHECK_BEEP*/
 
                 return(CMN_FAIL);
 
@@ -2704,7 +2877,7 @@ SHORT ChangeRPMH( SHORT sServ,
 
     } /* end of if a relationship is defined */
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return (CMN_SUCCESS);
 
@@ -2741,6 +2914,8 @@ SHORT ChangeRPMH( SHORT sServ,
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 SHORT DropClientLK( SHORT sServ,
                     SHORT sIndex,
@@ -2758,7 +2933,7 @@ SHORT DropClientLK( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD            = pSTDParms->pBFCD;
     hwnd             = pSTDParms->hwnd;
@@ -2802,7 +2977,7 @@ SHORT DropClientLK( SHORT sServ,
 
     POSTMSG;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -2837,6 +3012,7 @@ SHORT DropClientLK( SHORT sServ,
 **  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **  --------  -----------  -------  -------------------------------------
 **  11/08/93  C. Crampton              Original code.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT DropClientLD( SHORT sServ,
@@ -2855,7 +3031,7 @@ SHORT DropClientLD( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD = pSTDParms->pBFCD;
     hwnd  = pSTDParms->hwnd;
@@ -2899,7 +3075,7 @@ SHORT DropClientLD( SHORT sServ,
 
     POSTMSG;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -2954,7 +3130,7 @@ SHORT DropClientRD( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD = pSTDParms->pBFCD;
     hwnd  = pSTDParms->hwnd;
@@ -2990,7 +3166,7 @@ SHORT DropClientRD( SHORT sServ,
     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pReturnData[sNewServIndex].
             ClientLayoutIndex = -1;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return(CMN_SUCCESS);
 
@@ -3027,6 +3203,7 @@ SHORT DropClientRD( SHORT sServ,
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 SHORT DropClientCK( SHORT sServ,
@@ -3045,7 +3222,7 @@ SHORT DropClientCK( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD = pSTDParms->pBFCD;
     hwnd  = pSTDParms->hwnd;
@@ -3099,7 +3276,7 @@ SHORT DropClientCK( SHORT sServ,
              sizeof( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                             pCompareKeys[sNewServIndex].WildCardValue ));
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -3135,6 +3312,8 @@ SHORT DropClientCK( SHORT sServ,
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean Up.
+**  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**
 ***************************************************************************/
 SHORT DropClientRPMH( SHORT sServ,
                       SHORT sIndex,
@@ -3152,7 +3331,7 @@ SHORT DropClientRPMH( SHORT sServ,
     _BFCD * pBFCD;
     HWND hwnd;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     pBFCD = pSTDParms->pBFCD;
     hwnd  = pSTDParms->hwnd;
@@ -3192,7 +3371,7 @@ SHORT DropClientRPMH( SHORT sServ,
     pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
            pRepeatingMaps[sNewServIndex].SingleOccurence = 'N';
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return CMN_SUCCESS;
 
@@ -3234,6 +3413,7 @@ SHORT DropClientRPMH( SHORT sServ,
 **  11/08/93  C. Crampton           Original code.
 **
 **  10/18/94  J. Looney             Clean Up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
 **
 ***************************************************************************/
 CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
@@ -3243,7 +3423,7 @@ CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
     SHORT sParentx;
     static SHORT sNestedLevel=0;
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     /*
      * sParentx will be -1 when you are at the top of the hierarchy
@@ -3303,7 +3483,7 @@ CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
         strcat(szFullName, "");
     }
 
-    HEAP_CHECK_BEEP
+    /*HEAP_CHECK_BEEP*/
 
     return( szFullName );
 
@@ -3311,10 +3491,10 @@ CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
 
 
 
-
+/*mdc 03/2/96 REmoved 
 VOID FileOut( CHAR *Text )
 {
-  /*
+  
   FILE *fp;
 
   if( fp = fopen( "bug", "a" ))
@@ -3322,9 +3502,8 @@ VOID FileOut( CHAR *Text )
     fprintf( fp, "%s", Text );
     fclose( fp );
   }
-  */
-
+  
+    CmnOsSleep( 100L, CMN_ARCH_PARMS );
   DosSleep( 100 );
   return;
-}
-
+}					  */

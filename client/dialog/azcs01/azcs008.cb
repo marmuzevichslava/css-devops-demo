@@ -4,16 +4,16 @@
 ****************************************************************************/
 static WCBPROC(AZCS008BUSUserPredisplay)
 {
-unsigned short FndGenRC = FND_SUCCESS;
+USHORT FndGenRC = FND_SUCCESS;
   _FND_ERROR_BLOCK FndGenErrorBlock;
 char Action[] = "Search and Destroy";
 char ObjectType[] = "Request ID";
-short ix;
+SHORT ix;
 _MapLBRow NewRow;
 
 
 FndGenRC = CmnWindowTitleCreate(Action, ObjectType, pBFCD->pCSRMapBFCD->ClientInfo.ReqId,
-           strlen(Action) + strlen(ObjectType) + strlen(pBFCD->pCSRMapBFCD->ClientInfo.ReqId)+ 6,
+           (USHORT)(strlen(Action) + strlen(ObjectType) + strlen(pBFCD->pCSRMapBFCD->ClientInfo.ReqId)+ 6),
            CMN_ARCH_PARMS);
 
 
@@ -52,12 +52,12 @@ for (ix=0; ix < pBFCD->pCSRMapBFCD->ClientInfo.NumSearchDestroy; ix++)
 
 static WCBPROC(AZCS008BUSSaveToBFCD)
 {
-unsigned short FndGenRC = FND_SUCCESS;
+USHORT FndGenRC = FND_SUCCESS;
 /*mdc 1-31-96 this var not used in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
 */
-short ix=0;
-short iy=0;
+SHORT ix=0;
+SHORT iy=0;
 
 /* Loop thru the list box and save all valid Map Names to BFCD */
 
@@ -78,4 +78,3 @@ pBFCD->pCSRMapBFCD->ClientInfo.NumSearchDestroy = iy;
 return(CMN_SUCCESS);
 
 }
-

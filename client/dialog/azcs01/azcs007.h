@@ -2,20 +2,59 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-/*mdc 03/20/96 _WCD_DATA WCD addded to _WCDAZCS007C in azcs007c.h. */
-/*                 This structure is not generated correctly by FCP and must be */
-/*                  edited each time azcs01 is generated.  malloc.h is not included */
-/*                  by the generation drdiver so it is included here */
+/***************************************************************************
+**
+**               Customer Service System Architecture Header File
+**
+**  FILENAME         : azcs007
+**
+**  DESCRIPTION      : Window Header File
+**
+**  AUTHOR           : MCONNER
+**
+**  DATE CREATED     : 01-08-96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**	 01/08/96   mconner               added malloc.h
+**   01/15/96   mconner               added help headers
+***************************************************************************/
 
-
-
+/***************************************************************************/
+/* Application #includes                                                   */
+/***************************************************************************/
+/*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
+ */
 #include <malloc.h>
 
+#include "systcomm.hh"
+#include "roadmap.hh"
+
+/***************************************************************************/
+/* Application #defines                                                    */
+/***************************************************************************/
 #define CMN_HIGH_VALUES_STR "HIGH-VALUES"
 #define CMN_LOW_VALUES_STR  "LOW-VALUES"
 
-WCBFWD(AZCS007BUSAboutMNClick);
+
+/***************************************************************************/
+/* Application typedefs                                                    */
+/***************************************************************************/
+
+
+/***************************************************************************/
+/* Forward declarations for Application Validation Functions               */
+/***************************************************************************/
+
+
+/***************************************************************************/
+/* Forward declarations for Application Business Functions                 */
+/***************************************************************************/
 WCBFWD (UnLdAZCS7I);
+WCBFWD(AZCS007BUSAboutMNClick);
+WCBFWD(AZCS007BUSSetCLNTLITERALStatus);
 WCBFWD (AZCS007BUSMoveLB1);
 WCBFWD (AZCS007BUSMoveLB2);
 WCBFWD (AZCS007BUSNewService);
@@ -31,11 +70,10 @@ WCBFWD(FillStatusLD);
 WCBFWD(InitService);
 WCBFWD(MoveService);
 WCBFWD(InitClient);
-WCBFWD(MoveClient);
-WCBFWD(CellAttrNotNorm);
-WCBFWD(AZCS007BUSChangeClientType);
-WCBFWD(AZCS007BUSChangeServiceType);
-WCBFWD(AZCS007BUSSetCLNTLITERALStatus);
+WCBPROC(MoveClient);
+WCBPROC(CellAttrNotNorm);
+WCBPROC(AZCS007BUSChangeClientType);
+WCBPROC(AZCS007BUSChangeServiceType);
 WCBFWD(AZCS007BUSClntLng);
 WCBFWD(AZCS007BUSSrvLng);
 WCBFWD(FillServiceLB);
@@ -48,13 +86,13 @@ WCBFWD(Azcs007busrlb02elbpagedown);
 WCBFWD(Azcs007busrlb02elbpageup);
 
 
-short ClientElmntToRow(short ClientElmnt, CMN_ARCH_PARM_TYPES);
-short ServiceElmntToRow(short ServiceElmnt, CMN_ARCH_PARM_TYPES);
-short LoadClientElmnt(short ClientElmnt, CMN_ARCH_PARM_TYPES);
-short LoadServiceElmnt(short ServiceElmnt, CMN_ARCH_PARM_TYPES);
+SHORT ClientElmntToRow(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES);
+SHORT ServiceElmntToRow(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES);
+SHORT LoadClientElmnt(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES);
+SHORT LoadServiceElmnt(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES);
 
 SHORT CheckDataTypes( USHORT ClientIndex,
                       USHORT ServiceIndex,
                       USHORT ServiceNum,
                       CMN_ARCH_PARM_TYPES);
-
+

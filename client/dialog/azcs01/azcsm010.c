@@ -27,6 +27,7 @@
 **                          WriteRPRD
 **                          DecodeDataType
 **                          FormatHighValues
+**                          FileAdd
 **
 **  DATE CREATED  :  06/09/93
 **
@@ -57,19 +58,32 @@
 **				      Architecture includes to prevent
 **				      redefinition of _BFCD
 **
-** 04/09/96   mconner              changed all occurances of SHORT casting 
-**                                     strlen to USHORT
+** 03/25/96   mconner               added #defs for OS/2 and WINNT declarations
+**
+** 03/25/96   mconner               cast strlen to USHORT in min calls
+**
+** 04/22/96   mconner               Added call to remove tmp file and
+**                                  created FileAdd to concatenate tmp file
+**                                  to the map file.  This removes the calls
+**                                  to "system" from the program.
 **
 ******************************************************************/
 
 /**************************************************************************
 **
-**   OS/2 #defines
+**    #defines
 **
 ***************************************************************************/
+#define INCL_WIN
 #define  INCL_DOS
+
 #define WINDOWMOD
+#ifdef FND_WIN32
+#include <windows.h>
+#endif
+#ifdef FND_OS2
 #include <os2.h>
+#endif
 
 /**************************************************************************
 **
@@ -86,6 +100,7 @@
 #include <stdarg.h>
 #include <time.h>
 
+
 /**************************************************************************
 **
 **   Foundation #includes
@@ -98,7 +113,13 @@
 #define  FND_CF_INCL
 #define  FND_CTCONV_INCL
 #define  FND_VERSION2
+
+#ifdef FND_OS2
 #include <kglzk000.h>
+#endif
+#ifdef FND_WIN32
+#include <kglxk000.h>
+#endif
 
 /**************************************************************************
 **
@@ -133,6 +154,8 @@ USHORT FormatHighValues(_LAYOUT_REC ServiceLayout,
                         CHAR *pszFormatString,
                         SHORT sFormatStringLen);
 
+USHORT FileAdd(FILE *, FILE *);
+
 /**************************************************************************
 **
 **   AZCSM010.C Variable Declarations
@@ -164,8 +187,6 @@ SHORT MapDataLength;
 **  --------      ----------     -----     ---------------------
 **  06/09/93      J. Looney                Original Code
 **
-**  04/09/96     mconner                   remove temp file
-**
 ******************************************************************/
 
 USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
@@ -178,6 +199,7 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
     CHAR TmpFileNm[_CSR_MAP_FILENAME_LEN] = "";
     _FND_ERROR_BLOCK  FndGenErrorBlock;
     USHORT SelectedButton;
+	LONG lSysRC = 0;
 
 
     /* Initialize CopyCommand */
@@ -284,12 +306,73 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                           " ",
                           FileNm );
 
-   FndGenRC = system(CopyCommand);
+   /*lSysRC = system(CopyCommand); */
+   /*mdc reopen files and cat to FileNm*/
+   Stream = fopen(FileNm, "a");
+   TmpFile = fopen(TmpFileNm, "r");
+   if(Stream == NULL || TmpFile == NULL)
+   {
+   		fprintf(stderr, "File open failure.");
+		return CMN_FAIL;
+	}
+   FndGenRC = FileAdd(Stream, TmpFile);
 
-/*mdc 04/09/96 remove tmp file */
-FndGenRC = remove(TmpFileNm);
+    /* Close all files */
+    if ((NumberClosed = fcloseall()) != 2)
+    {
+       return(CMN_FAIL);
+    }
+
+
+	/*mdc 04/09/96 remove temp file */
+	FndGenRC = remove(TmpFileNm);
+
+	return CMN_SUCCESS;
 
 } /* end of GenerateMap */
+
+/*mdc*************************************************************************/
+/*****************************************************************
+**
+**       CUSTOMER SERVICE SYTEM CSR MAP GENERATOR FUNCTION
+**
+**  FUNCTION      :  FileAdd
+**
+**  DESCRIPTION   :  Adds file 2 to file 1.
+**                   NOTE: InputChar is declared as an int so that this will
+**                         run in 16 bit OS/2 without conversion.
+**
+**  INPUTS        :  FILE *	ofp - target file
+**                   FILE * ifp - source file
+**
+**  OUTPUTS       :  CMN_SUCCESS
+**
+**  AUTHOR        :  mconner
+**
+**  DATE CREATED  :  04/22/96
+**
+**  REVISION HISTORY
+**
+**    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
+**  --------      ----------     -----     ---------------------
+**	04/22/96	mconner						created
+******************************************************************/
+USHORT FileAdd(FILE *ofp, FILE *ifp)
+{
+	int  InputChar;
+	
+
+	 if( ofp  != NULL &&	ifp != NULL)
+	 {
+	 	while (InputChar != EOF)
+		{
+			InputChar = getc(ifp);
+		    putc(InputChar, ofp );
+		}
+	  }
+
+	  return CMN_SUCCESS;
+}
 
 /*****************************************************************
 **
@@ -500,7 +583,7 @@ USHORT GenerateService(_LAYOUT_REC  ServiceLayout[],
 #define CK_LINE_1 "********  C O M P A R E  K E Y S  ********\n"
 #define CK_LINE_2 "**** ClientName                       ServiceName                       FromOffset  ToOffset  Length    DataType    Operation   WildCardUsed WildCard              LiteralUsed LiteralValue \n"
 #define CK_LINE_3 "**** ----------                       -----------                       ----------  --------  ------    --------    ---------   ------------ --------              ----------- ------------ \n"
-#define CK_LINE_4 "CK   %-32.32s %-32.32s  %-10.1u  %-10.1u%-10.1i%-11.11s %-11.11s %-1.1c            %-21.21s %-1.1c           %-61.61s\n"
+#define CK_LINE_4 "CK   %-32.32s %-32.32s  %-10.1u  %-10.1u%-10.1d%-11.11s %-11.11s %-1.1c            %-21.21s %-1.1c           %-61.61s\n"
 
 USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                 _LAYOUT_REC  ServiceLayout[],
@@ -609,7 +692,7 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((USHORT) strlen(CK[Index].LiteralValue) + 1)),
+				     ((USHORT) ( strlen(CK[Index].LiteralValue) + 1))),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -670,7 +753,7 @@ USHORT WriteCK( _LAYOUT_REC  ClientLayout[],
                                  ItemOffset,
                                  ServiceLayout[Index].ItemOffset,
                                  min(ServiceLayout[Index].ItemCLength,
-				     ((SHORT) strlen(CK[Index].LiteralValue) + 1)),
+				     ((USHORT) strlen(CK[Index].LiteralValue) + 1)),
                                  DataType,
                                  CK[Index].Operation,
                                  CK[Index].WildCardUsed,
@@ -2781,4 +2864,3 @@ if (ServiceLayout.Precision > 0)
 return( CMN_SUCCESS );
 
 } /* End of function FormatHighValues */
-

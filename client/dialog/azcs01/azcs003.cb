@@ -478,4 +478,3 @@ static WCBPROC (AZCS003BusTranFldChg)
 
  return(CMN_SUCCESS);
 }
-

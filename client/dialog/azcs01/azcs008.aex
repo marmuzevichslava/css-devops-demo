@@ -298,11 +298,13 @@ AEXPROC (ExitWktCloseAfterCancel)
 
 AEXPROC (ExitElbRegister)
 {
- unsigned short FndGenRC;
-/*mdc 1-31-96 this var not used in this function
+ USHORT FndGenRC;
+
+ /*mdc - 01-09-96 - not used in function
   _FND_ERROR_BLOCK FndGenErrorBlock;
-*/
- short rc=0;
+  */
+
+ SHORT rc=0;
  _CMNELBREGPARMS Parms;
 
     /*  Each enterable list box in a window MUST be registered with  */
@@ -382,12 +384,13 @@ AEXPROC (ExitElbRegister)
 
 AEXPROC (ExitElb1CloseAfterSave)
 {
- short FndGenRC = FND_SUCCESS;
-/*MDC 1-31-96 THIS VAR NOT USED IN THIS FUNCTION
+ SHORT FndGenRC = FND_SUCCESS;
+  /*mdc - 01-09-96 - not used in function
   _FND_ERROR_BLOCK FndGenErrorBlock;
-*/
+  */
+
  _MapLBRow NewRow;
- short ix=0;
+ SHORT ix=0;
 
 /******************************************************************/
 /* Put the data that was added in window AZCS010 into the Listbox */
@@ -500,10 +503,11 @@ AEXPROC (ExitElb1CloseAfterCncl)
 
 AEXPROC (ExitElb1BuildInstName)
 {
-/*mdc 1-31-96 this var not used in this function
+   /*mdc - 01-09-96 - not used in function
   _FND_ERROR_BLOCK FndGenErrorBlock;
-*/
-  short FndGenRC=0;
+  */
+
+  SHORT FndGenRC=0;
 
   FndGenRC = CmnElbAssignChgWinInstName ("INST1", CMN_ARCH_PARMS);
 
@@ -550,16 +554,17 @@ AEXPROC (ExitElb1BuildInitData)
 
  char Init[] = "GoodLuck";
  USHORT FndGenRC=0;
-/*mdc 1-31-96 this var not used in this function
+  /*mdc - 01-09-96 - not used in function
   _FND_ERROR_BLOCK FndGenErrorBlock;
-*/
+  */
 
   /* CSC: ADDED 06/18/93 */
   HEAP_CHECK
 
  FndGenRC = CmnElbAssignInitialData (
                           (void *) &Init,
-                         strlen(Init) + 1,
+						  /*mdc 01-09-96 - cast to USHORT for NT */
+                         (USHORT)(strlen(Init) + 1),
                          CMN_ARCH_PARMS);
 
 
@@ -603,10 +608,10 @@ AEXPROC (ExitElb1BuildInitData)
 
 AEXPROC (ExitElb1BuildDelData)
 {
-  SHORT FndGenRC;
-/*mdc 1-31-96 this var not used in this function
+  /*mdc - 01-09-96 - not used in function
   _FND_ERROR_BLOCK FndGenErrorBlock;
-*/
+  */
+ SHORT FndGenRC;
   _MapLBRow Row;
 
 
@@ -659,7 +664,7 @@ AEXPROC (ExitElb1BuildDelData)
 
 AEXPROC( CmnArchExitInitialize )
 {
-  int ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
+  SHORT ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
 
   HEAP_CHECK;
 
@@ -678,4 +683,3 @@ AEXPROC( CmnArchExitInitialize )
 
   return (CMN_SUCCESS);
 } /* End of CmnArchExitInitialize */
-

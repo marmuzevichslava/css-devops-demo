@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS004                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Fri May  3 09:20:47 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -27,8 +27,8 @@
 #define ClientLayout_FID                               7
 #define SrvcElement_FID                                8
 #define FlWindowMod_FID                                9
-#define ClntLiteral_FID                                10
-#define ClntElement_FID                                11
+#define ClntElement_FID                                10
+#define ClntLiteral_FID                                11
 #define Rlb01ELBSelInd_FID                             12
 #define Rlb01ELBCdStatusIconic_FID                     13
 #define Rlb01ELBRecType_FID                            14
@@ -58,8 +58,8 @@
 #define ClientLayout_WID                               107
 #define SrvcElement_WID                                108
 #define FlWindowMod_WID                                109
-#define ClntLiteral_WID                                110
-#define ClntElement_WID                                111
+#define ClntElement_WID                                110
+#define ClntLiteral_WID                                111
 
 /***************************************************************************
 *  Command IDs                                                             *

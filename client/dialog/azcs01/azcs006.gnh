@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS006                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Tue Apr 30 17:18:26 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -47,13 +47,13 @@
 #define Rlb01ELB_WID                                   101
 #define Rlb02ELB_WID                                   102
 #define ClntType_WID                                   8003
-#define ClntGrpBox_WID                                 9000
-#define ServiceGrpBox_WID                              9001
+#define ServiceGrpBox_WID                              9000
 #define ClientLayout_WID                               104
 #define SrvcElement_WID                                105
 #define FlWindowMod_WID                                106
 #define ClntLiteral_WID                                107
 #define ClntElement_WID                                108
+#define ClntGrpBox_WID                                 9001
 
 /***************************************************************************
 *  Command IDs                                                             *

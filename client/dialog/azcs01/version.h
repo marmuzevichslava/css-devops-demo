@@ -74,4 +74,3 @@ SHORT LocateCVerField (FILE *pInputFile, FILE *pOutputFile,
 SHORT StrTrimTrailBlanks (char *Target, USHORT nSize);
 
 SHORT ReportError (char *ErrorText);
-

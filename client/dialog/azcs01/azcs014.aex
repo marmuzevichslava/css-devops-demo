@@ -913,7 +913,7 @@ AEXPROC (ExitElb1BuildDelData)
 
 AEXPROC( CmnArchExitInitialize )
 {
-  int ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
+  SHORT ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
 
 /*  HEAP_CHECK; */
 
@@ -932,4 +932,3 @@ AEXPROC( CmnArchExitInitialize )
 
   return (CMN_SUCCESS);
 } /* End of CmnArchExitInitialize */
-

@@ -23,7 +23,13 @@
 #define  INCL_DOS
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 
+#ifdef FND_WIN32
+#define WINDOWMOD
+#include <windows.h>
+#endif
+#ifdef FND_OS2
 #include <os2.h>
+#endif
 #include <string.h>
 #include <stdio.h>
 #include <float.h>
@@ -41,14 +47,23 @@
 #define  FND_PS_INCL
 #define  FND_CF_INCL
 #define  FND_CTCONV_INCL
+/*mdc not in others
 #define  FND_VERSION2
+*/
 
+#ifdef FND_OS2
 #include <kglzk000.h>
+#endif
+#ifdef FND_WIN32
+#include <kglxk000.h>
+#endif
+
 
 #include "version.h"
+/*mdc 01-11-96 - Already included in version.h
 #include <azrp001m.h>
-
-/*mdc 03/21/96 these are already included in azcs01b.gnb
+*/
+/*mdc 03/25/96 Already included in azcs01b.gnb
 #include "csrcmn.h"
 #include "mapgen.h"
 */
@@ -61,11 +76,11 @@
 
 
 
-BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
+SHORT BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
                      double *pVersion)
 {
-    USHORT   i, j,  nTypeVal;
-    ULONG nLenPrecisOcc;
+    USHORT   i, j, nTypeVal;
+	ULONG  nLenPrecisOcc;
     LONG    nCharSum;
     double  dSubTotal, dLineTotal;
 
@@ -76,8 +91,10 @@ BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
         */
         StrTrimTrailBlanks ((pEntityData+i)->EntityCobolName,
                             sizeof ((pEntityData+i)->EntityCobolName));
-        StrTrimTrailBlanks ((pEntityData+i)->EntityType,
+
+		StrTrimTrailBlanks ((pEntityData+i)->EntityType,
                             sizeof ((pEntityData+i)->EntityType));
+
         StrTrimTrailBlanks ((pEntityData+i)->DteIntUsage,
                             sizeof ((pEntityData+i)->DteIntUsage));
 
@@ -116,7 +133,7 @@ BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
         {
             nLenPrecisOcc =
              (((pEntityData+i)->RelatOccFact < 1)
-		    ? 1L : (pEntityData+i)->RelatOccFact)
+                    ? 1 : (pEntityData+i)->RelatOccFact)
                           + (pEntityData+i)->DteIntLength
                           + (pEntityData+i)->DteIntPrecision;
 
@@ -199,32 +216,35 @@ BuildVersionNumber (_ENTITYDATA *pEntityData, USHORT nRows,
 
 SHORT StrTrimTrailBlanks (char *Target, USHORT nSize)
 {
-     USHORT i;
+    SHORT i;
+	/*char *s;*/
 
+    /*
+    |   Set the last position of the target to null
+    */
+    Target[nSize - 1] = 0;
+	/*s = Target;
 
-  /*   Set the last position of the target to null */
+	while ((! isspace(*s)) && (*s != '\0')) ++s; 
+	*s = '\0';*/
 
-   Target[nSize - 1] = 0;
-
-
-   /*   Scan backwards replacing spaces with nulls until the first
-       non-null character is encountered. */
-
+    
+    /*   Scan backwards replacing spaces with nulls until the first
+    |       non-null character is encountered.
+    */
     for (i = (nSize - 2);
          ((i >= 0)
            &&
           ((Target[i] == ' ')
             ||
-	   (Target[i] == '\0')));
-    i--)
-
+           (Target[i] == 0)));
+         i--)
     {
         if (Target [i] == ' ')
         {
-	    Target [i] = '\0';
+            Target [i] = 0;
         }
-    }	
+    } 
 
     return (0);
 }
-

@@ -2,15 +2,56 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-/*mdc 03/20/96 _WCD_DATA WCD has been added to _WCDAZCS009C typedef in azcs009c.h. */
-/*                 This structure is not generated correctly by FCP and must be edited each time */
-/*                  azc01 is generated. The drivers do not include malloc.h so it is included here. */
+/***************************************************************************
+**
+**               Customer Service System Architecture Header File
+**
+**  FILENAME         : azcs009
+**
+**  DESCRIPTION      : Window Header File
+**
+**  AUTHOR           : MCONNER
+**
+**  DATE CREATED     : 01-08-96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**	 01/08/96   mconner               added malloc.h
+**   01/15/96   mconner               added help headers
+***************************************************************************/
 
+/***************************************************************************/
+/* Application #includes                                                   */
+/***************************************************************************/
+/*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
+ */
 #include <malloc.h>
+#include "systcomm.hh"
+#include "roadmap.hh"
 
 
-WCBFWD(AZCS009BUSSaveToBFCD);
+/***************************************************************************/
+/* Application #defines                                                    */
+/***************************************************************************/
+
+
+/***************************************************************************/
+/* Application typedefs                                                    */
+/***************************************************************************/
+
+
+/***************************************************************************/
+/* Forward declarations for Application Validation Functions               */
+/***************************************************************************/
+
+
+/***************************************************************************/
+/* Forward declarations for Application Business Functions                 */
+/***************************************************************************/
+WCBFWD(ACS009BUSSaveToBFCD);
 WCBFWD(ChkSaveDir);
 WCBFWD(ChkGenDir);
 WCBFWD(AZCS009BUSUserPredisplay);
-
+

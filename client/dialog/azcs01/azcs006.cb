@@ -2,10 +2,10 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-short FindClientMatch(CMN_ARCH_PARM_TYPES);
-short FillLayoutLB(char *LBName,
+SHORT FindClientMatch(CMN_ARCH_PARM_TYPES);
+SHORT FillLayoutLB(char *LBName,
                    _LAYOUT_REC *pLayout,
-                   unsigned short NumRec,
+                   USHORT NumRec,
                    enum LANGUAGE_TYPE Language,
                    CMN_ARCH_PARM_TYPES);
 
@@ -91,10 +91,10 @@ static WCBPROC(AZCS006BUSAboutMNClick)
 
 static WCBPROC (UnLdAZCS6I)
 {
-     unsigned short           FndGenRC = FND_SUCCESS;
+     USHORT           FndGenRC = FND_SUCCESS;
      _FND_ERROR_BLOCK         FndGenErrorBlock;
-     short ix=0;
-     short iy=0;
+     SHORT ix=0;
+     SHORT iy=0;
 
   _AZCS004I *pAzcs004i;
 
@@ -105,8 +105,8 @@ static WCBPROC (UnLdAZCS6I)
  */
 FndGenRC = FndFieldSetValue( CBI_hwnd,
                                  "CLIENTLAYOUT",
-                                 strlen(pAzcs004i->ClientLayout),
-                                 pAzcs004i->ClientLayout,
+                                 (USHORT)strlen(pAzcs004i->ClientLayout),
+                                 (void *)pAzcs004i->ClientLayout,
                                  &FndGenErrorBlock);
 
 /*mdc -03/06/96 -Changed for standards compliance
@@ -114,8 +114,8 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
 */
 FndGenRC = FndFieldSetValue( CBI_hwnd,
                                  "ServiceLayoutName",
-                                 strlen(pAzcs004i->Services[0].ServerLayout),
-                                 pAzcs004i->Services[0].ServerLayout,
+                                 (USHORT)strlen(pAzcs004i->Services[0].ServerLayout),
+                                 (void *)pAzcs004i->Services[0].ServerLayout,
                                  &FndGenErrorBlock);
 
 
@@ -277,12 +277,12 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
 
 static WCBPROC (AZCS006BUSMoveLB1)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-unsigned short           RowNum;
+USHORT           FndGenRC = FND_SUCCESS;
+USHORT           RowNum;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-unsigned int             CellAttr;
-unsigned short           CellData;
-unsigned short          *pCellData;
+USHORT             CellAttr;
+USHORT           CellData;
+USHORT          *pCellData;
 
 /*
 ** Find out which row was selected
@@ -407,12 +407,12 @@ return(CMN_SUCCESS);
 
 static WCBPROC (AZCS006BUSMoveLB2)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-unsigned short           RowNum;
+USHORT           FndGenRC = FND_SUCCESS;
+USHORT           RowNum;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-unsigned int             CellAttr;
-unsigned short           CellData;
-unsigned short          *pCellData;
+USHORT             CellAttr;
+USHORT           CellData;
+USHORT          *pCellData;
 
 /***********************************/
 /* Find out which row was selected */
@@ -536,9 +536,9 @@ return(CMN_SUCCESS);
 
 static WCBPROC (AZCS006BUSNewService)
 {
-  int index=0;
-  int ServiceIndex=-1;
-  unsigned int  nRC=0;
+  SHORT index=0;
+  SHORT ServiceIndex=-1;
+  USHORT  nRC=0;
   /*
   ** Compare the BFCD Services versus the Service name in WES
   */
@@ -615,15 +615,15 @@ return(CMN_SUCCESS);
 
 static WCBPROC (AZCS006BUSRemoveRelationship)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    ServiceRow;
-short                    ServiceElmnt;
-short                    ClientRow;
-short                    ClientElmnt;
-int                      CellData;
-short                    ix;
-short                    iy;
+SHORT                    ServiceRow;
+SHORT                    ServiceElmnt;
+SHORT                    ClientRow;
+SHORT                    ClientElmnt;
+SHORT                      CellData;
+SHORT                    ix;
+SHORT                    iy;
 BOOL                     MultipleService;
 
 /*
@@ -649,7 +649,7 @@ FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
                                  MAPGEN_SERVICE_LB_NAME,
                                  ServiceRow,
                                  0,
-                                 sizeof(short),
+                                 sizeof(SHORT),
                                  &CellData,
                                  &FndGenErrorBlock);
 
@@ -705,7 +705,7 @@ if (pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].LiteralUs
                                  MAPGEN_CLIENT_LB_NAME,
                                  ClientRow,
                                  0,
-                                 sizeof(short),
+                                 sizeof(SHORT),
                                  &CellData,
                                  &FndGenErrorBlock);
 
@@ -795,14 +795,14 @@ InitClient(pEventInfo,
 
 static WCBPROC(AZCS006BUSCreateRelationship)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-unsigned short           ServiceRow;
-unsigned short           ServiceElmnt;
-unsigned short           ClientRow;
-unsigned short           ClientElmnt;
-int                      CellData;
-short                    ix;
+USHORT           ServiceRow;
+USHORT           ServiceElmnt;
+USHORT           ClientRow;
+USHORT           ClientElmnt;
+SHORT                      CellData;
+SHORT                    ix;
 
 ix = pWindContextData->WCD.CurrentServiceIndex;
 
@@ -853,7 +853,7 @@ if (ClntTypeData == LT_ClntElementRB)
                                  MAPGEN_CLIENT_LB_NAME,
                                  ClientRow,
                                  0,
-                                 sizeof(short),
+                                 sizeof(SHORT),
                                  &CellData,
                                  &FndGenErrorBlock);
     pWindContextData->WCD.ServiceInfoTable[ix].pLoadKeys[ServiceElmnt].ClientLayoutIndex = ClientElmnt;
@@ -900,7 +900,7 @@ FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
                                  MAPGEN_SERVICE_LB_NAME,
                                  ServiceRow,
                                  0,
-                                 sizeof(short),
+                                 sizeof(SHORT),
                                  &CellData,
                                  &FndGenErrorBlock);
 
@@ -965,14 +965,14 @@ FndGenRC = FndLstBoxCellSetData( CBI_hwnd,
 **
 ***************************************************************************/
 
-static short FindClientMatch(CMN_ARCH_PARM_TYPES)
+static SHORT FindClientMatch(CMN_ARCH_PARM_TYPES)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short index;
-short ClientRow;
-short ClientElmnt;
-short ix;
+SHORT index;
+SHORT ClientRow;
+SHORT ClientElmnt;
+SHORT ix;
 
 /*
 ** Assign the current service to a local variable
@@ -1037,9 +1037,9 @@ return(CMN_FAIL);
 
 static WCBPROC(CellAttrNormC)
 {
- unsigned short           FndGenRC = FND_SUCCESS;
- short ClientRow;
- short ClientElmnt;
+ USHORT           FndGenRC = FND_SUCCESS;
+ SHORT ClientRow;
+ SHORT ClientElmnt;
 
 /*
 ** Get the client row and calculate the client index
@@ -1096,9 +1096,9 @@ else
 
 static WCBPROC(CellAttrNormS)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-short                    ix;
-short ServiceElmnt;
+USHORT           FndGenRC = FND_SUCCESS;
+SHORT                    ix;
+SHORT ServiceElmnt;
 
 ServiceElmnt = CBI_ListRow + pWindContextData->WCD.ServiceLBOffset;
 
@@ -1149,16 +1149,16 @@ else
 
 static WCBPROC(CellDataComplete)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    FndGenRBValueShort = 0;
+SHORT                    FndGenRBValueShort = 0;
 
-short                    ServiceRow;
-short                    ServiceElmnt;
-short                    ix;
-short                    iy;
-short                    ClientRow;
-short                    ClientElmnt;
+SHORT                    ServiceRow;
+SHORT                    ServiceElmnt;
+SHORT                    ix;
+SHORT                    iy;
+SHORT                    ClientRow;
+SHORT                    ClientElmnt;
 
 ix = pWindContextData->WCD.CurrentServiceIndex;
 
@@ -1191,6 +1191,15 @@ ix = pWindContextData->WCD.CurrentServiceIndex;
               ServiceElmnt = FindClientMatch(CMN_ARCH_PARMS);
               FndGenRC = LoadServiceElmnt(ServiceElmnt,
                                           CMN_ARCH_PARMS);
+
+			/*mdc 04/17/96 Assign the selected row to "ServiceRow"*/
+			FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                                MAPGEN_SERVICE_LB_NAME,
+                                                FND_LSTBOX_START,
+                                                &ServiceRow,
+                                                &FndGenErrorBlock);
+
+
              }
          /*
          ** A service row is selected
@@ -1500,17 +1509,23 @@ ix = pWindContextData->WCD.CurrentServiceIndex;
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
 **
+**
+**    04/18/96  mconner				Added logic to fill in service element
+**                                  field and default apply pb.
+**
 ***************************************************************************/
 
 
 static WCBPROC(CellDataNotCompleteClient)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    RowNum = -1;
-int                      CellData;
-int                     *pCellData;
-short                    ServiceIndex;
+SHORT                    RowNum = -1;
+SHORT                      CellData;
+SHORT                     *pCellData;
+/*mdc 04/18/96 added ix and changed data type of ServiceIndex to USHORT*/
+SHORT                      ix;
+USHORT                      ServiceIndex;
 
 pCellData = &CellData;
 
@@ -1605,6 +1620,58 @@ else
      if (ServiceIndex != CMN_FAIL)
          {
           FndGenRC = LoadServiceElmnt(ServiceIndex, CMN_ARCH_PARMS);
+
+			/*mdc 04/18/96 aded to populate the service element field*/
+			ix = pWindContextData->WCD.CurrentServiceIndex;
+
+			FndGenRC = FndFieldEnable(CBI_hwnd,
+			                             "SRVCELEMENT",
+			                             &FndGenErrorBlock);
+
+
+			if (pWindContextData->WCD.ServiceLanguage == C_LANGUAGE)
+			    {
+					FndFieldSetValue(CBI_hwnd,
+					                 "SRVCELEMENT",
+									 (USHORT)strlen((pBFCD->pCSRMapBFCD->
+									 	ServiceInfoTable[ix].
+									 	pReposServiceLayoutTable + 
+									 	ServiceIndex)->ItemCName),
+									(pBFCD->pCSRMapBFCD->
+										ServiceInfoTable[ix].
+										pReposServiceLayoutTable + 
+										ServiceIndex)->ItemCName,
+									&FndGenErrorBlock);
+
+			    }
+			else
+			    {
+					FndFieldSetValue(CBI_hwnd,
+					                 "SRVCELEMENT",
+									 (USHORT)strlen((pBFCD->pCSRMapBFCD->
+									 	ServiceInfoTable[ix].
+									 	pReposServiceLayoutTable + 
+									 	ServiceIndex)->ItemCobolName),
+									(pBFCD->pCSRMapBFCD->
+										ServiceInfoTable[ix].
+										pReposServiceLayoutTable + 
+										ServiceIndex)->ItemCobolName,
+									&FndGenErrorBlock);
+					
+
+			    }
+
+
+
+ 			/*mdc 04/17/96 Enable and default ApplyPB*/
+			FndGenRC = FndCommandEnable(CBI_hwnd,
+	                           		 	"ApplyPB",
+										&FndGenErrorBlock);
+
+			FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+	                                      		"ApplyPB",
+										 		 &FndGenErrorBlock);
+
          }
     }
 
@@ -1643,16 +1710,22 @@ FndGenRC = MoveClient(pEventInfo,
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
+**	  04/18/96	mconner				  Canged data type of ClientIndex to USHORT
+**                                    CMN_FAIL is defined as (USHORT)
 **
+**	  04/18/96	mconner				  Added calls to select Element RB after
+**                                    Element is selected for client
 ***************************************************************************/
 static WCBPROC(CellDataNotCompleteService)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    RowNum = -1;
-int                      CellData;
-int                     *pCellData;
-short                    ClientIndex;
+SHORT                    RowNum = -1;
+SHORT                      CellData;
+SHORT                     *pCellData;
+/*mdc 04/18/96 changed data type of ClientIndex and initialized it*/
+USHORT                    ClientIndex = 0;
+SHORT                    FndGenRBValueShort = 0;
 /*USHORT                FndGenRBValueShort; no longer used - mdc*/
 
      pCellData = &CellData;
@@ -1690,7 +1763,7 @@ short                    ClientIndex;
                                      "RemovePB",
                                      &FndGenErrorBlock);
        }
-    else
+    else  /*client row is not selected*/
         {
       /*mdc 03/12/96 - removed so that literals can be inserted before service
                              choice.
@@ -1714,6 +1787,61 @@ short                    ClientIndex;
         if (ClientIndex != CMN_FAIL)
            {
             FndGenRC = LoadClientElmnt(ClientIndex, CMN_ARCH_PARMS);
+
+   			/* mdc 04/18/96
+			** Enable the client radio button and entry field
+			*/
+
+			FndGenRBValueShort = LT_ClntElementRB;
+			FndGenRC = FndValueEnableItem( CBI_hwnd,
+			                            "CLNTTYPE",
+			                            (VOID *) &FndGenRBValueShort,
+			                            &FndGenErrorBlock);
+
+			FndGenRC = FndFieldEnable(CBI_hwnd,
+			                             "CLNTELEMENT",
+			                             &FndGenErrorBlock);
+
+			ClntTypeData = LT_ClntElementRB;
+
+
+			/*mdc 04/17/96 populate client element field*/
+			if (pWindContextData->WCD.ClientLanguage == C_LANGUAGE)
+              {
+			  	FndGenRC = FndFieldSetValue(CBI_hwnd,
+				                            "CLNTELEMENT",
+											(USHORT)strlen((pBFCD->pCSRMapBFCD->
+												ClientInfo.pReposClientLayoutTable + 
+												ClientIndex)->ItemCName),
+											 (pBFCD->pCSRMapBFCD->
+											 	ClientInfo.pReposClientLayoutTable + 
+											 	ClientIndex)->ItemCName,
+											&FndGenErrorBlock);
+              }
+            else
+              {
+			  	FndGenRC = FndFieldSetValue(CBI_hwnd,
+				                            "CLNTELEMENT",
+											(USHORT)strlen((pBFCD->pCSRMapBFCD->
+												ClientInfo.pReposClientLayoutTable + 
+												ClientIndex)->ItemCobolName),
+											 (pBFCD->pCSRMapBFCD->
+											 	ClientInfo.pReposClientLayoutTable + 
+											 	ClientIndex)->ItemCobolName,
+											&FndGenErrorBlock);
+
+              }
+
+
+			/*mdc 04/17/96 Enable and default ApplyPB*/
+			FndGenRC = FndCommandEnable(CBI_hwnd,
+	                           		 	"ApplyPB",
+										&FndGenErrorBlock);
+
+			FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+	                                      		"ApplyPB",
+										 		 &FndGenErrorBlock);
+
            }
 	/*mdc 03/11/96 - added to enable rest of radio button to allow user
                                    to select other than element if there is no match
@@ -1805,11 +1933,11 @@ short                    ClientIndex;
 
 static WCBPROC(AZCS006BUSSaveToBFCD)
 {
- int ix;
+ SHORT ix;
  _RELATE_LK *pOldBFCD;
  _RELATE_LK *pTempBFCD;
  _RELATE_LK *pTempWCD;
- int TempSize;
+ SHORT TempSize;
 
 
  for (ix=0; ix<pWindContextData->WCD.NumServices; ix++)
@@ -1850,11 +1978,11 @@ return(CMN_SUCCESS);
 static WCBPROC(FillStatusLK)
 {
 
-int ix;
-short ServNum;
-short ClientRow;
-short ClientElmnt;
-short ServiceRow;
+SHORT ix;
+SHORT ServNum;
+SHORT ClientRow;
+SHORT ClientElmnt;
+SHORT ServiceRow;
 
 ServNum = pWindContextData->WCD.CurrentServiceIndex;
 
@@ -1935,7 +2063,7 @@ return(CMN_SUCCESS);
 
 static WCBPROC(InitService)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 
@@ -1967,10 +2095,10 @@ return(CMN_SUCCESS);
 
 static WCBPROC(MoveService)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    ix;
-short                    ServiceElmnt;
+SHORT                    ix;
+SHORT                    ServiceElmnt;
 
 
 
@@ -2011,9 +2139,9 @@ return(CMN_SUCCESS);
 static WCBPROC(InitClient)
 {
 
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    FndGenRBValueShort = 0;
+SHORT                    FndGenRBValueShort = 0;
 
 
 /*
@@ -2089,10 +2217,10 @@ return(CMN_SUCCESS);
 static WCBPROC(MoveClient)
 {
 
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    FndGenRBValueShort = 0;
-short                    ClientElmnt;
+SHORT                    FndGenRBValueShort = 0;
+SHORT                    ClientElmnt;
 
 
 ClientElmnt = CBI_ListRow + pWindContextData->WCD.ClientLBOffset;
@@ -2170,6 +2298,17 @@ else
                                 "CLNTTYPE",
                             (VOID *) &FndGenRBValueShort,
                             &FndGenErrorBlock);
+
+   	/*mdc 04/17/96 Enable and default ApplyPB*/
+	FndGenRC = FndCommandEnable(CBI_hwnd,
+	                            "ApplyPB",
+								&FndGenErrorBlock);
+
+	FndGenRC = FndCommandSetDefaultButton(CBI_hwnd,
+	                                      "ApplyPB",
+										  &FndGenErrorBlock);
+
+
 }
 
 
@@ -2189,11 +2328,14 @@ return(CMN_SUCCESS);
 
 static WCBPROC(CellAttrNotNorm)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 // _FND_ERROR_BLOCK         FndGenErrorBlock;
 
+  /*mdc 03/21/96 changed to Cmn Arch funtion
     DosBeep(440, 100);
+  */
 
+  CmnOsBeep(440L, 100L, CMN_ARCH_PARMS);
 
 return(CMN_FAIL);
 
@@ -2212,9 +2354,9 @@ return(CMN_FAIL);
 static WCBPROC(AZCS006BUSChangeClientType)
 {
 
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    FndGenRBValueShort = 0;
+SHORT                    FndGenRBValueShort = 0;
 
 
 /* set the radio button to element */
@@ -2247,11 +2389,11 @@ return(CMN_SUCCESS);
 
 static WCBPROC(AZCS006BUSChangeServiceType)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
-short                    FndGenRBValueShort = 0;
+SHORT                    FndGenRBValueShort = 0;
 
-int ix=0;
+SHORT ix=0;
 
 for (ix=0; ix < NUMRLB01ELBROWS; ix++)
     {
@@ -2312,7 +2454,7 @@ return(CMN_SUCCESS);
 
 static WCBPROC (AZCS006BUSClntLng)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 FndGenRC = FndCommandQueryChecked (CBI_hwnd,
@@ -2354,7 +2496,7 @@ return(CMN_SUCCESS);
 
 static WCBPROC (AZCS006BUSSrvLng)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 FndGenRC = FndCommandQueryChecked (CBI_hwnd,
@@ -2397,20 +2539,22 @@ return(CMN_SUCCESS);
 /*********************************************************************/
 
 
-static short FillLayoutLB(char * LBName,
+static SHORT FillLayoutLB(char * LBName,
                            _LAYOUT_REC *pLayout,
-                          unsigned short NumRecords,
+                          USHORT NumRecords,
                           enum LANGUAGE_TYPE Language,
                           CMN_ARCH_PARM_TYPES)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 _Rlb01ELBRow NewRow;
-unsigned short index=0;
+USHORT index=0;
 char padding[]="   ";
-short index2=0;
+SHORT index2=0;
  _LAYOUT_REC *pTemp;
+/*mdc 03/22/96 replaced with CONTROL_NAME_LEN in mapgen.h
 char ControlName[34];
+*/
 
 /*
 ** Set the pointer to wait
@@ -2441,7 +2585,7 @@ for (index=0; index < NumRecords; index++)
      strcpy(NewRow._Rlb01ELBControlNameData,"");
      for (index2=0; index2 < (pLayout+index)->IndentLevel &&
                     (index2 * strlen(padding)) <
-                             sizeof(ControlName); index2++)
+                             CONTROL_NAME_LEN; index2++)
          {
           strcat(NewRow._Rlb01ELBControlNameData, padding);
          }
@@ -2449,10 +2593,10 @@ for (index=0; index < NumRecords; index++)
      if (Language == C_LANGUAGE)
          strncat(NewRow._Rlb01ELBControlNameData,
                  (pLayout+index)->ItemCName,
-                  sizeof(ControlName) - strlen(NewRow._Rlb01ELBControlNameData) - 1);
+                  CONTROL_NAME_LEN - strlen(NewRow._Rlb01ELBControlNameData) - 1);
      else
         strncat(NewRow._Rlb01ELBControlNameData,(pLayout+index)->ItemCobolName,
-                        sizeof(ControlName) - strlen(NewRow._Rlb01ELBControlNameData) - 1);
+                        CONTROL_NAME_LEN - strlen(NewRow._Rlb01ELBControlNameData) - 1);
 
 
      if (toupper((pLayout+index)->Format) == 'A')
@@ -2518,8 +2662,8 @@ for (index=0; index < NumRecords; index++)
 
 static WCBPROC(AZCS006BUSFillClientLB)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-unsigned short           usNumRows;
+USHORT           FndGenRC = FND_SUCCESS;
+USHORT           usNumRows;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 usNumRows = pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows -
@@ -2596,9 +2740,9 @@ return(CMN_SUCCESS);
 
 static WCBPROC(FillServiceLB)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-short ix;
-unsigned short           usNumRows;
+USHORT           FndGenRC = FND_SUCCESS;
+SHORT ix;
+USHORT           usNumRows;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 ix = pWindContextData->WCD.CurrentServiceIndex;
@@ -2815,7 +2959,7 @@ static WCBPROC(Azcs006busrlb01elbpageup)
 static WCBPROC(Azcs006busrlb02elbpagedown)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
-  short ix;
+  SHORT ix;
   USHORT FndGenRC;
 
   /*
@@ -2856,7 +3000,7 @@ static WCBPROC(Azcs006busrlb02elbpagedown)
 static WCBPROC(Azcs006busrlb02elbpageup)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
-  short ix;
+  SHORT ix;
   USHORT FndGenRC;
 
   /*
@@ -2920,14 +3064,14 @@ static WCBPROC(Azcs006busrlb02elbpageup)
 static WCBPROC(LookForClientName)
 
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 char ReposName[ITEM_NAME_LEN];
-short ix;
-short ServiceNum = 0;
+SHORT ix;
+SHORT ServiceNum = 0;
 BOOL ServiceInCobol;
-short ServiceElmnt;
-short ServiceRow;
+SHORT ServiceElmnt;
+SHORT ServiceRow;
 
  ServiceNum = pWindContextData->WCD.CurrentServiceIndex;
 
@@ -3085,15 +3229,15 @@ static WCBPROC(AZCS006BUSSetCLNTLITERALStatus)
 static WCBPROC(LookForServiceName)
 
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+USHORT           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 char ReposName[ITEM_NAME_LEN];
-short ix;
-short ServiceNum = 0;
+SHORT ix;
+SHORT ServiceNum = 0;
 BOOL ClientInC;
 char TempName[ITEM_NAME_LEN];
-short ClientRow;
-short ClientElmnt;
+SHORT ClientRow;
+SHORT ClientElmnt;
 
  ServiceNum = pWindContextData->WCD.CurrentServiceIndex;
 
@@ -3194,10 +3338,10 @@ return(CMN_FAIL);   /* Did not find a match so return fail */
 ***************************************************************************/
 
 
-static short LoadClientElmnt(short ClientElmnt, CMN_ARCH_PARM_TYPES)
+static SHORT LoadClientElmnt(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES)
 {
  SHORT ix;
- unsigned short           FndGenRC = FND_SUCCESS;
+ USHORT           FndGenRC = FND_SUCCESS;
  _FND_ERROR_BLOCK         FndGenErrorBlock;
 
  ix = 0;
@@ -3286,11 +3430,11 @@ static short LoadClientElmnt(short ClientElmnt, CMN_ARCH_PARM_TYPES)
 **
 ***************************************************************************/
 
-static short LoadServiceElmnt(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
+static SHORT LoadServiceElmnt(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES)
 {
 
  SHORT ix;
- unsigned short           FndGenRC = FND_SUCCESS;
+ USHORT           FndGenRC = FND_SUCCESS;
  _FND_ERROR_BLOCK         FndGenErrorBlock;
  USHORT usIndex;
  ix = 0;
@@ -3386,9 +3530,9 @@ static short LoadServiceElmnt(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
 **
 ***************************************************************************/
 
-static short ClientElmntToRow(short ClientElmnt, CMN_ARCH_PARM_TYPES)
+static SHORT ClientElmntToRow(SHORT ClientElmnt, CMN_ARCH_PARM_TYPES)
 {
- short ix;
+ SHORT ix;
 
  ix = ClientElmnt % NUMRLB01ELBROWS;
 
@@ -3424,9 +3568,9 @@ static short ClientElmntToRow(short ClientElmnt, CMN_ARCH_PARM_TYPES)
 ***************************************************************************/
 
 
-static short ServiceElmntToRow(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
+static SHORT ServiceElmntToRow(SHORT ServiceElmnt, CMN_ARCH_PARM_TYPES)
 {
-  short ix;
+  SHORT ix;
 
   ix = ServiceElmnt % NUMRLB02ELBROWS;
 
@@ -3435,4 +3579,3 @@ static short ServiceElmntToRow(short ServiceElmnt, CMN_ARCH_PARM_TYPES)
 } /* end of function ServiceElmntToRow */
 
 
-

@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS011                           *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Tue Apr 30 17:22:30 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -1210,6 +1210,8 @@ if ( ClntTypeData == LT_ClntLiteralRB )
                            pWesMap,
                            pWindContextData,
                            pABHI);
+  
+
 
    } /* end if */
 

@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS007                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Tue Apr 30 17:19:42 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -32,53 +32,53 @@ Begin  /* controls */
    CONTROL "",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,1,18,173,114
+              ,3,16,173,114
 
    CONTROL "",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,183,18,173,114
+              ,184,16,173,114
 
    CONTROL "&Apply",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,155,141,41,12
+              ,163,140,41,12
 
    CONTROL "&Remove",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,155,159,41,12
+              ,163,158,41,12
 
    CONTROL "Client Information",8003,
               FND_RADIO_GROUP,
               WS_VISIBLE | BS_GROUPBOX
-              ,3,148,0,0
+              ,5,148,0,0
 
    CONTROL "Element",109,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,3,148,61,10
+              ,5,148,61,10
 
    CONTROL "Li&teral",110,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,3,159,61,10
+              ,5,159,61,10
 
    CONTROL "&High Values",111,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,3,170,61,10
+              ,5,170,61,10
 
    CONTROL "&Low Values",112,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,3,181,61,10
+              ,5,181,61,10
 
    CONTROL "OK",1002,
               FND_PUSH_BUTTON,
@@ -95,22 +95,22 @@ Begin  /* controls */
    CONTROL "Client Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,3,136,136,56
+              ,3,134,154,59
 
    CONTROL "Service Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,210,136,141,28
+              ,216,136,141,28
 
    CONTROL "Element:",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,219,140,38,8
+              ,224,140,38,8
 
    CONTROL "",104,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,259,148,86,0
+              ,264,148,86,0
 
    CONTROL "Client:",505,
               FND_STATICTEXT,
@@ -130,12 +130,12 @@ Begin  /* controls */
    CONTROL "",107,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,46,159,86,10
+              ,66,158,86,0
 
    CONTROL "",108,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,46,147,86,10
+              ,66,144,86,0
 
 End /* controls */
 

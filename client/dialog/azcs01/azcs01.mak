@@ -13,9 +13,9 @@
 #                                                                          *
 #***************************************************************************
 
-PROJDIR = c:\data\archunit\nt\src\csrmapgn
-OBJDIR = c:\data\archunit\nt\bin\obj
-EXEDIR = c:\data\archunit\nt\bin\exe
+PROJDIR = g:\data\archunit\nt\src\csrmapgn
+OBJDIR = g:\data\archunit\nt\bin\obj
+EXEDIR = g:\data\archunit\nt\bin\exe
 
 PROJ = AZCS01
 
@@ -27,8 +27,8 @@ CC = cl
 RC = rc
 LINK = link
 
-CFLAGS_D = /c /W3 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
-CFLAGS_R = /c /W3 /Zp /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD 
+CFLAGS_D = /c /W3 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MD /Fd"$(EXEDIR)\$(PROJ).PDB" 
+CFLAGS_R = /c /W3 /Zp /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MD 
 LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows   /MAP
 LFLAGS_R = /SUBSYSTEM:windows  
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
@@ -341,19 +341,19 @@ $(OBJDIR)\AZCS014.obj : $(AZCS014_DEP)
     $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS014.obj AZCS014.c
 
 $(OBJDIR)\AZCSM001.obj : $(PROJDIR)\AZCSM001.c
-     cl $(CFLAGS) AZCSM001.c
+     cl $(CFLAGS) AZCSM001.c  /Fo$(OBJDIR)\azcsm001.obj
 
 $(OBJDIR)\AZCSM005.obj : $(PROJDIR)\AZCSM005.c
-     cl $(CFLAGS) AZCSM005.c
+     cl $(CFLAGS) AZCSM005.c /Fo$(OBJDIR)\azcsm005.obj
 
 $(OBJDIR)\AZCSM006.obj : $(PROJDIR)\AZCSM006.c
-     cl $(CFLAGS) AZCSM006.c
+     cl $(CFLAGS) AZCSM006.c /Fo$(OBJDIR)\azcsm006.obj
 
 $(OBJDIR)\AZCSM010.obj : $(PROJDIR)\AZCSM010.c
-     cl $(CFLAGS) AZCSM010.c
+     cl $(CFLAGS) AZCSM010.c  /Fo$(OBJDIR)\azcsm010.obj
 
 $(OBJDIR)\VERSION.obj : $(PROJDIR)\VERSION.c
-     cl $(CFLAGS) VERSION.c
+     cl $(CFLAGS) VERSION.c	 /Fo$(OBJDIR)\version.obj
 
 #***************************************************************************
 # Compile the executable resource file

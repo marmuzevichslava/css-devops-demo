@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS002                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Tue Apr 30 17:14:44 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -16,7 +16,7 @@
 AZCS002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,139,119
     STYLE 0 
      | WS_CAPTION
-     | DS_MODALFRAME
+     | WS_DLGFRAME
     CAPTION "Open Request Information"
 Begin  /* controls */
    CONTROL "&Request ID",500,

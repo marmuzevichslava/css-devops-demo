@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS013                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Tue Apr 30 17:23:27 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -19,21 +19,21 @@ AZCS013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,339,177
      | WS_DLGFRAME
     CAPTION "Map Generator Comparison Log"
 Begin  /* controls */
-   CONTROL "",100,
-              FND_LISTBOX,
-              WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,5,10,323,136
-
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              WS_VISIBLE  | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
               ,150,152,37,12
 
+   CONTROL "",100,
+              FND_LISTBOX,
+              WS_VISIBLE
+              ,5,10,323,136
+
    CONTROL "",101,
               FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
+              WS_VISIBLE
               ,104,154,0,0
 
 End /* controls */

@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS004                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Fri May  3 09:20:47 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -43,14 +43,13 @@ Begin  /* controls */
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-     | BS_DEFPUSHBUTTON
-              ,141,164,42,12
+              ,148,164,42,12
 
    CONTROL "&Remove",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,141,180,41,12
+              ,148,180,41,12
 
    CONTROL "Client Information",8003,
               FND_RADIO_GROUP,
@@ -116,7 +115,7 @@ Begin  /* controls */
    CONTROL "Client Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,1,142,129,61
+              ,1,142,141,61
 
    CONTROL "Service Information",9001,
               FND_GROUP_BOX,
@@ -150,13 +149,13 @@ Begin  /* controls */
 
    CONTROL "",110,
               FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,46,166,76,11
+              WS_VISIBLE
+              ,63,152,76,0
 
    CONTROL "",111,
               FND_ENTRYFIELD,
-              WS_VISIBLE
-              ,46,152,76,0
+              WS_VISIBLE | WS_TABSTOP
+              ,63,166,76,11
 
 End /* controls */
 
@@ -647,13 +646,13 @@ Begin
    FP_VALID_CONDITION,                  "==,Y\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
 
-   /*  Control Data for Entry Field CLNTLITERAL  */
+   /*  Control Data for Entry Field CLNTELEMENT  */
    FP_CONTROL_ID,                       "110\0"
    FP_SCREEN_LENGTH,                    "32\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_BLACK, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
    FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
@@ -664,13 +663,13 @@ Begin
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
 
-   /*  Control Data for Entry Field CLNTELEMENT  */
+   /*  Control Data for Entry Field CLNTLITERAL  */
    FP_CONTROL_ID,                       "111\0"
    FP_SCREEN_LENGTH,                    "32\0"
    FP_DRAW_BORDER,                      FPV_TRUE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_BLACK, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"

@@ -8,7 +8,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS013                           *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Tue Apr 30 17:23:27 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -111,6 +111,13 @@ unsigned short           FndGenRC = FND_SUCCESS;
 CMN_ARCH_EXIT_INITIALIZE
 
 FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = AZCS013BUSPredistroy( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
@@ -333,15 +340,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Xmkfbsnk9884_List_Select
+ *   Callback Name: Xmkfbsnk2837_Click
  * 
- *   WidgetName:    MsgLB
+ *   WidgetName:    OKPB
  *
- *   Event Name:    LIST_SELECT
+ *   Event Name:    BUTTON_CLICK
  *
  *
  ***************************************************************************/
-static WCBPROC(Xmkfbsnk9884_List_Select)
+static WCBPROC(Xmkfbsnk2837_Click)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
@@ -369,15 +376,15 @@ return 0;
  *
  *   Widget-Level Event
  *
- *   Callback Name: Xmkfbsnk2837_Click
+ *   Callback Name: Xmkfbsnk9884_List_Select
  * 
- *   WidgetName:    OKPB
+ *   WidgetName:    MsgLB
  *
- *   Event Name:    BUTTON_CLICK
+ *   Event Name:    LIST_SELECT
  *
  *
  ***************************************************************************/
-static WCBPROC(Xmkfbsnk2837_Click)
+static WCBPROC(Xmkfbsnk9884_List_Select)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 

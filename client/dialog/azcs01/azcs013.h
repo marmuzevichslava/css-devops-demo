@@ -2,12 +2,43 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-/*mdc 03/21/96 Added so that it will not be in azcs013.c */
-#define EXCLUDE_FND_WRAPPERS
+/***************************************************************************
+**
+**               Customer Service System Architecture Header File
+**
+**  FILENAME         : 	azcs013
+**
+**  DESCRIPTION      : Window Header File
+**
+**  AUTHOR           : MCONNER
+**
+**  DATE CREATED     : 01-08-96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**	 01/08/96   mconner               added malloc.h
+**   01/15/96   mconner               added help headers
+***************************************************************************/
 
+/***************************************************************************/
+/* Application #includes                                                   */
+/***************************************************************************/
+/*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
+ */
 #include <malloc.h>
+
+
 #include <process.h>
 #include <stddef.h>
+#include "systcomm.hh"
+#include "roadmap.hh"
+
+
+/***************************************************************************/
+/* Application #defines                                                    */
+/***************************************************************************/
 #define CMN_MAPGEN_MSG_BASE 25000
 #define CMN_MSG_SPACER       5
 #define CMN_MAPGEN_MSG_INFO  CMN_MAPGEN_MSG_BASE + 1
@@ -24,12 +55,12 @@
 #define RESET_PRINTER "\033E"
 
 #define POSTMSG                                            \
-                 FndGenRC = DosSemSet(&hsemLock);  \
+                 FndGenRC = CmnOsSignalSet(hsemLock);  \
                  FndGenRC = FndWndMsgPost( hwnd,   \
                                            MsgID,  \
                                            &MsgData,\
                                            &FndGenErrorBlock); \
-                 FndGenRC = DosSemWait(&hsemLock, CMN_SEM_TIMEOUT);  \
+                 FndGenRC = CmnOsSignalWait(hsemLock, CMN_SEM_TIMEOUT);  \
                  if(pBFCD->pCSRMapBFCD->AbortFlag == TRUE)           \
                     _endthread();                                         \
 
@@ -52,14 +83,23 @@
                       break; \
                      }
 
+#define ERR_TYPE       '1'
+#define ERR_FORMAT     '2'
+#define ERR_LENGTH     '3'
+#define ERR_OCCURS     '4'
+#define ERR_USAGE      '5'
+#define ERR_ID         '6'
 
-
-ULONG hsemLock;   /* Global Semaphore variable*/
+/*mdc - 01-10-96 - changed data type to CMN_SIGNAL for compatibility with
+common Arch funtions. CMN_SIGNAL is a HANDLE in WINN32 and a HSYSSEM in OS/2 */
+CMN_SIGNAL hsemLock;   /* Global Semaphore variable */
 BOOL bWarn;
 BOOL bError;
 BOOL bRemap;
 
-
+/***************************************************************************/
+/* Application typedefs                                                    */
+/***************************************************************************/
 typedef struct __STDParms
  {
   _BFCD * pBFCD;
@@ -67,42 +107,42 @@ typedef struct __STDParms
  } _STDParms;
 
 
+/***************************************************************************/
+/* Forward declarations for Application Validation Functions               */
+/***************************************************************************/
 
+
+/***************************************************************************/
+/* Forward declarations for Application Business Functions                 */
+/***************************************************************************/
 WCBFWD(AZCS013BusPredisplay);
+WCBFWD(AZCS013BUSPredistroy);
 WCBFWD(ProcessMsg);
 WCBFWD(SaveLog);
 WCBFWD(PrintLog);
 WCBFWD(Azcs013BusUseOldMap);
 
 VOID CompareLayouts(_STDParms *pSTDParms);
-short CheckIt(char cLayoutType, short sServiceIndex, short sNumRows, _LAYOUT_REC *pReposLayout, _LAYOUT_REC *pSavedLayout, _STDParms *pSTDParms);
+SHORT CheckIt(char cLayoutType, SHORT sServiceIndex, SHORT sNumRows, _LAYOUT_REC *pReposLayout, _LAYOUT_REC *pSavedLayout, _STDParms *pSTDParms);
 
-short Remap(_STDParms *pSTDParms);
-short ChangeIt(short sServx, short sIndex, short sNewReposIx, _STDParms *pSTDParms);
+SHORT Remap(_STDParms *pSTDParms);
+SHORT ChangeIt(SHORT sServx, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
 
-char *BuildFullName(short sElementx, _LAYOUT_REC *pLayout);
-short FindFullName(short sSavedIndex,
+char *BuildFullName(SHORT sElementx, _LAYOUT_REC *pLayout);
+SHORT FindFullName(SHORT sSavedIndex,
                    _LAYOUT_REC *pSavedLayout,
                    _LAYOUT_REC *pReposLayout,
-                   short sNumReposRows,
-                   short *sReposIndex);
+                   SHORT sNumReposRows,
+                   SHORT *sReposIndex);
 
-short ChangeLK(short sServ, short sIndex, short sNewReposIx, _STDParms *pSTDParms);
-short ChangeCK(short sServ, short sIndex, short sNewReposIx, _STDParms *pSTDParms);
-short ChangeLD(short sServ, short sIndex, short sNewReposIx, _STDParms *pSTDParms);
-short ChangeRD(short sServ, short sIndex, short sNewReposIx, _STDParms *pSTDParms);
-short ChangeRPMH(short sServ, short sIndex, short sNewReposIx, _STDParms *pSTDParms);
-short DropClientLK(short sServ, short sIndex, short sNewServIndex, _STDParms *pSTDParms);
-short DropClientCK(short sServ, short sIndex, short sNewServIndex, _STDParms *pSTDParms);
-short DropClientLD(short sServ, short sIndex, short sNewServIndex, _STDParms *pSTDParms);
-short DropClientRD(short sServ, short sIndex, short sNewServIndex, _STDParms *pSTDParms);
-short DropClientRPMH(short sServ, short sIndex, short sNewServIndex, _STDParms *pSTDParms);
+SHORT ChangeLK(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
+SHORT ChangeCK(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
+SHORT ChangeLD(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
+SHORT ChangeRD(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
+SHORT ChangeRPMH(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
+SHORT DropClientLK(SHORT sServ, SHORT sIndex, SHORT sNewServIndex, _STDParms *pSTDParms);
+SHORT DropClientCK(SHORT sServ, SHORT sIndex, SHORT sNewServIndex, _STDParms *pSTDParms);
+SHORT DropClientLD(SHORT sServ, SHORT sIndex, SHORT sNewServIndex, _STDParms *pSTDParms);
+SHORT DropClientRD(SHORT sServ, SHORT sIndex, SHORT sNewServIndex, _STDParms *pSTDParms);
+SHORT DropClientRPMH(SHORT sServ, SHORT sIndex, SHORT sNewServIndex, _STDParms *pSTDParms);
 
-
-#define ERR_TYPE       '1'
-#define ERR_FORMAT     '2'
-#define ERR_LENGTH     '3'
-#define ERR_OCCURS     '4'
-#define ERR_USAGE      '5'
-#define ERR_ID         '6'
-

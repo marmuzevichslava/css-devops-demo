@@ -2144,7 +2144,7 @@ AEXPROC (ExitElb5BuildDelData)
 
 AEXPROC( CmnArchExitInitialize )
 {
-  int ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
+  SHORT ArchBlocksize = sizeof(_CMN_ARCH_BLOCK);
 
   HEAP_CHECK;
 
@@ -2198,9 +2198,7 @@ AEXPROC( CmnArchExitInitialize )
 **  03/16/93  FGANTER               Original code.
 **
 ***************************************************************************/
-
 AEXPROC (ExitSibStartDialog)
 {
-    return (CMN_SUCCESS);
+ return (CMN_SUCCESS);
 }
-

@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS011                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Tue Apr 30 17:22:30 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -26,22 +26,21 @@
 #define ClientLayout_FID                               6
 #define ClntElement_FID                                7
 #define SrvcElement_FID                                8
-#define LiteralRB_FID                                  9
-#define FlWindowMod_FID                                10
-#define Rlb01ELBSelInd_FID                             11
-#define Rlb01ELBCdStatusIconic_FID                     12
-#define Rlb01ELBRecType_FID                            13
-#define Rlb01ELBOccurs_FID                             14
-#define Rlb01ELBControlName_FID                        15
-#define Rlb01ELBDataType_FID                           16
-#define Rlb01ELBNumBytes_FID                           17
-#define Rlb02ELBSelInd_FID                             18
-#define Rlb02ELBCdStatusIconic_FID                     19
-#define Rlb02ELBRecType_FID                            20
-#define Rlb02ELBOccurs_FID                             21
-#define Rlb02ELBControlName_FID                        22
-#define Rlb02ELBDataType_FID                           23
-#define Rlb02ELBNumBytes_FID                           24
+#define FlWindowMod_FID                                9
+#define Rlb01ELBSelInd_FID                             10
+#define Rlb01ELBCdStatusIconic_FID                     11
+#define Rlb01ELBRecType_FID                            12
+#define Rlb01ELBOccurs_FID                             13
+#define Rlb01ELBControlName_FID                        14
+#define Rlb01ELBDataType_FID                           15
+#define Rlb01ELBNumBytes_FID                           16
+#define Rlb02ELBSelInd_FID                             17
+#define Rlb02ELBCdStatusIconic_FID                     18
+#define Rlb02ELBRecType_FID                            19
+#define Rlb02ELBOccurs_FID                             20
+#define Rlb02ELBControlName_FID                        21
+#define Rlb02ELBDataType_FID                           22
+#define Rlb02ELBNumBytes_FID                           23
 
 /***************************************************************************
 *  Widget IDs                                                              *
@@ -58,8 +57,7 @@
 #define ClientLayout_WID                               106
 #define ClntElement_WID                                107
 #define SrvcElement_WID                                108
-#define LiteralRB_WID                                  8009
-#define FlWindowMod_WID                                110
+#define FlWindowMod_WID                                109
 
 /***************************************************************************
 *  Command IDs                                                             *
@@ -93,15 +91,6 @@
 #endif
 #ifndef LT_ClntLiteralRB                   
 #define LT_ClntLiteralRB                    2
-#endif
-#ifndef LT_LiteralValue                    
-#define LT_LiteralValue                     "3"
-#endif
-#ifndef LT_LiteralLV                       
-#define LT_LiteralLV                        "1"
-#endif
-#ifndef LT_LiteralHV                       
-#define LT_LiteralHV                        "2"
 #endif
 
 

@@ -2345,4 +2345,3 @@ WCBPROC(ResetDeleteFlag)
     return CMN_SUCCESS;
 
 }/* end of ResetDeleteFlag */
-

@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS011                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Tue Apr 30 17:22:30 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -103,9 +103,6 @@ unsigned char _grpFiller;
 
    char _SrvcElementData[34];
 #define SrvcElementData              pWesMap->_SrvcElementData
-
-   char _LiteralRBData[3];
-#define LiteralRBData              pWesMap->_LiteralRBData
 
    char _FlWindowModData[2];
 #define FlWindowModData              pWesMap->_FlWindowModData
@@ -217,13 +214,6 @@ unsigned char _grpFiller;
 #define SrvcElementRights                     pWesMap->_SrvcElementCtl.Rights
 #define SrvcElementMsg                        pWesMap->_SrvcElementCtl.Msg
 #define SrvcElementCursor                     pWesMap->_SrvcElementCtl.Cursor
-
-    WESFLDCTL _LiteralRBCtl;
-#define LiteralRBAttr                       pWesMap->_LiteralRBCtl.Attr
-#define LiteralRBStatus                     pWesMap->_LiteralRBCtl.Status
-#define LiteralRBRights                     pWesMap->_LiteralRBCtl.Rights
-#define LiteralRBMsg                        pWesMap->_LiteralRBCtl.Msg
-#define LiteralRBCursor                     pWesMap->_LiteralRBCtl.Cursor
 
     WESFLDCTL _FlWindowModCtl;
 #define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr

@@ -21,10 +21,26 @@
 **  --------    ----------      -----      ---------------------
 **                                         Original Code.
 **  07/22/93    C. CRAMPTON                Added entityId to the Info Msg Box
+**
+**  01/11/96    mconner                    Removed stackavail() not in NT
+**
+**  01/11/96    mconner                    Restored MSGConvUI in replace of
+**                                         MSGConv
+**
+**  04/03/96    mconner                    Added inclusion of version.h
+**                                         for version number definition
+**
+**
 ***********************************************************************/
 #define  INCL_WIN
 #define  INCL_DOS
+#define WINDOWMOD
+#ifdef FND_WIN32
+#include <windows.h>
+#endif
+#ifdef FND_OS2
 #include <os2.h>
+#endif
 #include <string.h>
 #include <stdio.h>
 #include <float.h>
@@ -45,7 +61,13 @@
 #define  FND_CTCONV_INCL
 #define  FND_VERSION2
 
+#ifdef FND_OS2
 #include <kglzk000.h>
+#endif
+
+#ifdef FND_WIN32
+#include <kglxk000.h>
+#endif
 
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define INCL_C1CBASE
@@ -56,8 +78,8 @@
 
 #include "csrcmn.h"
 #include "mapgen.h"
-/*mdc 1-31-96 must include this for BuildVersionNumber prototype*/
-#include "version.h"
+/*mdc this must be included for prototype of BuildVersionNumber*/
+#include "version.h" 
 
 #define  DataType_len 15
 #define _LITERAL_DATA_TYPES enum LITERAL_DATA_TYPES
@@ -102,7 +124,9 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 
   USHORT i;
   USHORT usCounter;
+  /* mdc 01-11-96 used by stackavail only stackavail commented out
   size_t stackleft;
+  */
 
   _MESSAGEINPUT  *pMessageInput;
   _MESSAGEOUTPUT *pMessageOutput;
@@ -187,7 +211,7 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
       (*(pMessageInput->RequestHdr.EntityId + usCounter + 1)) = '\0';
   }
 
-
+  HEAP_CHECK
   pMessageInput->RequestHdr.MaxRows = *pNumberRows;
 
   /* Initialize Foundation Parm Block */
@@ -204,19 +228,21 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
   memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );
 
   HEAP_CHECK
-
+  /* mdc - 01-11-96 - stackavail unrecognized function in windows
   stackleft = stackavail();
+  */
 
-//  FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
-//                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
+  FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
+                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
 
 #ifdef DEBUG
   ftime( &SendTimeb );
   pSendTimeStruct = localtime( &SendTimeb.time );
 #endif
-
+/* mdc 01-11-96 function not recognized restoring MSGConvUI
   FndGenRC = MSGConv( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
                       (_MSG_RECV_AREA) pMessageOutput, pABHI );
+*/
 
 #ifdef DEBUG
   ftime( &RecvTimeb );
@@ -300,9 +326,12 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 
       HEAP_CHECK
 
-      ReturnCode = BuildVersionNumber(pMessageOutput->EntityData,
+      BuildVersionNumber(pMessageOutput->EntityData,
                          pMessageOutput->ReplyHdr.RowsReturned,
                          pVersionNumber);
+
+	  HEAP_CHECK
+
 
     }
 
@@ -365,7 +394,8 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 
   /* Free the memory allocated for Message Input and Output */
   free( pMessageInput );
-  free( pMessageOutput );
+  free( pMessageOutput ); 
+
 
 /* CSC: 07/19/93 added */
 
@@ -428,11 +458,11 @@ USHORT CsrMapProcessDataLayout(  _ENTITYDATA *pEntityDataTable,
                                  USHORT      CurOffset,
                                  USHORT      *pGroupCLength)
    {
-    USHORT Index = 0;
+    SHORT Index = 0;
     USHORT CLength = 0;
-    _LITERAL_DATA_TYPES DataType;
+    _LITERAL_DATA_TYPES DataType = 0;
     USHORT ReturnGroupCLength;
-    USHORT FndGenRC;
+    USHORT FndGenRC = 0;
 
 
     /* Traverse ReposLayout and perform calculations */
@@ -467,11 +497,11 @@ USHORT CsrMapProcessDataLayout(  _ENTITYDATA *pEntityDataTable,
               ReposLayout[Index].DataType = DataType;
 
               /* JLL: 07/18/93 MODIFIED */
-              Offsets[CurLevel] += (CLength *  \
+              Offsets[CurLevel] += (CLength *  
                     ReposLayout[Index].ItemOccurs);
 
               /* JLL: 07/18/93 MODIFIED */
-              *pGroupCLength += (CLength *  \
+              *pGroupCLength += (CLength * 
                     ReposLayout[Index].ItemOccurs);
 
 
@@ -482,11 +512,12 @@ USHORT CsrMapProcessDataLayout(  _ENTITYDATA *pEntityDataTable,
                ReturnGroupCLength = 0;
 
                FndGenRC = CsrMapProcessDataLayout( pEntityDataTable,
-                                           Offsets, ReposLayout,
-                                           Index,
-                                           (CurLevel+1),
+                                            Offsets, 
+                                            ReposLayout,
+                                            Index,
+                                            (USHORT)(CurLevel+1),
                                             Offsets[CurLevel],
-                                           &ReturnGroupCLength);
+                                            &ReturnGroupCLength);
 
               Offsets[CurLevel] += (ReturnGroupCLength *  \
                     ReposLayout[Index].ItemOccurs);
@@ -512,9 +543,9 @@ USHORT CsrMapInitItem( _ENTITYDATA *pEntityData, _LAYOUT_REC *pLayoutRec,
                        CMN_ARCH_PARM_TYPES )
 {
   USHORT FndGenRC = 0;
-/*mdc 1-31-96 this var not included in this function
+  /*mdc 01-11-96 not used in this function
   _FND_ERROR_BLOCK FndGenErrorBlock;
-*/
+  */
   SHORT i = 0;
 
   /* JSH: 07/01/93 ADDED */
@@ -827,4 +858,3 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
 //  "E0000032", 'E', "E0000032", "E0000032", 't', 'N', -1, -1, "FL",  1, CSR_LONG, 48,  0,  0, -1, 49, 0,
 //  "E0000033", 'E', "E0000033", "E0000033", 't', 'N', -1, -1, "F2",  1, CSR_LONG, 49,  0,  0, -1, 50, 0,
 //};
-

@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS004                           *
-*                          Generated on: Thu Mar 21 14:16:12 1996          *
+*                          Generated on: Fri May  3 09:20:47 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -101,11 +101,11 @@ unsigned char _grpFiller;
    char _FlWindowModData[2];
 #define FlWindowModData              pWesMap->_FlWindowModData
 
-   char _ClntLiteralData[33];
-#define ClntLiteralData              pWesMap->_ClntLiteralData
-
    char _ClntElementData[34];
 #define ClntElementData              pWesMap->_ClntElementData
+
+   char _ClntLiteralData[33];
+#define ClntLiteralData              pWesMap->_ClntLiteralData
 
 
     WESFLDCTL _ServiceLayoutNameCtl;
@@ -216,19 +216,19 @@ unsigned char _grpFiller;
 #define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
 #define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 
-    WESFLDCTL _ClntLiteralCtl;
-#define ClntLiteralAttr                       pWesMap->_ClntLiteralCtl.Attr
-#define ClntLiteralStatus                     pWesMap->_ClntLiteralCtl.Status
-#define ClntLiteralRights                     pWesMap->_ClntLiteralCtl.Rights
-#define ClntLiteralMsg                        pWesMap->_ClntLiteralCtl.Msg
-#define ClntLiteralCursor                     pWesMap->_ClntLiteralCtl.Cursor
-
     WESFLDCTL _ClntElementCtl;
 #define ClntElementAttr                       pWesMap->_ClntElementCtl.Attr
 #define ClntElementStatus                     pWesMap->_ClntElementCtl.Status
 #define ClntElementRights                     pWesMap->_ClntElementCtl.Rights
 #define ClntElementMsg                        pWesMap->_ClntElementCtl.Msg
 #define ClntElementCursor                     pWesMap->_ClntElementCtl.Cursor
+
+    WESFLDCTL _ClntLiteralCtl;
+#define ClntLiteralAttr                       pWesMap->_ClntLiteralCtl.Attr
+#define ClntLiteralStatus                     pWesMap->_ClntLiteralCtl.Status
+#define ClntLiteralRights                     pWesMap->_ClntLiteralCtl.Rights
+#define ClntLiteralMsg                        pWesMap->_ClntLiteralCtl.Msg
+#define ClntLiteralCursor                     pWesMap->_ClntLiteralCtl.Cursor
 };
 
 typedef struct
