@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: AZCS009                           *
-*                          Generated on: Wed Sep 25 13:28:52 1996          *
+*                          Generated on: Wed Nov 20 11:22:14 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -23,10 +23,12 @@ WCBFWD (Lapzivat9536_Msg_Notification)
 WCBFWD (Lapzivat9538_Interwindow_Msg)
 WCBFWD (Lapzivat9540_Window_Close)
 WCBFWD (Lapzivat9542_Other_Gui_Event)
-WCBFWD (Lapzivat9544_Click)
-WCBFWD (Lapzivat9547_Click)
 WCBFWD (Lapzivat8232_Field_Change)
 WCBFWD (Lapzivat8190_Field_Change)
+WCBFWD (Lapzivat7080_Field_Change)
+WCBFWD (Lapzivat7731_Field_Change)
+WCBFWD (Lapzivat9544_Click)
+WCBFWD (Lapzivat9547_Click)
 
 /****************************************************************************
  Window Dispatch Table
@@ -49,10 +51,12 @@ WNDDISPTBL AZCS009WindDisp[] =
 
 WDGDISPTBL AZCS009WidgDisp[] =
 {
-    {OKPB_CMD, BUTTON_CLICK, Lapzivat9544_Click},
-    {CancelPB_CMD, BUTTON_CLICK, Lapzivat9547_Click},
     {SaveDir_FID, FIELD_CHANGE, Lapzivat8232_Field_Change},
     {GenDir_FID, FIELD_CHANGE, Lapzivat8190_Field_Change},
+    {FLMassGen_FID, FIELD_CHANGE, Lapzivat7080_Field_Change},
+    {MapLstFile_FID, FIELD_CHANGE, Lapzivat7731_Field_Change},
+    {OKPB_CMD, BUTTON_CLICK, Lapzivat9544_Click},
+    {CancelPB_CMD, BUTTON_CLICK, Lapzivat9547_Click},
     {0,0,0}
 };
 
@@ -64,6 +68,8 @@ FLDDEFTBLENTRY AZCS009FieldDefTbl[] =
 {
     { "SaveDir", SaveDir_FID },
     { "GenDir", GenDir_FID },
+    { "FLMassGen", FLMassGen_FID },
+    { "MapLstFile", MapLstFile_FID },
     { "FlWindowMod", FlWindowMod_FID },
     { "", 0}
 };
@@ -87,7 +93,7 @@ CMDDEFTBLENTRY AZCS009CommandDefTbl[] =
 
 WCTHEADER  AZCS009WCTHeader =
 { 
-    "30", 3, 3, 2,
+    "30", 5, 5, 2,
     sizeof(struct _AZCS009WesMap),
     offsetof(struct _AZCS009WesMap, _SaveDirData),
     offsetof(struct _AZCS009WesMap, _SaveDirCtl),
@@ -115,6 +121,22 @@ WCTFIELD AZCS009WCTFieldTbl[] =
       SIZEOF(struct _AZCS009WesMap, _GenDirData),
       255, 0, offsetof(struct _AZCS009WesMap, _GenDirData),
       offsetof(struct _AZCS009WesMap, _GenDirCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "FLMassGen", FLMassGen_FID,
+      FLMassGen_WID, FND_IT_CHAR,
+      SIZEOF(struct _AZCS009WesMap, _FLMassGenData),
+      1, 0, offsetof(struct _AZCS009WesMap, _FLMassGenData),
+      offsetof(struct _AZCS009WesMap, _FLMassGenCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "MapLstFile", MapLstFile_FID,
+      MapLstFile_WID, FND_IT_CHAR,
+      SIZEOF(struct _AZCS009WesMap, _MapLstFileData),
+      84, 0, offsetof(struct _AZCS009WesMap, _MapLstFileData),
+      offsetof(struct _AZCS009WesMap, _MapLstFileCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   

@@ -7,55 +7,75 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS009                           *
-*                          Generated on: Wed Sep 25 13:28:52 1996          *
+*                          Generated on: Wed Nov 20 11:22:14 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS009ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,230,79
+AZCS009ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,230,89
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
     CAPTION "Specify Directories"
     
 Begin  /* controls */
+   CONTROL "&Save Directory:",500,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,11,4,72,12
+
+   CONTROL "",100,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,93,4,118,0
+
+   CONTROL "&Generation Directory:",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,11,20,81,12
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,93,20,118,12
+
+   CONTROL "M&ass Generate",102,
+              FND_CHECK_BOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP  | BS_CHECKBOX
+              ,12,44,0,0
+
+   CONTROL "Map List File:",503,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,11,55,52,12
+
+   CONTROL "",103,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,93,55,118,0
+
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,7,63,37,12
+              ,5,73,37,12
 
    CONTROL "Cancel",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,53,63,37,12
+              ,52,73,37,12
 
-   CONTROL "&Save Directory:",500,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,16,13,72,12
-
-   CONTROL "",100,
+   CONTROL "",104,
               FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,91,13,0,0
+              WS_VISIBLE
+              ,216,101,0,0
 
-   CONTROL "&Generation Directory:",501,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,9,37,81,12
-
-   CONTROL "",101,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,91,37,0,0
-
-   CONTROL "",102,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,151,62,0,0
+   CONTROL "Mass Generation",9000,
+              FND_GROUP_BOX,
+              WS_VISIBLE | BS_GROUPBOX
+              ,4,35,212,34
 
 End /* controls */
 
@@ -126,8 +146,36 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Entry Field FlWindowMod  */
+   /*  Control Data for Checkbox FLMassGen  */
    FP_CONTROL_ID,                       "102\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+
+   /*  Control Data for Static Text Map List File:  */
+   FP_CONTROL_ID,                       "503\0"
+   FP_SCREEN_LENGTH,                    "14\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field MapLstFile  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "84\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "104\0"
    FP_SCREEN_LENGTH,                    "1\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
