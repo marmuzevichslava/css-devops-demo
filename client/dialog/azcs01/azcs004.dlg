@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS004                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 12:48:16 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS004X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZCS004ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,301,231
+AZCS004ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,346,231
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
@@ -23,34 +23,34 @@ Begin  /* controls */
    CONTROL "Service:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,166,5,25,8
+              ,191,5,28,8
 
    CONTROL "",100,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,194,2,60,11
+              ,223,2,69,11
 
    CONTROL "",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,1,14,143,128
+              ,1,14,164,128
 
    CONTROL "",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,146,14,146,128
+              ,168,14,168,128
 
    CONTROL "&Apply",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,129,164,37,12
+              ,148,164,42,12
 
    CONTROL "&Remove",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,129,180,36,12
+              ,148,180,41,12
 
    CONTROL "Client Information",8003,
               FND_RADIO_GROUP,
@@ -84,79 +84,79 @@ Begin  /* controls */
    CONTROL "&Wildcard",104,
               FND_CHECK_BOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP  | BS_CHECKBOX
-              ,176,186,0,0
+              ,202,186,0,0
 
    CONTROL "",105,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,216,184,75,11
+              ,248,184,86,11
 
    CONTROL "Operator",506,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,141,148,26,8
+              ,162,148,29,8
 
    CONTROL "",106,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,170,144,30,0
+              ,195,144,34,0
 
    CONTROL "OK",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,5,208,32,12
+              ,5,208,37,12
 
    CONTROL "Cancel",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,51,208,32,12
+              ,59,208,37,12
 
    CONTROL "Client Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,1,142,122,61
+              ,1,142,141,61
 
    CONTROL "Service Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,170,156,125,47
+              ,195,156,143,47
 
    CONTROL "Client:",507,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,24,5,20,8
+              ,28,5,22,8
 
    CONTROL "",107,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,46,2,60,11
+              ,53,2,69,11
 
    CONTROL "Element:",508,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,188,170,26,8
+              ,216,170,30,8
 
    CONTROL "",108,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,216,166,75,0
+              ,248,166,86,0
 
    CONTROL "",109,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,135,208,0,0
+              ,155,208,0,0
 
    CONTROL "",110,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,55,152,66,0
+              ,63,152,76,0
 
    CONTROL "",111,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,55,166,66,11
+              ,63,166,76,11
 
 End /* controls */
 
@@ -198,8 +198,8 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "194,13\0"
-   FP_LIST_WIDTH,                       "68\0"
+   FP_LIST_POSITION,                    "223,13\0"
+   FP_LIST_WIDTH,                       "78\0"
    FP_LIST_HEIGHT,                      "48\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
@@ -476,7 +476,7 @@ Begin
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
    FP_TOP_MARGIN,                       "6\0"
-   FP_LEFT_MARGIN,                      "20\0"
+   FP_LEFT_MARGIN,                      "22\0"
    FP_HORIZONTAL_SPACING,               "3\0"
    FP_VERTICAL_SPACING,                 "1\0"
    FP_DIRECTION,                        FPV_VERTICAL, "\0"
@@ -538,8 +538,8 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "170,144\0"
-   FP_LIST_WIDTH,                       "38\0"
+   FP_LIST_POSITION,                    "195,144\0"
+   FP_LIST_WIDTH,                       "43\0"
    FP_LIST_HEIGHT,                      "34\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"

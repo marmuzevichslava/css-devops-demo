@@ -7,7 +7,7 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS001                           *
- *                         Generated on: Mon Jul 15 06:51:10 1996          *
+ *                         Generated on: Wed Sep 25 13:30:28 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
@@ -30,7 +30,7 @@ unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -83,7 +83,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -141,7 +141,7 @@ static WCBPROC(Erxuqhan9066_Predestroy)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -155,7 +155,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -177,7 +177,7 @@ static WCBPROC(Erxuqhan8912_Interwindow_Msg)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -191,7 +191,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -213,7 +213,7 @@ static WCBPROC(Erxuqhan9087_Msg_Notification)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -227,7 +227,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -249,7 +249,7 @@ static WCBPROC(Erxuqhan9040_Window_Close)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -263,7 +263,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -285,7 +285,7 @@ static WCBPROC(Erxuqhan5820_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -306,7 +306,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -328,7 +328,7 @@ static WCBPROC(Erxuqhan1824_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -349,7 +349,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -371,7 +371,7 @@ static WCBPROC(Erxuqhan1914_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -392,7 +392,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -414,7 +414,7 @@ static WCBPROC(Erxuqhan1930_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -428,7 +428,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -450,7 +450,7 @@ static WCBPROC(Erxuqhan6340_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -471,7 +471,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -493,7 +493,7 @@ static WCBPROC(Erxuqhan7269_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -507,7 +507,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -529,7 +529,7 @@ static WCBPROC(Erxuqhan7227_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -543,7 +543,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -565,7 +565,7 @@ static WCBPROC(Erxuqhan7336_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -579,7 +579,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -601,7 +601,7 @@ static WCBPROC(Erxuqhan8155_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -622,7 +622,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -644,7 +644,7 @@ static WCBPROC(Erxuqhan2875_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -665,7 +665,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -687,7 +687,7 @@ static WCBPROC(Erxuqhan7282_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -701,7 +701,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -723,7 +723,7 @@ static WCBPROC(Erxuqhan7254_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -737,7 +737,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -759,7 +759,7 @@ static WCBPROC(Erxuqhan7312_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -773,7 +773,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -795,7 +795,7 @@ static WCBPROC(Erxuqhan7294_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -809,7 +809,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -831,7 +831,7 @@ static WCBPROC(Erxuqhan7166_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -852,7 +852,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -874,7 +874,7 @@ static WCBPROC(Erxuqhan5956_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -888,7 +888,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -910,7 +910,7 @@ static WCBPROC(Erxuqhan6008_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -924,7 +924,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 

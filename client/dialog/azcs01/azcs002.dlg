@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS002                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:30:50 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS002X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZCS002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,121,119
+AZCS002ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,140,118
     STYLE 0 
      | WS_CAPTION
      | DS_MODALFRAME
@@ -23,52 +23,57 @@ Begin  /* controls */
    CONTROL "&Request ID",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,15,11,35,8
+              ,15,6,43,12
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,51,7,60,0
+              ,59,6,69,0
 
    CONTROL "Client &Layout",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,2,27,48,8
+              ,2,22,55,12
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,52,23,60,0
+              ,60,22,69,0
 
    CONTROL "Request Type",8002,
               FND_RADIO_GROUP,
-              WS_VISIBLE | BS_GROUPBOX
-              ,30,41,60,44
+              WS_VISIBLE | WS_GROUP | BS_GROUPBOX
+              ,35,40,69,44
 
-   CONTROL "&Inquiry",103,
+   CONTROL "&Inquiry",104,
               FND_RADIO_BUTTON,
-              WS_VISIBLE | WS_TABSTOP
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,30,41,0,0
+              ,35,40,0,0
 
-   CONTROL "&Update",104,
+   CONTROL "&Update",105,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,30,41,0,0
+              ,35,40,0,0
 
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_TABSTOP
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,6,99,32,12
+              ,7,98,37,12
 
    CONTROL "Cancel",1001,
               FND_PUSH_BUTTON,
-              WS_VISIBLE  | WS_TABSTOP
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,46,99,32,12
+              ,53,98,37,12
+
+   CONTROL "",103,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,112,96,13,0
 
 End /* controls */
 
@@ -144,13 +149,31 @@ Begin
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
    FP_TOP_MARGIN,                       "8\0"
-   FP_LEFT_MARGIN,                      "15\0"
+   FP_LEFT_MARGIN,                      "17\0"
    FP_HORIZONTAL_SPACING,               "3\0"
    FP_VERTICAL_SPACING,                 "5\0"
    FP_DIRECTION,                        FPV_VERTICAL, "\0"
    FP_BUTTONS_PER_ROW,                  "2\0"
-   FP_BUTTON_INFO,                      "103,1\0"
-   FP_BUTTON_INFO,                      "104,2\0"
+   FP_BUTTON_INFO,                      "104,1\0"
+   FP_BUTTON_INFO,                      "105,2\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    FP_END
 End

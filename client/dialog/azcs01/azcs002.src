@@ -7,32 +7,10 @@
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS002                           *
- *                         Generated on: Mon Jul 15 06:51:10 1996          *
+ *                         Generated on: Wed Sep 25 13:30:50 1996          *
  *                                   by: MCONNER                           *
  *                                                                         *
  ***************************************************************************/
-
-WESCALLBACK CmnArchTest( WINCONTEXTNAME     *pWindContextData );
-
-BOOL f = FALSE;
-typedef struct _CrtMemBlockHeader
-{
-        struct _CrtMemBlockHeader * pBlockHeaderNext;
-        struct _CrtMemBlockHeader * pBlockHeaderPrev;
-        char *                      szFileName;
-        int                         nLine;
-        size_t                      nDataSize;
-        int                         nBlockUse;
-        long                        lRequest;
-        unsigned char               gap[4];
-        /* followed by:
-         *  unsigned char           data[4];
-         *  unsigned char           anotherGap[4];
-         */
-} _CrtMemBlockHeader;
-
-#define pbData(pblock) ((unsigned char *)((_CrtMemBlockHeader *)pblock + 1))
-#define pHdr(pbData) (((_CrtMemBlockHeader *)pbData)-1)
 
 /***************************************************************************
  *
@@ -52,7 +30,7 @@ unsigned short           FndGenRC = FND_SUCCESS;
 _FND_ERROR_BLOCK         FndGenErrorBlock;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -76,7 +54,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -117,73 +95,24 @@ return 0;
 
 
 }
-
 /***************************************************************************
  *
  *   Window-Level Event
  *
- *   Callback Name: Ejskkjkt2577_Predestroy
+ *   Callback Name: Ejskkjkt2557_Window_Close
  * 
  *
  *
- *   Event Name:    PREDESTROY
+ *   Event Name:    WINDOW_CLOSE
  *
  *
  ***************************************************************************/
-static WCBPROC(Ejskkjkt2577_Predestroy)
-{
-unsigned short           FndGenRC = FND_SUCCESS;
-_CrtMemBlockHeader * pHead = pHdr(pCmnArchBlock);
-
-
-CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
-FndGenRC = CmnArchInit( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-HEAP_CHECK
-if( f )
-free( pCmnArchBlock );
-
-
-
-FndGenRC = CmnArchTerm( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-if( f )
-free( pCmnArchBlock );
-
-
-HEAP_CHECK
-return 0;
-
-
-}
-/***************************************************************************
- *
- *   Window-Level Event
- *
- *   Callback Name: Ejskkjkt2441_Interwindow_Msg
- * 
- *
- *
- *   Event Name:    INTERWINDOW_MSG
- *
- *
- ***************************************************************************/
-static WCBPROC(Ejskkjkt2441_Interwindow_Msg)
+static WCBPROC(Ejskkjkt2557_Window_Close)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -197,7 +126,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -219,7 +148,7 @@ static WCBPROC(Ejskkjkt2622_Msg_Notification)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -233,7 +162,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -242,20 +171,20 @@ return 0;
  *
  *   Window-Level Event
  *
- *   Callback Name: Ejskkjkt2557_Window_Close
+ *   Callback Name: Ejskkjkt2577_Predestroy
  * 
  *
  *
- *   Event Name:    WINDOW_CLOSE
+ *   Event Name:    PREDESTROY
  *
  *
  ***************************************************************************/
-static WCBPROC(Ejskkjkt2557_Window_Close)
+static WCBPROC(Ejskkjkt2577_Predestroy)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -269,7 +198,43 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ejskkjkt2441_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ejskkjkt2441_Interwindow_Msg)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
 return 0;
 
 
@@ -291,7 +256,7 @@ static WCBPROC(Ejskkjkt7175_Field_Exit)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -312,7 +277,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -332,9 +297,10 @@ return 0;
 static WCBPROC(Ejskkjkt9450_Field_Change)
 {
 unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -342,13 +308,22 @@ FndGenRC = CmnArchInit( pEventInfo,
                            pWindContextData,
                            pABHI);
 
+if (strcmp( ClientLayoutData, "" ) != 0)
+   {
+
+   FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                            "OKPB",
+                            &FndGenErrorBlock);
+
+   } /* end if */
+
 FndGenRC = CmnArchTerm( pEventInfo,
                            pEAIA,
                            pBFCD,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -370,7 +345,7 @@ static WCBPROC(Ejskkjkt4045_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -391,7 +366,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 
@@ -413,7 +388,7 @@ static WCBPROC(Ejskkjkt4082_Click)
 unsigned short           FndGenRC = FND_SUCCESS;
 
 CMN_ARCH_EXIT_INITIALIZE
-HEAP_CHECK
+
 FndGenRC = CmnArchInit( pEventInfo,
                            pEAIA,
                            pBFCD,
@@ -427,7 +402,7 @@ FndGenRC = CmnArchTerm( pEventInfo,
                            pWesMap,
                            pWindContextData,
                            pABHI);
-HEAP_CHECK
+
 return 0;
 
 

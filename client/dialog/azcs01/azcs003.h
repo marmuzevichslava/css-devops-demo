@@ -28,7 +28,8 @@
 /*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
  */
 #include <malloc.h>
-#include "azcs002.gnh" /*mdc 03/22/96 Added for LT_RequestTypeUP definition*/
+/*#include "azcs002.gnh" mdc 03/22/96 Added for LT_RequestTypeUP definition*/
+/*mdc 09/16/96 Removed above and defined LT_RequestTypeUP below*/
 
 #include "systcomm.hh"
 #include "roadmap.hh"
@@ -38,6 +39,11 @@
 /***************************************************************************/
 #define MAPGEN_ELBADD1_INST_NAME "Elb1AddRow"
 #define MAPGEN_ELBCHG1_INST_NAME "Elb1ChangeRow"
+
+/*mdc 09/16/96 Added here to match definition in azcs002.gnh*/
+#ifndef LT_RequestTypeUP
+#define LT_RequestTypeUP                     "2"
+#endif
 
 #define CHANGE_ACTION "Change Service Information"
 #define CHANGE_OBJECT_TYPE "CSR Request ID"

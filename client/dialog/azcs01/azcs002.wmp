@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS002                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:30:50 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS002X                          *
 *                                                                          *
@@ -44,6 +44,9 @@ unsigned char _grpFiller;
    char _RequestTypeData[3];
 #define RequestTypeData              pWesMap->_RequestTypeData
 
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
+
 
     WESFLDCTL _RequestIDCtl;
 #define RequestIDAttr                       pWesMap->_RequestIDCtl.Attr
@@ -65,5 +68,12 @@ unsigned char _grpFiller;
 #define RequestTypeRights                     pWesMap->_RequestTypeCtl.Rights
 #define RequestTypeMsg                        pWesMap->_RequestTypeCtl.Msg
 #define RequestTypeCursor                     pWesMap->_RequestTypeCtl.Cursor
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 };
 

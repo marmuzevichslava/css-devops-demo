@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS001                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:30:28 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS001X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZCS001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,310,164
+AZCS001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,356,164
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
@@ -27,86 +27,86 @@ Begin  /* controls */
    CONTROL "Request ID",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,20,21,35,8
+              ,22,21,40,8
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,56,17,60,0
+              ,65,17,69,0
 
    CONTROL "Request Type",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,11,37,44,8
+              ,12,37,50,8
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,56,33,60,0
+              ,65,33,69,0
 
    CONTROL "Client Layout",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,11,53,44,8
+              ,12,53,50,8
 
    CONTROL "",102,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,56,49,60,0
+              ,65,49,69,0
 
    CONTROL "&Add...",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,133,132,36,12
+              ,153,132,41,12
 
    CONTROL "&Change...",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,179,132,36,12
+              ,205,132,41,12
 
    CONTROL "&Delete",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,220,132,36,12
+              ,253,132,41,12
 
    CONTROL "&Undelete",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,263,132,36,12
+              ,302,132,41,12
 
    CONTROL "Services",103,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,133,18,165,110
+              ,153,18,190,110
 
    CONTROL "Service Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,128,6,176,144
+              ,147,6,203,144
 
    CONTROL "Task List",104,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,73,121,76
+              ,3,73,139,76
 
    CONTROL "Request Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,3,6,121,63
+              ,3,6,139,63
 
    CONTROL "GenerateStatus",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,166,140,46,8
+              ,191,140,53,8
 
    CONTROL "",105,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,215,136,0,0
+              ,247,136,0,0
 
 End /* controls */
 

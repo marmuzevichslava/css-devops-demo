@@ -89,6 +89,7 @@ static WCBPROC (ChkForMap)
 
     /* JLL: 06/30/93 ADDED */
 
+
     /* Open Map File */
     FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
                           FileNm,
@@ -160,6 +161,7 @@ static WCBPROC (ChkForMap)
         }
 
         /* If a map is found disable the entire RB group */
+
           FndGenRC = FndFieldDisable( CBI_hwnd,
                                       "REQUESTTYPE",
                                       &FndGenErrorBlock);
@@ -168,27 +170,49 @@ static WCBPROC (ChkForMap)
                                       "CLIENTLAYOUT",
                                       &FndGenErrorBlock );
 
-
-
-    }
+          
+    }	  
 
     else
     {  /* Saved Map Not Found */
        /* Set default to Inquiry */
+        /*mdc 09/19/96 Use FCP API instead of strcpy
         strcpy( RequestTypeData,
                 LT_RequestTypeIN );
 
+       */
         /* Enable the Radio Button Group */
         FndGenRC = FndFieldEnable( CBI_hwnd,
                                    "REQUESTTYPE",
                                    &FndGenErrorBlock );
 
+        FndGenRC = FndFieldSetValue( CBI_hwnd,
+                                       "REQUESTTYPE", ,
+                                       sizeof( RequestTypeData ),
+                                       "1",
+                                       &FndGenErrorBlock );
+
+
         FndGenRC = FndFieldEnable( CBI_hwnd,
                                    "CLIENTLAYOUT",
                                    &FndGenErrorBlock );
 
+        FndGenRC = FndFieldSetCursor( CBI_hwnd,
+                                      "CLIENTLAYOUT",
+                                      CUR_MAKECURRENT,
+                                      &FndGenErrorBlock );
+
 
     }
+
+    /*mdc 09/18/96 set data modified and enable OK default button
+        */
+     FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS ); 
+
+	 FndGenRC = FndCommandSetDefaultButton( CBI_hwnd,
+                                            "OKPB",
+                                            &FndGenErrorBlock);
+
 
  HEAP_CHECK
  return(CMN_SUCCESS);

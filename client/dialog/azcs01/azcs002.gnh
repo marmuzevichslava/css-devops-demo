@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS002                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:30:50 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS002X                          *
 *                                                                          *
@@ -20,6 +20,7 @@
 #define RequestID_FID                                  0
 #define ClientLayout_FID                               1
 #define RequestType_FID                                2
+#define FlWindowMod_FID                                3
 
 /***************************************************************************
 *  Widget IDs                                                              *
@@ -28,6 +29,7 @@
 #define RequestID_WID                                  100
 #define ClientLayout_WID                               101
 #define RequestType_WID                                8002
+#define FlWindowMod_WID                                103
 
 /***************************************************************************
 *  Command IDs                                                             *

@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS003                           *
-*                          Generated on: Mon Jul 15 06:51:10 1996          *
+*                          Generated on: Wed Sep 25 13:31:04 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS003X                          *
 *                                                                          *
@@ -26,6 +26,7 @@
 #define AltMap_FID                                     6
 #define AnticModule_FID                                7
 #define ForceCall_FID                                  8
+#define FlWindowMod_FID                                9
 
 /***************************************************************************
 *  Widget IDs                                                              *
@@ -40,6 +41,7 @@
 #define AltMap_WID                                     106
 #define AnticModule_WID                                107
 #define ForceCall_WID                                  108
+#define FlWindowMod_WID                                109
 
 /***************************************************************************
 *  Command IDs                                                             *
