@@ -1,0 +1,109 @@
+/***************************************************************************
+*                                                                          *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZLM001                           *
+*                          Generated on: Tue Oct 29 09:37:55 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+struct _DZLM001WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _TxLockObjectTypeData[33];
+#define TxLockObjectTypeData              pWesMap->_TxLockObjectTypeData
+
+   char _LockObjectNameData[33];
+#define LockObjectNameData              pWesMap->_LockObjectNameData
+
+   char _TxLockRepositoryData[21];
+#define TxLockRepositoryData              pWesMap->_TxLockRepositoryData
+
+   char _LockRefCheckData[3];
+#define LockRefCheckData              pWesMap->_LockRefCheckData
+
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
+
+   char _TxGenDecode1Data[21];
+#define TxGenDecode1Data              pWesMap->_TxGenDecode1Data
+
+   char _TxGenDecode2Data[21];
+#define TxGenDecode2Data              pWesMap->_TxGenDecode2Data
+
+
+    WESFLDCTL _TxLockObjectTypeCtl;
+#define TxLockObjectTypeAttr                       pWesMap->_TxLockObjectTypeCtl.Attr
+#define TxLockObjectTypeStatus                     pWesMap->_TxLockObjectTypeCtl.Status
+#define TxLockObjectTypeRights                     pWesMap->_TxLockObjectTypeCtl.Rights
+#define TxLockObjectTypeMsg                        pWesMap->_TxLockObjectTypeCtl.Msg
+#define TxLockObjectTypeCursor                     pWesMap->_TxLockObjectTypeCtl.Cursor
+
+    WESFLDCTL _LockObjectNameCtl;
+#define LockObjectNameAttr                       pWesMap->_LockObjectNameCtl.Attr
+#define LockObjectNameStatus                     pWesMap->_LockObjectNameCtl.Status
+#define LockObjectNameRights                     pWesMap->_LockObjectNameCtl.Rights
+#define LockObjectNameMsg                        pWesMap->_LockObjectNameCtl.Msg
+#define LockObjectNameCursor                     pWesMap->_LockObjectNameCtl.Cursor
+
+    WESFLDCTL _TxLockRepositoryCtl;
+#define TxLockRepositoryAttr                       pWesMap->_TxLockRepositoryCtl.Attr
+#define TxLockRepositoryStatus                     pWesMap->_TxLockRepositoryCtl.Status
+#define TxLockRepositoryRights                     pWesMap->_TxLockRepositoryCtl.Rights
+#define TxLockRepositoryMsg                        pWesMap->_TxLockRepositoryCtl.Msg
+#define TxLockRepositoryCursor                     pWesMap->_TxLockRepositoryCtl.Cursor
+
+    WESFLDCTL _LockRefCheckCtl;
+#define LockRefCheckAttr                       pWesMap->_LockRefCheckCtl.Attr
+#define LockRefCheckStatus                     pWesMap->_LockRefCheckCtl.Status
+#define LockRefCheckRights                     pWesMap->_LockRefCheckCtl.Rights
+#define LockRefCheckMsg                        pWesMap->_LockRefCheckCtl.Msg
+#define LockRefCheckCursor                     pWesMap->_LockRefCheckCtl.Cursor
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
+
+    WESFLDCTL _TxGenDecode1Ctl;
+#define TxGenDecode1Attr                       pWesMap->_TxGenDecode1Ctl.Attr
+#define TxGenDecode1Status                     pWesMap->_TxGenDecode1Ctl.Status
+#define TxGenDecode1Rights                     pWesMap->_TxGenDecode1Ctl.Rights
+#define TxGenDecode1Msg                        pWesMap->_TxGenDecode1Ctl.Msg
+#define TxGenDecode1Cursor                     pWesMap->_TxGenDecode1Ctl.Cursor
+
+    WESFLDCTL _TxGenDecode2Ctl;
+#define TxGenDecode2Attr                       pWesMap->_TxGenDecode2Ctl.Attr
+#define TxGenDecode2Status                     pWesMap->_TxGenDecode2Ctl.Status
+#define TxGenDecode2Rights                     pWesMap->_TxGenDecode2Ctl.Rights
+#define TxGenDecode2Msg                        pWesMap->_TxGenDecode2Ctl.Msg
+#define TxGenDecode2Cursor                     pWesMap->_TxGenDecode2Ctl.Cursor
+};
+

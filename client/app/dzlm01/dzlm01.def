@@ -1,0 +1,23 @@
+;*****************************************************************************
+;
+;           C   C O M P I L E R   D E F I N I T I O N   F I L E
+;
+;    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.
+;
+;*****************************************************************************
+;
+;              Compiler Definitions for: DZLM01  
+;                          Generated on: Tue Oct 29 09:37:55 1996
+;                                    by: IPEREZAR            
+;                     Short Description: 
+;
+;*****************************************************************************
+
+NAME           DZLM01  WINDOWAPI
+DESCRIPTION    'DZLM01'
+EXETYPE        WINDOWS
+STUB           'WINSTUB.EXE'
+CODE           PRELOAD MOVEABLE DISCARDABLE
+DATA           PRELOAD MOVEABLE MULTIPLE
+HEAPSIZE       1024
+STACKSIZE      20000

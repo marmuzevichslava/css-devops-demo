@@ -1,0 +1,248 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZLM001                           *
+*                          Generated on: Tue Oct 29 09:37:55 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Bhljotbl0877_Predisplay)
+WCBFWD (Bhljotbl0920_Predestroy)
+WCBFWD (Bhljotbl6058_Window_Close)
+WCBFWD (Bhljotbl0952_Field_Change)
+WCBFWD (Bhljotbl0944_Field_Change)
+WCBFWD (Bhljotbl0959_Field_Change)
+WCBFWD (Bhljotbl0991_Field_Change)
+WCBFWD (Bhljotbl0973_Click)
+WCBFWD (Bhljotbl0980_Click)
+WCBFWD (Bhljotbl3965_Field_Change)
+WCBFWD (Bhljotbl3997_Field_Change)
+WCBFWD (Bhljotbl8812_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZLM001WindDisp[] =
+{
+    {PREDISPLAY, Bhljotbl0877_Predisplay},
+    {PREDESTROY, Bhljotbl0920_Predestroy},
+    {WINDOW_CLOSE, Bhljotbl6058_Window_Close},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZLM001WidgDisp[] =
+{
+    {TxLockObjectType_FID, FIELD_CHANGE, Bhljotbl0952_Field_Change},
+    {LockObjectName_FID, FIELD_CHANGE, Bhljotbl0944_Field_Change},
+    {TxLockRepository_FID, FIELD_CHANGE, Bhljotbl0959_Field_Change},
+    {LockRefCheck_FID, FIELD_CHANGE, Bhljotbl0991_Field_Change},
+    {LockPB_CMD, BUTTON_CLICK, Bhljotbl0973_Click},
+    {UnlockPB_CMD, BUTTON_CLICK, Bhljotbl0980_Click},
+    {TxGenDecode1_FID, FIELD_CHANGE, Bhljotbl3965_Field_Change},
+    {TxGenDecode2_FID, FIELD_CHANGE, Bhljotbl3997_Field_Change},
+    {ExitMN_CMD, BUTTON_CLICK, Bhljotbl8812_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZLM001FieldDefTbl[] =
+{
+    { "TxLockObjectType", TxLockObjectType_FID },
+    { "LockObjectName", LockObjectName_FID },
+    { "TxLockRepository", TxLockRepository_FID },
+    { "LockRefCheck", LockRefCheck_FID },
+    { "FlWindowMod", FlWindowMod_FID },
+    { "TxGenDecode1", TxGenDecode1_FID },
+    { "TxGenDecode2", TxGenDecode2_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZLM001CommandDefTbl[] =
+{
+    { "LockPB", LockPB_CMD },
+    { "UnlockPB", UnlockPB_CMD },
+    { "ExitMN", ExitMN_CMD },
+    { "Cut", Cut_CMD },
+    { "Copy", Copy_CMD },
+    { "Paste", Paste_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZLM001WCTHeader =
+{ 
+    "30", 7, 7, 14,
+    sizeof(struct _DZLM001WesMap),
+    offsetof(struct _DZLM001WesMap, _TxLockObjectTypeData),
+    offsetof(struct _DZLM001WesMap, _TxLockObjectTypeCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZLM001WCTFieldTbl[] =
+{
+  
+    { WTP_FNDENTRYFLD, "TxLockObjectType", TxLockObjectType_FID,
+      TxLockObjectType_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _TxLockObjectTypeData),
+      32, 0, offsetof(struct _DZLM001WesMap, _TxLockObjectTypeData),
+      offsetof(struct _DZLM001WesMap, _TxLockObjectTypeCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "LockObjectName", LockObjectName_FID,
+      LockObjectName_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _LockObjectNameData),
+      32, 0, offsetof(struct _DZLM001WesMap, _LockObjectNameData),
+      offsetof(struct _DZLM001WesMap, _LockObjectNameCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "TxLockRepository", TxLockRepository_FID,
+      TxLockRepository_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _TxLockRepositoryData),
+      20, 0, offsetof(struct _DZLM001WesMap, _TxLockRepositoryData),
+      offsetof(struct _DZLM001WesMap, _TxLockRepositoryCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "LockRefCheck", LockRefCheck_FID,
+      LockRefCheck_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _LockRefCheckData),
+      2, 0, offsetof(struct _DZLM001WesMap, _LockRefCheckData),
+      offsetof(struct _DZLM001WesMap, _LockRefCheckCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "FlWindowMod", FlWindowMod_FID,
+      FlWindowMod_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _FlWindowModData),
+      1, 0, offsetof(struct _DZLM001WesMap, _FlWindowModData),
+      offsetof(struct _DZLM001WesMap, _FlWindowModCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
+  
+    { WTP_FNDENTRYFLD, "TxGenDecode1", TxGenDecode1_FID,
+      TxGenDecode1_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _TxGenDecode1Data),
+      20, 0, offsetof(struct _DZLM001WesMap, _TxGenDecode1Data),
+      offsetof(struct _DZLM001WesMap, _TxGenDecode1Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
+  
+    { WTP_FNDENTRYFLD, "TxGenDecode2", TxGenDecode2_FID,
+      TxGenDecode2_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZLM001WesMap, _TxGenDecode2Data),
+      20, 0, offsetof(struct _DZLM001WesMap, _TxGenDecode2Data),
+      offsetof(struct _DZLM001WesMap, _TxGenDecode2Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZLM001WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "LockPB", LockPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "UnlockPB", UnlockPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "LMFILEMn", LMFILEMn_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExitMN", ExitMN_CMD,
+      LMFILEMn_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Cut", Cut_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 1, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Paste", Paste_CMD,
+      EditMN_CMD, 2, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZLM001IDWindowDefn =
+{
+    "30", DZLM001ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_HIDDEN | WCR_NON_PROPORTIONAL, DZLM001ID,
+    DZLM001AccelID, DZLM001MenuID, DZLM001IconID, 0,
+    DZLM001WidgDisp, DZLM001WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZLM001WCTHeader, DZLM001WCTFieldTbl, 
+    DZLM001WCTCommandTbl, NULL, 30, 0, 0
+};
+
