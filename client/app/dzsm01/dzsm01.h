@@ -42,7 +42,7 @@
 #define DZSM001_SLAM_INI_DIR_KEY                      "PMR ini Path and File"
 #endif
 #ifndef DZSM001_TOKEN_VALUE
-#define DZSM001_TOKEN_VALUE                           10700
+#define DZSM001_TOKEN_VALUE                           40298
 #endif
 #ifndef DZSM001_PRG_ID
 #define DZSM001_PRG_ID                                "DZSM01"
