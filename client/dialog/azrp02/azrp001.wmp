@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZRP001                           *
-*                          Generated on: Tue May 14 09:37:32 1996          *
+*                          Generated on: Tue Jun 11 14:18:27 1996          *
 *                                    by: MCONNER                           *
 *                                                                          *
 ****************************************************************************/
@@ -53,7 +53,7 @@ unsigned char _grpFiller;
     char _ReposDataLBEntityIdData[200][25];
 #define ReposDataLBEntityIdData    pWesMap->_ReposDataLBEntityIdData
 
-    char _ReposDataLBEntityTypeData[200][21];
+    char _ReposDataLBEntityTypeData[200][31];
 #define ReposDataLBEntityTypeData    pWesMap->_ReposDataLBEntityTypeData
 
     char _ReposDataLBEntityNameData[200][37];
@@ -183,7 +183,7 @@ unsigned char _grpFiller;
 typedef struct
 {
     char  _ReposDataLBEntityIdData[25];
-    char  _ReposDataLBEntityTypeData[21];
+    char  _ReposDataLBEntityTypeData[31];
     char  _ReposDataLBEntityNameData[37];
     char  _ReposDataLBFormatData[4];
     char  _ReposDataLBLengthData[4];
