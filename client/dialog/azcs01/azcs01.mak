@@ -2,20 +2,20 @@
 #                                                                          *
 #                W I N D O W S   N T   M A K E   F I L E                   *
 #                                                                          *
-#                Copyright (C) 1994, Andersen Consulting.                  *
-#                          All rights reserved.                            *
+#    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 #                                                                          *
 #***************************************************************************
 #                                                                          *
 #                         Make file for: AZCS01                            *
-#                          Generated on: Sat Jan  6 09:52:36 1996          *
-#                                    by: PJPJ                              *
+#                          Generated on: Wed Jul 31 16:48:14 1996          *
+#                                    by: CWOODS                            *
+#                     Short Description:                                   *
 #                                                                          *
 #***************************************************************************
-
 PROJDIR = n:\azcs01nt
 OBJDIR = r:\obj
 EXEDIR = r:\exe
+ARCHINC = n:\archinc
 
 PROJ = AZCS01
 
@@ -27,9 +27,10 @@ CC = cl
 RC = rc
 LINK = link
 
-CFLAGS_D = /c /W3 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MD /Fd"$(EXEDIR)\$(PROJ).PDB" 
-CFLAGS_R = /c /W3 /Zp /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MD 
-LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows   /MAP
+
+CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "CSRMPGN" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
+CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MT 
+LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows /MAP 
 LFLAGS_R = /SUBSYSTEM:windows  
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
 RCDEFINES_R = -dNDEBUG -dFND_WIN32
@@ -45,11 +46,13 @@ RCDEFINES = $(RCDEFINES_R)
 !endif
 RCFLAGS = -r
 
-LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib ktmsgapi.lib ktddeapi.lib
+LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib \
+           ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib ktmsgapi.lib ktddeapi.lib
 
+NODBLIBS = kndbnul.lib
 OTHLIBS  = othelibs
 DLLLIBS  =
-USRLIBS  = C1CFUNC.LIB ARCHDISP.LIB CSSFUNC.LIB
+USRLIBS  = ARCHDISP.LIB C1CFUNC.LIB CSSFUNC.LIB
 ALL_LIBS = $(LIBS)   $(DLLLIBS) $(USRLIBS)
 
 #***************************************************************************
@@ -58,220 +61,232 @@ ALL_LIBS = $(LIBS)   $(DLLLIBS) $(USRLIBS)
 
 
 # Make C frontend dependencies AZCS01
-AZCS01_DEP = $(PROJDIR)\AZCS01B.gnb AZCS01.sdt AZCS01.wdt
+AZCS01_DEP = $(PROJDIR)\AZCS01B.gnb $(PROJDIR)\AZCS01.sdt $(PROJDIR)\AZCS01.wdt
+
 
 
 # Make C window module AZCS001
-AZCS001_DEP = AZCS001.c	\
+AZCS001_DEP = $(PROJDIR)\AZCS001.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS001C.h	\
 		$(PROJDIR)\AZCS002O.h	\
 		$(PROJDIR)\AZCS003I.h	\
 		$(PROJDIR)\AZCS003O.h	\
 		$(PROJDIR)\AZCS004I.h	\
-		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZDI0400.C	\
-		$(PROJDIR)\AZCS001.CB	\
-		$(PROJDIR)\AZCS001.C    \
-                AZCS001.aex     \
-                AZCS001.h       \
-                AZCS001.wmp     \
-                AZCS001.gnd     \
-                AZCS001.gnh     \
-                AZCS01.gnz        \
-                AZCS001.src
+		$(PROJDIR)\AZCS001.CB    \
+        $(PROJDIR)\AZCS001.aex     \
+        $(PROJDIR)\AZCS001.h       \
+        $(PROJDIR)\AZCS001.wmp     \
+        $(PROJDIR)\AZCS001.gnd     \
+        $(PROJDIR)\AZCS001.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS001.src	\
+		$(ARCHINC)\mapgen.h
+
 # Make C window module AZCS002
-AZCS002_DEP = AZCS002.c	\
+AZCS002_DEP = $(PROJDIR)\AZCS002.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS002C.h	\
 		$(PROJDIR)\AZCS002O.h	\
-		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS002.CB    \
-                AZCS002.aex     \
-                AZCS002.h       \
-                AZCS002.wmp     \
-                AZCS002.gnd     \
-                AZCS002.gnh     \
-                AZCS01.gnz        \
-                AZCS002.src
-# Make C window module AZCS006
-AZCS006_DEP = AZCS006.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS006C.h	\
-		$(PROJDIR)\AZCS004I.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS006.CB	\
-		$(PROJDIR)\AZDI0400.C    \
-                AZCS006.aex     \
-                AZCS006.h       \
-                AZCS006.wmp     \
-                AZCS006.gnd     \
-                AZCS006.gnh     \
-                AZCS01.gnz        \
-                AZCS006.src
-# Make C window module AZCS007
-AZCS007_DEP = AZCS007.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS007C.h	\
-		$(PROJDIR)\AZCS004I.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS007.CB	\
-		$(PROJDIR)\AZDI0400.C    \
-                AZCS007.aex     \
-                AZCS007.h       \
-                AZCS007.wmp     \
-                AZCS007.gnd     \
-                AZCS007.gnh     \
-                AZCS01.gnz        \
-                AZCS007.src
-# Make C window module AZCS004
-AZCS004_DEP = AZCS004.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS004C.h	\
-		$(PROJDIR)\AZCS004I.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS004.CB	\
-		$(PROJDIR)\AZDI0400.C	\
-                AZCS004.aex     \
-                AZCS004.h       \
-                AZCS004.wmp     \
-                AZCS004.gnd     \
-                AZCS004.gnh     \
-                AZCS01.gnz        \
-                AZCS004.src
-# Make C window module AZCS005
-AZCS005_DEP = AZCS005.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS005C.h	\
-		$(PROJDIR)\AZCS004I.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS005.CB	\
-		$(PROJDIR)\AZDI0400.C    \
-                AZCS005.aex     \
-                AZCS005.h       \
-                AZCS005.wmp     \
-                AZCS005.gnd     \
-                AZCS005.gnh     \
-                AZCS01.gnz        \
-                AZCS005.src
-# Make C window module AZCS008
-AZCS008_DEP = AZCS008.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS008C.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS008.CB	\
-		$(PROJDIR)\AZDI0400.C    \
-                AZCS008.aex     \
-                AZCS008.h       \
-                AZCS008.wmp     \
-                AZCS008.gnd     \
-                AZCS008.gnh     \
-                AZCS01.gnz        \
-                AZCS008.src
-# Make C window module AZCS009
-AZCS009_DEP = AZCS009.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS009C.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS009.CB	\
-		$(PROJDIR)\AZDI0400.C    \
-                AZCS009.aex     \
-                AZCS009.h       \
-                AZCS009.wmp     \
-                AZCS009.gnd     \
-                AZCS009.gnh     \
-                AZCS01.gnz        \
-                AZCS009.src
-# Make C window module AZCS010
-AZCS010_DEP = AZCS010.c	\
-		$(PROJDIR)\AZCS01B.gnb	\
-		$(PROJDIR)\AZCS010C.h	\
-		n:\archinc\mapgen.h	\
-		$(PROJDIR)\AZCS010.CB	\
-		$(PROJDIR)\AZDI0400.C    \
-                AZCS010.aex     \
-                AZCS010.h       \
-                AZCS010.wmp     \
-                AZCS010.gnd     \
-                AZCS010.gnh     \
-                AZCS01.gnz        \
-                AZCS010.src
+        $(PROJDIR)\AZCS002.aex     \
+        $(PROJDIR)\AZCS002.h       \
+        $(PROJDIR)\AZCS002.wmp     \
+        $(PROJDIR)\AZCS002.gnd     \
+        $(PROJDIR)\AZCS002.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS002.src	\
+		$(ARCHINC)\mapgen.h
+
 # Make C window module AZCS003
-AZCS003_DEP = AZCS003.c	\
+AZCS003_DEP = $(PROJDIR)\AZCS003.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS003C.h	\
 		$(PROJDIR)\AZCS003I.h	\
 		$(PROJDIR)\AZCS003O.h	\
-		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS003.CB    \
-                AZCS003.aex     \
-                AZCS003.h       \
-                AZCS003.wmp     \
-                AZCS003.gnd     \
-                AZCS003.gnh     \
-                AZCS01.gnz        \
-                AZCS003.src
+        $(PROJDIR)\AZCS003.aex     \
+        $(PROJDIR)\AZCS003.h       \
+        $(PROJDIR)\AZCS003.wmp     \
+        $(PROJDIR)\AZCS003.gnd     \
+        $(PROJDIR)\AZCS003.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS003.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS004
+AZCS004_DEP = $(PROJDIR)\AZCS004.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS004C.h	\
+		$(PROJDIR)\AZDI0400.C	\
+		$(PROJDIR)\AZCS004.CB    \
+        $(PROJDIR)\AZCS004.aex     \
+        $(PROJDIR)\AZCS004.h       \
+        $(PROJDIR)\AZCS004.wmp     \
+        $(PROJDIR)\AZCS004.gnd     \
+        $(PROJDIR)\AZCS004.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS004.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS005
+AZCS005_DEP = $(PROJDIR)\AZCS005.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS005C.h	\
+		$(PROJDIR)\AZCS004I.h	\
+		$(PROJDIR)\AZCS005.CB	\
+		$(PROJDIR)\AZDI0400.C    \
+        $(PROJDIR)\AZCS005.aex     \
+        $(PROJDIR)\AZCS005.h       \
+        $(PROJDIR)\AZCS005.wmp     \
+        $(PROJDIR)\AZCS005.gnd     \
+        $(PROJDIR)\AZCS005.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS005.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS006
+AZCS006_DEP = $(PROJDIR)\AZCS006.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS006C.h	\
+		$(PROJDIR)\AZCS004I.h	\
+		$(PROJDIR)\AZCS006.CB	\
+		$(PROJDIR)\AZDI0400.C    \
+        $(PROJDIR)\AZCS006.aex     \
+        $(PROJDIR)\AZCS006.h       \
+        $(PROJDIR)\AZCS006.wmp     \
+        $(PROJDIR)\AZCS006.gnd     \
+        $(PROJDIR)\AZCS006.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS006.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS007
+AZCS007_DEP = $(PROJDIR)\AZCS007.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS007C.h	\
+		$(PROJDIR)\AZCS004I.h	\
+		$(PROJDIR)\AZCS007.CB	\
+		$(PROJDIR)\AZDI0400.C    \
+        $(PROJDIR)\AZCS007.aex     \
+        $(PROJDIR)\AZCS007.h       \
+        $(PROJDIR)\AZCS007.wmp     \
+        $(PROJDIR)\AZCS007.gnd     \
+        $(PROJDIR)\AZCS007.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS007.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS008
+AZCS008_DEP = $(PROJDIR)\AZCS008.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS008C.h	\
+		$(PROJDIR)\AZCS010O.h	\
+		$(PROJDIR)\AZCS008.CB	\
+		$(PROJDIR)\AZDI0400.C    \
+        $(PROJDIR)\AZCS008.aex     \
+        $(PROJDIR)\AZCS008.h       \
+        $(PROJDIR)\AZCS008.wmp     \
+        $(PROJDIR)\AZCS008.gnd     \
+        $(PROJDIR)\AZCS008.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS008.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS009
+AZCS009_DEP = $(PROJDIR)\AZCS009.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS009C.h	\
+		$(PROJDIR)\AZCS009.CB	\
+		$(PROJDIR)\AZDI0400.C    \
+        $(PROJDIR)\AZCS009.aex     \
+        $(PROJDIR)\AZCS009.h       \
+        $(PROJDIR)\AZCS009.wmp     \
+        $(PROJDIR)\AZCS009.gnd     \
+        $(PROJDIR)\AZCS009.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS009.src	\
+		$(ARCHINC)\mapgen.h
+
+# Make C window module AZCS010
+AZCS010_DEP = $(PROJDIR)\AZCS010.c	\
+		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS010C.h	\
+		$(PROJDIR)\AZCS010O.h	\
+		$(PROJDIR)\AZCS010.CB	\
+		$(PROJDIR)\AZDI0400.C    \
+        $(PROJDIR)\AZCS010.aex     \
+        $(PROJDIR)\AZCS010.h       \
+        $(PROJDIR)\AZCS010.wmp     \
+        $(PROJDIR)\AZCS010.gnd     \
+        $(PROJDIR)\AZCS010.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS010.src	\
+		$(ARCHINC)\mapgen.h
+
 # Make C window module AZCS011
-AZCS011_DEP = AZCS011.c	\
+AZCS011_DEP = $(PROJDIR)\AZCS011.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS011C.h	\
-		$(PROJDIR)\AZCS011I.h	\
-		n:\archinc\mapgen.h	\
 		$(PROJDIR)\AZCS011.CB	\
 		$(PROJDIR)\AZDI0400.C    \
-                AZCS011.aex     \
-                AZCS011.h       \
-                AZCS011.wmp     \
-                AZCS011.gnd     \
-                AZCS011.gnh     \
-                AZCS01.gnz        \
-                AZCS011.src
+        $(PROJDIR)\AZCS011.aex     \
+        $(PROJDIR)\AZCS011.h       \
+        $(PROJDIR)\AZCS011.wmp     \
+        $(PROJDIR)\AZCS011.gnd     \
+        $(PROJDIR)\AZCS011.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS011.src	\
+		$(ARCHINC)\mapgen.h
+
 # Make C window module AZCS013
-AZCS013_DEP = AZCS013.c	\
+AZCS013_DEP = $(PROJDIR)\AZCS013.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
 		$(PROJDIR)\AZCS013C.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS013.CB    \
-                AZCS013.aex     \
-                AZCS013.h       \
-                AZCS013.wmp     \
-                AZCS013.gnd     \
-                AZCS013.gnh     \
-                AZCS01.gnz        \
-                AZCS013.src
+        $(PROJDIR)\AZCS013.aex     \
+        $(PROJDIR)\AZCS013.h       \
+        $(PROJDIR)\AZCS013.wmp     \
+        $(PROJDIR)\AZCS013.gnd     \
+        $(PROJDIR)\AZCS013.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS013.src	\
+		$(ARCHINC)\mapgen.h
+
 # Make C window module AZCS014
-AZCS014_DEP = AZCS014.c	\
+AZCS014_DEP = $(PROJDIR)\AZCS014.c	\
 		$(PROJDIR)\AZCS01B.gnb	\
+		$(PROJDIR)\AZCS014C.h	\
 		$(PROJDIR)\AZDI0400.C	\
 		$(PROJDIR)\AZCS014.CB    \
-                AZCS014.aex     \
-                AZCS014.h       \
-                AZCS014.wmp     \
-                AZCS014.gnd     \
-                AZCS014.gnh     \
-                AZCS01.gnz        \
-                AZCS014.src
-
-
-
+        $(PROJDIR)\AZCS014.aex     \
+        $(PROJDIR)\AZCS014.h       \
+        $(PROJDIR)\AZCS014.wmp     \
+        $(PROJDIR)\AZCS014.gnd     \
+        $(PROJDIR)\AZCS014.gnh     \
+        $(PROJDIR)\AZCS01.gnz        \
+        $(PROJDIR)\AZCS014.src	\
+		$(ARCHINC)\mapgen.h
+				   
 # Make RC dependencies for AZCS01
-AZCS01_RCDEP = AZCS01.gnz    \
-               AZCS001.dlg  \
-               AZCS002.dlg  \
-               AZCS006.dlg  \
-               AZCS007.dlg  \
-               AZCS004.dlg  \
-               AZCS005.dlg  \
-               AZCS008.dlg  \
-               AZCS009.dlg  \
-               AZCS010.dlg  \
-               AZCS003.dlg  \
-               AZCS011.dlg  \
-               AZCS013.dlg  \
-               AZCS014.dlg 
-
+AZCS01_RCDEP = $(PROJDIR)\AZCS01.gnz    \
+               $(PROJDIR)\AZCS001.dlg  \
+               $(PROJDIR)\AZCS002.dlg  \
+               $(PROJDIR)\AZCS003.dlg  \
+               $(PROJDIR)\AZCS004.dlg  \
+               $(PROJDIR)\AZCS005.dlg  \
+               $(PROJDIR)\AZCS006.dlg  \
+               $(PROJDIR)\AZCS007.dlg  \
+               $(PROJDIR)\AZCS008.dlg  \
+               $(PROJDIR)\AZCS009.dlg  \
+               $(PROJDIR)\AZCS010.dlg  \
+               $(PROJDIR)\AZCS011.dlg  \
+               $(PROJDIR)\AZCS013.dlg  \
+               $(PROJDIR)\AZCS014.dlg 
 
 #***************************************************************************
 #  Steps for construction of AZCS01.EXE 
@@ -296,13 +311,9 @@ $(OBJDIR)\AZCS001.obj : $(AZCS001_DEP)
 $(OBJDIR)\AZCS002.obj : $(AZCS002_DEP)
     $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS002.obj AZCS002.c
 
-# Make C window module AZCS006
-$(OBJDIR)\AZCS006.obj : $(AZCS006_DEP)
-    $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS006.obj AZCS006.c
-
-# Make C window module AZCS007
-$(OBJDIR)\AZCS007.obj : $(AZCS007_DEP)
-    $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS007.obj AZCS007.c
+# Make C window module AZCS003
+$(OBJDIR)\AZCS003.obj : $(AZCS003_DEP)
+    $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS003.obj AZCS003.c
 
 # Make C window module AZCS004
 $(OBJDIR)\AZCS004.obj : $(AZCS004_DEP)
@@ -311,6 +322,14 @@ $(OBJDIR)\AZCS004.obj : $(AZCS004_DEP)
 # Make C window module AZCS005
 $(OBJDIR)\AZCS005.obj : $(AZCS005_DEP)
     $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS005.obj AZCS005.c
+
+# Make C window module AZCS006
+$(OBJDIR)\AZCS006.obj : $(AZCS006_DEP)
+    $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS006.obj AZCS006.c
+
+# Make C window module AZCS007
+$(OBJDIR)\AZCS007.obj : $(AZCS007_DEP)
+    $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS007.obj AZCS007.c
 
 # Make C window module AZCS008
 $(OBJDIR)\AZCS008.obj : $(AZCS008_DEP)
@@ -323,10 +342,6 @@ $(OBJDIR)\AZCS009.obj : $(AZCS009_DEP)
 # Make C window module AZCS010
 $(OBJDIR)\AZCS010.obj : $(AZCS010_DEP)
     $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS010.obj AZCS010.c
-
-# Make C window module AZCS003
-$(OBJDIR)\AZCS003.obj : $(AZCS003_DEP)
-    $(CC) $(CFLAGS) /I.\ /Fo$(OBJDIR)\AZCS003.obj AZCS003.c
 
 # Make C window module AZCS011
 $(OBJDIR)\AZCS011.obj : $(AZCS011_DEP)
@@ -361,10 +376,6 @@ $(OBJDIR)\VERSION.obj : $(PROJDIR)\VERSION.c
 $(OBJDIR)\AZCS01.res:   AZCS01.RC $(AZCS01_RCDEP)
    $(RC) $(RCFLAGS) $(RCDEFINES) -Fo$(OBJDIR)\AZCS01.res AZCS01.RC
 
-#***************************************************************************
-# Compile each service module
-#***************************************************************************
-
 
 #***************************************************************************
 # Compile initialization and termination routines
@@ -381,35 +392,35 @@ $(OBJDIR)\AZCS01.res:   AZCS01.RC $(AZCS01_RCDEP)
 $(EXEDIR)\$(PROJ).EXE :  $(OBJDIR)\AZCS01.obj $(OBJDIR)\AZCS01.res 	\
 		$(OBJDIR)\AZCS001.obj 	\
 		$(OBJDIR)\AZCS002.obj 	\
-		$(OBJDIR)\AZCS006.obj 	\
-		$(OBJDIR)\AZCS007.obj 	\
+		$(OBJDIR)\AZCS003.obj 	\
 		$(OBJDIR)\AZCS004.obj 	\
 		$(OBJDIR)\AZCS005.obj 	\
+		$(OBJDIR)\AZCS006.obj 	\
+		$(OBJDIR)\AZCS007.obj 	\
 		$(OBJDIR)\AZCS008.obj 	\
 		$(OBJDIR)\AZCS009.obj 	\
 		$(OBJDIR)\AZCS010.obj 	\
-		$(OBJDIR)\AZCS003.obj 	\
 		$(OBJDIR)\AZCS011.obj 	\
 		$(OBJDIR)\AZCS013.obj 	\
-		$(OBJDIR)\AZCS014.obj 	\
-		$(OBJDIR)\AZCSM001.obj  \
-		$(OBJDIR)\AZCSM005.obj  \
-		$(OBJDIR)\AZCSM006.obj  \
-		$(OBJDIR)\AZCSM010.obj  \
-		$(OBJDIR)\VERSION.obj
+		$(OBJDIR)\AZCS014.obj \
+	    $(OBJDIR)\AZCSM001.obj	   \
+	    $(OBJDIR)\AZCSM005.obj	   \
+	    $(OBJDIR)\AZCSM006.obj	  \
+	    $(OBJDIR)\AZCSM010.obj	  \
+	    $(OBJDIR)\VERSION.obj
     link $(LFLAGS) @<<
 /OUT:$(EXEDIR)\$(PROJ).EXE
 $(OBJDIR)\AZCS01.obj
       $(OBJDIR)\AZCS001.obj
       $(OBJDIR)\AZCS002.obj
-      $(OBJDIR)\AZCS006.obj
-      $(OBJDIR)\AZCS007.obj
+      $(OBJDIR)\AZCS003.obj
       $(OBJDIR)\AZCS004.obj
       $(OBJDIR)\AZCS005.obj
+      $(OBJDIR)\AZCS006.obj
+      $(OBJDIR)\AZCS007.obj
       $(OBJDIR)\AZCS008.obj
       $(OBJDIR)\AZCS009.obj
       $(OBJDIR)\AZCS010.obj
-      $(OBJDIR)\AZCS003.obj
       $(OBJDIR)\AZCS011.obj
       $(OBJDIR)\AZCS013.obj
       $(OBJDIR)\AZCS014.obj

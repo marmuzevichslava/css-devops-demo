@@ -1,15 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *      C   O S / 2    W I N D O W   D E F I N I T I O N   T A B L E S     *
+ * C  W I N D O W S   N T   W I N D O W   D E F I N I T I O N   T A B L E S *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *            Window Dispatch Table for: AZCS01                            *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Mon Jul 15 06:51:10 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************
 
@@ -34,14 +34,14 @@
  ***************************************************************************/
 extern WINDEFTBLENTRY AZCS001IDWindowDefn;
 extern WINDEFTBLENTRY AZCS002IDWindowDefn;
-extern WINDEFTBLENTRY AZCS006IDWindowDefn;
-extern WINDEFTBLENTRY AZCS007IDWindowDefn;
+extern WINDEFTBLENTRY AZCS003IDWindowDefn;
 extern WINDEFTBLENTRY AZCS004IDWindowDefn;
 extern WINDEFTBLENTRY AZCS005IDWindowDefn;
+extern WINDEFTBLENTRY AZCS006IDWindowDefn;
+extern WINDEFTBLENTRY AZCS007IDWindowDefn;
 extern WINDEFTBLENTRY AZCS008IDWindowDefn;
 extern WINDEFTBLENTRY AZCS009IDWindowDefn;
 extern WINDEFTBLENTRY AZCS010IDWindowDefn;
-extern WINDEFTBLENTRY AZCS003IDWindowDefn;
 extern WINDEFTBLENTRY AZCS011IDWindowDefn;
 extern WINDEFTBLENTRY AZCS013IDWindowDefn;
 extern WINDEFTBLENTRY AZCS014IDWindowDefn;
@@ -54,14 +54,14 @@ EXEWINDOWLIST ExeWindowTable[] =
 {
     FND_MAIN_WINDOW, "AZCS001", &AZCS001IDWindowDefn,
     FND_NO, "AZCS002", &AZCS002IDWindowDefn,
-    FND_NO, "AZCS006", &AZCS006IDWindowDefn,
-    FND_NO, "AZCS007", &AZCS007IDWindowDefn,
+    FND_NO, "AZCS003", &AZCS003IDWindowDefn,
     FND_NO, "AZCS004", &AZCS004IDWindowDefn,
     FND_NO, "AZCS005", &AZCS005IDWindowDefn,
+    FND_NO, "AZCS006", &AZCS006IDWindowDefn,
+    FND_NO, "AZCS007", &AZCS007IDWindowDefn,
     FND_NO, "AZCS008", &AZCS008IDWindowDefn,
     FND_NO, "AZCS009", &AZCS009IDWindowDefn,
     FND_NO, "AZCS010", &AZCS010IDWindowDefn,
-    FND_NO, "AZCS003", &AZCS003IDWindowDefn,
     FND_NO, "AZCS011", &AZCS011IDWindowDefn,
     FND_NO, "AZCS013", &AZCS013IDWindowDefn,
     FND_NO, "AZCS014", &AZCS014IDWindowDefn,
@@ -89,7 +89,7 @@ CBLWINSETUPENTRY CBLwindowSetupTable[] =
 /***************************************************************************
  * Table of DLLs referenced in this EXE                                    *
  ***************************************************************************/
-DLLWINDOWINFO *pWindowsInDLLs[] =
+DLLWINDOWINFO  *pWindowsInDLLs[] =
 {
 
         0

@@ -2,14 +2,14 @@
  *                                                                         *
  *                     P R O G R A M   F R O N T   E N D                   *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                Program Front End for: AZCS01                            *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Mon Jul 15 06:51:10 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 

@@ -1,69 +1,70 @@
 /***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS014                           *
-*                          Generated on: Tue Apr 30 17:23:51 1996          *
+*                          Generated on: Mon Jul 15 06:51:10 1996          *
 *                                    by: MCONNER                           *
+*                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,164,158
+AZCS014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,143,158
     STYLE 0 
+     | WS_POPUP
      | DS_MODALFRAME
-    CAPTION "AZCS014"
+    
 Begin  /* controls */
    CONTROL "CSR Map Generator Program",10000,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,8,40,145,12
+              ,7,40,126,12
 
    CONTROL "Copyright 1993",10001,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,52,104,57,8
+              ,45,104,50,8
 
    CONTROL "Andersen Consulting, LLP",10002,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,33,114,92,8
+              ,29,114,80,8
 
    CONTROL "Release:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,37,52,30,8
+              ,31,64,26,8
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,69,60,40,0
+              ,60,60,35,0
 
    CONTROL "Date:",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,36,70,29,8
+              ,30,82,26,8
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,67,78,63,0
+              ,59,78,55,0
 
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,5,138,37,12
+              ,5,138,32,12
 
    CONTROL "#134",11000,
               FND_STATICIMAGE,
               WS_VISIBLE
-              ,17,12,128,18
+              ,15,12,111,18
 
 End /* controls */
 
@@ -81,11 +82,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Static Text Copyright 1993  */
    FP_CONTROL_ID,                       "10001\0"
@@ -94,11 +95,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Static Text Andersen Consulting, LLP  */
    FP_CONTROL_ID,                       "10002\0"
@@ -107,11 +108,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Static Text Release:  */
    FP_CONTROL_ID,                       "500\0"
@@ -120,11 +121,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field Release  */
    FP_CONTROL_ID,                       "100\0"
@@ -133,15 +134,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_BLACK, "\0"
    FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Date:  */
    FP_CONTROL_ID,                       "501\0"
@@ -150,11 +151,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field ReleaseDate  */
    FP_CONTROL_ID,                       "101\0"
@@ -163,15 +164,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_BLACK, "\0"
    FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Bitmap CSRLOGO  */
    FP_CONTROL_ID,                       "11000\0"
@@ -203,6 +204,7 @@ End
 /**********************************************
 *         Static Icons and Bitmaps            *
 **********************************************/
+
 
 #ifndef BITMAP_RID_134
 #define BITMAP_RID_134

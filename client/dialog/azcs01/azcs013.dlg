@@ -1,40 +1,41 @@
 /***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS013                           *
-*                          Generated on: Tue Apr 30 17:23:27 1996          *
+*                          Generated on: Mon Jul 15 06:51:10 1996          *
 *                                    by: MCONNER                           *
+*                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-AZCS013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,339,177
+AZCS013ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,295,177
     STYLE 0 
      | WS_CAPTION
-     | WS_DLGFRAME
+     | DS_MODALFRAME
     CAPTION "Map Generator Comparison Log"
+    
 Begin  /* controls */
    CONTROL "OK",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_TABSTOP
               | BS_PUSHBUTTON
      | BS_DEFPUSHBUTTON
-              ,150,152,37,12
+              ,131,152,32,12
 
    CONTROL "",100,
               FND_LISTBOX,
               WS_VISIBLE
-              ,5,10,323,136
+              ,5,10,281,136
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,104,154,0,0
+              ,91,154,0,0
 
 End /* controls */
 
@@ -50,11 +51,6 @@ Begin
    FP_CAPTION,                          "\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -77,10 +73,9 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_IMAGE_SOURCE,                     "16,BMP,EXE,1\0"
    FP_IMAGE_SOURCE,                     "17,BMP,EXE,2\0"
@@ -96,17 +91,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
    FP_TITLE_FONT_SIZE,                  "10\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for Entry Field FlWindowMod  */
@@ -116,16 +109,16 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_VALID_CONDITION,                  "==,Y\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    FP_END
 End
@@ -152,9 +145,7 @@ End  /*  menus  */
 AZCS013AccelID ACCELERATORS PRELOAD
 Begin
 "S",1001,CONTROL,VIRTKEY
-"s",1001,CONTROL,VIRTKEY
 "P",1002,CONTROL,VIRTKEY
-"p",1002,CONTROL,VIRTKEY
 End
 
 
@@ -180,14 +171,17 @@ End
 *           Listbox Column Bitmaps            *
 **********************************************/
 
+
 #ifndef BITMAP_RID_16
 #define BITMAP_RID_16
 16 BITMAP STDINFO.BMP
 #endif
+
 #ifndef BITMAP_RID_17
 #define BITMAP_RID_17
 17 BITMAP STDWARN.BMP
 #endif
+
 #ifndef BITMAP_RID_18
 #define BITMAP_RID_18
 18 BITMAP STDERROR.BMP

@@ -1,76 +1,76 @@
 /***************************************************************************
  *                                                                         *
- *             C   O S /2    W I N D O W   I D E N T I F I E R S           *
+ *         C  W I N D O W S   N T   W I N D O W   I D E N T I F I E R S     *
  *                                                                         *
- *                 Copyright (C) 1994 Andersen Consulting.                 *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *               Window Identifiers for: AZCS01                            *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Mon Jul 15 06:51:10 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
-#define AZCS001ID                502
-#define AZCS001MenuID                502
-#define AZCS001IconID                502
-#define AZCS001AccelID               502
-#define AZCS001WctID                 502
+#define AZCS001ID                501
+#define AZCS001MenuID                501
+#define AZCS001IconID                501
+#define AZCS001AccelID               501
+#define AZCS001WctID                 501
 
-#define AZCS002ID                501
-#define AZCS002MenuID                501
-#define AZCS002IconID                501
-#define AZCS002AccelID               501
-#define AZCS002WctID                 501
+#define AZCS002ID                502
+#define AZCS002MenuID                502
+#define AZCS002IconID                502
+#define AZCS002AccelID               502
+#define AZCS002WctID                 502
 
-#define AZCS006ID                503
-#define AZCS006MenuID                503
-#define AZCS006IconID                503
-#define AZCS006AccelID               503
-#define AZCS006WctID                 503
+#define AZCS003ID                503
+#define AZCS003MenuID                503
+#define AZCS003IconID                503
+#define AZCS003AccelID               503
+#define AZCS003WctID                 503
 
-#define AZCS007ID                504
-#define AZCS007MenuID                504
-#define AZCS007IconID                504
-#define AZCS007AccelID               504
-#define AZCS007WctID                 504
+#define AZCS004ID                504
+#define AZCS004MenuID                504
+#define AZCS004IconID                504
+#define AZCS004AccelID               504
+#define AZCS004WctID                 504
 
-#define AZCS004ID                505
-#define AZCS004MenuID                505
-#define AZCS004IconID                505
-#define AZCS004AccelID               505
-#define AZCS004WctID                 505
+#define AZCS005ID                505
+#define AZCS005MenuID                505
+#define AZCS005IconID                505
+#define AZCS005AccelID               505
+#define AZCS005WctID                 505
 
-#define AZCS005ID                506
-#define AZCS005MenuID                506
-#define AZCS005IconID                506
-#define AZCS005AccelID               506
-#define AZCS005WctID                 506
+#define AZCS006ID                506
+#define AZCS006MenuID                506
+#define AZCS006IconID                506
+#define AZCS006AccelID               506
+#define AZCS006WctID                 506
 
-#define AZCS008ID                507
-#define AZCS008MenuID                507
-#define AZCS008IconID                507
-#define AZCS008AccelID               507
-#define AZCS008WctID                 507
+#define AZCS007ID                507
+#define AZCS007MenuID                507
+#define AZCS007IconID                507
+#define AZCS007AccelID               507
+#define AZCS007WctID                 507
 
-#define AZCS009ID                508
-#define AZCS009MenuID                508
-#define AZCS009IconID                508
-#define AZCS009AccelID               508
-#define AZCS009WctID                 508
+#define AZCS008ID                508
+#define AZCS008MenuID                508
+#define AZCS008IconID                508
+#define AZCS008AccelID               508
+#define AZCS008WctID                 508
 
-#define AZCS010ID                509
-#define AZCS010MenuID                509
-#define AZCS010IconID                509
-#define AZCS010AccelID               509
-#define AZCS010WctID                 509
+#define AZCS009ID                509
+#define AZCS009MenuID                509
+#define AZCS009IconID                509
+#define AZCS009AccelID               509
+#define AZCS009WctID                 509
 
-#define AZCS003ID                510
-#define AZCS003MenuID                510
-#define AZCS003IconID                510
-#define AZCS003AccelID               510
-#define AZCS003WctID                 510
+#define AZCS010ID                510
+#define AZCS010MenuID                510
+#define AZCS010IconID                510
+#define AZCS010AccelID               510
+#define AZCS010WctID                 510
 
 #define AZCS011ID                511
 #define AZCS011MenuID                511

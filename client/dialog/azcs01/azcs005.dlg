@@ -1,112 +1,113 @@
 /***************************************************************************
 *                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS005                           *
-*                          Generated on: Tue Apr 30 17:17:14 1996          *
+*                          Generated on: Mon Jul 15 06:51:10 1996          *
 *                                    by: MCONNER                           *
+*                     Short Description: AZCS005X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZCS005ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,348,216
+AZCS005ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,303,216
     STYLE 0 
      | WS_CAPTION
-     | WS_DLGFRAME
+     | DS_MODALFRAME
     CAPTION "Define Return Data Relationships"
+    
 Begin  /* controls */
    CONTROL "Service:",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,190,5,28,8
+              ,164,5,25,8
 
    CONTROL "",100,
               FND_COMBOBOX,
               WS_VISIBLE | WS_TABSTOP
-              ,220,2,69,11
+              ,191,2,60,11
 
    CONTROL "",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,9,16,164,132
+              ,8,16,143,132
 
    CONTROL "",102,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,178,16,160,132
+              ,155,16,140,132
 
    CONTROL "&Apply",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,153,157,41,12
+              ,133,157,36,12
 
    CONTROL "&Remove",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,153,173,40,12
+              ,133,173,35,12
 
    CONTROL "OK",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,9,188,37,12
+              ,8,188,32,12
 
    CONTROL "Cancel",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,63,188,37,12
+              ,55,188,32,12
 
    CONTROL "Element:",503,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,15,154,30,8
+              ,12,166,26,8
 
    CONTROL "",103,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,47,162,86,0
+              ,41,162,75,0
 
    CONTROL "Client:",504,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,31,-7,22,8
+              ,26,5,20,8
 
    CONTROL "",104,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,55,1,69,0
+              ,48,1,60,0
 
    CONTROL "Element:",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,216,156,30,8
+              ,188,168,26,8
 
    CONTROL "",105,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,248,164,86,0
+              ,216,164,75,0
 
    CONTROL "Client Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,9,152,131,26
+              ,8,152,114,26
 
    CONTROL "Service Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,207,152,131,29
+              ,180,152,114,29
 
    CONTROL "",106,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,143,190,0,0
+              ,125,190,0,0
 
 End /* controls */
 
@@ -124,11 +125,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Combobox ServiceLayoutName  */
    FP_CONTROL_ID,                       "100\0"
@@ -137,10 +138,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_TRUE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
@@ -149,24 +149,22 @@ Begin
    FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
    FP_DECODE_TABLE,                     "\0"
    FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
-   FP_LIST_POSITION,                    "220,13\0"
-   FP_LIST_WIDTH,                       "78\0"
+   FP_LIST_POSITION,                    "191,13\0"
+   FP_LIST_WIDTH,                       "68\0"
    FP_LIST_HEIGHT,                      "48\0"
    FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
    FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
    FP_LINK_FIELD,                       FPV_NONE, "\0"
    FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "31\0"
+   FP_DECODE_LENGTH,                    "31\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for List Box Rlb01ELB  */
    FP_CONTROL_ID,                       "101\0"
    FP_CAPTION,                          "\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -189,10 +187,9 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_IMAGE_SOURCE,                     "1,BMP,EXE,1\0"
    FP_IMAGE_SOURCE,                     "2,BMP,EXE,2\0"
@@ -215,17 +212,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column CONTROLNAME  */
@@ -237,17 +232,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column DATATYPE  */
@@ -259,17 +252,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column NUMBYTES  */
@@ -281,17 +272,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "8\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
@@ -301,18 +290,12 @@ Begin
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
    /*  Control Data for List Box Rlb02ELB  */
    FP_CONTROL_ID,                       "102\0"
    FP_CAPTION,                          "\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "200\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -335,10 +318,9 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_IMAGE_SOURCE,                     "1,BMP,EXE,1\0"
    FP_IMAGE_SOURCE,                     "2,BMP,EXE,2\0"
@@ -361,17 +343,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
    /*  Control Data for List Box Column CONTROLNAME  */
@@ -383,17 +363,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column DATATYPE  */
@@ -405,17 +383,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
 
    /*  Control Data for List Box Column NUMBYTES  */
@@ -427,17 +403,15 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_COURIER, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
    FP_TITLE_FONT_SIZE,                  "8\0"
    FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_COURIER, "\0"
+   FP_FONT_CODE,                        "Courier\0"
    FP_FONT_SIZE,                        "8\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "8\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
@@ -447,7 +421,6 @@ Begin
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
    /*  Control Data for Static Text Element:  */
    FP_CONTROL_ID,                       "503\0"
@@ -456,11 +429,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field CLNTELEMENT  */
    FP_CONTROL_ID,                       "103\0"
@@ -469,15 +442,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_BLACK, "\0"
    FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Client:  */
    FP_CONTROL_ID,                       "504\0"
@@ -486,11 +459,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field CLIENTLAYOUT  */
    FP_CONTROL_ID,                       "104\0"
@@ -499,15 +472,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_BLACK, "\0"
    FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Static Text Element:  */
    FP_CONTROL_ID,                       "505\0"
@@ -516,11 +489,11 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
 
    /*  Control Data for Entry Field SRVCELEMENT  */
    FP_CONTROL_ID,                       "105\0"
@@ -529,15 +502,15 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_BLACK, "\0"
    FP_BACKGROUND_COLOR,                 FPV_PALEGRAY, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    /*  Control Data for Entry Field FlWindowMod  */
    FP_CONTROL_ID,                       "106\0"
@@ -546,16 +519,16 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
    FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
    FP_VALID_CONDITION,                  "==,Y\0"
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    FP_END
 End
@@ -626,82 +599,102 @@ End
 *           Listbox Column Bitmaps            *
 **********************************************/
 
+
 #ifndef BITMAP_RID_1
 #define BITMAP_RID_1
 1 BITMAP ARCB0001.BMP
 #endif
+
 #ifndef BITMAP_RID_2
 #define BITMAP_RID_2
 2 BITMAP ARCB0002.BMP
 #endif
+
 #ifndef BITMAP_RID_7
 #define BITMAP_RID_7
 7 BITMAP ARCB0007.BMP
 #endif
+
 #ifndef BITMAP_RID_8
 #define BITMAP_RID_8
 8 BITMAP ARCB0008.BMP
 #endif
+
 #ifndef BITMAP_RID_9
 #define BITMAP_RID_9
 9 BITMAP ARCB0009.BMP
 #endif
+
 #ifndef BITMAP_RID_10
 #define BITMAP_RID_10
 10 BITMAP ARCB0010.BMP
 #endif
+
 #ifndef BITMAP_RID_11
 #define BITMAP_RID_11
 11 BITMAP ARCB0011.BMP
 #endif
+
 #ifndef BITMAP_RID_13
 #define BITMAP_RID_13
 13 BITMAP ARCB0013.BMP
 #endif
+
 #ifndef BITMAP_RID_14
 #define BITMAP_RID_14
 14 BITMAP ARCB0014.BMP
 #endif
+
 #ifndef BITMAP_RID_15
 #define BITMAP_RID_15
 15 BITMAP ARCB0015.BMP
 #endif
+
 #ifndef BITMAP_RID_1
 #define BITMAP_RID_1
 1 BITMAP ARCB0001.BMP
 #endif
+
 #ifndef BITMAP_RID_2
 #define BITMAP_RID_2
 2 BITMAP ARCB0002.BMP
 #endif
+
 #ifndef BITMAP_RID_7
 #define BITMAP_RID_7
 7 BITMAP ARCB0007.BMP
 #endif
+
 #ifndef BITMAP_RID_8
 #define BITMAP_RID_8
 8 BITMAP ARCB0008.BMP
 #endif
+
 #ifndef BITMAP_RID_9
 #define BITMAP_RID_9
 9 BITMAP ARCB0009.BMP
 #endif
+
 #ifndef BITMAP_RID_10
 #define BITMAP_RID_10
 10 BITMAP ARCB0010.BMP
 #endif
+
 #ifndef BITMAP_RID_11
 #define BITMAP_RID_11
 11 BITMAP ARCB0011.BMP
 #endif
+
 #ifndef BITMAP_RID_13
 #define BITMAP_RID_13
 13 BITMAP ARCB0013.BMP
 #endif
+
 #ifndef BITMAP_RID_14
 #define BITMAP_RID_14
 14 BITMAP ARCB0014.BMP
 #endif
+
 #ifndef BITMAP_RID_15
 #define BITMAP_RID_15
 15 BITMAP ARCB0015.BMP

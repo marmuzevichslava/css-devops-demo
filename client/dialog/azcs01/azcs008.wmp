@@ -1,15 +1,15 @@
 /***************************************************************************
 *                                                                          *
-*             O S / 2    W E S   M A P   D E F I N I T I O N               *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
 *                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
 *                                                                          *
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS008                           *
-*                          Generated on: Tue Apr 30 17:20:32 1996          *
+*                          Generated on: Mon Jul 15 06:51:10 1996          *
 *                                    by: MCONNER                           *
+*                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
@@ -41,7 +41,7 @@ unsigned char _grpFiller;
     char _MapLBSelIndData[50];
 #define MapLBSelIndData    pWesMap->_MapLBSelIndData
 
-    unsigned short _MapLBCdStatusIconicData[50];
+    short _MapLBCdStatusIconicData[50];
 #define MapLBCdStatusIconicData    pWesMap->_MapLBCdStatusIconicData
 
     short _MapLBNmRowIndxData[50];
@@ -74,7 +74,7 @@ unsigned char _grpFiller;
 
 typedef struct
 {
-    unsigned short  _MapLBCdStatusIconicData;
+    short  _MapLBCdStatusIconicData;
     short  _MapLBNmRowIndxData;
     char  _MapLBRequestIDData[10];
 }_MapLBRow;

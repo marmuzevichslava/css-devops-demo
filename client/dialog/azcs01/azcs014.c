@@ -1,22 +1,24 @@
 /***************************************************************************
  *                                                                         *
- *           C   W I N D O W S    N T   W I N D O W   F I L E              *
+ *            C  W I N D O W S   N T   W I N D O W   F I L E               *
  *                                                                         *
- *              Copyright (C) 1994, Andersen Consulting.                   *
- *                        All rights reserved.                             *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                      Module File for: AZCS014                           *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Mon Jul 15 06:51:10 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************
  * You may need to define other constants depending on the APIs used       *
  * in your window.                                                         *
  ***************************************************************************/
+
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define WINDOWNAME AZCS014
+
 
 #define INCL_DOS
 #define INCL_WIN
@@ -25,23 +27,6 @@
 /***************************************************************************
  * FOUNDATION Data Structures And Common Functions                         *
  ***************************************************************************/
-/*mdc 03/25/96 These #defines are from the working copy*/
-#define  FND_VERSION2
-#define  FND_CD_INCL
-#define  FND_CF_INCL
-#define  FND_CTCONV_INCL
-#define  FND_EH_INCL
-#define  FND_IM_INCL
-#define  FND_SD_INCL
-#define  FND_PS_INCL
-#define  FND_DD_INCL
-#define  FND_OS_INCL
-#define  FND_ST_INCL
-#define  FND_MS_INCL
-
-
-
-/*mdc 
 #define  FND_CF_INCL
 #define  FND_CTCONV_INCL
 #define  FND_EH_INCL
@@ -50,7 +35,6 @@
 #define  FND_SD_INCL
 #define  FND_ST_INCL
 #define  FND_MS_INCL
-*/
 
 #define WESMAPNAME _AZCS014WesMap
 
@@ -82,24 +66,9 @@
 
 
 /***************************************************************************
- * WESMap Header File                                                      *
- ***************************************************************************/
-#include "azcs014.wmp"
-
-/***************************************************************************
  * CSS Architecture Global Header File                                     *
  ***************************************************************************/
 #include <C1CEAB.H>
-
-/***************************************************************************
- * User Includes.                                                          *
- ***************************************************************************/
-
-/***************************************************************************
- * Copybooks and Source Includes
- ***************************************************************************/
-
-
 
 /***************************************************************************
  * Window Context Data
@@ -114,22 +83,10 @@
 #endif
 
 /***************************************************************************
- * CSS Architecture Global Header File                                     *
+ * WESMap Header File                                                      *
  ***************************************************************************/
-#define INCL_C1CBASE
-#define INCL_C1CCALLBACK
-#include <C1C.H>
+#include "azcs014.wmp"
 
-/***************************************************************************
- * CSS Functional Header File                                              *
- ***************************************************************************/
-/*mdc 03/21/96 not used
-#include <CSS.H>
-*/
-/***************************************************************************
- * Window Header File                                                      *
- ***************************************************************************/
-#include "azcs014.h"
 
 /*************************************************************************** 
  * Application Window Identifiers, window control identifiers and the      *
@@ -140,11 +97,37 @@
 #include "azcs014.gnd"
 
 /***************************************************************************
+ * CSS Architecture Global Header File                                     *
+ ***************************************************************************/
+#define INCL_C1CBASE
+#define INCL_C1CCALLBACK
+#include <C1C.H>
+
+/***************************************************************************
+ * CSS Functional Header File                                              *
+ ***************************************************************************/
+#include <CSS.H>
+
+
+/***************************************************************************
+ * User Includes.                                                          *
+ ***************************************************************************/
+
+/***************************************************************************
+ * Copybooks and Source Includes
+ ***************************************************************************/
+
+
+/***************************************************************************
+ * Window Header File                                                      *
+ ***************************************************************************/
+#include "azcs014.h"
+
+/***************************************************************************
  * Callbacks                                                               *
  ***************************************************************************/
 #include "azcs014.aex"
 #include "archhelp.cb"
-
 #include "azdi0400.c"
 #include "azcs014.cb"
 

@@ -1,15 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *           O S / 2   S E R V I C E   D I S P A T C H   T A B L E         *
+ *    W I N D O W S   N T   S E R V I C E   D I S P A T C H   T A B L E     *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *           Service Dispatch Table for: AZCS01                            *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Mon Jul 15 06:51:10 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 

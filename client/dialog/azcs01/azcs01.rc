@@ -1,15 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *          C   W I N D O W S   N T   R E S O U R C E   F I L E            *
+ *          C  W I N D O W S   N T   R E S O U R C E   F I L E              *
  *                                                                         *
- *                Copyright (C) 1994 Andersen Consulting.                  *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                    Resource file for: AZCS01                            *
- *                         Generated on: Thu Mar 21 14:16:12 1996          *
+ *                         Generated on: Mon Jul 15 06:51:10 1996          *
  *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 #include <windows.h>
@@ -28,14 +28,14 @@ rcinclude n:\archinc\c1cptrs.rch
 
 rcinclude azcs001.dlg
 rcinclude azcs002.dlg
-rcinclude azcs006.dlg
-rcinclude azcs007.dlg
+rcinclude azcs003.dlg
 rcinclude azcs004.dlg
 rcinclude azcs005.dlg
+rcinclude azcs006.dlg
+rcinclude azcs007.dlg
 rcinclude azcs008.dlg
 rcinclude azcs009.dlg
 rcinclude azcs010.dlg
-rcinclude azcs003.dlg
 rcinclude azcs011.dlg
 rcinclude azcs013.dlg
 rcinclude azcs014.dlg
