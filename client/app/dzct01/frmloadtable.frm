@@ -157,10 +157,19 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Const XLT_REMOTE_PATH = "/sw/working/pvcs/xltmap"
+Const XLT_LOG_PATH = "/sw/working/pvcs/cte/xltmap"
+Const XLT_LOG_FILE = "cte_xlt.log"
+Const DAT_LOG_PATH = "/sw/working/pvcs/cte/dat"
+Const DAT_LOG_FILE = "cte_dat.log"
 Const KCOD_PATH = "c:\dev\fnd32\data"
-Const BASE_PATH = "k:\data\codestbl\tablechange"
 Const KCOD_NAME = "KCODF010.TBL"
+Const XLT_WORKING_DIR = "c:\temp\cte_xlt"
+Const DAT_WORKING_DIR = "c:\temp\cte_dat"
+Const FILE_IN_LOG_ARG = 1
+Const REV_NUM_ARG = 2
+Const STAMP_ARG = 3
+Const USER_ARG = 4
+Const FILE_NAME_ARG = 9
 Const TOTAL_STEPS = 10
 Const TOTAL_STEPS_NO_DAT = 9
 Const TOTAL_STEPS_NO_XLT = 7
@@ -176,74 +185,80 @@ Public sRemoteKcodFile As String
 Public sLocalKcodFile As String
 Public sArchiveKcodFile As String
 Public sServer As String
-Public sDatPath As String
-Public sDatArchivePath As String
-Public sXltPath As String
-Public sXltArchivePath As String
-Public sXltRemotePath As String
+Public sRemoteDatLogDir As String
+Public sRemoteDatLogFile As String
+Public sLocalDatLogFile As String
+Public sLocalDatFile As String
+Public sLocalXltLogFile As String
+Public sRemoteXltLogDir As String
+Public sRemoteXltLogFile As String
+Public sLocalXltFile As String
+Public sRevNum As String
+Public sInputStamp As String
+Public sInputUser As String
 Public mywdj As New wdj
 Public myftp As New FTP
 
 '***************************************************************************************************************
 Private Sub Form_Load()
 '***************************************************************************************************************
-Dim mycodestable As New CodesTable
-Dim ctr As Integer
-Dim Decode As String
-
-'Populate the Environment combo box
-ctr = 0
-
-With mycodestable
-    .Table = "tblEnvironment"
-    .CodeColumn = "code"
-    .DecodeColumn = "environment"
-    .SortDecode = True
-End With
-
-mycodestable.Retrieve
-
-Do
-    If (mycodestable.Decode(ctr) = vbNullChar) Then Exit Do
-    If Len(mycodestable.Decode(ctr)) Then
-        cboEnvironment.AddItem mycodestable.Decode(ctr)
-    End If
-    ctr = ctr + 1
-Loop
-
-cboEnvironment.Text = mycodestable.Decode(0)
-
-'Populate the Project combo box
-ctr = 0
-
-With mycodestable
-    .Table = "tblProjectEnv"
-    .CodeColumn = "code"
-    .DecodeColumn = "projectenv"
-    .SortDecode = True
-End With
-
-mycodestable.Retrieve
-
-Do
-    If (mycodestable.Decode(ctr) = vbNullChar) Then Exit Do
-    If Len(mycodestable.Decode(ctr)) Then
-        cboProject.AddItem mycodestable.Decode(ctr)
-    End If
-    ctr = ctr + 1
-Loop
-
-cboProject.Text = mycodestable.Decode(0)
-
-Me.optBoth = True
-
-sbStatusBar.Panels(1).Width = Me.Width * 0.64
-sbStatusBar.Panels(2).Width = Me.Width * 0.33
-sbStatusBar.Panels(1).Text = "Ready."
-pBar.Height = sbStatusBar.Height - 42
-pBar.Width = sbStatusBar.Panels(2).Width - 50
-
-End Sub
+    Dim mycodestable As New CodesTable
+    Dim ctr As Integer
+    Dim Decode As String
+    
+    'Populate the Environment combo box
+    ctr = 0
+    
+    With mycodestable
+        .Table = "tblEnvironment"
+        .CodeColumn = "code"
+        .DecodeColumn = "environment"
+        .SortDecode = True
+    End With
+    
+    mycodestable.Retrieve
+    
+    Do
+        If (mycodestable.Decode(ctr) = vbNullChar) Then Exit Do
+        If Len(mycodestable.Decode(ctr)) Then
+            cboEnvironment.AddItem mycodestable.Decode(ctr)
+        End If
+        ctr = ctr + 1
+    Loop
+    
+    cboEnvironment.Text = mycodestable.Decode(0)
+    
+    'Populate the Project combo box
+    ctr = 0
+    
+    With mycodestable
+        .Table = "tblProjectEnv"
+        .CodeColumn = "code"
+        .DecodeColumn = "projectenv"
+        .SortDecode = True
+    End With
+    
+    mycodestable.Retrieve
+    
+    Do
+        If (mycodestable.Decode(ctr) = vbNullChar) Then Exit Do
+        If Len(mycodestable.Decode(ctr)) Then
+            cboProject.AddItem mycodestable.Decode(ctr)
+        End If
+        ctr = ctr + 1
+    Loop
+    
+    cboProject.Text = mycodestable.Decode(0)
+    
+    Me.optBoth = True
+    
+    sbStatusBar.Panels(1).Width = Me.Width * 0.64
+    sbStatusBar.Panels(2).Width = Me.Width * 0.33
+    sbStatusBar.Panels(1).Text = "Ready."
+    pBar.Height = sbStatusBar.Height - 42
+    pBar.Width = sbStatusBar.Panels(2).Width - 50
+    
+    End Sub
 '***************************************************************************************************************
 Private Sub mnuClose_Click()
 '***************************************************************************************************************
@@ -309,7 +324,7 @@ Private Sub mnuLoad_Click()
         pBar.Value = pBar.Value + 1
         sbStatusBar.Panels(1).Text = "Downloading all xlt maps"
         sbStatusBar.Refresh
-        If Not GetXltMaps Then
+         If Not GetXltMaps Then
             Unload Me
             Exit Sub
         End If
@@ -325,6 +340,15 @@ Private Sub mnuLoad_Click()
     End If
     
     If Not bNoDat Then
+        'Get all dats from remote server
+        pBar.Value = pBar.Value + 1
+        sbStatusBar.Panels(1).Text = "Downloading all codes tables"
+        sbStatusBar.Refresh
+        If Not GetCodesTables Then
+            Unload Me
+            Exit Sub
+        End If
+
         'Load codes tables
         pBar.Value = pBar.Value + 1
         sbStatusBar.Panels(1).Text = "Loading dat's to " & KCOD_NAME
@@ -334,27 +358,7 @@ Private Sub mnuLoad_Click()
             Exit Sub
         End If
     End If
-
-    'Archive xlt's and dat's
-    pBar.Value = pBar.Value + 1
-    sbStatusBar.Panels(1).Text = "Archiving dat's and xlt's"
-    sbStatusBar.Refresh
-    If Not Archive(bNoDat, bNoXlt) Then
-        Unload Me
-        Exit Sub
-    End If
-    
-    If Not bNoXlt Then
-        'Remove remote xlt maps
-        pBar.Value = pBar.Value + 1
-        sbStatusBar.Panels(1).Text = "Removing remote xlt's"
-        sbStatusBar.Refresh
-        If Not RemoveRemoteXlt Then
-            Unload Me
-            Exit Sub
-        End If
-    End If
-    
+  
     'Put new kcod file in direcory structure
     pBar.Value = pBar.Value + 1
     sbStatusBar.Panels(1).Text = "Putting new " & KCOD_NAME
@@ -389,6 +393,59 @@ Private Sub mnuLoad_Click()
     sbStatusBar.Refresh
     
 End Sub
+
+'***************************************************************************************************************
+Function InitializeSettings() As Boolean
+'***************************************************************************************************************
+    Dim mycodestable As New CodesTable
+    Dim ctr As Integer
+    Dim sFile As String
+    Dim msg As String
+    Dim RC As Integer
+                    
+    On Error GoTo ErrorHandler
+    
+    'Initialize Variables
+    sRemoteKcodFile = "/sw/c1/" & cboProject.Text & "/client/" & cboEnvironment.Text & "/runtime/nt/codestbl/" & KCOD_NAME
+    sLocalKcodFile = KCOD_PATH & "\" & KCOD_NAME
+    sArchiveKcodFile = "/sw/c1/" & cboProject.Text & "/client/" & cboEnvironment.Text & "/runtime/nt/codestbl/" & KCOD_NAME & ".BAK"
+    sRemoteDatLogDir = DAT_LOG_PATH & "/" & cboProject.Text & "/" & cboEnvironment.Text
+    sRemoteDatLogFile = sRemoteDatLogDir & "/" & DAT_LOG_FILE
+    sLocalDatLogFile = DAT_WORKING_DIR & "\" & DAT_LOG_FILE
+    sLocalXltLogFile = XLT_WORKING_DIR & "\" & XLT_LOG_FILE
+    sRemoteXltLogDir = XLT_LOG_PATH & "/" & cboProject.Text & "/" & cboEnvironment.Text
+    sRemoteXltLogFile = sRemoteXltLogDir & "/" & XLT_LOG_FILE
+               
+    'Find out what server the project resides on
+    strsql = "Select server " _
+             & "From tblProjectEnv " _
+             & "Where projectenv = " & Chr(39) & cboProject.Text & Chr(39)
+             
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    If Not DaoRS.EOF Then
+        sServer = DaoRS(0).Value
+    Else
+        DaoRS.Close
+        Err.Raise 1, "DAO", "Database Error - No rows returned for server name."
+    End If
+
+    DaoRS.Close
+    InitializeSettings = True
+    
+    Exit Function
+    
+ErrorHandler:
+    
+msg = "An error occured while initializing variables. " & vbCrLf _
+                & "Number = " & Err.Number & vbCrLf _
+                & "Description: " & Err.Description & vbCrLf
+        
+    Screen.MousePointer = vbNormal
+    RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
+    InitializeSettings = False
+    
+End Function
 '***************************************************************************************************************
 Function RestoreTblFile() As Boolean
 '***************************************************************************************************************
@@ -428,7 +485,7 @@ Function PutTblFile() As Boolean
         .PutFile
     End With
 
-    'Check to see if get was successful
+    'Check to see if put was successful
     If myftp.Error Then
                
          msg = "An error occured while putting " & sRemoteKcodFile & vbCrLf _
@@ -442,87 +499,7 @@ Function PutTblFile() As Boolean
     End If
     
 End Function
-'***************************************************************************************************************
-Function RemoveRemoteXlt() As Boolean
-'***************************************************************************************************************
-    Dim msg As String
-    Dim RC As Integer
-    
-    With myftp
-        .HostName = sServer
-        .UserName = USER
-        .Password = PWD
-        .RemoteDirectory = sXltRemotePath
-        .RemoteFile = "*.xlt"
-        .ErrorMessageBox = True
-        .DeleteDirectory
-    End With
 
-    If myftp.Error Then
-        
-         msg = "Xlt maps were not removed from holding area on " & sServer & vbCrLf _
-                & "Do you want to continue with process?" & vbCrLf
-        
-        Screen.MousePointer = vbNormal
-        RC = MsgBox(msg, vbYesNo + vbQuestion, App.Title)
-        If RC = vbYes Then
-            RemoveRemoteXlt = True
-            Screen.MousePointer = vbHourglass
-        Else
-            RemoveRemoteXlt = False
-        End If
-    Else
-        RemoveRemoteXlt = True
-    End If
-    
-End Function
-'***************************************************************************************************************
-Function Archive(ByVal bNoDat As Boolean, ByVal bNoXlt As Boolean) As Boolean
-'***************************************************************************************************************
-    Dim sFile As String
-    Dim msg As String
-    Dim RC As Integer
-    
-    On Error GoTo ErrorHandler
-    
-    If Not bNoDat Then
-        sFile = Dir(sDatPath & "\*")
-        Do While sFile <> ""
-            FileCopy sDatPath & "\" & sFile, sDatArchivePath & "\" & sFile
-            Kill sDatPath & "\" & sFile
-            sFile = Dir
-        Loop
-    End If
-    
-    If Not bNoXlt Then
-        sFile = Dir(sXltPath & "\*")
-        Do While sFile <> ""
-            FileCopy sXltPath & "\" & sFile, sXltArchivePath & "\" & sFile
-            Kill sXltPath & "\" & sFile
-            sFile = Dir
-        Loop
-    End If
-    
-    Archive = True
-    Exit Function
-    
-ErrorHandler:
-       
-    msg = "An error occured archiving files." & vbCrLf _
-                & "Number = " & Err.Number & vbCrLf _
-                & "Description: " & Err.Description & vbCrLf _
-                & "Do you want to continue with process?" & vbCrLf
-                
-    Screen.MousePointer = vbNormal
-    RC = MsgBox(msg, vbYesNo + vbQuestion, App.Title)
-        If RC = vbYes Then
-            Archive = True
-            Screen.MousePointer = vbHourglass
-        Else
-            Archive = False
-        End If
-
-End Function
 '***************************************************************************************************************
 Function LoadCodesTables() As Boolean
 '***************************************************************************************************************
@@ -530,11 +507,30 @@ Function LoadCodesTables() As Boolean
     Dim sKcodTime1 As Variant
     Dim sKcodTime2 As Variant
     Dim msg As String
+    Dim sLine As String
     Dim RC As Integer
+    Dim iFileNum As Integer
+    Dim iFileNum2 As Integer
+    Dim sCurDateTime As String
+    Dim sDatLoadLogName As String
+    Dim sRemoteDatLoadFile As String
+    Dim sLoadStamp As String
+    Dim sLoadLogFile As String
+    Dim sTimestamp As String
+    Dim sCurLoadDate As String
+    Const LOAD_LOG_FILE = "datload.log"
     
     On Error GoTo ErrorHandler
     
-    sFile = Dir(sDatPath & "\*")
+    'Get current date and time for dat log archive file name.
+    sCurDateTime = Now
+    sTimestamp = Format(sCurDateTime, "yyyymmddhhmmss")
+
+    sLoadLogFile = DAT_WORKING_DIR & "\" & LOAD_LOG_FILE
+
+    iFileNum = FreeFile
+
+    sFile = Dir(DAT_WORKING_DIR & "\*.dat")
     If sFile <> "" Then
         Do While sFile <> ""
             sKcodTime1 = FileDateTime(KCOD_PATH & "\" & KCOD_NAME)
@@ -543,7 +539,7 @@ Function LoadCodesTables() As Boolean
             
             'Load dat files
             With mywdj
-                .Command = DAT_LOAD_EXE & " " & sDatPath & "\" & sFile
+                .Command = DAT_LOAD_EXE & " " & DAT_WORKING_DIR & "\" & sFile
                 .Execute
             End With
             
@@ -557,15 +553,69 @@ Function LoadCodesTables() As Boolean
                 RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
                 LoadCodesTables = False
                 Exit Function
+            Else
+                sLoadStamp = Now
+                sCurLoadDate = Format(sLoadStamp, "d mmm yyyy hh:mm:ss")
+                iFileNum = FreeFile
+                Open sLocalDatLogFile For Input As iFileNum
+                Do Until EOF(iFileNum)
+                    Line Input #iFileNum, sLine
+                    If (InStr(sLine, sFile) And Not InStr(sLine, "loaded")) Then
+                        iFileNum2 = FreeFile
+                        'Append load info. to input dat log.
+                        Open sLoadLogFile For Append As iFileNum2
+                        Print #iFileNum2, sLine & ",loaded by " & CurrentUser & " on " & sCurLoadDate
+                        Close iFileNum2
+                    End If
+                Loop
+                
+                Close iFileNum
+                
+                sFile = Dir
             End If
-            
-            LoadCodesTables = True
-            sFile = Dir
         Loop
+        
+        sDatLoadLogName = Dir(sLoadLogFile)
+        sRemoteDatLoadFile = DAT_LOG_PATH & "/" & cboProject.Text & "/" _
+                        & cboEnvironment.Text & "/archive/" & sDatLoadLogName & "." & sTimestamp
+               
+        'FTP the datload.log to the UNIX server.
+        With myftp
+            .HostName = sServer
+            .UserName = USER
+            .Password = PWD
+            .RemoteFile = sRemoteDatLoadFile
+            .LocalFile = sLoadLogFile
+            .ErrorMessageBox = True
+            .PutFile
+        End With
+        
+        'Check to see if put was successful
+        If myftp.Error Then
+            Err.Raise 1, , "FTP ERROR. Could not put " & sDatLoadLogName
+        End If
+        
+        'Remove the remote input dat log file.
+        With myftp
+             .ErrorMessageBox = True
+             .HostName = sServer
+             .UserName = USER
+             .Password = PWD
+             .RemoteDirectory = sRemoteDatLogDir
+             .RemoteFile = DAT_LOG_FILE & "*"
+             .DeleteDirectory
+        End With
+                
+        'Check to see if remove was successful.
+        If myftp.Error Then
+            Err.Raise 1, , "FTP ERROR. Could not delete " & sRemoteDatLogFile
+        End If
+        
+        LoadCodesTables = True
+        
     Else
-
-        msg = "No dat files were found." & vbCrLf _
-                & "Do you want to continue with process?" & vbCrLf
+        msg = "No dat files were found to be loaded." & vbCrLf _
+              & "Do you want to continue with process?" & vbCrLf
                 
         Screen.MousePointer = vbNormal
         RC = MsgBox(msg, vbYesNo + vbQuestion, App.Title)
@@ -577,10 +627,19 @@ Function LoadCodesTables() As Boolean
         End If
     End If
 
+    sFile = Dir(DAT_WORKING_DIR & "\*")
+    Do While sFile <> ""
+        Kill DAT_WORKING_DIR & "\" & sFile
+        sFile = Dir
+    Loop
+    
+    RmDir (DAT_WORKING_DIR)
+    
     Exit Function
+    
 ErrorHandler:
     
-    msg = "An error occured while loading xlt maps. " & vbCrLf _
+    msg = "An error occured while loading codes tables. " & vbCrLf _
                 & "Number = " & Err.Number & vbCrLf _
                 & "Description: " & Err.Description & vbCrLf
         
@@ -590,76 +649,175 @@ ErrorHandler:
     
 End Function
 '***************************************************************************************************************
-Function InitializeSettings() As Boolean
+Function GetCodesTables() As Boolean
 '***************************************************************************************************************
-    Dim mycodestable As New CodesTable
-    Dim ctr As Integer
     Dim sFile As String
-    Dim sDate As String
     Dim msg As String
+    Dim CurLine As String
+    Dim sRemoteDatFile As String
+    Dim sDatFileName As String
     Dim RC As Integer
-    
-    sDate = Date
-    
-    On Error GoTo ErrorHandler
-    
-    'Initialize Variables
-    sRemoteKcodFile = "/sw/c1/" & cboProject.Text & "/client/" & cboEnvironment.Text & "/runtime/nt/codestbl/" & KCOD_NAME
-    sLocalKcodFile = KCOD_PATH & "\" & KCOD_NAME
-    sArchiveKcodFile = BASE_PATH & "\" & cboProject.Text & "\" & KCOD_NAME & "." _
-                    & cboEnvironment.Text _
-                    & "." _
-                    & ParseString(sDate, "/", 1) _
-                    & ParseString(sDate, "/", 2) _
-                    & ParseString(sDate, "/", 3)
-    sDatPath = BASE_PATH & "\" & cboProject.Text & "\dat\" & cboEnvironment.Text
-    sDatArchivePath = BASE_PATH & "\" & cboProject.Text & "\dat\archive\" & cboEnvironment.Text
-    sXltPath = BASE_PATH & "\" & cboProject.Text & "\xlt\" & cboEnvironment.Text
-    sXltArchivePath = BASE_PATH & "\" & cboProject.Text & "\xlt\archive\" & cboEnvironment.Text
-    sXltRemotePath = XLT_REMOTE_PATH & "/" & cboProject.Text & "/" & cboEnvironment.Text
-         
-    'Find out what server the project resides on
-    strsql = "Select server " _
-             & "From tblProjectEnv " _
-             & "Where projectenv = " & Chr(39) & cboProject.Text & Chr(39)
-             
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-    If Not DaoRS.EOF Then
-        sServer = DaoRS(0).Value
-    Else
-        DaoRS.Close
-        Err.Raise 1, "DAO", "Database Error - No rows returned for server name."
+    Dim iFileNum As Integer
+            
+    'Check to see if xlt working path exists.
+    If (Dir(DAT_WORKING_DIR, vbDirectory) = "") Then
+        MkDir (DAT_WORKING_DIR)
     End If
-
-    DaoRS.Close
-    InitializeSettings = True
     
+    sFile = Dir(DAT_WORKING_DIR)
+    Do While sFile <> ""
+        Kill DAT_WORKING_DIR & "\" & sFile
+        sFile = Dir
+    Loop
+        
+    'Get the dat log file from the remote server
+    If Not GetDatLogFile Then
+        Unload Me
+        Exit Function
+    End If
+    
+    If (Not Dir(sLocalDatLogFile, vbNormal) = "") Then
+        'Open dat log file.
+        iFileNum = FreeFile
+        Open sLocalDatLogFile For Input As iFileNum
+            
+        'Priming read on dat log  file.
+        Line Input #iFileNum, CurLine
+    
+        Do Until EOF(iFileNum)
+        
+            'Parse out the dat remote file path and name.
+            sRemoteDatFile = ParseString(CurLine, ",", FILE_IN_LOG_ARG)
+            sDatFileName = ParseString(sRemoteDatFile, "/", FILE_NAME_ARG)
+            sLocalDatFile = DAT_WORKING_DIR & "\" & sDatFileName
+                              
+            On Error GoTo ErrorHandler
+            
+            'Get remote xltmap file.
+            With myftp
+                .HostName = sServer
+                .UserName = USER
+                .Password = PWD
+                .RemoteFile = sRemoteDatFile
+                .LocalFile = sLocalDatFile
+                .ErrorMessageBox = True
+                .GetFile
+            End With
+            
+            If myftp.Error Then
+                Err.Raise 1, , "FTP ERROR. Could not get " & sRemoteDatFile
+            End If
+                            
+            'Get the next line.
+            Line Input #iFileNum, CurLine
+        Loop
+        
+        'Close input file.
+        Close iFileNum
+    End If
+          
+    GetCodesTables = True
+        
     Exit Function
-    
+   
 ErrorHandler:
-    
-msg = "An error occured while initializing variables. " & vbCrLf _
+    msg = "An error occured while getting codes tables." & vbCrLf _
                 & "Number = " & Err.Number & vbCrLf _
                 & "Description: " & Err.Description & vbCrLf
         
     Screen.MousePointer = vbNormal
     RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
-    InitializeSettings = False
     
+    sFile = Dir(DAT_WORKING_DIR & "\*")
+    Do While sFile <> ""
+        Kill DAT_WORKING_DIR & "\" & sFile
+        sFile = Dir
+    Loop
+    
+    RmDir (DAT_WORKING_DIR)
+    
+    GetCodesTables = False
+End Function
+
+'***************************************************************************************************************
+Function GetDatLogFile() As Boolean
+'***************************************************************************************************************
+    Dim msg As String
+    Dim RC As Integer
+    Dim bCheckFlag As Boolean
+    Dim iCtr As Integer
+    Dim iFileNum As Integer
+    Dim sFile As String
+    
+    iCtr = 1
+    bCheckFlag = True
+    
+    'Get remote log file.
+    With myftp
+        .HostName = sServer
+        .UserName = USER
+        .Password = PWD
+        .RemoteFile = sRemoteDatLogFile
+        .LocalFile = sLocalDatLogFile
+        .ErrorMessageBox = True
+        .GetFile
+    End With
+
+    'Check to see if get was successful
+    If myftp.Error Then
+        msg = "FTP ERROR. Could not get dat log file from " & sServer & vbCrLf _
+              & "Do you want to continue with process?" & vbCrLf
+       
+        Screen.MousePointer = vbNormal
+        RC = MsgBox(msg, vbYesNo + vbQuestion, App.Title)
+        If RC = vbYes Then
+            GetDatLogFile = True
+            Screen.MousePointer = vbHourglass
+        Else
+            GetDatLogFile = False
+        End If
+    Else
+        'Open dat log file.
+        iFileNum = FreeFile
+        Open sLocalDatLogFile For Append As iFileNum
+        
+        'Print blank line so last valid line will be read.
+        Print #iFileNum, ""
+        
+        Close iFileNum
+               
+        GetDatLogFile = True
+    End If
+         
 End Function
 '***************************************************************************************************************
 Function LoadXltMaps() As Boolean
 '***************************************************************************************************************
     Dim iFileNum As Integer
+    Dim iFileNum2 As Integer
     Dim sFile As String
+    Dim sCurDateTime As String
     Dim msg As String
     Dim RC As Integer
     Dim sLine As String
     Dim sNoExt As String
+    Dim sRemoteMapLogFileName As String
+    Dim sRemoteMapLog As String
+    Dim sLoadStamp As String
+    Dim sLoadLogFile As String
+    Dim sMapLogFileName As String
+    Dim sTimestamp As String
+    Dim sCurLoadDate As String
     Dim bFound As Boolean
+    Const LOAD_LOG_FILE = "mapload.log"
     
     On Error GoTo ErrorHandler
+    
+    'Get current date and time for xlt log archive file name.
+    sCurDateTime = Now
+    sTimestamp = Format(sCurDateTime, "yyyymmddhhmmss")
+    
+    sLoadLogFile = XLT_WORKING_DIR & "\" & LOAD_LOG_FILE
 
     iFileNum = FreeFile
     
@@ -674,10 +832,10 @@ Function LoadXltMaps() As Boolean
     Print #iFileNum, " "
     Print #iFileNum, "[Files]"
        
-    sFile = Dir(sXltPath & "\*")
+    sFile = Dir(XLT_WORKING_DIR & "\*.xlt")
     If sFile <> "" Then
         Do While sFile <> ""
-            Print #iFileNum, sXltPath & "\" & sFile
+            Print #iFileNum, XLT_WORKING_DIR & "\" & sFile
             sFile = Dir
         Loop
         
@@ -694,8 +852,8 @@ Function LoadXltMaps() As Boolean
             .Command = MAP_LOAD_EXE & " ### " & MAP_LOAD_CFG
             .Execute
         End With
-        
-        sFile = Dir(sXltPath & "\*")
+                
+        sFile = Dir(XLT_WORKING_DIR & "\*.xlt")
         Do While sFile <> ""
             iFileNum = FreeFile
             bFound = False
@@ -717,15 +875,68 @@ Function LoadXltMaps() As Boolean
                 LoadXltMaps = False
                 Exit Function
             Else
+                sLoadStamp = Now
+                sCurLoadDate = Format(sLoadStamp, "d mmm yyyy hh:mm:ss")
+                iFileNum = FreeFile
+                Open sLocalXltLogFile For Input As iFileNum
+                Do Until EOF(iFileNum)
+                    Line Input #iFileNum, sLine
+                    If (InStr(sLine, sFile) And Not InStr(sLine, "loaded")) Then
+                        iFileNum2 = FreeFile
+                        'Append load info. to input dat log.
+                        Open sLoadLogFile For Append As iFileNum2
+                        Print #iFileNum2, sLine & ",loaded by " & CurrentUser & " on " & sCurLoadDate
+                        Close iFileNum2
+                    End If
+                Loop
+                
+                Close iFileNum
+                           
                 sFile = Dir
             End If
         Loop
+        
+        sMapLogFileName = Dir(sLoadLogFile)
+        sRemoteMapLog = XLT_LOG_PATH & "/" & cboProject.Text & "/" _
+                        & cboEnvironment.Text & "/archive/" & sMapLogFileName & "." & sTimestamp
+               
+        'FTP the mapload.log to the UNIX server.
+        With myftp
+            .HostName = sServer
+            .UserName = USER
+            .Password = PWD
+            .RemoteFile = sRemoteMapLog
+            .LocalFile = sLoadLogFile
+            .ErrorMessageBox = True
+            .PutFile
+        End With
+        
+        'Check to see if put was successful
+        If myftp.Error Then
+            Err.Raise 1, , "FTP ERROR. Could not put " & sRemoteMapLog
+        End If
+        
+        'Remove the remote input xlt log file.
+        With myftp
+             .ErrorMessageBox = True
+             .HostName = sServer
+             .UserName = USER
+             .Password = PWD
+             .RemoteDirectory = sRemoteXltLogDir
+             .RemoteFile = XLT_LOG_FILE & "*"
+             .DeleteDirectory
+        End With
+                
+        'Check to see if remove was successful.
+        If myftp.Error Then
+            Err.Raise 1, , "FTP ERROR. Could not delete " & sRemoteXltLogFile
+        End If
         
         LoadXltMaps = True
     Else
         Close iFileNum
         
-        msg = "No xlt maps were found." & vbCrLf _
+        msg = "No xlt maps were found to be loaded." & vbCrLf _
                 & "Do you want to continue with process?" & vbCrLf
                         
         Screen.MousePointer = vbNormal
@@ -736,7 +947,15 @@ Function LoadXltMaps() As Boolean
         Else
             LoadXltMaps = False
         End If
-   End If
+    End If
+  
+    sFile = Dir(XLT_WORKING_DIR & "\*")
+    Do While sFile <> ""
+        Kill XLT_WORKING_DIR & "\" & sFile
+        sFile = Dir
+    Loop
+    
+    RmDir (XLT_WORKING_DIR)
     
     Exit Function
 
@@ -745,9 +964,8 @@ ErrorHandler:
     msg = "An error occured while loading xlt maps. " & vbCrLf _
                 & "Number = " & Err.Number & vbCrLf _
                 & "Description: " & Err.Description & vbCrLf
-        
     Screen.MousePointer = vbNormal
-    RC = MsgBox(msg, vbOKOnly + vbCritical, App.Title)
+    RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
     LoadXltMaps = False
     
 End Function
@@ -756,63 +974,145 @@ Function GetXltMaps() As Boolean
 '***************************************************************************************************************
     Dim sFile As String
     Dim msg As String
+    Dim CurLine As String
+    Dim sRemoteXltFile As String
+    Dim sXltFileName As String
     Dim RC As Integer
-    
-    On Error GoTo ErrorHandler
-    
-    'Remove all files from the xlt map area
-    sFile = Dir(sXltPath & "\*")
-    Do While sFile <> ""
-        Kill sXltPath & "\" & sFile
-        sFile = Dir
-    Loop
-    
-    'Get all xlt maps from remote server
-    With myftp
-        .HostName = sServer
-        .UserName = USER
-        .Password = PWD
-        .RemoteDirectory = sXltRemotePath
-        .LocalDirectory = sXltPath
-        .RemoteFile = "*.xlt"
-        .ErrorMessageBox = True
-        .GetDirectory
-    End With
-    
-    If myftp.Error Then
-         msg = "Xlt maps were not ftp'd from " & sServer & vbCrLf _
-                & "Do you want to continue with process?" & vbCrLf
-        
-        Screen.MousePointer = vbNormal
-        RC = MsgBox(msg, vbYesNo + vbQuestion, App.Title)
-        If RC = vbYes Then
-            GetXltMaps = True
-            Screen.MousePointer = vbHourglass
-        Else
-            GetXltMaps = False
-        End If
-        
-        sFile = Dir(sXltPath & "\*")
-        Do While sFile <> ""
-            Kill sXltPath & "\" & sFile
-            sFile = Dir
-        Loop
-    Else
-        GetXltMaps = True
+    Dim iFileNum As Integer
+            
+    'Check to see if xlt working path exists.
+    'If not, then create it.  If yes, delete its contents.
+    If (Dir(XLT_WORKING_DIR, vbDirectory) = "") Then
+        MkDir (XLT_WORKING_DIR)
     End If
     
-    Exit Function
+    sFile = Dir(XLT_WORKING_DIR & "\*")
+    Do While sFile <> ""
+        Kill XLT_WORKING_DIR & "\" & sFile
+        sFile = Dir
+    Loop
+        
+    'Get the xlt log file from the remote server
+    If Not GetXltLogFile Then
+        Unload Me
+        Exit Function
+    End If
     
-ErrorHandler:
+    If (Not Dir(sLocalXltLogFile, vbNormal) = "") Then
+        'Open xlt log file.
+        iFileNum = FreeFile
+        Open sLocalXltLogFile For Input As iFileNum
             
-    msg = "An error occured while backing up " & KCOD_NAME & vbCrLf _
+        'Priming read on xlt log  file.
+        Line Input #iFileNum, CurLine
+    
+        Do Until EOF(iFileNum)
+        
+            'Parse out the xlt remote file path and name.
+            sRemoteXltFile = ParseString(CurLine, ",", FILE_IN_LOG_ARG)
+            sXltFileName = ParseString(sRemoteXltFile, "/", FILE_NAME_ARG)
+            sLocalXltFile = XLT_WORKING_DIR & "\" & sXltFileName
+                              
+            On Error GoTo ErrorHandler
+            
+            'Get remote xltmap file.
+            With myftp
+                .HostName = sServer
+                .UserName = USER
+                .Password = PWD
+                .RemoteFile = sRemoteXltFile
+                .LocalFile = sLocalXltFile
+                .ErrorMessageBox = True
+                .GetFile
+            End With
+            
+            If myftp.Error Then
+                Err.Raise 1, , "FTP ERROR. Could not get " & sRemoteXltFile
+            End If
+                            
+            'Get the next line.
+            Line Input #iFileNum, CurLine
+        Loop
+        
+        'Close input file.
+        Close iFileNum
+    End If
+          
+    GetXltMaps = True
+        
+    Exit Function
+   
+ErrorHandler:
+    msg = "An error occured while getting xltmaps." & vbCrLf _
                 & "Number = " & Err.Number & vbCrLf _
                 & "Description: " & Err.Description & vbCrLf
         
     Screen.MousePointer = vbNormal
     RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
+    
+    sFile = Dir(XLT_WORKING_DIR & "\*")
+    Do While sFile <> ""
+        Kill XLT_WORKING_DIR & "\" & sFile
+        sFile = Dir
+    Loop
+    
+    RmDir (XLT_WORKING_DIR)
+    
     GetXltMaps = False
 End Function
+
+'***************************************************************************************************************
+Function GetXltLogFile() As Boolean
+'***************************************************************************************************************
+    Dim msg As String
+    Dim RC As Integer
+    Dim bCheckFlag As Boolean
+    Dim iCtr As Integer
+    Dim iFileNum As Integer
+    Dim sFile As String
+    
+    iCtr = 1
+    bCheckFlag = True
+    
+    'Get remote log file.
+    With myftp
+        .HostName = sServer
+        .UserName = USER
+        .Password = PWD
+        .RemoteFile = sRemoteXltLogFile
+        .LocalFile = sLocalXltLogFile
+        .ErrorMessageBox = True
+        .GetFile
+    End With
+
+    'Check to see if get was successful
+    If myftp.Error Then
+        msg = "FTP ERROR. Could not get xlt log file from " & sServer & vbCrLf _
+              & "Do you want to continue with process?" & vbCrLf
+       
+        Screen.MousePointer = vbNormal
+        RC = MsgBox(msg, vbYesNo + vbQuestion, App.Title)
+        If RC = vbYes Then
+            GetXltLogFile = True
+            Screen.MousePointer = vbHourglass
+        Else
+            GetXltLogFile = False
+        End If
+    Else
+        'Open xlt log file.
+        iFileNum = FreeFile
+        Open sLocalXltLogFile For Append As iFileNum
+        
+        'Print blank line so last valid line will be read.
+        Print #iFileNum, ""
+        
+        Close iFileNum
+               
+        GetXltLogFile = True
+    End If
+         
+End Function
+
 '***************************************************************************************************************
 Function GetTblFile() As Boolean
 '***************************************************************************************************************
@@ -840,31 +1140,22 @@ Function GetTblFile() As Boolean
 
     'Check to see if get was successful
     If myftp.Error Then
-        Err.Raise 1, , "FTP ERROR.  Could not get file"
+        Err.Raise 1, , "FTP ERROR.  Could not get " & sRemoteKcodFile & "."
     End If
-    
-    While (bCheckFlag)
-        sFile = Dir(sArchiveKcodFile & "." & iCtr)
-        If (Len(sFile) = 0) Then
-            bCheckFlag = False
-        Else
-            iCtr = iCtr + 1
-        End If
-    Wend
-    
+
     With myftp
         .HostName = sServer
         .UserName = USER
         .Password = PWD
-        .RemoteFile = sRemoteKcodFile
-        .LocalFile = sArchiveKcodFile & "." & iCtr
+        .RemoteFile = sArchiveKcodFile
+        .LocalFile = sLocalKcodFile
         .ErrorMessageBox = True
-        .GetFile
+        .PutFile
     End With
-    
+
     'Check to see if get was successful
     If myftp.Error Then
-        Err.Raise 1, , "FTP ERROR.  Could not get file"
+        Err.Raise 1, , "FTP ERROR.  Could not put " & sArchiveKcodFile & "."
     End If
     
     GetTblFile = True
@@ -903,17 +1194,15 @@ Function BackupTblFile() As Boolean
     BackupTblFile = True
     
     Exit Function
-    
+
 ErrorHandler:
-            
+
     msg = "An error occured while backing up " & KCOD_NAME & vbCrLf _
                 & "Number = " & Err.Number & vbCrLf _
                 & "Description: " & Err.Description & vbCrLf
-        
+
     Screen.MousePointer = vbNormal
     RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
     BackupTblFile = False
 End Function
-
-
 

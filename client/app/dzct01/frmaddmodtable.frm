@@ -301,9 +301,9 @@ Private Sub cmdAddTbl_Click()
     If (txtDescription.Text = "") Then txtDescription.Text = " "
     If (txtKeyLength.Text = "") Then txtKeyLength.Text = " "
     
-    For X = 0 To UBound(TableTypes)
-        If (cbxTblType.Text = TableTypes(X).TableTypeName) Then
-            CurrentTblType = TableTypes(X).TableTypeCode
+    For x = 0 To UBound(TableTypes)
+        If (cbxTblType.Text = TableTypes(x).TableTypeName) Then
+            CurrentTblType = TableTypes(x).TableTypeCode
         End If
     Next
         
@@ -372,8 +372,8 @@ End Sub
 
 Private Sub Form_Load()
 
-    For X = 0 To UBound(TableTypes)
-        cbxTblType.AddItem (TableTypes(X).TableTypeName)
+    For x = 0 To UBound(TableTypes)
+        cbxTblType.AddItem (TableTypes(x).TableTypeName)
     Next
 
     strsql = "select TableType, DecodeLen, DecodeDisplacement, EffDate,  " & _
@@ -388,9 +388,9 @@ Private Sub Form_Load()
             
             'Get the current table entries
             If Len(DaoRS(0).Value) > 0 Then
-                For X = 0 To UBound(TableTypes)
-                    If (RTrim(DaoRS(0).Value) = TableTypes(X).TableTypeCode) Then
-                        cbxTblType.Text = TableTypes(X).TableTypeName
+                For x = 0 To UBound(TableTypes)
+                    If (RTrim(DaoRS(0).Value) = TableTypes(x).TableTypeCode) Then
+                        cbxTblType.Text = TableTypes(x).TableTypeName
                     End If
                 Next
                 'cbxTblType.Text = RTrim(DaoRS(0).Value)

@@ -14,9 +14,7 @@ Begin VB.Form frmMain
    StartUpPosition =   2  'CenterScreen
    Begin VB.ListBox StaticNames 
       Height          =   650
-      ItemData        =   "ctmmain.frx":030A
       Left            =   7320
-      List            =   "ctmmain.frx":030C
       Sorted          =   -1  'True
       TabIndex        =   18
       Top             =   480
@@ -991,12 +989,7 @@ Private Sub mnuDeleteTable_Click()
                     "Table Explorer. Please use Microsoft Access or contact" & vbCrLf & _
                     "Development tools for assistance.", vbOKOnly + vbExclamation, "Codes Table Explorer")
     End If
-        
-    
-    
 End Sub
-
-
 
 '***************************************************************************************************************
 Private Sub mnuExit_Click()
@@ -1004,11 +997,10 @@ Private Sub mnuExit_Click()
     Unload Me
 End Sub
 
-
 '***************************************************************************************************************
 Private Sub mnuExport_Click()
 '***************************************************************************************************************
-    frmExportTable.Show
+    frmExportTable.Show vbModal
 
 End Sub
 
@@ -1114,7 +1106,24 @@ Private Sub mnuPrintTable_Click()
 '***************************************************************************************************************
     Dim x As Integer, iStr As Integer, iPg As Integer, iDecodeLenth As Integer
     Dim sDecode As String
-        
+    Dim sDrivingLogic As String
+    Dim sTransfer As String
+    Dim sStaticFlag As String
+    
+    strsql = "select Project from tblProject where ProjectFlag = True"
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    If Not DaoRS.EOF Then
+        sTransfer = DaoRS(0).Value
+        DaoRS.Close
+    End If
+            
+    If (StaticListBox = True) Then
+        sStaticFlag = "Yes"
+    Else
+        sStaticFlag = "No"
+    End If
+            
     On Error GoTo PrinterError
     
     Screen.MousePointer = vbHourglass
@@ -1128,7 +1137,9 @@ Private Sub mnuPrintTable_Click()
     Printer.FontName = "Times New Roman"
     Printer.FontBold = True
     Printer.FontSize = 15
-    Printer.Print vbLf & "Codes Table: " & CurTable
+    Printer.Print vbLf & "Project: " & sTransfer & "    Codes Table: " & CurTable
+    Printer.FontSize = 12
+    Printer.Print vbLf & "Key Length: " & txtKeyLength.Text & "    Decode Length: " & txtDecodeLength.Text & "    Number of Keys: " & txtTotalKeys.Text & "    Static Tables: " & sStaticFlag
     Printer.FontBold = False
     Printer.FontSize = 10
     
@@ -1150,7 +1161,10 @@ Private Sub mnuPrintTable_Click()
     Printer.CurrentX = 1750
     Printer.CurrentY = Printer.CurrentY - 234
     Printer.Print "Client"
-    Printer.CurrentX = 4000
+    Printer.CurrentX = 4500
+    Printer.CurrentY = Printer.CurrentY - 234
+    Printer.Print "Driving Logic"
+    Printer.CurrentX = 6500
     Printer.CurrentY = Printer.CurrentY - 234
     Printer.Print "Decode"
     Printer.FontBold = False
@@ -1184,7 +1198,7 @@ Private Sub mnuPrintTable_Click()
             Printer.FontName = "Times New Roman"
             Printer.FontBold = True
             Printer.FontSize = 15
-            Printer.Print vbLf & "Codes Table: " & CurTable & vbLf
+            Printer.Print vbLf & "Project: " & sTransfer & "    Codes Table: " & CurTable
             Printer.FontBold = False
             Printer.FontSize = 10
             Printer.Line Step(5, 5)-Step(15000, 10), , BF
@@ -1196,7 +1210,10 @@ Private Sub mnuPrintTable_Click()
             Printer.CurrentX = 1750
             Printer.CurrentY = Printer.CurrentY - 234
             Printer.Print "Client"
-            Printer.CurrentX = 4000
+            Printer.CurrentX = 4500
+            Printer.CurrentY = Printer.CurrentY - 234
+            Printer.Print "Driving Logic"
+            Printer.CurrentX = 6500
             Printer.CurrentY = Printer.CurrentY - 234
             Printer.Print "Decode"
             Printer.FontBold = False
@@ -1211,41 +1228,49 @@ Private Sub mnuPrintTable_Click()
         Printer.CurrentX = 1750
         Printer.CurrentY = Printer.CurrentY - 234
         Printer.Print lvListView.ListItems(x).SubItems(2)
-        Printer.CurrentX = 4000
+        Printer.CurrentX = 4500
         Printer.CurrentY = Printer.CurrentY - 234
-        
+        sDrivingLogic = "Host: " & lvListView.ListItems(x).SubItems(6) & " / Client: " & lvListView.ListItems(x).SubItems(7)
+        Printer.Print sDrivingLogic
+        Printer.CurrentX = 6500
+        Printer.CurrentY = Printer.CurrentY - 234
+                
         sDecode = lvListView.ListItems(x).SubItems(1)
         
-        If (Len(sDecode) > 125) Then
-            
-            iStr = InStr(125, sDecode, " ")
-            Printer.Print Left(sDecode, iStr)
-            Printer.CurrentX = 4000
-            Printer.CurrentY = Printer.CurrentY + 20
-            
-            sDecode = Mid(lvListView.ListItems(x).SubItems(1), iStr + 1, Len(sDecode))
-            
-            If (Len(sDecode) > 125) Then
-            
-                iStr = InStr(125, sDecode, " ")
-                Printer.Print Left(sDecode, iStr)
-                Printer.CurrentX = 4000
-                Printer.CurrentY = Printer.CurrentY + 20
-                Printer.Print Mid(sDecode, iStr + 1, Len(sDecode))
-                
-            Else
-            
-                Printer.Print sDecode
-                Printer.CurrentY = Printer.CurrentY + 20
-                
-            End If
+        If (Len(sDecode) > 90) Then
         
-        Else
+            iStr = InStr(90, sDecode, " ")
+            If (iStr > 0) Then
+                Printer.Print Left(sDecode, iStr)
+                Printer.CurrentX = 6500
+                Printer.CurrentY = Printer.CurrentY + 10
             
+                sDecode = Mid(lvListView.ListItems(x).SubItems(1), iStr + 1, Len(sDecode))
+            
+                If (Len(sDecode) > 90) Then
+                    iStr = InStr(90, sDecode, " ")
+                    If (iStr > 0) Then
+                        Printer.Print Left(sDecode, iStr)
+                        Printer.CurrentX = 6500
+                        Printer.CurrentY = Printer.CurrentY + 10
+                        Printer.Print Mid(sDecode, iStr + 1, Len(sDecode))
+                    End If
+                Else
+                    Printer.Print sDecode
+                    Printer.CurrentY = Printer.CurrentY + 10
+                End If
+            Else
+                Printer.Print sDecode
+                Printer.CurrentY = Printer.CurrentY + 10
+            End If
+        Else
             Printer.Print sDecode
-            Printer.CurrentY = Printer.CurrentY + 20
+            Printer.CurrentY = Printer.CurrentY + 10
         
         End If
+        
+        Printer.Line Step(5, 5)-Step(15000, 10), , BF
+        Printer.CurrentY = Printer.CurrentY + 20
     
     Next
     

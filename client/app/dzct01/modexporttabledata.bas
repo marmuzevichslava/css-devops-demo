@@ -45,7 +45,7 @@ Public Sub ExportProcedure()
             If (frmExportTable.SelectTable.SelCount = 1) Then
                 FileName = frmExportTable.efPath & "\" & frmExportTable.efExportFile
             ElseIf (frmExportTable.SelectTable.SelCount > 1) Then
-                FileName = frmExportTable.efPath & "\" & Trim$(frmExportTable.SelectTable.List(x)) & ".DAT"
+                FileName = frmExportTable.efPath & "\" & LCase(Trim$(frmExportTable.SelectTable.List(x))) & ".dat"
             End If
             
             'Check to see if the file DOES exist.

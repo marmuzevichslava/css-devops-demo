@@ -31,11 +31,9 @@ Begin VB.Form frmAddStaticTable
             Object.Width           =   9410
             MinWidth        =   9410
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frmaddstatictable.frx":030A
    End
    Begin VB.CommandButton Command2 
       BackColor       =   &H8000000D&
@@ -134,13 +132,13 @@ Private Sub Command1_Click()
     Dim RelTabArray(1000) As String
     Dim NumListItems As Integer
     
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        frmAddStaticTable.StaticTables.Selected(X) = False
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        frmAddStaticTable.StaticTables.Selected(x) = False
     Next
     
     'Check to see if a relational table is selected.
-    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.Selected(X) = True) Then
+    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.Selected(x) = True) Then
             TableIsSelected = True
         End If
     Next
@@ -152,28 +150,28 @@ Private Sub Command1_Click()
         Exit Sub
     End If
     
-    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.Selected(X) = True) Then
+    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.Selected(x) = True) Then
             sbStatusBar.Panels(1).Text = "Added static table(s) to static list..."
             sbStatusBar.Refresh
             
-           frmAddStaticTable.StaticTables.AddItem Me.SelectTable.List(X)
+           frmAddStaticTable.StaticTables.AddItem Me.SelectTable.List(x)
         End If
     Next
     
     frmAddStaticTable.StaticTables.Refresh
             
-    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        If (frmAddStaticTable.SelectTable.Selected(X) = False) Then
-            RelTabArray(X) = frmAddStaticTable.SelectTable.List(X)
+    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        If (frmAddStaticTable.SelectTable.Selected(x) = False) Then
+            RelTabArray(x) = frmAddStaticTable.SelectTable.List(x)
         End If
     Next
         
     frmAddStaticTable.SelectTable.Clear
     
-    For X = 0 To 1000
-        If RelTabArray(X) <> "" Then
-            frmAddStaticTable.SelectTable.AddItem RelTabArray(X)
+    For x = 0 To 1000
+        If RelTabArray(x) <> "" Then
+            frmAddStaticTable.SelectTable.AddItem RelTabArray(x)
         End If
     Next
     
@@ -189,13 +187,13 @@ Private Sub Command2_Click()
     Dim RelTabArray(1000) As String
     Dim NumListItems As Integer
     
-    For X = 0 To frmAddStaticTable.SelectTable.ListCount - 1
-        frmAddStaticTable.SelectTable.Selected(X) = False
+    For x = 0 To frmAddStaticTable.SelectTable.ListCount - 1
+        frmAddStaticTable.SelectTable.Selected(x) = False
     Next
     
     'Check to see if a static table is selected.
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.Selected(X) = True) Then
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.Selected(x) = True) Then
             TableIsSelected = True
         End If
     Next
@@ -207,28 +205,28 @@ Private Sub Command2_Click()
         Exit Sub
     End If
     
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.Selected(X) = True) Then
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.Selected(x) = True) Then
             sbStatusBar.Panels(1).Text = "Deleted static table(s) from static list..."
             sbStatusBar.Refresh
             
-            frmAddStaticTable.SelectTable.AddItem Me.StaticTables.List(X)
+            frmAddStaticTable.SelectTable.AddItem Me.StaticTables.List(x)
         End If
     Next
     
     frmAddStaticTable.SelectTable.Refresh
             
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
-        If (frmAddStaticTable.StaticTables.Selected(X) = False) Then
-            RelTabArray(X) = frmAddStaticTable.StaticTables.List(X)
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+        If (frmAddStaticTable.StaticTables.Selected(x) = False) Then
+            RelTabArray(x) = frmAddStaticTable.StaticTables.List(x)
         End If
     Next
         
     frmAddStaticTable.StaticTables.Clear
     
-    For X = 0 To 1000
-        If RelTabArray(X) <> "" Then
-            frmAddStaticTable.StaticTables.AddItem RelTabArray(X)
+    For x = 0 To 1000
+        If RelTabArray(x) <> "" Then
+            frmAddStaticTable.StaticTables.AddItem RelTabArray(x)
         End If
     Next
     
@@ -305,7 +303,6 @@ Private Sub mnuPrint_Click()
     
     If Not DaoRS3.EOF Then
         sTransfer = DaoRS3(0).Value
-        Me.Caption = "Codes Table Explorer - " & sTransfer
         DaoRS3.Close
     End If
     
@@ -511,10 +508,10 @@ Public Sub mnuProcess_Click()
         DaoRS.Close
     End If
 
-    For X = 0 To frmAddStaticTable.StaticTables.ListCount - 1
+    For x = 0 To frmAddStaticTable.StaticTables.ListCount - 1
         'Set SQL string.
         SQLInsert = "INSERT INTO tblTables " _
-                  & "SELECT " & Chr(34) & frmAddStaticTable.StaticTables.List(X) & Chr(34) & " As TableName," _
+                  & "SELECT " & Chr(34) & frmAddStaticTable.StaticTables.List(x) & Chr(34) & " As TableName," _
                   & Chr(34) & TABLE_TYPE & Chr(34) & " AS TableType," _
                   & Chr(34) & sTimestamp & Chr(34) & " AS FlagUpdateTS;"
         

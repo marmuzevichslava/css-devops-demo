@@ -358,7 +358,7 @@ Private Sub Form_Load()
         Wend
         DaoRS.Close
     End If
-    
+        
     'Get the list of clients
     Call LoadClients
     
@@ -400,7 +400,7 @@ Private Sub Form_Load()
     
     Screen.MousePointer = vbNormal
     
-    Me.Show
+    'Me.Show
     Me.Refresh
 
 End Sub
@@ -500,8 +500,17 @@ Private Sub optExportCustom_Click()
     For x = 0 To SelectTable.ListCount - 1
         SelectTable.Selected(x) = False
     Next
-
+    
     SelectTable.Selected(0) = True
+    
+   'Select table in listbox that is selected on tree view.
+    For x = 0 To SelectTable.ListCount - 1
+        If (SelectTable.List(x) = frmMain.tvTreeView.SelectedItem.Text) Then
+            SelectTable.Selected(0) = False
+            SelectTable.Selected(x) = True
+        End If
+    Next
+             
     SelectTable.Enabled = True
     cbClient.Enabled = True
 
@@ -624,7 +633,7 @@ Private Sub SelectTable_Click()
     'One item selected
     ElseIf (SelectTable.SelCount = 1) Then
         efExportFile.Enabled = True
-        efExportFile.Text = Trim$(SelectTable.Text) & ".DAT"
+        efExportFile.Text = LCase(Trim$(SelectTable.Text)) & ".dat"
     
     'Multiple tables selected.
     Else

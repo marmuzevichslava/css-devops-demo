@@ -22,6 +22,7 @@ Public KeyCntr As Integer
 Public bCloseImport As Boolean
 Public bAddNewKey As Boolean
 Public bAdmin As Boolean
+Public StaticListBox As Boolean
 Public CurrentUser As String
 
 '***************************************************************************************************************
@@ -874,8 +875,7 @@ Public Sub RefreshCodeDecodeLB()
 '*********************************************************************************************************
     Dim itmX As ListItem, cnt As Integer
     Dim x As Integer
-    Dim StaticListBox As Boolean
-    
+        
     KeyCntr = 0
     
     frmMain.lvListView.ListItems.Clear
@@ -888,7 +888,9 @@ Public Sub RefreshCodeDecodeLB()
     frmMain.Label6.Visible = True
     frmMain.StaticNames.Visible = False
     frmMain.Label7.Visible = False
-
+    
+    StaticListBox = False
+    
     On Error GoTo ODBCError
     
     If (CurTableType = CODES_TABLE) Then
