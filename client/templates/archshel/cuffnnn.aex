@@ -1699,6 +1699,38 @@ AEXPROC( ExitSecSetBrowse )
 } /* End of ExitSecSetBrowse */
 
 
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitHlpInit
+**
+**  DESCRIPTION      : This exit is invoked during Predisplay. This exit 
+**                     initializes the Help Manager subsystem by
+**                     calling FND Help Manger APIs. The logic to be 
+**                     included depends on whether or not this is 
+**                     the Main window of the dialog.
+**                     
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
 AEXPROC( ExitHlpInit )
 {
   //---------------------------------------------------
