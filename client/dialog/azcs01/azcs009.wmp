@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS009                           *
-*                          Generated on: Wed Sep 25 13:28:52 1996          *
+*                          Generated on: Wed Nov 20 11:22:14 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description:                                   *
 *                                                                          *
@@ -41,6 +41,12 @@ unsigned char _grpFiller;
    char _GenDirData[256];
 #define GenDirData              pWesMap->_GenDirData
 
+   char _FLMassGenData[2];
+#define FLMassGenData              pWesMap->_FLMassGenData
+
+   char _MapLstFileData[85];
+#define MapLstFileData              pWesMap->_MapLstFileData
+
    char _FlWindowModData[2];
 #define FlWindowModData              pWesMap->_FlWindowModData
 
@@ -58,6 +64,20 @@ unsigned char _grpFiller;
 #define GenDirRights                     pWesMap->_GenDirCtl.Rights
 #define GenDirMsg                        pWesMap->_GenDirCtl.Msg
 #define GenDirCursor                     pWesMap->_GenDirCtl.Cursor
+
+    WESFLDCTL _FLMassGenCtl;
+#define FLMassGenAttr                       pWesMap->_FLMassGenCtl.Attr
+#define FLMassGenStatus                     pWesMap->_FLMassGenCtl.Status
+#define FLMassGenRights                     pWesMap->_FLMassGenCtl.Rights
+#define FLMassGenMsg                        pWesMap->_FLMassGenCtl.Msg
+#define FLMassGenCursor                     pWesMap->_FLMassGenCtl.Cursor
+
+    WESFLDCTL _MapLstFileCtl;
+#define MapLstFileAttr                       pWesMap->_MapLstFileCtl.Attr
+#define MapLstFileStatus                     pWesMap->_MapLstFileCtl.Status
+#define MapLstFileRights                     pWesMap->_MapLstFileCtl.Rights
+#define MapLstFileMsg                        pWesMap->_MapLstFileCtl.Msg
+#define MapLstFileCursor                     pWesMap->_MapLstFileCtl.Cursor
 
     WESFLDCTL _FlWindowModCtl;
 #define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
