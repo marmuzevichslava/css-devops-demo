@@ -454,7 +454,6 @@ Exit Function
 
 End Function
 
-
 '*************************************************************
 '**                   RelationalTablesUpdate                **
 '*************************************************************
@@ -463,11 +462,13 @@ Public Function RelationalTablesUpdate() As Boolean
     'Local variables.
     Dim sTimestamp As String
     Dim sRelTabName As String
+    Dim sRelTabDecode As String
     Dim SQLInsert As String
     Dim SQLQuery As String
     Dim CurLine As String
     Dim CurDateTime As String
     Const REL_TABLE_ARG As Integer = 1
+    Const REL_DECODE_ARG As Integer = 2
     Const UPDATE_INPUT_FILE = "c:\temp\dzct03.txt"
         
     'Get input file from UNIX directory and place in temp directory.
@@ -505,11 +506,12 @@ Public Function RelationalTablesUpdate() As Boolean
     Do Until EOF(iFileNum)
         
         'Parse out the relational table name.
-        sRelTabName = ParseString(CurLine, " ", REL_TABLE_ARG)
+        sRelTabName = ParseString(CurLine, ",", REL_TABLE_ARG)
+        sRelTabDecode = ParseString(CurLine, ",", REL_DECODE_ARG)
                             
         On Error GoTo SQLQueryError
         
-        'Query to see if static table exists in tblTables.
+        'Query to see if static table exists in tblRelTables.
         SQLQuery = "SELECT TableName " _
                  & "FROM tblRelTables " _
                  & "WHERE TableName = " & Chr(34) & sRelTabName & Chr(34)
@@ -523,7 +525,8 @@ Public Function RelationalTablesUpdate() As Boolean
         If DaoRS.EOF Then
             'Set SQL string.
             SQLInsert = "INSERT INTO tblRelTables " _
-                      & "SELECT " & Chr(34) & sRelTabName & Chr(34) & " As TableName;"
+                      & "SELECT " & Chr(34) & sRelTabName & Chr(34) & " As TableName," _
+                      & Chr(34) & sRelTabDecode & Chr(34) & " AS TableDecode;"
                       
             On Error GoTo ProcessingRelationalTablesError
         
@@ -826,7 +829,6 @@ Public Function CodesUpdateProcess() As Boolean
 
 'Local variables.
     Dim sTimestamp As String
-    Dim sStaticTabName As String
     Dim sCodesTableDecode As String
     Dim sStaticTabNum As String
     Dim sCodesTableName As String
@@ -835,9 +837,8 @@ Public Function CodesUpdateProcess() As Boolean
     Dim CurLine As String
     Dim CurDateTime As String
     Const STAT_NUM_ARG As Integer = 1
-    Const STAT_NAME_ARG As Integer = 2
-    Const CODES_TAB_NAME_ARG As Integer = 3
-    Const CODES_TAB_DECODE_ARG As Integer = 4
+    Const CODES_TAB_NAME_ARG As Integer = 2
+    Const CODES_TAB_DECODE_ARG As Integer = 3
     Const UPDATE_INPUT_FILE = "c:\temp\dzct03.txt"
         
     'Get input file from UNIX directory and place in temp directory.
@@ -876,7 +877,6 @@ Public Function CodesUpdateProcess() As Boolean
         
         'Parse out the Static Table #, Static Table Name, Copybook Name, and BFA.
         sStaticTabNum = ParseString(CurLine, ",", STAT_NUM_ARG)
-        sStaticTabName = ParseString(CurLine, ",", STAT_NAME_ARG)
         sCodesTableName = ParseString(CurLine, ",", CODES_TAB_NAME_ARG)
         sCodesTableDecode = ParseString(CurLine, ",", CODES_TAB_DECODE_ARG)
                 
@@ -921,7 +921,6 @@ Public Function CodesUpdateProcess() As Boolean
             'Set SQL string.
             SQLInsert = "INSERT INTO tblTables " _
                       & "SELECT " & Chr(34) & sStaticTabNum & Chr(34) & " As TableName," _
-                      & Chr(34) & sStaticTabName & Chr(34) & " AS TableDecode," _
                       & Chr(34) & TABLE_TYPE & Chr(34) & " AS TableType," _
                       & Chr(34) & sTimestamp & Chr(34) & " AS FlagUpdateTS;"
         
@@ -1205,7 +1204,7 @@ Public Function DeleteBFARelations() As Boolean
     
     On Error GoTo SQLQueryError
         
-    'Query to see if static tables exist in tblTables.
+    'Query to see if static/bfa entries exist in tblStaticBFAEntries.
     SQLQuery = "SELECT * " _
              & "FROM tblStaticBFAEntries;"
                       
@@ -1240,7 +1239,7 @@ Public Function DeleteBFARelations() As Boolean
         
     On Error GoTo SQLQueryError
         
-    'Query to see if static tables exist in tblTables.
+    'Query to see if entries exist in tblBFALookup.
     SQLQuery = "SELECT * " _
              & "FROM tblBFALookup;"
                       
@@ -1352,7 +1351,6 @@ Public Function BFAUpdateProcess() As Boolean
     
     'Local variables.
     Dim sTimestamp As String
-    Dim sStaticTabName As String
     Dim sCopybookName As String
     Dim sStaticTabNum As String
     Dim sBFAName As String
@@ -1361,9 +1359,8 @@ Public Function BFAUpdateProcess() As Boolean
     Dim CurLine As String
     Dim CurDateTime As String
     Const STAT_NUM_ARG As Integer = 1
-    Const STAT_NAME_ARG As Integer = 2
-    Const COPYBOOK_ARG As Integer = 3
-    Const BFA_NAME_ARG As Integer = 4
+    Const COPYBOOK_ARG As Integer = 2
+    Const BFA_NAME_ARG As Integer = 3
     Const UPDATE_INPUT_FILE = "c:\temp\dzct03.txt"
         
     'Get input file from UNIX directory and place in temp directory.
@@ -1402,7 +1399,6 @@ Public Function BFAUpdateProcess() As Boolean
         
         'Parse out the Static Table #, Static Table Name, Copybook Name, and BFA.
         sStaticTabNum = ParseString(CurLine, ",", STAT_NUM_ARG)
-        sStaticTabName = ParseString(CurLine, ",", STAT_NAME_ARG)
         sCopybookName = ParseString(CurLine, ",", COPYBOOK_ARG)
         sBFAName = ParseString(CurLine, ",", BFA_NAME_ARG)
                 
@@ -1447,7 +1443,6 @@ Public Function BFAUpdateProcess() As Boolean
             'Set SQL string.
             SQLInsert = "INSERT INTO tblTables " _
                       & "SELECT " & Chr(34) & sStaticTabNum & Chr(34) & " As TableName," _
-                      & Chr(34) & sStaticTabName & Chr(34) & " AS TableDecode," _
                       & Chr(34) & TABLE_TYPE & Chr(34) & " AS TableType," _
                       & Chr(34) & sTimestamp & Chr(34) & " AS FlagUpdateTS;"
         
