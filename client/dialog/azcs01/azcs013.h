@@ -35,6 +35,10 @@
 #include "systcomm.hh"
 #include "roadmap.hh"
 
+/*mdc 11/21/96 include gloabal header file for functions moved to 
+               azcsm010.c */
+#include "azcs01.h"
+
 
 /***************************************************************************/
 /* Application #defines                                                    */
@@ -116,13 +120,15 @@ SHORT CheckIt(char cLayoutType, SHORT sServiceIndex, SHORT sNumRows, _LAYOUT_REC
 SHORT Remap(_STDParms *pSTDParms);
 SHORT ChangeIt(SHORT sServx, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
 
+
+/*mdc 11/21/96 Moved prototypes to global header file azcs01.h
 char *BuildFullName(SHORT sElementx, _LAYOUT_REC *pLayout);
 SHORT FindFullName(SHORT sSavedIndex,
                    _LAYOUT_REC *pSavedLayout,
                    _LAYOUT_REC *pReposLayout,
                    SHORT sNumReposRows,
                    SHORT *sReposIndex);
-
+*/
 SHORT ChangeLK(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
 SHORT ChangeCK(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
 SHORT ChangeLD(SHORT sServ, SHORT sIndex, SHORT sNewReposIx, _STDParms *pSTDParms);
