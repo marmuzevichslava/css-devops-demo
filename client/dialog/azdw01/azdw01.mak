@@ -31,7 +31,8 @@ EA_BIN_DRIVE=$(EA_REMOTE_BIN_DRIVE)
 #***************************************************************************
 # Construct the executable
 #***************************************************************************
-$(EA_BIN_DRIVE)\EXE\AZDW01.exe : $(EA_BIN_DRIVE)\obj\AZDW01.obj            \
+#* CWOODS 10/22/95 : Change exe to EXE
+$(EA_BIN_DRIVE)\EXE\AZDW01.EXE : $(EA_BIN_DRIVE)\obj\AZDW01.obj            \
                                  $(EA_SRC_DRIVE)\AZDW01.def   \
                                  $(EA_SRC_DRIVE)\AZDW01.res            \
                                  $(EA_SRC_DRIVE)\AZDW001.obj           \
@@ -48,7 +49,7 @@ $(EA_BIN_DRIVE)\OBJ\AZDW003.obj+
 $(EA_BIN_DRIVE)\OBJ\AZDW004.obj+
 $(EA_BIN_DRIVE)\OBJ\AZDW005.obj+
 $(EA_BIN_DRIVE)\OBJ\AZDW006.obj
-$(EA_BIN_DRIVE)\EXE\AZDW01.exe
+$(EA_BIN_DRIVE)\EXE\AZDW01.EXE
 NUL
 $(LIBS)
 $(EA_SRC_DRIVE)\AZDW01.DEF
@@ -57,7 +58,8 @@ $(EA_SRC_DRIVE)\AZDW01.DEF
 #*****************************************************************************
 # Link in resources
 #*****************************************************************************
-    rc $(EA_BIN_DRIVE)\OBJ\AZDW01.res $(EA_BIN_DRIVE)\EXE\AZDW01.exe
+#* CWOODS 10/22/95 : changed exe to EXE
+    rc $(EA_BIN_DRIVE)\OBJ\AZDW01.res $(EA_BIN_DRIVE)\EXE\AZDW01.EXE
 
 #***************************************************************************
 # Compile each window module
