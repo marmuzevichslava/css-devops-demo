@@ -345,10 +345,12 @@ Sub DeleteDirectory()
         End If
         
         RC = InternetCloseHandle(hInet)
-        
-    End If
+    
+    Else
         Err.Raise Err.LastDllError, "Connect", "FTP ERROR - Could not connect to " & strHost
         bError = True
+    End If
+    
     Exit Sub
     
 ErrorHandler:
