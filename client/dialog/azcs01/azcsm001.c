@@ -30,6 +30,12 @@
 **  04/03/96    mconner                    Added inclusion of version.h
 **                                         for version number definition
 **
+**  08/03/96    CWOODS                     CsrMapProcessElement:
+**										   Discovery Release:  The INT3DATE
+**										   data type generated incorrectly.
+**										   Added a row to the table for
+**										   a 'DT' usage to generate as
+**										   alpha 11.
 **
 ***********************************************************************/
 #define  INCL_WIN
@@ -651,6 +657,11 @@ HEAP_CHECK
 **  --------    ----------      -----      ---------------------
 **                                         Original Code.
 **  09/13/94    CCRAMPTON         427      Add CSR_POINTER.
+**  08/03/96    CWOODS                     Discovery Release:  The INT3DATE
+**										   data type generated incorrectly.
+**										   Added a row to the table for
+**										   a 'DT' usage to generate as
+**										   alpha 11.
 ************************************************************************/
 
 USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
@@ -701,6 +712,11 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
    'A', 'N',  "D"  ,   1 ,   7 ,   1 ,  -1 , CSR_FLOAT   ,   4 , /* float  */
    'A', 'N',  "D"  ,   8 ,  14 ,   1 ,  -1 , CSR_DOUBLE  ,   8 , /* double */
    'A', 'N',  "D"  ,  14 ,  -1 ,  -1 ,  -1 , CSR_LONG_DBL,  10 , /* longdbl*/
+
+   /* CWOODS 08/03/96:  Numeric Date Type generate as alpha 11 - This fixes
+      the INT3DATE Discovery problem */
+   'A', 'N',  "DT" ,  10 ,  10 ,   0 ,   0 , CSR_STRING  ,   11 , /* uchar  */
+
 
    'A', 'N',  "C"  ,   1 ,   1 ,   0 ,   0 , CSR_UCHAR   ,   1 , /* char   */
    'A', 'N',  "C"  ,   2 ,   4 ,   0 ,   0 , CSR_USHORT  ,   2 , /* short  */
