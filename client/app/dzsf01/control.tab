@@ -1,2 +1,2 @@
-0 500 66 100 0 0 0
-Delay PoolSize NumPools RefreshRate Log Beep Iterative
+0 100 1 100 0 0 1 u:\data\tab\msg24\pool1 pool u:\data\tab\msg24\tab.prf u:\data\tab\msg24\tab.err KREUAS TOPFUEL
+Delay PoolSize NumPools RefreshRate Log Beep Iterative File_location Directory_prefix Log_File Err_File

@@ -44,7 +44,7 @@
 /*  Application defined macos                                              */
 /***************************************************************************/
 #ifndef _PATH_LEN
-#define _PATH_LEN                        70
+#define _PATH_LEN                        256
 #endif
 #ifndef DZSF001_ADDRESS_LEN 
 #define DZSF001_ADDRESS_LEN              16
@@ -139,7 +139,7 @@
 #define DZSF001_USER_PSWD_LEN           8
 #endif
 #ifndef DZSF001_TAB_PARMS_LEN
-#define DZSF001_TAB_PARMS_LEN           100
+#define DZSF001_TAB_PARMS_LEN           150
 #endif
 #ifndef DZSF001_KY_CONV_ID_STR
 #define DZSF001_KY_CONV_ID_STR          "TABNT\0"
@@ -229,6 +229,9 @@
 #ifndef DZSF001_ERR_ALLOC_MEM_MSG
 #define DZSF001_ERR_ALLOC_MEM_MSG        "Memory allocation failure."
 #endif
+#ifndef DZSF001_ERR_HME_PATH
+#define DZSF001_ERR_HME_PATH             "Control File path get failure"
+#endif
 #ifndef DZSF001_ERR_INIT_MSP_Q
 #define DZSF001_ERR_INIT_MSP_Q           "Failed to initialize message queue."
 #endif
@@ -256,13 +259,7 @@
 //#define TAB_ERROR_LOG                   "C:\\DATA\\TAB.ERR"
 //#endif
 #ifndef TAB_CONTROL_INPUT_FILE
-#define TAB_CONTROL_INPUT_FILE          "C:\\DATA\\CONTROL.TAB"
-#endif
-#ifndef TAB_USER_ID
-#define TAB_USER_ID                     "mconner"
-#endif
-#ifndef	TAB_USER_PSWD
-#define TAB_USER_PSWD                   "mdc1343"
+#define TAB_CONTROL_INPUT_FILE          "CONTROL.TAB"
 #endif
 
 /***************************************************************************
@@ -379,7 +376,14 @@ double          DZSF001_TestBeginTime   = 0;
 double          DZSF001_PauseBeginTime  = 0;
 double          DZSF001_PauseEndTime    = 0;
 double          DZSF001_TotalPauseTime  = 0;
+/*
+** mdc 4/7/98 global drive 
+*/
+int            tabhome;
+CHAR           TabControlFile[_PATH_LEN];
 
+SHORT           sFirstTime         = 1;
+SHORT           SavedRangeRandom   = 0;
 SHORT           DelayThrottle      = 0;
 SHORT           PoolSize           = 0;
 SHORT           RefreshRate        = 0;

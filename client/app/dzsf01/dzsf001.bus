@@ -508,7 +508,7 @@ USHORT APIENTRY TABThread( _APM_START far *pApm, ABHINAME *pABHI)
 	** first Random # Call. Iterative testing is determined by the
     ** seventh parameter in the TAB_CONTROL_INPUT_FILE.
 	**/
-    if ( Iterative > 0 )
+    if ( Iterative > 0  && sFirstTime == 1)
     {
         PoolCounter = 0;
         RangeRandom = -1;
@@ -571,6 +571,13 @@ USHORT APIENTRY TABThread( _APM_START far *pApm, ABHINAME *pABHI)
 
         }
 
+		if(sFirstTime == 0)
+		{
+			RangeRandom = ++SavedRangeRandom;
+		}
+
+		SavedRangeRandom = RangeRandom;
+
         sprintf(RandomFileName, DZSF001_MSG_FILE_NM_FORMAT, RangeRandom);     
         /* 
         ** Record Current Time Before Network Read
@@ -589,6 +596,7 @@ USHORT APIENTRY TABThread( _APM_START far *pApm, ABHINAME *pABHI)
 		** Retrieve the Parm Block and Message Data Area from 
 		** Random CSR Dump File 
 		**/
+
 		pRandomFileName = RandomFileName;
 
         rc = TABGetPBAndMessage( &MsgPB,
@@ -772,6 +780,22 @@ USHORT APIENTRY TABThread( _APM_START far *pApm, ABHINAME *pABHI)
                 if (RefreshCounter == RefreshRate)
                 {
                     rc = TABRefreshControl ( );
+					if(rc != CMN_SUCCESS)
+					{
+								FndMsgBoxDisplayText(
+											DZSF001_ERR_CNTLTAB_READ,
+											DZSF001_PROG_NAME,
+											CBI_hwnd,					
+											FND_MSGBOX_OK,
+											FND_MSGBOX_CRITICAL,
+											FND_MSGBOX_OK,
+											NULL,
+											&SelectedButton,
+											&FndGenErrorBlock );
+						
+						return(FND_SEVERITY_FATAL);
+					}
+
             
 			        RefreshCounter = 0;
                 }
@@ -901,6 +925,31 @@ WCBPROC( DZSF001BusPrdis )
 	_FND_ERROR_BLOCK FndGenErrorBlock;
 	USHORT	         SelectedButton;
 	HWND             hwnd;
+	CHAR             *tbf;
+
+
+	/*
+	** mdc 4/7/98 save off the present working directory for tab refresh
+	*/
+	tabhome = _getdrive();
+	tbf = _getdcwd(tabhome, TabControlFile, _PATH_LEN);
+	if(tbf == NULL)
+	{
+	     FndMsgBoxDisplayText(
+						DZSF001_ERR_HME_PATH,
+						DZSF001_PROG_NAME,
+						hwnd,					
+						FND_MSGBOX_OK,
+						FND_MSGBOX_CRITICAL,
+						FND_MSGBOX_OK,
+						NULL,
+						&SelectedButton,
+						&FndGenErrorBlock );
+
+		return( CMN_FAIL );
+	}
+	strcat(TabControlFile, "\\");
+	strcat(TabControlFile, TAB_CONTROL_INPUT_FILE);
 
 	/*
 	** mdc 02/06/98 moved to here so that files could be defined in control.tab
@@ -1145,13 +1194,13 @@ SHORT TABGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
 			** Password messages created with other OT numbers & Passwords
 			** that may have expired
             **/
-
-            memcpy ( pMsgPB->secur.user_id, TabUserID, DZSF001_USER_ID_LEN);
-            
-			memcpy ( pMsgPB->secur.user_pw, TabUserPW, DZSF001_USER_PSWD_LEN);
+            memcpy ( pMsgPB->secur.user_id, TabUserID, DZSF001_USER_ID_LEN );
+			memcpy ( pMsgPB->secur.user_pw, TabUserPW, DZSF001_USER_PSWD_LEN );
 
         }    /* end of if:  Successful fopen */
-        else /* Error from fopen */
+
+        
+		else /* Error from fopen */
         {
 	        
 	        FndMsgBoxDisplayText(
@@ -1253,16 +1302,29 @@ SHORT TABRefreshControl( )
     USHORT           rc = 0;
     FILE            *fp;
     CHAR            TabParms[DZSF001_TAB_PARMS_LEN];
+	SHORT           sIDLen = 0;
+	SHORT           sPWLen = 0;
+	CHAR            TempTabUserID[DZSF001_USER_ID_LEN];
+	CHAR            TempTabUserPW[DZSF001_USER_PSWD_LEN];
+
 
     /*  Read Control File for Test Parameters */
 
 	/* 
     ** Mods   EHEMMMER   12/03/96
-    ** Changed from network directory to local directory. 
-    ** The TAB_CONTROL_INPUT_FILE holds six parameters that affect the 
-    ** behavior of TAB.
+    *CONTROL_INPUT_FILE holds six parameters that affect the 
+    ** behavior* Changed from network directory to local directory. 
+    ** The TAB_ of TAB.
     **/
-    fp = fopen(TAB_CONTROL_INPUT_FILE,"r");
+
+	/*
+	** mdc 4/7/98 create global Control.tab file field.  This is populate in predisplay.
+	*/
+    fp = fopen(TabControlFile, "r");
+	if( fp == NULL)
+	{
+		return( CMN_FAIL );
+	}
     
 	memset (TabParms, '\0', DZSF001_TAB_PARMS_LEN);
     
@@ -1283,15 +1345,55 @@ SHORT TABRefreshControl( )
 		lTotalNumMessages = ( float ) PoolSize;
         
 		ldelaytime        = ( unsigned long ) ( DelayThrottle * DZSF001_MSEC_PER_SEC );
+
+		/*
+		** 06-02-98 KAK Pad user ID and password with spaces to eight characters
+		*/
+		memset ( TempTabUserID, ' ', DZSF001_USER_ID_LEN );
+		memset ( TempTabUserPW, ' ', DZSF001_USER_PSWD_LEN );
+
+		if( strlen(TabUserID) < DZSF001_USER_ID_LEN )
+		{
+			sIDLen = strlen(TabUserID);
+		}
+		else
+		{
+			sIDLen = DZSF001_USER_ID_LEN;
+		}
+
+		if( strlen(TabUserPW) < DZSF001_USER_PSWD_LEN )
+		{
+			sPWLen = strlen(TabUserPW);
+		}
+		else
+		{
+			sPWLen = DZSF001_USER_ID_LEN;
+		}
+
+		memcpy( TempTabUserID, TabUserID, sIDLen );
+		memcpy( TempTabUserPW, TabUserPW, sIDLen );
+		memcpy( TabUserID, TempTabUserID, DZSF001_USER_ID_LEN );
+		memcpy( TabUserPW, TempTabUserPW, DZSF001_USER_PSWD_LEN );
+		/*
+		** End pad user ID and password
+		*/
+
     }
     else
     {
         return ( DZSF001_REFRESH_FAIL );
     }
     
-    fclose( fp );
-
-    return ( CMN_SUCCESS );
+	rc = 0;
+    rc = fclose( fp );
+	if(rc != 0 )
+	{
+		return( CMN_FAIL);
+	}
+	else
+	{
+		return ( CMN_SUCCESS );
+	}
 
 } /*End of TABRefreshControl*/
 
@@ -1331,6 +1433,10 @@ WCBPROC( DZSF001BusContPBClick)
     _APM_START       Apmstart;
     USHORT           rc = 0;
     _ABHI	         ABHI;
+	_FND_ERROR_BLOCK       FndGenErrorBlock;
+	USHORT               FndGenRC  = CMN_SUCCESS;
+	USHORT                SelectedButton;
+
    
     ftime(&timemilli);
 
@@ -1341,10 +1447,26 @@ WCBPROC( DZSF001BusContPBClick)
         
     /* Set the Continue Flag to TRUE */
     DZSF001_Continue = TRUE;
+	sFirstTime = 0;
 
     rc = MSGInit(&InitialParmBlock, &ABHI);
   	
     rc = TABRefreshControl ( );
+	if(rc != CMN_SUCCESS)
+	{
+				FndMsgBoxDisplayText(
+							DZSF001_ERR_CNTLTAB_READ,
+							DZSF001_PROG_NAME,
+							CBI_hwnd,					
+							FND_MSGBOX_OK,
+							FND_MSGBOX_CRITICAL,
+							FND_MSGBOX_OK,
+							NULL,
+							&SelectedButton,
+							&FndGenErrorBlock );
+		
+		return(FND_SEVERITY_FATAL);
+	}
 
     memcpy (FND_PB.ver, FND_APM_VER, _VER_LEN);
 
