@@ -3,11 +3,11 @@
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
 /***************************************************************************
-**
+** 
 **               Customer Service System Business Logic Module
 **
 ** FILENAME         :  ATDW001.BUS
-**
+**					    
 ** DESCRIPTION      :  Business Logic functions for window ATDW001,
 **                     includes:
 **
@@ -36,6 +36,11 @@
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
 ** 08/12/93    C. Crampton         Creation
+** 07/30/96    CWOODS			   Discovery Release:
+**								   Error on MEMFree.  FOUNDATION does not
+**								   support MEM APIs after 2.4.  Changed
+**								   MEMFree to free and changed CmnMemAllocPrivate
+**								   to malloc.
 **
 ***************************************************************************/
 
@@ -1201,7 +1206,8 @@ short ATDW001BusProcessRequestMsg(CMN_ARCH_PARM_TYPES)
 
   if ( BFCD_AZCD01->pRequestBlock )
   {
-     MEMFree( BFCD_AZCD01->pRequestBlock );
+     /* CWOODS:  Changed MEMFree to free */
+     free( BFCD_AZCD01->pRequestBlock );
      fclose( BFCD_AZCD01->fptrRequestLog );
      BFCD_AZCD01->fptrRequestLog = NULL;
      strcpy( BFCD_AZCD01->szRequestLogName, "" );
@@ -1209,7 +1215,8 @@ short ATDW001BusProcessRequestMsg(CMN_ARCH_PARM_TYPES)
 
   for ( usCounter = 0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
   {
-       MEMFree( BFCD_AZCD01->Service[usCounter].pServiceBlock );
+       /* CWOODS:  Changed MEMFree to free */
+       free( BFCD_AZCD01->Service[usCounter].pServiceBlock );
        fclose( BFCD_AZCD01->Service[usCounter].fptrServiceLog );
        BFCD_AZCD01->Service[usCounter].fptrServiceLog = NULL;
        strcpy( BFCD_AZCD01->Service[usCounter].szServiceLogName,"" );
@@ -1234,11 +1241,12 @@ short ATDW001BusProcessRequestMsg(CMN_ARCH_PARM_TYPES)
 **  Call the Radio Button Field Change function to handle the filling of
 **    the listboxes.
 */
-
-   FndGenRC = CmnMemAllocPrivate( 64000, &pMem, CMN_ARCH_PARMS);
+   /* CWOODS:  Changed CmnMemAllocPrivate to malloc */
+   //FndGenRC = CmnMemAllocPrivate( 64000, &pMem, CMN_ARCH_PARMS);
+   pMem = malloc(64000);
 
    BFCD_AZCD01->pRequestBlock = pMem;
-
+   
    sprintf( BFCD_AZCD01->szRequestLogName,
             "%s\\%s.LOG",
             BFCD_AZCD01->szLogDirName,
@@ -1392,8 +1400,9 @@ short ATDW001BusProcessServiceMsg(CMN_ARCH_PARM_TYPES)
    **  the services messages.
    */
 
-
-   FndGenRC = CmnMemAllocPrivate( 64000 , &pMem, CMN_ARCH_PARMS);
+   /* CWOODS:  Changed CmnMemAllocPrivate to malloc */
+   //FndGenRC = CmnMemAllocPrivate( 64000 , &pMem, CMN_ARCH_PARMS);
+   pMem=malloc(64000);
 
    BFCD_AZCD01->Service[usSrvIndex].pServiceBlock = pMem;
 
@@ -2139,7 +2148,8 @@ WCBPROC (ATDW001BusWindowClose)
        */
        if ( BFCD_AZCD01->pRequestBlock )
        { 
-           MEMFree( BFCD_AZCD01->pRequestBlock);
+		   /* CWOODS:  Changed MEMFree to free */
+           free( BFCD_AZCD01->pRequestBlock);
            fclose( BFCD_AZCD01->fptrRequestLog );
            BFCD_AZCD01->fptrRequestLog = NULL;
            strcpy( BFCD_AZCD01->szRequestLogName, "" );
@@ -2147,7 +2157,8 @@ WCBPROC (ATDW001BusWindowClose)
 
        for ( usCounter = 0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
        {
-           MEMFree( BFCD_AZCD01->Service[usCounter].pServiceBlock );
+	       /* CWOODS:  Changed MEMFree to free */
+           free( BFCD_AZCD01->Service[usCounter].pServiceBlock );
            fclose( BFCD_AZCD01->Service[usCounter].fptrServiceLog );
            BFCD_AZCD01->Service[usCounter].fptrServiceLog = NULL;
            strcpy( BFCD_AZCD01->Service[usCounter].szServiceLogName,"" );
