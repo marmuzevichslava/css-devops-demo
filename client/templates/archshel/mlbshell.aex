@@ -143,7 +143,11 @@ AEXPROC( ExitCsrNotification )
       p<CUFFnnnOutput> = EAB_pWdtOutData;
       
       /* Overlay window fields from OUT layout <CUFFnnnOutput> */
-      
+
+	  // 02/29./96 - The iconic status of the MLB rows populated from the
+	  // output layout should be set to CHANGED
+      /* Set the MLB Iconic Column to CHANGED */
+       <LBRowDataName>._<LBRow>CdStatusIconicData = CMN_LBROW_STATUS_CHANGED;
     }
   
     
@@ -215,6 +219,17 @@ AEXPROC( ExitCsrNotification )
                           sizeof(<ListBoxRow._LBNameColumnNameData>),
                           &<ListBoxRow._LBNameColumnNameData>,
                           &FndGenErrorBlock );
+
+   	    // Added 02/29/96 - Manually set field to incomplete
+		// if the field is required	and the value is NULL
+		if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
+		{
+		    FndFieldSetStatus(CBI_hwnd,
+			                  "<MLBEntryFieldName>",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+		}
+
 
 
         //----------------------------------------------------------

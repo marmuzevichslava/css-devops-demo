@@ -118,7 +118,16 @@ WCBPROC( CUffnnnBus<MLBListBoxName>Sel )
                       &<ListBoxRow._LBNameColumnNameData>,
                       &FndGenErrorBlock );
 
-	
+	// Added 02/29/96 - Manually set field to incomplete
+	// if the field is required
+	if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
+	{
+	    FndFieldSetStatus(CBI_hwnd,
+		                  "<MLBEntryFieldName>",
+						  STS_INCOMPLETE,
+						  &FndGenErrorBlock);
+	}
+
     return CMN_SUCCESS;
 
 } /* end CUffnnnBusMtrRdgLbSel */
@@ -300,6 +309,16 @@ WCBPROC( CUffnnnBus<EnterPBName>Click )
                           sizeof(<ListBoxRow._LBNameColumnNameData>),
                           &<ListBoxRow._LBNameColumnNameData>,
                           &FndGenErrorBlock );
+
+   	    // Added 02/29/96 - Manually set field to incomplete
+		// if the field is required	and the value is NULL
+		if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
+		{
+		    FndFieldSetStatus(CBI_hwnd,
+			                  "<MLBEntryFieldName>",
+							  STS_INCOMPLETE,
+							  &FndGenErrorBlock);
+		}
 
         /* Set the cursor in the first non-output MLB entry field */
         FndFieldSetCursor( CBI_hwnd,

@@ -144,6 +144,32 @@ SHORT CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARM_TYPES)
 	FndCommandEnable(CBI_hwnd,
 		             "<ResetPB>",
 					 &FndGenErrorBlock);
+	// Added 02/29/96
+	//--------------------------------------------------------------------------
+	//  SHELL INSTRUCTIONS
+  	//  Query the value of each entry field and set the status to Incomplete
+	//  if the value is NULL.  
+	//--------------------------------------------------------------------------
+
+    /* 02/29/96 */	
+    /*  Query entry field value into local variable and set status to INCOMPLETE 
+        if the field is NULL */
+	FndFieldQueryValue( CBI_hwnd,
+                        "<EntryFieldName>",
+                        sizeof(EntryFieldLocalVariable),
+                        EntryFieldLocalVariable,
+                        &FndGenErrorBlock );
+
+	/* 02/29/96 */
+	/* Set status to INCOMPLETE if the entry field value is NULL */
+    if (strcmp(EntryFieldLocalVariable,"")==0)
+	{
+	    FndFieldSetStatus(CBI_hwnd,
+		                  "<EntryFieldName>",
+						  STS_INCOMPLETE,
+						  &FndGenErrorBlock);
+	}
+
 
 	//--------------------------------------------------------------------------
 	//  SHELL INSTRUCTIONS
