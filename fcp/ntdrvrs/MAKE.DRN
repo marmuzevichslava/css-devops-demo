@@ -35,8 +35,8 @@ LINK = link
        but this will actually slow down the runtime exe.  I have left it in.
 %
 
-CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT"~ifNoPrecompile. /D "WIN32"~endIf. /D "FND_WIN32~ifServerGen!_SERVER~endIf!" /MT /Fd"$(PROJ).PDB" ~UserCCompileFlags
-CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT"~ifNoPrecompile. /D "WIN32"~endIf. /D "FND_WIN32~ifServerGen!_SERVER~endIf!" /MT ~UserCCompileFlags
+CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT"~ifNoPrecompile. /D "WIN32"~endIf. /D "FND_WIN32~ifServerGen!_SERVER~endIf!" /MD /Fd"$(PROJ).PDB" ~UserCCompileFlags
+CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT"~ifNoPrecompile. /D "WIN32"~endIf. /D "FND_WIN32~ifServerGen!_SERVER~endIf!" /MD ~UserCCompileFlags
 LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:~ifClientGen!windows~endIf!~ifServerGen!console~endIf! ~UserLinkFlags ~DLLOpt /MAP 
 LFLAGS_R = /SUBSYSTEM:~ifClientGen!windows~endIf!~ifServerGen!console~endIf! ~UserLinkFlags ~DLLOpt
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
