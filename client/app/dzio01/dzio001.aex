@@ -408,6 +408,39 @@ AEXPROC( ExitWktCloseAfterSave )
     strncpy(MessageInput->Hdr_DZ0101.Vw_Nm,pBFCD->DZIO01Luw.Dz00713,
 				   sizeof(MessageInput->Hdr_DZ0101.Vw_Nm));
 
+    strncpy(MessageInput->Hdr_DZ0202.SecTabB ,
+            pBFCD->DZIO012Luw.SecTabB,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabB ));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabBNm ,
+            pBFCD->DZIO012Luw.SecTabBNm ,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabBNm ));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabC ,
+            pBFCD->DZIO012Luw.SecTabC,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabC ));
+
+    strncpy(MessageInput->Hdr_DZ0202.SecTabCNm ,
+            pBFCD->DZIO012Luw.SecTabCNm ,
+			sizeof(MessageInput->Hdr_DZ0202.SecTabCNm ));
+
+
+
+
+
+
+/**************************************************************************
+*		                                     							  *
+* Formatting the parameters of tables DZ01TB03 and DZ01TB04               *
+*                                                                         *
+***************************************************************************/
+
+
+    memcpy( &(MessageInput->DZIO013Luw), &(pBFCD->DZIO013Luw), sizeof(_DZIO013LUW) );
+
+    memcpy( &(MessageInput->DZIO014Luw), &(pBFCD->DZIO014Luw), sizeof(_DZIO014LUW) );
+
+
 
 /**************************************************************************
 *									  *
@@ -434,6 +467,9 @@ AEXPROC( ExitWktCloseAfterSave )
     }
 
     memcpy(FndStandardPB.ver,FND_MSG_VER,_VER_LEN);
+
+
+
 
     i = sizeof (MessageOutput->StandardHeader);
     MSGInitPB(&FndStandardPB,
