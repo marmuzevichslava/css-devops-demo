@@ -651,9 +651,11 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     'Get all the Keys and decodes.
     Call RefreshCodeDecodeLB
      
-    'Enable the delete Table Key.
-    frmMain.mnuDeleteTable.Enabled = True
-    frmMain.mnuModifyTable.Enabled = True
+    'Enable the delete and modify table menu options if not a static table.
+    If (CurTableType <> 4) Then
+        frmMain.mnuDeleteTable.Enabled = True
+        frmMain.mnuModifyTable.Enabled = True
+    End If
                  
     If (CurTableType = 1) Then
         frmMain.mnuPrintTable.Enabled = True
@@ -971,8 +973,14 @@ Public Sub RefreshCodeDecodeLB()
        Else
             frmMain.Label1.Caption = "Table Name:"
             frmMain.txtDataLength.Width = 4000
-            frmMain.txtDataLength.Text = DaoRS(6).Value
-            frmMain.txtDataLength.ToolTipText = "Static Table name"
+            
+            If Not DaoRS(6).Value = "Null" Then
+                frmMain.txtDataLength.Text = DaoRS(6).Value
+            Else
+                frmMain.txtDataLength.Text = " "
+            End If
+            
+            frmMain.txtDataLength.ToolTipText = "Static Table Name"
             frmMain.Label2.Visible = False
             frmMain.Label3.Visible = False
             frmMain.Label4.Visible = False

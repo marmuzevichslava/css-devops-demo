@@ -32,7 +32,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":030A
       NumItems        =   0
    End
    Begin VB.Frame famTable 
@@ -349,7 +348,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0326
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -370,7 +368,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "ctmmain.frx":0342
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -391,11 +388,9 @@ Begin VB.Form frmMain
             Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "ctmmain.frx":035E
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -457,6 +452,10 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuSep1 
          Caption         =   "-"
          Index           =   2
+      End
+      Begin VB.Menu mnuStaticTable 
+         Caption         =   "Add/Delete Static Table &List"
+         Shortcut        =   ^L
       End
       Begin VB.Menu mnuAddTable 
          Caption         =   "&Add New Codes Table..."
@@ -717,6 +716,7 @@ Private Sub Frame1_DblClick()
     End If
 End Sub
 
+
 '***************************************************************************************************************
 Private Sub imgSplitter_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
@@ -826,8 +826,6 @@ Private Sub lvListView_MouseDown(Button As Integer, Shift As Integer, x As Singl
 
 End Sub
 
-
-
 '***************************************************************************************************************
 Private Sub mnuAbout_Click()
 '***************************************************************************************************************
@@ -846,7 +844,6 @@ Private Sub mnuAdminUsers_Click()
 '***************************************************************************************************************
     frmAdminUsers.Show vbModal
 End Sub
-
 
 '***************************************************************************************************************
 Private Sub mnuDeleteKey_Click()
@@ -998,6 +995,8 @@ Private Sub mnuDeleteTable_Click()
     
     
 End Sub
+
+
 
 '***************************************************************************************************************
 Private Sub mnuExit_Click()
@@ -1294,6 +1293,10 @@ Private Sub mnuRequest_Click()
 
     Screen.MousePointer = vbNormal
     
+End Sub
+
+Private Sub mnuStaticTable_Click()
+    frmAddStaticTable.Show vbModal
 End Sub
 
 Private Sub mnuTableLoad_Click()
