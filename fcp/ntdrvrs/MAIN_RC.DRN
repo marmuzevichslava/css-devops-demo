@@ -1,15 +1,15 @@
 /***************************************************************************
  *                                                                         *
- *          C   W I N D O W S   N T   R E S O U R C E   F I L E            *
+ *          C  ~PlatformLiteral   R E S O U R C E   F I L E              *
  *                                                                         *
- *                Copyright (C) 1994 Andersen Consulting.                  *
- *                         All rights reserved.                            *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                    Resource file for: ~PaddedExeName                          *
  *                         Generated on: ~GenTime          *
  *                                   by: ~UserID              *
+ *                    Short Description: ~ShortDescr ~@75.*
  *                                                                         *
  ***************************************************************************/
 #include <windows.h>
@@ -20,7 +20,7 @@
  ***************************************************************************/
 #include "~ExeName..gnz"
 
-% CWOODS 09/13/95 : Removed reference to bitmaps path %
+% JHERSTEI 07/01/96 : Removed reference to bitmaps path %
 % #define FND_USER_RESOURCE_PATH  ~NTResPathDefine    %
 
 /***************************************************************************
@@ -28,6 +28,7 @@
  ***************************************************************************/
 % JSH: 01/29/95 ADDED rcinclude for Architecture cursors %
 % CWOODS 09/13/95 : New Directory structure - changed s: to n: %
+% JHERSTEI: 07/01/96 Updated for Discovery (no change) %
 rcinclude n:\archinc\c1cptrs.rch
 
 ~Dialogs

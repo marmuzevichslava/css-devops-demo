@@ -1,9 +1,8 @@
 %---------------------------------------------------------------%
 %  MAKE_WIN - Makefile statements to produce window module .OBJ %
 %---------------------------------------------------------------%
-% JSH: 1/28/95 REMOVED /I~UserIncludePath  %
+% JSH: 07/01/96 REMOVED /I~UserIncludePath  %
 
 # Make C window module ~ModuleName
 ~UserObjPath.~ModuleName..obj : $(~ModuleName._DEP)
     $(CC) $(CFLAGS) /I~UserSourcePath /Fo~UserObjPath.~ModuleName..obj ~ModuleFilename
-

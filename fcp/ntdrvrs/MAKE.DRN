@@ -2,40 +2,43 @@
 #                                                                          *
 #                W I N D O W S   N T   M A K E   F I L E                   *
 #                                                                          *
-#                Copyright (C) 1994, Andersen Consulting.                  *
-#                          All rights reserved.                            *
+#    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
 #                                                                          *
 #***************************************************************************
 #                                                                          *
 #                         Make file for: ~PaddedExeName                          *
 #                          Generated on: ~GenTime          *
 #                                    by: ~UserID              *
+#                     Short Description: ~ShortDescr ~@75.*
 #                                                                          *
 #***************************************************************************
 
 PROJ = ~ExeName
 
-% JSH: 12/04/94 Modified handling of DEBUG options
+% JSH: 07/01/96 Modified handling of DEBUG options
 DEBUG = ~CompileDebugFlag
 %
 !ifndef DEBUG
 DEBUG = 1
 !endif
 
-% JSH:  12/04/94  Removed 
+% JSH:  07/01/96  Removed 
  DEBUG = ~CompileDebugFlag 
 %
 CC = cl
 RC = rc
 LINK = link
 
-% JSH: 12/4/94 ADDED /MAP option to DEBUG LINK %
-% JSH: 1/28/94 ADDED /DWIN32 %
-% JSH: 1/28/94 REMOVED /O2 to turn optimization off for release version %
-CFLAGS_D = /c /W3 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" ~UserCCompileFlags
-CFLAGS_R = /c /W3 /Zp /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD ~UserCCompileFlags
-LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows ~UserLinkFlags ~DLLOpt /MAP
-LFLAGS_R = /SUBSYSTEM:windows ~UserLinkFlags ~DLLOpt
+% JSH: 07/01/96 ADDED /MAP option to DEBUG LINK %
+% JSH: 07/01/96 ADDED /DWIN32 %
+% JSH: 07/01/96 We used to remove the /O2 from the release compile  flags
+       but this will actually slow down the runtime exe.  I have left it in.
+%
+
+CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT"~ifNoPrecompile. /D "WIN32"~endIf. /D "FND_WIN32~ifServerGen!_SERVER~endIf!" /MT /Fd"$(PROJ).PDB" ~UserCCompileFlags
+CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT"~ifNoPrecompile. /D "WIN32"~endIf. /D "FND_WIN32~ifServerGen!_SERVER~endIf!" /MT ~UserCCompileFlags
+LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:~ifClientGen!windows~endIf!~ifServerGen!console~endIf! ~UserLinkFlags ~DLLOpt /MAP 
+LFLAGS_R = /SUBSYSTEM:~ifClientGen!windows~endIf!~ifServerGen!console~endIf! ~UserLinkFlags ~DLLOpt
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
 RCDEFINES_R = -dNDEBUG -dFND_WIN32
 
@@ -50,12 +53,22 @@ RCDEFINES = $(RCDEFINES_R)
 !endif
 RCFLAGS = -r
 
-LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib ktmsgapi.lib ktddeapi.lib
+~ifClientGen!
+LIBS     = user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib \
+           ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib ktmsgapi.lib ktddeapi.lib
+~endIf!
+~ifServerGen!
+LIBS     = kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib \
+           knfntend.lib knfndcod.lib knfndapi.lib knmsgapi.lib kndscore.lib kndscomm.lib \
+           knstcomm.lib knmsgtrc.lib knsecext.lib
+SQLLIBS  = libcmt.lib sqlakw32.lib caw32.lib ntwdblib.lib
+~endIf!
 
+NODBLIBS = kndbnul.lib
 OTHLIBS  = othelibs
 DLLLIBS  =~DLLNames
 USRLIBS  = ~UserLibList
-ALL_LIBS = $(LIBS) ~DBMLib ~LibList $(DLLLIBS) $(USRLIBS)
+ALL_LIBS = $(LIBS) ~ifServerGen.~DBMLib.~endIf. ~LibList $(DLLLIBS) $(USRLIBS)
 
 #***************************************************************************
 #  Dependencies for each of the executable components
@@ -72,10 +85,10 @@ ALL_LIBS = $(LIBS) ~DBMLib ~LibList $(DLLLIBS) $(USRLIBS)
 #***************************************************************************
 all:	~UserExePath.$(PROJ).~ExeExtension
 
-% JSH: 1/28/95 REMOVED /I~UserIncludePath %
 #***************************************************************************
 # Compile the Front End
 #***************************************************************************
+% JSH: 07/01/96 REMOVED /I~UserIncludePath %
 ~UserObjPath.~ExeName..obj : ~ExeName..C $(~ExeName._DEP)
      $(CC) $(CFLAGS) -Fo~UserObjPath.~ExeName..obj ~ExeName..C
 
@@ -84,16 +97,20 @@ all:	~UserExePath.$(PROJ).~ExeExtension
 #***************************************************************************
 ~CompileWindows
 
+~ifClientGen!
 #***************************************************************************
 # Compile the executable resource file
 #***************************************************************************
 ~ResourceName:   ~ExeName..RC $(~ExeName._RCDEP)
    $(RC) $(RCFLAGS) $(RCDEFINES) -Fo~ResourceName ~ExeName..RC
+~endIf!
 
+~ifServerGen!
 #***************************************************************************
 # Compile each service module
 #***************************************************************************
 ~CompileServices
+~endIf!
 
 #***************************************************************************
 # Compile initialization and termination routines
@@ -117,4 +134,3 @@ $(ALL_LIBS)
 ~NTDLLExpFile
 <<
 ~BuildDLLLib
-

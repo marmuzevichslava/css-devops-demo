@@ -1,25 +1,28 @@
 /***************************************************************************
  *                                                                         *
- *           C   W I N D O W S    N T   W I N D O W   F I L E              *
+ *            C  ~PlatformLiteral   W I N D O W   F I L E ~@75.*
  *                                                                         *
- *              Copyright (C) 1994, Andersen Consulting.                   *
- *                        All rights reserved.                             *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
- *                      Module File for: ~PadModName                          *
- *                         Generated on: ~GenTime          *
- *                                   by: ~UserID              *
+ *                      Module File for: ~EntityID   ~@75.*
+ *                         Generated on: ~GenTime    ~@75.*
+ *                                   by: ~UserID     ~@75.*
+ *                    Short Description: ~ShortDescr ~@75.*
  *                                                                         *
  ***************************************************************************
  * You may need to define other constants depending on the APIs used       *
  * in your window.                                                         *
  ***************************************************************************/
+
 %
-  JSH: 12/04/94 ADDED to support C1C Architecture
+  JSH: 07/01/96 ADDED CMN_ERR_ARCH_WRAP_FUNC and WINDOWNAME to support 
+       C1C Architecture
 %
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define WINDOWNAME ~WindowName
+
 
 #define INCL_DOS
 #define INCL_WIN
@@ -36,7 +39,6 @@
 #define  FND_SD_INCL
 #define  FND_ST_INCL
 #define  FND_MS_INCL
-~DBMSStatement
 
 #define WESMAPNAME _~CWindowID.WesMap
 
@@ -50,6 +52,9 @@
  ***************************************************************************/
 #include <windows.h>
 #include <string.h>
+~ifDBCS!
+#include <mbstring.h>
+~endIf!
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -60,36 +65,22 @@
 /*************************************************************************** 
  * Foundation Global Header File                                           *
  ***************************************************************************/
-#include <kglxk000.h>
+#include <~GblHeaderFile.>
 
 /***************************************************************************
  * Business Function Context Data Type Definition                          *
  ***************************************************************************/
 ~BFCDInclude
 
-/***************************************************************************
- * WESMap Header File                                                      *
- ***************************************************************************/
-#include "~LowerWindowFilename..wmp"
-
 %
-  JSH: 12/04/94 ADDED to support C1C Architecture
+  JSH: 07/01/96 ADDED following to support C1C Architecture
+  CWOODS : 07/11/96 Moved from below 'Application Window Identifiers...' to
+  above the WCD Declarations.
 %
 /***************************************************************************
  * CSS Architecture Global Header File                                     *
  ***************************************************************************/
 #include <C1CEAB.H>
-
-/***************************************************************************
- * User Includes.                                                          *
- ***************************************************************************/
-~UserIncludes!
-
-/***************************************************************************
- * Copybooks and Source Includes
- ***************************************************************************/
-~CopybookIncludes
-
 
 /***************************************************************************
  * Window Context Data
@@ -102,28 +93,11 @@
 #define FND_WINCONTEXT_LEN   sizeof(WINCONTEXTNAME)
 #endif
 
-%
-  JSH: 12/04/94 ADDED to support C1C Architecture
-%
 /***************************************************************************
- * CSS Architecture Global Header File                                     *
+ * WESMap Header File                                                      *
  ***************************************************************************/
-#define INCL_C1CBASE
-#define INCL_C1CCALLBACK
-#include <C1C.H>
+#include "~LowerWindowFilename..wmp"
 
-%
-  JSH: 12/04/94 ADDED
-%
-/***************************************************************************
- * CSS Functional Header File                                              *
- ***************************************************************************/
-#include <CSS.H>
-
-/***************************************************************************
- * Window Header File                                                      *
- ***************************************************************************/
-#include "~LowerWindowFilename..h"
 
 /*************************************************************************** 
  * Application Window Identifiers, window control identifiers and the      *
@@ -134,14 +108,47 @@
 #include "~LowerWindowFilename..gnd"
 
 /***************************************************************************
+ * CSS Architecture Global Header File                                     *
+ ***************************************************************************/
+#define INCL_C1CBASE
+#define INCL_C1CCALLBACK
+#include <C1C.H>
+
+%
+  JSH: 07/01/96 ADDED
+%
+/***************************************************************************
+ * CSS Functional Header File                                              *
+ ***************************************************************************/
+#include <CSS.H>
+
+
+/***************************************************************************
+ * User Includes.                                                          *
+ ***************************************************************************/
+~UserIncludes!
+
+/***************************************************************************
+ * Copybooks and Source Includes
+ ***************************************************************************/
+~CopybookIncludes
+
+%
+  CWOODS : 07/11/96 Added include window.h file
+%
+/***************************************************************************
+ * Window Header File                                                      *
+ ***************************************************************************/
+#include "~LowerWindowFilename..h"
+
+/***************************************************************************
  * Callbacks                                                               *
  ***************************************************************************/
 %
-  JSH: 12/4/94 ADDED to support C1C Architecture
+  JSH: 07/01/96 ADDED to support C1C Architecture
 %
 #include "~LowerWindowFilename..aex"
 #include "archhelp.cb"
-
 ~Callbacks
 
 #include "~LowerWindowFilename..src"
