@@ -47,7 +47,9 @@
 **                                     to C1CPRIV.H
 **
 **  07/18/94    CCRAMPTO               Add INCL_AGRWN01 so C1CPRIV will not
-**                                      get errors.
+**					get errors.
+**  01/10/96	CWOODS		       Modify GenerateMap to remove
+**				       temp file created.
 ******************************************************************/
 
 /**************************************************************************
@@ -147,12 +149,14 @@ SHORT MapDataLength;
 **    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
 **  --------      ----------     -----     ---------------------
 **  06/09/93      J. Looney                Original Code
-**
+**  01/10/96	  CWOODS		   Add Remove Command to
+**					   delete temp file created.
 ******************************************************************/
 
 USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 {
     CHAR CopyCommand[_COPY_COMMAND_LEN];
+    CHAR RmCommand[_RM_COMMAND_LEN];
     SHORT NumberClosed;
     SHORT i;
     SHORT j;
@@ -267,6 +271,17 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                           FileNm );
 
    FndGenRC = system(CopyCommand);
+
+    /* CWOODS 01/10/96 : Remove temp file */
+    FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
+			  RmCommand,
+			  _RM_COMMAND_LEN,
+			  2,
+			  "RM ",
+			  TmpFileNm);
+
+   FndGenRC = system(RmCommand);
+
 
 } /* end of GenerateMap */
 
