@@ -162,7 +162,6 @@ Public Sub ExportProcedure()
                         "Codes Table Update", _
                         MB_OK Or MB_ICONINFORMATION)
 
-    
 
 Exit_Export:
     Close #1

@@ -173,20 +173,20 @@ Public Sub PopulateCodesTableListView()
     frmMain.lvListView.ColumnHeaders.Clear
 
     'Add the column headings.
-        frmMain.lvListView.ColumnHeaders.Add , , "Key", 700, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Drives Host Logic", 1400, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Drives Client Logic", 1400, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Key", 700, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Drives Host Logic", 1400, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Drives Client Logic", 1400, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
+    frmMain.lvListView.ColumnHeaders.Add , , "Description", 3000, 0
     
     'UnHide Check boxes
-        frmMain.chkStatic.Visible = True
-        frmMain.txtStatic.Visible = True
+    frmMain.chkStatic.Visible = True
+    frmMain.txtStatic.Visible = True
 
     frmMain.sbStatusBar.Panels(1).Text = "Running Query..."
     frmMain.Refresh
@@ -692,10 +692,6 @@ Public Function CheckAuthorityLevel() As Boolean
     DaoRS.Close
     
 End Function
-
-
-
-
 
 '*********************************************************************************************************
 Public Function CheckForSpecialChars(S As String) As String
