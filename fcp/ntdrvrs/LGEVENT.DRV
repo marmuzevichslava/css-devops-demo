@@ -13,7 +13,7 @@
 static WCBPROC(~CallbackName.)
 {
 ~LocalStorage
-% JSH: 11/4/94 ADDED %
+% JSH: 07/1/96 ADDED CMN_ARCH_EXIT_INITIALIZE %
 CMN_ARCH_EXIT_INITIALIZE
 ~InitRoutines
 ~Actions

@@ -74,6 +74,10 @@ ALL_LIBS = $(LIBS) ~ifServerGen.~DBMLib.~endIf. ~LibList $(DLLLIBS) $(USRLIBS)
 #  Dependencies for each of the executable components
 #***************************************************************************
 
+% 02/06/97 GHOWELL - Added to get $(INCLUDE_DIR) variable %
+
+!INCLUDE <azvars.h>
+
 ~DependFrontEnd
 
 ~DependWindows

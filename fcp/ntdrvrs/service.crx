@@ -1,0 +1,635 @@
+%
+CBLSVC - COBOL service file for OS/2 and Unix service modules.  
+%
+      ****************************************************************
+      **                                                            **
+      **           FOUNDATION FOR COOPERATIVE PROCESSING            **
+      **                                                            **
+      **                         ~COBOLSvcDrvTitle    **
+      **                    COBOL ~ServiceFileType FILE X    **
+      **                                                            **
+      **           COPYRIGHT (C) 1992 ANDERSEN CONSULTING.          **
+      **                    ALL RIGHTS RESERVED.                    **
+      **                                                            **
+      ****************************************************************
+      **                                                            **
+      **  MODULE NAME:    ~PadModName                               **
+      **                                                            **
+      **  DATE GENERATED: ~Time                  **
+      **                                                            **
+      **  BY USER:        ~UserID                                  **
+      **                                                            **
+      **  AUTHOR:         FLORIDA POWER CORPORATION &               **
+      **                  ANDERSEN CONSULTING - CSS PROJECT.        **
+      **                                                            **
+      **  DESCRIPTION     ~Descr       **
+      **                                                            **
+      ****************************************************************
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.   ~InvocationName.
+       INSTALLATION. COMPUTER SERVICES DIVISION.
+		     FLORIDA POWER CORPORATION.
+		     ST.  PETERSBURG, FLORIDA.
+       AUTHOR.       FLORIDA POWER CORPORATION/ANDERSEN CONSULTING.
+       DATE-WRITTEN. ~Date..
+
+      **********************COPYRIGHT NOTICE*************************
+      ** COPYRIGHT 1992 FLORIDA POWER CORPORATION.  ALL RIGHTS     **
+      ** RESERVED.                                                 **
+      ** NOTICE OF COPYRIGHT DOES NOT IMPLY PUBLICATION.           **
+      **                                                           **
+      **********************PROGRAM PURPOSE**************************
+      **                                                           **
+      **  SERVICE DESCRIPTION                                      **
+      **                                                           **
+      **                                                           **
+      ***********************PARM OPTIONS****************************
+      **                                                           **
+      **  - LIST FUNCTION OF ALL AVAILABLE PARM OPTIONS            **
+      **                                                           **
+      **                                                           **
+      *********************ABORT CONDITIONS**************************
+      **                                                           **
+      **  - STATUS OTHER THAN "OK" RETURNED FROM AN I/O MODULE     **
+      **  - LIST ANY OTHER ABORT OR ERROR CONDITIONS               **
+      **                                                           **
+      *********************CALL INTERFACES***************************
+      **                                                           **
+      **  LIST ALL CALLED MODULES -- NAME AND DESCRIPTION          **
+      **                                                           **
+      **                                                           **
+      *********************PROGRAM CHANGES***************************
+      **                                                           **
+      **  REV 00    MM/DD/YY    F. LASTNAME                        **
+      **      DESCRIPTION OF CHANGES (MAY CONTINUE SEVERAL LINES)  **
+      **                                                           **
+      ***************************************************************
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER.  IBM-ES-9000-820.
+       OBJECT-COMPUTER.  IBM-ES-9000-820.
+
+
+       DATA DIVISION.
+
+       WORKING-STORAGE SECTION.
+           EXEC SQL BEGIN DECLARE SECTION END-EXEC.
+           EXEC SQL END DECLARE SECTION END-EXEC.
+       01  WC-BEGIN-WORKING-STORAGE        PIC X(42)
+	   VALUE '*** BEGIN WORKING STORAGE ~ModuleName. ***'.
+
+      ****************************************************************
+      ** REPOSITORY WORKING STORAGE                                 **
+      ****************************************************************
+~UnixSQLPrep
+~WSCopybooks
+
+~SQL
+      ****************************************************************
+      ** ARCHITECTURE API-RELATED WORKING STORAGE                   **
+      ****************************************************************
+
+       COPY WFNDCONS.
+
+      ****************************************************************
+      **  LOCK MODULE COPYBOOK                                      **
+      ****************************************************************
+
+       COPY CUMCO999.
+
+      ****************************************************************
+      **  ARCHITECTURE ABEND AND ERROR HANDLING COPYBOOKS           **
+      **                                                            **
+      ****************************************************************
+      
+      * INCLUDE THE MESSAGE V COPYBOOK HERE
+      * COPY CUCG001V.
+
+       COPY CUCBCO02.
+
+       COPY WAPICODE.
+
+       COPY WFNDERR.
+
+       COPY AZEH001W.
+
+       COPY AZEH002W.
+
+       01 LT-MODULE-NAMES.
+	   EXEC SQL INCLUDE AZEH005W
+           END-EXEC.
+ 
+      ****************************************************************
+      **  I/O MODULE SPECIFIC COPYBOOK AND VARIABLES                **
+      **                                                            **
+      ****************************************************************
+
+      ****************************************************************
+      **  DATA ACCESS CONTROL PARAMETERS (DACP) COPYBOOK            **
+      ****************************************************************
+
+       COPY AZIO006W.
+
+
+      ****************************************************************
+      **  DATA ACCESS DATA BLOCK (DADB)                             **
+      ****************************************************************
+      *01  DADB-DAT-BLK.
+      *    05  WV-DADB-ALR OCCURS XX TIMES PIC X(NNN).
+      *    WHERE XX = MAX NUMBER OF ALRs NEEDED BY APPLICATION FROM
+      *                   ANY VIEW
+      *         NNN = LENGTH OF THE LONGEST ALR THE APPLICATION USES
+      *
+      *    NOTE:  PLEASE REMOVE THIS COMMENT!         
+
+      ****************************************************************
+      **  SUM/COUNT COPYBOOK                                        **
+      **  ONLY INCLUDE THIS COPYBOOK IF APPLICATION PERFORMS        **
+      **  SUM AND/OR COUNT OPERATIONS                               **
+      ****************************************************************
+      *01  SUM-CNT-GRP REDEFINES DADB-DAT-BLK.
+      * COPY AZIO007W.
+      *
+
+      ****************************************************************
+      **  APPLICATION LOGICAL ROW (ALR) RECORDS                     **
+      **  APPLICATION USES ONE ALR RECORD FOR EACH I/O MODULE       **
+      **  CALLED                                                    **
+      ****************************************************************
+
+      *01  Annn-ALR-GRP.
+      *    02  Annn-ALR-ROW OCCURS NN TIMES.
+      *COPY aaaaaaaA.
+
+      * WHERE Annn = ALR Copybook Prefix
+      *       NN   = Number of rows of this ALR needed by application
+      *  aaaaaaa   = I/O module name
+      *
+      *    NOTE:  PLEASE REMOVE THIS COMMENT!         
+
+      ****************************************************************
+      **  I/O MODULE LOW KEY COPYBOOKS                              **
+      **  APPLICATION USES ONE LOW KEY COPYBOOK FOR EACH I/O MODULE **
+      **  CALLED                                                    **
+      ****************************************************************
+
+      *COPY aaaaaaaL.
+
+      *        WHERE aaaaaaa = I/O module name                                 
+      *
+      *    NOTE:  PLEASE REMOVE THIS COMMENT!         
+
+      ****************************************************************
+      **  I/O MODULE HIGH KEY COPYBOOKS                             **
+      **  APPLICATION USES ONE HIGH KEY COPYBOOK FOR EACH I/O MODULE**
+      **  CALLED                                                    **
+      ****************************************************************
+
+      *COPY aaaaaaaH.
+
+      *        WHERE aaaaaaa = I/O module name                                 
+      *
+      *    NOTE:  PLEASE REMOVE THIS COMMENT!         
+
+      ****************************************************************
+      **  INCLUDE ANY OTHER COPYBOOKS FOR I/O MODULE CALLS SUCH AS  **
+      **  COPYBOOKS FOR UPDATE SET, DYNAMIC SCREENING, COUNT VALUE, **
+      **  SUM OR COUNT MULTIPLE, OR OTHER CUSTOM FUNCTIONS.         **
+      **  INCLUDE A DESCRIPTIVE COMMENT BLOCK WITH EACH.            **
+      ****************************************************************
+      *
+      *    COPY copybook.
+      *
+
+       01  WF-FLAGS-AND-SWITCHES.
+	   05  WF-ENVIRONMENT           PIC X(01).
+	     88  WF-ENVIRONMENT-BATCH VALUE 'B'.          
+	     88  WF-ENVIRONMENT-CICS  VALUE 'C'.          
+       
+       01  WV-VARIABLES.
+	   05  WV-MESSAGE-LENGTH        PIC S9(07) COMP-3.
+
+       01  WA-ACCUMULATORS.
+	   05  WA-CNT                   PIC 9(03) COMP-3.
+
+       01  WC-CONSTANTS.
+	   05  WC-NAME-OF-THIS-SERVICE  PIC X(08)  VALUE '~ModuleName.'.
+      *    05  WC-IO-aaaaaaa            PIC X(08)  VALUE 'aaaaaaa '.
+      *    05  WC-IO-aaaaaaa            PIC X(08)  VALUE 'aaaaaaa '.
+           05  WC-SERVICE-TYPE             PIC X(01) VALUE 'R'.
+                88 RETRIEVAL-SERVICE       VALUE 'R'.
+                88 LUW-SERVICE               VALUE 'L'.
+       
+       COPY AZIO001W.
+
+       COPY AZIO003W.
+
+
+       01  WC-END-WORKING-STORAGE       PIC X(42)
+	   VALUE '*** LINKAGE SECTION ~ModuleName. ***'.
+
+       LINKAGE SECTION.
+      ****************************************************************
+      ** FOUNDATION LINKAGE SECTION                                 **
+      ****************************************************************
+
+      ****************************************************************
+      ** SERVICE DATA                                               **
+      ****************************************************************
+       COPY WSVCDATA.
+
+      ****************************************************************
+      ** SERVICE RETURN-TO-ARCHITECTURE INFORMATION                 **
+      ****************************************************************
+       COPY WSVCRTAF.
+
+      ****************************************************************
+      ** FCP-SPECIFIC ABEND HANDLER INTERFACE                       **
+      ****************************************************************
+       COPY WFNDABHI.
+
+      ****************************************************************
+      ** BUSINESS FUNCTION CONTEXT DATA                             **
+      ****************************************************************
+       01  BFCD.
+       ~BFCDInclude
+
+      ****************************************************************
+      ** EXECUTION ARCHITECTUE INFORMATION AREA                     **
+      ****************************************************************
+       COPY WFNDEAIA.
+
+      ****************************************************************
+      ** INPUT MESSAGE PARMBLOCK                                    **
+      ****************************************************************
+       01  SRV-TXN-PB.
+       COPY WAPIMSG.
+
+      ****************************************************************
+      ** INPUT MESSAGE DATA                                         **
+      ****************************************************************
+       01  INPUT-TXN.
+    ~InputMsgLayoutInclude
+
+      ****************************************************************
+      ** REPLY MESSAGE PARMBLOCK                                    **
+      ****************************************************************
+       01  RTAF-TXN-PB.
+       COPY WAPIMSG.
+
+      ****************************************************************
+      ** REPLY MESSAGE DATA                                         **
+      ****************************************************************
+       01  OUTPUT-TXN.
+    ~OutputMsgLayoutInclude
+
+      ****************************************************************
+      ** USER LINKAGE COPYBOOKS                                     **
+      ****************************************************************
+~LSCopybooks
+
+      ****************************************************************
+      ** USER PROCEDURE DIVISION                                    **
+      ****************************************************************
+       PROCEDURE DIVISION USING  SERVICEDATA,
+				 RETURN-DATA,
+				 ABHI-ABEND-HANDLER-INTERFACE,
+				 BFCD,
+				 EXEC-ARCH-INTERFACE-AREA,
+				 SRV-TXN-PB,
+				 INPUT-TXN,
+				 RTAF-TXN-PB,
+				 OUTPUT-TXN.
+
+
+      ****************************************************************
+      **                                                            **
+      **  P R O C E D U R E   D I V I S I O N                       **
+      **  -----------------------------------                       **
+      **                                                            **
+      **  THIS PROCEDURE DIVISION IS DIVIDED INTO TWO PARTS.  THE   **
+      **  FIRST PART IS SHELL CODE.  EACH OF THESE PARAGRAPHS       **
+      **  BEGINS WITH THE LETTER "S".  THE SECOND IS APPLICATION    **
+      **  SPECIFIC AND SHOULD BE SUPPLIED BY THE APPLICATION        **
+      **  PROGRAMMER.  EACH OF THESE PARAGRAPHS BEGIN WITH THE      **
+      **  LETTER "A".  SHELL CODE SHOULD NEVER BE MODIFIED!!        **
+      **  SHELL CODE PARGRAPHS ARE CONTAINED IN COPYBOOK AZSH001.   **
+      **                                                            **
+      **  ANY TEXT IN LOWER CASE LETTERS NEEDS TO BE REPLACED OR    **
+      **  DELETED.                                                  **
+      **                                                            **
+      **  PARAGRAPHS A8100-A8120 CAN BE COPIED FOR EACH IO CALL THE **
+      **  SERVICE MAKES.  THE SECOND CALL WOULD USE A8200 NUMBERS,  **
+      **  THE THIRD CALL WOULD USE A8300 NUMBERS, ETC.              **
+      ****************************************************************
+
+
+      * SHELL CODE COPYBOOK
+           EXEC SQL INCLUDE AZSH001
+           END-EXEC.
+
+
+	EJECT.
+
+       A0500-HOUSEKEEPING.
+      ****************************************************************
+      **  A 0 5 0 0 - H O U S E K E E P I N G                       **
+      **  -----------------------------------                       **
+      **  INITIALIZATION OF APPLICATION WORKING STORAGE VARIABLES   **
+      **  AND I/O BLOCKS.  USE THIS AREA FOR THE INITIALIZATION OF  **
+      **  ALL WORKING STORAGE VARIABLES.                            **
+      **                                                            **
+      ****************************************************************
+	   MOVE 'A0500 ' TO WI-EH-NM-PARAGRAPH.
+
+	   INITIALIZE MSGIO-ACTUAL-DATA-LENGTH    OF SRV-TXN-PB.
+	   INITIALIZE MSGIO-APPL-RETURN-CODE      OF SRV-TXN-PB.
+	   INITIALIZE MSGIO-APPL-EXPLANATION-CODE OF SRV-TXN-PB.
+	   INITIALIZE WV-VARIABLES
+		      WA-ACCUMULATORS.
+
+	   MOVE INPUT-TXN                   TO OUTPUT-TXN.
+		     
+       A0500-EXIT.
+	   EXIT.
+
+
+       A1000-APPLICATION-PROCESS.
+      ****************************************************************
+      **  A 1 0 0 0 - A P P L I C A T I O N - P R O C E S S         **
+      **  -------------------------------------------------         **
+      **                                                            **
+      ****************************************************************
+	   MOVE 'A1000 ' TO WI-EH-NM-PARAGRAPH.
+
+      *	   MOVE CD-FUNCTION OF STANDARD-HEADER TO vs-function-code.
+
+      *    if vs-function-cd-1
+      *         perform A1100-logic-function-cd-1
+      *    ELSE
+      *    if vs-function-cd-2
+      *         perform A1200-logic-function-cd-2
+      *    ELSE
+      *    if vs-function-code-nn
+      *         perform AXXXX-logic-function-cd-nn
+      *    ELSE
+      *    if other   (an invalid function code)
+      *         process invalid function code.
+
+
+
+~Procedures
+
+       A1000-EXIT.
+	   EXIT.
+
+
+       A1100-logic-function-cd-1.
+      ****************************************************************
+      **  A 1 1 0 0 -                                               **
+      **  -----------------------------------------                 **
+      **                                                            **
+      ****************************************************************
+	   MOVE 'A1100 ' TO WI-EH-NM-PARAGRAPH.
+
+      *    add necessary application logic
+
+      *    PERFORM A8100-IO-call-1       THRU A8100-EXIT.
+
+      *    add necessary application logic
+
+
+       A1100-EXIT.
+	   EXIT.
+
+       A1200-logic-function-cd-2.
+      ****************************************************************
+      **  A 1 2 0 0 -                                               **
+      **  -----------------------------------------                 **
+      **                                                            **
+      ****************************************************************
+	   MOVE 'A1200 ' TO WI-EH-NM-PARAGRAPH.
+
+      *    add necessary application logic
+
+      *    PERFORM paragraph modeled after A8100-IO-call-1.
+
+      *    add necessary application logic
+
+
+       A1200-EXIT.
+	   EXIT.
+
+
+       A8100-IO-call-1.
+      ****************************************************************
+      **  A 8 1 0 0 - I O - c a l l - 1                             **
+      **  -----------------------------                             **
+      **  THIS PARAGRAPH CALLS i/o module name TO description       ** 
+      **  of function performed.                                    **
+      **  IT FORMATS THE CALL PARAMETERS AND CALLS THE I/O MODULE.  **
+      **  IF THE CALL IS SUCCESSFUL, THE DATA IN THE OUTPUT MESSAGE **
+      **  IS FORMATTED FROM THE DATA RETURNED FROM THE I/O MODULE.  **
+      **  IF THE CALL IS NOT SUCCESSFUL, THE STATUS CODE FROM THE   **
+      **  I/O MODULE IS ANALYZED.  Annn-ALR-GRP SHOULD BE FORMATTED **
+      **  BEFORE THIS PARAGRAPH IS CALLED.                          **
+      ****************************************************************
+	   MOVE 'A8100 ' TO WI-EH-NM-PARAGRAPH.
+
+	   PERFORM A8110-FORMAT-DACP-xxx    THRU A8110-EXIT.
+
+	   INITIALIZE DADB-DAT-BLK.
+      
+      *    The following statement should only be performed for update  
+      *    operations.
+      *    Remove this comment!
+
+      *    MOVE Annn-ALR-GRP                TO DADB-DAT-BLK.
+      
+      *    Remove this comment!
+
+	   PERFORM S8900-CALL-IO-MODULE     THRU S8900-EXIT.
+
+	   PERFORM A8120-PROCESS-IO-xxx     THRU A8120-EXIT.
+
+       A8100-EXIT.
+	   EXIT.
+
+
+       A8110-FORMAT-DACP-xxx.
+      ****************************************************************
+      **  A 8 1 1 0 - F O R M A T - D A C P - x x x                 **
+      **  -----------------------------------------                 **
+      **                                                            **
+      ****************************************************************
+	   MOVE 'A8110 ' TO WI-EH-NM-PARAGRAPH
+
+      *   INITIALIZE DACP-DAT-ACS-CTL-PARM.
+
+      *   SET <access command
+      *            DACP-FETCH
+      *            DACP-FETCH-NEXT
+      *           DACP-UPDATE>        TO TRUE.
+
+      *   SET <range qualifier
+      *          DACP-RANGE-GELE
+      *          DACP-RANGE-EQ
+      *          DACP-RANGE-LELE>       TO TRUE.
+      *   MOVE <rows requested>       TO DACP-QY-ROWS-REQUESTED.
+
+      *    format low key values in the low key copybook for the
+      *    i/o module using one of the following:
+      *        constant
+      *        program variable
+      *        message variable
+      *        WC-TS-LOW-VAL
+      *        WC-DT-DB2-LOW-VAL
+      *        ZEROS
+      *        SPACES
+      *        LOW-VALUES
+
+      *    MOVE low-key-record TO DACP-TX-ACS-KEY-LO-ID.
+
+      *    format high values in the high key copybook for the
+      *    i/o module using one of the following:
+      *        constant
+      *        program variable
+      *        message variable
+      *        WC-TS-HIGH-VAL
+      *        WC-DT-DB2-HIGH-VAL
+      *        WC-PACK-HIGH-VAL
+      *        WC-COMP-HIGH-VAL
+      *        HIGH-VALUES
+
+      *    MOVE high-key-record TO DACP-TX-ACS-KEY-HI-ID.
+
+      *    if dynamic screening:
+      *    format values in dynamic screening copybook
+      *    MOVE dyn-scr-crit-rec TO DACP-TX-DYN-SCR-CRIT.
+      *
+      *    if sum/count performed:
+      *    format values in sum/count copybook(s)
+      *    MOVE column-name  TO DACP-CD-COLUMN-NAME.
+      *    MOVE column-value TO DACP-TX-COL-VAL.
+
+
+      *    MOVE WC-IO-aaaaaaa           TO DACP-CD-IO-MOD-ID.
+      
+      *    verify that all required DACP fields are formatted
+
+
+       A8110-EXIT.
+	   EXIT.
+
+
+       A8120-PROCESS-IO-xxx.
+      ****************************************************************
+      **  A 8 1 2 0 - P R O C E S S - I O - x x x                   **
+      **  ---------------------------------------                   **
+      **  this paragraph formats the following: status(if error),   **
+      **  explan.code(if error), return code, output message layout **
+      **  using DADB.                                               **
+      ****************************************************************
+
+	   MOVE 'A8120 ' TO WI-EH-NM-PARAGRAPH.
+
+      *    MOVE DACP-CD-ERR-MSG-NO      TO CD-RETURN
+      *                                 of service key group.
+	   
+      *    IF NOT DACP-STA-NORMAL
+      *        MOVE DACP-CD-ERR-MSG-NO  TO WI-EH-CD-ERR-MSG.
+      
+
+
+      *    Include a statement for each I/O module status you wish      
+      *    to override the value for.  Remove all other commented
+      *    lines.  Handling a particular status by PERFORMING a
+      *    separate paragraph is optional.
+      *
+      *    EVALUATE TRUE
+      *
+      *    WHEN DACP-STA-NOT-FOUND
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT
+      *
+      *    WHEN DACP-STA-DUPLICATE-KEY
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT
+      *
+      *    WHEN DACP-STA-UNAVAILABLE
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT                  
+      *
+      *    WHEN DACP-STA-REF-INTEG-ERR
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT                  
+      *
+      *    WHEN DACP-STA-NOT-AUTHORIZED
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT                  
+      *
+      *    WHEN DACP-STA-INVALID-REQUEST
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT
+      *
+      *    WHEN DACP-STA-CURSOR-OPEN
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT
+      *
+      *    WHEN DACP-STA-FATAL-ERROR
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT
+      *
+      *    WHEN DACP-STA-LOCK-OUT
+      *         MOVE <value>                TO WI-EH-CD-ERR-MSG
+      *         PERFORM S9850-PROCESS-IO-ERROR      THRU S9850-EXIT
+      *
+      *    END-EVALUATE.
+
+      *    MOVE DADB-DAT-BLK                TO Annn-ALR-GRP.
+
+      *    format fields in output message area.  Be sure to use
+      *    WA-CNT as the subscript.  A group move can be used if
+      *    the data layout in the message is the same as the ALR.
+
+      *    format fields in output message header area.
+
+
+       A8120-EXIT.
+	   EXIT.
+
+
+	   EJECT
+       A9500-WRAP-UP.
+      ****************************************************************
+      **  A 9 5 0 0 - W R A P - U P                                 **
+      **  -------------------------                                 **
+      **  THIS PARAGRAPH COMPUTES THE MESSAGE LENGTH OF DATA SENT   **
+      **  BACK TO THE SERVER FRONT END.                             **
+      **                                                            **
+      ****************************************************************
+	   MOVE 'A9500 ' TO WI-EH-NM-PARAGRAPH.
+
+      * the following compute statement must be commented out in the
+      * offhost environment
+      *    if service retrieves data
+      *    COMPUTE WV-MESSAGE-LENGTH =
+      *            (LENGTH OF last data section in output message *
+      *            (actual rows returned in last data section)    +
+      *             LENGTH OF other data in output message.
+
+      * the following compute statement is only used in the offhost
+      * environment
+      *    otherwise
+      *    COMPUTE WV-MESSAGE-LENGTH = LENGTH OF OUTPUT-TXN.
+
+	   MOVE WV-MESSAGE-LENGTH              
+	     TO REPLY-TXN-MSG-LEN.
+
+       A9500-EXIT.
+	   EXIT.
+
+~SourceFiles
+

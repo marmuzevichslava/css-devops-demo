@@ -1,36 +1,43 @@
 /***************************************************************************
  *                                                                         *
- *          C  ~PlatformLiteral   R E S O U R C E   F I L E              *
+ *                S E R V I C E   D I S P A T C H   T A B L E              *
  *                                                                         *
  *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
- *                    Resource file for: ~PaddedExeName                          *
+ *           Service Dispatch Table for: ~PaddedExeName                    *
  *                         Generated on: ~GenTime          *
  *                                   by: ~UserID              *
  *                    Short Description: ~ShortDescr ~@75.*
  *                                                                         *
  ***************************************************************************/
-#include <windows.h>
-#include <kwdxk010.h>
 
 /***************************************************************************
- * Window Identifier File                                                  * 
+ * Server Name                                                             *
  ***************************************************************************/
-#include "~ExeName..gnz"
-
-% JHERSTEI 07/01/96 : Removed reference to bitmaps path %
-% #define FND_USER_RESOURCE_PATH  ~NTResPathDefine    %
+#define   FND_APPL_ID                   ~ApplicationID
 
 /***************************************************************************
- * Window Resource Files                                                   * 
+ * Custom Initialization And Termination Declarations                      *
  ***************************************************************************/
-% JSH: 01/29/95 ADDED rcinclude for Architecture cursors %
-% CWOODS 09/13/95 : New Directory structure - changed s: to n: %
-% JHERSTEI: 07/01/96 Updated for Discovery (no change) %
-% GHOWELL:  02/06/97 removed hardcodes for C1C pointer header file %
-% rcinclude n:\archinc\c1cptrs.rch %
-rcinclude c1cptrs.rch
+#ifdef BUILD_ENV
+	#define   FND_PROGRAM_INIT_ROUTINE      NULL
+	#define   FND_PROGRAM_TERM_ROUTINE      NULL
+#else
+	#define   FND_PROGRAM_INIT_ROUTINE      ~InitProgramName
+	#define   FND_PROGRAM_TERM_ROUTINE      ~TermProgramName
+#endif
 
-~Dialogs
+
+/***************************************************************************
+ *  Service Dispatch Table Message Codes                                   *
+ ***************************************************************************/
+~ServiceMessageCodes
+/***************************************************************************
+ *  Service Dispatch Table                                                 *
+ ***************************************************************************/
+static _FE_MSG_DISPATCH_RECORD dispatchTable[] =
+{
+~ServiceDispatchTable
+};
