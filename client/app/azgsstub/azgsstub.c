@@ -1,45 +1,50 @@
 #include "azgsstub.h"
 
-/*
 
+#ifdef AGS_DEBUG
 #include <sys/timeb.h>
 
 FILE *pFile = NULL;
 
 VOID LogTime( char *Event, struct _timeb StartTime, struct _timeb EndTime )
 {
-	char ElapsedTime[15] = "";
-	pFile = fopen( "c:\\azgs\\weblog.txt", "a+" );
-	fseek( pFile, 0L, SEEK_END );
+ 	char ElapsedTime[15] = "";
+	pFile = fopen( "c:\\agslog.txt", "a+" );
 
-	sprintf( ElapsedTime, "%.3f", (( EndTime.time	+ 
-		                           ( EndTime.millitm * .001 )) -
-					               ( StartTime.time + 
-								   ( StartTime.millitm * .001 ))));
+    if( pFile )
+    {
+	    fseek( pFile, 0L, SEEK_END );
 
-	fprintf( pFile, "%s%s", ElapsedTime, Event );	
+	    sprintf( ElapsedTime, "%.3f", (( EndTime.time	+ 
+		                               ( EndTime.millitm * .001 )) -
+					                   ( StartTime.time + 
+								       ( StartTime.millitm * .001 ))));
 
-	fclose( pFile );
+	    fprintf( pFile, "%s%s", ElapsedTime, Event );	
+
+	    fclose( pFile );
+    }
 
 	return;
 }
+#endif
 
-*/
-
-int displaymsg ()
+void displaymsg ()
 {
 	printf( "\nAZGSSTUB: invalid parameter(s) \n" );
-	printf( "USAGE:    webstub -<value type><value> ...\n" );
-	printf( "EXAMPLE:  webstub -i1 -v2 -r10 -dKyBa=0657580001 \n\n" );
-	printf( "<value types> \n" );
-	printf( " d - pipe data (account number) \n" );
-	printf( " h - host name. default = 'c1proxyhost'\n" );
+	printf( "USAGE:    azgsstub -<flag><flag value>\n" );
+    printf( "EXAMPLE:  azgsstub -i1 -v2 -r10 -fc:\\temp\\indata.txt -oc:\\temp\\outdata.txt \n\n" );
+	printf( "<flags> \n" );
+	printf( " d - data \n" );
+    printf( " f - input data file \n" );
+	//printf( " h - host name. default = 'c1proxyhost'\n" );
 	printf( " i - transaction id \n" );
-	printf( " r - repeat x time\n" );
-	printf( " s - service name. default = 'c1proxy'\n" );
-	printf( " v - transaction version \n\n" );
+    printf( " o - output data file \n" );
+	printf( " r - repeat n time\n" );
+	//printf( " s - service name. default = 'c1proxy'\n" );
+	printf( " v - transaction version \n" );	
 
-	return (0);
+	return;
 }
 
 
@@ -54,14 +59,23 @@ int main( int argc, char *argv[] )
 	char			PipeName[40] = "";
 	char			HostName[15] = "";
 	char			ServiceName[15] = "";
-	char			InData[200] = "";
+	char			InData[500] = "";
 	char			*pOutData = NULL;
+	CHAR            InFileName[20] = "";
+	CHAR            OutFileName[20] = "";
+	FILE            *pInFile  = NULL;
+	FILE            *pOutFile = NULL;
+    DWORD           StartTime = 0;
+    DWORD           EndTime = 0;
 	PIPE_HANDLE		hPipe;
 	MESSAGE_HDR		MsgHeader;
 
-/*
-struct _timeb StartTime, EndTime;
-*/
+    #ifdef AGS_DEBUG
+     struct _timeb StartTime, EndTime;
+
+     memset( &StartTime, 0, sizeof( struct _timeb ));
+     memset( &EndTime,   0, sizeof( struct _timeb ));
+    #endif
 
 	memset( &hPipe, 0, sizeof( PIPE_HANDLE ));
 	memset( &MsgHeader, 0, sizeof( MESSAGE_HDR ));
@@ -72,6 +86,7 @@ struct _timeb StartTime, EndTime;
 		{
 			/* show help message */
 			displaymsg();
+            return 1;
 		}
 		else
 		{
@@ -107,24 +122,51 @@ struct _timeb StartTime, EndTime;
 							/* service name */
 							case 's':
 								strcpy( ServiceName, &argv[i][2] );
+								break;
 
 							/* transaction version */
 							case 'v':
 								MsgHeader.TxVersion = atol( &argv[i][2] );
 								break;
 
+							case 'f':
+								strcpy( InFileName, &argv[i][2] );
+								break;
+
+							case 'o':
+								strcpy( OutFileName, &argv[i][2] );
+								break;
+							
 							default:
 								displaymsg();
+                                return 1;
 								break;
 						}
 						break;
 
 					default:
 						displaymsg();
+                        return 1;
 						break;
 				}
 			}
 		}
+	}
+
+	if( strlen( InFileName ))
+	{
+		pInFile = fopen( InFileName, "r" );
+
+		if( pInFile )
+		{
+			fgets( InData, 499, pInFile );
+            fclose( pInFile );
+		}
+	}
+
+    else if( strlen( InData ) == 0 )
+	{
+		strcpy( InData, "TblName=CIS00059|NumRecReq=15" );
 	}
 
 	/*
@@ -140,21 +182,6 @@ struct _timeb StartTime, EndTime;
 	if( strlen( ServiceName ) == 0 )
 	{
 		strcpy( ServiceName, "c1proxy" );
-	}
-
-	if( strlen( InData ) == 0 )
-	{
-/*
-		strcpy( InData, "KyBa=0656390004" );
-		strcpy( InData, "KyBa=0135710139|TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
-		strcpy( InData, "TblName=CIS00059|NumRecReq=15|TblKey=E0004" );
-*/
-		strcpy( InData, "TblName=CIS00059|NumRecReq=15" );
-/*
-		strcpy( InData, "TblName=C1CMBMSG|TblKey=10000" );
-		strcpy( InData, "TblName=C1CMBMSG|NumRecReq=200" );
-		strcpy( InData, "TblName=CIS00059|TblKey=E0004" );
-*/
 	}
 
 	if( MsgHeader.TxID == 0 )
@@ -181,9 +208,32 @@ struct _timeb StartTime, EndTime;
 	MsgHeader.ForceCall    = TRUE;
 	MsgHeader.ForceCache   = FALSE;
 
+    /* display tx info */
+    printf( "\nTx Settings    -> TxID:            %.*d  TxVer:     %.*d\n", 2, MsgHeader.TxID, 2, MsgHeader.TxVersion );
+    printf( "Cache Settings -> CacheTime: %.*d sec  ForceCall:  %d  ForceCache: %d\n", 4, MsgHeader.CacheTimeLen, MsgHeader.ForceCall, MsgHeader.ForceCache );
+
+    printf( "Input File     -> " );
+    if( strlen( InFileName ))
+    {
+        printf( "%s\n", InFileName );
+    }
+    else
+    {
+        printf( "None\n" );
+    }
+
+    printf( "Output File    -> " );
+    if( strlen( OutFileName ))
+    {
+        printf( "%s\n", OutFileName );
+    }
+    else
+    {
+        printf( "None\n" );
+    }
+
    for ( j = 1; j <= Repeat; ++j )
    {			
-
 		sprintf( PipeName, 
 			     "%c%c%s%c%s", 
 				 PIPE_SEPERATOR,
@@ -191,39 +241,32 @@ struct _timeb StartTime, EndTime;
 			     HostName, 
 				 PIPE_SEPERATOR,
 				 ServiceName );
-/*
-		sprintf( PipeName, 
-			     "%c%c%s%c%s", 
-				 PIPE_SEPERATOR,
-				 PIPE_SEPERATOR,
-			     "127.0.0.1", 
-				 PIPE_SEPERATOR,
-				 "11001" );
-*/
 
+        /* open pipe */
+		printf( "\nTcpPipeOpen..." );
 
-		/* open pipe */
-		printf( "\nTcpPipeOpen... \n" );
+        #ifdef AGS_DEBUG
+         _ftime( &StartTime );
+        #endif
 
-/*
-_ftime( &StartTime );
-*/	
+        StartTime = GetTickCount();
 
 		rc = TcpPipeOpen ( PipeName, &hPipe); 
 
-/*
-_ftime( &EndTime );
-LogTime( ",", StartTime, EndTime );
-*/
+        #ifdef AGS_DEBUG
+         _ftime( &EndTime );
+         LogTime( ",", StartTime, EndTime );
+        #endif
 
 		if (!rc)
 		{
 			/* write pipe header */
-			printf( "\nTcpPipeWrite MsgHeader... \n" );
+			printf( "            Done.\nTcpPipeWrite MsgHeader..." );
 
-/*
-_ftime( &StartTime );
-*/	
+            #ifdef AGS_DEBUG
+             _ftime( &StartTime );
+            #endif
+
 			/* data length */
 			MsgHeader.DataLen = 1 + strlen( InData );
 
@@ -231,72 +274,73 @@ _ftime( &StartTime );
 			AZGS02FormatMsgHdr( ORDER_TO_NET, 
 						        &MsgHeader ); 
 
-/*
-_ftime( &EndTime );
-LogTime( ",", StartTime, EndTime );
-*/
+            #ifdef AGS_DEBUG
+             _ftime( &EndTime );
+             LogTime( ",", StartTime, EndTime );
+            #endif
 
 			DataLen = sizeof( MESSAGE_HDR );
 
-/*
-_ftime( &StartTime );
-*/	
+            #ifdef AGS_DEBUG
+             _ftime( &StartTime );
+            #endif
 
 			rc = TcpPipeWrite( hPipe,
 							   &MsgHeader,
 							   &DataLen,
 							   0 );
 
-/*
-_ftime( &EndTime );
-LogTime( ",", StartTime, EndTime );
-*/
+            #ifdef AGS_DEBUG
+             _ftime( &EndTime );
+             LogTime( ",", StartTime, EndTime );
+            #endif
 
 			if ( !rc )
 			{
 				/* write pipe header */
-				printf( "\nTcpPipeWrite Data... \n" );
+				printf( " Done, Data..." );
 
 				DataLen = 1 + strlen( InData );
 
-/*
-_ftime( &StartTime );
-*/	
+                #ifdef AGS_DEBUG
+                 _ftime( &StartTime );
+                #endif
 
 				rc = TcpPipeWrite( hPipe,
 								   &InData,
 								   &DataLen,
-								   0 );
+								   0 );                
 
-/*
-_ftime( &EndTime );
-LogTime( ",", StartTime, EndTime );
-*/
+                #ifdef AGS_DEBUG
+                 _ftime( &EndTime );
+                 LogTime( ",", StartTime, EndTime );
+                #endif
 
 				if (!rc)
 				{
 					/* read retrun message header from pipe */
-					printf( "\nTcpPipeRead MsgHeader... \n" );
+					printf( " Done.\nTcpPipeRead  MsgHeader..." );
 
 					DataLen = sizeof( MESSAGE_HDR );
 
-/*
-_ftime( &StartTime );
-*/	
+                    #ifdef AGS_DEBUG
+                     _ftime( &StartTime );
+                    #endif
 
 					rc = TcpPipeRead ( hPipe,
 									   &MsgHeader,
 									   &DataLen,
-									   0 );
+									   0 );                    
 
-/*
-_ftime( &EndTime );
-LogTime( ",", StartTime, EndTime );
-*/
-
+                    #ifdef AGS_DEBUG
+                     _ftime( &EndTime );
+                     LogTime( ",", StartTime, EndTime );
+                    #endif
 
 					if (!rc)
 					{
+                        printf( " Done, Data..." );
+
 						/* convert to network byte order */
 						AZGS02FormatMsgHdr( ORDER_TO_HOST, 
 									        &MsgHeader );
@@ -306,54 +350,73 @@ LogTime( ",", StartTime, EndTime );
 						memset( pOutData, 0, MsgHeader.DataLen );
 
 						/* read retrun data header from pipe */
-						printf( "\nTcpPipeRead Data... \n" );
-
-/*
-_ftime( &StartTime );
-*/	
+                        #ifdef AGS_DEBUG
+                         _ftime( &StartTime );
+                        #endif
 						
 						rc = TcpPipeRead ( hPipe,
 										   pOutData,
 										   &DataLen,
 										   0 );
-/*
-_ftime( &EndTime );
-LogTime( ",", StartTime, EndTime );
-*/
+                        printf( " Done.\nTcpPipeClose... " );
 
-/*
-_ftime( &StartTime );
-*/	
-						
+                        #ifdef AGS_DEBUG
+                         _ftime( &EndTime );
+                         LogTime( ",", StartTime, EndTime );
+                         _ftime( &StartTime );
+                        #endif
+
 						rc = TcpPipeClose ( hPipe );
-/*
-_ftime( &EndTime );
-LogTime( "\n", StartTime, EndTime );
-*/
+                        printf( "          Done.\n\n" );
+
+                        EndTime = GetTickCount();
+
+                        #ifdef AGS_DEBUG
+                         _ftime( &EndTime );
+                         LogTime( "\n", StartTime, EndTime );
+                        #endif
 					
 						if (!rc)
 						{
 							/* return data from pipe read */
-							printf( "\nReturn Value: %s\n",pOutData );
+                            printf( "Tx Time:        %.3f sec\n", ( EndTime - StartTime ) * .001 );
+                            printf( "Return Code:    %d\n", MsgHeader.RC );
+                            printf( "Return Length:  %d bytes\n", MsgHeader.DataLen );
+							printf( "Return Data:    %s\n",pOutData );							
+
+                            /* write output to file */
+                            if( strlen( OutFileName ))
+							{
+								 pOutFile = fopen( OutFileName, "w" );
+
+								 if( pOutFile )
+								 {
+									fprintf( pOutFile, "%s", pOutData );
+                                    fclose( pOutFile );
+								 }
+							}
 						}
 						else
 						{
 							/* error reading from pipe */
-							printf( "\nError: TcpPipeRead... Error Code:%d\n", rc );
+							printf( " Error: %d\n", rc );
 						}
+
+                        /* release resources */
+                        free( pOutData );
 					}
 				}
 				else
 				{
 					/* error writing pipe */
-					printf( "\nError: TcpPipeWrite... Error Code:%d\n", rc );	
+					printf( " Error: %d\n", rc );
 				}
 			}
 		}
 		else
 		{
 			/* error opening pipe */
-			printf( "\nError: TcpPipeOpen... Error Code:%d\n", rc );
+			printf( " Error: %d\n", rc );
 		} 
 	}
 			
