@@ -5,13 +5,30 @@
 static WCBPROC (AZCS009BUSUserPredisplay)
 {
 USHORT FndGenRC = 0;
+CHAR cStatus;
+_FND_ERROR_BLOCK FndGenErrorBlock;
+
+/*mdc 09/27/96 if SaveDir is invalid set focus there
+*/
+FndGenRC =  FndFieldQueryStatus( CBI_hwnd,
+                                 "SaveDir",
+								 &cStatus,
+								 &FndGenErrorBlock );
+
+if ( cStatus == STS_INVALID  && FndGenRC == FND_SUCCESS)
+{
+	FndGenRC = FndFieldSetCursor( CBI_hwnd,
+	                              "SaveDir",
+								  CUR_MAKECURRENT,
+								  &FndGenErrorBlock );
+}
+
 
  strcpy(SaveDirData, BFCD_pCSRMapBFCD->CsrMapSavePath);
  strcpy(GenDirData, BFCD_pCSRMapBFCD->CsrMapGenPath);
- if ((strcmp(SaveDirData, "") != 0) && (strcmp(GenDirData, "") != 0))
- {
-    FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
- }
+ /*mdc 09/27/96 Added to make window valid once fields are 
+    populated correctly*/
+ FndGenRC = CmnWindowSetDataModified( CMN_ARCH_PARMS );
 
  return(CMN_SUCCESS);
 }
