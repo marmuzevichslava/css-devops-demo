@@ -822,6 +822,17 @@ WCBPROC( DZBA001DelPbClk )
 	/* Decrement the number of rows. */
     NumberOfRows--;
 
+	/* Execute the process enable callback */
+
+	FndGenRC = DZBA001BusProcessMNEnable( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+
+
     return CMN_SUCCESS;
 }
 
