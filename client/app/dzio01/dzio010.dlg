@@ -1,0 +1,127 @@
+/**********************************************
+*                                             *
+*  Resource Definition:  DZIO010              *
+*  Generation Date:      September 13, 1995   *
+*  Generation Time:      14:01:28             *
+*  User ID:              IPEREZAR             *
+*                                             *
+***********************************************/
+
+
+DLGTEMPLATE DZIO010ID LOADONCALL MOVEABLE DISCARDABLE
+
+Begin  /* dialog */
+
+DIALOG "ALR PREFIX",DZIO010ID,
+     0,0,174,41,
+     WS_SAVEBITS
+     | WS_VISIBLE,
+     FCF_NOBYTEALIGN
+     | FCF_TITLEBAR
+     | FCF_SYSMENU
+     | FCF_DLGBORDER
+     | FCF_MINBUTTON
+
+Begin  /* controls */
+
+CONTROL "Cancel",1000,
+     58,6,45,13,WC_BUTTON,
+     WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+     | BS_PUSHBUTTON
+
+
+CONTROL "OK",1001,
+     6,6,45,13,WC_BUTTON,
+     WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+     | BS_PUSHBUTTON
+
+
+CONTROL "PRIMARY TABLE NAME:", 500,
+     4, 26, 107, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          19,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",100,
+     112,26,51,12,FND_ENTRYFIELD,
+     WS_VISIBLE | WS_TABSTOP | WS_GROUP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      TRUE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   TRUE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+End /* controls */
+
+End /* dialog */
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+MENU DZIO010MenuID PRELOAD
+Begin /* menus */
+End /* menus */
+
+
+RESOURCE 927 DZIO010ID DZIO010.wct
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

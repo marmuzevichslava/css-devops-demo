@@ -1,0 +1,285 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZIO013                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Hwjgrirh1624_Window_Close)
+WCBFWD (Hwjgrirh1630_Interwindow_Msg)
+WCBFWD (Hwjgrirh1638_Msg_Notification)
+WCBFWD (Hwjgrirh1729_Predisplay)
+WCBFWD (Hwjgrirh1809_Predestroy)
+WCBFWD (Hwjgrirh1889_List_Select)
+WCBFWD (Hwjgrirh1898_Double_Click)
+WCBFWD (Hwjgrirh1832_List_Select)
+WCBFWD (Hwjgrirh1840_Double_Click)
+WCBFWD (Hwjgrirh1916_Click)
+WCBFWD (Hwjgrirh1929_Click)
+WCBFWD (Hwjgrirh3252_Click)
+WCBFWD (Hwjgrirh3259_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZIO013WindDisp[] =
+{
+    {WINDOW_CLOSE, Hwjgrirh1624_Window_Close},
+    {INTERWINDOW_MSG, Hwjgrirh1630_Interwindow_Msg},
+    {MSG_NOTIFICATION, Hwjgrirh1638_Msg_Notification},
+    {PREDISPLAY, Hwjgrirh1729_Predisplay},
+    {PREDESTROY, Hwjgrirh1809_Predestroy},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZIO013WidgDisp[] =
+{
+    {ReposDataLB_FID, LIST_SELECT, Hwjgrirh1889_List_Select},
+    {ReposDataLB_FID, FND_DOUBLE_CLICK, Hwjgrirh1898_Double_Click},
+    {Dz00751_FID, LIST_SELECT, Hwjgrirh1832_List_Select},
+    {Dz00751_FID, FND_DOUBLE_CLICK, Hwjgrirh1840_Double_Click},
+    {AddPB_CMD, BUTTON_CLICK, Hwjgrirh1916_Click},
+    {DeletePB_CMD, BUTTON_CLICK, Hwjgrirh1929_Click},
+    {OKPB_CMD, BUTTON_CLICK, Hwjgrirh3252_Click},
+    {CancelPB_CMD, BUTTON_CLICK, Hwjgrirh3259_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZIO013FieldDefTbl[] =
+{
+    { "ReposDataLB", ReposDataLB_FID },
+    { "DZ00751", Dz00751_FID },
+    { "TABLE_NAME_WIDGET", TableNameWidget_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZIO013CommandDefTbl[] =
+{
+    { "AddPB", AddPB_CMD },
+    { "DeletePB", DeletePB_CMD },
+    { "OKPB", OKPB_CMD },
+    { "CancelPB", CancelPB_CMD },
+    { "Cut", Cut_CMD },
+    { "Copy", Copy_CMD },
+    { "Paste", Paste_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZIO013WCTHeader =
+{ 
+    "30", 11, 3, 14,
+    sizeof(struct _DZIO013WesMap),
+    offsetof(struct _DZIO013WesMap, _ReposDataLBSelIndData),
+    offsetof(struct _DZIO013WesMap, _ReposDataLBCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZIO013WCTFieldTbl[] =
+{
+  
+    { WTP_FNDLISTBOX, "ReposDataLB", ReposDataLB_FID,
+      ReposDataLB_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _ReposDataLBSelIndData) + 
+      SIZEOF(struct _DZIO013WesMap, _ReposDataLBEntityNameData) + 
+      SIZEOF(struct _DZIO013WesMap, _ReposDataLBDz00707Data),
+      0, 0, offsetof(struct _DZIO013WesMap, _ReposDataLBSelIndData),
+      offsetof(struct _DZIO013WesMap, _ReposDataLBCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "ReposDataLBSelInd", ReposDataLBSelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _ReposDataLBSelIndData[0]),
+      0, 0, offsetof(struct _DZIO013WesMap, _ReposDataLBSelIndData),
+      offsetof(struct _DZIO013WesMap, _ReposDataLBSelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "EntityName", ReposDataLBEntityName_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _ReposDataLBEntityNameData[0]),
+      36, 0, offsetof(struct _DZIO013WesMap, _ReposDataLBEntityNameData),
+      offsetof(struct _DZIO013WesMap, _ReposDataLBEntityNameCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "DZ00707", ReposDataLBDz00707_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _ReposDataLBDz00707Data[0]),
+      32, 0, offsetof(struct _DZIO013WesMap, _ReposDataLBDz00707Data),
+      offsetof(struct _DZIO013WesMap, _ReposDataLBDz00707Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDLISTBOX, "DZ00751", Dz00751_FID,
+      Dz00751_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _Dz00751SelIndData) + 
+      SIZEOF(struct _DZIO013WesMap, _Dz00751CdStatusIconicData) + 
+      SIZEOF(struct _DZIO013WesMap, _Dz00751NmRowIndxData) + 
+      SIZEOF(struct _DZIO013WesMap, _Dz00751KeyTypData) + 
+      SIZEOF(struct _DZIO013WesMap, _Dz00751Dz00799Data),
+      0, 0, offsetof(struct _DZIO013WesMap, _Dz00751SelIndData),
+      offsetof(struct _DZIO013WesMap, _Dz00751Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "DZ00751SelInd", Dz00751SelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _Dz00751SelIndData[0]),
+      0, 0, offsetof(struct _DZIO013WesMap, _Dz00751SelIndData),
+      offsetof(struct _DZIO013WesMap, _Dz00751SelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "CdStatusIconic", Dz00751CdStatusIconic_FID,
+      0, FND_IT_USHORT,
+      SIZEOF(struct _DZIO013WesMap, _Dz00751CdStatusIconicData[0]),
+      2, 0, offsetof(struct _DZIO013WesMap, _Dz00751CdStatusIconicData),
+      offsetof(struct _DZIO013WesMap, _Dz00751CdStatusIconicCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "NmRowIndx", Dz00751NmRowIndx_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZIO013WesMap, _Dz00751NmRowIndxData[0]),
+      4, 0, offsetof(struct _DZIO013WesMap, _Dz00751NmRowIndxData),
+      offsetof(struct _DZIO013WesMap, _Dz00751NmRowIndxCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "DZ00797", Dz00751KeyTyp_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _Dz00751KeyTypData[0]),
+      8, 0, offsetof(struct _DZIO013WesMap, _Dz00751KeyTypData),
+      offsetof(struct _DZIO013WesMap, _Dz00751KeyTypCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "DZ00799", Dz00751Dz00799_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _Dz00751Dz00799Data[0]),
+      36, 0, offsetof(struct _DZIO013WesMap, _Dz00751Dz00799Data),
+      offsetof(struct _DZIO013WesMap, _Dz00751Dz00799Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "TABLE_NAME_WIDGET", TableNameWidget_FID,
+      TableNameWidget_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO013WesMap, _TableNameWidgetData),
+      18, 0, offsetof(struct _DZIO013WesMap, _TableNameWidgetData),
+      offsetof(struct _DZIO013WesMap, _TableNameWidgetCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_PROTECTED_BIT},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZIO013WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "AddPB", AddPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "DeletePB", DeletePB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Cut", Cut_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 1, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Paste", Paste_CMD,
+      EditMN_CMD, 2, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZIO013IDWindowDefn =
+{
+    "30", DZIO013ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO013ID,
+    DZIO013AccelID, DZIO013MenuID, WOP_NOICON, 0,
+    DZIO013WidgDisp, DZIO013WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZIO013WCTHeader, DZIO013WCTFieldTbl, 
+    DZIO013WCTCommandTbl, NULL, 24, 0, 0
+};
+

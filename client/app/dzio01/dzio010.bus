@@ -1,0 +1,119 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME	    :  DZIO010.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**		       DZIO010BusOkPbClk
+**
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 08/29/95	IPEREZAR	   Creation
+**
+***************************************************************************/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO010BusPreDisp
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - SolutionWorks
+**
+**  DATE CREATED     : 07/21/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    7/21/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZIO010BusPreDisp )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+    FndGenRC = FndWindowCenter(CBI_hwnd,
+			       FND_WINDOW_OWNER,
+			       &FndGenErrorBlock);
+
+
+//    if(strcmp(pBFCD->DZIO01Luw.Iomodnm,NULL_STR) != 0)
+//    {
+//	  FndGenRC = DZIO01FieldSetValue(IOMODNM,
+//				   pBFCD->DZIO01Luw.Iomodnm,
+//				   sizeof(pBFCD->DZIO01Luw.Iomodnm),
+//				   CMN_ARCH_PARMS);
+//    }
+
+    return CMN_SUCCESS;
+}
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO010BusOkPbClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - SolutionWorks
+**
+**  DATE CREATED     : 07/21/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 08/29/95	IPEREZAR	   Creation
+**
+***************************************************************************/
+
+WCBPROC( DZIO010BusOkPbClk )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    USHORT RowNumber = 0;
+
+
+
+    FndGenRC = FndFieldQueryValue (CBI_hwnd,
+				   IOMODNM,
+				   sizeof(pBFCD->DZIO01Hdr.Iomodnm),
+				   pBFCD->DZIO01Hdr.Iomodnm,
+				   &FndGenErrorBlock);
+
+    strncpy(pBFCD->DZIO01Luw.Iomodnm, pBFCD->DZIO01Hdr.Iomodnm ,
+	   sizeof(pBFCD->DZIO01Hdr.Iomodnm) );
+
+    return CMN_SUCCESS;
+}

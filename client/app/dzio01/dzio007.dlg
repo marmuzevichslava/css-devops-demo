@@ -1,0 +1,353 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
+*                                                                          *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO007                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+DZIO007ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,289,156
+    STYLE 0 
+     | WS_CAPTION
+     | WS_SYSMENU
+     | DS_MODALFRAME
+    CAPTION "Descending Keys"
+    
+Begin  /* controls */
+   CONTROL "Descending Keys",100,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,166,7,119,105
+
+   CONTROL "<< &Delete",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,111,51,41,12
+
+   CONTROL "&Add >>",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,111,23,41,12
+
+   CONTROL "&Cancel",1002,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,51,115,37,12
+
+   CONTROL "",5200,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,8,138,276,10
+
+   CONTROL "Order",8001,
+              FND_RADIO_GROUP,
+              WS_VISIBLE | BS_GROUPBOX
+              ,168,122,0,0
+
+   CONTROL "Ascending",103,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE | WS_TABSTOP
+              | BS_RADIOBUTTON
+              ,168,122,0,0
+
+   CONTROL "Descending",104,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,168,122,0,0
+
+   CONTROL "Key Name",102,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,7,7,97,106
+
+   CONTROL "OK",1003,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,7,115,36,12
+
+   CONTROL "Order",9000,
+              FND_GROUP_BOX,
+              WS_VISIBLE | BS_GROUPBOX
+              ,166,114,119,22
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+DZIO007ID 332
+Begin
+   /*  Control Data for List Box DZ00751  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_CAPTION,                          "Descending Keys\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "4\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column CdStatusIconic  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "2\0"
+   FP_INITIALLY_HIDDEN,                 FPV_TRUE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "2\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_PREFIX, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+
+   /*  Control Data for List Box Column NmRowIndx  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_TRUE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_PREFIX, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_COMMA, "\0"
+
+   /*  Control Data for List Box Column DZ00797  */
+   FP_COLUMN_ID,                        "2\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column DZ00799  */
+   FP_COLUMN_ID,                        "3\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "36\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for Error Field TxMsgAreaA  */
+   FP_CONTROL_ID,                       "5200\0"
+   FP_SCREEN_LENGTH,                    "79\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Radio Group CdOperandB1  */
+   FP_CONTROL_ID,                       "8001\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_TOP_MARGIN,                       "33\0"
+   FP_LEFT_MARGIN,                      "1\0"
+   FP_HORIZONTAL_SPACING,               "3\0"
+   FP_VERTICAL_SPACING,                 "0\0"
+   FP_DIRECTION,                        FPV_HORIZONTAL, "\0"
+   FP_BUTTONS_PER_ROW,                  "2\0"
+   FP_BUTTON_INFO,                      "103,Ascd\0"
+   FP_BUTTON_INFO,                      "104,Desc\0"
+
+   /*  Control Data for List Box ReposDataLB  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_CAPTION,                          "Key Name\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_TRUE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "2\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column EntityName  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "36\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Courier\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Courier\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column DZ00707  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "\0"
+   FP_SCREEN_LENGTH,                    "32\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+DZIO007MenuID MENU PRELOAD
+Begin  /*  menus  */
+     POPUP "&Edit"
+Begin
+     MENUITEM "&Copy\tCtrl Ins",3002
+End
+     POPUP "&Help"
+Begin
+     MENUITEM "&Help for Help...",1004
+     MENUITEM "&Extended Help...",1005
+     MENUITEM "&Keys Help...",1006
+     MENUITEM "Help &Index...",1007
+     MENUITEM SEPARATOR     MENUITEM "&About...",1008
+End
+End  /*  menus  */
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+DZIO007AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1002,VIRTKEY
+VK_INSERT,3002,CONTROL,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

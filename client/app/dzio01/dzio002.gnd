@@ -1,0 +1,200 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZIO002                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Ncqnskfl3345_Predisplay)
+WCBFWD (Ncqnskfl3458_Predestroy)
+WCBFWD (Ncqnskfl3470_Other_Gui_Event)
+WCBFWD (Ncqnskfl3485_Interwindow_Msg)
+WCBFWD (Ncqnskfl3496_Help_Requested)
+WCBFWD (Ncqnskfl3505_Window_Close)
+WCBFWD (Ncqnskfl3600_Redisplay)
+WCBFWD (Ncqnskfl5378_Msg_Notification)
+WCBFWD (Ncqnskfl5397_Window_Nowinvalid)
+WCBFWD (Ncqnskfl5413_Dde_Event)
+WCBFWD (Ncqnskfl5419_Dde_Notification)
+WCBFWD (Ncqnskfl9488_Click)
+WCBFWD (Ncqnskfl0635_Click)
+WCBFWD (Ncqnskfl3146_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZIO002WindDisp[] =
+{
+    {PREDISPLAY, Ncqnskfl3345_Predisplay},
+    {PREDESTROY, Ncqnskfl3458_Predestroy},
+    {OTHER_GUI_EVENT, Ncqnskfl3470_Other_Gui_Event},
+    {INTERWINDOW_MSG, Ncqnskfl3485_Interwindow_Msg},
+    {FND_HELP_REQUESTED, Ncqnskfl3496_Help_Requested},
+    {WINDOW_CLOSE, Ncqnskfl3505_Window_Close},
+    {REDISPLAY, Ncqnskfl3600_Redisplay},
+    {MSG_NOTIFICATION, Ncqnskfl5378_Msg_Notification},
+    {WINDOW_NOWINVALID, Ncqnskfl5397_Window_Nowinvalid},
+    {DDE_EVENT, Ncqnskfl5413_Dde_Event},
+    {DDE_NOTIFICATION, Ncqnskfl5419_Dde_Notification},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZIO002WidgDisp[] =
+{
+    {CancelPB_CMD, BUTTON_CLICK, Ncqnskfl9488_Click},
+    {OKPB_CMD, BUTTON_CLICK, Ncqnskfl0635_Click},
+    {Copy_CMD, BUTTON_CLICK, Ncqnskfl3146_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZIO002FieldDefTbl[] =
+{
+    { "ImpObjNmLB", ImpObjNmLB_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZIO002CommandDefTbl[] =
+{
+    { "CancelPB", CancelPB_CMD },
+    { "OKPB", OKPB_CMD },
+    { "Copy", Copy_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZIO002WCTHeader =
+{ 
+    "30", 3, 1, 10,
+    sizeof(struct _DZIO002WesMap),
+    offsetof(struct _DZIO002WesMap, _ImpObjNmLBSelIndData),
+    offsetof(struct _DZIO002WesMap, _ImpObjNmLBCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZIO002WCTFieldTbl[] =
+{
+  
+    { WTP_FNDLISTBOX, "ImpObjNmLB", ImpObjNmLB_FID,
+      ImpObjNmLB_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO002WesMap, _ImpObjNmLBSelIndData) + 
+      SIZEOF(struct _DZIO002WesMap, _ImpObjNmLBTxObjectDescData),
+      0, 0, offsetof(struct _DZIO002WesMap, _ImpObjNmLBSelIndData),
+      offsetof(struct _DZIO002WesMap, _ImpObjNmLBCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "ImpObjNmLBSelInd", ImpObjNmLBSelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO002WesMap, _ImpObjNmLBSelIndData[0]),
+      0, 0, offsetof(struct _DZIO002WesMap, _ImpObjNmLBSelIndData),
+      offsetof(struct _DZIO002WesMap, _ImpObjNmLBSelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "TxObjectDesc", ImpObjNmLBTxObjectDesc_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO002WesMap, _ImpObjNmLBTxObjectDescData[0]),
+      32, 0, offsetof(struct _DZIO002WesMap, _ImpObjNmLBTxObjectDescData),
+      offsetof(struct _DZIO002WesMap, _ImpObjNmLBTxObjectDescCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZIO002WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZIO002IDWindowDefn =
+{
+    "30", DZIO002ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO002ID,
+    DZIO002AccelID, DZIO002MenuID, WOP_NOICON, 0,
+    DZIO002WidgDisp, DZIO002WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZIO002WCTHeader, DZIO002WCTFieldTbl, 
+    DZIO002WCTCommandTbl, NULL, 24, 0, 0
+};
+

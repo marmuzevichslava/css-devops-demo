@@ -1,0 +1,59 @@
+/***************************************************************************
+*                                                                          *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO009                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+struct _DZIO009WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _PrimTabNmData[19];
+#define PrimTabNmData              pWesMap->_PrimTabNmData
+
+   char _ALRPrefixData[5];
+#define ALRPrefixData              pWesMap->_ALRPrefixData
+
+
+    WESFLDCTL _PrimTabNmCtl;
+#define PrimTabNmAttr                       pWesMap->_PrimTabNmCtl.Attr
+#define PrimTabNmStatus                     pWesMap->_PrimTabNmCtl.Status
+#define PrimTabNmRights                     pWesMap->_PrimTabNmCtl.Rights
+#define PrimTabNmMsg                        pWesMap->_PrimTabNmCtl.Msg
+#define PrimTabNmCursor                     pWesMap->_PrimTabNmCtl.Cursor
+
+    WESFLDCTL _ALRPrefixCtl;
+#define ALRPrefixAttr                       pWesMap->_ALRPrefixCtl.Attr
+#define ALRPrefixStatus                     pWesMap->_ALRPrefixCtl.Status
+#define ALRPrefixRights                     pWesMap->_ALRPrefixCtl.Rights
+#define ALRPrefixMsg                        pWesMap->_ALRPrefixCtl.Msg
+#define ALRPrefixCursor                     pWesMap->_ALRPrefixCtl.Cursor
+};
+

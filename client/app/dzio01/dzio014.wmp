@@ -1,0 +1,153 @@
+/***************************************************************************
+*                                                                          *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO014                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+struct _DZIO014WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+
+#define  NUMJOINTABLE1ROWS   200
+
+    char _JoinTable1SelIndData[200];
+#define JoinTable1SelIndData    pWesMap->_JoinTable1SelIndData
+
+    char _JoinTable1TableNameWidgetData[200][19];
+#define JoinTable1TableNameWidgetData    pWesMap->_JoinTable1TableNameWidgetData
+
+
+#define  NUMJOINTABLE2ROWS   200
+
+    char _JoinTable2SelIndData[200];
+#define JoinTable2SelIndData    pWesMap->_JoinTable2SelIndData
+
+    char _JoinTable2TableNameWidgetData[200][19];
+#define JoinTable2TableNameWidgetData    pWesMap->_JoinTable2TableNameWidgetData
+
+   char _PrimTblLstData[9];
+#define PrimTblLstData              pWesMap->_PrimTblLstData
+
+   char _SecTblLstData[9];
+#define SecTblLstData              pWesMap->_SecTblLstData
+
+
+#define  NUMMAINJOINLBROWS   50
+
+    char _MainJoinLBSelIndData[50];
+#define MainJoinLBSelIndData    pWesMap->_MainJoinLBSelIndData
+
+    char _MainJoinLBAppliedJoinEntryData[50][51];
+#define MainJoinLBAppliedJoinEntryData    pWesMap->_MainJoinLBAppliedJoinEntryData
+
+   char _Dz00820RelationalOperatorsData[9];
+#define Dz00820RelationalOperatorsData              pWesMap->_Dz00820RelationalOperatorsData
+
+
+    WESFLDCTL _JoinTable1Ctl;
+#define JoinTable1Attr                       pWesMap->_JoinTable1Ctl.Attr
+#define JoinTable1Status                     pWesMap->_JoinTable1Ctl.Status
+#define JoinTable1Rights                     pWesMap->_JoinTable1Ctl.Rights
+#define JoinTable1Msg                        pWesMap->_JoinTable1Ctl.Msg
+#define JoinTable1Cursor                     pWesMap->_JoinTable1Ctl.Cursor
+
+    WESFLDCTL _JoinTable1SelIndCtl[200];
+#define JoinTable1SelIndCtl      pWesMap->_JoinTable1SelIndCtl
+
+    WESFLDCTL _JoinTable1TableNameWidgetCtl[200];
+#define JoinTable1TableNameWidgetCtl      pWesMap->_JoinTable1TableNameWidgetCtl
+
+
+    WESFLDCTL _JoinTable2Ctl;
+#define JoinTable2Attr                       pWesMap->_JoinTable2Ctl.Attr
+#define JoinTable2Status                     pWesMap->_JoinTable2Ctl.Status
+#define JoinTable2Rights                     pWesMap->_JoinTable2Ctl.Rights
+#define JoinTable2Msg                        pWesMap->_JoinTable2Ctl.Msg
+#define JoinTable2Cursor                     pWesMap->_JoinTable2Ctl.Cursor
+
+    WESFLDCTL _JoinTable2SelIndCtl[200];
+#define JoinTable2SelIndCtl      pWesMap->_JoinTable2SelIndCtl
+
+    WESFLDCTL _JoinTable2TableNameWidgetCtl[200];
+#define JoinTable2TableNameWidgetCtl      pWesMap->_JoinTable2TableNameWidgetCtl
+
+
+    WESFLDCTL _PrimTblLstCtl;
+#define PrimTblLstAttr                       pWesMap->_PrimTblLstCtl.Attr
+#define PrimTblLstStatus                     pWesMap->_PrimTblLstCtl.Status
+#define PrimTblLstRights                     pWesMap->_PrimTblLstCtl.Rights
+#define PrimTblLstMsg                        pWesMap->_PrimTblLstCtl.Msg
+#define PrimTblLstCursor                     pWesMap->_PrimTblLstCtl.Cursor
+
+    WESFLDCTL _SecTblLstCtl;
+#define SecTblLstAttr                       pWesMap->_SecTblLstCtl.Attr
+#define SecTblLstStatus                     pWesMap->_SecTblLstCtl.Status
+#define SecTblLstRights                     pWesMap->_SecTblLstCtl.Rights
+#define SecTblLstMsg                        pWesMap->_SecTblLstCtl.Msg
+#define SecTblLstCursor                     pWesMap->_SecTblLstCtl.Cursor
+
+    WESFLDCTL _MainJoinLBCtl;
+#define MainJoinLBAttr                       pWesMap->_MainJoinLBCtl.Attr
+#define MainJoinLBStatus                     pWesMap->_MainJoinLBCtl.Status
+#define MainJoinLBRights                     pWesMap->_MainJoinLBCtl.Rights
+#define MainJoinLBMsg                        pWesMap->_MainJoinLBCtl.Msg
+#define MainJoinLBCursor                     pWesMap->_MainJoinLBCtl.Cursor
+
+    WESFLDCTL _MainJoinLBSelIndCtl[50];
+#define MainJoinLBSelIndCtl      pWesMap->_MainJoinLBSelIndCtl
+
+    WESFLDCTL _MainJoinLBAppliedJoinEntryCtl[50];
+#define MainJoinLBAppliedJoinEntryCtl      pWesMap->_MainJoinLBAppliedJoinEntryCtl
+
+
+    WESFLDCTL _Dz00820RelationalOperatorsCtl;
+#define Dz00820RelationalOperatorsAttr                       pWesMap->_Dz00820RelationalOperatorsCtl.Attr
+#define Dz00820RelationalOperatorsStatus                     pWesMap->_Dz00820RelationalOperatorsCtl.Status
+#define Dz00820RelationalOperatorsRights                     pWesMap->_Dz00820RelationalOperatorsCtl.Rights
+#define Dz00820RelationalOperatorsMsg                        pWesMap->_Dz00820RelationalOperatorsCtl.Msg
+#define Dz00820RelationalOperatorsCursor                     pWesMap->_Dz00820RelationalOperatorsCtl.Cursor
+};
+
+typedef struct
+{
+    char  _JoinTable1TableNameWidgetData[19];
+}_JoinTable1Row;
+
+typedef struct
+{
+    char  _JoinTable2TableNameWidgetData[19];
+}_JoinTable2Row;
+
+typedef struct
+{
+    char  _MainJoinLBAppliedJoinEntryData[51];
+}_MainJoinLBRow;
+

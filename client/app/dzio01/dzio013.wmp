@@ -1,0 +1,133 @@
+/***************************************************************************
+*                                                                          *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO013                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+struct _DZIO013WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+
+#define  NUMREPOSDATALBROWS   50
+
+    char _ReposDataLBSelIndData[50];
+#define ReposDataLBSelIndData    pWesMap->_ReposDataLBSelIndData
+
+    char _ReposDataLBEntityNameData[50][37];
+#define ReposDataLBEntityNameData    pWesMap->_ReposDataLBEntityNameData
+
+    char _ReposDataLBDz00707Data[50][33];
+#define ReposDataLBDz00707Data    pWesMap->_ReposDataLBDz00707Data
+
+
+#define  NUMDZ00751ROWS   50
+
+    char _Dz00751SelIndData[50];
+#define Dz00751SelIndData    pWesMap->_Dz00751SelIndData
+
+    unsigned short _Dz00751CdStatusIconicData[50];
+#define Dz00751CdStatusIconicData    pWesMap->_Dz00751CdStatusIconicData
+
+    short _Dz00751NmRowIndxData[50];
+#define Dz00751NmRowIndxData    pWesMap->_Dz00751NmRowIndxData
+
+    char _Dz00751KeyTypData[50][9];
+#define Dz00751KeyTypData    pWesMap->_Dz00751KeyTypData
+
+    char _Dz00751Dz00799Data[50][37];
+#define Dz00751Dz00799Data    pWesMap->_Dz00751Dz00799Data
+
+   char _TableNameWidgetData[19];
+#define TableNameWidgetData              pWesMap->_TableNameWidgetData
+
+
+    WESFLDCTL _ReposDataLBCtl;
+#define ReposDataLBAttr                       pWesMap->_ReposDataLBCtl.Attr
+#define ReposDataLBStatus                     pWesMap->_ReposDataLBCtl.Status
+#define ReposDataLBRights                     pWesMap->_ReposDataLBCtl.Rights
+#define ReposDataLBMsg                        pWesMap->_ReposDataLBCtl.Msg
+#define ReposDataLBCursor                     pWesMap->_ReposDataLBCtl.Cursor
+
+    WESFLDCTL _ReposDataLBSelIndCtl[50];
+#define ReposDataLBSelIndCtl      pWesMap->_ReposDataLBSelIndCtl
+
+    WESFLDCTL _ReposDataLBEntityNameCtl[50];
+#define ReposDataLBEntityNameCtl      pWesMap->_ReposDataLBEntityNameCtl
+
+    WESFLDCTL _ReposDataLBDz00707Ctl[50];
+#define ReposDataLBDz00707Ctl      pWesMap->_ReposDataLBDz00707Ctl
+
+
+    WESFLDCTL _Dz00751Ctl;
+#define Dz00751Attr                       pWesMap->_Dz00751Ctl.Attr
+#define Dz00751Status                     pWesMap->_Dz00751Ctl.Status
+#define Dz00751Rights                     pWesMap->_Dz00751Ctl.Rights
+#define Dz00751Msg                        pWesMap->_Dz00751Ctl.Msg
+#define Dz00751Cursor                     pWesMap->_Dz00751Ctl.Cursor
+
+    WESFLDCTL _Dz00751SelIndCtl[50];
+#define Dz00751SelIndCtl      pWesMap->_Dz00751SelIndCtl
+
+    WESFLDCTL _Dz00751CdStatusIconicCtl[50];
+#define Dz00751CdStatusIconicCtl      pWesMap->_Dz00751CdStatusIconicCtl
+
+    WESFLDCTL _Dz00751NmRowIndxCtl[50];
+#define Dz00751NmRowIndxCtl      pWesMap->_Dz00751NmRowIndxCtl
+
+    WESFLDCTL _Dz00751KeyTypCtl[50];
+#define Dz00751KeyTypCtl      pWesMap->_Dz00751KeyTypCtl
+
+    WESFLDCTL _Dz00751Dz00799Ctl[50];
+#define Dz00751Dz00799Ctl      pWesMap->_Dz00751Dz00799Ctl
+
+
+    WESFLDCTL _TableNameWidgetCtl;
+#define TableNameWidgetAttr                       pWesMap->_TableNameWidgetCtl.Attr
+#define TableNameWidgetStatus                     pWesMap->_TableNameWidgetCtl.Status
+#define TableNameWidgetRights                     pWesMap->_TableNameWidgetCtl.Rights
+#define TableNameWidgetMsg                        pWesMap->_TableNameWidgetCtl.Msg
+#define TableNameWidgetCursor                     pWesMap->_TableNameWidgetCtl.Cursor
+};
+
+typedef struct
+{
+    char  _ReposDataLBEntityNameData[37];
+    char  _ReposDataLBDz00707Data[33];
+}_ReposDataLBRow;
+
+typedef struct
+{
+    unsigned short  _Dz00751CdStatusIconicData;
+    short  _Dz00751NmRowIndxData;
+    char  _Dz00751KeyTypData[9];
+    char  _Dz00751Dz00799Data[37];
+}_Dz00751Row;
+

@@ -1,0 +1,503 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZIO001                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Ncqnrdhl4547_Predestroy)
+WCBFWD (Ncqnrdhl4606_Msg_Notification)
+WCBFWD (Ncqnrdhl4613_Window_Close)
+WCBFWD (Ncqnrdhl4618_Interwindow_Msg)
+WCBFWD (Ncqnrdhl4629_Other_Gui_Event)
+WCBFWD (Ncqnrdhl8096_Predisplay)
+WCBFWD (Ncqnrdhl8191_Help_Requested)
+WCBFWD (Ncqnrdhl9475_Field_Change)
+WCBFWD (Ncqnrdhl9733_Field_Nowinvalid)
+WCBFWD (Ncqnrdhl9065_Click)
+WCBFWD (Ncqnrdhl9917_Click)
+WCBFWD (Ncqnrdhl9636_Field_Change)
+WCBFWD (Ncqnrdhl9774_Field_Nowinvalid)
+WCBFWD (Ncqnrdhl9259_Click)
+WCBFWD (Ncqnrdhl0571_Field_Change)
+WCBFWD (Ncqnrdhl1731_Click)
+WCBFWD (Ncqnrdhl0642_Field_Change)
+WCBFWD (Ncqnrdhl0857_Field_Change)
+WCBFWD (Ncqnrdhl0890_Field_Change)
+WCBFWD (Ncqnrdhl0937_Field_Change)
+WCBFWD (Ncqnrdhl8954_Field_Change)
+WCBFWD (Ncqnrdhl8715_Field_Change)
+WCBFWD (Ncqnrdhl5644_List_Select)
+WCBFWD (Ncqnrdhl7284_Double_Click)
+WCBFWD (Ncqnrdhl5241_Click)
+WCBFWD (Ncqnrdhl6984_Click)
+WCBFWD (Ncqnrdhl3063_Click)
+WCBFWD (Ncqnrdhl3440_Click)
+WCBFWD (Ncqnrdhl4328_Click)
+WCBFWD (Ncqnrdhl2546_Click)
+WCBFWD (Ncqnrdhl9280_Click)
+WCBFWD (Ncqnrdhl9419_Click)
+WCBFWD (Ncqnrdhl9424_Click)
+WCBFWD (Ncqnrdhl9405_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZIO001WindDisp[] =
+{
+    {PREDESTROY, Ncqnrdhl4547_Predestroy},
+    {MSG_NOTIFICATION, Ncqnrdhl4606_Msg_Notification},
+    {WINDOW_CLOSE, Ncqnrdhl4613_Window_Close},
+    {INTERWINDOW_MSG, Ncqnrdhl4618_Interwindow_Msg},
+    {OTHER_GUI_EVENT, Ncqnrdhl4629_Other_Gui_Event},
+    {PREDISPLAY, Ncqnrdhl8096_Predisplay},
+    {FND_HELP_REQUESTED, Ncqnrdhl8191_Help_Requested},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZIO001WidgDisp[] =
+{
+    {PrimTab_FID, FIELD_CHANGE, Ncqnrdhl9475_Field_Change},
+    {PrimTab_FID, FIELD_NOWINVALID, Ncqnrdhl9733_Field_Nowinvalid},
+    {FindPB1_CMD, BUTTON_CLICK, Ncqnrdhl9065_Click},
+    {VIEW1_CMD, BUTTON_CLICK, Ncqnrdhl9917_Click},
+    {Alrcbook_FID, FIELD_CHANGE, Ncqnrdhl9636_Field_Change},
+    {Alrcbook_FID, FIELD_NOWINVALID, Ncqnrdhl9774_Field_Nowinvalid},
+    {FindPB2_CMD, BUTTON_CLICK, Ncqnrdhl9259_Click},
+    {Funct_FID, FIELD_CHANGE, Ncqnrdhl0571_Field_Change},
+    {VIEW2_CMD, BUTTON_CLICK, Ncqnrdhl1731_Click},
+    {Fetch_FID, FIELD_CHANGE, Ncqnrdhl0642_Field_Change},
+    {FetNx_FID, FIELD_CHANGE, Ncqnrdhl0857_Field_Change},
+    {Update_FID, FIELD_CHANGE, Ncqnrdhl0890_Field_Change},
+    {Insert_FID, FIELD_CHANGE, Ncqnrdhl0937_Field_Change},
+    {Delete_FID, FIELD_CHANGE, Ncqnrdhl8954_Field_Change},
+    {Sum_FID, FIELD_CHANGE, Ncqnrdhl8715_Field_Change},
+    {TaskList_FID, LIST_SELECT, Ncqnrdhl5644_List_Select},
+    {TaskList_FID, FND_DOUBLE_CLICK, Ncqnrdhl7284_Double_Click},
+    {FolderPB_CMD, BUTTON_CLICK, Ncqnrdhl5241_Click},
+    {MntmNew_CMD, BUTTON_CLICK, Ncqnrdhl6984_Click},
+    {MntmOpen_CMD, BUTTON_CLICK, Ncqnrdhl3063_Click},
+    {MntSave_CMD, BUTTON_CLICK, Ncqnrdhl3440_Click},
+    {MntSaveAs_CMD, BUTTON_CLICK, Ncqnrdhl4328_Click},
+    {MntmGen_CMD, BUTTON_CLICK, Ncqnrdhl2546_Click},
+    {ExitMN_CMD, BUTTON_CLICK, Ncqnrdhl9280_Click},
+    {Cut_CMD, BUTTON_CLICK, Ncqnrdhl9419_Click},
+    {Copy_CMD, BUTTON_CLICK, Ncqnrdhl9424_Click},
+    {Paste_CMD, BUTTON_CLICK, Ncqnrdhl9405_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZIO001FieldDefTbl[] =
+{
+    { "PrimTab", PrimTab_FID },
+    { "Alrcbook", Alrcbook_FID },
+    { "Funct", Funct_FID },
+    { "Fetch", Fetch_FID },
+    { "FetNx", FetNx_FID },
+    { "Update", Update_FID },
+    { "Insert", Insert_FID },
+    { "Delete", Delete_FID },
+    { "InsSet", InsSet_FID },
+    { "UpdSet", UpdSet_FID },
+    { "DelSet", DelSet_FID },
+    { "Sum", Sum_FID },
+    { "SumMul", SumMul_FID },
+    { "Unique", Unique_FID },
+    { "CntMul", CntMul_FID },
+    { "Count", Count_FID },
+    { "CstFun", CstFun_FID },
+    { "FetPrev", FetPrev_FID },
+    { "Rename", Rename_FID },
+    { "DynScr", DynScr_FID },
+    { "TaskList", TaskList_FID },
+    { "SumCol", SumCol_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZIO001CommandDefTbl[] =
+{
+    { "FindPB1", FindPB1_CMD },
+    { "VIEW1", VIEW1_CMD },
+    { "FindPB2", FindPB2_CMD },
+    { "VIEW2", VIEW2_CMD },
+    { "FolderPB", FolderPB_CMD },
+    { "MntmNew", MntmNew_CMD },
+    { "MntmOpen", MntmOpen_CMD },
+    { "MntSave", MntSave_CMD },
+    { "MntSaveAs", MntSaveAs_CMD },
+    { "MntmGen", MntmGen_CMD },
+    { "ExitMN", ExitMN_CMD },
+    { "Cut", Cut_CMD },
+    { "Copy", Copy_CMD },
+    { "Paste", Paste_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZIO001WCTHeader =
+{ 
+    "30", 27, 22, 22,
+    sizeof(struct _DZIO001WesMap),
+    offsetof(struct _DZIO001WesMap, _PrimTabData),
+    offsetof(struct _DZIO001WesMap, _PrimTabCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZIO001WCTFieldTbl[] =
+{
+  
+    { WTP_FNDENTRYFLD, "PrimTab", PrimTab_FID,
+      PrimTab_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _PrimTabData),
+      8, 0, offsetof(struct _DZIO001WesMap, _PrimTabData),
+      offsetof(struct _DZIO001WesMap, _PrimTabCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "Alrcbook", Alrcbook_FID,
+      Alrcbook_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _AlrcbookData),
+      8, 0, offsetof(struct _DZIO001WesMap, _AlrcbookData),
+      offsetof(struct _DZIO001WesMap, _AlrcbookCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_RADIOGROUP, "Funct", Funct_FID,
+      Funct_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _FunctData),
+      8, 0, offsetof(struct _DZIO001WesMap, _FunctData),
+      offsetof(struct _DZIO001WesMap, _FunctCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Fetch", Fetch_FID,
+      Fetch_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _FetchData),
+      1, 0, offsetof(struct _DZIO001WesMap, _FetchData),
+      offsetof(struct _DZIO001WesMap, _FetchCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "FetNx", FetNx_FID,
+      FetNx_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _FetNxData),
+      1, 0, offsetof(struct _DZIO001WesMap, _FetNxData),
+      offsetof(struct _DZIO001WesMap, _FetNxCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Update", Update_FID,
+      Update_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _UpdateData),
+      1, 0, offsetof(struct _DZIO001WesMap, _UpdateData),
+      offsetof(struct _DZIO001WesMap, _UpdateCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Insert", Insert_FID,
+      Insert_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _InsertData),
+      1, 0, offsetof(struct _DZIO001WesMap, _InsertData),
+      offsetof(struct _DZIO001WesMap, _InsertCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Delete", Delete_FID,
+      Delete_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _DeleteData),
+      1, 0, offsetof(struct _DZIO001WesMap, _DeleteData),
+      offsetof(struct _DZIO001WesMap, _DeleteCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "InsSet", InsSet_FID,
+      InsSet_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _InsSetData),
+      1, 0, offsetof(struct _DZIO001WesMap, _InsSetData),
+      offsetof(struct _DZIO001WesMap, _InsSetCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "UpdSet", UpdSet_FID,
+      UpdSet_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _UpdSetData),
+      1, 0, offsetof(struct _DZIO001WesMap, _UpdSetData),
+      offsetof(struct _DZIO001WesMap, _UpdSetCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "DelSet", DelSet_FID,
+      DelSet_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _DelSetData),
+      1, 0, offsetof(struct _DZIO001WesMap, _DelSetData),
+      offsetof(struct _DZIO001WesMap, _DelSetCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Sum", Sum_FID,
+      Sum_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _SumData),
+      1, 0, offsetof(struct _DZIO001WesMap, _SumData),
+      offsetof(struct _DZIO001WesMap, _SumCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "SumMul", SumMul_FID,
+      SumMul_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _SumMulData),
+      1, 0, offsetof(struct _DZIO001WesMap, _SumMulData),
+      offsetof(struct _DZIO001WesMap, _SumMulCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Unique", Unique_FID,
+      Unique_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _UniqueData),
+      1, 0, offsetof(struct _DZIO001WesMap, _UniqueData),
+      offsetof(struct _DZIO001WesMap, _UniqueCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "CntMul", CntMul_FID,
+      CntMul_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _CntMulData),
+      1, 0, offsetof(struct _DZIO001WesMap, _CntMulData),
+      offsetof(struct _DZIO001WesMap, _CntMulCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Count", Count_FID,
+      Count_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _CountData),
+      1, 0, offsetof(struct _DZIO001WesMap, _CountData),
+      offsetof(struct _DZIO001WesMap, _CountCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "CstFun", CstFun_FID,
+      CstFun_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _CstFunData),
+      1, 0, offsetof(struct _DZIO001WesMap, _CstFunData),
+      offsetof(struct _DZIO001WesMap, _CstFunCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "FetPrev", FetPrev_FID,
+      FetPrev_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _FetPrevData),
+      1, 0, offsetof(struct _DZIO001WesMap, _FetPrevData),
+      offsetof(struct _DZIO001WesMap, _FetPrevCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "Rename", Rename_FID,
+      Rename_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _RenameData),
+      1, 0, offsetof(struct _DZIO001WesMap, _RenameData),
+      offsetof(struct _DZIO001WesMap, _RenameCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_CHECKBOX, "DynScr", DynScr_FID,
+      DynScr_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _DynScrData),
+      1, 0, offsetof(struct _DZIO001WesMap, _DynScrData),
+      offsetof(struct _DZIO001WesMap, _DynScrCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDLISTBOX, "TaskList", TaskList_FID,
+      TaskList_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _TaskListSelIndData) + 
+      SIZEOF(struct _DZIO001WesMap, _TaskListCdStatusIconicData) + 
+      SIZEOF(struct _DZIO001WesMap, _TaskListWnWindowTitleData) + 
+      SIZEOF(struct _DZIO001WesMap, _TaskListWktWindowNameData) + 
+      SIZEOF(struct _DZIO001WesMap, _TaskListWnTrackKeyData),
+      0, 0, offsetof(struct _DZIO001WesMap, _TaskListSelIndData),
+      offsetof(struct _DZIO001WesMap, _TaskListCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "TaskListSelInd", TaskListSelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _TaskListSelIndData[0]),
+      0, 0, offsetof(struct _DZIO001WesMap, _TaskListSelIndData),
+      offsetof(struct _DZIO001WesMap, _TaskListSelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "CdStatusIconic", TaskListCdStatusIconic_FID,
+      0, FND_IT_USHORT,
+      SIZEOF(struct _DZIO001WesMap, _TaskListCdStatusIconicData[0]),
+      2, 0, offsetof(struct _DZIO001WesMap, _TaskListCdStatusIconicData),
+      offsetof(struct _DZIO001WesMap, _TaskListCdStatusIconicCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "WnWindowTitle", TaskListWnWindowTitle_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _TaskListWnWindowTitleData[0]),
+      41, 0, offsetof(struct _DZIO001WesMap, _TaskListWnWindowTitleData),
+      offsetof(struct _DZIO001WesMap, _TaskListWnWindowTitleCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "WktWindowName", TaskListWktWindowName_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _TaskListWktWindowNameData[0]),
+      9, 0, offsetof(struct _DZIO001WesMap, _TaskListWktWindowNameData),
+      offsetof(struct _DZIO001WesMap, _TaskListWktWindowNameCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "WnTrackKey", TaskListWnTrackKey_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _TaskListWnTrackKeyData[0]),
+      9, 0, offsetof(struct _DZIO001WesMap, _TaskListWnTrackKeyData),
+      offsetof(struct _DZIO001WesMap, _TaskListWnTrackKeyCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "SumCol", SumCol_FID,
+      SumCol_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO001WesMap, _SumColData),
+      8, 0, offsetof(struct _DZIO001WesMap, _SumColData),
+      offsetof(struct _DZIO001WesMap, _SumColCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZIO001WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "FindPB1", FindPB1_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "VIEW1", VIEW1_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "FindPB2", FindPB2_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "VIEW2", VIEW2_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "FolderPB", FolderPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "IoMod", IoMod_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "MntmNew", MntmNew_CMD,
+      IoMod_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "MntmOpen", MntmOpen_CMD,
+      IoMod_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "MntSave", MntSave_CMD,
+      IoMod_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "MntSaveAs", MntSaveAs_CMD,
+      IoMod_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "MntmGen", MntmGen_CMD,
+      IoMod_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExitMN", ExitMN_CMD,
+      IoMod_CMD, 5, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Cut", Cut_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 1, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Paste", Paste_CMD,
+      EditMN_CMD, 2, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZIO001IDWindowDefn =
+{
+    "30", DZIO001ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_TOP | WCR_NON_PROPORTIONAL, DZIO001ID,
+    DZIO001AccelID, DZIO001MenuID, DZIO001IconID, 0,
+    DZIO001WidgDisp, DZIO001WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZIO001WCTHeader, DZIO001WCTFieldTbl, 
+    DZIO001WCTCommandTbl, NULL, 24, 0, 0
+};
+

@@ -1,0 +1,195 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZIO005                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Ncqnsnpl3985_Predisplay)
+WCBFWD (Ncqnsnpl4050_Predestroy)
+WCBFWD (Ncqnsnpl4063_Other_Gui_Event)
+WCBFWD (Ncqnsnpl4074_Interwindow_Msg)
+WCBFWD (Ncqnsnpl4080_Help_Requested)
+WCBFWD (Ncqnsnpl4089_Window_Close)
+WCBFWD (Ncqnsnpl7367_Field_Change)
+WCBFWD (Ncqnsnpl8230_Field_Nowinvalid)
+WCBFWD (Ncqnsnpl7084_Click)
+WCBFWD (Ncqnsnpl6874_Click)
+WCBFWD (Ncqnsnpl0823_Click)
+WCBFWD (Ncqnsnpl3371_Click)
+WCBFWD (Ncqnsnpl3355_Click)
+WCBFWD (Ncqnsnpl3378_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZIO005WindDisp[] =
+{
+    {PREDISPLAY, Ncqnsnpl3985_Predisplay},
+    {PREDESTROY, Ncqnsnpl4050_Predestroy},
+    {OTHER_GUI_EVENT, Ncqnsnpl4063_Other_Gui_Event},
+    {INTERWINDOW_MSG, Ncqnsnpl4074_Interwindow_Msg},
+    {FND_HELP_REQUESTED, Ncqnsnpl4080_Help_Requested},
+    {WINDOW_CLOSE, Ncqnsnpl4089_Window_Close},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZIO005WidgDisp[] =
+{
+    {Iomodnm_FID, FIELD_CHANGE, Ncqnsnpl7367_Field_Change},
+    {Iomodnm_FID, FIELD_NOWINVALID, Ncqnsnpl8230_Field_Nowinvalid},
+    {FindPB_CMD, BUTTON_CLICK, Ncqnsnpl7084_Click},
+    {CancelPB_CMD, BUTTON_CLICK, Ncqnsnpl6874_Click},
+    {OKPB_CMD, BUTTON_CLICK, Ncqnsnpl0823_Click},
+    {Cut_CMD, BUTTON_CLICK, Ncqnsnpl3371_Click},
+    {Copy_CMD, BUTTON_CLICK, Ncqnsnpl3355_Click},
+    {Paste_CMD, BUTTON_CLICK, Ncqnsnpl3378_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZIO005FieldDefTbl[] =
+{
+    { "Iomodnm", Iomodnm_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZIO005CommandDefTbl[] =
+{
+    { "FindPB", FindPB_CMD },
+    { "CancelPB", CancelPB_CMD },
+    { "OKPB", OKPB_CMD },
+    { "Cut", Cut_CMD },
+    { "Copy", Copy_CMD },
+    { "Paste", Paste_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZIO005WCTHeader =
+{ 
+    "30", 1, 1, 13,
+    sizeof(struct _DZIO005WesMap),
+    offsetof(struct _DZIO005WesMap, _IomodnmData),
+    offsetof(struct _DZIO005WesMap, _IomodnmCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZIO005WCTFieldTbl[] =
+{
+  
+    { WTP_FNDENTRYFLD, "Iomodnm", Iomodnm_FID,
+      Iomodnm_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO005WesMap, _IomodnmData),
+      8, 0, offsetof(struct _DZIO005WesMap, _IomodnmData),
+      offsetof(struct _DZIO005WesMap, _IomodnmCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZIO005WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "FindPB", FindPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Cut", Cut_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 1, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Paste", Paste_CMD,
+      EditMN_CMD, 2, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZIO005IDWindowDefn =
+{
+    "30", DZIO005ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO005ID,
+    DZIO005AccelID, DZIO005MenuID, WOP_NOICON, 0,
+    DZIO005WidgDisp, DZIO005WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZIO005WCTHeader, DZIO005WCTFieldTbl, 
+    DZIO005WCTCommandTbl, NULL, 24, 0, 0
+};
+

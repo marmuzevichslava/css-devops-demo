@@ -1,0 +1,301 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZIO014                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Hwkilehb1206_Predisplay)
+WCBFWD (Hwkilehb1284_Predestroy)
+WCBFWD (Hwkilehb1728_Interwindow_Msg)
+WCBFWD (Hwkilehb1732_Msg_Notification)
+WCBFWD (Hwkilehb1742_Window_Close)
+WCBFWD (Hwkilehb1321_List_Select)
+WCBFWD (Hwkilehb1342_List_Select)
+WCBFWD (Hwkilehb1393_Click)
+WCBFWD (Hwkilehb1375_Click)
+WCBFWD (Hwkilehb1367_Click)
+WCBFWD (Hwkilehb1297_Field_Change)
+WCBFWD (Hwkilehb1310_Field_Change)
+WCBFWD (Hwkilehb1351_List_Select)
+WCBFWD (Hwkilehb1387_Click)
+WCBFWD (Hwkilehb1400_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZIO014WindDisp[] =
+{
+    {PREDISPLAY, Hwkilehb1206_Predisplay},
+    {PREDESTROY, Hwkilehb1284_Predestroy},
+    {INTERWINDOW_MSG, Hwkilehb1728_Interwindow_Msg},
+    {MSG_NOTIFICATION, Hwkilehb1732_Msg_Notification},
+    {WINDOW_CLOSE, Hwkilehb1742_Window_Close},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZIO014WidgDisp[] =
+{
+    {JoinTable1_FID, LIST_SELECT, Hwkilehb1321_List_Select},
+    {JoinTable2_FID, LIST_SELECT, Hwkilehb1342_List_Select},
+    {OKPB_CMD, BUTTON_CLICK, Hwkilehb1393_Click},
+    {CancelPB_CMD, BUTTON_CLICK, Hwkilehb1375_Click},
+    {ApplyPB_CMD, BUTTON_CLICK, Hwkilehb1367_Click},
+    {PrimTblLst_FID, FIELD_CHANGE, Hwkilehb1297_Field_Change},
+    {SecTblLst_FID, FIELD_CHANGE, Hwkilehb1310_Field_Change},
+    {MainJoinLB_FID, LIST_SELECT, Hwkilehb1351_List_Select},
+    {DeletePB_CMD, BUTTON_CLICK, Hwkilehb1387_Click},
+    {UndeletePB_CMD, BUTTON_CLICK, Hwkilehb1400_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZIO014FieldDefTbl[] =
+{
+    { "JOIN_TABLE_1", JoinTable1_FID },
+    { "JOIN_TABLE_2", JoinTable2_FID },
+    { "PRIM_TBL_LST", PrimTblLst_FID },
+    { "SEC_TBL_LST", SecTblLst_FID },
+    { "MAIN_JOIN_LB", MainJoinLB_FID },
+    { "DZ00820_RELATIONAL_OPERATORS", Dz00820RelationalOperators_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZIO014CommandDefTbl[] =
+{
+    { "OKPB", OKPB_CMD },
+    { "CancelPB", CancelPB_CMD },
+    { "ApplyPB", ApplyPB_CMD },
+    { "DeletePB", DeletePB_CMD },
+    { "UndeletePB", UndeletePB_CMD },
+    { "Cut", Cut_CMD },
+    { "Copy", Copy_CMD },
+    { "Paste", Paste_CMD },
+    { "HelpforHelpMN", HelpforHelpMN_CMD },
+    { "ExtendedHelpMN", ExtendedHelpMN_CMD },
+    { "KeysHelpMN", KeysHelpMN_CMD },
+    { "HelpIndexMN", HelpIndexMN_CMD },
+    { "AboutMN", AboutMN_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZIO014WCTHeader =
+{ 
+    "30", 12, 6, 15,
+    sizeof(struct _DZIO014WesMap),
+    offsetof(struct _DZIO014WesMap, _JoinTable1SelIndData),
+    offsetof(struct _DZIO014WesMap, _JoinTable1Ctl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZIO014WCTFieldTbl[] =
+{
+  
+    { WTP_FNDLISTBOX, "JOIN_TABLE_1", JoinTable1_FID,
+      JoinTable1_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _JoinTable1SelIndData) + 
+      SIZEOF(struct _DZIO014WesMap, _JoinTable1TableNameWidgetData),
+      0, 0, offsetof(struct _DZIO014WesMap, _JoinTable1SelIndData),
+      offsetof(struct _DZIO014WesMap, _JoinTable1Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "JOIN_TABLE_1SelInd", JoinTable1SelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _JoinTable1SelIndData[0]),
+      0, 0, offsetof(struct _DZIO014WesMap, _JoinTable1SelIndData),
+      offsetof(struct _DZIO014WesMap, _JoinTable1SelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "TABLE_NAME_WIDGET", JoinTable1TableNameWidget_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _JoinTable1TableNameWidgetData[0]),
+      18, 0, offsetof(struct _DZIO014WesMap, _JoinTable1TableNameWidgetData),
+      offsetof(struct _DZIO014WesMap, _JoinTable1TableNameWidgetCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDLISTBOX, "JOIN_TABLE_2", JoinTable2_FID,
+      JoinTable2_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _JoinTable2SelIndData) + 
+      SIZEOF(struct _DZIO014WesMap, _JoinTable2TableNameWidgetData),
+      0, 0, offsetof(struct _DZIO014WesMap, _JoinTable2SelIndData),
+      offsetof(struct _DZIO014WesMap, _JoinTable2Ctl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "JOIN_TABLE_2SelInd", JoinTable2SelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _JoinTable2SelIndData[0]),
+      0, 0, offsetof(struct _DZIO014WesMap, _JoinTable2SelIndData),
+      offsetof(struct _DZIO014WesMap, _JoinTable2SelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "TABLE_NAME_WIDGET", JoinTable2TableNameWidget_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _JoinTable2TableNameWidgetData[0]),
+      18, 0, offsetof(struct _DZIO014WesMap, _JoinTable2TableNameWidgetData),
+      offsetof(struct _DZIO014WesMap, _JoinTable2TableNameWidgetCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "PRIM_TBL_LST", PrimTblLst_FID,
+      PrimTblLst_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _PrimTblLstData),
+      8, 0, offsetof(struct _DZIO014WesMap, _PrimTblLstData),
+      offsetof(struct _DZIO014WesMap, _PrimTblLstCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "SEC_TBL_LST", SecTblLst_FID,
+      SecTblLst_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _SecTblLstData),
+      8, 0, offsetof(struct _DZIO014WesMap, _SecTblLstData),
+      offsetof(struct _DZIO014WesMap, _SecTblLstCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDLISTBOX, "MAIN_JOIN_LB", MainJoinLB_FID,
+      MainJoinLB_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _MainJoinLBSelIndData) + 
+      SIZEOF(struct _DZIO014WesMap, _MainJoinLBAppliedJoinEntryData),
+      0, 0, offsetof(struct _DZIO014WesMap, _MainJoinLBSelIndData),
+      offsetof(struct _DZIO014WesMap, _MainJoinLBCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXSEL, "MAIN_JOIN_LBSelInd", MainJoinLBSelInd_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _MainJoinLBSelIndData[0]),
+      0, 0, offsetof(struct _DZIO014WesMap, _MainJoinLBSelIndData),
+      offsetof(struct _DZIO014WesMap, _MainJoinLBSelIndCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "APPLIED_JOIN_ENTRY", MainJoinLBAppliedJoinEntry_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _MainJoinLBAppliedJoinEntryData[0]),
+      50, 0, offsetof(struct _DZIO014WesMap, _MainJoinLBAppliedJoinEntryData),
+      offsetof(struct _DZIO014WesMap, _MainJoinLBAppliedJoinEntryCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_RADIOGROUP, "DZ00820_RELATIONAL_OPERATORS", Dz00820RelationalOperators_FID,
+      Dz00820RelationalOperators_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO014WesMap, _Dz00820RelationalOperatorsData),
+      8, 0, offsetof(struct _DZIO014WesMap, _Dz00820RelationalOperatorsData),
+      offsetof(struct _DZIO014WesMap, _Dz00820RelationalOperatorsCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZIO014WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "ApplyPB", ApplyPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "DeletePB", DeletePB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "UndeletePB", UndeletePB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "EditMN", EditMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Cut", Cut_CMD,
+      EditMN_CMD, 0, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Copy", Copy_CMD,
+      EditMN_CMD, 1, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "Paste", Paste_CMD,
+      EditMN_CMD, 2, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENU, "HelpMN", HelpMN_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpforHelpMN", HelpforHelpMN_CMD,
+      HelpMN_CMD, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExtendedHelpMN", ExtendedHelpMN_CMD,
+      HelpMN_CMD, 1, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "KeysHelpMN", KeysHelpMN_CMD,
+      HelpMN_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "HelpIndexMN", HelpIndexMN_CMD,
+      HelpMN_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "AboutMN", AboutMN_CMD,
+      HelpMN_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZIO014IDWindowDefn =
+{
+    "30", DZIO014ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO014ID,
+    DZIO014AccelID, DZIO014MenuID, WOP_NOICON, 0,
+    DZIO014WidgDisp, DZIO014WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZIO014WCTHeader, DZIO014WCTFieldTbl, 
+    DZIO014WCTCommandTbl, NULL, 24, 0, 0
+};
+

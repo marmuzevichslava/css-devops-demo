@@ -1,0 +1,132 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME	    :  DZIO009.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**		       DZIO009BusPbOkClk
+**		       DZIO009BusPrdis
+**
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 7/21/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO009BusPbOkClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : IPEREZAR
+**
+**  DATE CREATED     : 07/21/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    7/21/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZIO009BusPbOkClk )
+{
+
+    USHORT FndGenRC = 0;
+    USHORT RowNumber = 0;
+
+
+    FndGenRC = DZIO01FieldQueryValue(PRIMTABNM,
+				     pBFCD->DZIO01Hdr.PrimTabNm,
+				     sizeof(pBFCD->DZIO01Hdr.PrimTabNm),
+				     CMN_ARCH_PARMS);
+
+    FndGenRC = DZIO01FieldQueryValue(ALRPREFIX,
+				     pBFCD->DZIO01Luw.Dz00713,
+				     sizeof(pBFCD->DZIO01Luw.Dz00713),
+				     CMN_ARCH_PARMS);
+
+    return CMN_SUCCESS;
+}
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO009BusPreDis
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : IPEREZAR
+**
+**  DATE CREATED     : 07/21/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    7/21/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZIO009BusPreDis )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+    FndGenRC = FndWindowCenter(CBI_hwnd,
+			       FND_WINDOW_OWNER,
+			       &FndGenErrorBlock);
+
+    if (strcmp(pBFCD->DZIO01Hdr.PrimTabNm,NULL_STR) != 0)
+    {
+	       FndGenRC = DZIO01FieldSetValue( PRIMTABNM,
+			    pBFCD->DZIO01Hdr.PrimTabNm,
+			    sizeof(pBFCD->DZIO01Hdr.PrimTabNm),
+			    CMN_ARCH_PARMS);
+
+    }
+
+    if (strcmp(pBFCD->DZIO01Luw.Dz00713,NULL_STR) != 0)
+    {
+	       FndGenRC = DZIO01FieldSetValue( ALRPREFIX,
+			    pBFCD->DZIO01Luw.Dz00713,
+			    sizeof(pBFCD->DZIO01Luw.Dz00713),
+			    CMN_ARCH_PARMS);
+
+    }
+
+
+    return CMN_SUCCESS;
+}

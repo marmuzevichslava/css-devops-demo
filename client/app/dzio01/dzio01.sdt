@@ -1,0 +1,33 @@
+/***************************************************************************
+ *                                                                         *
+ *    W I N D O W S   N T   S E R V I C E   D I S P A T C H   T A B L E     *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *           Service Dispatch Table for: DZIO01                            *
+ *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                                   by: IPEREZAR                          *
+ *                    Short Description:                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ * Default Server Name                                                     *
+ ***************************************************************************/
+#define   FND_APPL_ID                   0
+
+/***************************************************************************
+ * Custom Initialization And Termination Declarations                      *
+ ***************************************************************************/
+#define   FND_PROGRAM_INIT_ROUTINE      NULL
+#define   FND_PROGRAM_TERM_ROUTINE      NULL
+
+/***************************************************************************
+ *  Default Service Dispatch Table                                         *
+ ***************************************************************************/
+static _FE_MSG_DISPATCH_RECORD dispatchTable[] =
+{
+    0
+};

@@ -1,0 +1,157 @@
+/***************************************************************************
+*                                                                          *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO008                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+struct _DZIO008WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _EntIdData[9];
+#define EntIdData              pWesMap->_EntIdData
+
+   char _EntTypData[9];
+#define EntTypData              pWesMap->_EntTypData
+
+
+#define  NUMREPOSDATALBROWS   200
+
+    char _ReposDataLBSelIndData[200];
+#define ReposDataLBSelIndData    pWesMap->_ReposDataLBSelIndData
+
+    char _ReposDataLBEntityIdData[200][25];
+#define ReposDataLBEntityIdData    pWesMap->_ReposDataLBEntityIdData
+
+    char _ReposDataLBEntityTypeData[200][31];
+#define ReposDataLBEntityTypeData    pWesMap->_ReposDataLBEntityTypeData
+
+    char _ReposDataLBEntityNameData[200][37];
+#define ReposDataLBEntityNameData    pWesMap->_ReposDataLBEntityNameData
+
+    char _ReposDataLBFormatData[200][4];
+#define ReposDataLBFormatData    pWesMap->_ReposDataLBFormatData
+
+    char _ReposDataLBLengthData[200][4];
+#define ReposDataLBLengthData    pWesMap->_ReposDataLBLengthData
+
+    char _ReposDataLBPrecisionData[200][5];
+#define ReposDataLBPrecisionData    pWesMap->_ReposDataLBPrecisionData
+
+    char _ReposDataLBUsageData[200][3];
+#define ReposDataLBUsageData    pWesMap->_ReposDataLBUsageData
+
+    char _ReposDataLBOccursData[200][6];
+#define ReposDataLBOccursData    pWesMap->_ReposDataLBOccursData
+
+    char _ReposDataLBBytesData[200][6];
+#define ReposDataLBBytesData    pWesMap->_ReposDataLBBytesData
+
+    char _ReposDataLBOtherData[200][23];
+#define ReposDataLBOtherData    pWesMap->_ReposDataLBOtherData
+
+    char _ReposDataLBOther2Data[200][23];
+#define ReposDataLBOther2Data    pWesMap->_ReposDataLBOther2Data
+
+
+    WESFLDCTL _EntIdCtl;
+#define EntIdAttr                       pWesMap->_EntIdCtl.Attr
+#define EntIdStatus                     pWesMap->_EntIdCtl.Status
+#define EntIdRights                     pWesMap->_EntIdCtl.Rights
+#define EntIdMsg                        pWesMap->_EntIdCtl.Msg
+#define EntIdCursor                     pWesMap->_EntIdCtl.Cursor
+
+    WESFLDCTL _EntTypCtl;
+#define EntTypAttr                       pWesMap->_EntTypCtl.Attr
+#define EntTypStatus                     pWesMap->_EntTypCtl.Status
+#define EntTypRights                     pWesMap->_EntTypCtl.Rights
+#define EntTypMsg                        pWesMap->_EntTypCtl.Msg
+#define EntTypCursor                     pWesMap->_EntTypCtl.Cursor
+
+    WESFLDCTL _ReposDataLBCtl;
+#define ReposDataLBAttr                       pWesMap->_ReposDataLBCtl.Attr
+#define ReposDataLBStatus                     pWesMap->_ReposDataLBCtl.Status
+#define ReposDataLBRights                     pWesMap->_ReposDataLBCtl.Rights
+#define ReposDataLBMsg                        pWesMap->_ReposDataLBCtl.Msg
+#define ReposDataLBCursor                     pWesMap->_ReposDataLBCtl.Cursor
+
+    WESFLDCTL _ReposDataLBSelIndCtl[200];
+#define ReposDataLBSelIndCtl      pWesMap->_ReposDataLBSelIndCtl
+
+    WESFLDCTL _ReposDataLBEntityIdCtl[200];
+#define ReposDataLBEntityIdCtl      pWesMap->_ReposDataLBEntityIdCtl
+
+    WESFLDCTL _ReposDataLBEntityTypeCtl[200];
+#define ReposDataLBEntityTypeCtl      pWesMap->_ReposDataLBEntityTypeCtl
+
+    WESFLDCTL _ReposDataLBEntityNameCtl[200];
+#define ReposDataLBEntityNameCtl      pWesMap->_ReposDataLBEntityNameCtl
+
+    WESFLDCTL _ReposDataLBFormatCtl[200];
+#define ReposDataLBFormatCtl      pWesMap->_ReposDataLBFormatCtl
+
+    WESFLDCTL _ReposDataLBLengthCtl[200];
+#define ReposDataLBLengthCtl      pWesMap->_ReposDataLBLengthCtl
+
+    WESFLDCTL _ReposDataLBPrecisionCtl[200];
+#define ReposDataLBPrecisionCtl      pWesMap->_ReposDataLBPrecisionCtl
+
+    WESFLDCTL _ReposDataLBUsageCtl[200];
+#define ReposDataLBUsageCtl      pWesMap->_ReposDataLBUsageCtl
+
+    WESFLDCTL _ReposDataLBOccursCtl[200];
+#define ReposDataLBOccursCtl      pWesMap->_ReposDataLBOccursCtl
+
+    WESFLDCTL _ReposDataLBBytesCtl[200];
+#define ReposDataLBBytesCtl      pWesMap->_ReposDataLBBytesCtl
+
+    WESFLDCTL _ReposDataLBOtherCtl[200];
+#define ReposDataLBOtherCtl      pWesMap->_ReposDataLBOtherCtl
+
+    WESFLDCTL _ReposDataLBOther2Ctl[200];
+#define ReposDataLBOther2Ctl      pWesMap->_ReposDataLBOther2Ctl
+
+};
+
+typedef struct
+{
+    char  _ReposDataLBEntityIdData[25];
+    char  _ReposDataLBEntityTypeData[31];
+    char  _ReposDataLBEntityNameData[37];
+    char  _ReposDataLBFormatData[4];
+    char  _ReposDataLBLengthData[4];
+    char  _ReposDataLBPrecisionData[5];
+    char  _ReposDataLBUsageData[3];
+    char  _ReposDataLBOccursData[6];
+    char  _ReposDataLBBytesData[6];
+    char  _ReposDataLBOtherData[23];
+    char  _ReposDataLBOther2Data[23];
+}_ReposDataLBRow;
+

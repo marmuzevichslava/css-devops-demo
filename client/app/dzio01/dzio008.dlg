@@ -1,0 +1,444 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
+*                                                                          *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO008                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+DZIO008ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,299,157
+    STYLE 0 
+     | WS_CAPTION
+     | WS_MAXIMIZEBOX
+     | DS_MODALFRAME
+    CAPTION "View"
+    
+Begin  /* controls */
+   CONTROL "Entity ID :",500,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,7,10,38,8
+
+   CONTROL "",100,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,47,6,63,0
+
+   CONTROL "Entity Type :",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,174,10,47,8
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,224,6,60,0
+
+   CONTROL "&OK",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,9,120,45,12
+
+   CONTROL "",5200,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,7,135,224,12
+
+   CONTROL "Repository Data",102,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,9,32,279,82
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+DZIO008ID 332
+Begin
+   /*  Control Data for Static Text Entity ID :  */
+   FP_CONTROL_ID,                       "500\0"
+   FP_SCREEN_LENGTH,                    "11\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field EntId  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Entity Type :  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "13\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field EntTyp  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Error Field TxMsgAreaA  */
+   FP_CONTROL_ID,                       "5200\0"
+   FP_SCREEN_LENGTH,                    "79\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for List Box ReposDataLB  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_CAPTION,                          "Repository Data\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "200\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_TRUE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "11\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column EntityId  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "Entity Id\0"
+   FP_SCREEN_LENGTH,                    "24\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column EntityType  */
+   FP_COLUMN_ID,                        "1\0"
+   FP_CAPTION,                          "Entity Type\0"
+   FP_SCREEN_LENGTH,                    "30\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column EntityName  */
+   FP_COLUMN_ID,                        "2\0"
+   FP_CAPTION,                          "EntityName\0"
+   FP_SCREEN_LENGTH,                    "36\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Format  */
+   FP_COLUMN_ID,                        "3\0"
+   FP_CAPTION,                          "Fmt\0"
+   FP_SCREEN_LENGTH,                    "3\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Length  */
+   FP_COLUMN_ID,                        "4\0"
+   FP_CAPTION,                          "Len\0"
+   FP_SCREEN_LENGTH,                    "3\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Precision  */
+   FP_COLUMN_ID,                        "5\0"
+   FP_CAPTION,                          "Prec\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Usage  */
+   FP_COLUMN_ID,                        "6\0"
+   FP_CAPTION,                          "Us\0"
+   FP_SCREEN_LENGTH,                    "2\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Occurs  */
+   FP_COLUMN_ID,                        "7\0"
+   FP_CAPTION,                          "Occur\0"
+   FP_SCREEN_LENGTH,                    "5\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Bytes  */
+   FP_COLUMN_ID,                        "8\0"
+   FP_CAPTION,                          "Bytes\0"
+   FP_SCREEN_LENGTH,                    "5\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Other  */
+   FP_COLUMN_ID,                        "9\0"
+   FP_CAPTION,                          "Other\0"
+   FP_SCREEN_LENGTH,                    "25\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column Other2  */
+   FP_COLUMN_ID,                        "10\0"
+   FP_CAPTION,                          "Other\0"
+   FP_SCREEN_LENGTH,                    "25\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "Helvetica\0"
+   FP_TITLE_FONT_SIZE,                  "8\0"
+   FP_TITLE_FONT_STYLE,                 FPV_BOLD_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "Helvetica\0"
+   FP_FONT_SIZE,                        "8\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+DZIO008MenuID MENU PRELOAD
+Begin  /*  menus  */
+     POPUP "&Edit"
+Begin
+     MENUITEM "Cu&t\tShift Del",3001
+     MENUITEM "&Copy\tCtrl Ins",3002
+     MENUITEM "&Paste\tShift Ins",3003
+End
+     POPUP "&Help"
+Begin
+     MENUITEM "&Help for Help...",1001
+     MENUITEM "&Extended Help...",1002
+     MENUITEM "&Keys Help...",1003
+     MENUITEM "Help &Index...",1004
+     MENUITEM SEPARATOR     MENUITEM "&About...",1005
+End
+End  /*  menus  */
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+DZIO008AccelID ACCELERATORS PRELOAD
+Begin
+VK_DELETE,3001,SHIFT,VIRTKEY
+VK_INSERT,3002,CONTROL,VIRTKEY
+VK_INSERT,3003,SHIFT,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

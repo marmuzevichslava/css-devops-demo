@@ -1,0 +1,350 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME	    :  DZIO013X.BUS
+**
+** DESCRIPTION	    :  Business Logic functions for window DZIO001X,
+**                     includes:
+**
+**
+**
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xPredisplay
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xPredisplay )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xMainLbDblClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xMainLbDblClk )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xMainLbSelect
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xMainLbSelect )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xSecLbDblCkl
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xSecLbDblCkl )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xSecLbSelect
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xSecLbSelect )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xAddPbClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xAddPbClk )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xDelPbClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xDelPbClk )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}
+
+
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO013xOkPbClk
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting - Solutionworks
+**
+**  DATE CREATED     :
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+** 07/13/95    IPEREZAR		  Creation
+**
+***************************************************************************/
+
+WCBPROC(DZIO013xOkPbClk )
+{
+
+    USHORT FndGenRC = 0;
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    return FndGenRC;
+}

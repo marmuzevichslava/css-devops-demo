@@ -1,0 +1,1625 @@
+/***************************************************************************
+ *                                                                         *
+ *                 C   A P P L I C A T I O N   L O G I C                   *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: DZIO001                           *
+ *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                                   by: IPEREZAR                          *
+ *                                                                         *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl8096_Predisplay
+ * 
+ *
+ *
+ *   Event Name:    PREDISPLAY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl8096_Predisplay)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Alrcbook",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "PrimTab",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "MntmGen",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "MntSave",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "MntSaveAs",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "TaskList",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Funct",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "FindPB1",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "FindPB2",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "VIEW1",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "VIEW2",
+                             &FndGenErrorBlock);
+
+strncpy(FunctData,LT_Limit,9);
+
+DeleteData[0] = 'Y';
+
+FetchData[0] = 'Y';
+
+FetNxData[0] = 'Y';
+
+UpdateData[0] = 'Y';
+
+InsertData[0] = 'Y';
+
+InsSetData[0] = 'N';
+
+UniqueData[0] = 'N';
+
+UpdSetData[0] = 'N';
+
+SumData[0] = 'N';
+
+CntMulData[0] = 'N';
+
+DynScrData[0] = 'N';
+
+CstFunData[0] = 'N';
+
+CountData[0] = 'N';
+
+DelSetData[0] = 'N';
+
+SumMulData[0] = 'N';
+
+FetPrevData[0] = 'N';
+
+RenameData[0] = 'N';
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CntMul",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Unique",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Count",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CstFun",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Delete",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "DelSet",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "DynScr",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Fetch",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "FetNx",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "FetPrev",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Insert",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "InsSet",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Rename",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Sum",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "SumMul",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Update",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "UpdSet",
+                             &FndGenErrorBlock);
+
+FndGenRC = DZIO001BusPrdis( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "SumCol",
+                             &FndGenErrorBlock);
+
+FndGenRC = FndCommandDisable(CBI_hwnd,
+                             "FolderPB",
+                             &FndGenErrorBlock);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl4629_Other_Gui_Event
+ * 
+ *
+ *
+ *   Event Name:    OTHER_GUI_EVENT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl4629_Other_Gui_Event)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl4613_Window_Close
+ * 
+ *
+ *
+ *   Event Name:    WINDOW_CLOSE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl4613_Window_Close)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl4606_Msg_Notification
+ * 
+ *
+ *
+ *   Event Name:    MSG_NOTIFICATION
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl4606_Msg_Notification)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl8191_Help_Requested
+ * 
+ *
+ *
+ *   Event Name:    FND_HELP_REQUESTED
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl8191_Help_Requested)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl4547_Predestroy
+ * 
+ *
+ *
+ *   Event Name:    PREDESTROY
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl4547_Predestroy)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Window-Level Event
+ *
+ *   Callback Name: Ncqnrdhl4618_Interwindow_Msg
+ * 
+ *
+ *
+ *   Event Name:    INTERWINDOW_MSG
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl4618_Interwindow_Msg)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl6984_Click
+ * 
+ *   WidgetName:    MntmNew
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl6984_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO001BusNewMnClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl3063_Click
+ * 
+ *   WidgetName:    MntmOpen
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl3063_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusOpenMnClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl3440_Click
+ * 
+ *   WidgetName:    MntSave
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl3440_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusSaveMnClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl4328_Click
+ * 
+ *   WidgetName:    MntSaveAs
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl4328_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusSaveAsMnClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl2546_Click
+ * 
+ *   WidgetName:    MntmGen
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl2546_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusMnGenClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9280_Click
+ * 
+ *   WidgetName:    ExitMN
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9280_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9419_Click
+ * 
+ *   WidgetName:    Cut
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9419_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9424_Click
+ * 
+ *   WidgetName:    Copy
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9424_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9405_Click
+ * 
+ *   WidgetName:    Paste
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9405_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9475_Field_Change
+ * 
+ *   WidgetName:    PrimTab
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9475_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+if (strcmp( PrimTabData, "" ) != 0)
+   {
+
+   FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "FolderPB",
+                            &FndGenErrorBlock);
+
+   if (strcmp( AlrcbookData, "" ) != 0)
+      {
+
+      FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "MntSave",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Funct",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "TaskList",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Fetch",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Delete",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "FetNx",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Insert",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Update",
+                            &FndGenErrorBlock);
+
+      } /* end if */
+
+   FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "FindPB1",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "VIEW1",
+                            &FndGenErrorBlock);
+
+   } /* end if */
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9733_Field_Nowinvalid
+ * 
+ *   WidgetName:    PrimTab
+ *
+ *   Event Name:    FIELD_NOWINVALID
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9733_Field_Nowinvalid)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusPrimTabFldChg( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9065_Click
+ * 
+ *   WidgetName:    FindPB1
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9065_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO001BusPrimFindPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9917_Click
+ * 
+ *   WidgetName:    VIEW1
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9917_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO001BusPrimViewPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9636_Field_Change
+ * 
+ *   WidgetName:    Alrcbook
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9636_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+if (strcmp( AlrcbookData, "" ) != 0)
+   {
+
+   if (strcmp( PrimTabData, "" ) != 0)
+      {
+
+      FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "MntSave",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Funct",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "TaskList",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Fetch",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Delete",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "FetNx",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Insert",
+                            &FndGenErrorBlock);
+
+      FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Update",
+                            &FndGenErrorBlock);
+
+      } /* end if */
+
+   FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "FindPB2",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndCommandEnable(CBI_hwnd,
+                            "VIEW2",
+                            &FndGenErrorBlock);
+
+   } /* end if */
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9774_Field_Nowinvalid
+ * 
+ *   WidgetName:    Alrcbook
+ *
+ *   Event Name:    FIELD_NOWINVALID
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9774_Field_Nowinvalid)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusAlrFldChg( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl9259_Click
+ * 
+ *   WidgetName:    FindPB2
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl9259_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO001BusAlrFindPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl0571_Field_Change
+ * 
+ *   WidgetName:    Funct
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl0571_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+_FND_ERROR_BLOCK         FndGenErrorBlock;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+if ( strcmp(FunctData, LT_Std) == 0 )
+   {
+
+   DeleteData[0] = 'N';
+
+   FetchData[0] = 'N';
+
+   FetNxData[0] = 'N';
+
+   InsertData[0] = 'N';
+
+   UpdateData[0] = 'N';
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CntMul",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Unique",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Count",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CstFun",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "DelSet",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "DynScr",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "FetPrev",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "InsSet",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Rename",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Sum",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "SumMul",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "UpdSet",
+                             &FndGenErrorBlock);
+
+   } /* end if */
+
+if ( strcmp(FunctData, LT_NonStd) == 0 )
+   {
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "CntMul",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Unique",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Count",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "CstFun",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Delete",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "DelSet",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "DynScr",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Fetch",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "FetNx",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "FetPrev",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Insert",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "InsSet",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Rename",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Sum",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "SumMul",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "Update",
+                            &FndGenErrorBlock);
+
+   FndGenRC = FndFieldEnable(CBI_hwnd,
+                            "UpdSet",
+                            &FndGenErrorBlock);
+
+   } /* end if */
+
+if ( strcmp(FunctData, LT_Limit) == 0 )
+   {
+
+   DeleteData[0] = 'Y';
+
+   FetchData[0] = 'Y';
+
+   FetNxData[0] = 'Y';
+
+   UpdateData[0] = 'Y';
+
+   InsertData[0] = 'Y';
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CntMul",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Unique",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Count",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "CstFun",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "DelSet",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "DynScr",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "FetPrev",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "InsSet",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Rename",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "Sum",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "SumMul",
+                             &FndGenErrorBlock);
+
+   FndGenRC = FndFieldDisable(CBI_hwnd,
+                             "UpdSet",
+                             &FndGenErrorBlock);
+
+   } /* end if */
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl1731_Click
+ * 
+ *   WidgetName:    VIEW2
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl1731_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO001BusAlrViewPbClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl0642_Field_Change
+ * 
+ *   WidgetName:    Fetch
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl0642_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusStdFunClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl0857_Field_Change
+ * 
+ *   WidgetName:    FetNx
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl0857_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusStdFunClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl0890_Field_Change
+ * 
+ *   WidgetName:    Update
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl0890_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusStdFunClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl0937_Field_Change
+ * 
+ *   WidgetName:    Insert
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl0937_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusStdFunClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl8954_Field_Change
+ * 
+ *   WidgetName:    Delete
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl8954_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusStdFunClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl8715_Field_Change
+ * 
+ *   WidgetName:    Sum
+ *
+ *   Event Name:    FIELD_CHANGE
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl8715_Field_Change)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = DZIO001BusSumButClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl5644_List_Select
+ * 
+ *   WidgetName:    TaskList
+ *
+ *   Event Name:    LIST_SELECT
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl5644_List_Select)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl7284_Double_Click
+ * 
+ *   WidgetName:    TaskList
+ *
+ *   Event Name:    FND_DOUBLE_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl7284_Double_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+/***************************************************************************
+ *
+ *   Widget-Level Event
+ *
+ *   Callback Name: Ncqnrdhl5241_Click
+ * 
+ *   WidgetName:    FolderPB
+ *
+ *   Event Name:    BUTTON_CLICK
+ *
+ *
+ ***************************************************************************/
+static WCBPROC(Ncqnrdhl5241_Click)
+{
+unsigned short           FndGenRC = FND_SUCCESS;
+
+CMN_ARCH_EXIT_INITIALIZE
+
+FndGenRC = CmnArchInit( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = DZIO001BusPbFolderClk( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+FndGenRC = CmnArchTerm( pEventInfo,
+                           pEAIA,
+                           pBFCD,
+                           pWesMap,
+                           pWindContextData,
+                           pABHI);
+
+return 0;
+
+
+}
+

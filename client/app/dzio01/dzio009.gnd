@@ -1,0 +1,152 @@
+/***************************************************************************
+*                                                                          *
+*            W I N D O W S   N T    D I S P A T C H   T A B L E             *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*                    Dispatch Table for: DZIO009                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Ekhqvikh3292_Predestroy)
+WCBFWD (Ekhqvikh3322_Window_Close)
+WCBFWD (Ekhqvikh3334_Help_Requested)
+WCBFWD (Ekhqvikh3342_Redisplay)
+WCBFWD (Ekhqvikh3353_Interwindow_Msg)
+WCBFWD (Ekhqvikh3360_Msg_Notification)
+WCBFWD (Ekhqvikh9928_Predisplay)
+WCBFWD (Ekhqvikh4465_Click)
+WCBFWD (Ekhqvikh1606_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL DZIO009WindDisp[] =
+{
+    {PREDESTROY, Ekhqvikh3292_Predestroy},
+    {WINDOW_CLOSE, Ekhqvikh3322_Window_Close},
+    {FND_HELP_REQUESTED, Ekhqvikh3334_Help_Requested},
+    {REDISPLAY, Ekhqvikh3342_Redisplay},
+    {INTERWINDOW_MSG, Ekhqvikh3353_Interwindow_Msg},
+    {MSG_NOTIFICATION, Ekhqvikh3360_Msg_Notification},
+    {PREDISPLAY, Ekhqvikh9928_Predisplay},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL DZIO009WidgDisp[] =
+{
+    {CancelPB_CMD, BUTTON_CLICK, Ekhqvikh4465_Click},
+    {OKPB_CMD, BUTTON_CLICK, Ekhqvikh1606_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY DZIO009FieldDefTbl[] =
+{
+    { "PrimTabNm", PrimTabNm_FID },
+    { "ALRPrefix", ALRPrefix_FID },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY DZIO009CommandDefTbl[] =
+{
+    { "CancelPB", CancelPB_CMD },
+    { "OKPB", OKPB_CMD },
+    { "", 0}
+};
+
+
+/****************************************************************************
+ WCT Header Table
+****************************************************************************/
+
+WCTHEADER  DZIO009WCTHeader =
+{ 
+    "30", 2, 2, 2,
+    sizeof(struct _DZIO009WesMap),
+    offsetof(struct _DZIO009WesMap, _PrimTabNmData),
+    offsetof(struct _DZIO009WesMap, _PrimTabNmCtl),
+    WLT_C, 0, 15, 0
+}; 
+
+
+/****************************************************************************
+ WCT Field Table
+****************************************************************************/
+
+WCTFIELD DZIO009WCTFieldTbl[] =
+{
+  
+    { WTP_FNDENTRYFLD, "PrimTabNm", PrimTabNm_FID,
+      PrimTabNm_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO009WesMap, _PrimTabNmData),
+      18, 0, offsetof(struct _DZIO009WesMap, _PrimTabNmData),
+      offsetof(struct _DZIO009WesMap, _PrimTabNmCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "ALRPrefix", ALRPrefix_FID,
+      ALRPrefix_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZIO009WesMap, _ALRPrefixData),
+      4, 0, offsetof(struct _DZIO009WesMap, _ALRPrefixData),
+      offsetof(struct _DZIO009WesMap, _ALRPrefixCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ WCT Command Table
+****************************************************************************/
+
+WCTCOMMAND DZIO009WCTCommandTbl[] =
+{
+
+    { WTP_PUSHBUTTON, "CancelPB", CancelPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_PUSHBUTTON, "OKPB", OKPB_CMD,
+      0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { 0, "", 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY DZIO009IDWindowDefn =
+{
+    "30", DZIO009ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP | WCR_NON_PROPORTIONAL, DZIO009ID,
+    DZIO009AccelID, WOP_NOMENU, WOP_NOICON, 0,
+    DZIO009WidgDisp, DZIO009WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, &DZIO009WCTHeader, DZIO009WCTFieldTbl, 
+    DZIO009WCTCommandTbl, NULL, 24, 0, 0
+};
+

@@ -1,0 +1,88 @@
+/***************************************************************************
+ *                                                                         *
+ * C  W I N D O W S   N T   W I N D O W   D E F I N I T I O N   T A B L E S *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *            Window Dispatch Table for: DZIO01                            *
+ *                         Generated on: Tue Oct 01 09:25:43 1996          *
+ *                                   by: IPEREZAR                          *
+ *                    Short Description:                                   *
+ *                                                                         *
+ ***************************************************************************
+
+/***************************************************************************
+ * GUI Queue Size Definition                                               *
+ ***************************************************************************/
+#define   MAX_GUI_Q_SIZE                50
+
+/***************************************************************************
+ * Custom Initialization And Termination Declarations                      *
+ ***************************************************************************/
+#define   FND_INTERFACE_INIT_ROUTINE    NULL
+#define   FND_INTERFACE_TERM_ROUTINE    NULL
+
+/***************************************************************************
+ * Window Identifiers                                                      *
+ ***************************************************************************/
+#include "DZIO01.gnz"
+
+/***************************************************************************
+ * Window Forward Declarations                                             *
+ ***************************************************************************/
+extern WINDEFTBLENTRY DZIO001IDWindowDefn;
+extern WINDEFTBLENTRY DZIO002IDWindowDefn;
+extern WINDEFTBLENTRY DZIO005IDWindowDefn;
+extern WINDEFTBLENTRY DZIO007IDWindowDefn;
+extern WINDEFTBLENTRY DZIO008IDWindowDefn;
+extern WINDEFTBLENTRY DZIO009IDWindowDefn;
+extern WINDEFTBLENTRY DZIO012IDWindowDefn;
+extern WINDEFTBLENTRY DZIO013IDWindowDefn;
+extern WINDEFTBLENTRY DZIO014IDWindowDefn;
+
+
+/***************************************************************************
+ * Windows accessible from the EXE                                         *
+ ***************************************************************************/
+EXEWINDOWLIST ExeWindowTable[] =
+{
+    FND_MAIN_WINDOW, "DZIO001X", &DZIO001IDWindowDefn,
+    FND_NO, "DZIO002X", &DZIO002IDWindowDefn,
+    FND_NO, "DZIO005X", &DZIO005IDWindowDefn,
+    FND_NO, "DZIO007X", &DZIO007IDWindowDefn,
+    FND_NO, "DZIO008X", &DZIO008IDWindowDefn,
+    FND_NO, "DZIO009X", &DZIO009IDWindowDefn,
+    FND_NO, "DZIO012X", &DZIO012IDWindowDefn,
+    FND_NO, "DZIO013X", &DZIO013IDWindowDefn,
+    FND_NO, "DZIO014X", &DZIO014IDWindowDefn,
+    FND_NO,           "",   NULL
+};
+
+/***************************************************************************
+ * COBOL window references from the EXE                                    *
+ ***************************************************************************/
+
+
+/***************************************************************************
+ * Window references for COBOL client EXE                                  *
+ ***************************************************************************/
+CBLWINSETUPENTRY CBLwindowSetupTable[] =
+{
+    FND_NO,       "", 0, 0
+};
+
+/***************************************************************************
+ * External references to DLLs                                             *
+ ***************************************************************************/
+
+
+/***************************************************************************
+ * Table of DLLs referenced in this EXE                                    *
+ ***************************************************************************/
+DLLWINDOWINFO  *pWindowsInDLLs[] =
+{
+
+        0
+};

@@ -1,0 +1,316 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME	    :  DZIO002.BUS
+**
+** DESCRIPTION	    :  Business Logic functions for window DZIO002X,
+**                     includes:
+**
+**		       DZIO002BusPrdis
+**		       DZIO002BusPbOkClk
+**		       DZIO002LstSelect
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 08/29/95    IPEREZAR 	   Creation
+**
+***************************************************************************/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO002BusPrdis
+**
+**  DESCRIPTION      : This function is invoked by the opening of window
+**		       number 2.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting
+**
+**  DATE CREATED     : 08/29/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/29/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZIO002BusPrdis )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    USHORT i = 0;
+    USHORT j = 0;
+    ULONG size = 0;
+
+
+    memset(&(WCD_Rqst),'\0',sizeof(_RQST) );
+
+    FndGenRC = FndWindowCenter(CBI_hwnd,
+			       FND_WINDOW_OWNER,
+			       &FndGenErrorBlock);
+
+
+
+    /* Format the WCD request layout  */
+
+    strncpy(WCD_Rqst.Dzsr002xKeys.WordReturn, WORDRET,
+		sizeof(WCD_Rqst.Dzsr002xKeys.WordReturn) );
+
+    strncpy(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode, FUNCTCODE,
+		sizeof(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode) );
+
+
+    if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0)
+    {
+	FndGenRC = FndWindowSetText(CBI_hwnd,
+				    TITLE1,
+				    &FndGenErrorBlock);
+
+	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
+		   DEIOMOD,
+		   sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
+		   CMN_ARCH_PARMS );
+
+	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc,
+		   pBFCD->DZIO01Hdr.Iomodnm,
+		   sizeof(WCD_Rqst.Dzsr002xKeys.TxObjectDesc),
+		   CMN_ARCH_PARMS );
+
+
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,PRITABLE) == 0)
+    {
+	FndGenRC = FndWindowSetText(CBI_hwnd,
+				    TITLE2,
+				    &FndGenErrorBlock);
+
+	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
+		   DEDTABLE,
+		   sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
+		   CMN_ARCH_PARMS );
+
+	strcpy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc, pBFCD->DZIO01Hdr.PrimTab );
+	j = strlen(pBFCD->DZIO01Hdr.PrimTab);
+	WCD_Rqst.Dzsr002xKeys.TxObjectDesc[8] = '\0';
+
+
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,ALRCOPYB) == 0)
+    {
+	FndGenRC = FndWindowSetText(CBI_hwnd,
+				    TITLE3,
+				    &FndGenErrorBlock);
+
+	CmnStrCopy(WCD_Rqst.Dzsr002xKeys.CdObjectType,
+		   DECOPYBK,
+		   sizeof(WCD_Rqst.Dzsr002xKeys.CdObjectType),
+		   CMN_ARCH_PARMS );
+
+	strcpy(WCD_Rqst.Dzsr002xKeys.TxObjectDesc, pBFCD->DZIO01Hdr.Alrcbook );
+	j = strlen(pBFCD->DZIO01Hdr.Alrcbook);
+	WCD_Rqst.Dzsr002xKeys.TxObjectDesc[8] = '\0';
+
+
+    }
+
+    size = sizeof(WCD_Rqst);
+
+
+/* Make the CSR Call */
+
+    FndGenRC = FndMsgBoxDisplayMdlssText( TITLE5,
+				   BOX_TITLE,
+				   CBI_hwnd,
+				   FND_MSGBOX_NOBUTTONS,
+				   FND_MSGBOX_INFORMATION,
+				   FND_MSGBOX_IDNOBUTTON,
+				   BOX_TITLE,
+				   &FndGenErrorBlock);
+
+
+
+
+    CmnCsrCall( (BYTE *) &WCD_Rqst,
+		sizeof(WCD_Rqst),
+		CMN_FORCECALL_NO,
+		CSRRQST,
+		CMN_ARCH_PARMS);
+
+
+
+
+
+    return CMN_SUCCESS;
+}
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO002LstSelect
+**
+**  DESCRIPTION      : This function is invoked by the opening of window
+**		       number 2.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting
+**
+**  DATE CREATED     : 08/29/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/29/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZIO002LstSelect )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    USHORT RowNumber = 0;
+    _ImpObjNmLBRow RowData;
+
+
+    if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0)
+    {
+	 FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+					       IMPOBJ,
+					       RowNumber,
+					       &RowNumber,
+					       &FndGenErrorBlock);
+
+	 FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
+				IMPOBJ,
+				RowNumber,
+				sizeof(RowData._ImpObjNmLBTxObjectDescData),
+				RowData._ImpObjNmLBTxObjectDescData,
+				&FndGenErrorBlock);
+
+	 strncpy(pBFCD->DZIO01Hdr.Iomodnm, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.FuncNm) );
+	 strncpy(pBFCD->DZIO01Luw.Iomodnm, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.FuncNm) );
+
+
+    }
+
+
+    return CMN_SUCCESS;
+
+}
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION	     : DZIO002BusPbOkClk
+**
+**  DESCRIPTION      : This function is invoked by the opening of window
+**		       number 2.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR	     : Andersen Consulting
+**
+**  DATE CREATED     : 08/29/95
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    07/22/95	IPEREZAR	      Original code.
+**
+***************************************************************************/
+
+WCBPROC( DZIO002BusPbOkClk )
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    USHORT RowNumber = 0;
+
+    _DZIO002O *pDZIO002O ;
+
+    _ImpObjNmLBRow RowData;
+
+
+//  Establish addressability
+
+
+    pDZIO002O = EAB_pWdtOutData;
+
+
+
+
+
+    FndGenRC = FndLstBoxRowQuerySelection(CBI_hwnd,
+					  IMPOBJ,
+					  RowNumber,
+					  &RowNumber,
+					  &FndGenErrorBlock);
+
+    FndGenRC = FndLstBoxRowQueryData (CBI_hwnd,
+			   IMPOBJ,
+			   RowNumber,
+			   sizeof(RowData._ImpObjNmLBTxObjectDescData),
+			   RowData._ImpObjNmLBTxObjectDescData,
+			   &FndGenErrorBlock);
+
+
+    if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0 )
+    {
+	 strncpy(pBFCD->DZIO01Hdr.Iomodnm, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.Iomodnm) );
+	 strncpy(pBFCD->DZIO01Luw.Iomodnm, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.Iomodnm) );
+    }
+
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,PRITABLE) == 0 )
+    {
+	 strncpy(pBFCD->DZIO01Hdr.PrimTab, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.PrimTab) );
+	 strncpy(pBFCD->DZIO01Luw.PrimTab, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.PrimTab) );
+    }
+    else if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,ALRCOPYB) == 0 )
+    {
+	 strncpy(pBFCD->DZIO01Hdr.Alrcbook, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.Alrcbook) );
+	 strncpy(pBFCD->DZIO01Luw.Alrcbook, RowData._ImpObjNmLBTxObjectDescData,
+	    sizeof(pBFCD->DZIO01Hdr.Alrcbook) );
+    }
+
+
+    return CMN_SUCCESS;
+
+}

@@ -1,0 +1,298 @@
+/***************************************************************************
+*                                                                          *
+*         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N         *
+*                                                                          *
+*   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.    *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO001                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+struct _DZIO001WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   char _PrimTabData[9];
+#define PrimTabData              pWesMap->_PrimTabData
+
+   char _AlrcbookData[9];
+#define AlrcbookData              pWesMap->_AlrcbookData
+
+   char _FunctData[9];
+#define FunctData              pWesMap->_FunctData
+
+   char _FetchData[2];
+#define FetchData              pWesMap->_FetchData
+
+   char _FetNxData[2];
+#define FetNxData              pWesMap->_FetNxData
+
+   char _UpdateData[2];
+#define UpdateData              pWesMap->_UpdateData
+
+   char _InsertData[2];
+#define InsertData              pWesMap->_InsertData
+
+   char _DeleteData[2];
+#define DeleteData              pWesMap->_DeleteData
+
+   char _InsSetData[2];
+#define InsSetData              pWesMap->_InsSetData
+
+   char _UpdSetData[2];
+#define UpdSetData              pWesMap->_UpdSetData
+
+   char _DelSetData[2];
+#define DelSetData              pWesMap->_DelSetData
+
+   char _SumData[2];
+#define SumData              pWesMap->_SumData
+
+   char _SumMulData[2];
+#define SumMulData              pWesMap->_SumMulData
+
+   char _UniqueData[2];
+#define UniqueData              pWesMap->_UniqueData
+
+   char _CntMulData[2];
+#define CntMulData              pWesMap->_CntMulData
+
+   char _CountData[2];
+#define CountData              pWesMap->_CountData
+
+   char _CstFunData[2];
+#define CstFunData              pWesMap->_CstFunData
+
+   char _FetPrevData[2];
+#define FetPrevData              pWesMap->_FetPrevData
+
+   char _RenameData[2];
+#define RenameData              pWesMap->_RenameData
+
+   char _DynScrData[2];
+#define DynScrData              pWesMap->_DynScrData
+
+
+#define  NUMTASKLISTROWS   2
+
+    char _TaskListSelIndData[2];
+#define TaskListSelIndData    pWesMap->_TaskListSelIndData
+
+    unsigned short _TaskListCdStatusIconicData[2];
+#define TaskListCdStatusIconicData    pWesMap->_TaskListCdStatusIconicData
+
+    char _TaskListWnWindowTitleData[2][42];
+#define TaskListWnWindowTitleData    pWesMap->_TaskListWnWindowTitleData
+
+    char _TaskListWktWindowNameData[2][10];
+#define TaskListWktWindowNameData    pWesMap->_TaskListWktWindowNameData
+
+    char _TaskListWnTrackKeyData[2][10];
+#define TaskListWnTrackKeyData    pWesMap->_TaskListWnTrackKeyData
+
+   char _SumColData[9];
+#define SumColData              pWesMap->_SumColData
+
+
+    WESFLDCTL _PrimTabCtl;
+#define PrimTabAttr                       pWesMap->_PrimTabCtl.Attr
+#define PrimTabStatus                     pWesMap->_PrimTabCtl.Status
+#define PrimTabRights                     pWesMap->_PrimTabCtl.Rights
+#define PrimTabMsg                        pWesMap->_PrimTabCtl.Msg
+#define PrimTabCursor                     pWesMap->_PrimTabCtl.Cursor
+
+    WESFLDCTL _AlrcbookCtl;
+#define AlrcbookAttr                       pWesMap->_AlrcbookCtl.Attr
+#define AlrcbookStatus                     pWesMap->_AlrcbookCtl.Status
+#define AlrcbookRights                     pWesMap->_AlrcbookCtl.Rights
+#define AlrcbookMsg                        pWesMap->_AlrcbookCtl.Msg
+#define AlrcbookCursor                     pWesMap->_AlrcbookCtl.Cursor
+
+    WESFLDCTL _FunctCtl;
+#define FunctAttr                       pWesMap->_FunctCtl.Attr
+#define FunctStatus                     pWesMap->_FunctCtl.Status
+#define FunctRights                     pWesMap->_FunctCtl.Rights
+#define FunctMsg                        pWesMap->_FunctCtl.Msg
+#define FunctCursor                     pWesMap->_FunctCtl.Cursor
+
+    WESFLDCTL _FetchCtl;
+#define FetchAttr                       pWesMap->_FetchCtl.Attr
+#define FetchStatus                     pWesMap->_FetchCtl.Status
+#define FetchRights                     pWesMap->_FetchCtl.Rights
+#define FetchMsg                        pWesMap->_FetchCtl.Msg
+#define FetchCursor                     pWesMap->_FetchCtl.Cursor
+
+    WESFLDCTL _FetNxCtl;
+#define FetNxAttr                       pWesMap->_FetNxCtl.Attr
+#define FetNxStatus                     pWesMap->_FetNxCtl.Status
+#define FetNxRights                     pWesMap->_FetNxCtl.Rights
+#define FetNxMsg                        pWesMap->_FetNxCtl.Msg
+#define FetNxCursor                     pWesMap->_FetNxCtl.Cursor
+
+    WESFLDCTL _UpdateCtl;
+#define UpdateAttr                       pWesMap->_UpdateCtl.Attr
+#define UpdateStatus                     pWesMap->_UpdateCtl.Status
+#define UpdateRights                     pWesMap->_UpdateCtl.Rights
+#define UpdateMsg                        pWesMap->_UpdateCtl.Msg
+#define UpdateCursor                     pWesMap->_UpdateCtl.Cursor
+
+    WESFLDCTL _InsertCtl;
+#define InsertAttr                       pWesMap->_InsertCtl.Attr
+#define InsertStatus                     pWesMap->_InsertCtl.Status
+#define InsertRights                     pWesMap->_InsertCtl.Rights
+#define InsertMsg                        pWesMap->_InsertCtl.Msg
+#define InsertCursor                     pWesMap->_InsertCtl.Cursor
+
+    WESFLDCTL _DeleteCtl;
+#define DeleteAttr                       pWesMap->_DeleteCtl.Attr
+#define DeleteStatus                     pWesMap->_DeleteCtl.Status
+#define DeleteRights                     pWesMap->_DeleteCtl.Rights
+#define DeleteMsg                        pWesMap->_DeleteCtl.Msg
+#define DeleteCursor                     pWesMap->_DeleteCtl.Cursor
+
+    WESFLDCTL _InsSetCtl;
+#define InsSetAttr                       pWesMap->_InsSetCtl.Attr
+#define InsSetStatus                     pWesMap->_InsSetCtl.Status
+#define InsSetRights                     pWesMap->_InsSetCtl.Rights
+#define InsSetMsg                        pWesMap->_InsSetCtl.Msg
+#define InsSetCursor                     pWesMap->_InsSetCtl.Cursor
+
+    WESFLDCTL _UpdSetCtl;
+#define UpdSetAttr                       pWesMap->_UpdSetCtl.Attr
+#define UpdSetStatus                     pWesMap->_UpdSetCtl.Status
+#define UpdSetRights                     pWesMap->_UpdSetCtl.Rights
+#define UpdSetMsg                        pWesMap->_UpdSetCtl.Msg
+#define UpdSetCursor                     pWesMap->_UpdSetCtl.Cursor
+
+    WESFLDCTL _DelSetCtl;
+#define DelSetAttr                       pWesMap->_DelSetCtl.Attr
+#define DelSetStatus                     pWesMap->_DelSetCtl.Status
+#define DelSetRights                     pWesMap->_DelSetCtl.Rights
+#define DelSetMsg                        pWesMap->_DelSetCtl.Msg
+#define DelSetCursor                     pWesMap->_DelSetCtl.Cursor
+
+    WESFLDCTL _SumCtl;
+#define SumAttr                       pWesMap->_SumCtl.Attr
+#define SumStatus                     pWesMap->_SumCtl.Status
+#define SumRights                     pWesMap->_SumCtl.Rights
+#define SumMsg                        pWesMap->_SumCtl.Msg
+#define SumCursor                     pWesMap->_SumCtl.Cursor
+
+    WESFLDCTL _SumMulCtl;
+#define SumMulAttr                       pWesMap->_SumMulCtl.Attr
+#define SumMulStatus                     pWesMap->_SumMulCtl.Status
+#define SumMulRights                     pWesMap->_SumMulCtl.Rights
+#define SumMulMsg                        pWesMap->_SumMulCtl.Msg
+#define SumMulCursor                     pWesMap->_SumMulCtl.Cursor
+
+    WESFLDCTL _UniqueCtl;
+#define UniqueAttr                       pWesMap->_UniqueCtl.Attr
+#define UniqueStatus                     pWesMap->_UniqueCtl.Status
+#define UniqueRights                     pWesMap->_UniqueCtl.Rights
+#define UniqueMsg                        pWesMap->_UniqueCtl.Msg
+#define UniqueCursor                     pWesMap->_UniqueCtl.Cursor
+
+    WESFLDCTL _CntMulCtl;
+#define CntMulAttr                       pWesMap->_CntMulCtl.Attr
+#define CntMulStatus                     pWesMap->_CntMulCtl.Status
+#define CntMulRights                     pWesMap->_CntMulCtl.Rights
+#define CntMulMsg                        pWesMap->_CntMulCtl.Msg
+#define CntMulCursor                     pWesMap->_CntMulCtl.Cursor
+
+    WESFLDCTL _CountCtl;
+#define CountAttr                       pWesMap->_CountCtl.Attr
+#define CountStatus                     pWesMap->_CountCtl.Status
+#define CountRights                     pWesMap->_CountCtl.Rights
+#define CountMsg                        pWesMap->_CountCtl.Msg
+#define CountCursor                     pWesMap->_CountCtl.Cursor
+
+    WESFLDCTL _CstFunCtl;
+#define CstFunAttr                       pWesMap->_CstFunCtl.Attr
+#define CstFunStatus                     pWesMap->_CstFunCtl.Status
+#define CstFunRights                     pWesMap->_CstFunCtl.Rights
+#define CstFunMsg                        pWesMap->_CstFunCtl.Msg
+#define CstFunCursor                     pWesMap->_CstFunCtl.Cursor
+
+    WESFLDCTL _FetPrevCtl;
+#define FetPrevAttr                       pWesMap->_FetPrevCtl.Attr
+#define FetPrevStatus                     pWesMap->_FetPrevCtl.Status
+#define FetPrevRights                     pWesMap->_FetPrevCtl.Rights
+#define FetPrevMsg                        pWesMap->_FetPrevCtl.Msg
+#define FetPrevCursor                     pWesMap->_FetPrevCtl.Cursor
+
+    WESFLDCTL _RenameCtl;
+#define RenameAttr                       pWesMap->_RenameCtl.Attr
+#define RenameStatus                     pWesMap->_RenameCtl.Status
+#define RenameRights                     pWesMap->_RenameCtl.Rights
+#define RenameMsg                        pWesMap->_RenameCtl.Msg
+#define RenameCursor                     pWesMap->_RenameCtl.Cursor
+
+    WESFLDCTL _DynScrCtl;
+#define DynScrAttr                       pWesMap->_DynScrCtl.Attr
+#define DynScrStatus                     pWesMap->_DynScrCtl.Status
+#define DynScrRights                     pWesMap->_DynScrCtl.Rights
+#define DynScrMsg                        pWesMap->_DynScrCtl.Msg
+#define DynScrCursor                     pWesMap->_DynScrCtl.Cursor
+
+    WESFLDCTL _TaskListCtl;
+#define TaskListAttr                       pWesMap->_TaskListCtl.Attr
+#define TaskListStatus                     pWesMap->_TaskListCtl.Status
+#define TaskListRights                     pWesMap->_TaskListCtl.Rights
+#define TaskListMsg                        pWesMap->_TaskListCtl.Msg
+#define TaskListCursor                     pWesMap->_TaskListCtl.Cursor
+
+    WESFLDCTL _TaskListSelIndCtl[2];
+#define TaskListSelIndCtl      pWesMap->_TaskListSelIndCtl
+
+    WESFLDCTL _TaskListCdStatusIconicCtl[2];
+#define TaskListCdStatusIconicCtl      pWesMap->_TaskListCdStatusIconicCtl
+
+    WESFLDCTL _TaskListWnWindowTitleCtl[2];
+#define TaskListWnWindowTitleCtl      pWesMap->_TaskListWnWindowTitleCtl
+
+    WESFLDCTL _TaskListWktWindowNameCtl[2];
+#define TaskListWktWindowNameCtl      pWesMap->_TaskListWktWindowNameCtl
+
+    WESFLDCTL _TaskListWnTrackKeyCtl[2];
+#define TaskListWnTrackKeyCtl      pWesMap->_TaskListWnTrackKeyCtl
+
+
+    WESFLDCTL _SumColCtl;
+#define SumColAttr                       pWesMap->_SumColCtl.Attr
+#define SumColStatus                     pWesMap->_SumColCtl.Status
+#define SumColRights                     pWesMap->_SumColCtl.Rights
+#define SumColMsg                        pWesMap->_SumColCtl.Msg
+#define SumColCursor                     pWesMap->_SumColCtl.Cursor
+};
+
+typedef struct
+{
+    unsigned short  _TaskListCdStatusIconicData;
+    char  _TaskListWnWindowTitleData[42];
+    char  _TaskListWktWindowNameData[10];
+    char  _TaskListWnTrackKeyData[10];
+}_TaskListRow;
+

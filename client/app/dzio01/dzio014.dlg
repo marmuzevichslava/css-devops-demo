@@ -1,0 +1,395 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
+*                                                                          *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZIO014                           *
+*                          Generated on: Tue Oct 01 09:25:43 1996          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+DZIO014ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,242,227
+    STYLE 0 
+     | WS_CAPTION
+     | WS_SYSMENU
+     | DS_MODALFRAME
+    CAPTION "Join Relationships"
+    
+Begin  /* controls */
+   CONTROL "Table Elements",100,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,5,22,72,82
+
+   CONTROL "Table Elements",101,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,162,22,72,82
+
+   CONTROL "OK",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+     | BS_DEFPUSHBUTTON
+              ,5,192,37,12
+
+   CONTROL "Cancel",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,53,192,37,12
+
+   CONTROL "Apply",1002,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,97,90,45,12
+
+   CONTROL "",102,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,5,6,64,0
+
+   CONTROL "",103,
+              FND_COMBOBOX,
+              WS_VISIBLE | WS_TABSTOP
+              ,163,6,63,0
+
+   CONTROL "Join Relationships",104,
+              FND_LISTBOX,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              ,5,112,183,76
+
+   CONTROL "Delete",1003,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,193,122,41,12
+
+   CONTROL "Undelete",1004,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,193,138,41,12
+
+   CONTROL "Relation",8005,
+              FND_RADIO_GROUP,
+              WS_VISIBLE | WS_GROUP | BS_GROUPBOX
+              ,99,24,41,60
+
+   CONTROL "EQ",106,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
+              | BS_RADIOBUTTON
+              ,99,24,0,0
+
+   CONTROL "LE",107,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,99,24,0,0
+
+   CONTROL "LT",108,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,99,24,0,0
+
+   CONTROL "GE",109,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,99,24,0,0
+
+   CONTROL "GT",110,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,99,24,0,0
+
+   CONTROL "",5200,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,5,207,219,10
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+DZIO014ID 332
+Begin
+   /*  Control Data for List Box JOIN_TABLE_1  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_CAPTION,                          "Table Elements\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "200\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "1\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  "0\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column TABLE_NAME_WIDGET  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "Join Table\0"
+   FP_SCREEN_LENGTH,                    "18\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box JOIN_TABLE_2  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_CAPTION,                          "Table Elements\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "200\0"
+   FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "1\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  "0\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column TABLE_NAME_WIDGET  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "Join Table\0"
+   FP_SCREEN_LENGTH,                    "18\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for Combobox PRIM_TBL_LST  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "5,6\0"
+   FP_LIST_WIDTH,                       "72\0"
+   FP_LIST_HEIGHT,                      "0\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "8\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Combobox SEC_TBL_LST  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "20\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_LANGUAGE,                         "E\0"
+   FP_COMBOBOX_TYPE,                    FPV_DROPDOWNLIST_COMBO, "\0"
+   FP_DECODE_TABLE,                     "\0"
+   FP_LIST_SORT_ORDER,                  FPV_NO_ORDER, "\0"
+   FP_LIST_POSITION,                    "163,6\0"
+   FP_LIST_WIDTH,                       "70\0"
+   FP_LIST_HEIGHT,                      "0\0"
+   FP_LIST_ARRANGEMENT,                 FPV_DECODE, "\0"
+   FP_VALUE_IN_ENTRY,                   FPV_DECODE, "\0"
+   FP_LINK_FIELD,                       FPV_NONE, "\0"
+   FP_SHOW_CLOSEST_MATCH,               FPV_FALSE, "\0"
+   FP_CODE_LENGTH,                      "8\0"
+   FP_DECODE_LENGTH,                    "20\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for List Box MAIN_JOIN_LB  */
+   FP_CONTROL_ID,                       "104\0"
+   FP_CAPTION,                          "Join Relationships\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_MAXIMUM_ROWS,                     "50\0"
+   FP_DRAW_HORZ_LINES,                  FPV_FALSE, "\0"
+   FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
+   FP_SHOW_TITLE,                       FPV_TRUE, "\0"
+   FP_SHOW_COL_TITLES,                  FPV_FALSE, "\0"
+   FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
+   FP_COLUMNS_PER_LINE,                 "1\0"
+   FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
+   FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
+   FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
+   FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
+
+   /*  Control Data for List Box Column APPLIED_JOIN_ENTRY  */
+   FP_COLUMN_ID,                        "0\0"
+   FP_CAPTION,                          "Dz00815 Applied Join Entry\0"
+   FP_SCREEN_LENGTH,                    "50\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_FONT_CODE,                  "System Proportional\0"
+   FP_TITLE_FONT_SIZE,                  "10\0"
+   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for Radio Group DZ00820_RELATIONAL_OPERATORS  */
+   FP_CONTROL_ID,                       "8005\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_TOP_MARGIN,                       "4\0"
+   FP_LEFT_MARGIN,                      "7\0"
+   FP_HORIZONTAL_SPACING,               "3\0"
+   FP_VERTICAL_SPACING,                 "0\0"
+   FP_DIRECTION,                        FPV_VERTICAL, "\0"
+   FP_BUTTONS_PER_ROW,                  "5\0"
+   FP_BUTTON_INFO,                      "106,EQ\0"
+   FP_BUTTON_INFO,                      "107,LE\0"
+   FP_BUTTON_INFO,                      "108,LT\0"
+   FP_BUTTON_INFO,                      "109,GE\0"
+   FP_BUTTON_INFO,                      "110,GT\0"
+
+   /*  Control Data for Error Field TxMsgAreaA  */
+   FP_CONTROL_ID,                       "5200\0"
+   FP_SCREEN_LENGTH,                    "79\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+DZIO014MenuID MENU PRELOAD
+Begin  /*  menus  */
+     POPUP "&Edit"
+Begin
+     MENUITEM "Cu&t\tShift Del",3001
+     MENUITEM "&Copy\tCtrl Ins",3002
+     MENUITEM "&Paste\tShift Ins",3003
+End
+     POPUP "&Help"
+Begin
+     MENUITEM "&Help for Help...",1005
+     MENUITEM "&Extended Help...",1006
+     MENUITEM "&Keys Help...",1007
+     MENUITEM "Help &Index...",1008
+     MENUITEM SEPARATOR     MENUITEM "&About...",1009
+End
+End  /*  menus  */
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+DZIO014AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1001,VIRTKEY
+VK_DELETE,3001,SHIFT,VIRTKEY
+VK_INSERT,3002,CONTROL,VIRTKEY
+VK_INSERT,3003,SHIFT,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+
