@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmExportTable 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Export Tables"
-   ClientHeight    =   4230
+   ClientHeight    =   4170
    ClientLeft      =   45
    ClientTop       =   615
    ClientWidth     =   5295
@@ -11,28 +11,28 @@ Begin VB.Form frmExportTable
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4230
+   ScaleHeight     =   4170
    ScaleWidth      =   5295
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox efPath 
       Height          =   315
-      Left            =   720
+      Left            =   2400
       Style           =   2  'Dropdown List
-      TabIndex        =   21
-      Top             =   2115
-      Width           =   4425
+      TabIndex        =   14
+      Top             =   3240
+      Width           =   2760
    End
    Begin VB.TextBox efExportFile 
       Height          =   285
-      Left            =   720
-      TabIndex        =   20
+      Left            =   2400
+      TabIndex        =   15
       ToolTipText     =   "Name of file to export to"
-      Top             =   2475
-      Width           =   4425
+      Top             =   3720
+      Width           =   2760
    End
    Begin VB.Frame Frame3 
-      Caption         =   "File &Options"
+      Caption         =   "File Options"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -43,15 +43,15 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   915
-      Left            =   2700
-      TabIndex        =   19
-      Top             =   2850
-      Width           =   2475
+      Left            =   1890
+      TabIndex        =   13
+      Top             =   2160
+      Width           =   3285
       Begin VB.OptionButton optCreateFile 
          Caption         =   "Create New File"
          Height          =   240
-         Left            =   150
-         TabIndex        =   8
+         Left            =   120
+         TabIndex        =   5
          ToolTipText     =   "Create a new export file"
          Top             =   300
          Width           =   1590
@@ -59,15 +59,15 @@ Begin VB.Form frmExportTable
       Begin VB.OptionButton optAppendFile 
          Caption         =   "Append to existing file"
          Height          =   240
-         Left            =   150
-         TabIndex        =   9
+         Left            =   120
+         TabIndex        =   6
          ToolTipText     =   "Append to an existing export file"
          Top             =   600
          Width           =   1965
       End
    End
    Begin VB.Frame Frame2 
-      Caption         =   "Export T&ype"
+      Caption         =   "Export Type"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -77,41 +77,41 @@ Begin VB.Form frmExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1290
-      Left            =   120
-      TabIndex        =   18
-      Top             =   2850
-      Width           =   2355
+      Height          =   1050
+      Left            =   1890
+      TabIndex        =   12
+      Top             =   960
+      Width           =   3285
       Begin VB.OptionButton optExportCISOnly 
          Caption         =   """CIS"" Codes Tables"
          Height          =   240
-         Left            =   150
-         TabIndex        =   7
+         Left            =   120
+         TabIndex        =   4
          ToolTipText     =   "Export only the ""CIS"" codes tables"
-         Top             =   885
+         Top             =   720
          Width           =   1965
       End
       Begin VB.OptionButton optExportCustom 
          Caption         =   "Custom Export"
          Height          =   240
-         Left            =   150
-         TabIndex        =   6
+         Left            =   120
+         TabIndex        =   2
          ToolTipText     =   "Perform a custom export"
-         Top             =   285
+         Top             =   240
          Width           =   1965
       End
       Begin VB.OptionButton optExportAll 
-         Caption         =   "Export All Clients"
+         Caption         =   "Export All Tables"
          Height          =   240
-         Left            =   150
-         TabIndex        =   5
+         Left            =   120
+         TabIndex        =   3
          ToolTipText     =   "Export all the tables"
-         Top             =   585
+         Top             =   480
          Width           =   1515
       End
    End
    Begin VB.Frame Frame1 
-      Caption         =   "Export Table &For"
+      Caption         =   "Export Table For"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -121,90 +121,18 @@ Begin VB.Form frmExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1890
+      Height          =   765
       Left            =   1890
-      TabIndex        =   11
-      Top             =   105
+      TabIndex        =   8
+      Top             =   90
       Width           =   3285
-      Begin VB.ComboBox cbPlatform 
-         Height          =   315
-         Left            =   1290
-         TabIndex        =   4
-         Top             =   1440
-         Width           =   1815
-      End
-      Begin VB.ComboBox cbApplication 
-         Height          =   315
-         Left            =   1290
-         TabIndex        =   3
-         Top             =   1050
-         Width           =   1815
-      End
-      Begin VB.ComboBox cbRelease 
-         Height          =   315
-         Left            =   1290
-         TabIndex        =   2
-         Top             =   660
-         Width           =   1815
-      End
       Begin VB.ComboBox cbClient 
          Enabled         =   0   'False
          Height          =   315
-         Left            =   1290
+         Left            =   720
          TabIndex        =   1
-         Top             =   285
-         Width           =   1815
-      End
-      Begin VB.Label Label5 
-         Caption         =   "Platform:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   450
-         TabIndex        =   15
-         Top             =   1470
-         Width           =   810
-      End
-      Begin VB.Label Label4 
-         Caption         =   "Application:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   165
-         TabIndex        =   14
-         Top             =   1080
-         Width           =   1095
-      End
-      Begin VB.Label Label3 
-         Caption         =   "Release:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   465
-         TabIndex        =   13
-         Top             =   690
-         Width           =   795
+         Top             =   240
+         Width           =   2535
       End
       Begin VB.Label Label2 
          Caption         =   "Client:"
@@ -218,24 +146,24 @@ Begin VB.Form frmExportTable
             Strikethrough   =   0   'False
          EndProperty
          Height          =   240
-         Left            =   660
-         TabIndex        =   12
-         Top             =   315
+         Left            =   90
+         TabIndex        =   9
+         Top             =   330
          Width           =   600
       End
    End
    Begin VB.ListBox SelectTable 
-      Height          =   1620
+      Height          =   3570
       Left            =   120
       MultiSelect     =   2  'Extended
       Sorted          =   -1  'True
       TabIndex        =   0
       ToolTipText     =   "Selected table(s) for exporting"
-      Top             =   300
+      Top             =   360
       Width           =   1590
    End
    Begin VB.Label Label7 
-      Caption         =   "&File:"
+      Caption         =   "File:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -246,13 +174,13 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   195
-      TabIndex        =   17
-      Top             =   2490
+      Left            =   1990
+      TabIndex        =   11
+      Top             =   3830
       Width           =   510
    End
    Begin VB.Label Label6 
-      Caption         =   "&Path:"
+      Caption         =   "Path:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -263,13 +191,13 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   195
-      TabIndex        =   16
-      Top             =   2145
+      Left            =   1920
+      TabIndex        =   10
+      Top             =   3360
       Width           =   465
    End
    Begin VB.Label Label1 
-      Caption         =   "Table &List:"
+      Caption         =   "Table List:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -281,7 +209,7 @@ Begin VB.Form frmExportTable
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   10
+      TabIndex        =   7
       Top             =   75
       Width           =   915
    End
@@ -363,13 +291,13 @@ Private Sub Form_Load()
     Call LoadClients
     
     'Get the list of releases
-    Call LoadReleases
+    'Call LoadReleases
     
     'Get the list of applications
-    Call LoadApplications
+    'Call LoadApplications
     
     'Get the list of platforms
-    Call LoadPlatforms
+    'Call LoadPlatforms
     
     'Get the list of paths
     ctr = 0
@@ -548,80 +476,80 @@ Public Sub LoadClients()
 End Sub
 
 '***************************************************************************************************************
-Public Sub LoadReleases()
+'Public Sub LoadReleases()
 '***************************************************************************************************************
     
-    cbRelease.Enabled = False
-    cbRelease.Clear
+ '   cbRelease.Enabled = False
+ '   cbRelease.Clear
     
-    strsql = "select Release, Code from tblReleases order by Code"
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+ '   strsql = "select Release, Code from tblReleases order by Code"
+ '   Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
-    If Not DaoRS.EOF Then
-        While Not DaoRS.EOF
-            cbRelease.AddItem DaoRS(0).Value
-            DaoRS.MoveNext
-        Wend
-        DaoRS.Close
-        cbRelease.ListIndex = 0
-    End If
+ '   If Not DaoRS.EOF Then
+ '       While Not DaoRS.EOF
+ '           cbRelease.AddItem DaoRS(0).Value
+ '           DaoRS.MoveNext
+ '       Wend
+ '       DaoRS.Close
+ '       cbRelease.ListIndex = 0
+ '   End If
 
-    cbRelease.Enabled = True
+ '   cbRelease.Enabled = True
 
-End Sub
-
-'***************************************************************************************************************
-Public Sub LoadApplications()
-'***************************************************************************************************************
-    
-    cbApplication.Enabled = False
-    cbApplication.Clear
-    
-    strsql = "select Application, Code from tblApplications order by Code"
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-    
-    If Not DaoRS.EOF Then
-        While Not DaoRS.EOF
-            cbApplication.AddItem DaoRS(0).Value
-            DaoRS.MoveNext
-        Wend
-        DaoRS.Close
-        cbApplication.ListIndex = 0
-    End If
-
-    cbApplication.Enabled = True
-
-End Sub
+'End Sub
 
 '***************************************************************************************************************
-Public Sub LoadPlatforms()
+'Public Sub LoadApplications()
 '***************************************************************************************************************
-    Dim x As Integer
     
-    x = 0
-    cbPlatform.Enabled = False
-    cbPlatform.Clear
+ '   cbApplication.Enabled = False
+ '   cbApplication.Clear
     
-    strsql = "select Platform, Code from tblPlatforms order by Code"
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+ '   strsql = "select Application, Code from tblApplications order by Code"
+ '   Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
-    If Not DaoRS.EOF Then
-        While Not DaoRS.EOF
-            cbPlatform.AddItem DaoRS(0).Value
-            If (DaoRS(0).Value = "Windows NT") Then
-                cbPlatform.ListIndex = x
-            Else
-                x = x + 1
-            End If
+ '   If Not DaoRS.EOF Then
+ '       While Not DaoRS.EOF
+ '           cbApplication.AddItem DaoRS(0).Value
+ '           DaoRS.MoveNext
+ '       Wend
+ '       DaoRS.Close
+ '       cbApplication.ListIndex = 0
+ '   End If
+
+ '   cbApplication.Enabled = True
+
+'End Sub
+
+'***************************************************************************************************************
+'Public Sub LoadPlatforms()
+'***************************************************************************************************************
+ '   Dim x As Integer
+ 
+ '   x = 0
+ '   cbPlatform.Enabled = False
+ '   cbPlatform.Clear
+    
+ '   strsql = "select Platform, Code from tblPlatforms order by Code"
+ '   Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+ '   If Not DaoRS.EOF Then
+ '       While Not DaoRS.EOF
+ '           cbPlatform.AddItem DaoRS(0).Value
+ '           If (DaoRS(0).Value = "Windows NT") Then
+ '               cbPlatform.ListIndex = x
+ '           Else
+ '               x = x + 1
+ '           End If
             
-            DaoRS.MoveNext
-        Wend
-        DaoRS.Close
-    End If
+ '           DaoRS.MoveNext
+ '       Wend
+ '       DaoRS.Close
+ '   End If
 
-    cbPlatform.Enabled = True
+ '   cbPlatform.Enabled = True
 
-End Sub
+'End Sub
 
 '***************************************************************************************************************
 Private Sub SelectTable_Click()

@@ -2,124 +2,65 @@ VERSION 5.00
 Begin VB.Form frmAddTable 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add New Codes Table"
-   ClientHeight    =   3690
-   ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   5550
+   ClientHeight    =   3585
+   ClientLeft      =   3330
+   ClientTop       =   2475
+   ClientWidth     =   5535
    Icon            =   "frmaddtable.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3690
-   ScaleWidth      =   5550
+   ScaleHeight     =   3559.209
+   ScaleMode       =   0  'User
+   ScaleWidth      =   5774.352
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox txtClass 
       Height          =   285
-      Left            =   4845
+      Left            =   4920
       TabIndex        =   0
       TabStop         =   0   'False
       Text            =   "Text1"
-      Top             =   2250
+      Top             =   2040
       Visible         =   0   'False
       Width           =   495
-   End
-   Begin VB.Frame Frame2 
-      Caption         =   "Codes Table Flags:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1080
-      Left            =   180
-      TabIndex        =   21
-      Top             =   1065
-      Width           =   2190
-      Begin VB.CheckBox chkEffDate 
-         Caption         =   "Effective Date"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   195
-         Left            =   240
-         TabIndex        =   8
-         Top             =   360
-         Width           =   1665
-      End
-      Begin VB.CheckBox chkResidency 
-         Caption         =   "Residency"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   195
-         Left            =   240
-         TabIndex        =   9
-         Top             =   630
-         Width           =   1665
-      End
    End
    Begin VB.TextBox txtDescription 
       BackColor       =   &H0000FFFF&
       Height          =   555
-      Left            =   165
+      Left            =   240
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   10
+      TabIndex        =   7
       ToolTipText     =   "Description for the table"
-      Top             =   2550
+      Top             =   2400
       Width           =   5220
    End
    Begin VB.TextBox txtTblName 
       Height          =   315
-      Left            =   915
+      Left            =   960
       TabIndex        =   1
       Text            =   "CIS"
       ToolTipText     =   "Codes Table Name"
       Top             =   135
       Width           =   1515
    End
-   Begin VB.TextBox txtCenturyDelimeter 
-      Height          =   315
-      Left            =   4590
-      TabIndex        =   5
-      ToolTipText     =   "Codes Table Century Delimeter"
-      Top             =   1845
-      Width           =   765
-   End
    Begin VB.ComboBox cbxTblType 
       Height          =   315
-      Left            =   915
+      Left            =   3600
       Style           =   2  'Dropdown List
       TabIndex        =   2
       ToolTipText     =   "Table Type"
-      Top             =   540
+      Top             =   135
       Width           =   1515
    End
    Begin VB.TextBox txtDataLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4590
-      TabIndex        =   6
+      Left            =   2280
+      TabIndex        =   4
       ToolTipText     =   "Codes Table Max Data Length"
-      Top             =   540
+      Top             =   960
       Width           =   765
    End
    Begin VB.CommandButton cmdCancel 
@@ -135,9 +76,9 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   330
       Left            =   2922
-      TabIndex        =   12
+      TabIndex        =   9
       ToolTipText     =   "Create New Table"
-      Top             =   3225
+      Top             =   3120
       Width           =   1215
    End
    Begin VB.CommandButton cmdAddTbl 
@@ -154,37 +95,37 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      Left            =   1414
-      TabIndex        =   11
+      Left            =   1440
+      TabIndex        =   8
       ToolTipText     =   "Create New Table"
-      Top             =   3225
+      Top             =   3120
       Width           =   1215
    End
    Begin VB.TextBox txtDecodeDisplacement 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4590
-      TabIndex        =   7
+      Left            =   2280
+      TabIndex        =   6
       ToolTipText     =   "Codes Table Max Decode Displacement"
-      Top             =   1395
+      Top             =   1680
       Width           =   765
    End
    Begin VB.TextBox txtDecodeLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4590
-      TabIndex        =   3
+      Left            =   2280
+      TabIndex        =   5
       ToolTipText     =   "Codes Table Max Decode Length"
-      Top             =   945
+      Top             =   1320
       Width           =   765
    End
    Begin VB.TextBox txtKeyLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4590
-      TabIndex        =   4
+      Left            =   2280
+      TabIndex        =   3
       ToolTipText     =   "Codes Table Max Key Length"
-      Top             =   135
+      Top             =   600
       Width           =   765
    End
    Begin VB.Label Label3 
@@ -199,9 +140,9 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   180
-      TabIndex        =   20
-      Top             =   2280
+      Left            =   240
+      TabIndex        =   16
+      Top             =   2160
       Width           =   1290
    End
    Begin VB.Label Label1 
@@ -217,28 +158,10 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   165
-      Left            =   75
-      TabIndex        =   19
-      Top             =   210
-      Width           =   690
-   End
-   Begin VB.Label Label5 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Century Delimeter:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   2535
-      TabIndex        =   18
-      Top             =   1905
-      Width           =   1965
+      Left            =   201
+      TabIndex        =   15
+      Top             =   240
+      Width           =   615
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -253,13 +176,12 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   195
-      TabIndex        =   17
-      Top             =   600
+      Left            =   2880
+      TabIndex        =   14
+      Top             =   210
       Width           =   615
    End
    Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
       Caption         =   "Data Length:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -271,13 +193,12 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2535
-      TabIndex        =   16
-      Top             =   600
+      Left            =   240
+      TabIndex        =   13
+      Top             =   1080
       Width           =   1965
    End
    Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
       Caption         =   "Decode Displacement:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -289,13 +210,12 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2535
-      TabIndex        =   15
-      Top             =   1455
+      Left            =   240
+      TabIndex        =   12
+      Top             =   1800
       Width           =   1965
    End
    Begin VB.Label Label7 
-      Alignment       =   1  'Right Justify
       Caption         =   "Decode Length:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -307,13 +227,12 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2535
-      TabIndex        =   14
-      Top             =   1005
+      Left            =   240
+      TabIndex        =   11
+      Top             =   1440
       Width           =   1965
    End
    Begin VB.Label Label6 
-      Alignment       =   1  'Right Justify
       Caption         =   "Key Length:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -325,10 +244,10 @@ Begin VB.Form frmAddTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2535
-      TabIndex        =   13
-      Top             =   195
-      Width           =   1965
+      Left            =   240
+      TabIndex        =   10
+      Top             =   720
+      Width           =   2205
    End
 End
 Attribute VB_Name = "frmAddTable"
@@ -342,18 +261,18 @@ Public bEffDate As Boolean
 Public bResidency As Boolean
 
 '***************************************************************************************************************
-Private Sub chkEffDate_Click()
+' Private Sub chkEffDate_Click()
 '***************************************************************************************************************
-    If (chkEffDate.Value = 0) Then bEffDate = False
-    If (chkEffDate.Value = 1) Then bEffDate = True
-End Sub
+ '  If (chkEffDate.Value = 0) Then bEffDate = False
+  ' If (chkEffDate.Value = 1) Then bEffDate = True
+ 'End Sub
 
 '***************************************************************************************************************
-Private Sub chkResidency_Click()
+' Private Sub chkResidency_Click()
 '***************************************************************************************************************
-    If (chkResidency.Value = 0) Then bResidency = False
-    If (chkResidency.Value = 1) Then bResidency = True
-End Sub
+ '  If (chkResidency.Value = 0) Then bResidency = False
+  ' If (chkResidency.Value = 1) Then bResidency = True
+ 'End Sub
 
 '***************************************************************************************************************
 Private Sub cmdAddTbl_Click()
@@ -391,22 +310,16 @@ Private Sub cmdAddTbl_Click()
                                     "TableType, " & _
                                     "DecodeLen, " & _
                                     "DecodeDisplacement, " & _
-                                    "EffDate, " & _
-                                    "Residency, " & _
                                     "DataLen, " & _
                                     "KeyLen, " & _
-                                    "CenturyDelim, " & _
                                     "Class, " & _
                                     "Description) " & _
              "VALUES (" & Chr(34) & txtTblName.Text & Chr(34) & ", " & _
                           CurrentTblType & ", " & _
                           txtDecodeLength.Text & ", " & _
                           txtDecodeDisplacement.Text & ", " & _
-                          bEffDate & ", " & _
-                          bResidency & ", " & _
                           txtDataLength.Text & ", " & _
                           txtKeyLength.Text & ", " & _
-                          txtCenturyDelimeter.Text & ", " & _
                           Chr(34) & txtClass.Text & Chr(34) & ", " & _
                           Chr(34) & txtDescription.Text & Chr(34) & ");"
     
@@ -455,7 +368,7 @@ Private Sub Form_Load()
     Dim x As Integer
     
     txtClass.Text = "A"
-    txtCenturyDelimeter.Text = 0
+    'txtCenturyDelimeter.Text = 0
     
     'For x = 0 To UBound(TableTypes)
     For x = 0 To 2
@@ -510,11 +423,11 @@ Public Sub WindowRefresh()
         txtDataLength.BackColor = &HFFFF&
     End If
     
-    If (Len(txtCenturyDelimeter.Text) > 0) Then
-        txtCenturyDelimeter.BackColor = &H80000005
-    Else
-        txtCenturyDelimeter.BackColor = &HFFFF&
-    End If
+    'If (Len(txtCenturyDelimeter.Text) > 0) Then
+     '   txtCenturyDelimeter.BackColor = &H80000005
+     'Else
+     ' txtCenturyDelimeter.BackColor = &HFFFF&
+    'End If
     
     If (Len(txtDecodeDisplacement.Text) > 0) Then
         txtDecodeDisplacement.BackColor = &H80000005
@@ -527,9 +440,8 @@ Public Sub WindowRefresh()
         And (Len(txtDescription.Text) > 0) _
         And (Len(txtDecodeLength.Text) > 0) _
         And (Len(txtKeyLength.Text) > 0) _
-        And (Len(txtTblName.Text) > 0) _
-        And (Len(txtDataLength.Text) > 0) _
-        And (Len(txtCenturyDelimeter.Text) > 0)) Then
+        And (Len(txtTblName.Text) > 0)) _
+        And (Len(txtDataLength.Text) > 0) Then
             cmdAddTbl.Enabled = True
     Else
             cmdAddTbl.Enabled = False

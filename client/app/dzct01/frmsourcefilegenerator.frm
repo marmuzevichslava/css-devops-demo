@@ -165,7 +165,6 @@ Begin VB.Form frmSourceFileGenerator
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "frmsourcefilegenerator.frx":030A
       NumItems        =   0
    End
    Begin VB.Frame Frame1 
@@ -226,7 +225,9 @@ Begin VB.Form frmSourceFileGenerator
       End
       Begin VB.ComboBox cboDataType 
          Height          =   315
+         ItemData        =   "frmsourcefilegenerator.frx":030A
          Left            =   1500
+         List            =   "frmsourcefilegenerator.frx":030C
          Style           =   2  'Dropdown List
          TabIndex        =   2
          Top             =   675

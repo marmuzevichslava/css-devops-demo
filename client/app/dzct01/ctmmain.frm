@@ -9,6 +9,7 @@ Begin VB.Form frmMain
    ForeColor       =   &H80000008&
    Icon            =   "ctmmain.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    ScaleHeight     =   6000
    ScaleWidth      =   10380
    StartUpPosition =   2  'CenterScreen
@@ -16,7 +17,7 @@ Begin VB.Form frmMain
       Height          =   650
       Left            =   7320
       Sorted          =   -1  'True
-      TabIndex        =   18
+      TabIndex        =   16
       Top             =   480
       Visible         =   0   'False
       Width           =   1250
@@ -56,32 +57,10 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1095
-      Left            =   105
+      Left            =   120
       TabIndex        =   5
       Top             =   135
       Width           =   8895
-      Begin VB.TextBox txtCenturyDelim 
-         BackColor       =   &H8000000B&
-         BorderStyle     =   0  'None
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000000&
-         Height          =   270
-         Left            =   6660
-         Locked          =   -1  'True
-         TabIndex        =   16
-         TabStop         =   0   'False
-         ToolTipText     =   "Length of the current table's Decodes"
-         Top             =   645
-         Width           =   495
-      End
       Begin VB.TextBox txtTotalKeys 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
@@ -96,12 +75,12 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00000000&
          Height          =   270
-         Left            =   6660
+         Left            =   4200
          Locked          =   -1  'True
          TabIndex        =   14
          TabStop         =   0   'False
          ToolTipText     =   "Number of Keys found in the current table"
-         Top             =   285
+         Top             =   720
          Width           =   495
       End
       Begin VB.TextBox txtDecodeLength 
@@ -118,12 +97,12 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00000000&
          Height          =   270
-         Left            =   4035
+         Left            =   6360
          Locked          =   -1  'True
          TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current table's Decodes"
-         Top             =   645
+         Top             =   360
          Width           =   495
       End
       Begin VB.TextBox txtDecodeDisplacement 
@@ -140,12 +119,12 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00000000&
          Height          =   270
-         Left            =   4035
+         Left            =   4200
          Locked          =   -1  'True
          TabIndex        =   10
          TabStop         =   0   'False
          ToolTipText     =   "Length of the Decode displacement"
-         Top             =   285
+         Top             =   360
          Width           =   495
       End
       Begin VB.TextBox txtKeyLength 
@@ -162,12 +141,12 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00000000&
          Height          =   270
-         Left            =   1530
+         Left            =   1320
          Locked          =   -1  'True
          TabIndex        =   8
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
-         Top             =   645
+         Top             =   720
          Width           =   495
       End
       Begin VB.TextBox txtDataLength 
@@ -184,12 +163,12 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00000000&
          Height          =   270
-         Left            =   1530
+         Left            =   1320
          Locked          =   -1  'True
          TabIndex        =   7
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
-         Top             =   285
+         Top             =   360
          Width           =   495
       End
       Begin VB.Label Label7 
@@ -205,28 +184,10 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   7220
-         TabIndex        =   19
+         TabIndex        =   17
          Top             =   120
          Visible         =   0   'False
          Width           =   1200
-      End
-      Begin VB.Label Label6 
-         Alignment       =   1  'Right Justify
-         Caption         =   "Century Delimeter:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   270
-         Left            =   4620
-         TabIndex        =   17
-         Top             =   645
-         Width           =   1950
       End
       Begin VB.Label Label5 
          Alignment       =   1  'Right Justify
@@ -241,9 +202,9 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   4590
+         Left            =   2190
          TabIndex        =   15
-         Top             =   285
+         Top             =   720
          Width           =   1950
       End
       Begin VB.Label Label4 
@@ -259,10 +220,10 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   1980
+         Left            =   4680
          TabIndex        =   13
-         Top             =   645
-         Width           =   1995
+         Top             =   360
+         Width           =   1635
       End
       Begin VB.Label Label3 
          Alignment       =   1  'Right Justify
@@ -277,9 +238,9 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   1980
+         Left            =   2160
          TabIndex        =   11
-         Top             =   285
+         Top             =   360
          Width           =   1995
       End
       Begin VB.Label Label2 
@@ -295,9 +256,9 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   300
+         Left            =   120
          TabIndex        =   9
-         Top             =   645
+         Top             =   720
          Width           =   1185
       End
       Begin VB.Label Label1 
@@ -313,9 +274,9 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   300
+         Left            =   120
          TabIndex        =   6
-         Top             =   285
+         Top             =   360
          Width           =   1185
       End
    End
@@ -351,7 +312,7 @@ Begin VB.Form frmMain
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
-      Left            =   3015
+      Left            =   3000
       TabIndex        =   1
       Top             =   1425
       Width           =   4170
@@ -1235,7 +1196,7 @@ Private Sub mnuPrintTable_Click()
         Printer.Print lvListView.ListItems(x).SubItems(2)
         Printer.CurrentX = 4500
         Printer.CurrentY = Printer.CurrentY - 234
-        sDrivingLogic = "Host: " & lvListView.ListItems(x).SubItems(6) & " / Client: " & lvListView.ListItems(x).SubItems(7)
+        sDrivingLogic = "Host: " & lvListView.ListItems(x).SubItems(3) & " / Client: " & lvListView.ListItems(x).SubItems(4)
         Printer.Print sDrivingLogic
         Printer.CurrentX = 6500
         Printer.CurrentY = Printer.CurrentY - 234

@@ -9,6 +9,7 @@ Begin VB.Form frmAddStaticTable
    ClientWidth     =   5265
    Icon            =   "frmaddstatictable.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4065
@@ -31,11 +32,9 @@ Begin VB.Form frmAddStaticTable
             Object.Width           =   9410
             MinWidth        =   9410
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frmaddstatictable.frx":030A
    End
    Begin VB.CommandButton Command2 
       BackColor       =   &H8000000D&

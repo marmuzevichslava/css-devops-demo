@@ -12,30 +12,6 @@ Begin VB.Form frmAddModUMsg
    ScaleHeight     =   3390
    ScaleWidth      =   7335
    StartUpPosition =   2  'CenterScreen
-   Begin VB.ComboBox cbxPlatform 
-      Height          =   315
-      Left            =   1425
-      Style           =   2  'Dropdown List
-      TabIndex        =   6
-      Top             =   2088
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxApplication 
-      Height          =   315
-      Left            =   1425
-      Style           =   2  'Dropdown List
-      TabIndex        =   5
-      Top             =   1716
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxRelease 
-      Height          =   315
-      Left            =   1425
-      Style           =   2  'Dropdown List
-      TabIndex        =   7
-      Top             =   2460
-      Width           =   2295
-   End
    Begin VB.CommandButton cmdProcess 
       Caption         =   "&Add"
       Default         =   -1  'True
@@ -50,7 +26,7 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   330
       Left            =   2573
-      TabIndex        =   9
+      TabIndex        =   6
       ToolTipText     =   "Add/Modify error message"
       Top             =   2940
       Width           =   1215
@@ -74,11 +50,11 @@ Begin VB.Form frmAddModUMsg
    Begin VB.TextBox txtComments 
       BackColor       =   &H00FFFFFF&
       Height          =   1050
-      Left            =   4830
+      Left            =   1425
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   8
-      Top             =   1725
+      TabIndex        =   5
+      Top             =   1800
       Width           =   2325
    End
    Begin VB.TextBox txtLanguage 
@@ -119,64 +95,10 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   330
       Left            =   4013
-      TabIndex        =   10
+      TabIndex        =   7
       ToolTipText     =   "Return to main"
       Top             =   2940
       Width           =   1215
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Application:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   285
-      TabIndex        =   19
-      Top             =   1753
-      Width           =   1095
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Platform:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   540
-      TabIndex        =   18
-      Top             =   2125
-      Width           =   840
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Release:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   615
-      TabIndex        =   17
-      Top             =   2497
-      Width           =   780
    End
    Begin VB.Label Label6 
       Alignment       =   1  'Right Justify
@@ -192,7 +114,7 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   255
       Left            =   405
-      TabIndex        =   16
+      TabIndex        =   13
       Top             =   645
       Width           =   975
    End
@@ -210,7 +132,7 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   210
       Left            =   3705
-      TabIndex        =   15
+      TabIndex        =   12
       Top             =   660
       Width           =   1305
    End
@@ -227,9 +149,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   3840
-      TabIndex        =   14
-      Top             =   1755
+      Left            =   370
+      TabIndex        =   11
+      Top             =   1680
       Width           =   975
    End
    Begin VB.Label Label3 
@@ -246,7 +168,7 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   255
       Left            =   5805
-      TabIndex        =   13
+      TabIndex        =   10
       Top             =   645
       Width           =   900
    End
@@ -264,7 +186,7 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   255
       Left            =   -315
-      TabIndex        =   12
+      TabIndex        =   9
       Top             =   1020
       Width           =   1695
    End
@@ -282,7 +204,7 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   255
       Left            =   165
-      TabIndex        =   11
+      TabIndex        =   8
       Top             =   270
       Width           =   1215
    End
@@ -321,20 +243,20 @@ End Sub
 Public Function AddNewUMsgRecord() As Boolean
 '***************************************************************************************************************
     Dim myClient As New Client
-    Dim myApplication As New Application
-    Dim myPlatform As New Platform
-    Dim myRelease As New Release
+   ' Dim myApplication As New Application
+   ' Dim myPlatform As New Platform
+   ' Dim myRelease As New Release
     Dim myComment As New Comment
     
     myClient.Decode = Me.cbxClients.Text
-    myApplication.Decode = Me.cbxApplication.Text
-    myPlatform.Decode = Me.cbxPlatform.Text
-    myRelease.Decode = Me.cbxRelease.Text
+   ' myApplication.Decode = Me.cbxApplication.Text
+   ' myPlatform.Decode = Me.cbxPlatform.Text
+   ' myRelease.Decode = Me.cbxRelease.Text
     
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
     
-    strsql = "INSERT INTO tblUserErrorMsgEntries (TableName, ErrorNumber, ErrorCode, Client, SequenceNumber, Language, Coments, Application, Platform, CSSRelease)" _
+    strsql = "INSERT INTO tblUserErrorMsgEntries (TableName, ErrorNumber, ErrorCode, Client, SequenceNumber, Language, Coments,)" _
              & " VALUES (" _
              & Chr(34) & CurTable & Chr(34) & ", " _
              & Me.txtKey & ", " _
@@ -343,10 +265,7 @@ Public Function AddNewUMsgRecord() As Boolean
              & Me.txtSeqNumber & ", " _
              & Chr(34) & Me.txtLanguage & Chr(34) & ", " _
              & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
-             & myApplication.Displaycode & ", " _
-             & myPlatform.Displaycode & ", " _
-             & myRelease.Displaycode & ") "
-    
+        
     'Set up the error handling.
     On Error GoTo InsertError
     
@@ -527,15 +446,15 @@ End Sub
 Public Function ModifyUMsgRecord() As Boolean
 '***************************************************************************************************************
     Dim myClient As New Client
-    Dim myApplication As New Application
-    Dim myPlatform As New Platform
-    Dim myRelease As New Release
+   ' Dim myApplication As New Application
+   ' Dim myPlatform As New Platform
+   ' Dim myRelease As New Release
     Dim myComment As New Comment
     
     myClient.Decode = Me.cbxClients.Text
-    myApplication.Decode = Me.cbxApplication.Text
-    myPlatform.Decode = Me.cbxPlatform.Text
-    myRelease.Decode = Me.cbxRelease.Text
+   ' myApplication.Decode = Me.cbxApplication.Text
+   ' myPlatform.Decode = Me.cbxPlatform.Text
+   ' myRelease.Decode = Me.cbxRelease.Text
     
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
@@ -546,9 +465,6 @@ Public Function ModifyUMsgRecord() As Boolean
              & "ErrorCode = " & Chr(34) & Me.txtDecode.Text & Chr(34) & ", " _
              & "Client = " & myClient.Displaycode & ", " _
              & "Coments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
-             & "Application = " & myApplication.Displaycode & ", " _
-             & "Platform = " & myPlatform.Displaycode & ", " _
-             & "CSSRelease = " & myRelease.Displaycode & ", " _
              & "Language = " & Chr(34) & Me.txtLanguage & Chr(34) & ", " _
              & "SequenceNumber = " & Me.txtSeqNumber
              
@@ -607,13 +523,13 @@ Private Sub Form_Load()
     GetClientCBox Me.cbxClients
     
     'Build Application combo box
-    GetApplicationCBox Me.cbxApplication
+    'GetApplicationCBox Me.cbxApplication
         
     'Build Platform combo box
-    GetPlatformCBox Me.cbxPlatform
+    'GetPlatformCBox Me.cbxPlatform
     
     'Build Release combo box
-    GetReleaseCBox Me.cbxRelease
+    'GetReleaseCBox Me.cbxRelease
 
     If (bAddNewKey) Then
         Me.Caption = CurTable & " - Add New Error Code"
@@ -626,8 +542,8 @@ Private Sub Form_Load()
         
         myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
         
-        strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.SequenceNumber, tblClients.Client, tblUserErrorMsgEntries.ErrorCode, tblUserErrorMsgEntries.Coments, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform" _
-                  & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code" _
+        strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.SequenceNumber, tblClients.Client, tblUserErrorMsgEntries.ErrorCode, tblUserErrorMsgEntries.Coments, " _
+                  & " FROM ((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) " _
                   & " WHERE (((tblUserErrorMsgEntries.ErrorNumber)= " & CurKey & ") AND ((tblUserErrorMsgEntries.SequenceNumber)= " & frmMain.lvListView.SelectedItem.SubItems(6) & ") AND ((tblUserErrorMsgEntries.Client)= " & myClient.Displaycode & ") AND ((tblUserErrorMsgEntries.TableName)= " & Chr(34) & CurTable & Chr(34) & "));"
                     
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -674,28 +590,28 @@ Private Sub Form_Load()
             End If
             
             'Set up the Application combo box.
-            For x = 0 To UBound(ApplicationArray)
-                If (DaoRS(6).Value = ApplicationArray(x).Application) Then
-                    cbxApplication.ListIndex = x
-                    Exit For
-                End If
-            Next
+            'For x = 0 To UBound(ApplicationArray)
+            '    If (DaoRS(6).Value = ApplicationArray(x).Application) Then
+            '        cbxApplication.ListIndex = x
+            '        Exit For
+            '    End If
+            'Next
             
             'Set up the Release combo box.
-            For x = 0 To UBound(ReleaseArray)
-                If (DaoRS(7).Value = ReleaseArray(x).Release) Then
-                    cbxRelease.ListIndex = x
-                    Exit For
-                End If
-            Next
+            'For x = 0 To UBound(ReleaseArray)
+            '    If (DaoRS(7).Value = ReleaseArray(x).Release) Then
+            '        cbxRelease.ListIndex = x
+            '        Exit For
+            '    End If
+            'Next
 
             'Set up the Platform combo box.
-            For x = 0 To UBound(PlatformArray)
-                If (DaoRS(8).Value = PlatformArray(x).Platform) Then
-                    cbxPlatform.ListIndex = x
-                    Exit For
-                End If
-            Next
+            'For x = 0 To UBound(PlatformArray)
+            '    If (DaoRS(8).Value = PlatformArray(x).Platform) Then
+            '        cbxPlatform.ListIndex = x
+            '        Exit For
+            '    End If
+            'Next
         
         End If
     End If

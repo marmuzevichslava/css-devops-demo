@@ -1,16 +1,17 @@
 VERSION 5.00
 Begin VB.Form frmAddModTable 
    Caption         =   "Modify Current Codes Table"
-   ClientHeight    =   3645
+   ClientHeight    =   3840
    ClientLeft      =   3345
    ClientTop       =   2490
-   ClientWidth     =   5790
+   ClientWidth     =   5700
    Icon            =   "frmaddmodtable.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3645
-   ScaleWidth      =   5790
+   ScaleHeight     =   3840
+   ScaleWidth      =   5700
    Begin VB.CommandButton cmdCancel 
       Caption         =   "&Cancel"
       BeginProperty Font 
@@ -23,10 +24,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      Left            =   3083
-      TabIndex        =   10
+      Left            =   3120
+      TabIndex        =   7
       ToolTipText     =   "Return to main"
-      Top             =   3165
+      Top             =   3240
       Width           =   1215
    End
    Begin VB.CommandButton cmdAddTbl 
@@ -42,123 +43,64 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      Left            =   1493
-      TabIndex        =   9
+      Left            =   1440
+      TabIndex        =   6
       ToolTipText     =   "Modify Codes Table"
-      Top             =   3165
+      Top             =   3240
       Width           =   1380
    End
    Begin VB.ComboBox cbxTblType 
       Height          =   315
-      Left            =   1005
+      Left            =   1440
       TabIndex        =   0
       Top             =   135
       Width           =   1905
    End
-   Begin VB.Frame Frame1 
-      Caption         =   "Codes Table Flags:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1095
-      Left            =   240
-      TabIndex        =   18
-      Top             =   720
-      Width           =   2310
-      Begin VB.CheckBox chkEffDate 
-         Caption         =   "Effective Date"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   120
-         TabIndex        =   1
-         Top             =   360
-         Width           =   1695
-      End
-      Begin VB.CheckBox chkResidency 
-         Caption         =   "Residency"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Left            =   120
-         TabIndex        =   2
-         Top             =   650
-         Width           =   1695
-      End
-   End
    Begin VB.TextBox txtDescription 
       BackColor       =   &H00FFFFFF&
       Height          =   675
-      Left            =   210
+      Left            =   240
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   8
+      TabIndex        =   5
       ToolTipText     =   "Description for the table"
-      Top             =   2295
+      Top             =   2400
       Width           =   5415
-   End
-   Begin VB.TextBox txtCenturyDelimeter 
-      Height          =   315
-      Left            =   4830
-      TabIndex        =   7
-      ToolTipText     =   "Codes Table Century Delimeter"
-      Top             =   1770
-      Width           =   765
    End
    Begin VB.TextBox txtKeyLength 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   4815
-      TabIndex        =   3
+      Left            =   2520
+      TabIndex        =   1
       ToolTipText     =   "Codes Table Max Key Length"
-      Top             =   120
+      Top             =   600
       Width           =   765
    End
    Begin VB.TextBox txtDecodeLength 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   4830
-      TabIndex        =   5
+      Left            =   2520
+      TabIndex        =   3
       ToolTipText     =   "Codes Table Max Decode Lenght"
-      Top             =   944
+      Top             =   1320
       Width           =   765
    End
    Begin VB.TextBox txtDecodeDisplacement 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   4830
-      TabIndex        =   6
+      Left            =   2520
+      TabIndex        =   4
       ToolTipText     =   "Codes Table Max Decode Displacement"
-      Top             =   1356
+      Top             =   1680
       Width           =   765
    End
    Begin VB.TextBox txtDataLength 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   4830
-      TabIndex        =   4
+      Left            =   2520
+      TabIndex        =   2
       ToolTipText     =   "Codes Table Max Data Length"
-      Top             =   532
+      Top             =   960
       Width           =   765
    End
    Begin VB.Label Label3 
@@ -173,28 +115,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   195
-      TabIndex        =   17
-      Top             =   2085
+      Left            =   240
+      TabIndex        =   13
+      Top             =   2160
       Width           =   1290
-   End
-   Begin VB.Label Label5 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Century Delimeter:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   195
-      Left            =   2670
-      TabIndex        =   16
-      Top             =   1830
-      Width           =   2085
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -209,13 +133,12 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   270
-      TabIndex        =   15
+      Left            =   120
+      TabIndex        =   12
       Top             =   165
       Width           =   615
    End
    Begin VB.Label Label6 
-      Alignment       =   1  'Right Justify
       Caption         =   "Key Length:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -227,13 +150,12 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2670
-      TabIndex        =   14
-      Top             =   180
-      Width           =   2085
+      Left            =   240
+      TabIndex        =   11
+      Top             =   720
+      Width           =   1125
    End
    Begin VB.Label Label7 
-      Alignment       =   1  'Right Justify
       Caption         =   "Decode Length:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -245,13 +167,12 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2655
-      TabIndex        =   13
-      Top             =   1004
-      Width           =   2085
+      Left            =   240
+      TabIndex        =   10
+      Top             =   1440
+      Width           =   1485
    End
    Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
       Caption         =   "Decode Displacement:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -263,13 +184,12 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2655
-      TabIndex        =   12
-      Top             =   1416
-      Width           =   2085
+      Left            =   240
+      TabIndex        =   9
+      Top             =   1800
+      Width           =   1965
    End
    Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
       Caption         =   "Data Length:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -281,10 +201,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2670
-      TabIndex        =   11
-      Top             =   592
-      Width           =   2085
+      Left            =   240
+      TabIndex        =   8
+      Top             =   1080
+      Width           =   1125
    End
 End
 Attribute VB_Name = "frmAddModTable"
@@ -294,7 +214,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdAddTbl_Click()
 
-    If (txtCenturyDelimeter.Text = "") Then txtCenturyDelimeter.Text = " "
+    'If (txtCenturyDelimeter.Text = "") Then txtCenturyDelimeter.Text = " "
     If (txtDataLength.Text = "") Then txtDataLength.Text = " "
     If (txtDecodeDisplacement.Text = "") Then txtDecodeDisplacement.Text = " "
     If (txtDecodeLength.Text = "") Then txtDecodeLength.Text = " "
@@ -313,13 +233,10 @@ Private Sub cmdAddTbl_Click()
              "DecodeLen = " & Chr(34) & txtDecodeLength.Text & Chr(34) & ", " & _
              "DecodeDisplacement = " & txtDecodeDisplacement.Text & ", " & _
              "Description = " & Chr(34) & txtDescription.Text & Chr(34) & ", " & _
-             "EffDate = " & Chr(34) & chkEffDate.Value & Chr(34) & ", " & _
-             "Residency = " & Chr(34) & chkResidency.Value & Chr(34) & ", " & _
              "DataLen = " & Chr(34) & txtDataLength.Text & Chr(34) & ", " & _
-             "KeyLen = " & Chr(34) & txtKeyLength.Text & Chr(34) & ", " & _
-             "CenturyDelim = " & Chr(34) & txtCenturyDelimeter.Text & Chr(34) & _
+             "KeyLen = " & Chr(34) & txtKeyLength.Text & Chr(34) & _
              " WHERE TableName = " & Chr(34) & CurTable & Chr(34)
-    
+        
     'Set up the error handling.
     On Error GoTo UpdateError
     
@@ -337,7 +254,7 @@ Private Sub cmdAddTbl_Click()
         frmMain.txtKeyLength.Text = Me.txtKeyLength.Text
         frmMain.txtDecodeDisplacement.Text = Me.txtDecodeDisplacement.Text
         frmMain.txtDecodeLength.Text = Me.txtDecodeLength.Text
-        frmMain.txtCenturyDelim.Text = Me.txtCenturyDelimeter.Text
+        'frmMain.txtCenturyDelim.Text = Me.txtCenturyDelimeter.Text
         'frmMain.chkStatic.Value = Me.chkStaticTable.Value
         If (Len(Me.txtDescription.Text) = 0) Then
             frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
@@ -376,8 +293,8 @@ Private Sub Form_Load()
         cbxTblType.AddItem (TableTypes(x).TableTypeName)
     Next
 
-    strsql = "select TableType, DecodeLen, DecodeDisplacement, EffDate,  " & _
-             "Residency, DataLen, KeyLen, CenturyDelim, Description " & _
+    strsql = "select TableType, DecodeLen, DecodeDisplacement, " & _
+             "DataLen, KeyLen, Description " & _
              "from tblTables where TableName = " & Chr(34) & CurTable & Chr(34)
         
          Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -410,56 +327,21 @@ Private Sub Form_Load()
                 txtDecodeDisplacement.Text = " "
             End If
             
+                                   
             If Len(DaoRS(3).Value) > 0 Then
-                If (RTrim(DaoRS(3).Value) = False) Then
-                    chkEffDate.Value = False
-                Else
-                    chkEffDate.Value = 1
-                End If
-            Else
-                chkEffDate.Value = False
-            End If
-           
-            If Len(DaoRS(4).Value) > 0 Then
-                If (RTrim(DaoRS(4).Value) = False) Then
-                    chkResidency.Value = False
-                Else
-                    chkResidency.Value = 1
-                End If
-            Else
-                chkResidency.Value = False
-            End If
-            
-            If Len(DaoRS(5).Value) > 0 Then
-                txtDataLength.Text = RTrim(DaoRS(5).Value)
+                txtDataLength.Text = RTrim(DaoRS(3).Value)
             Else
                 txtDataLength.Text = " "
             End If
             
-            If Len(DaoRS(6).Value) > 0 Then
-                txtKeyLength.Text = RTrim(DaoRS(6).Value)
+            If Len(DaoRS(4).Value) > 0 Then
+                txtKeyLength.Text = RTrim(DaoRS(4).Value)
             Else
                 txtKeyLength.Text = " "
             End If
-            
-            If Len(DaoRS(7).Value) > 0 Then
-                txtCenturyDelimeter.Text = RTrim(DaoRS(7).Value)
-            Else
-                txtCenturyDelimeter.Text = " "
-            End If
-
-'            If Len(DaoRS(8).Value) > 0 Then
-'                If (RTrim(DaoRS(8).Value) = False) Then
-'                    chkStaticTable.Value = False
-'                Else
-'                    chkStaticTable.Value = 1
-'                End If
-'            Else
-'                chkStaticTable.Value = False
-'            End If
-
-            If Len(DaoRS(8).Value) > 0 Then
-                txtDescription.Text = RTrim(DaoRS(8).Value)
+                             
+            If Len(DaoRS(5).Value) > 0 Then
+                txtDescription.Text = RTrim(DaoRS(5).Value)
             Else
                 txtDescription.Text = " "
             End If

@@ -14,7 +14,7 @@ Public Sub ExportProcedure()
     Dim MsgText As String
     Dim MyCIS As String
     Dim Table As String
-    Dim x As Integer
+    Dim X As Integer
     Const ALL = 1
     Const CIS = 3
 
@@ -40,19 +40,19 @@ Public Sub ExportProcedure()
     frmExportTable.Refresh
     
     
-    For x = 0 To frmExportTable.SelectTable.ListCount - 1
-        If (frmExportTable.SelectTable.Selected(x) = True) Then
+    For X = 0 To frmExportTable.SelectTable.ListCount - 1
+        If (frmExportTable.SelectTable.Selected(X) = True) Then
             If (frmExportTable.SelectTable.SelCount = 1) Then
                 FileName = frmExportTable.efPath & "\" & frmExportTable.efExportFile
             ElseIf (frmExportTable.SelectTable.SelCount > 1) Then
-                FileName = frmExportTable.efPath & "\" & LCase(Trim$(frmExportTable.SelectTable.List(x))) & ".dat"
+                FileName = frmExportTable.efPath & "\" & LCase(Trim$(frmExportTable.SelectTable.List(X))) & ".dat"
             End If
             
             'Check to see if the file DOES exist.
             If (Not Dir(FileName, vbNormal) = "") Then
                 If (frmExportTable.optCreateFile) Then
                     RetVal = MessageBox(frmExportTable.hwnd, _
-                                        "The export file, " & Trim$(frmExportTable.SelectTable.List(x)) & ".DAT, already exists." & vbCrLf & _
+                                        "The export file, " & Trim$(frmExportTable.SelectTable.List(X)) & ".DAT, already exists." & vbCrLf & _
                                         "Would you like to overwrite it?", _
                                         "Codes Table Update", _
                                         MB_YESNO Or MB_ICONQUESTION Or MB_DEFBUTTON1)
@@ -70,7 +70,7 @@ Public Sub ExportProcedure()
             Else
                 If (frmExportTable.optAppendFile) Then
                     RetVal = MessageBox(frmExportTable.hwnd, _
-                                        "The export file, " & Trim$(frmExportTable.SelectTable.List(x)) & ".DAT, does not exist." & vbCrLf & "Would you like to create it?", _
+                                        "The export file, " & Trim$(frmExportTable.SelectTable.List(X)) & ".DAT, does not exist." & vbCrLf & "Would you like to create it?", _
                                         "Codes Table Update", _
                                         MB_YESNO Or MB_ICONQUESTION Or MB_DEFBUTTON1)
                             
@@ -98,34 +98,34 @@ Public Sub ExportProcedure()
             End If
     
             'Get the release code.
-            strsql = "select Code from tblReleases where Release = " & Chr(34) & frmExportTable.cbRelease.Text & Chr(34)
-            Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+            'strsql = "select Code from tblReleases where Release = " & Chr(34) & frmExportTable.cbRelease.Text & Chr(34)
+            'Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
-            If Not DaoRS.EOF Then
-                nRelease% = DaoRS(0).Value
-                DaoRS.Close
-            End If
+            'If Not DaoRS.EOF Then
+            '    nRelease% = DaoRS(0).Value
+            '    DaoRS.Close
+            'End If
     
             'Get the platform code.
-            strsql = "select Code from tblPlatforms where Platform = " & Chr(34) & frmExportTable.cbPlatform.Text & Chr(34)
-            Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+            'strsql = "select Code from tblPlatforms where Platform = " & Chr(34) & frmExportTable.cbPlatform.Text & Chr(34)
+            'Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
-            If Not DaoRS.EOF Then
-                nPlatform% = DaoRS(0).Value
-                DaoRS.Close
-            End If
+            'If Not DaoRS.EOF Then
+            '    nPlatform% = DaoRS(0).Value
+            '    DaoRS.Close
+            'End If
         
             'Get the application code.
-            strsql = "select Code from tblApplications where Application = " & Chr(34) & frmExportTable.cbApplication.Text & Chr(34)
-            Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+            'strsql = "select Code from tblApplications where Application = " & Chr(34) & frmExportTable.cbApplication.Text & Chr(34)
+            'Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
-            If Not DaoRS.EOF Then
-                nAppl% = DaoRS(0).Value
-                DaoRS.Close
-            End If
+            'If Not DaoRS.EOF Then
+            '    nAppl% = DaoRS(0).Value
+            '    DaoRS.Close
+            'End If
     
             strsql = "SELECT * from tblTables where TableName = " & _
-                     Chr(34) & frmExportTable.SelectTable.List(x) & Chr(34)
+                     Chr(34) & frmExportTable.SelectTable.List(X) & Chr(34)
     
             Set TableSet = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
         
@@ -185,7 +185,7 @@ Public Sub ExportCodesTable(TblData As Recordset)
     Const ALL = 1
     Const CIS = 3
     
-    SQLquery = "SELECT * FROM tblEntries WHERE TableName = '" & TblData!TableName & "' ORDER BY Application, Client, CSSRelease, Platform, Key;"
+    SQLquery = "SELECT * FROM tblEntries WHERE TableName = '" & TblData!TableName & "' ORDER BY Client, Key;"
     Set EntrySet = dbCTM.OpenRecordset(SQLquery)
     
     If EntrySet.EOF Then
@@ -198,17 +198,17 @@ Public Sub ExportCodesTable(TblData As Recordset)
         
         Do Until EntrySet.EOF
 
-            If EntrySet!Application <> CMN And EntrySet!Application <> nAppl Then
-                GoTo Continue_LOOP0
-            End If
+            'If EntrySet!Application <> CMN And EntrySet!Application <> nAppl Then
+            '    GoTo Continue_LOOP0
+            'End If
 
-            If EntrySet!CSSRelease <> CMN And EntrySet!CSSRelease <> nRelease Then
-                GoTo Continue_LOOP0
-            End If
+            'If EntrySet!CSSRelease <> CMN And EntrySet!CSSRelease <> nRelease Then
+            '    GoTo Continue_LOOP0
+            'End If
 
-            If EntrySet!Platform <> CMN And EntrySet!Platform <> nPlatform Then
-                GoTo Continue_LOOP0
-            End If
+            'If EntrySet!Platform <> CMN And EntrySet!Platform <> nPlatform Then
+            '    GoTo Continue_LOOP0
+            'End If
             
             If EntrySet!Client = CSS Then
                 GoTo Continue_LOOP0
@@ -223,17 +223,17 @@ Public Sub ExportCodesTable(TblData As Recordset)
                 Print #FileNumber, Format$(EntrySet!Key, "!@@@@@@@@@@@@@@@@@@@@@");
             End If
 
-            If IsNull(EntrySet!EffDateSign) Then
-                Print #FileNumber, " ";
-            Else
-                Print #FileNumber, Format$(EntrySet!EffDateSign, "@");
-            End If
+            'If IsNull(EntrySet!EffDateSign) Then
+            '    Print #FileNumber, " ";
+            'Else
+            '    Print #FileNumber, Format$(EntrySet!EffDateSign, "@");
+            'End If
 
-            If IsNull(EntrySet!EffDate) Then
-                Print #FileNumber, Space$(8);
-            Else
-                Print #FileNumber, Format$(EntrySet!EffDate, "@@@@@@@@");
-            End If
+            'If IsNull(EntrySet!EffDate) Then
+            '    Print #FileNumber, Space$(8);
+            'Else
+            '    Print #FileNumber, Format$(EntrySet!EffDate, "@@@@@@@@");
+            'End If
 
             If IsNull(EntrySet!Decode) Then
                 Print #FileNumber, Space$(370)
@@ -253,17 +253,17 @@ Continue_LOOP0: ' Continue with the loop with no processing
                 GoTo Continue_LOOP1
             End If
 
-            If EntrySet!Application <> CMN And EntrySet!Application <> nAppl Then
-                GoTo Continue_LOOP1
-            End If
+            'If EntrySet!Application <> CMN And EntrySet!Application <> nAppl Then
+            '    GoTo Continue_LOOP1
+            'End If
 
-            If EntrySet!CSSRelease <> CMN And EntrySet!CSSRelease <> nRelease Then
-                GoTo Continue_LOOP1
-            End If
+            'If EntrySet!CSSRelease <> CMN And EntrySet!CSSRelease <> nRelease Then
+            '    GoTo Continue_LOOP1
+            'End If
 
-            If EntrySet!Platform <> CMN And EntrySet!Platform <> nPlatform Then
-                GoTo Continue_LOOP1
-            End If
+            'If EntrySet!Platform <> CMN And EntrySet!Platform <> nPlatform Then
+            '    GoTo Continue_LOOP1
+            'End If
 
             ' If the current entry is valid for export - output to the file
             Print #FileNumber, "R2" & Format$(TblData!TableName, "!@@@@@@@@");
@@ -274,17 +274,17 @@ Continue_LOOP0: ' Continue with the loop with no processing
                 Print #FileNumber, Format$(EntrySet!Key, "!@@@@@@@@@@@@@@@@@@@@@");
             End If
 
-            If IsNull(EntrySet!EffDateSign) Then
-                Print #FileNumber, " ";
-            Else
-                Print #FileNumber, Format$(EntrySet!EffDateSign, "@");
-            End If
+            'If IsNull(EntrySet!EffDateSign) Then
+            '    Print #FileNumber, " ";
+            'Else
+            '    Print #FileNumber, Format$(EntrySet!EffDateSign, "@");
+            'End If
 
-            If IsNull(EntrySet!EffDate) Then
-                Print #FileNumber, Space$(8);
-            Else
-                Print #FileNumber, Format$(EntrySet!EffDate, "@@@@@@@@");
-            End If
+            'If IsNull(EntrySet!EffDate) Then
+            '    Print #FileNumber, Space$(8);
+            'Else
+            '    Print #FileNumber, Format$(EntrySet!EffDate, "@@@@@@@@");
+            'End If
 
             If IsNull(EntrySet!Decode) Then
                 Print #FileNumber, Space$(370)
@@ -312,7 +312,7 @@ Public Sub ExportMsgBoxTable(TblData As Recordset)
     Dim Description As String * 370, StrCode As String * 6
     Const CMN = 0
 
-    SQL1 = "SELECT * FROM tblMsgBoxEntries WHERE TableName = '" & TblData!TableName & "' ORDER BY Application, Client, CSSRelease, Platform, Code;"
+    SQL1 = "SELECT * FROM tblMsgBoxEntries WHERE TableName = '" & TblData!TableName & "' ORDER BY Client, Code;"
     Set MsgSet = dbCTM.OpenRecordset(SQL1)
 
     If MsgSet.EOF Then
@@ -325,17 +325,17 @@ Public Sub ExportMsgBoxTable(TblData As Recordset)
             GoTo Continue_LOOP2
         End If
 
-        If MsgSet!Application <> CMN And MsgSet!Application <> nAppl Then
-            GoTo Continue_LOOP2
-        End If
+        'If MsgSet!Application <> CMN And MsgSet!Application <> nAppl Then
+        '    GoTo Continue_LOOP2
+        'End If
 
-        If MsgSet!CSSRelease <> CMN And MsgSet!CSSRelease <> nRelease Then
-            GoTo Continue_LOOP2
-        End If
+        'If MsgSet!CSSRelease <> CMN And MsgSet!CSSRelease <> nRelease Then
+        '    GoTo Continue_LOOP2
+        'End If
 
-        If MsgSet!Platform <> CMN And MsgSet!Platform <> nPlatform Then
-            GoTo Continue_LOOP2
-        End If
+        'If MsgSet!Platform <> CMN And MsgSet!Platform <> nPlatform Then
+        '    GoTo Continue_LOOP2
+        'End If
 
         ' If the current entry is valid for export - output to the file
         Print #FileNumber, "R2"; Format$(TblData!TableName, "!@@@@@@@@");
@@ -394,17 +394,17 @@ Public Sub ExportOneTable(TableData As Recordset)
         Print #FileNumber, Format$(TableData!DecodeDisplacement, "00000");
     End If
 
-    If TableData!EffDate = True Then
-        Print #FileNumber, "Y";
-    Else
-        Print #FileNumber, "N";
-    End If
+    'If TableData!EffDate = True Then
+    '    Print #FileNumber, "Y";
+    'Else
+    '    Print #FileNumber, "N";
+    'End If
 
-    If TableData!Residency = True Then
-        Print #FileNumber, "Y";
-    Else
-        Print #FileNumber, "N";
-    End If
+    'If TableData!Residency = True Then
+    '    Print #FileNumber, "Y";
+    'Else
+    '    Print #FileNumber, "N";
+    'End If
 
     If IsEmpty(TableData!DataLen) Or IsNull(TableData!DataLen) Then
         Print #FileNumber, Spc(5);
@@ -418,11 +418,11 @@ Public Sub ExportOneTable(TableData As Recordset)
         Print #FileNumber, Format$(TableData!KeyLen, "00000");
     End If
 
-    If IsEmpty(TableData!CenturyDelim) Or IsNull(TableData!CenturyDelim) Then
-        Print #FileNumber, Spc(2);
-    Else
-        Print #FileNumber, Format$(TableData!CenturyDelim, "00");
-    End If
+    'If IsEmpty(TableData!CenturyDelim) Or IsNull(TableData!CenturyDelim) Then
+    '    Print #FileNumber, Spc(2);
+    'Else
+    '    Print #FileNumber, Format$(TableData!CenturyDelim, "00");
+    'End If
 
     If IsEmpty(TableData!Class) Or IsNull(TableData!Class) Then
         Print #FileNumber, "  ";
@@ -442,7 +442,7 @@ Public Sub ExportUserErrTable(TblData As Recordset)
     Dim ErrorMsg As String * 389
     Const CMN = 0
 
-    SQL1 = "SELECT * FROM tblUserErrorMsgEntries WHERE TableName = '" & TblData!TableName & "' ORDER BY Application, Client, CSSRelease, Platform, ErrorNUmber;"
+    SQL1 = "SELECT * FROM tblUserErrorMsgEntries WHERE TableName = '" & TblData!TableName & "' ORDER BY Client, ErrorNUmber;"
     Set UsrSet = dbCTM.OpenRecordset(SQL1)
 
     If UsrSet.EOF Then
@@ -455,17 +455,17 @@ Public Sub ExportUserErrTable(TblData As Recordset)
             GoTo Continue_LOOP3
         End If
 
-        If UsrSet!Application <> CMN And UsrSet!Application <> nAppl Then
-            GoTo Continue_LOOP3
-        End If
+        'If UsrSet!Application <> CMN And UsrSet!Application <> nAppl Then
+        '    GoTo Continue_LOOP3
+        'End If
 
-        If UsrSet!CSSRelease <> CMN And UsrSet!CSSRelease <> nRelease Then
-            GoTo Continue_LOOP3
-        End If
+        'If UsrSet!CSSRelease <> CMN And UsrSet!CSSRelease <> nRelease Then
+        '    GoTo Continue_LOOP3
+        'End If
 
-        If UsrSet!Platform <> CMN And UsrSet!Platform <> nPlatform Then
-            GoTo Continue_LOOP3
-        End If
+        'If UsrSet!Platform <> CMN And UsrSet!Platform <> nPlatform Then
+        '    GoTo Continue_LOOP3
+        'End If
 
         ' If the current entry is valid for export - output to the file
         Print #FileNumber, "R2"; Format$(TblData!TableName, "!@@@@@@@@"); "+";

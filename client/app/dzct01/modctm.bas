@@ -100,25 +100,25 @@ End Type
 Public DefaultButtonArray() As objDefaultButton
 
 'Structure for populating the Application List Box.
-Type objApplication
-    Application As String
-    Code As Integer
-End Type
-Public ApplicationArray() As objApplication
+' Type objApplication
+'    Application As String
+'    Code As Integer
+' End Type
+' Public ApplicationArray() As objApplication
 
 'Structure for populating the Platform List Box.
-Type objPlatform
-    Platform As String
-    Code As Integer
-End Type
-Public PlatformArray() As objPlatform
+' Type objPlatform
+'    Platform As String
+'    Code As Integer
+' End Type
+' Public PlatformArray() As objPlatform
 
 'Structure for populating the Release List Box.
-Type objRelease
-    Release As String
-    Code As Integer
-End Type
-Public ReleaseArray() As objRelease
+' Type objRelease
+'    Release As String
+'    Code As Integer
+' End Type
+' Public ReleaseArray() As objRelease
 
 '***************************************************************************************************************
 '** FUNCTION DECLARATIONS & CONSTANTS                                                                         **
@@ -169,20 +169,17 @@ Public Sub PopulateCodesTableListView()
 
     On Error GoTo ODBCError
     
-    strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.HostOccurs, tblEntries.ClientOccurs, tblEntries.Comments, tblEntries.Description" _
-           & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
+    strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblEntries.HostOccurs, tblEntries.ClientOccurs, tblEntries.Comments, tblEntries.Description" _
+           & " FROM tblEntries INNER JOIN tblClients ON tblEntries.Client = tblClients.Code" _
            & " WHERE (((tblEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
            & " ORDER BY tblEntries.Key;"
-
+          
     frmMain.lvListView.ColumnHeaders.Clear
 
     'Add the column headings.
     frmMain.lvListView.ColumnHeaders.Add , , "Key", 700, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Decode", 3000, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-    frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-    frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-    frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Drives Host Logic", 1400, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Drives Client Logic", 1400, 0
     frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
@@ -203,34 +200,31 @@ Public Sub PopulateCodesTableListView()
                 End If
 
                 itmX.SubItems(2) = RTrim(DaoRS(2).Value)
-                itmX.SubItems(3) = DaoRS(3).Value
-                itmX.SubItems(4) = DaoRS(4).Value
-                itmX.SubItems(5) = DaoRS(5).Value
-                
+
+                If ((Not DaoRS(3).Value = vbNullChar) And (Not DaoRS(3).Value = "Null")) Then
+                    itmX.SubItems(3) = CStr(DaoRS(3).Value)
+                Else
+                    itmX.SubItems(3) = " "
+                End If
+
+                If ((Not DaoRS(4).Value = vbNullChar) And (Not DaoRS(4).Value = "Null")) Then
+                    itmX.SubItems(4) = CStr(DaoRS(4).Value)
+                Else
+                    itmX.SubItems(4) = " "
+                End If
+
+                If ((Not DaoRS(5).Value = vbNullChar) And (Not DaoRS(5).Value = "Null")) Then
+                    itmX.SubItems(5) = CStr(DaoRS(5).Value)
+                Else
+                    itmX.SubItems(5) = " "
+                End If
+
                 If ((Not DaoRS(6).Value = vbNullChar) And (Not DaoRS(6).Value = "Null")) Then
                     itmX.SubItems(6) = CStr(DaoRS(6).Value)
                 Else
                     itmX.SubItems(6) = " "
                 End If
-                
-                If ((Not DaoRS(7).Value = vbNullChar) And (Not DaoRS(7).Value = "Null")) Then
-                    itmX.SubItems(7) = CStr(DaoRS(7).Value)
-                Else
-                    itmX.SubItems(7) = " "
-                End If
-
-                If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
-                    itmX.SubItems(8) = CStr(DaoRS(8).Value)
-                Else
-                    itmX.SubItems(8) = " "
-                End If
-                
-                If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
-                    itmX.SubItems(9) = CStr(DaoRS(9).Value)
-                Else
-                    itmX.SubItems(9) = " "
-                End If
-                
+                              
                 frmMain.sbStatusBar.Refresh
 
                 KeyCntr = KeyCntr + 1
@@ -268,8 +262,8 @@ Public Sub PopulateMessageBoxListView()
     
     On Error GoTo ODBCError
     
-    strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
-           & " FROM ((((((tblMsgBoxEntries INNER JOIN tblMsgBoxButtons ON tblMsgBoxEntries.Buttons = tblMsgBoxButtons.[Button ID]) INNER JOIN tblMsgBoxDefaultButtons ON tblMsgBoxEntries.DefaultButton = tblMsgBoxDefaultButtons.[Default Button ID]) INNER JOIN tblMsgBoxIcons ON tblMsgBoxEntries.Icon = tblMsgBoxIcons.[Icon ID]) INNER JOIN tblReleases ON tblMsgBoxEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblMsgBoxEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblMsgBoxEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblMsgBoxEntries.Application = tblApplications.Code" _
+    strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
+           & " FROM ((((tblMsgBoxEntries INNER JOIN tblMsgBoxButtons ON tblMsgBoxEntries.Buttons = tblMsgBoxButtons.[Button ID]) INNER JOIN tblMsgBoxDefaultButtons ON tblMsgBoxEntries.DefaultButton = tblMsgBoxDefaultButtons.[Default Button ID]) INNER JOIN tblMsgBoxIcons ON tblMsgBoxEntries.Icon = tblMsgBoxIcons.[Icon ID]) INNER JOIN tblClients ON tblMsgBoxEntries.Client = tblClients.Code) " _
            & " Where (((tblMsgBoxEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
            & " ORDER BY tblMsgBoxEntries.Code;"
 
@@ -279,9 +273,6 @@ Public Sub PopulateMessageBoxListView()
         frmMain.lvListView.ColumnHeaders.Add , , "Msg Key", 700, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Message Box Decode", 4000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Icon", 2500, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Default Button", 2500, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Buttons", 2500, 0
@@ -305,14 +296,11 @@ Public Sub PopulateMessageBoxListView()
                 itmX.SubItems(3) = DaoRS(3).Value
                 itmX.SubItems(4) = DaoRS(4).Value
                 itmX.SubItems(5) = DaoRS(5).Value
-                itmX.SubItems(6) = DaoRS(6).Value
-                itmX.SubItems(7) = DaoRS(7).Value
-                itmX.SubItems(8) = DaoRS(8).Value
 
-                If ((Not DaoRS(9).Value = vbNullChar) And (Not DaoRS(9).Value = "Null")) Then
-                    itmX.SubItems(9) = CStr(DaoRS(9).Value)
+                If ((Not DaoRS(6).Value = vbNullChar) And (Not DaoRS(6).Value = "Null")) Then
+                    itmX.SubItems(6) = CStr(DaoRS(6).Value)
                 Else
-                    itmX.SubItems(9) = " "
+                    itmX.SubItems(6) = " "
                 End If
 
                 frmMain.sbStatusBar.Refresh
@@ -353,8 +341,8 @@ Public Sub PopulateUerrMessagesListView()
     
     On Error GoTo ODBCError
     
-    strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
-           & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code" _
+    strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
+           & " FROM (tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code)" _
            & " Where (((tblUserErrorMsgEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
            & " ORDER BY tblUserErrorMsgEntries.ErrorNumber;"
 
@@ -364,9 +352,6 @@ Public Sub PopulateUerrMessagesListView()
         frmMain.lvListView.ColumnHeaders.Add , , "Error Key", 700, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Error Message Decode", 3000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Client", 1500, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Application", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Platform", 1000, 0
-        frmMain.lvListView.ColumnHeaders.Add , , "Release", 1000, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Seq. No.", 700, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Language", 700, 0
         frmMain.lvListView.ColumnHeaders.Add , , "Comment", 3000, 0
@@ -388,14 +373,11 @@ Public Sub PopulateUerrMessagesListView()
                 itmX.SubItems(2) = RTrim(DaoRS(2).Value)
                 itmX.SubItems(3) = DaoRS(3).Value
                 itmX.SubItems(4) = DaoRS(4).Value
-                itmX.SubItems(5) = DaoRS(5).Value
-                itmX.SubItems(6) = DaoRS(6).Value
-                itmX.SubItems(7) = DaoRS(7).Value
 
-                If ((Not DaoRS(8).Value = vbNullChar) And (Not DaoRS(8).Value = "Null")) Then
-                    itmX.SubItems(8) = CStr(DaoRS(8).Value)
+                If ((Not DaoRS(5).Value = vbNullChar) And (Not DaoRS(5).Value = "Null")) Then
+                    itmX.SubItems(5) = CStr(DaoRS(5).Value)
                 Else
-                    itmX.SubItems(8) = " "
+                    itmX.SubItems(5) = " "
                 End If
 
                 frmMain.sbStatusBar.Refresh
@@ -582,7 +564,6 @@ ODBCError:
 
 End Sub
 
-
 '***************************************************************************************************************
 Public Sub MainTreeViewNodeClick(ByVal Node As Node)
 '***************************************************************************************************************
@@ -593,7 +574,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
     frmMain.txtDecodeDisplacement.Text = ""
     frmMain.txtDataLength.Text = ""
     frmMain.txtKeyLength.Text = ""
-    frmMain.txtCenturyDelim.Text = ""
+    'frmMain.txtCenturyDelim.Text = ""
     frmMain.txtTotalKeys = ""
             
     frmMain.mnuPrintTable.Enabled = False
@@ -885,7 +866,7 @@ Public Sub RefreshCodeDecodeLB()
     frmMain.Label3.Visible = True
     frmMain.Label4.Visible = True
     frmMain.Label5.Visible = True
-    frmMain.Label6.Visible = True
+    'frmMain.Label6.Visible = True
     frmMain.StaticNames.Visible = False
     frmMain.Label7.Visible = False
     
@@ -907,9 +888,9 @@ Public Sub RefreshCodeDecodeLB()
     End If
         
     'Reset the status bar and current table group box with current table information
-    strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
-             "DataLen, KeyLen, CenturyDelim " & _
-             "from tblTables where TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
+    strsql = "SELECT Description, DecodeLen, DecodeDisplacement, " & _
+             "DataLen, KeyLen " & _
+             "FROM tblTables WHERE TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
             
     'Set value for Static Table checkbox.
     strsql2 = "SELECT DISTINCTROW tblStaticCodesEntries.CISName" _
@@ -977,11 +958,11 @@ Public Sub RefreshCodeDecodeLB()
                  Next
             End If
           
-            If (IsNull(DaoRS(5).Value)) Then
-                frmMain.txtCenturyDelim.Text = ""
-            Else
-                frmMain.txtCenturyDelim.Text = DaoRS(5).Value
-            End If
+            'If (IsNull(DaoRS(5).Value)) Then
+            '    frmMain.txtCenturyDelim.Text = ""
+            'Else
+            '    frmMain.txtCenturyDelim.Text = DaoRS(5).Value
+            'End If
        'Populate status bar for static table
        Else
             frmMain.Label1.Caption = "Table Name:"
@@ -1008,7 +989,7 @@ Public Sub RefreshCodeDecodeLB()
             frmMain.Label3.Visible = False
             frmMain.Label4.Visible = False
             frmMain.Label5.Visible = False
-            frmMain.Label6.Visible = False
+            'frmMain.Label6.Visible = False
        End If
        
        DaoRS.Close
@@ -1210,113 +1191,113 @@ End Sub
 
 
 '***************************************************************************************************************
-Public Sub GetApplicationCBox(cboSource As Control)
+'Public Sub GetApplicationCBox(cboSource As Control)
 '***************************************************************************************************************
 
-    ReDim ApplicationArray(0)
+'    ReDim ApplicationArray(0)
 
-    cboSource.Enabled = False
-    cboSource.Clear
-    Screen.MousePointer = vbHourglass
+'    cboSource.Enabled = False
+'    cboSource.Clear
+'    Screen.MousePointer = vbHourglass
 
-    strsql = "SELECT Application, Code " _
-           & " From tblApplications " _
-           & " ORDER BY Code"
+'    strsql = "SELECT Application, Code " _
+'           & " From tblApplications " _
+'           & " ORDER BY Code"
 
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+'    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
-    If Not DaoRS.EOF Then
+'    If Not DaoRS.EOF Then
 
-        While Not DaoRS.EOF
-            cboSource.AddItem DaoRS(0).Value
-            ApplicationArray(UBound(ApplicationArray)).Application = DaoRS(0).Value
-            ApplicationArray(UBound(ApplicationArray)).Code = DaoRS(1).Value
-            ReDim Preserve ApplicationArray(UBound(ApplicationArray) + 1)
-            DaoRS.MoveNext
-        Wend
+'        While Not DaoRS.EOF
+'            cboSource.AddItem DaoRS(0).Value
+'            ApplicationArray(UBound(ApplicationArray)).Application = DaoRS(0).Value
+'            ApplicationArray(UBound(ApplicationArray)).Code = DaoRS(1).Value
+'            ReDim Preserve ApplicationArray(UBound(ApplicationArray) + 1)
+'            DaoRS.MoveNext
+'        Wend
 
-        DaoRS.Close
-        cboSource.ListIndex = 0
-    End If
+'        DaoRS.Close
+'        cboSource.ListIndex = 0
+'    End If
 
-    Screen.MousePointer = vbNormal
+'    Screen.MousePointer = vbNormal
 
     'Enable the combo box.
-    cboSource.Enabled = True
+'    cboSource.Enabled = True
 
-End Sub
+'End Sub
 
 '***************************************************************************************************************
-Public Sub GetPlatformCBox(cboSource As Control)
+'Public Sub GetPlatformCBox(cboSource As Control)
 '***************************************************************************************************************
 
-    ReDim PlatformArray(0)
+'    ReDim PlatformArray(0)
 
-    cboSource.Enabled = False
-    cboSource.Clear
-    Screen.MousePointer = vbHourglass
+'    cboSource.Enabled = False
+'    cboSource.Clear
+'    Screen.MousePointer = vbHourglass
 
-    strsql = "SELECT Platform, Code " _
-           & " From tblPlatforms " _
-           & " ORDER BY Code"
+'    strsql = "SELECT Platform, Code " _
+'           & " From tblPlatforms " _
+'           & " ORDER BY Code"
 
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+'    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
-    If Not DaoRS.EOF Then
+'    If Not DaoRS.EOF Then
 
-        While Not DaoRS.EOF
-            cboSource.AddItem DaoRS(0).Value
-            PlatformArray(UBound(PlatformArray)).Platform = DaoRS(0).Value
-            PlatformArray(UBound(PlatformArray)).Code = DaoRS(1).Value
-            ReDim Preserve PlatformArray(UBound(PlatformArray) + 1)
-            DaoRS.MoveNext
-        Wend
+'        While Not DaoRS.EOF
+'            cboSource.AddItem DaoRS(0).Value
+'            PlatformArray(UBound(PlatformArray)).Platform = DaoRS(0).Value
+'            PlatformArray(UBound(PlatformArray)).Code = DaoRS(1).Value
+'            ReDim Preserve PlatformArray(UBound(PlatformArray) + 1)
+'            DaoRS.MoveNext
+'        Wend
 
-        DaoRS.Close
-        cboSource.ListIndex = 0
-    End If
+'        DaoRS.Close
+'        cboSource.ListIndex = 0
+'    End If
 
-    Screen.MousePointer = vbNormal
+'    Screen.MousePointer = vbNormal
 
     'Enable the combo box.
-    cboSource.Enabled = True
+'    cboSource.Enabled = True
 
-End Sub
+'End Sub
 
 '***************************************************************************************************************
-Public Sub GetReleaseCBox(cboSource As Control)
+'Public Sub GetReleaseCBox(cboSource As Control)
 '***************************************************************************************************************
 
-    ReDim ReleaseArray(0)
+'    ReDim ReleaseArray(0)
 
-    cboSource.Enabled = False
-    cboSource.Clear
-    Screen.MousePointer = vbHourglass
+'    cboSource.Enabled = False
+'    cboSource.Clear
+'    Screen.MousePointer = vbHourglass
 
-    strsql = "SELECT Release, Code " _
-           & " From tblReleases " _
-           & " ORDER BY Code"
+'    strsql = "SELECT Release, Code " _
+'           & " From tblReleases " _
+'           & " ORDER BY Code"
 
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+'    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
-    If Not DaoRS.EOF Then
+'    If Not DaoRS.EOF Then
 
-        While Not DaoRS.EOF
-            cboSource.AddItem DaoRS(0).Value
-            ReleaseArray(UBound(ReleaseArray)).Release = DaoRS(0).Value
-            ReleaseArray(UBound(ReleaseArray)).Code = DaoRS(1).Value
-            ReDim Preserve ReleaseArray(UBound(ReleaseArray) + 1)
-            DaoRS.MoveNext
-        Wend
+'        While Not DaoRS.EOF
+'            cboSource.AddItem DaoRS(0).Value
+'            ReleaseArray(UBound(ReleaseArray)).Release = DaoRS(0).Value
+'            ReleaseArray(UBound(ReleaseArray)).Code = DaoRS(1).Value
+'            ReDim Preserve ReleaseArray(UBound(ReleaseArray) + 1)
+'            DaoRS.MoveNext
+'        Wend
 
-        DaoRS.Close
-        cboSource.ListIndex = 0
-    End If
+'        DaoRS.Close
+'        cboSource.ListIndex = 0
+'    End If
 
-    Screen.MousePointer = vbNormal
+'    Screen.MousePointer = vbNormal
 
     'Enable the combo box.
-    cboSource.Enabled = True
+'    cboSource.Enabled = True
 
-End Sub
+'End Sub
 

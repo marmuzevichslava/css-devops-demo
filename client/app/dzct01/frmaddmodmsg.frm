@@ -12,27 +12,6 @@ Begin VB.Form frmAddModMsg
    ScaleHeight     =   3285
    ScaleWidth      =   8295
    StartUpPosition =   2  'CenterScreen
-   Begin VB.ComboBox cbxRelease 
-      Height          =   315
-      Left            =   1410
-      TabIndex        =   5
-      Top             =   2055
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxApplication 
-      Height          =   315
-      Left            =   1410
-      TabIndex        =   3
-      Top             =   1335
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxPlatform 
-      Height          =   315
-      Left            =   1410
-      TabIndex        =   4
-      Top             =   1695
-      Width           =   2295
-   End
    Begin VB.ComboBox cbxClients 
       BackColor       =   &H00FFFFFF&
       Height          =   315
@@ -43,22 +22,22 @@ Begin VB.Form frmAddModMsg
    End
    Begin VB.ComboBox cbxDefaultButton 
       Height          =   315
-      Left            =   5250
-      TabIndex        =   8
+      Left            =   1440
+      TabIndex        =   5
       Top             =   2055
       Width           =   2895
    End
    Begin VB.ComboBox cbxIcon 
       Height          =   315
-      Left            =   5250
-      TabIndex        =   7
+      Left            =   1440
+      TabIndex        =   4
       Top             =   1695
       Width           =   2895
    End
    Begin VB.ComboBox cbxButtons 
       Height          =   315
-      Left            =   5250
-      TabIndex        =   6
+      Left            =   1440
+      TabIndex        =   3
       Top             =   1335
       Width           =   2895
    End
@@ -74,7 +53,7 @@ Begin VB.Form frmAddModMsg
    Begin VB.TextBox txtDecode 
       BackColor       =   &H00FFFFFF&
       Height          =   675
-      Left            =   1410
+      Left            =   1440
       TabIndex        =   2
       ToolTipText     =   "Decode for the current Key"
       Top             =   615
@@ -82,8 +61,8 @@ Begin VB.Form frmAddModMsg
    End
    Begin VB.TextBox txtComments 
       Height          =   315
-      Left            =   1395
-      TabIndex        =   9
+      Left            =   1440
+      TabIndex        =   6
       Top             =   2430
       Width           =   6765
    End
@@ -102,7 +81,7 @@ Begin VB.Form frmAddModMsg
       EndProperty
       Height          =   330
       Left            =   2955
-      TabIndex        =   10
+      TabIndex        =   7
       ToolTipText     =   "Add/Modify Message"
       Top             =   2850
       Width           =   1215
@@ -120,61 +99,10 @@ Begin VB.Form frmAddModMsg
       EndProperty
       Height          =   330
       Left            =   4605
-      TabIndex        =   11
+      TabIndex        =   8
       ToolTipText     =   "Return to main"
       Top             =   2850
       Width           =   1215
-   End
-   Begin VB.Label Label10 
-      Caption         =   "Release:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   600
-      TabIndex        =   21
-      Top             =   2085
-      Width           =   780
-   End
-   Begin VB.Label Label9 
-      Caption         =   "Platform:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   600
-      TabIndex        =   20
-      Top             =   1732
-      Width           =   840
-   End
-   Begin VB.Label Label8 
-      Caption         =   "Application:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   345
-      TabIndex        =   19
-      Top             =   1372
-      Width           =   1095
    End
    Begin VB.Label Label2 
       Caption         =   "Message Code:"
@@ -189,7 +117,7 @@ Begin VB.Form frmAddModMsg
       EndProperty
       Height          =   240
       Left            =   120
-      TabIndex        =   18
+      TabIndex        =   15
       Top             =   270
       Width           =   1335
    End
@@ -206,7 +134,7 @@ Begin VB.Form frmAddModMsg
       EndProperty
       Height          =   465
       Left            =   585
-      TabIndex        =   17
+      TabIndex        =   14
       Top             =   615
       Width           =   840
    End
@@ -223,7 +151,7 @@ Begin VB.Form frmAddModMsg
       EndProperty
       Height          =   240
       Left            =   4590
-      TabIndex        =   16
+      TabIndex        =   13
       Top             =   270
       Width           =   615
    End
@@ -239,9 +167,9 @@ Begin VB.Form frmAddModMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   4455
-      TabIndex        =   15
-      Top             =   1372
+      Left            =   680
+      TabIndex        =   12
+      Top             =   1320
       Width           =   735
    End
    Begin VB.Label Label5 
@@ -256,9 +184,9 @@ Begin VB.Form frmAddModMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   4605
-      TabIndex        =   14
-      Top             =   1732
+      Left            =   840
+      TabIndex        =   11
+      Top             =   1725
       Width           =   585
    End
    Begin VB.Label Label6 
@@ -273,9 +201,9 @@ Begin VB.Form frmAddModMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   3840
-      TabIndex        =   13
-      Top             =   2092
+      Left            =   100
+      TabIndex        =   10
+      Top             =   2085
       Width           =   1350
    End
    Begin VB.Label Label7 
@@ -291,7 +219,7 @@ Begin VB.Form frmAddModMsg
       EndProperty
       Height          =   240
       Left            =   450
-      TabIndex        =   12
+      TabIndex        =   9
       Top             =   2460
       Width           =   960
    End
@@ -366,7 +294,7 @@ Private Sub Form_Load()
             End If
         Next
         
-        strsql = "SELECT MsgBoxText, Buttons, Icon, DefaultButton, Application, Platform, CSSRelease, Comments " & _
+        strsql = "SELECT MsgBoxText, Buttons, Icon, DefaultButton, Comments " & _
                  " From tblMsgBoxEntries " & _
                  " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & _
                  " AND   Code = " & CurKey & _
@@ -408,28 +336,28 @@ Private Sub Form_Load()
             Next
 
             'Get the application
-            For x = 0 To UBound(ApplicationArray)
-                If ((DaoRS(4).Value = ApplicationArray(x).Code)) Then
-                    cbxApplication.ListIndex = x
-                    Exit For
-                End If
-            Next
+           ' For x = 0 To UBound(ApplicationArray)
+           '     If ((DaoRS(4).Value = ApplicationArray(x).Code)) Then
+           '         cbxApplication.ListIndex = x
+           '         Exit For
+           '     End If
+           ' Next
 
             'Get the platform
-            For x = 0 To UBound(PlatformArray)
-                If ((DaoRS(5).Value = PlatformArray(x).Code)) Then
-                    cbxPlatform.ListIndex = x
-                    Exit For
-                End If
-            Next
+           ' For x = 0 To UBound(PlatformArray)
+           '     If ((DaoRS(5).Value = PlatformArray(x).Code)) Then
+           '         cbxPlatform.ListIndex = x
+           '         Exit For
+           '     End If
+           ' Next
 
             'Get the release
-            For x = 0 To UBound(ReleaseArray)
-                If ((DaoRS(6).Value = ReleaseArray(x).Code)) Then
-                    cbxRelease.ListIndex = x
-                    Exit For
-                End If
-            Next
+           ' For x = 0 To UBound(ReleaseArray)
+           '     If ((DaoRS(6).Value = ReleaseArray(x).Code)) Then
+           '         cbxRelease.ListIndex = x
+           '         Exit For
+           '     End If
+           ' Next
 
             'Get the comments.
             If (Len(DaoRS(7).Value) > 0) Then
@@ -594,30 +522,27 @@ Public Function AddNewRecord() As Boolean
     Dim myMsgButtons As New MsgButtons
     Dim myMsgIcon As New MsgIcon
     Dim myMsgDefaultButton As New MsgDefaultButtons
-    Dim myApplication As New Application
-    Dim myPlatform As New Platform
-    Dim myRelease As New Release
+   ' Dim myApplication As New Application
+   ' Dim myPlatform As New Platform
+   ' Dim myRelease As New Release
     Dim myComment As New Comment
     
     myClient.Decode = Me.cbxClients.Text
     myMsgButtons.Decode = Me.cbxButtons.Text
     myMsgIcon.Decode = Me.cbxIcon.Text
     myMsgDefaultButton.Decode = Me.cbxDefaultButton.Text
-    myApplication.Decode = Me.cbxApplication.Text
-    myPlatform.Decode = Me.cbxPlatform.Text
-    myRelease.Decode = Me.cbxRelease.Text
+   ' myApplication.Decode = Me.cbxApplication.Text
+   ' myPlatform.Decode = Me.cbxPlatform.Text
+   ' myRelease.Decode = Me.cbxRelease.Text
 
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
     
     strsql = "INSERT INTO tblMsgBoxEntries " _
-            & " (TableName, Client, Application, CSSRelease, Platform, Code, Buttons, Icon, DefaultButton, MsgBoxText, Comments) " _
+            & " (TableName, Client, Code, Buttons, Icon, DefaultButton, MsgBoxText, Comments) " _
             & "VALUES (" _
             & Chr(34) & CurTable & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
-            & myApplication.Displaycode & ", " _
-            & myRelease.Displaycode & ", " _
-            & myPlatform.Displaycode & ", " _
             & txtKey.Text & ", " _
             & myMsgButtons.Displaycode & ", " _
             & myMsgIcon.Displaycode & ", " _
@@ -670,18 +595,18 @@ Public Function ModifyRecord() As Boolean
     Dim myMsgButtons As New MsgButtons
     Dim myMsgIcon As New MsgIcon
     Dim myMsgDefaultButton As New MsgDefaultButtons
-    Dim myApplication As New Application
-    Dim myPlatform As New Platform
-    Dim myRelease As New Release
+   ' Dim myApplication As New Application
+   ' Dim myPlatform As New Platform
+   ' Dim myRelease As New Release
     Dim myComment As New Comment
     
     myClient.Decode = Me.cbxClients.Text
     myMsgButtons.Decode = Me.cbxButtons.Text
     myMsgIcon.Decode = Me.cbxIcon.Text
     myMsgDefaultButton.Decode = Me.cbxDefaultButton.Text
-    myApplication.Decode = Me.cbxApplication.Text
-    myPlatform.Decode = Me.cbxPlatform.Text
-    myRelease.Decode = Me.cbxRelease.Text
+   ' myApplication.Decode = Me.cbxApplication.Text
+   ' myPlatform.Decode = Me.cbxPlatform.Text
+   ' myRelease.Decode = Me.cbxRelease.Text
     
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
@@ -689,9 +614,6 @@ Public Function ModifyRecord() As Boolean
     'Put together the base update SQL
     strsql = " UPDATE tblMsgBoxEntries SET " _
              & " Client = " & myClient.Displaycode & ", " _
-             & " Application = " & myApplication.Displaycode & ", " _
-             & " CSSRelease = " & myRelease.Displaycode & ", " _
-             & " Platform = " & myPlatform.Displaycode & ", " _
              & " Code = " & txtKey.Text & ", " _
              & " Buttons = " & myMsgButtons.Displaycode & ", " _
              & " Icon = " & myMsgIcon.Displaycode & ", " _
@@ -895,12 +817,12 @@ Private Sub BuildComboBoxes()
     GetClientCBox Me.cbxClients
     
     'Build Application combo box
-    GetApplicationCBox Me.cbxApplication
+    'GetApplicationCBox Me.cbxApplication
         
     'Build Platform combo box
-    GetPlatformCBox Me.cbxPlatform
+    'GetPlatformCBox Me.cbxPlatform
     
     'Build Release combo box
-    GetReleaseCBox Me.cbxRelease
+    'GetReleaseCBox Me.cbxRelease
     
 End Sub

@@ -20,8 +20,8 @@ Begin VB.Form frmAddModKey
       Enabled         =   0   'False
       Height          =   255
       Left            =   1350
-      TabIndex        =   21
-      Top             =   2185
+      TabIndex        =   15
+      Top             =   2040
       Width           =   255
    End
    Begin VB.TextBox txtDecode 
@@ -32,14 +32,6 @@ Begin VB.Form frmAddModKey
       ToolTipText     =   "Decode for the current Key"
       Top             =   653
       Width           =   5970
-   End
-   Begin VB.ComboBox cbxApplication 
-      Height          =   315
-      Left            =   1350
-      Style           =   2  'Dropdown List
-      TabIndex        =   4
-      Top             =   1449
-      Width           =   2415
    End
    Begin VB.TextBox txtKey 
       BackColor       =   &H0000FFFF&
@@ -63,7 +55,7 @@ Begin VB.Form frmAddModKey
    Begin VB.TextBox txtComments 
       Height          =   315
       Left            =   1350
-      TabIndex        =   7
+      TabIndex        =   4
       ToolTipText     =   "Comments for current Key"
       Top             =   2925
       Width           =   5925
@@ -72,7 +64,7 @@ Begin VB.Form frmAddModKey
       BackColor       =   &H00FFFFFF&
       Height          =   315
       Left            =   1350
-      TabIndex        =   6
+      TabIndex        =   3
       ToolTipText     =   "Decription of the current Key"
       Top             =   2523
       Width           =   5925
@@ -91,10 +83,10 @@ Begin VB.Form frmAddModKey
       Height          =   255
       Left            =   1350
       MaskColor       =   &H00000000&
-      TabIndex        =   20
+      TabIndex        =   14
       TabStop         =   0   'False
       ToolTipText     =   "Indicates the current Key is used to drive system logic"
-      Top             =   1847
+      Top             =   1680
       UseMaskColor    =   -1  'True
       Width           =   255
    End
@@ -113,7 +105,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   330
       Left            =   2392
-      TabIndex        =   8
+      TabIndex        =   5
       ToolTipText     =   "Add/Modify Key"
       Top             =   3375
       Width           =   1215
@@ -131,26 +123,10 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   330
       Left            =   3937
-      TabIndex        =   9
+      TabIndex        =   6
       ToolTipText     =   "Return to main"
       Top             =   3375
       Width           =   1215
-   End
-   Begin VB.ComboBox cbxRelease 
-      Height          =   315
-      Left            =   4920
-      Style           =   2  'Dropdown List
-      TabIndex        =   5
-      Top             =   1410
-      Width           =   2415
-   End
-   Begin VB.ComboBox cbxPlatform 
-      Height          =   315
-      Left            =   4920
-      Style           =   2  'Dropdown List
-      TabIndex        =   3
-      Top             =   1005
-      Width           =   2415
    End
    Begin VB.Label lblClientLogic 
       Caption         =   "Drives Client Logic"
@@ -165,9 +141,9 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   1680
-      TabIndex        =   19
-      Top             =   2220
-      Width           =   2295
+      TabIndex        =   13
+      Top             =   2040
+      Width           =   1815
    End
    Begin VB.Label lblHostLogic 
       Caption         =   "Drives Host Logic"
@@ -182,9 +158,9 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   1680
-      TabIndex        =   18
-      Top             =   1875
-      Width           =   2295
+      TabIndex        =   12
+      Top             =   1680
+      Width           =   1815
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -200,7 +176,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   645
-      TabIndex        =   17
+      TabIndex        =   11
       Top             =   285
       Width           =   615
    End
@@ -218,63 +194,9 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   645
-      TabIndex        =   16
+      TabIndex        =   10
       Top             =   1080
       Width           =   615
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Release:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   4125
-      TabIndex        =   15
-      Top             =   1485
-      Width           =   780
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Platform:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   4065
-      TabIndex        =   14
-      Top             =   1080
-      Width           =   840
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Application:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   165
-      TabIndex        =   13
-      Top             =   1485
-      Width           =   1095
    End
    Begin VB.Label Label7 
       Alignment       =   1  'Right Justify
@@ -290,7 +212,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   180
-      TabIndex        =   12
+      TabIndex        =   9
       Top             =   2970
       Width           =   1080
    End
@@ -308,7 +230,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   11
+      TabIndex        =   8
       Top             =   2595
       Width           =   1095
    End
@@ -326,7 +248,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   420
-      TabIndex        =   10
+      TabIndex        =   7
       Top             =   630
       Width           =   840
    End
@@ -513,13 +435,13 @@ Private Sub Form_Load()
     GetClientCBox cbxClients
     
     'Build Application combo box
-    GetApplicationCBox Me.cbxApplication
+'    GetApplicationCBox Me.cbxApplication
         
     'Build Platform combo box
-    GetPlatformCBox Me.cbxPlatform
+'    GetPlatformCBox Me.cbxPlatform
     
     'Build Release combo box
-    GetReleaseCBox Me.cbxRelease
+'    GetReleaseCBox Me.cbxRelease
     
     'If we are adding a new Key...
     If (bAddNewKey) Then
@@ -538,8 +460,8 @@ Private Sub Form_Load()
         
         myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
                  
-        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblEntries.Comments, tblEntries.Description, tblEntries.HostSystemUse, tblEntries.HostOccurs, tblEntries.ClientSystemUse, tblEntries.ClientOccurs" _
-               & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
+        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblEntries.Comments, tblEntries.Description, tblEntries.HostSystemUse, tblEntries.HostOccurs, tblEntries.ClientSystemUse, tblEntries.ClientOccurs" _
+               & " FROM (tblEntries INNER JOIN tblClients ON tblEntries.Client = tblClients.Code)" _
                & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & CurKey & Chr(34) & " and tblEntries.Client = " & myClient.Displaycode
         
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -569,61 +491,62 @@ Private Sub Form_Load()
             Next
             
             'Set up the Application combo box.
-            For x = 0 To UBound(ApplicationArray)
-                If (DaoRS(3).Value = ApplicationArray(x).Application) Then
-                    cbxApplication.ListIndex = x
-                    Exit For
-                End If
-            Next
+            'For x = 0 To UBound(ApplicationArray)
+            '    If (DaoRS(3).Value = ApplicationArray(x).Application) Then
+            '        cbxApplication.ListIndex = x
+            '        Exit For
+            '    End If
+            'Next
             
             'Set up the Release combo box.
-            For x = 0 To UBound(ReleaseArray)
-                If (DaoRS(4).Value = ReleaseArray(x).Release) Then
-                    cbxRelease.ListIndex = x
-                    Exit For
-                End If
-            Next
+            'For x = 0 To UBound(ReleaseArray)
+            '    If (DaoRS(4).Value = ReleaseArray(x).Release) Then
+            '        cbxRelease.ListIndex = x
+            '        Exit For
+            '    End If
+            'Next
 
             'Set up the Platform combo box.
-            For x = 0 To UBound(PlatformArray)
-                If (DaoRS(5).Value = PlatformArray(x).Platform) Then
-                    cbxPlatform.ListIndex = x
-                    Exit For
-                End If
-            Next
+            'For x = 0 To UBound(PlatformArray)
+            '    If (DaoRS(5).Value = PlatformArray(x).Platform) Then
+            '        cbxPlatform.ListIndex = x
+            '        Exit For
+            '    End If
+            'Next
  
             'Get the comments.
-            If (Len(DaoRS(6).Value) > 0) Then
-                txtComments.Text = RTrim(DaoRS(6).Value)
+            If (Len(DaoRS(3).Value) > 0) Then
+                txtComments.Text = RTrim(DaoRS(3).Value)
             Else
                 txtComments.Text = ""
             End If
             
             'Get the description.
-            If (Len(DaoRS(7).Value) > 0) Then
-                Me.txtDesc.Text = RTrim(DaoRS(7).Value)
+            If (Len(DaoRS(4).Value) > 0) Then
+                Me.txtDesc.Text = RTrim(DaoRS(4).Value)
             Else
                 Me.txtDesc.Text = ""
             End If
              
             'Update the check boxes.
-            If (Len(DaoRS(8).Value) > 0) Then
-                If (DaoRS(8).Value = False) Then
+            If (Len(DaoRS(5).Value) > 0) Then
+                If (DaoRS(5).Value = False) Then
                     Me.chkHostUse.Value = 0
                 Else
                     Me.chkHostUse.Value = 1
-                    lblHostLogic.Caption = "Drives Host Logic (" & DaoRS(9).Value & ")"
+                    lblHostLogic.Caption = "Drives Host Logic (" & DaoRS(5).Value & ")"
                 End If
             Else
                 Me.chkHostUse.Value = 0
             End If
             
-            If (Len(DaoRS(10).Value) > 0) Then
-                If (DaoRS(10).Value = False) Then
+            
+            If (Len(DaoRS(6).Value) > 0) Then
+                If (DaoRS(6).Value = False) Then
                     Me.chkClientUse.Value = 0
                 Else
                     Me.chkClientUse.Value = 1
-                    lblClientLogic.Caption = "Drives Client Logic (" & DaoRS(11).Value & ")"
+                    lblClientLogic.Caption = "Drives Client Logic (" & DaoRS(6).Value & ")"
                 End If
             Else
                 Me.chkClientUse.Value = 0
@@ -786,16 +709,16 @@ End Sub
 Public Function AddNewRecord() As Boolean
 '***************************************************************************************************************
     Dim myClient As New Client
-    Dim myApplication As New Application
-    Dim myPlatform As New Platform
-    Dim myRelease As New Release
+    'Dim myApplication As New Application
+    'Dim myPlatform As New Platform
+    'Dim myRelease As New Release
     Dim myComment As New Comment
     Dim hDecode As String
     
     myClient.Decode = Me.cbxClients.Text
-    myApplication.Decode = Me.cbxApplication.Text
-    myPlatform.Decode = Me.cbxPlatform.Text
-    myRelease.Decode = Me.cbxRelease.Text
+    'myApplication.Decode = Me.cbxApplication.Text
+    'myPlatform.Decode = Me.cbxPlatform.Text
+    'myRelease.Decode = Me.cbxRelease.Text
 
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
@@ -812,17 +735,18 @@ Public Function AddNewRecord() As Boolean
 '    hDecode = CheckForSpecialChars(txtDecode.Text)
     
     strsql = "INSERT INTO tblEntries" _
-            & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease) " _
+            & " (TableName, Key, Decode, Client, Description, Comments) " _
             & "VALUES (" _
             & Chr(34) & CurTable & Chr(34) & ", " _
             & Chr(34) & txtKey.Text & Chr(34) & ", " _
             & Chr(34) & txtDecode.Text & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
             & Chr(34) & txtDesc.Text & Chr(34) & ", " _
-            & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
-            & myApplication.Displaycode & ", " _
-            & myPlatform.Displaycode & ", " _
-            & myRelease.Displaycode & ");"
+            & Chr(34) & myComment.DisplayComment & Chr(34) & ");"
+            
+'            & myApplication.Displaycode & ", " _
+'            & myPlatform.Displaycode & ", " _
+'            & myRelease.Displaycode & ");"
     
     'Set up the error handling.
     On Error GoTo InsertError
@@ -864,16 +788,16 @@ End Function
 Public Function ModifyRecord() As Boolean
 '***************************************************************************************************************
     Dim myClient As New Client
-    Dim myApplication As New Application
-    Dim myPlatform As New Platform
-    Dim myRelease As New Release
+'    Dim myApplication As New Application
+'    Dim myPlatform As New Platform
+'    Dim myRelease As New Release
     Dim myComment As New Comment
     Dim hDecode As String
         
     myClient.Decode = Me.cbxClients.Text
-    myApplication.Decode = Me.cbxApplication.Text
-    myPlatform.Decode = Me.cbxPlatform.Text
-    myRelease.Decode = Me.cbxRelease.Text
+'    myApplication.Decode = Me.cbxApplication.Text
+'    myPlatform.Decode = Me.cbxPlatform.Text
+'    myRelease.Decode = Me.cbxRelease.Text
       
     'Figure out what the comment should be.
     myComment.Text = Me.txtComments.Text
@@ -927,14 +851,11 @@ Public Function ModifyRecord() As Boolean
              & "Decode = " & Chr(34) & txtDecode.Text & Chr(34) & ", " _
              & "Client = " & myClient.Displaycode & ", " _
              & "Description = " & Chr(34) & txtDesc.Text & Chr(34) & ", " _
-             & "Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
-             & "Application = " & myApplication.Displaycode & ", " _
-             & "Platform = " & myPlatform.Displaycode & ", " _
-             & "CSSRelease = " & myRelease.Displaycode _
+             & "Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) _
              & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) _
              & " AND Key = " & Chr(34) & txtKey.Text & Chr(34) _
              & " AND Client = " & myClient.Displaycode & ";"
-    
+        
     'Set up the error handling.
     On Error GoTo UpdateError
     
