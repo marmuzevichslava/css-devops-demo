@@ -37,6 +37,8 @@
 **										   a 'DT' usage to generate as
 **										   alpha 11.
 **
+**
+**
 ***********************************************************************/
 #define  INCL_WIN
 #define  INCL_DOS
@@ -75,6 +77,9 @@
 #include <kglxk000.h>
 #endif
 
+
+#include "azcs01b.gnb"
+
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define INCL_C1CBASE
 #include <c1c.h>
@@ -82,13 +87,22 @@
 /* JSH: 07/01/93 ADDED */
 //#include "explode.h"
 
+/*mdc 11/25/96 azcs01b.gnb includes these headers
 #include "csrcmn.h"
 #include "mapgen.h"
+*/
+/*mdc 11/25/96 Added for LogError prototype*/
+#include "azcs01.h"
+
 /*mdc this must be included for prototype of BuildVersionNumber*/
 #include "version.h" 
 
 #define  DataType_len 15
 #define _LITERAL_DATA_TYPES enum LITERAL_DATA_TYPES
+
+/*mdc 12/11/96 Added for Check Occurring groups*/
+#define _MESSAGE_LEN  255
+#define CMN_MAPGEN_NAME "CSR Map Generator"
 
 
 USHORT CsrMapInitItem( _ENTITYDATA *pEntityData, _LAYOUT_REC *pLayoutRec,
@@ -156,11 +170,13 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 #endif
 
   /* CSC: 07/19/93 added */
-
-
-  FndGenRC = FndWindowSetPointer(CBI_hwnd,
+  /*mdc 11/25/96 Make this conditional on Mass Gen*/
+  if (BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES)
+  {
+         FndWindowSetPointer(CBI_hwnd,
                                  FNDSYSPTR_WAIT,
                                  &FndGenErrorBlock);
+  }
 
   /* "\n\nRetrieving Data From The Repository ...\n\n Please be patient.",
                                    "ReposWait"
@@ -178,7 +194,11 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
   strcat(MsgBoxText, EntityId);
   strcat(MsgBoxText, " \n  from the Design Repository ...");
 
-  FndGenRC = FndMsgBoxDisplayMdlssText( MsgBoxText,
+  /*mdc 11/25/96 Make this conditional on Mass Gen */
+  if (BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES)
+  {
+
+      FndMsgBoxDisplayMdlssText( MsgBoxText,
                                    "ReposWait",
                                    CBI_hwnd,
                                    FND_MSGBOX_NOBUTTONS,
@@ -186,6 +206,11 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
                                    FND_MSGBOX_IDNOBUTTON,
                                    CMN_CSS_APPL_NAME,
                                    &FndGenErrorBlock);
+  }
+  else
+  {
+      LogError( MsgBoxText );
+  }
 
   /* CSC: 07/19/93 end added */
 
@@ -363,9 +388,17 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
             break;
       }
 
-      FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+      /*mdc 11/25/96 Make display conditional on Mass Gen*/
+      if (BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES )
+      {
+        FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
                             FND_MSGBOX_CRITICAL, FND_MSGBOX_OK,
                             NULL, &SelectedButton, &FndGenErrorBlock );
+      }
+      else
+      {
+          LogError( Message );
+      }
 
       /* Set ReturnCode to indicate error */
       ReturnCode = 1;
@@ -376,9 +409,18 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
       sprintf(Message,
              "The requested layout was to large for the Repository Extract Service.\n\n"
              "Please contact the Technical Services Department");
-       FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+
+      /*mdc 11/25/96 Make display conditional on Mass Gen */
+      if (BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES )
+      {
+        FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
                             FND_MSGBOX_CRITICAL, FND_MSGBOX_OK,
                             NULL, &SelectedButton, &FndGenErrorBlock );
+      }
+      else
+      {
+          LogError( Message );
+      }
 
       /* Set ReturnCode to indicate error */
        ReturnCode = 1;
@@ -392,10 +434,17 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
                       "The explanation code is %d.",
              FndGenRC, ParmBlock.appl_status.explan_code );
 
-
-    FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
+    /*mdc 11/25/96 Make display conditional on Mass Gen */
+    if ( BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES )
+    {
+        FndMsgBoxDisplayText( Message, NULL, CBI_hwnd, FND_MSGBOX_OK,
                           FND_MSGBOX_CRITICAL, FND_MSGBOX_OK,
                           NULL, &SelectedButton, &FndGenErrorBlock );
+    }
+    else
+    {
+        LogError( Message );
+    }
 
     /* DS Error occurred */
     ReturnCode = 1;
@@ -408,17 +457,20 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 
 /* CSC: 07/19/93 added */
 
-
-  FndGenRC = FndWindowSetPointer(CBI_hwnd,
+  /*mdc 11/25/96 if the Mass Gen flag was not set then the pointer
+                 was not changed.  Not necessary to set it back*/
+  if ( BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES )
+  {
+     FndWindowSetPointer(CBI_hwnd,
                                  FNDSYSPTR_ARROW,
                                  &FndGenErrorBlock);
 
 
-  FndGenRC = FndMsgBoxDestroy("ReposWait",
+    FndGenRC = FndMsgBoxDestroy("ReposWait",
                                &FndGenErrorBlock);
+  }
 
-/* CSC: 07/19/93 added */
-
+   /* CSC: 07/19/93 added */
   return ReturnCode;
 }
 
@@ -877,3 +929,275 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
 //  "E0000032", 'E', "E0000032", "E0000032", 't', 'N', -1, -1, "FL",  1, CSR_LONG, 48,  0,  0, -1, 49, 0,
 //  "E0000033", 'E', "E0000033", "E0000033", 't', 'N', -1, -1, "F2",  1, CSR_LONG, 49,  0,  0, -1, 50, 0,
 //};
+
+
+/***********************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM CSR FUNCTION
+**
+**  FUNCTION         :  CheckOccurGrps
+**
+**  DESCRIPTION      :  Checks for valid occurring groups mapping
+**
+**  INPUTS           :  CMN_ARCH_PARM_TYPES
+**
+**  OUTPUTS          :  CMN_SUCCESS, CMN_FAIL
+**
+**  AUTHOR           :  ANDERSEN CONSULTING 
+**
+**  DATE CREATED     :  12/10/96
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
+**  --------    ----------      -----      ---------------------
+**
+*****************************************************************************/
+USHORT CheckOccurGrps( CMN_ARCH_PARM_TYPES )
+{
+    SHORT i;
+    SHORT j;
+    USHORT FndGenRC;
+
+
+    for ( i = 0; i < BFCD_pCSRMapBFCD->NumServices; i++ )
+    {
+      /* Check if Service is deleted */
+      if ( BFCD_pCSRMapBFCD->ServiceInfoTable[i].DeleteFlag )
+      {
+         /* if deleted, continue onto the next service */
+         continue;
+      }
+
+      if ( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].ServiceType,
+                   LT_Primary ) == 0 )
+      {
+
+         FndGenRC = CheckServiceRPMH( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReposServiceLayoutTable,
+                                      BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable,
+                                      i,
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps,
+                                      CMN_ARCH_PARMS);
+
+         if ( FndGenRC != CMN_SUCCESS )
+         {
+             return( CMN_FAIL );
+         }
+
+         if (( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService,
+               "NULL" ) != 0 ))
+         {
+            /* Search for Alternate Service */
+            for ( j = 0; j < BFCD_pCSRMapBFCD->NumServices; j++ )
+            {
+                if (( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[j].ServiceLayoutName,
+                      BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService )
+                      == 0 ))
+                {
+                  FndGenRC = CheckServiceRPMH( BFCD_pCSRMapBFCD->ServiceInfoTable[j].pReposServiceLayoutTable,
+                                               BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable,
+                                               j,
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable[j].pRepeatingMaps,
+                                               CMN_ARCH_PARMS);
+
+                  if (FndGenRC != CMN_SUCCESS )
+                  {
+                      return ( CMN_FAIL );
+                  }
+                  break;
+                } /* end of 3rd if */
+
+             } /* end of inner for loop */
+
+         } /* end of 2nd if */
+
+      } /* end of 1st if */
+
+    } /* end of outer for loop */
+
+    return( CMN_SUCCESS );
+
+}/*end of CheckOccurGrps */
+
+/*****************************************************************
+**
+**       CUSTOMER SERVICE SYTEM CSR MAP GENERATOR FUNCTION
+**
+**  FUNCTION      :  CheckServiceRPMH
+**
+**  DESCRIPTION   :  Verifies repeating map header info.
+**
+**  INPUTS        :  _LAYOUT_REC  ServiceLayout[]
+**                   _LAYOUT_REC  ClientLayout[]
+**                   USHORT CurIndex
+**                   _RELATE_RPMH RPMH[]
+
+**  OUTPUTS       :  CMN_SUCCESS
+**
+**  AUTHOR        :  ANDERSEN CONSULTING & FLORIDA POWER CORP.
+**
+**  DATE CREATED  :  12/10/96
+**
+**  REVISION HISTORY
+**
+**    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
+**  --------      ----------     -----     ---------------------
+**
+******************************************************************/
+USHORT CheckServiceRPMH( _LAYOUT_REC  ServiceLayout[],
+                 _LAYOUT_REC  ClientLayout[], 
+                  USHORT      CurIndex,
+                 _RELATE_RPMH RPMH[],
+                 CMN_ARCH_PARM_TYPES)
+
+{
+    SHORT Index = 0;
+    USHORT FndGenRC;
+
+    Index = ServiceLayout[CurIndex].ChildIndex;
+
+    while (Index != -1)
+    {
+         if ((RPMH != NULL ) &&
+             (ServiceLayout[Index].ItemType == 'G') &&
+             (ServiceLayout[Index].ItemOccurs > 1))
+         {
+              FndGenRC = CheckRPMH(ServiceLayout,
+                                   ClientLayout,
+                                   Index,
+                                   RPMH,
+                                   CMN_ARCH_PARMS);
+
+              if (FndGenRC != CMN_SUCCESS )
+              {
+                  return( CMN_FAIL );
+              }
+         }
+         else if (ServiceLayout[Index].ItemType == 'G')
+         {
+              FndGenRC = CheckServiceRPMH(ServiceLayout,
+                                       ClientLayout,
+                                       Index,
+                                       RPMH,
+                                       CMN_ARCH_PARMS);
+
+              if (FndGenRC != CMN_SUCCESS )
+              {
+                  return( CMN_FAIL );
+              }
+         }
+
+         Index = ServiceLayout[Index].SiblingIndex;
+    }
+
+    return( CMN_SUCCESS );
+
+} /* end of CheckServiceRPMH */
+
+/*****************************************************************
+**
+**       CUSTOMER SERVICE SYTEM CSR MAP GENERATOR FUNCTION
+**
+**  FUNCTION      :  CheckRPMH
+**
+**  DESCRIPTION   :
+**
+**  INPUTS        :
+**
+**  OUTPUTS       :  CMN_SUCCESS
+**
+**  AUTHOR        :  ANDERSEN CONSULTING & FLORIDA POWER CORP.
+**
+**  DATE CREATED  :  12/10/96
+**
+**  REVISION HISTORY
+**
+**    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
+**  --------      ----------     -----     ---------------------
+**
+******************************************************************/
+
+USHORT CheckRPMH( _LAYOUT_REC  ServiceLayout[],
+                             _LAYOUT_REC  ClientLayout[],
+                              USHORT      CurIndex,
+                             _RELATE_RPMH RPMH[],
+                             CMN_ARCH_PARM_TYPES)
+{
+
+    USHORT usSelectedButton, FndGenRC, usIcon;
+    CHAR sMessage[_MESSAGE_LEN];
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+
+
+    GlobalNestedLevel++;
+    
+
+    memset( sMessage, 0, _MESSAGE_LEN );
+
+    if (( RPMH[CurIndex].ClientLayoutIndex == -1) &&
+        ( RPMH[CurIndex].SingleOccurence == 'N' ))
+    {
+        sprintf( sMessage, "Occurring Groups not valid!\n"
+                 "You MUST remap Occurring Groups before generating!\n"
+                 "Generation terminating!\n\n");
+
+        if( BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES )
+        {
+            /*Notify users*/
+            FndGenRC = FndMsgBoxDisplayText( sMessage,
+                                      NULL,
+                                      CBI_hwnd,
+                                      FND_MSGBOX_OK,
+                                      FND_MSGBOX_ERROR,
+                                      FND_MSGBOX_IDYES,
+                                      CMN_MAPGEN_NAME,
+                                      &usSelectedButton,
+                                      &FndGenErrorBlock);
+
+            /*rest the task list to not complete*/
+            pBFCD->pCSRMapBFCD->RPMHTaskListComplete = 'N';
+
+            /*TaskListCdStatusIconicData[TL_RM_ROW_NUM] =
+                                       CMN_LBROW_STATUS_AVAILABLE;
+            */
+            usIcon = CMN_LBROW_STATUS_AVAILABLE;
+            FndLstBoxCellSetData( CBI_hwnd,
+                                  CMN_LB_TLB_CONTROL_NAME,
+                                  TL_RM_ROW_NUM,
+                                  0,
+                                  sizeof(SHORT),
+                                  (void *) &usIcon,
+                                  &FndGenErrorBlock);
+
+
+            FndLstBoxRowSetAttr( CBI_hwnd,
+                                CMN_LB_TLB_CONTROL_NAME,
+                                TL_RM_ROW_NUM,
+                                AT_REQUIRED,
+                                &FndGenErrorBlock );
+        }
+        else
+        {
+            LogError( sMessage );
+        }
+
+
+        return( CMN_FAIL );
+    }
+
+    FndGenRC = CheckServiceRPMH(ServiceLayout,
+                             ClientLayout,
+                             CurIndex,
+                             RPMH,
+                             CMN_ARCH_PARMS);
+
+    if (FndGenRC != CMN_SUCCESS )
+    {
+        return( CMN_FAIL );
+    }
+
+    GlobalNestedLevel--;
+    
+    return( CMN_SUCCESS );
+
+}  /*end of CheckRPMH */
