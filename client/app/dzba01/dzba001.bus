@@ -60,8 +60,11 @@
 WCBPROC( DZBA001BusWindowPredisp )
 {
 
-    USHORT             FndGenRC = 0;
+    USHORT              FndGenRC = 0;
     _FND_ERROR_BLOCK    FndGenErrorBlock;
+
+    /* Will contain registry key for user's ConfigPath to write error report file */
+    CHAR                REPORT_FILE_PATH[CONFIG_PATH_LEN] = "";
 
 
     /* Allocate memory for the working storage area */
@@ -74,10 +77,34 @@ WCBPROC( DZBA001BusWindowPredisp )
 
     memset(&WCD_Dzba004c, 0, sizeof(WCD_Dzba004c) );
 
+
+    /* format ReportFile in case registry key read fails (default to c:) */
+
+    sprintf (ReportFile, "%s\\%s", DEFAULT_DRIVE, REPORT_LOG);
+
+  
+	/* Get ConfigPath from registry and place into REPORT_FILE variable */
+	                                                                   
+    CmnOsGetProfileValue (CMN_PROFILE_NAME_CSS,
+                          CMN_PROFILE_SECTION_MISC_FILES,
+	   					  CMN_PROFILE_KEY_CONFIG_PATH,
+                          CMN_PROFILE_KEY_CONFIG_PATH_LEN,
+                          CMN_PRF_FAIL_ON_ERROR,
+                          REPORT_FILE_PATH,
+                          &FndGenRC,
+                          CMN_NULL_ARCH_PARMS);
+
+    /* format ReportFile if registry key read was successful */
+
+	if (FndGenRC == 0)
+	{
+	    sprintf (ReportFile, "%s\\%s", REPORT_FILE_PATH, REPORT_LOG);
+	}			  				  
+  
     
     /* Open the report file, if one already exists, it will be overwritten. */
 
-	LogFile = fopen( REPORT_FILE , "w");
+	LogFile = fopen( ReportFile , "w");
 
 	fprintf(LogFile, LOG_HEADER);
 	fprintf(LogFile, LOG_COLUMNS);

@@ -277,6 +277,8 @@ AEXPROC( ExitWktCloseAfterCancel )
 **  --------  -----------  -------  ---------------------------------------
 **  03/28/95  KCHASE                Original code.
 **  10/05/98  JMEISSNE      5543    Code changed to detect incorrect file name.
+**  01/14/99  TMCEWEN    IR 31531	Removed hard-coding of REPORT_FILE path
+**                                  Path name now read from registry key
 **
 ***************************************************************************/
 
@@ -289,6 +291,9 @@ AEXPROC( ExitCsrNotification )
     USHORT            SelectButton = 0;  /* For Prebill Errors MsgBox */
     USHORT            SelectedButton = 0;  /* For Prebill Errors MsgBox */
 	long              nTotalReturnCounter = 0;
+
+    char              ErrorMessage[] = "";
+		
     _ExtractInsertLBRow RowData;
     _FND_ERROR_BLOCK FndGenErrorBlock;
 
@@ -369,10 +374,17 @@ AEXPROC( ExitCsrNotification )
 		  
 
 			else if (strcmp(BFCD_SWAT01Luw.SWAT01BData[0].TsKyExtract,LT_Second_Pass) == 0)
-			{													
+			{					
+
+	        /** format error message **/
+			    
+				sprintf (ErrorMessage, "%s%s", 
+				                       BAD_EXTRACT, 
+									   ReportFile);
+											
 			/** Bad table access make the user aware of it by printing 			**/
 
-				FndMsgBoxDisplayText( "Table Error(s) during Extract. See " REPORT_FILE,
+				FndMsgBoxDisplayText( ErrorMessage,
                                       "DZBA001X",
                                       CBI_hwnd,
                                       FND_MSGBOX_OK,
@@ -731,12 +743,18 @@ AEXPROC( ExitCsrNotification )
 		*/
 
 			else if (strcmp(BFCD_SWAT01Luw.SWAT01BData[0].TsKyExtract, LT_Second_Pass) == 0)
-			{													
+			{										
+			/** format error message **/
+			    
+				sprintf (ErrorMessage, "%s%s", 
+				                       BAD_INSERT, 
+									   ReportFile);
+			
 			/*
 			** If a bad table access is made on a first pass, make the user aware of it
 			**/
 
-                FndMsgBoxDisplayText( "Table Error(s) during Insert. See " REPORT_FILE,
+                FndMsgBoxDisplayText( ErrorMessage,
                                       "DZBA001Y",
                                       CBI_hwnd,
                                       FND_MSGBOX_OK,

@@ -14,7 +14,10 @@
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**   03/28/95  KCHASE                Original code.
+**   03/28/95   KCHASE                Original code.
+**   01/14/99   TMCEWEN     IR 31531  Changed file path parameters for 
+**                                    reading ConfigPath from registry and
+**                                    writing error log
 **
 ***************************************************************************/
 
@@ -27,7 +30,8 @@
 /***************************************************************************/
 
 /* Report file path */
-#define REPORT_FILE "C:\\DATA\\BAEXT.LOG"
+/* comment report file path out while I code registry key for IR #31531 TM */
+#define CONFIG_PATH_LEN   70
 
 #define LOG_HEADER  "\t\tBILL ACCOUNT EXTRACT ERROR LOG\n"
 #define LOG_COLUMNS "\t Account Id \tTable \t\tJob Type     Sql Error \n"
@@ -45,19 +49,23 @@
 #define LT_Bldg_B         "B"
 
 /* Literals defining the Pass Order */
-#define LT_First_Pass   "01"
-#define LT_Second_Pass  "02"
+#define LT_First_Pass     "01"
+#define LT_Second_Pass    "02"
 
 
-#define MX_PART_ACCT_PROC   99999
+#define MX_PART_ACCT_PROC  99999
 
 
 /* Bad password literal */
 #define NOCONN             "NOCONN"
 #define NODATA             "NODATA"
 #define NOFILE             "NOFILE"
+#define REPORT_LOG         "BAEXT.LOG"
+#define DEFAULT_DRIVE	   "c:"
 
-#define BAD_DATA           "There are now rows to process."
+#define BAD_INSERT         "One or more row errors detected during insert. See error log "
+#define BAD_EXTRACT        "One or more row errors dectected during extract. See error log "
+#define BAD_DATA           "There are no rows to process."
 #define BAD_EXT_PW         "Incorrect Password on Extraction Criteria."
 #define BAD_INS_PW         "Incorrect Password on Insertion Criteria."
 #define NO_DATA_FOUND      "Account Not Found."
@@ -88,12 +96,11 @@
 USHORT NumberOfRows = 0;
 USHORT RowQueryNumber = 0;
 
+
 /* The following are an array of structures that hold all deleted items, and the
 ** index of that structure.
 **/
-
 BOOL   ChangeFlag = FALSE;
-
 BOOL   DeleteFlag = FALSE;
 BOOL   Continue = FALSE;
 
@@ -138,4 +145,6 @@ FILE *LogFile;
 
 const unsigned short TableCountLimit = 500;
 char NullString[] = "";
+char ReportFile[CONFIG_PATH_LEN] = "";
+
 
