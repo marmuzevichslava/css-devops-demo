@@ -244,32 +244,7 @@ SHORT CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARM_TYPES)
 	else 
 	{
 	    
-		if (Status<EntryFieldName1> == STS_INDETERMINATE)
-		{
-		    FndFieldSetStatus( CBI_hwnd,
-	                           "<MLBEntryFieldName1>",
-			    			   STS_VALID,
-				    		   &FndGenErrorBlock);
-
-            FndFieldSetMsg(CBI_hwnd,
-   		                   "<MLBEntryFieldName1>",
-				    	   MF_NO_MSG,
-					       &FndGenErrorBlock);
-
-		}
-
-		if (Status<EntryFieldName2> == STS_INDETERMINATE)
-		{
-		    FndFieldSetStatus( CBI_hwnd,
-	                           "<MLBEntryFieldName2>",
-			    			   STS_VALID,
-				    		   &FndGenErrorBlock);
-            FndFieldSetMsg(CBI_hwnd,
-		                   "<MLBEntryFieldName>",
-				     	   MF_NO_MSG,
-					       &FndGenErrorBlock);
-
-		}
+		// Removed 03/01/96 - Set field's status to valid if status is indeterminate
 
 		/* Set 'Enter Reading' pushbutton as the default */
 	    FndCommandSetDefaultButton(CBI_hwnd,

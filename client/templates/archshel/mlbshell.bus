@@ -467,6 +467,16 @@ WCBPROC( CUffnnnBusResetClick )
                       &<ListBoxRow._LBNameColumnNameData>,
                       &FndGenErrorBlock );
 
+    // Added 02/29/96 - Manually set field to incomplete
+	// if the field is required	and the value is NULL
+	if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
+	{
+	    FndFieldSetStatus(CBI_hwnd,
+		                  "<MLBEntryFieldName>",
+						  STS_INCOMPLETE,
+						  &FndGenErrorBlock);
+	}
+
     /* Disable MLB 'Enter' Pushbutton */
     FndCommandDisable( CBI_hwnd,
                       "<EnterPB>",
@@ -559,6 +569,10 @@ WCBPROC( CUffnnnBusOkClick )
 			//----------------------------------------------------------------
 			
 		    
+			// Added 03/01/96
+			/* Increment BFCD MLB Counter */
+			<CUffnnL.QyAlrAclCnt>++;
+
 		} /* end if if (<ListBoxRow._LBNameCdStatusIconicData> == CMN_LBROW_STATUS_CHANGED) */
 
 	}  /* end for loop */
