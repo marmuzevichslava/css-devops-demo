@@ -26,6 +26,8 @@
 **                                   hard-coded Registry Paths with macros.  The 
 **                                   SolutionWorks key will be retrieved first, 
 **                                   then the FPC key if the SW key is not found.
+** 02/22/99    CMilliken   ATP     Removed the code that searched for the FPC
+**                                  key if the SolutionWorks key was not found
 *************************************************************************/
 #include <windows.h>
 #include <stdio.h>
@@ -63,11 +65,9 @@ SHORT GetRegEntries( _REGENTRIES_HDR  *pRegEntriesHdr , _REG_LIST_HDR *pRegListH
     		*psValueBuffer,
     		*psDataBuffer,
     		sClassString[30],
-            *pSubKey_SW,         /* 02/12/97 GHOWELL added */
-            *pSubKey_FPC;        /* 02/12/97 GHOWELL added */
+            *pSubKey_SW;         /* 02/12/97 GHOWELL added */
 
-    USHORT  SubKeySize_SW  = 0,  /* 02/12/97 GHOWELL added */
-            SubKeySize_FPC = 0;  /* 02/12/97 GHOWELL added */
+    USHORT  SubKeySize_SW  = 0;  /* 02/12/97 GHOWELL added */
 
 	FILETIME LastWrite; 
   
@@ -215,34 +215,6 @@ SHORT GetRegEntries( _REGENTRIES_HDR  *pRegEntriesHdr , _REG_LIST_HDR *pRegListH
     /* Free the memory containing the subkey built */
     free (pSubKey_SW);
 
-    if (lrc != ERROR_SUCCESS)   /* no SolutionWorks Key */
-    {
-        /* Set size for malloc */
-        SubKeySize_FPC = sizeof( CMN_PROFILE_KEY_FPC_TOP_KEY ) + 
-                         sizeof( CMN_PROFILE_KEY_NAME_CSS )    + 
-                         sizeof( CMN_PROFILE_KEY_CURRENT_VERSION );
-
-        /* Allocate memory to contain the subkey being built */
-        pSubKey_FPC = malloc (SubKeySize_FPC);
-        /* Build the subkey in the allocated memory */
-        memset(pSubKey_FPC, 0, SubKeySize_FPC);
-
-        strcpy( pSubKey_FPC, CMN_PROFILE_KEY_FPC_TOP_KEY );
-        strcat( pSubKey_FPC, CMN_PROFILE_KEY_NAME_CSS );
-        strcat( pSubKey_FPC, CMN_PROFILE_KEY_CURRENT_VERSION );
-
-
-        /* Free the memory containing the subkey built */
-        free (pSubKey_FPC);
-
-        lrc = RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-                            pSubKey_FPC,
-                            0,
-                            KEY_READ,
-                            &hKey);
-
-    }  /* end no SolutionWorks Key */
-
     /* End 02/12/97 GHOWELL changes for modifying Registry variables */
 
     
@@ -354,36 +326,6 @@ SHORT GetRegEntries( _REGENTRIES_HDR  *pRegEntriesHdr , _REG_LIST_HDR *pRegListH
 
         /* Free the memory containing the subkey built */
         free (pSubKey_SW);
-
-        if (lrc != ERROR_SUCCESS)   /* no SolutionWorks Key */
-        {
-            /* Set size for malloc */
-            SubKeySize_FPC = sizeof( CMN_PROFILE_KEY_FPC_TOP_KEY )     + 
-                             sizeof( CMN_PROFILE_KEY_NAME_CSS )        + 
-                             sizeof( CMN_PROFILE_KEY_CURRENT_VERSION ) +
-                             sizeof( pCurrent->sEnumSubKey );
-                     
-            /* Allocate memory to contain the subkey being built */
-            pSubKey_FPC = malloc (SubKeySize_FPC);
-            /* Build the subkey in the allocated memory */
-            memset(pSubKey_FPC, 0, SubKeySize_FPC);
-
-            strcpy( pSubKey_FPC, CMN_PROFILE_KEY_FPC_TOP_KEY );
-            strcat( pSubKey_FPC, CMN_PROFILE_KEY_NAME_CSS );
-            strcat( pSubKey_FPC, CMN_PROFILE_KEY_CURRENT_VERSION );
-            strcat( pSubKey_SW, pCurrent->sEnumSubKey );
-
-
-            /* Free the memory containing the subkey built */
-            free (pSubKey_FPC);
-    
-            lrc = RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-                                pSubKey_FPC,
-                                0,
-                                KEY_READ,
-                                &hKey);
-
-        }  /* end no SolutionWorks Key */
 
         /* End 02/12/97 GHOWELL changes for modifying Registry variables */
 
@@ -533,34 +475,6 @@ SHORT GetRegEntries( _REGENTRIES_HDR  *pRegEntriesHdr , _REG_LIST_HDR *pRegListH
 
     /* Free the memory containing the subkey built */
     free (pSubKey_SW);
-
-    if (lrc != ERROR_SUCCESS)   /* no SolutionWorks Key */
-    {
-        /* Set size for malloc */
-        SubKeySize_FPC = sizeof( CMN_PROFILE_KEY_FPC_TOP_KEY ) + 
-                         sizeof( CMN_PROFILE_KEY_NAME_CSS )    + 
-                         sizeof( CMN_PROFILE_KEY_RELEASE );
-
-
-        /* Allocate memory to contain the subkey being built */
-        pSubKey_FPC = malloc (SubKeySize_FPC);
-        /* Build the subkey in the allocated memory */
-        memset(pSubKey_FPC, 0, SubKeySize_FPC);
-
-        strcpy( pSubKey_FPC, CMN_PROFILE_KEY_FPC_TOP_KEY );
-        strcat( pSubKey_FPC, CMN_PROFILE_KEY_NAME_CSS );
-        strcat( pSubKey_FPC, CMN_PROFILE_KEY_CURRENT_VERSION );
-
-        /* Free the memory containing the subkey built */
-        free (pSubKey_FPC);
-    
-        lrc = RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-                            pSubKey_FPC,
-                            0,
-                            KEY_READ,
-                            &hKey);
-
-    }  /* end no SolutionWorks Key */
 
     /* End 02/12/97 GHOWELL changes for modifying Registry variables */
     
