@@ -6,7 +6,7 @@
 **
 **               Customer Service System Application Header File
 **
-**  FILENAME         : <CUffnnn>.H
+**  FILENAME         : azrp001.H
 **
 **  DESCRIPTION      : Window Header File
 **
@@ -23,6 +23,12 @@
 **                                    to accomodate port to NT and generally 
 **                                    clean it up
 **
+**   04/25/96  mconner                Changed definition of NUM_SUBS to 10 
+**                                    Long desc of 640 bytes expand to more than
+**                                    8 lines for printing. Removed definition of 
+**                                    PRINTPORT for win NT. Code now useds call 
+**                                    to system for default printer
+**
 ***************************************************************************/
 
 /***************************************************************************/
@@ -30,7 +36,7 @@
 /***************************************************************************/
 #include <malloc.h>
 #include <time.h>
-/*#include <ctype.h>*/
+#include <ctype.h>
 #include "systcomm.hh"
 #include "roadmap.hh"
 
@@ -42,12 +48,14 @@
 #define LONG_DESC_LEN   641
 #define LINE_LEN        80
 #define SUB_STR_LEN     120
-#define NUM_SUBS        8
+#define NUM_SUBS        10
 #define PARSE_CHAR      '\n'
 #define PAD_CHAR        ' '
+/*mdc 04/25/96 not used with win NT default printer logic
 #ifdef FND_WIN32
 #define PRINTPORT       "LPT2"
 #endif
+*/
 #ifdef FND_OS2
 #define PRINTPORT       "LPT1"
 #endif
@@ -102,11 +110,10 @@ USHORT FormatLongDesc(char *,
 
 
 USHORT StrAllocateSubs(char *[],
-				       USHORT,
+                       USHORT,
 				       USHORT);
 
-USHORT FreeMemArray(void *[],
-                    USHORT);
+USHORT FreeMemArray(void *[]);
 
 USHORT StrInsertCRLF(char *,
 		             USHORT *);
