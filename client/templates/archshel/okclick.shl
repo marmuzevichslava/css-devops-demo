@@ -287,14 +287,42 @@ WCBPROC( <CUFFnnn>BusOK )
     <_CUFFnnnOUTPUT>  CUFFnnnOutput;
 
     /*
+    **  Set up a variable to hold the row data
+    */
+    <_CUFFnnnListBoxRow>  <ELBRowData>;
+
+
+    /*
     **  Declare a return message id variable for the add function.
     */
     SHORT   RtrnMsgId = 0;
 
     /*
+    **  Declare a variable to track the row number in the Bulk Add list box.
+    */
+    SHORT   <RowNum>;
+
+    /*
+    **  Declare a counter variable to track the row currently being processed.
+    */
+    SHORT   <Index>;
+
+
+
+	/*
+	**  Make an initial call to find the first selected row.
+	*/
+
+	FndLstBoxRowQuerySelection(CBI_hwnd,
+		                       "<ListBoxName>",
+							   FND_LSTBOX_START,
+							   &<RowNum>,
+							   &FndGenErrorBlock);
+
+    /*
     ** Loop through each bulk row to add...
     */
-    while (<there are rows to add to the Enterable LB>)
+    while (FndGenRC == CMN_SUCCESS)
     {
 
   //---------------------------------------------------
@@ -316,11 +344,19 @@ WCBPROC( <CUFFnnn>BusOK )
         /*
         **  Format the following fields in the OUT layout <CUFFnnnOutput>
         */
-        FndFieldQueryValue(CBI_hwnd,
-                           "<FieldName>",
-                           <OUT Field Length>,
-                           <CUFFnnnOutput.FieldName>,
-                           &FndGenErrorBlock);
+        FndLstBoxRowQueryData(CBI_hwnd,
+                              "<ListBoxName>",
+							  <RowNum>,
+                              sizeof(<ELBRowData>),
+                              &<ELBRowData>,
+                              &FndGenErrorBlock);
+
+		/*
+		**  Set your index variable equal to the current row number
+		*/
+
+		<Index> = <RowNum>;
+
 
         CmnStrCopy(<CUFFnnnOutput.FieldName>,
                    <Source>,
@@ -352,7 +388,6 @@ WCBPROC( <CUFFnnn>BusOK )
                 **  Reset the message type to Close After Cancel
                 **      for proper handling of the data.
                 */
-                EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
 
                 break;
 
@@ -364,7 +399,6 @@ WCBPROC( <CUFFnnn>BusOK )
                 **  Reset the message type to Close After Cancel
                 **      for proper handling of the data.
                 */
-                EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
 
                 break;
 
@@ -381,6 +415,17 @@ WCBPROC( <CUFFnnn>BusOK )
     **      window data tracking node from being created.
     */
     EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
+
+
+	/*  IF AND ONLY IF THERE ARE ANY WIDGETS OTHER THAN THE LISTBOX AND
+	**  THE PUSHBUTTONS IN THE CHILD WINDOW.
+	**              
+	**    Set Confirmation on exit to No if there are any ****** widgets
+	**    to prevent a confirmation message box and allow the bulk add to process.
+	**              
+	**    EAB_ConfirmOnExit = CMN_NO;
+	**
+	*/
 
     return CMN_SUCCESS;
 
