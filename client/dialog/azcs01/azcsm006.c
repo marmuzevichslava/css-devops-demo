@@ -67,7 +67,13 @@
 #define INCL_C1CBASE
 #include <c1c.h>
 
+/*mdc 12/10/96 Included for CsrMapReadMapFile and others*/
+#include "azcs01.h"
+
 #define _DUMMY_LEN  30
+/*mdc 12/10/96 addeddefinitions for RPMH check
+#define _MESSAGE_LEN 255
+#define CMN_MAPGEN_NAME "CSR Map Generator"   */
 
 /***********************************************************************
 **
@@ -624,4 +630,4 @@ USHORT CsrMapReadMapFile( CMN_ARCH_PARM_TYPES )
     return(CMN_SUCCESS);
 
 }
-
+
