@@ -1,8 +1,8 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINNT\System32\StdOle2.tlb#OLE Automation
-Reference=*\G{00025E01-0000-0000-C000-000000000046}#4.0#0#C:\Program Files\Common Files\Microsoft Shared\DAO\DAO350.DLL#Microsoft DAO 3.5 Object Library
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\WINNT\System32\STDOLE2.TLB#OLE Automation
+Reference=*\G{00025E01-0000-0000-C000-000000000046}#4.0#0#..\Program Files\Common Files\Microsoft Shared\DAO\DAO350.DLL#Microsoft DAO 3.5 Object Library
 Object={648A5603-2C6E-101B-82B6-000000000014}#1.1#0; MSCOMM32.OCX
-Reference=*\G{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}#2.0#0#C:\Program Files\Common Files\Microsoft Shared\vC:\Program Fil#Microsoft Office 8.0 Object Library
+Reference=*\G{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}#2.0#0#..\APPS\OFFICE97\Office\MSO97.DLL#Microsoft Office 8.0 Object Library
 Object={6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0; comctl32.ocx
 Module=modCTM; modctma.bas
 Class=CodesTable; object.cls

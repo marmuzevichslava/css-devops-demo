@@ -597,14 +597,14 @@ On Error GoTo Err_txtCobolNam_LostFocus
         
     If Len(txtCOBOLNam.Text) < 4 Then
     
-        MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Enter COBOL Values"
+        MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters or spaces.", vbOKOnly, "Enter COBOL Values"
         txtCOBOLNam.SetFocus
         txtCOBOLNam.SelStart = 0
         txtCOBOLNam.SelLength = Len(sString)
         
     ElseIf Len(sString) > 3 And SpecialCharsChk(sString, iDash, True) Then
         
-        MsgBox "Please enter a COBOL Name between 4 and 18 characters with no special characters.", vbOKOnly, "Enter COBOL Values"
+        MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters or spaces.", vbOKOnly, "Enter COBOL Values"
         txtCOBOLNam.SetFocus
         txtCOBOLNam.SelStart = 0
         txtCOBOLNam.SelLength = Len(sString)

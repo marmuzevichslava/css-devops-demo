@@ -5,7 +5,6 @@ Begin VB.Form frmRecord
    ClientLeft      =   165
    ClientTop       =   735
    ClientWidth     =   6840
-   ControlBox      =   0   'False
    LinkTopic       =   "Form7"
    ScaleHeight     =   4680
    ScaleWidth      =   6840
@@ -14,6 +13,7 @@ Begin VB.Form frmRecord
       BackColor       =   &H00FFFFFF&
       Height          =   315
       Left            =   240
+      MaxLength       =   50
       TabIndex        =   7
       Top             =   4080
       Width           =   2775
@@ -39,9 +39,7 @@ Begin VB.Form frmRecord
    Begin VB.ComboBox cboOriging 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      ItemData        =   "frmRecord.frx":0000
       Left            =   2040
-      List            =   "frmRecord.frx":0002
       TabIndex        =   0
       Top             =   480
       Width           =   1455
@@ -504,8 +502,8 @@ On Error GoTo Err_mnuAddRequestRecGrp_Click
     
     'compose file name if all required fields entered
     If CheckFields = True Then
-        'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-        SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
+        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
         Call WriteSirInfo
         
     Else
@@ -533,43 +531,57 @@ End Sub
 '****************************************************************************
 Private Sub mnuExit_Click()
 On Error GoTo Err_mnuExit_Click
-
+ 
     Dim strMsg As String, strTitle As String
-    Dim style, Response
+    Dim intStyle, intResponse As Integer
         
-    style = vbYesNo
-    strTitle = "Do You Want To Exit?"
+    intStyle = vbYesNoCancel
+    strTitle = "Do you wish to exit?"
     
-    Call CheckFields
+  '  Call CheckFields
     
-    'check if all required fields have been entered
     If CheckFields Then
-        strMsg = "The Request Record Template has been filled out correctly. Click 'Yes' to " & _
-        " exit with out saving information to the SIR repository. Click  'No' to return to form."
-        Response = MsgBox(strMsg, style, strTitle)
         
-        If Response = vbYes Then
-            'user chose to exit without saving changes
-            Unload frmRecord
-        Else
-            'do nothing user returns to form
+        Beep
+        'Msg = "The Request Copybook Template has been filled out correctly. Click 'Yes' to " & _
+        '" exit with out saving information to the SIR repository. Click  'No' to return to form."
+        strMsg = "Save changes before exiting?"  ' Steve Bricker 10/2/97 Gui Standards
+        intResponse = MsgBox(strMsg, intStyle, strTitle)
+        
+        If intResponse = vbNo Then
+            'user wishes to exit unload current form - end application
+            Unload Me
+        
+        ElseIf intResponse = vbYes Then
+        
+            SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+            'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
             
-        End If
-    Else
-        strMsg = "The form contains required fields that do not contain entries. Click " & _
-        "the  'No'  button to return to the form or the  'Yes'  button to close your " & _
-        "form without saving data."
-        Response = MsgBox(strMsg, style, strTitle)
+            Call WriteSirInfo  'STB This module writes the Text to the form.
         
-        If Response = vbYes Then
-            'user chose to close form without saving information
-            Unload frmRecord
-        Else
-            'do nothing and user returns to form
+        End If
+        
+    Else
+    
+        Beep
+        'Msg = "The form contains required fields that do not contain entries. Click " & _
+        '"the  'No'  button to return to the form or the  'Yes'  button to close your " & _
+        '"form without saving data."
+        
+        strMsg = "Unable to save changes, return to form?"
+        intStyle = vbYesNo
+        
+        intResponse = MsgBox(strMsg, intStyle, strTitle)
+        
+        If intResponse = vbNo Then
+        
+            'user choose to exit. close current form - exit application
+            Unload Me
+            
         End If
         
     End If
-        
+    
 Exit_mnuExit_Click:
     Exit Sub
     
@@ -806,8 +818,8 @@ On Error GoTo Err_txtCName_LostFocus
                 'assign ascii number of character
                 intAscNumber = Asc(strLetter)
             
-                If (intAscNumber >= 33 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber > 123 And intAscNumber < 127) Then
-                    MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Request Record Template"
+                If (intAscNumber >= 32 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber > 123 And intAscNumber < 127) Then
+                    MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Request Record Template"
                 
                     'return focus to txtCName and highlight entry
                     txtCName.SetFocus
@@ -821,7 +833,7 @@ On Error GoTo Err_txtCName_LostFocus
                 intI = intI + 1
             Loop
             
-            MsgBox "Please enter a C name between 3 and 18 characters.", vbOKOnly, "Request Record Template"
+            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Request Record Template"
                 
             'return focus to txtCName and highlight entry
             txtCName.SetFocus
@@ -842,8 +854,8 @@ On Error GoTo Err_txtCName_LostFocus
         'assign ascii number of character
         intAscNumber = Asc(strLetter)
             
-        If (intAscNumber >= 33 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber >= 123 And intAscNumber <= 127) Then
-            MsgBox "Please enter a C name that does not contain special characters.", vbOKOnly, "Request Record Template"
+        If (intAscNumber >= 32 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber >= 123 And intAscNumber <= 127) Then
+            MsgBox "Please enter a C name that does not contain special characters and spaces.", vbOKOnly, "Request Record Template"
                 
             'return focus to txtCName and highlight entry
             txtCName.SetFocus
@@ -925,8 +937,8 @@ On Error GoTo Err_txtCOBOLNm_LostFocus
                 'assign ascii number of character
                 intAscNumber = Asc(strLetter)
             
-                If (intAscNumber >= 33 And intAscNumber < 45) Or (intAscNumber > 45 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber > 123 And intAscNumber < 127) Then
-                    MsgBox "Please enter a COBOL name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Request Record Template"
+                If (intAscNumber >= 32 And intAscNumber < 45) Or (intAscNumber > 45 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber > 123 And intAscNumber < 127) Then
+                    MsgBox "Please enter a COBOL name between 4 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Request Record Template"
                 
                     'return focus to txtCOBOLNm and highlight entry
                     txtCOBOLNm.SetFocus
@@ -940,7 +952,7 @@ On Error GoTo Err_txtCOBOLNm_LostFocus
                 intI = intI + 1
             Loop
             
-            MsgBox "Please enter a COBOL name between 4 and 18 characters.", vbOKOnly, "Request Record Template"
+            MsgBox "Please enter a COBOL name between 4 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Request Record Template"
                 
             'return focus to txtCOBOLNm and highlight entry
             txtCOBOLNm.SetFocus
@@ -961,8 +973,8 @@ On Error GoTo Err_txtCOBOLNm_LostFocus
         'assign ascii number of character
         intAscNumber = Asc(strLetter)
             
-        If (intAscNumber >= 33 And intAscNumber < 45) Or (intAscNumber > 45 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber >= 123 And intAscNumber <= 127) Then
-            MsgBox "Please enter a COBOL name that does not contain special characters.", vbOKOnly, "Request Record Template"
+        If (intAscNumber >= 32 And intAscNumber < 45) Or (intAscNumber > 45 And intAscNumber <= 47) Or (intAscNumber >= 58 And intAscNumber <= 64) Or (intAscNumber >= 91 And intAscNumber <= 96) Or (intAscNumber >= 123 And intAscNumber <= 127) Then
+            MsgBox "Please enter a COBOL name that does not contain special characters and spaces.", vbOKOnly, "Request Record Template"
                 
             'return focus to txtCOBOLNm and highlight entry
             txtCOBOLNm.SetFocus

@@ -6,10 +6,7 @@ Begin VB.Form frmDataElem
    ClientLeft      =   990
    ClientTop       =   1080
    ClientWidth     =   10095
-   ControlBox      =   0   'False
    LinkTopic       =   "Form8"
-   MaxButton       =   0   'False
-   MinButton       =   0   'False
    ScaleHeight     =   7320
    ScaleWidth      =   10095
    Begin VB.TextBox txtPointsToCOBOLNm 
@@ -1162,45 +1159,63 @@ End Sub
 
 Private Sub mnExit_Click()
 On Error GoTo Err_mnExit_Click
-
+ 
     Dim strMsg As String, strTitle As String
-    Dim intStyle, intResponse
+    Dim intStyle, intResponse As Integer
         
-    intStyle = vbYesNo
+    intStyle = vbYesNoCancel
     strTitle = "Do you wish to exit?"
     
+  '  Call CheckFields
     
     If CheckFields Then
-        strMsg = "The Request DataElement Template has been filled out correctly. Click 'Yes' to " & _
-        " exit with out saving information to the SIR repository. Click  'No' to return to form."
+        
+        Beep
+        'Msg = "The Request Copybook Template has been filled out correctly. Click 'Yes' to " & _
+        '" exit with out saving information to the SIR repository. Click  'No' to return to form."
+        strMsg = "Save changes before exiting?"  ' Steve Bricker 10/2/97 Gui Standards
         intResponse = MsgBox(strMsg, intStyle, strTitle)
         
-        If intResponse = vbYes Then
-        
+        If intResponse = vbNo Then
             'user wishes to exit unload current form - end application
             Unload frmDataElem
             Unload frmListValues
             Unload frmCOBOLVal
+
+        
+        ElseIf intResponse = vbYes Then
+        
+            'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+            SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
             
+            Call WriteSirInfo  'STB This module writes the Text to the form.
+        
         End If
         
     Else
     
-        strMsg = "The form contains required fields that do not contain entries. Click" & _
-        " 'Yes' to exit the form or 'No' to return to form."
+        Beep
+        'Msg = "The form contains required fields that do not contain entries. Click " & _
+        '"the  'No'  button to return to the form or the  'Yes'  button to close your " & _
+        '"form without saving data."
+        
+        strMsg = "Unable to save changes, return to form?"
+        intStyle = vbYesNo
+        
         intResponse = MsgBox(strMsg, intStyle, strTitle)
         
-        If intResponse = vbYes Then
+        If intResponse = vbNo Then
         
             'user choose to exit. close current form - exit application
             Unload frmDataElem
             Unload frmListValues
             Unload frmCOBOLVal
+
             
         End If
         
     End If
-        
+    
 Exit_mnExit_Click:
     Exit Sub
     
@@ -1303,14 +1318,14 @@ On Error GoTo Err_txtCName
     If Len(strTemp) < intThree And SpecialCharsChk(strTemp) Then
     
         'length does not meet requirements display error message
-        MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+        MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
         txtCName.SetFocus
         txtCName.SelStart = intZero
         txtCName.SelLength = Len(strTemp)
         
     ElseIf Len(strTemp) > intTwo And SpecialCharsChk(strTemp) = True Then
     
-        MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+        MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
         'set focus and highlight text
         txtCName.SetFocus
         txtCName.SelStart = intZero
@@ -1318,7 +1333,7 @@ On Error GoTo Err_txtCName
         
     ElseIf Len(strTemp) < intThree And SpecialCharsChk(strTemp) = False Then
                  
-         MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+         MsgBox "Please enter a C Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
          'set focus and highlight text
          txtCName.SetFocus
          txtCName.SelStart = intZero
@@ -1375,7 +1390,7 @@ On Error GoTo Err_txtCOBOLNam
     
     
     If Len(strTemp) < intFour Then
-         MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+         MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
          txtCOBOLNam.SetFocus
          txtCOBOLNam.SelStart = 0
          txtCOBOLNam.SelLength = Len(strTemp)
@@ -1383,7 +1398,7 @@ On Error GoTo Err_txtCOBOLNam
          
     ElseIf Len(strTemp) >= intFour And SpecialCharsChk(strTemp, intDash, True) Then
     
-         MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+         MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
          txtCOBOLNam.SetFocus
          txtCOBOLNam.SelStart = 0
          txtCOBOLNam.SelLength = Len(strTemp)
@@ -1442,14 +1457,14 @@ On Error GoTo Err_txtColumnnam
     If Len(strTemp) < intThree Then
     
         'length does not meet requirements display error message
-        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
         txtColumnNam.SetFocus
         txtColumnNam.SelStart = 0
         txtColumnNam.SelLength = Len(strTemp)
         
     ElseIf Len(strTemp) > iTwo And SpecialCharsChk(strTemp) Then
         
-        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Data Element Template"
+        MsgBox "Please enter a Column Name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
         txtColumnNam.SetFocus
         txtColumnNam.SelStart = 0
         txtColumnNam.SelLength = Len(strTemp)
@@ -2646,15 +2661,6 @@ On Error GoTo Err_WriteSirInfo
     Print #1, "Window/Screen      " & txtWsLength & sWsLength & txtWsPrecision & sWsPrecision & txtWsStructure
     Print #1, "Internal           " & txtIntLength & sIntLength & txtIntPrecision & sIntPrecision & txtIntStructure
     Print #1, "Report             " & txtRptLength & sRptLength & txtRptPrecision & sRptPrecision & txtRptStructure
-    Print #1, ""
-    Print #1, "________________________________________________________________"
-    Print #1, ""
-    Print #1, ""
-    Print #1, "Other Format Specifications:(These depend on the type of Data Element you chose.)"
-    Print #1, ""
-    Print #1, "________________________________________________________________"
-    Print #1, ""
-    Print #1,  'something goes here
     Print #1, ""
     Print #1, "________________________________________________________________"
     Print #1, ""

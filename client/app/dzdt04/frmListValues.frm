@@ -2675,7 +2675,7 @@ On Error GoTo Err_txtCNm1_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                      
             'set focus back to txtCNm1 and highlight entry
             txtCNm1.SetFocus
@@ -2688,7 +2688,7 @@ On Error GoTo Err_txtCNm1_LostFocus
              If SpecialCharsChk(TempString) Then
                 
                 'special character found flag as error
-                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                 txtCNm1.SetFocus
                 txtCNm1.SelStart = 0
                 txtCNm1.SelLength = Len(TempString)
@@ -2726,7 +2726,7 @@ On Error GoTo Err_txtCNm2_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                      
             'set focus back to txtwidget1 and highlight entry
             txtCNm2.SetFocus
@@ -2739,7 +2739,7 @@ On Error GoTo Err_txtCNm2_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                 txtCNm2.SetFocus
                 txtCNm2.SelStart = 0
                 txtCNm2.SelLength = Len(TempString)
@@ -2774,7 +2774,7 @@ On Error GoTo Err_txtCNm3_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                      
             'set focus back to txtwidget1 and highlight entry
             txtCNm3.SetFocus
@@ -2787,7 +2787,7 @@ On Error GoTo Err_txtCNm3_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                 txtCNm3.SetFocus
                 txtCNm3.SelStart = 0
                 txtCNm3.SelLength = Len(TempString)
@@ -2822,7 +2822,7 @@ On Error GoTo Err_txtCNm4_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
             
             'set focus back to txtwidget1 and highlight entry
             txtCNm4.SetFocus
@@ -2835,7 +2835,7 @@ On Error GoTo Err_txtCNm4_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                 txtCNm4.SetFocus
                 txtCNm4.SelStart = 0
                 txtCNm4.SelLength = Len(TempString)
@@ -2870,7 +2870,7 @@ On Error GoTo Err_txtCNm5_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+            MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
             
             'set focus back to txtwidget1 and highlight entry
             txtCNm5.SetFocus
@@ -2883,7 +2883,7 @@ On Error GoTo Err_txtCNm5_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                 txtCNm5.SetFocus
                 txtCNm5.SelStart = 0
                 txtCNm5.SelLength = Len(TempString)
@@ -2918,7 +2918,7 @@ On Error GoTo Err_txtCNm6_LostFocus
         'found a valid, evaluate it
         If Len(TempString) < 3 Then
     
-             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+             MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                      
             'set focus back to txtwidget1 and highlight entry
             txtCNm6.SetFocus
@@ -2931,7 +2931,7 @@ On Error GoTo Err_txtCNm6_LostFocus
              If SpecialCharsChk(TempString) Then
              
                 'special character found flag as error
-                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters.", vbOKOnly, "Enter List Values"
+                MsgBox "Please enter a C name between 3 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Enter List Values"
                 txtCNm6.SetFocus
                 txtCNm6.SelStart = 0
                 txtCNm6.SelLength = Len(TempString)

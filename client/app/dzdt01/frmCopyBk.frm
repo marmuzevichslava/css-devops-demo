@@ -6,10 +6,7 @@ Begin VB.Form frmCopyBk
    ClientLeft      =   150
    ClientTop       =   720
    ClientWidth     =   9240
-   ControlBox      =   0   'False
    LinkTopic       =   "Form5"
-   MaxButton       =   0   'False
-   MinButton       =   0   'False
    ScaleHeight     =   6060
    ScaleWidth      =   9240
    StartUpPosition =   3  'Windows Default
@@ -488,7 +485,7 @@ On Error GoTo Err_cboCpyBkType_Change
     If cboCpyBkType.Text = "" Then
         cboCpyBkType.BackColor = &HFFFF&
     Else
-        MsgBox "Please select a value from the list.", vbOKOnly, "Request Copybook Template"
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         'set global string compare item
         gblsComp = cboCpyBkType.Text
         cboCpyBkType.BackColor = &HFF&
@@ -515,6 +512,7 @@ On Error GoTo Err_cboCpyBkType_Click
     
      'update global string compare item
     gblsComp = ""
+
 Exit_cboCpyBkType_Click:
     Exit Sub
 
@@ -531,7 +529,7 @@ On Error GoTo Err_cboCpyBkType_LostFocus
     If cboCpyBkType.Text = "" Then
         cboCpyBkType.BackColor = &HFFFF&
     ElseIf (gblsComp = cboCpyBkType.Text) Then
-        MsgBox "You must choose a value from the list.", vbOKOnly, "Request Copybook Template"
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         cboCpyBkType.BackColor = &HFF&
         cboCpyBkType.SetFocus
         cboCpyBkType.Refresh
@@ -573,8 +571,7 @@ Private Sub cboDestination_Click()
 On Error GoTo Err_cboDestination_Click
     
     Dim tempString As String
-    
-        
+            
     tempString = cboDestination.Text
     tempString = Mid(tempString, 2, 2)
     
@@ -604,11 +601,13 @@ On Error GoTo Err_cboDestination_LostFocus
     
     If cboDestination.Text = "" Then
         cboDestination.BackColor = &HFFFF&
+    
     ElseIf (gblsComp = cboDestination.Text) Then
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         cboDestination.BackColor = &HFF&
         cboDestination.SetFocus
         cboDestination.Refresh
+    
     End If
     
 Exit_cboDestination_LostFocus:
@@ -625,12 +624,14 @@ On Error GoTo Err_cboEntity_Change
     
     If cboEntity.Text = "" Then
         cboEntity.BackColor = &HFFFF&
+    
     Else
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         'set global string compare item
         gblsComp = cboEntity.Text
         cboEntity.BackColor = &HFF&
         cboEntity.Refresh
+    
     End If
     
 Exit_cboEntity_Change:
@@ -668,11 +669,13 @@ On Error GoTo Err_cboEntity_LostFocus
     
     If cboEntity.Text = "" Then
         cboEntity.BackColor = &HFFFF&
+    
     ElseIf (gblsComp = cboEntity.Text) Then
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         cboEntity.BackColor = &HFF&
         cboEntity.SetFocus
         cboEntity.Refresh
+    
     End If
     
 Exit_cboEntity_LostFocus:
@@ -690,14 +693,13 @@ On Error GoTo Err_cboIncrement_Change
 
         
     If cboIncrement.Text = "" Or cboIncrement.Text = "2" Then
-        
-        'user has modified choices, set back to default
+       'user has modified choices, set back to default
         cboIncrement.BackColor = &HFFFFFF
         cboIncrement.Text = "2"
         
     Else
-    
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
+        
         'set global string compare item
         gblsComp = cboIncrement.Text
         cboIncrement.BackColor = &HFF&
@@ -886,12 +888,14 @@ On Error GoTo Err_cboLanguage_Change
     
     If cboLanguage.Text = "" Then
         cboLanguage.BackColor = &HFFFF&
+    
     Else
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         'set global string compare item
         gblsComp = cboLanguage.Text
         cboLanguage.BackColor = &HFF&
         cboLanguage.Refresh
+    
     End If
     
 Exit_cboLanguage_Change:
@@ -931,11 +935,13 @@ On Error GoTo Err_cboLanguage_LostFocus
     
     If cboLanguage.Text = "" Then
         cboLanguage.BackColor = &HFFFF&
+    
     ElseIf (gblsComp = cboLanguage.Text) Then
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         cboLanguage.BackColor = &HFF&
         cboLanguage.SetFocus
         cboLanguage.Refresh
+    
     End If
 
 Exit_cboLanguage_LostFocus:
@@ -950,15 +956,17 @@ End Sub
 Private Sub cboOriging_Change()
 On Error GoTo Err_cboOriging_Change
 
-
     If cboOriging.Text = "" Then
         cboOriging.BackColor = &HFFFF&
+    
     Else
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
+        
         'set global string compare item
         gblsComp = cboOriging.Text
         cboOriging.BackColor = &HFF&
         cboOriging.Refresh
+    
     End If
     
 Exit_cboOriging_Change:
@@ -967,9 +975,6 @@ Exit_cboOriging_Change:
 Err_cboOriging_Change:
     MsgBox Error$
     GoTo Exit_cboOriging_Change
-    
-    
-    
         
 End Sub
 
@@ -1001,11 +1006,13 @@ On Error GoTo Err_cboOriging_LostFocus
     
     If cboOriging.Text = "" Then
         cboOriging.BackColor = &HFFFF&
+    
     ElseIf (gblsComp = cboOriging.Text) Then
         MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         cboOriging.BackColor = &HFF&
         cboOriging.SetFocus
         cboOriging.Refresh
+    
     End If
 
 Exit_cboOriging_LostFocus:
@@ -1021,14 +1028,20 @@ End Sub
 Private Sub cboPrefix_Change()
 On Error GoTo Err_cboPrefix_Change
         
+    Dim intFour As Integer
+    Dim intZero As Integer
+    
+    intFour = 4
+    intZero = 0
+    
     cboPrefix.BackColor = &HFFFFFF 'set the background color to white
     
-    'test for an entry greate than 5 characters - there is no maxlength property
+    'test for an entry greater than 4 characters - there is no maxlength property
     'you can set at design time - must be done at runtime
-    If Len(cboPrefix.Text) > 5 Then
-        MsgBox "Entry cannot be greater than 5 characters. Please re-enter Prefix", vbOKOnly, "Request Copybook Template"
+    If Len(cboPrefix.Text) > intFour Then
+        MsgBox "Please enter a prefix that is not greater than " & intFour & " characters.", vbOKOnly, "Request Copybook Template"
         cboPrefix.SetFocus
-        cboPrefix.SelStart = 0
+        cboPrefix.SelStart = intZero
         cboPrefix.SelLength = Len(cboPrefix.Text)
     End If
     
@@ -1038,8 +1051,6 @@ Exit_cboPrefix_Change:
 Err_cboPrefix_Change:
     MsgBox Error$
     GoTo Exit_cboPrefix_Change
-    
-    
     
 End Sub
 
@@ -1064,12 +1075,17 @@ End Sub
 Private Sub cboPrefix_LostFocus()
 On Error GoTo Err_cboPrefix_LostFocus
 
+    Dim intFour As Integer
+    Dim intZero As Integer
+    
+    intFour = 4
+    intZero = 0
     
     'check for value - if value exists make sure value is not greater than 5 characters
-    If Len(cboPrefix.Text) > 5 Then
-        MsgBox "Entry cannot be greater than 5 characters. Please re-enter Prefix", vbOKOnly, "Request Copybook Template"
+    If Len(cboPrefix.Text) > intFour Then
+        MsgBox "Please enter a prefix that is not greater than " & intFour & " characters.", vbOKOnly, "Request Copybook Template"
         cboPrefix.SetFocus
-        cboPrefix.SelStart = 0
+        cboPrefix.SelStart = intZero
         cboPrefix.SelLength = Len(cboPrefix.Text)
     End If
 
@@ -1084,8 +1100,6 @@ End Sub
 
 Private Sub cboValues_Change()
 On Error GoTo Err_cboValues_Change
-
-
     
     If cboValues.Text = "" Then
         cboValues.BackColor = &HFFFF&
@@ -1103,7 +1117,6 @@ Exit_cboValues_Change:
 Err_cboValues_Change:
     MsgBox Error$
     GoTo Exit_cboValues_Change
-    
     
 End Sub
 
@@ -1134,7 +1147,7 @@ On Error GoTo Err_cboValues_LostFocus
     If cboValues.Text = "" Then
         cboValues.BackColor = &HFFFF&
     ElseIf (gblsComp = cboValues.Text) Then
-        MsgBox "You must choose a value from the list.", vbOKOnly, "Invalid Input"
+        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
         cboValues.BackColor = &HFF&
         cboValues.SetFocus
         cboValues.Refresh
@@ -1243,8 +1256,8 @@ On Error GoTo Err_mnuAddCpyBk_Click
 
     If CheckFields = True Then
     
-        'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-        SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
+        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
         Call WriteSirInfo
         
     Else
@@ -1267,38 +1280,49 @@ End Sub
 
 Private Sub mnuExit_Click()
 On Error GoTo Err_mnuExit_Click
-
-    
-    Dim Msg As String, Title As String
-    Dim style, Response
+ 
+    Dim strMsg As String, strTitle As String
+    Dim intStyle, intResponse As Integer
         
-    style = vbYesNo
-    Title = "Do you wish to exit?"
+    intStyle = vbYesNoCancel
+    strTitle = "Do you wish to exit?"
     
   '  Call CheckFields
     
     If CheckFields Then
-    
+        
         Beep
-        Msg = "The Request Copybook Template has been filled out correctly. Click 'Yes' to " & _
-        " exit with out saving information to the SIR repository. Click  'No' to return to form."
-        Response = MsgBox(Msg, style, Title)
+        'Msg = "The Request Copybook Template has been filled out correctly. Click 'Yes' to " & _
+        '" exit with out saving information to the SIR repository. Click  'No' to return to form."
+        strMsg = "Save changes before exiting?"  ' Steve Bricker 10/2/97 Gui Standards
+        intResponse = MsgBox(strMsg, intStyle, strTitle)
         
-        If Response = vbYes Then
-        
+        If intResponse = vbNo Then
             'user wishes to exit unload current form - end application
             Unload Me
+        
+        ElseIf intResponse = vbYes Then
+        
+            SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+            'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
             
+            Call WriteSirInfo  'STB This module writes the Text to the form.
+        
         End If
+        
     Else
     
         Beep
-        Msg = "The form contains required fields that do not contain entries. Click " & _
-        "the  'No'  button to return to the form or the  'Yes'  button to close your " & _
-        "form without saving data."
-        Response = MsgBox(Msg, style, Title)
+        'Msg = "The form contains required fields that do not contain entries. Click " & _
+        '"the  'No'  button to return to the form or the  'Yes'  button to close your " & _
+        '"form without saving data."
         
-        If Response = vbYes Then
+        strMsg = "Unable to save changes, return to form?"
+        intStyle = vbYesNo
+        
+        intResponse = MsgBox(strMsg, intStyle, strTitle)
+        
+        If intResponse = vbNo Then
         
             'user choose to exit. close current form - exit application
             Unload Me
@@ -1316,8 +1340,6 @@ Err_mnuExit_Click:
     
         
 End Sub
-
-
 
 Private Sub txtCpyBkNam_Change()
 On Error GoTo Err_txtCpyBkNam_Change
@@ -1346,7 +1368,7 @@ On Error GoTo Err_txtCpyBkNam_LostFocus
     Dim Response, style
     Dim sMsg As String, sTitle As String
     
-    sMsg = "The first character in this field must be a letter. Pleaser re-enter."
+    sMsg = "The first character of a copybook name must be a letter."
     style = vbOKOnly
     sTitle = "Request Copybook Template"
     
@@ -1810,7 +1832,7 @@ Exit_WriteSirInfo:
         
 Err_WriteSirInfo:
     'Display error message to user
-    MsgBox "Error in attempting to write file"
+    MsgBox Error$
     GoTo Exit_WriteSirInfo
         
 End Sub

@@ -138,7 +138,7 @@ On Error GoTo Err_specialcharschk
                 
                     SpecialCharsChk = False     'the ascii character was found
                     
-                ElseIf (intAscii > 32 And intAscii < 48) Or (intAscii > 57 And intAscii < 65) Or (intAscii > 90 And intAscii < 97) Or (intAscii > 122 And intAscii < 128) Then
+                ElseIf (intAscii > 31 And intAscii < 48) Or (intAscii > 57 And intAscii < 65) Or (intAscii > 90 And intAscii < 97) Or (intAscii > 122 And intAscii < 128) Then
                 
                     SpecialCharsChk = True      'special character found
                     
@@ -147,7 +147,7 @@ On Error GoTo Err_specialcharschk
                 
         Else
         
-            If (intAscii > 32 And intAscii < 48) Or (intAscii > 57 And intAscii < 65) Or (intAscii > 90 And intAscii < 97) Or (intAscii > 122 And intAscii < 128) Then
+            If (intAscii > 31 And intAscii < 48) Or (intAscii > 57 And intAscii < 65) Or (intAscii > 90 And intAscii < 97) Or (intAscii > 122 And intAscii < 128) Then
                 SpecialCharsChk = True
                 Exit For
             End If
