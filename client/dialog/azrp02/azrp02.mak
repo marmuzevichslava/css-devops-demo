@@ -14,13 +14,9 @@
 #***************************************************************************
 
 PROJ = AZRP02
-LOCAL_SRC = g:\data\archunit\nt\src
-LOCAL_BIN = g:\data\archunit\nt\bin
-REMOTE_SRC = n:
-REMOTE_BIN = r:
-EXEDIR = $(REMOTE_BIN)\exe
-OBJDIR = $(REMOTE_BIN)\obj
-PROJDIR = $(REMOTE_SRC)\azrp02
+EXEDIR = c:\data\archunit\nt\bin\exe
+OBJDIR = c:\data\archunit\nt\bin\obj
+PROJDIR = c:\data\archunit\nt\src\azrp02
 
 !ifndef DEBUG
 DEBUG = 1
@@ -67,7 +63,7 @@ AZRP02_DEP =  $(PROJDIR)\AZRP02.sdt $(PROJDIR)\AZRP02.wdt
 # Make C window module AZRP001X
 AZRP001X_DEP = $(PROJDIR)\AZRP001X.c	\
 		$(PROJDIR)\AZRP001C.h	\
-		$(REMOTE_SRC)\archinc\AZRP001M.h	\
+		$(PROJDIR)\AZRP001M.h	\
 		$(PROJDIR)\AZRP002O.h	\
 		$(PROJDIR)\AZRP003O.h	\
 		$(PROJDIR)\AZDI0400.C	\
