@@ -1,0 +1,77 @@
+/**********************************************
+*                                             *
+*  Dispatch Table:       AZDW006              *
+*  Generation Date:      November 4, 1993     *
+*  Generation Time:      11:30:38             *
+*  User ID:              CCRAMPTO             *
+*                                             *
+***********************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Fhnhqjxk6643_Predisplay)
+WCBFWD (Fhnhqjxk6648_Predestroy)
+WCBFWD (Fhnhqjxk6653_Msg_Notification)
+WCBFWD (Fhnhqjxk6657_Interwindow_Msg)
+WCBFWD (Fhnhqjxk6662_Window_Close)
+WCBFWD (Fhnhqjxk6668_Other_Gui_Event)
+WCBFWD (Fhnhqjxk6673_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL AZDW006WindDisp[] =
+{
+    {PREDISPLAY, Fhnhqjxk6643_Predisplay},
+    {PREDESTROY, Fhnhqjxk6648_Predestroy},
+    {MSG_NOTIFICATION, Fhnhqjxk6653_Msg_Notification},
+    {INTERWINDOW_MSG, Fhnhqjxk6657_Interwindow_Msg},
+    {WINDOW_CLOSE, Fhnhqjxk6662_Window_Close},
+    {OTHER_GUI_EVENT, Fhnhqjxk6668_Other_Gui_Event},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL AZDW006WidgDisp[] =
+{
+    {OKPB_CMD, BUTTON_CLICK, Fhnhqjxk6673_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY AZDW006FieldDefTbl[] =
+{
+    "Release", 0,
+    "ReleaseDate", 1,
+    "", 0
+};
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY AZDW006CommandDefTbl[] =
+{
+    "OKPB", 1000,
+    "", 0
+};
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY AZDW006IDWindowDefn = {
+    "20", AZDW006ID, "", WTP_WESWINDOW,
+    WMD_MODAL, FALSE, WCR_POPUP, AZDW006ID,
+    WOP_NOACCEL, WOP_NOMENU, WOP_NOICON, 0,
+    AZDW006WidgDisp, AZDW006WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, AZDW006FieldDefTbl, AZDW006CommandDefTbl };

@@ -1,0 +1,643 @@
+/**********************************************
+*                                             *
+*  Resource Definition:  AZDW002              *
+*  Generation Date:      November 4, 1993     *
+*  Generation Time:      09:32:42             *
+*  User ID:              CCRAMPTO             *
+*                                             *
+***********************************************/
+
+
+DLGTEMPLATE AZDW002ID LOADONCALL MOVEABLE DISCARDABLE
+
+Begin  /* dialog */
+
+DIALOG "CSR Statistics",AZDW002ID,
+     0,0,367,179,
+     WS_SAVEBITS
+     | WS_VISIBLE
+     | FS_SCREENALIGN,
+     FCF_NOBYTEALIGN
+     | FCF_TITLEBAR
+     | FCF_DLGBORDER
+
+Begin  /* controls */
+
+CONTROL "Memory",9000,
+     6,71,348,74,WC_STATIC,
+     WS_VISIBLE | WS_GROUP | SS_GROUPBOX
+
+CONTROL "OK",1000,
+     17,2,45,14,WC_BUTTON,
+     WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+     | BS_PUSHBUTTON
+
+
+CONTROL "Total Allocated Segments:", 500,
+     4, 154, 114, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          25,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",100,
+     120,154,24,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Memory Alarm:", 501,
+     201, 154, 74, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          13,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",101,
+     277,154,59,12,FND_ENTRYFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          9,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   TRUE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "Map Bytes:", 502,
+     13, 103, 69, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          10,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",102,
+     84,103,59,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Service Bytes:", 503,
+     12, 83, 69, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          14,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",103,
+     83,83,60,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Node Bytes:", 504,
+     9, 124, 71, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          11,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",104,
+     82,124,62,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Free Bytes:", 505,
+     206, 124, 73, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          11,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",105,
+     281,124,63,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Overhead Bytes:", 506,
+     206, 104, 73, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          15,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",106,
+     281,104,63,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Dead Bytes:", 507,
+     207, 84, 74, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          11,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",107,
+     283,84,60,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Thread Count:", 508,
+     13, 44, 73, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          13,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",108,
+     88,44,61,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Service Thread Count:", 509,
+     204, 44, 97, 10, FND_STATICTEXT,
+     SS_TEXT | WS_VISIBLE | WS_GROUP 
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          21,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     0,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+
+CONTROL "",109,
+     303,44,46,12,FND_NUMERICFIELD,
+     WS_VISIBLE | WS_TABSTOP
+  CTLDATA 
+     EFVERSION       3,
+     FLDLEN          4,
+     FLDJUST         EFJ_LEFTJUST,
+     TEXTCOLOR       CLR_FOREGROUND,
+     DRAWBORDER      FALSE,
+     BORDERCOLOR     CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     REQUIRED        FALSE,
+     ALPHAONLY       FALSE,
+     UPPERCASEONLY   FALSE,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     LOWRANGE        0,
+     HIGHRANGE       0,
+     SYMRANGE        RNG_NONE,
+     SPINBUTTON      FALSE
+     ,NUMEFVERSION   2,
+     INTEGERDIGITS   4,
+     PRECISION       0,
+     INTLDIGITS      4,
+     INTLPRECISION   0,
+     DATATYPE        3,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         1,46,
+     THOUCHAR        1,0,
+     CURRENCY        1,0
+
+CONTROL "Refresh",1001,
+     90,2,45,14,WC_BUTTON,
+     WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+     | BS_PUSHBUTTON
+
+
+End /* controls */
+
+End /* dialog */
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+MENU AZDW002MenuID PRELOAD
+Begin /* menus */
+End /* menus */
+
+
+RESOURCE 927 AZDW002ID AZDW002.wct
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

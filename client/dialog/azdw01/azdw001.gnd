@@ -1,0 +1,112 @@
+/**********************************************
+*                                             *
+*  Dispatch Table:       AZDW001              *
+*  Generation Date:      November 4, 1993     *
+*  Generation Time:      10:23:43             *
+*  User ID:              CCRAMPTO             *
+*                                             *
+***********************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Briqzkoi0035_Predestroy)
+WCBFWD (Briqzkoi0048_Msg_Notification)
+WCBFWD (Briqzkoi0060_Interwindow_Msg)
+WCBFWD (Briqzkoi0075_Window_Close)
+WCBFWD (Briqzkoi0090_Other_Gui_Event)
+WCBFWD (Briqzkoi9990_Predisplay)
+WCBFWD (Briqzkoi0265_Double_Click)
+WCBFWD (Briqzkoi9978_List_Select)
+WCBFWD (Briqzkoi1864_Field_Change)
+WCBFWD (Briqzkoi0192_Click)
+WCBFWD (Briqzkoi0141_Click)
+WCBFWD (Briqzkoi0125_Click)
+WCBFWD (Briqzkoi0157_Click)
+WCBFWD (Briqzkoi0175_Click)
+WCBFWD (Briqzkoi9241_Click)
+WCBFWD (Briqzkoi9368_Click)
+WCBFWD (Briqzkoi9413_Click)
+WCBFWD (Briqzkoi9397_Click)
+WCBFWD (Briqzkoi9262_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL AZDW001WindDisp[] =
+{
+    {PREDESTROY, Briqzkoi0035_Predestroy},
+    {MSG_NOTIFICATION, Briqzkoi0048_Msg_Notification},
+    {INTERWINDOW_MSG, Briqzkoi0060_Interwindow_Msg},
+    {WINDOW_CLOSE, Briqzkoi0075_Window_Close},
+    {OTHER_GUI_EVENT, Briqzkoi0090_Other_Gui_Event},
+    {PREDISPLAY, Briqzkoi9990_Predisplay},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL AZDW001WidgDisp[] =
+{
+    {ServicesLB_FID, DOUBLE_CLICK, Briqzkoi0265_Double_Click},
+    {ServicesLB_FID, LIST_SELECT, Briqzkoi9978_List_Select},
+    {MsgLevel_FID, FIELD_CHANGE, Briqzkoi1864_Field_Change},
+    {AMNSTAT_CMD, BUTTON_CLICK, Briqzkoi0192_Click},
+    {AMNMAPS_CMD, BUTTON_CLICK, Briqzkoi0141_Click},
+    {AMNDATA_CMD, BUTTON_CLICK, Briqzkoi0125_Click},
+    {AMNPRNTF_CMD, BUTTON_CLICK, Briqzkoi0157_Click},
+    {AMNPRNTP_CMD, BUTTON_CLICK, Briqzkoi0175_Click},
+    {HelpforHelpMN_CMD, BUTTON_CLICK, Briqzkoi9241_Click},
+    {ExtendedHelpMN_CMD, BUTTON_CLICK, Briqzkoi9368_Click},
+    {KeysHelpMN_CMD, BUTTON_CLICK, Briqzkoi9413_Click},
+    {HelpIndexMN_CMD, BUTTON_CLICK, Briqzkoi9397_Click},
+    {AboutMN_CMD, BUTTON_CLICK, Briqzkoi9262_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY AZDW001FieldDefTbl[] =
+{
+    "REQUESTID", 0,
+    "ServicesLB", 1,
+    "TranscriptLB", 2,
+    "MsgLevel", 3,
+    "", 0
+};
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY AZDW001CommandDefTbl[] =
+{
+    "AMNSTAT", 1000,
+    "AMNMAPS", 1001,
+    "AMNDATA", 1002,
+    "AMNPRNTF", 1003,
+    "AMNPRNTP", 1004,
+    "HelpforHelpMN", 1005,
+    "ExtendedHelpMN", 1006,
+    "KeysHelpMN", 1007,
+    "HelpIndexMN", 1008,
+    "AboutMN", 1009,
+    "", 0
+};
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY AZDW001IDWindowDefn = {
+    "20", AZDW001ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_TOP, AZDW001ID,
+    AZDW001AccelID, AZDW001MenuID, WOP_NOICON, 0,
+    AZDW001WidgDisp, AZDW001WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, AZDW001FieldDefTbl, AZDW001CommandDefTbl };

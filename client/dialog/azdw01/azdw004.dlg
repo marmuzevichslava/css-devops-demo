@@ -1,0 +1,226 @@
+/**********************************************
+*                                             *
+*  Resource Definition:  AZDW004              *
+*  Generation Date:      November 3, 1993     *
+*  Generation Time:      12:15:18             *
+*  User ID:              CCRAMPTO             *
+*                                             *
+***********************************************/
+
+
+DLGTEMPLATE AZDW004ID LOADONCALL MOVEABLE DISCARDABLE
+
+Begin  /* dialog */
+
+DIALOG "CSR Resident Service Data",AZDW004ID,
+     0,0,401,179,
+     WS_SAVEBITS
+     | WS_VISIBLE
+     | FS_SCREENALIGN,
+     FCF_NOBYTEALIGN
+     | FCF_TITLEBAR
+     | FCF_DLGBORDER
+
+Begin  /* controls */
+
+CONTROL "OK",1000,
+     179,8,45,14,WC_BUTTON,
+     WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+     | BS_PUSHBUTTON
+
+
+CONTROL "",100,
+     3,36,394,128,FND_LISTBOX,
+     WS_VISIBLE | WS_TABSTOP | WS_GROUP
+  CTLDATA 
+     LBVERSION       2,
+     MULTSEL         FALSE,
+     MAXROWS         50,
+     NUMCOLS         8,
+     HLINES          FALSE,
+     VLINES          TRUE,
+     SHOWTITLE       TRUE,
+     SHOWCOLTITLES   TRUE,
+     KEYCOL          0,
+     LINESPERROW     1,
+     PUSHBUTTONS     FALSE,
+     STATICBORDER    -1,
+     KEYCOL1         -1,
+     ASCENDING1      TRUE,
+     KEYCOL2         -1,
+     ASCENDING2      TRUE,
+     KEYCOL3         -1,
+     ASCENDING3      TRUE,
+     COLSPERLINE     8,
+     TITLE           0,
+     TITLECOLOR      CLR_FOREGROUND,
+     TITLEBGCOLOR    CLR_BACKGROUND
+     ,COLTITLE       6,"Server",
+     COLWIDTH        8,
+     COLSIZE         36,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_NUM,
+     COLJUST         EFJ_LEFTJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       10,"Service ID",
+     COLWIDTH        4,
+     COLSIZE         49,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_NUM,
+     COLJUST         EFJ_LEFTJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       15,"Translation Map",
+     COLWIDTH        8,
+     COLSIZE         71,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_CHAR,
+     COLJUST         EFJ_LEFTJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       12,"Request Type",
+     COLWIDTH        10,
+     COLSIZE         61,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_CHAR,
+     COLJUST         EFJ_CENTERJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       6,"Status",
+     COLWIDTH        10,
+     COLSIZE         44,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_CHAR,
+     COLJUST         EFJ_CENTERJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       13,"Creation Time",
+     COLWIDTH        9,
+     COLSIZE         64,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_CHAR,
+     COLJUST         EFJ_CENTERJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       15,"Expiration Time",
+     COLWIDTH        9,
+     COLSIZE         72,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_CHAR,
+     COLJUST         EFJ_CENTERJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,COLTITLE       4,"Size",
+     COLWIDTH        9,
+     COLSIZE         40,
+     TEXTCOLOR       CLR_FOREGROUND,
+     BGCOLOR         CLR_BACKGROUND,
+     FONTSIZE        10,
+     FONTSTYLE       FST_NORMAL,
+     FONT            19,"System Proportional",
+     COLTYPE         TYPE_NUM,
+     COLJUST         EFJ_CENTERJUST,
+     COLHEADJUST     EFJ_CENTERJUST,
+     INITHIDDEN      FALSE
+     ,INTEGERDIGITS   8,
+     PRECISION       0,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         ".",
+     THOUCHAR        "\001",
+     CURRENCY        0
+     ,INTEGERDIGITS   4,
+     PRECISION       0,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_LDGMINUS,
+     DECCHAR         ".",
+     THOUCHAR        ",",
+     CURRENCY        0
+     ,INTEGERDIGITS   9,
+     PRECISION       0,
+     LEADINGZEROS    FALSE,
+     TRAILINGZEROS   FALSE,
+     DISPWHENZERO    FALSE,
+     SIGNOPTION      SGN_UNSIGNED,
+     DECCHAR         ".",
+     THOUCHAR        "\001",
+     CURRENCY        0
+     
+End /* controls */
+
+End /* dialog */
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+MENU AZDW004MenuID PRELOAD
+Begin /* menus */
+End /* menus */
+
+
+RESOURCE 927 AZDW004ID AZDW004.wct
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+

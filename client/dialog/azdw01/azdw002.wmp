@@ -1,0 +1,133 @@
+/**********************************************
+*                                             *
+*  WES Map Definition:   AZDW002              *
+*  Generation Date:      November 4, 1993     *
+*  Generation Time:      09:33:20             *
+*  User ID:              CCRAMPTO             *
+*                                             *
+***********************************************/
+
+struct _AZDW002WesMap {
+
+WESMAPHDR _WesMapHeader;
+/* Header */
+#define WindowTitle               pWesMap->_WesMapHeader._WindowTitle
+#define WindowOriginX             pWesMap->_WesMapHeader._WindowOriginX
+#define WindowOriginY             pWesMap->_WesMapHeader._WindowOriginY
+#define WindowWidth               pWesMap->_WesMapHeader._WindowWidth
+#define WindowHeight              pWesMap->_WesMapHeader._WindowHeight
+#define WindowPointer             pWesMap->_WesMapHeader._WindowPointer
+#define WindowPointerMode         pWesMap->_WesMapHeader._WindowPointerMode
+#define WindowState               pWesMap->_WesMapHeader._WindowState
+#define WindowVisibility          pWesMap->_WesMapHeader._WindowVisibility
+#define WindowEnableInd           pWesMap->_WesMapHeader._WindowEnableInd
+
+/* Group Status Indicators */
+unsigned char _GrpStatus;
+unsigned char _grpFiller;
+#define GrpStatus                       pWesMap->_GrpStatus
+
+/* Data Access */
+
+   unsigned short _TotalAllocatedSegsData;
+#define TotalAllocatedSegsData              pWesMap->_TotalAllocatedSegsData
+
+   char _MemAlarmData[10];
+#define MemAlarmData              pWesMap->_MemAlarmData
+
+   unsigned short _MapBytesData;
+#define MapBytesData              pWesMap->_MapBytesData
+
+   unsigned short _ServiceBytesData;
+#define ServiceBytesData              pWesMap->_ServiceBytesData
+
+   unsigned short _NodeBytesData;
+#define NodeBytesData              pWesMap->_NodeBytesData
+
+   unsigned short _FreeBytesData;
+#define FreeBytesData              pWesMap->_FreeBytesData
+
+   unsigned short _MemNodeOverheadBytesData;
+#define MemNodeOverheadBytesData              pWesMap->_MemNodeOverheadBytesData
+
+   unsigned short _DeadBytesData;
+#define DeadBytesData              pWesMap->_DeadBytesData
+
+   unsigned short _ThreadCountData;
+#define ThreadCountData              pWesMap->_ThreadCountData
+
+   unsigned short _ServiceThreadCountData;
+#define ServiceThreadCountData              pWesMap->_ServiceThreadCountData
+
+
+    WESFLDCTL _TotalAllocatedSegsCtl;
+#define TotalAllocatedSegsAttr                       pWesMap->_TotalAllocatedSegsCtl.Attr
+#define TotalAllocatedSegsStatus                     pWesMap->_TotalAllocatedSegsCtl.Status
+#define TotalAllocatedSegsRights                     pWesMap->_TotalAllocatedSegsCtl.Rights
+#define TotalAllocatedSegsMsg                        pWesMap->_TotalAllocatedSegsCtl.Msg
+#define TotalAllocatedSegsCursor                     pWesMap->_TotalAllocatedSegsCtl.Cursor
+
+    WESFLDCTL _MemAlarmCtl;
+#define MemAlarmAttr                       pWesMap->_MemAlarmCtl.Attr
+#define MemAlarmStatus                     pWesMap->_MemAlarmCtl.Status
+#define MemAlarmRights                     pWesMap->_MemAlarmCtl.Rights
+#define MemAlarmMsg                        pWesMap->_MemAlarmCtl.Msg
+#define MemAlarmCursor                     pWesMap->_MemAlarmCtl.Cursor
+
+    WESFLDCTL _MapBytesCtl;
+#define MapBytesAttr                       pWesMap->_MapBytesCtl.Attr
+#define MapBytesStatus                     pWesMap->_MapBytesCtl.Status
+#define MapBytesRights                     pWesMap->_MapBytesCtl.Rights
+#define MapBytesMsg                        pWesMap->_MapBytesCtl.Msg
+#define MapBytesCursor                     pWesMap->_MapBytesCtl.Cursor
+
+    WESFLDCTL _ServiceBytesCtl;
+#define ServiceBytesAttr                       pWesMap->_ServiceBytesCtl.Attr
+#define ServiceBytesStatus                     pWesMap->_ServiceBytesCtl.Status
+#define ServiceBytesRights                     pWesMap->_ServiceBytesCtl.Rights
+#define ServiceBytesMsg                        pWesMap->_ServiceBytesCtl.Msg
+#define ServiceBytesCursor                     pWesMap->_ServiceBytesCtl.Cursor
+
+    WESFLDCTL _NodeBytesCtl;
+#define NodeBytesAttr                       pWesMap->_NodeBytesCtl.Attr
+#define NodeBytesStatus                     pWesMap->_NodeBytesCtl.Status
+#define NodeBytesRights                     pWesMap->_NodeBytesCtl.Rights
+#define NodeBytesMsg                        pWesMap->_NodeBytesCtl.Msg
+#define NodeBytesCursor                     pWesMap->_NodeBytesCtl.Cursor
+
+    WESFLDCTL _FreeBytesCtl;
+#define FreeBytesAttr                       pWesMap->_FreeBytesCtl.Attr
+#define FreeBytesStatus                     pWesMap->_FreeBytesCtl.Status
+#define FreeBytesRights                     pWesMap->_FreeBytesCtl.Rights
+#define FreeBytesMsg                        pWesMap->_FreeBytesCtl.Msg
+#define FreeBytesCursor                     pWesMap->_FreeBytesCtl.Cursor
+
+    WESFLDCTL _MemNodeOverheadBytesCtl;
+#define MemNodeOverheadBytesAttr                       pWesMap->_MemNodeOverheadBytesCtl.Attr
+#define MemNodeOverheadBytesStatus                     pWesMap->_MemNodeOverheadBytesCtl.Status
+#define MemNodeOverheadBytesRights                     pWesMap->_MemNodeOverheadBytesCtl.Rights
+#define MemNodeOverheadBytesMsg                        pWesMap->_MemNodeOverheadBytesCtl.Msg
+#define MemNodeOverheadBytesCursor                     pWesMap->_MemNodeOverheadBytesCtl.Cursor
+
+    WESFLDCTL _DeadBytesCtl;
+#define DeadBytesAttr                       pWesMap->_DeadBytesCtl.Attr
+#define DeadBytesStatus                     pWesMap->_DeadBytesCtl.Status
+#define DeadBytesRights                     pWesMap->_DeadBytesCtl.Rights
+#define DeadBytesMsg                        pWesMap->_DeadBytesCtl.Msg
+#define DeadBytesCursor                     pWesMap->_DeadBytesCtl.Cursor
+
+    WESFLDCTL _ThreadCountCtl;
+#define ThreadCountAttr                       pWesMap->_ThreadCountCtl.Attr
+#define ThreadCountStatus                     pWesMap->_ThreadCountCtl.Status
+#define ThreadCountRights                     pWesMap->_ThreadCountCtl.Rights
+#define ThreadCountMsg                        pWesMap->_ThreadCountCtl.Msg
+#define ThreadCountCursor                     pWesMap->_ThreadCountCtl.Cursor
+
+    WESFLDCTL _ServiceThreadCountCtl;
+#define ServiceThreadCountAttr                       pWesMap->_ServiceThreadCountCtl.Attr
+#define ServiceThreadCountStatus                     pWesMap->_ServiceThreadCountCtl.Status
+#define ServiceThreadCountRights                     pWesMap->_ServiceThreadCountCtl.Rights
+#define ServiceThreadCountMsg                        pWesMap->_ServiceThreadCountCtl.Msg
+#define ServiceThreadCountCursor                     pWesMap->_ServiceThreadCountCtl.Cursor
+};
+

@@ -1,0 +1,2384 @@
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Module
+**
+**  FILENAME         : <CUFFnnn>.AEX
+**
+**  DESCRIPTION      : CSS Architecture Exit Functions:
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+/***************************************************************************/
+/* Forward declarations for Architecture Exit functions                    */
+/***************************************************************************/
+
+AEXFWD( ExitWktCloseAfterSave );
+AEXFWD( ExitWktCloseAfterCancel );
+
+AEXFWD( ExitCsrNotification );
+AEXFWD( ExitCsrRequestFailed );
+AEXFWD( ExitCsrProcessReply );
+
+AEXFWD( ExitWdtSetDataLength );
+AEXFWD( ExitWdtBuildLUW );
+
+AEXFWD( ExitTlPopulateData );
+AEXFWD( ExitTlSetChildInitData );
+
+AEXFWD( ExitElbRegister );
+AEXFWD( ExitElb1CloseAfterSave );
+AEXFWD( ExitElb1CloseAfterCncl );
+AEXFWD( ExitElb1BuildInstName );
+AEXFWD( ExitElb1BuildInitData );
+AEXFWD( ExitElb1BuildDelData );
+AEXFWD( ExitElb2CloseAfterSave );
+AEXFWD( ExitElb2CloseAfterCncl );
+AEXFWD( ExitElb2BuildInstName );
+AEXFWD( ExitElb2BuildInitData );
+AEXFWD( ExitElb2BuildDelData );
+AEXFWD( ExitElb3CloseAfterSave );
+AEXFWD( ExitElb3CloseAfterCncl );
+AEXFWD( ExitElb3BuildInstName );
+AEXFWD( ExitElb3BuildInitData );
+AEXFWD( ExitElb3BuildDelData );
+AEXFWD( ExitElb4CloseAfterSave );
+AEXFWD( ExitElb4CloseAfterCncl );
+AEXFWD( ExitElb4BuildInstName );
+AEXFWD( ExitElb4BuildInitData );
+AEXFWD( ExitElb4BuildDelData );
+AEXFWD( ExitElb5CloseAfterSave );
+AEXFWD( ExitElb5CloseAfterCncl );
+AEXFWD( ExitElb5BuildInstName );
+AEXFWD( ExitElb5BuildInitData );
+AEXFWD( ExitElb5BuildDelData );
+
+AEXFWD( ExitSibStartDialog );
+
+AEXFWD( ExitDomDragPrepare );
+AEXFWD( ExitDomDragOver );
+AEXFWD( ExitDomDrop );
+
+AEXFWD( ExitSecSetBrowse );
+
+AEXFWD( ExitHlpInit );
+
+AEXFWD( CmnArchExitInitialize );
+
+
+/***************************************************************************/
+/* ArchExitTable - This table is used by the architecture functions to     */
+/*  resolve function addresses in the users program. All functions must    */
+/*  be registered in this table.                                           */
+/***************************************************************************/
+
+static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
+{
+    REGISTERARCHEXIT( ExitWktCloseAfterSave ),
+    REGISTERARCHEXIT( ExitWktCloseAfterCancel ),
+
+    REGISTERARCHEXIT( ExitCsrNotification ),
+    REGISTERARCHEXIT( ExitCsrRequestFailed ),
+    REGISTERARCHEXIT( ExitCsrProcessReply ),
+
+    REGISTERARCHEXIT( ExitWdtSetDataLength ),
+    REGISTERARCHEXIT( ExitWdtBuildLUW ),
+
+    REGISTERARCHEXIT( ExitTlPopulateData ),
+    REGISTERARCHEXIT( ExitTlSetChildInitData ),
+
+    REGISTERARCHEXIT( ExitElbRegister ),
+    REGISTERARCHEXIT( ExitElb1CloseAfterSave ),
+    REGISTERARCHEXIT( ExitElb1CloseAfterCncl ),
+    REGISTERARCHEXIT( ExitElb1BuildInstName ),
+    REGISTERARCHEXIT( ExitElb1BuildInitData ),
+    REGISTERARCHEXIT( ExitElb1BuildDelData ),
+    REGISTERARCHEXIT( ExitElb2CloseAfterSave ),
+    REGISTERARCHEXIT( ExitElb2CloseAfterCncl ),
+    REGISTERARCHEXIT( ExitElb2BuildInstName ),
+    REGISTERARCHEXIT( ExitElb2BuildInitData ),
+    REGISTERARCHEXIT( ExitElb2BuildDelData ),
+    REGISTERARCHEXIT( ExitElb3CloseAfterSave ),
+    REGISTERARCHEXIT( ExitElb3CloseAfterCncl ),
+    REGISTERARCHEXIT( ExitElb3BuildInstName ),
+    REGISTERARCHEXIT( ExitElb3BuildInitData ),
+    REGISTERARCHEXIT( ExitElb3BuildDelData ),
+    REGISTERARCHEXIT( ExitElb4CloseAfterSave ),
+    REGISTERARCHEXIT( ExitElb4CloseAfterCncl ),
+    REGISTERARCHEXIT( ExitElb4BuildInstName ),
+    REGISTERARCHEXIT( ExitElb4BuildInitData ),
+    REGISTERARCHEXIT( ExitElb4BuildDelData ),
+    REGISTERARCHEXIT( ExitElb5CloseAfterSave ),
+    REGISTERARCHEXIT( ExitElb5CloseAfterCncl ),
+    REGISTERARCHEXIT( ExitElb5BuildInstName ),
+    REGISTERARCHEXIT( ExitElb5BuildInitData ),
+    REGISTERARCHEXIT( ExitElb5BuildDelData ),
+
+    REGISTERARCHEXIT( ExitSibStartDialog ),
+
+    REGISTERARCHEXIT( ExitDomDragPrepare ),
+    REGISTERARCHEXIT( ExitDomDragOver ),
+    REGISTERARCHEXIT( ExitDomDrop ),
+
+    REGISTERARCHEXIT( ExitSecSetBrowse ),
+
+    REGISTERARCHEXIT( ExitHlpInit ),
+    "",0
+};
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitWktCloseAfterSave
+**
+**  DESCRIPTION      : This exit occurs when a child of this window closes
+**                     after pressing OK.  This exit is REQUIRED for ALL
+**                     parent windows.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitWktCloseAfterSave )
+{
+
+  //  USHORT FndGenRC = 0;
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+
+      SHORT sRC;
+
+    if( strcmp( EAB_ChildWindowName, "AZDW005" ) == 0 )
+      {
+
+      /*
+      ** Call function to write out the data
+      */
+         sRC = AZDW001BusWriteSaveFile(pEventInfo,
+                                pEAIA,
+                                pBFCD,
+                                pWesMap,
+                                pWindContextData,
+                                pABHI);
+      }
+
+
+    return CMN_SUCCESS;
+
+} /* End of ExitWktCloseAfterSave */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitWktCloseAfterCancel
+**
+**  DESCRIPTION      : This exit is invoked when a child of this window has
+**                     been closed by clicking on the CANCEL button.  No
+**                     data has been saved by the child window.  This exit
+**                     is REQUIRED for ALL parent windows.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitWktCloseAfterCancel )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Replace <CUFFnnnOutput>, <WesField>, and <ChildField>
+  //  with the appropriate values for any OUT layouts
+  //  that need to be examined or acted upon.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //
+  //  USHORT FndGenRC = 0;
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //
+  //  /* Handle window CUFFnnnX */
+  //  if( strcmp( EAB_ChildWindowName, "<CUFFnnnX>" ) == 0 )
+  //  {
+  //      /* Perform any necessary application logic */
+  //      ...
+  //  }
+  //  else if( ... )
+  //  {
+  //      /* Perform any necessary application logic */
+  //      ...
+  //  }
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitWktCloseAfterCancel */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitCsrNotification
+**
+**  DESCRIPTION      : This exit is invoked when the CSR request and reply
+**                     exchange is completed successfully.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitCsrNotification )
+{
+  //
+  //  USHORT FndGenRC = 0;
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //
+  //  if the window contains a list box (or ELB) declare the following:
+  //  _<LB>Row  <LbRowDataName>;
+  //
+  //
+  //  /* Handle LUW Process reply */
+  //  if( strcmp( EAB_CsrRequestId, "<CUFFnnL>" ) == 0 )
+  //  {
+  //      /* Declare a pointer to the Client Data area */
+  //      <_CUFFnnL> *p<CUFFnnL>;
+  //
+  //      /* Change the pointer to point to your <CuffnnL> Record Group. */
+  //      p<CUFFnnL> = &(BFCD_<CUFFnnL>);
+  //
+  //      /* Handle a successful update. */
+  //      if( p<CUFFnnL>->CdMsgioStatus == 0 )
+  //      {
+  //          CmnMsgBoxDisplay( p<CUFFnnL>->CdServErrMsg,
+  //                            CMN_NULL_RETURN_BUTTON,
+  //                            CMN_NULL_MSGBOX_NAME,
+  //                            CMN_ARCH_PARMS );
+  //
+  //          CMN_WN_CL_AFTER_SUCCESS_PROCESS
+  //      }
+  //
+  //      /* Handle an unsuccessful update. */
+  //      else
+  //      {
+  //          CmnMsgBoxDisplay( p<CUFFnnL>->CdServErrMsg,
+  //                            CMN_NULL_RETURN_BUTTON,
+  //                            CMN_NULL_MSGBOX_NAME,
+  //                            CMN_ARCH_PARMS);
+  //      }
+  //  }
+  //
+  //  /* Handle CSR reply for request <CUFFnnnR> */
+  //  else if( strcmp( EAB_CsrRequestId, "<CUFFnnnR>" ) == 0 )
+  //  {
+
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  In some cases, it may be necessary to examine additional fields
+  //  to determine if the request was successful.  For example, when
+  //  the request results in a Generic Service call, the number of
+  //  rows returned (QyAlrAclCnt) should be used to determine the
+  //  success of the request.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //
+  //      /* Handle a successful reply. */
+  //      if( WCD_<CUFFnnn>Rqst.CdMsgioStatus == 0 )
+  //      {
+  //          /* Populate the window fields with the data in <CUFFnnnR> */
+  //
+  //--------------------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  The following shell code applies to loading an enterable
+  //    list box with data from the CSR.  If this is not the case,
+  //    remove the shell code.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------------------
+  //             for (each row of data in the CSR reply layout <CUFFnnnR>)
+  //             {
+  //
+  //                 /* Format the enterable list box row typedef structure
+  //                 **    _<LB>Row found in the WESmap with the data from
+  //                 **    the CSR replay layout <CUFFnnnR>
+  //                 */
+  //
+  //               if (<exp. to determine if override chg window required>)
+  //               {
+  //                   CmnElbAssignRowData ( <ELB Widget Name>,
+  //                                         <row number to load data to>,
+  //                                         &<LbRowDataName>,
+  //                                         <override chg window name>,
+  //                                         CMN_ARCH_PARMS );
+  //               }
+  //               else
+  //               {
+  //                   CmnElbAssignRowData ( <ELB Widget Name>,
+  //                                         <row number to load data to>,
+  //                                         &<LbRowDataName>,
+  //                                         NULL,  /*use default chg window*/
+  //                                         CMN_ARCH_PARMS );
+  //               }
+  //             }
+  //
+  //
+  //          /* Format working storage fields with the data in <CUFFnnnR> */
+  //
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  The following code applies to a child window that is
+  //  receiving its initial data.  The modifications made during
+  //  previous OKs from this same window need to overlay the
+  //  data returned by the CSR.  These modifications are contained
+  //  in the OUT layout for the window.
+  //
+  //  Note that if this is not the request for initial data,
+  //  this logic should be removed.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //
+  //
+  //  If the this child window contains an enterable list box,
+  //     uncomment this code to load the window data tracking
+  //     data to the enterable list box in the window.
+  //     If this is not the case, remove the code.
+  //
+  //          for (<each ELB in the window>)
+  //          {
+  //               CmnElbLoadWdtData ( <ELB Widget Name>,
+  //                                   CMN_ELB_NOT_MEGA_SCROLL,
+  //                                   CMN_ARCH_PARMS );
+  //          }
+  //
+  //------------------------------------------------------
+  //
+  //          /* Check to see if there is data in the OUT layout */
+  //          if( EAB_pWdtOutData != NULL)
+  //          {
+  //              /* Set up a pointer to the OUT layout <CUFFnnnOUTPUT> */
+  //              <_CUFFnnnOUTPUT> *p<CUFFnnnOutput>;
+  //
+  //              p<CUFFnnnOutput> = EAB_pWdtOutData;
+  //
+  //              /* Overlay window fields from OUT layout <CUFFnnnOutput> */
+  //
+  //          }
+  //
+  //
+  //
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  The following code is used to handle a Mega-scrolling
+  //  reply.
+  //
+  //  Note that if this is not the reply from the Mega-
+  //  scrolling service request, this logic should be removed.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //          {
+  //
+  //              USHORT   i          = 0; /* Loop counter */
+  //              USHORT   DataLength = 0; /* Length of Row Data */
+  //              _<LB>Row RowData;        /* Data row */
+  //
+  //----------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  The following shell code pertains exclusively to windows
+  //    that contain mega-scrolling enterable list boxes.  If this
+  //    is not the case, remove the code.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //-----------------------------------------------------
+  //
+  //             /* Clear the contents of the mega-enterable list box */
+  //
+  //             CmnElbInit ( <ELB Widget Name>,
+  //                           CMN_ARCH_PARM_TYPES );
+  //
+  //             /*
+  //             **   Load the enterable list box with the data from the
+  //             **   CSR replay data layout <CUFFnnnR>
+  //             */
+  //
+  //             for (each row of data in the CSR replay layout <CUFFnnnR>)
+  //             {
+  //
+  //                 /* Format the enterable list box row typedef structure
+  //                 **    _<LB>Row found in the WESmap with the data from
+  //                 **    the CSR replay layout <CUFFnnnR>
+  //                 */
+  //
+  //               if (<exp. to determine if override chg window required>)
+  //               {
+  //                   CmnElbAssignRowData ( <ELB Widget Name>,
+  //                                         <row number to load data to>,
+  //                                         &<LbRowDataName>,
+  //                                         <override chg window name>,
+  //                                         CMN_ARCH_PARMS );
+  //               }
+  //               else
+  //               {
+  //                   CmnElbAssignRowData ( <ELB Widget Name>,
+  //                                         <row number to load data to>,
+  //                                         &<LbRowDataName>,
+  //                                         NULL,  /*use default chg window*/
+  //                                         CMN_ARCH_PARMS );
+  //               }
+  //             }
+  //
+  //             /*
+  //             **  After all rows have been loaded with data, load the
+  //             **  the previously saved data from window data tracking
+  //             */
+  //
+  //             CmnElbLoadWdtData ( <ELB Widget Name>,
+  //                                 CMN_ELB_MEGA_SCROLL,
+  //                                 CMN_ARCH_PARMS );
+  //
+  //-----------------------------------------------------------------
+  //   S H E L L   I N S T R U C T I O N S
+  //
+  //    The following shell code pertains to non-Enterable List Boxes.
+  //
+  //   REMOVE THIS COMMENT BLOCK WHEN DONE
+  //
+  //------------------------------------------------------------------
+  //
+  //
+  //              /* Clear the contents of the mega-listbox */
+  //              FndLstBoxRowDeleteAll( CBI_hwnd,
+  //                                     <ListBoxName>,
+  //                                     &FndGenErrorBlock );
+  //
+  //              /* Add rows to the listbox using the data in <CUFFnnnR> */
+  //              for( i = 0; i < pClientData->QyAlrAclCnt; i++ )
+  //              {
+  //                  /*
+  //                  ** Format the columns in the mega-listbox row using
+  //                  ** data from <CUFFnnnR> using the structure RowData.
+  //                  */
+  //
+  //                  /* Add the row to the mega-listbox */
+  //                  FndLstBoxRowAdd( CBI_hwnd,
+  //                                   <ListBoxName>,
+  //                                   i,
+  //                                   sizeof(_<LB>Row),
+  //                                   &RowData,
+  //                                   &FndGenErrorBlock );
+  //              }
+  //
+  //------------------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Perform the following for any type of mega-scrolling list box
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE
+  //
+  //-------------------------------------------------------------
+  //
+  //              /* You may need to change <CUCG003Output>  */
+  //              if( <CUCG003Output>.DataAbove == CMN_NO )
+  //              {
+  //                  /* Disable the ListPageUp Control. */
+  //                  FndLstBoxUpDisable( CBI_hwnd,
+  //                                      <ListBoxName>,
+  //                                      &FndGenErrorBlock );
+  //              }
+  //              else
+  //              {
+  //                  /* Enable the ListPageUp Control. */
+  //                  FndLstBoxUpEnable( CBI_hwnd,
+  //                                     <ListBoxName>,
+  //                                     &FndGenErrorBlock );
+  //              }
+  //
+  //              /* You may need to change <CUCG003Output>  */
+  //              if( <CUCG003Output>.DataBelow == CMN_NO )
+  //              {
+  //                  /* Disable the ListPageDown Control. */
+  //                  FndLstBoxDownDisable( CBI_hwnd,
+  //                                        <ListBoxName>,
+  //                                        &FndGenErrorBlock );
+  //              }
+  //              else
+  //              {
+  //                  /* Enable the ListPageDown Control. */
+  //                  FndLstBoxDownEnable( CBI_hwnd,
+  //                                       <ListBoxName>,
+  //                                       &FndGenErrorBlock );
+  //              }
+  //
+  //          } /* End of MegaScrolling block */
+  //
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Perform the following for all windows.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //          /* Set the window title */
+  //          CmnWindowTitleCreate( "<Action>",
+  //                                "<ObjectType>",/* CMN_NULL_OBJECT_TYPE */
+  //                                "<Object>",    /* no quotes if variable*/
+  //                                CMN_DEFAULT_WINDOW_TITLE_MAX,
+  //                                CMN_ARCH_PARMS);
+  //
+  //          /* Make the window visible */
+  //          FndWindowShow( CBI_hwnd,
+  //                         &FndGenErrorBlock);
+  //
+  //      } /* if( WCD_<CUFFnnn>Rqst.CdMsgioStatus == 0 )
+  //
+  //      else /* CdMsgioStatus is non-zero */
+  //      {
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  If the structure chart specifies that the window
+  //  should be destroyed when the MsgioStatus is non-
+  //  zero, then include the following Overrides,
+  //  otherwise remove it.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //          /* Set Logging Flag to Yes. */
+  //          CmnMsgBoxOverrides( CMN_LOGGING_YES,
+  //                              CMN_ARCH_PARMS );
+  //
+  //          /* Display the problem to the user. */
+  //          CmnMsgBoxDisplay( <message>,
+  //                            CMN_NULL_RETURN_BUTTON,
+  //                            CMN_NULL_MSGBOX_NAME,
+  //                            CMN_ARCH_PARMS );
+  //
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  If the structure chart specifies that the window
+  //  should be destroyed when the MsgioStatus is non-
+  //  zero, then include the following WindowDestroy,
+  //  otherwise remove it.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //          FndWindowDestroy( CBI_hwnd,
+  //                            &FndGenErrorBlock );
+  //
+  //      } /* end of else CdMsgioStatus is non-zero */
+  //
+  //  } /* end of if( strcmp( EAB_CsrRequestId, "<CUFFnnnR>" ) == 0 ) */
+  //
+  //  /* Handle CSR reply for request <CUFFnnnR> */
+  //  else if( ... )
+  //  {
+  //  }
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitCsrNotification */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitCsrRequestFailed
+**
+**  DESCRIPTION      : This exit is invoked when the CSR request and reply
+**                     exchange is NOT completed successfully.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+
+AEXPROC( ExitCsrRequestFailed )
+{
+  //  /* Set Logging Flag to Yes. */
+  //  CmnMsgBoxOverrides( CMN_LOGGING_YES,
+  //                      CMN_ARCH_PARMS );
+  //
+  //  /* Display the problem to the user. */
+  //  CmnMsgBoxDisplay( EAB_CsrReturnCode,
+  //                    CMN_NULL_RETURN_BUTTON,
+  //                    CMN_NULL_MSGBOX_NAME,
+  //                    CMN_ARCH_PARMS );
+  //
+  //  FndWindowDestroy( CBI_hwnd,
+  //                    &FndGenErrorBlock );
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitCsrRequestFailed */
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitCsrProcessReply
+**
+**  DESCRIPTION      : This exit is called for a successful Top Window reply.
+**                     The reply request id is checked to see if it is the
+**                     LUW Process reply.  If so, a flag must be set and a
+**                     message box must be destroyed.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitCsrProcessReply )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Modify the strcmp instruction to contain the name
+  //  of the LUW request for the window.  If the window
+  //  does not have an LUW, this exit should contain
+  //  only the return statement.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //
+  //  if( strcmp( EAB_CsrRequestId, "<CUFFnnL>" ) == 0 )
+  //  {
+  //      CMN_PROCESS_REPLY_RECEIVED
+  //  }
+  //
+
+  return CMN_SUCCESS;
+} /* End of ExitCsrProcessReply */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitWdtSetDataLength
+**
+**  DESCRIPTION      : This exit is invoked when the OK button on this
+**                     window is clicked.  The application must provide the
+**                     length of the OUT layout for Window Data Tracking
+**                     purposes.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitWdtSetDataLength )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  If this window has an Output layout, replace the
+  //  0 in the following line of code with:
+  //
+  //    sizeof(<_CUFFnnnOUTPUT>)
+  //
+  //  where <CUFFnnnOUTPUT> is the name of the window's
+  //  output layout.  If the window has no output
+  //  layout, do not modify the shell.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    /* Set EAB_OutDataLength to the sizeof the OUT layout for this window */
+    EAB_OutDataLength = 0;
+
+    return CMN_SUCCESS;
+
+} /* End of ExitWdtSetDataLength */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitWdtBuildLUW
+**
+**  DESCRIPTION      : This exit will be invoked ONCE FOR EACH descendent
+**                     window in the dialog that added, changed, or deleted
+**                     data during the life of the dialog.  The exit is
+**                     invoked just after the user clicks on the Process
+**                     Menu Item, and before the Process Menu Item callback
+**                     is invoked.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitWdtBuildLUW )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This shell code contains two types of examples:
+  //  first, for single instance child windows, and
+  //  second, for multiple instance child windows.
+  //  Note that in the second case, the instance name
+  //  should be referenced to determine which instance
+  //  of the child window's data is being handled.  The
+  //  specific processing in this case depends on the
+  //  application.
+  //
+  //  As in previous examples, be sure to replace the
+  //  template variable names (those enclosed with <...>
+  //  with actual application-specific names.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  /* Handle window CUFFnnnX */
+  //  if( strcmp( EAB_WdtWindowName, "<CUFFnnnX>" ) == 0 )
+  //  {
+  //---------------------------------------------------
+  //   Single Instance Window Example
+  //
+  //   REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //      /* Set up pointer to child window OUT layout <_CUFFnnnOUTPUT> */
+  //      <_CUFFnnnOUTPUT> *p<CUFFnnnOutput>;
+  //
+  //      /* Set the pointer to EAB_pWdtOutData */
+  //      p<CUFFnnnOutput> = EAB_pWdtOutData;
+  //
+  //      /* Format the global data area as necessary */
+  //
+  //      /* Format the LUW layout as necessary */
+  //
+  //  }
+  //  else if( ... )
+  //  {
+  //---------------------------------------------------
+  //   Multiple Instance Window Example
+  //
+  //   REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //
+  //      /* Set up pointer to child window OUT layout <_CUFFnnnOUTPUT> */
+  //      <_CUFFnnnOUTPUT> *p<CUFFnnnOutput>;
+  //
+  //       /* Set the pointer to EAB_pWdtOutData */
+  //      p<CUFFnnnOutput> = EAB_pWdtOutData;
+  //
+  //      /* Reference EAB_WdtInstanceName to determine which instance */
+  //
+  //      /* Format the global data area as necessary */
+  //
+  //      /* Format the LUW layout as necessary */
+  //
+  //  }
+  //  else if( ... )
+  //  {
+  //      ...
+  //  }
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitWdtBuildLUW */
+
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitTlPopulateData
+**
+**  DESCRIPTION      : This exit is invoked during PREDISPLAY in order to
+**                     populate the tasks in the Task List.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitTlPopulateData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  The following block of code will add one row to
+  //  the Task List.  The code should be copied for
+  //  each row that will appear in the Task List, then
+  //  customized with the corresponding WindowTitle,
+  //  WindowName, and Attributes.
+  //
+  //  Note: This exit is invoked during PREDISPLAY, and
+  //        in some cases, there may not be enough
+  //        information available to determine what the
+  //        attributes of one or more rows should be.
+  //        If this is the case, defer the call to
+  //        FndLstBoxRowSetAttr until ExitCsrNotification.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //
+  //  USHORT            FndGenRC     = 0;
+  //  _FND_ERROR_BLOCK  FndGenErrorBlock;
+  //  _TaskListRow      TaskListData = 0;
+  //  USHORT            RowNumber    = 0;
+  //
+  //-- --------------------------------------------------
+  //
+  //  /* Set Task List Row status to UNCHANGED */
+  //  TaskListData._TaskListCdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
+  //
+  //  /* Set Window Title of Task List child window */
+  //  CmnStrCopy( TaskListData._TaskListWnWindowTitleData,
+  //              "<WindowTitle>",
+  //              sizeof(TaskListData._TaskListWnWindowTitleData),
+  //              CMN_ARCH_PARMS );
+  //
+  //  /* Set Window Name of Task List child window */
+  //  CmnStrCopy( TaskListData._TaskListWktWindowNameData,
+  //              "<WindowName>",
+  //               sizeof(TaskListData._TaskListWktWindowNameData),
+  //               CMN_ARCH_PARMS );
+  //
+  //  /* Add Task List row to Task List */
+  //  FndLstBoxRowAdd( CBI_hwnd,
+  //                   CMN_LB_TLB_CONTROL_NAME,
+  //                   RowNumber,
+  //                   sizeof(_TaskListRow),
+  //                   &TaskListData,
+  //                   &FndGenErrorBlock );
+  //
+  //  /* Set attributes of new Task List row */
+  //  FndLstBoxRowSetAttr( CBI_hwnd,
+  //                       CMN_LB_TLB_CONTROL_NAME,
+  //                       RowNumber,
+  //                       < AT_REQUIRED or AT_OPTIONAL or AT_UNAVAILABLE >,
+  //                       &FndGenErrorBlock );
+  //
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  If there is another row to add, then increment the
+  //  row counter, and copy the above shell code.
+  //  Continue for as many rows as there are.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+  //  /* Increment the row counter to the next row */
+  //  RowNumber++;
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End ExitTlPopulateData function */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitTlSetChildInitData
+**
+**  DESCRIPTION      : This exit is invoked when a Task List row has been
+**                     double-clicked.  The application should format the
+**                     initial data for the child window.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+AEXPROC( ExitTlSetChildInitData )
+
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  < Place Instructions here >
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+
+  //  if( strcmp(  ))
+
+    return CMN_SUCCESS;
+
+} /* End of ExitTlSetChildInitData */
+
+
+
+
+
+
+
+AEXPROC( ExitSibStartDialog )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  If this window is responsible for starting the
+  //  requested dialog, it should do so.  Otherwise,
+  //  it should pass the message to its parent.  The
+  //  default action is to pass the message.  In the
+  //  shell code, <DialogName> should be replaced with
+  //  the name of a dialog that can be started from this
+  //  window.  If no dialogs can be started, there should
+  //  be no "if" statements in this exit.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  USHORT FndGenRC = 0;;
+  //
+  //  if( strcmp( EAB_SiblingDialogName, "<DialogName>" ) == 0 )
+  //  {
+  //      /* Start the sibling dialog */
+  //      CmnSibStartExe( ... );
+  //  }
+  //  else if( ... )
+  //  {
+  //  }
+  //  else
+  //  {
+  //      /* Pass the message to the parent window */
+  //      CmnWndMsgSend( CMN_WIN_KEY_PARENT,
+  //                     CMN_WIN_KEY_PARENT,
+  //                     CMN_MSG_START_SIBLING_DLG,
+  //                     EAB_SiblingDialogData,
+  //                     CMN_ARCH_PARMS );
+  //  }
+
+    return CMN_SUCCESS;
+
+} /* End of ExitSibStartDialog */
+
+
+AEXPROC( ExitDomDragPrepare )
+{
+    return CMN_SUCCESS;
+
+} /* End of ExitDomDragPrepare */
+
+AEXPROC( ExitDomDragOver )
+{
+    return CMN_SUCCESS;
+
+} /* End of ExitDomDragOver */
+
+AEXPROC( ExitDomDrop )
+{
+    return CMN_SUCCESS;
+
+} /* End of ExitDomDrop */
+
+
+AEXPROC( ExitSecSetBrowse )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Disable all non-navigational fields on the window
+  //  as in the following examples.  Refer to the
+  //  Foundation documentation for more details on how
+  //  to disable controls on a window.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //  USHORT FndGenRC = 0;
+  //
+  //  /* Disable entry field <FieldName> */
+  //  FndFieldDisable( CBI_hwnd,
+  //                   "<FieldName>",
+  //                   &FndGenErrorBlock );
+  //
+  //  /* Disable an individual button in a radio button group */
+  //  FndValueDisableItem( CBI_hwnd,
+  //                       "<FieldName>",
+  //                       "<FieldValue>",
+  //                       &FndGenErrorBlock );
+
+    return CMN_SUCCESS;
+
+} /* End of ExitSecSetBrowse */
+
+
+AEXPROC( ExitHlpInit )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  The Help Initialization shell code is currently
+  //  unavailable.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+
+    /* CSC: 10/25/93 ADDED HELP INIT FOR TEST */
+
+//    _FND_ERROR_BLOCK FndGenErrorBlock;
+//    USHORT FndGenRC = 0;
+
+//    short sRC;
+//    short sNumWinLibs=1;
+//    _FND_HLPMGR_WINLIB WinLibList[]= { "AZDW001", ' ', "CSRDIAG.HLP",
+//                                       "AZDW002", ' ', "CSRDIAG.HLP"
+//                                     };
+//    _FND_HLPMGR_PANEL_ID PanelList[] = { RequestID_WID,    AZDW001_RequestID,
+//                                         ServicesLB_WID,   AZDW001_ServicesLB,
+//                                         TranscriptLB_WID, AZDW001_TranscriptLB,
+//                                         MsgLevel_WID,     AZDW001_Message_LevelRB,
+//                                         AMNSTAT_CMD,      AZDW001_AMNSTAT,
+//                                         AMNMAPS_CMD,      AZDW001_AMNMAPS,
+//                                         AMNDATA_CMD,      AZDW001_AMNDATA,
+//                                         AMNPRNTF_CMD,     AZDW001_AMNPRNTF,
+//                                         AMNPRNTP_CMD,     AZDW001_AMNPRNTP,
+//                                         ExtendedHelpMN_CMD, AZDW001_EXTENDED_HELP,
+//                                         KeysHelpMN_CMD, AZDW001_KEYS_HELP
+//                                       };
+
+//    sRC = CmnHlpMgrInitInst("Csr Diagnostics Help",
+//                            WinLibList,
+//                            sizeof(WinLibList) / sizeof(_FND_HLPMGR_WINLIB) ,
+//                            CMN_ARCH_PARMS);
+
+
+//    if (sRC != CMN_SUCCESS)
+//       {
+//        return(CMN_FAIL);
+//       }
+
+
+//    sRC = CmnHlpMgrSetPanels(PanelList,
+//                             (sizeof(PanelList) / sizeof (_FND_HLPMGR_PANEL_ID)),
+//                             AZDW001_EXTENDED_HELP,
+//                             FALSE,
+//                             CMN_ARCH_PARMS);
+
+
+//    if (sRC != CMN_SUCCESS)
+//       {
+//        return(CMN_FAIL);
+//       }
+
+//    sRC = CmnHlpMgrSetCommands(HelpforHelpMN_CMD,
+//                               ExtendedHelpMN_CMD,
+//                               KeysHelpMN_CMD,
+//                               HelpIndexMN_CMD,
+//                               CMN_ARCH_PARMS
+//                              );
+
+//    if (sRC != CMN_SUCCESS)
+//       {
+//        return(CMN_FAIL);
+//       }
+
+//    sRC = CmnHlpMgrSetKeysPanel(AZDW001_KEYS_HELP,
+//                                "CSRDIAG.HLP",
+//                                CMN_ARCH_PARMS);
+
+//    if (sRC != CMN_SUCCESS)
+//       {
+//        return(CMN_FAIL);
+//       }
+
+    return CMN_SUCCESS;
+
+} /* End of ExitHlpInit */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitElbRegister
+**
+**  DESCRIPTION      : This exit occurs during the PREDISPLAY callback (via
+**                     CmnArchInit) to allow the application to register
+**                     each enterable list box (and its associations) with
+**                     the architecture.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitElbRegister )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Use this exit to register EACH enterable list box
+  //    contained in this window.
+  //
+  //  To register the ELB perform the following steps:
+  //
+  //        1. Declare an instance of the ELB registration
+  //           parameters structure, _CMNELBREGPARMS
+  //
+  //        2. Initialize the members of the structures as
+  //           required for the application's use of the ELB
+  //           control.
+  //
+  //        3. Call the function CmnELbRegister passing the
+  //           the address of the ELB registration parameter
+  //           structure.
+  //
+  //        4. The function will return CMN_SUCCESS if the ELB
+  //           was successfully registered with the architecture,
+  //           otherwise, the function returns CMN_FAIL.
+  //
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+
+  //
+  //  Declare an instance of the ELB registration parameter
+  //    structure, _CMNELBREGPARMS, as follows:
+  //
+  //    _CMNELBREGPARMS     ElbRegParms;
+  //
+  //  Initialize the members of the structure as follows:
+  //    (ALL STRINGS MUST BE NULL-TERMINATED STRINGS)
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbWidgetName,
+  //         "<your ELB widget name>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    ElbRegParms.nElbSeqNum = <a value from 1 to 5, inclusive>;
+  //
+  //    ElbRegParms.nElbRowLen = sizeof (<ELB row typedef in the WESmap>)
+  //
+  //    ElbRegParms.nElbMaxTxnCount = <max # of txns allowed for this ELB>;
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbAddWinName,
+  //         "<add child window name or CMN_NULL_SOURCE_STR>",
+  //          CMN_WINDOWNAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbChgWinName,
+  //         "<default change child window name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WINDOWNAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbAddPbName,
+  //         "<add pushutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbAddUsingPbName,
+  //         "<add using pushbutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbChangePbName,
+  //         "<change pushbutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbDeletePbName,
+  //         "<delete pushbutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbUndeletePbName,
+  //         "<undelete pushbutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbUpPbName,
+  //         "<move row up pushbutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnStrCopy
+  //        (ElbRegParms.szElbDownPbName,
+  //         "<move row down pushbutton widget name or CMN_NULL_SOURCE_STR>",
+  //         CMN_WIDGET_NAME_LEN);
+  //
+  //    CmnElbRegister (&ElbRegParms, CMN_ARCH_PARMS);
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElbRegister */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitElb1CloseAfterSave
+**
+**  DESCRIPTION      : This exit is associated with the enterable list box
+**                     registered as sequence number 1.
+**
+**                     This exit is called to allow the application to load
+**                     saved data to an enterable list box row.  This exit
+**                     is called during one of the following events:
+**                       1.  The OK pushbutton on an ELB child window was
+**                           clicked.
+**                       2.  A row is to be added or updated while loading
+**                           previously saved data from window data tracking
+**                           via the function CmnElbLoadWdtData.
+**                       3.  A row is being added to an enterable list box
+**                           from its child window using the function
+**                           CmnElbAddFromChild.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitElb1CloseAfterSave )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Use this exit routine to place the data saved in a child window
+  //    of an ELB into a row of the ELB.
+  //
+  //  There are several macro names that are available that identify the
+  //    the name of the ELB, the row being processed, the operation
+  //    that is occuring and the child data itself.  They are as follows:
+  //
+  //    EAB_CurrElbWidgetName:  Identifies the name of the current ELB
+  //                            being processed.
+  //
+  //    EAB_CurrElbRowNumber:   Identifies the current ELB row being
+  //                            processed.
+  //
+  //    CMN_ELB_CHILD_DATA:     A pointer to the child's window data
+  //                            tracking output data.
+  //
+  //    CMN_ELB_CHILD_DATA_STATUS:  The status of the child's window data
+  //                                tracking output data.
+  //
+  //    To update data in a row in the enterable list box, perform the
+  //        following steps:
+  //
+  //        1.  Declare a pointer to the child's window data tracking
+  //            output structure.
+  //
+  //        2.  Declare an instance of the ELB row typedef structure found
+  //            in the WESmap.
+  //
+  //        3.  Establish addressability to the child's output data.
+  //
+  //        4.  Move the child data to the row structure.
+  //
+  //        5.  Perform any additional processing as needed for derived
+  //            columns in the row.
+  //
+  //        6.  Determine if an override change window is required for
+  //            the row.
+  //
+  //        7.  Call the function CmnElbAssignRowData passing a void pointer
+  //            to the row structure and the override change window name.
+  //            If no override change window name is required and you wish
+  //            the architecture to assign the default change window name,
+  //            pass a NULL parameter as the override change window name.
+  //
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+
+  //  Declare a pointer to the child's window data tracking output layout.
+  //
+  //    <CUFFnnnOUTPUT>  *pCUFFnnnOutput;
+  //
+  //  Declare an instance of the ELB row typedef
+  //
+  //    <WESmap ELB ROW TYPEDEF>     ElbRowData;
+  //    .
+  //    .  Declare additional variables as needed.
+  //    .
+  //
+  //  Establish addressability to the child data.
+  //
+  //    pCUFFnnnOutput = CMN_ELB_CHILD_DATA;
+  //
+  //  Move the child data to the row structure.
+  //
+  //    ElbRowData.<member> = pCUFFnnnOutput-><member>;
+  //    CmnStrCopy (ElbRowData.<member>,
+  //                pCUFFnnnOutput-><member>,
+  //                <length of pCUFFnnnOutput-><member>,
+  //                CMN_ARCH_PARMS);
+  //    .
+  //    .  Any additional processing as required for the ELB row data
+  //    .
+  //
+  //  If an override change window is required, call CmnElbAssignRowData
+  //    passing the name of the override change window and a pointer
+  //    to the row structure.  Otherwise, call CmnElbAssignRowData setting
+  //    the override change window parameter to a NULL.  A NULL override
+  //    change window name will tell the architecture to use the default
+  //    change window name specified when the ELB was registered.
+  //
+  //    if (<expression determining if an override change window is needed>)
+  //    {
+  //        CmnElbAssignRowData
+  //                    (EAB_CurrElbWidgetName,
+  //                     EAB_CurrElbRowNumber,
+  //                     &ElbRowData,
+  //                     "<override change window name>",
+  //                     CMN_ARCH_PARMS);
+  //    }
+  //    else
+  //    {
+  //        CmnElbAssignRowData
+  //                    (EAB_CurrElbWidgetName,
+  //                     EAB_CurrElbRowNumber,
+  //                     &ElbRowData,
+  //                     NULL,          /* SPECIFIES NO OVERRIDE WINDOW */
+  //                     CMN_ARCH_PARMS);
+  //    }
+  //
+
+
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb1CloseAfterSave */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitElb1CloseAfterCncl
+**
+**  DESCRIPTION      : This exit is associated with the enterable list box
+**                     registered as sequence number 1.
+**
+**                     This exit is called to allow the application to
+**                     perform any application specific processing when a
+**                     child window of an enterable list box is cancelled.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitElb1CloseAfterCncl )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Use this exit function to perform any application specific processing
+  //    when a child window of an ELB is cancelled.
+  //
+  //  Macros valid during this exit are:
+  //
+  //    EAB_CurrElbWidgetName:  Identifies the name of the current ELB
+  //                            being processed.
+  //
+  //    EAB_CurrElbRowNumber:   Identifies the current ELB row being
+  //                            processed.
+  //
+  //    EAB_ElbChildWinFunction:    Identifies the operation that is
+  //                                being cancelled.  See the status values
+  //                                listed in the ExitElb1CloseAfterSave exit
+  //                                function.
+  //
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //
+  //  Place any application specific code here as needed.
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb1CloseAfterCncl */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitElb1BuildInstName
+**
+**  DESCRIPTION      : This exit is associated with the enterable list box
+**                     registered as sequence number 1.
+**
+**                     This exit allows the application to build an
+**                     instance name and assign that instance name to the
+**                     enterable list box row.  This exit is called when
+**                     a row has either been added to an ELB or a row has
+**                     been updated in an ELB.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitElb1BuildInstName )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Use this exit function to build the instance name for
+  //    an enterable list box row.
+  //
+  //  All instance names generated MUST be unique and consistent.
+  //    Non-unique and/or inconsistent names WILL CAUSE ERRORS.
+  //
+  //  The following macro names are valid during this exit:
+  //    EAB_CurrElbWidgetName
+  //    EAB_CurrElbRowNumber
+  //
+  //  Perform the following steps to build and assign the
+  //    instance name for the enterable list box row:
+  //
+  //    1.  Declare a character array variable long enough to
+  //        contain the longest instance name that could be built.
+  //
+  //    2.  Build the instance name string by concatenating columns of
+  //        of data in the specified row along with any other data as
+  //        needed to provide a consistent unique name.  Various functions
+  //        can be used (for example, sprintf, CmnStrCopy, etc.) to
+  //        build the instance name as long as the final result is a
+  //        character string.
+  //
+  //    3.  Assign the instance name to the row by calling the function,
+  //        CmnElbAssignChgWinInstName passing the built instance name
+  //        string to the function.
+  //
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //
+  //    Declare a character array to contain the instance name to build.
+  //
+  //    CHAR InstName[<as long as necessary>];
+  //
+  //    .  Build the instance name (using CmnStrBuildStr), using columns
+  //    .    in the ELB row along with any other data as needed to build
+  //    .    a unique and consistent instance name.
+  //    .
+  //
+  //    Call CmnElbAssignChgWinInstName passing the instance name built.
+  //
+  //    CmnElbAssignChgWinInstName (InstName, CMN_ARCH_PARMS);
+  //
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb1BuildInstName */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitElb1BuildInitData
+**
+**  DESCRIPTION      : This exit is associated with the enterable list box
+**                     registered as sequence number 1.
+**
+**                     This exit allows the application to build and assign
+**                     initial data for a child window being opened for a
+**                     change or an add using operation.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitElb1BuildInitData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Use this exit function to build and assign initial data for
+  //    a child window being opened for a change or add using operation.
+  //
+  //  The following macro names are valid during this exit:
+  //    EAB_CurrElbWidgetName
+  //    EAB_CurrElbRowNumber
+  //
+  //  Perform the following steps to build and assign the initial
+  //    data for a child window:
+  //
+  //    1.  Declare an instance of the child's input data layout.
+  //
+  //    2.  Move the data to the input layout.
+  //
+  //    3.  Call the function CmnElbAssignInitialData passing a void
+  //        pointer to the data and the length of the data layout.
+  //
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //
+  //  Declare an instance of the child's input data layout.
+  //
+  //    <_CUFFnnnINPUT>  CUFFnnnInput;
+  //
+  //    .
+  //    .  Move the needed data to the instance of the input layout
+  //    .
+  //
+  //  Call the function CmnElbAssignInitialData.
+  //
+  //    CmnElbAssignInitialData (&CUFFnnnInput,
+  //                             sizeof (<_CUFFnnnINPUT>),
+  //                             CMN_ARCH_PARMS);
+  //
+
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb1BuildInitData */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitElb1BuildDelData
+**
+**  DESCRIPTION      : This exit is associated with the enterable list box
+**                     registered as sequence number 1.
+**
+**                     This exit allows the application to build and assign
+**                     data to be placed in window data tracking for rows
+**                     that are unchanged and are being flagged for deletion.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitElb1BuildDelData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  Use this exit function to build and assign the data to use for
+  //    window data tracking for unchanged rows being flagged for deletion.
+  //
+  //  The following macro names are valid during this exit:
+  //    EAB_CurrElbWidgetName
+  //    EAB_CurrElbRowNumber
+  //
+  //  Perform the following steps to build and assign the delete data.
+  //
+  //    1.  Declare an instance of the child's output data layout.
+  //
+  //    2.  Move the data to the instance of the output data layout.
+  //
+  //    3.  Call the function CmnElbAssignDeleteData passing a void
+  //        pointer to the data and the length of the data layout.
+  //
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //
+  //  Declare an instance of the child's output data layout.
+  //
+  //    <CUFFnnnOUTPUT>  CUFFnnnOutput;
+  //
+  //    .
+  //    .  Move the needed data to the instance of the output layout
+  //    .
+  //
+  //  Call the function CmnElbAssignDeleteData.
+  //
+  //    CmnElbAssignDeleteData (&CUFFnnnOutput,
+  //                            sizeof (<_CUFFnnnOUTPUT>),
+  //                            CMN_ARCH_PARMS);
+  //
+
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb1BuildDelData */
+
+AEXPROC( ExitElb2CloseAfterSave )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 2.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb2CloseAfterSave */
+
+AEXPROC( ExitElb2CloseAfterCncl )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 2.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb2CloseAfterCncl */
+
+AEXPROC( ExitElb2BuildInstName )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 2.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb2BuildInstName */
+
+AEXPROC( ExitElb2BuildInitData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 2.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb2BuildInitData */
+
+AEXPROC( ExitElb2BuildDelData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 2.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb2BuildDelData */
+
+AEXPROC( ExitElb3CloseAfterSave )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 3.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb3CloseAfterSave */
+
+AEXPROC( ExitElb3CloseAfterCncl )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 3.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb3CloseAfterCncl */
+
+AEXPROC( ExitElb3BuildInstName )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 3.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb3BuildInstName */
+
+AEXPROC( ExitElb3BuildInitData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 3.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb3BuildInitData */
+
+AEXPROC( ExitElb3BuildDelData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 3.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb3BuildDelData */
+
+AEXPROC( ExitElb4CloseAfterSave )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 4.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb4CloseAfterSave */
+
+AEXPROC( ExitElb4CloseAfterCncl )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 4.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb4CloseAfterCncl */
+
+AEXPROC( ExitElb4BuildInstName )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 4.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb4BuildInstName */
+
+AEXPROC( ExitElb4BuildInitData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 4.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb4BuildInitData */
+
+AEXPROC( ExitElb4BuildDelData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 4.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb4BuildDelData */
+
+AEXPROC( ExitElb5CloseAfterSave )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 5.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb5CloseAfterSave */
+
+AEXPROC( ExitElb5CloseAfterCncl )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 5.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb5CloseAfterCncl */
+
+AEXPROC( ExitElb5BuildInstName )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 5.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb5BuildInstName */
+
+AEXPROC( ExitElb5BuildInitData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 5.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+}  /* End of ExitElb5BuildInitData */
+
+AEXPROC( ExitElb5BuildDelData )
+{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This exit is associated with the enterable list box registered
+  //    as sequence number 5.
+  //
+  //  Instructions for this exit are identical to the sequence number 1
+  //    exit function.
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+    return CMN_SUCCESS;
+
+} /* End of ExitElb5BuildDelData */
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : CmnArchExitInitialize
+**
+**  DESCRIPTION      : This function is called during the window's Predisplay
+**                     Event.  It performs 2 functions:
+**                       1. Allocates space for the Architecture Block
+**                          portion of Window Context Data.
+**                       2. Assign a Window Context Data pointer to the
+**                          ArchExitTable so the local function addresses
+**                          can be located.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+
+AEXPROC( CmnArchExitInitialize )
+{
+
+    //---------------------------------------------------
+    //  S H E L L   I N S T R U C T I O N S
+    //
+    //  DO NOT MODIFY THIS EXIT.
+    //
+    //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+    //
+    //---------------------------------------------------
+
+    /* Allocate space for Common Architecture Block, then Initialize */
+    pCmnArchBlock = (_CMN_ARCH_BLOCK *) malloc( sizeof( _CMN_ARCH_BLOCK ));
+    memset( pCmnArchBlock, 0, sizeof( _CMN_ARCH_BLOCK ));
+
+    /* Assign Architecture Exit Table */
+    EAB_pArchExitTable = ArchExitTable;
+
+    return CMN_SUCCESS;
+
+} /* End of CmnArchExitInitialize */
+
+
+/***************************************************************************
+**
+**               Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : CUFFnnnAexApplicationDefined
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : Parameter1 - description
+**
+**                     Parameter2 - description
+**
+**                     ParameterN - description
+**
+**                     CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+//SHORT CUFFnnnAexApplicationDefined( TYPE Parameter1,
+//                                    TYPE Parameter2,
+//                                    TYPE ParameterN,
+//                                    CMN_ARCH_PARM_TYPES)
+//{
+  //---------------------------------------------------
+  //  S H E L L   I N S T R U C T I O N S
+  //
+  //  This is a shell Architecture Exit logic
+  //  function.  This shell is used for application-
+  //  defined functions, rather than RAB-specified
+  //  functions.
+  //
+  //  Customize the function by changing the
+  //  function name according to the convention:
+  //
+  //  <CUFFnnn>Aex<Application-DefinedName>
+  //
+  //  Then, add logic as required.
+  //
+  //  Note: Place forward declaration for this function
+  //  in the windowname.h file.
+  //
+  //  (Do NOT create an AEXFWD in this file, or a
+  //  REGISTERARCHEXIT entry in this file for this function.)
+  //
+  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
+  //
+  //---------------------------------------------------
+
+  //  _FND_ERROR_BLOCK FndGenErrorBlock;
+  //  USHORT FndGenRC = 0;
+
+  //  Place Application Logic here
+
+  //  return CMN_SUCCESS;
+
+//}  /* End of CUFFnnnAexApplicationDefined */

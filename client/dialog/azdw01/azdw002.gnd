@@ -1,0 +1,88 @@
+/**********************************************
+*                                             *
+*  Dispatch Table:       AZDW002              *
+*  Generation Date:      November 4, 1993     *
+*  Generation Time:      09:33:32             *
+*  User ID:              CCRAMPTO             *
+*                                             *
+***********************************************/
+
+/****************************************************************************
+ Window & Widget Function List
+****************************************************************************/
+
+WCBFWD (Bricyjko1129_Predisplay)
+WCBFWD (Bricyjko1135_Predestroy)
+WCBFWD (Bricyjko1141_Msg_Notification)
+WCBFWD (Bricyjko1147_Interwindow_Msg)
+WCBFWD (Bricyjko1153_Window_Close)
+WCBFWD (Bricyjko1159_Other_Gui_Event)
+WCBFWD (Bricyjko7062_Click)
+WCBFWD (Bricyjko7034_Click)
+
+/****************************************************************************
+ Window Dispatch Table
+****************************************************************************/
+
+WNDDISPTBL AZDW002WindDisp[] =
+{
+    {PREDISPLAY, Bricyjko1129_Predisplay},
+    {PREDESTROY, Bricyjko1135_Predestroy},
+    {MSG_NOTIFICATION, Bricyjko1141_Msg_Notification},
+    {INTERWINDOW_MSG, Bricyjko1147_Interwindow_Msg},
+    {WINDOW_CLOSE, Bricyjko1153_Window_Close},
+    {OTHER_GUI_EVENT, Bricyjko1159_Other_Gui_Event},
+    {0,0}
+};
+
+/****************************************************************************
+ Widget Dispatch Table
+****************************************************************************/
+
+WDGDISPTBL AZDW002WidgDisp[] =
+{
+    {OKPB_CMD, BUTTON_CLICK, Bricyjko7062_Click},
+    {APBREFRESH_CMD, BUTTON_CLICK, Bricyjko7034_Click},
+    {0,0,0}
+};
+
+/****************************************************************************
+ Field Definition Table
+****************************************************************************/
+
+FLDDEFTBLENTRY AZDW002FieldDefTbl[] =
+{
+    "TotalAllocatedSegs", 0,
+    "MemAlarm", 1,
+    "MapBytes", 2,
+    "ServiceBytes", 3,
+    "NodeBytes", 4,
+    "FreeBytes", 5,
+    "MemNodeOverheadBytes", 6,
+    "DeadBytes", 7,
+    "ThreadCount", 8,
+    "ServiceThreadCount", 9,
+    "", 0
+};
+
+/****************************************************************************
+ Command Definition Table
+****************************************************************************/
+
+CMDDEFTBLENTRY AZDW002CommandDefTbl[] =
+{
+    "OKPB", 1000,
+    "APBREFRESH", 1001,
+    "", 0
+};
+
+/****************************************************************************
+ Window Definition Table
+****************************************************************************/
+
+WINDEFTBLENTRY AZDW002IDWindowDefn = {
+    "20", AZDW002ID, "", WTP_WESWINDOW,
+    WMD_MODELESS, FALSE, WCR_POPUP, AZDW002ID,
+    WOP_NOACCEL, WOP_NOMENU, WOP_NOICON, 0,
+    AZDW002WidgDisp, AZDW002WindDisp, FND_WINCONTEXT_LEN,
+    0, 0, AZDW002FieldDefTbl, AZDW002CommandDefTbl };

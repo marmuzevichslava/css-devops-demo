@@ -1,0 +1,2270 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  AZDW001.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window AZDW001,
+**                     includes:
+**
+**                     AZDW001BusPredisplay
+**                     AZDW001BusAmnstatClick
+**                     AZDW001BusAmnmapsClick
+**                     AZDW001BusAmndataClick
+**                     AZDW001BusAmnprntfClick
+**                     AZDW001BusAmnprntpClick
+**                     AZDW001BusServicesLBDblClick
+**                     AZDW001BusOpenPipe
+**                     AZDW001BusReadPipe
+**                     AZDW001BusInterWindow
+**                     AZDW001BusRBFldChg
+**                     AZDW001BusProcessRequestMsg
+**                     AZDW001BusProcessServiceMsg
+**                     AZDW001BusProcessDetailMsg
+**                     AZDW001BusFillMsgBox
+**                     AZDW001BusWriteSaveFile
+**                     AZDW001BusAboutMNClick
+**                     AZDW001BusWindowClose
+**                     AZDW001BusOtherGui
+
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 08/12/93    C. Crampton         Creation
+**
+***************************************************************************/
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusPredisplay
+**
+**  DESCRIPTION      : This function handles any predisplay processing for
+**                      window AZDW001.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : malloc
+**                     AZDW001BusOpenPipe
+**                     AZDW001BusReadPipe
+**                     AZDW001BusFillMsgBox
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton           Original code.
+**
+**    12/07/93  C. Crampton           Added Semaphore DosSemClear for each semaphore type.
+**
+**    01/19/94  C. Crampton           Added call to CmnWindowDataModNotReqd to Predisplay.
+***************************************************************************/
+
+WCBPROC( AZDW001BusPredisplay )
+ {
+
+   _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    USHORT usSelectedButton;
+    HSYSSEM hssem;
+
+  /*
+  ** Set this window to not modifiable
+  */
+
+  CmnWindowDataModNotReqd( CMN_ARCH_PARMS );
+
+  /*
+  ** Allocate space for the BFCD data structure
+  */
+
+  pBFCD->pCSRDiagBFCD = malloc(sizeof(_AZCD01Global));
+
+  if ( pBFCD->pCSRDiagBFCD == NULL )
+  {
+     FndMsgBoxDisplayText( "Unable to allocate memory for BFCD ...",
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           CSR_DIAG_APPL_NAME,
+                           &usSelectedButton,
+                           &FndGenErrorBlock );
+
+      return( CMN_FAIL );
+   }
+
+   /*
+   ** Initialize BFCD to zeros
+   */
+   memset( pBFCD->pCSRDiagBFCD, 0, sizeof( _AZCD01Global ));
+
+   /*
+   ** Free any outstanding semaphore locks for the csr
+   */
+
+   FndGenRC = DosOpenSem( &hssem, CSR_REQUEST_SEM_NAME );
+   if ( FndGenRC == 0 )
+   {
+       FndGenRC = DosSemClear( hssem );
+   }
+
+   FndGenRC = DosOpenSem( &hssem, CSR_SERVICE_SEM_NAME );
+
+   if ( FndGenRC == 0 )
+   {
+      FndGenRC = DosSemClear( hssem );
+   }
+
+   FndGenRC = DosOpenSem( &hssem, CSR_DETAIL_SEM_NAME );
+
+   if ( FndGenRC == 0 )
+   {
+      FndGenRC = DosSemClear( hssem );
+   }
+
+   /*
+   ** Tell the CSR to go into debug mode
+   */
+   FndGenRC = AZDW001BusOpenPipe( pEventInfo,
+                                  pEAIA,
+                                  pBFCD,
+                                  pWesMap,
+                                  pWindContextData,
+                                  pABHI );
+
+   if ( FndGenRC != CMN_SUCCESS )
+   {
+      return( CMN_FAIL );
+   }
+
+   /*
+   ** Default the directory name for the log files
+   */
+   strcpy( BFCD_AZCD01->szLogDirName,"C:\\DATA\\MAPS" );
+
+   return CMN_SUCCESS;
+ }  /* end of function AZDW001BusPredisplay */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusAmnstatClick
+**
+**  DESCRIPTION      : This function creates the statistics window.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : CmnWindowCreate
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusAmnstatClick )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  /* Create the Statistics Window  */
+  CmnWindowCreate( "AZDW002",
+                   "",
+                   NULL,
+                   NULL,
+                   CMN_ARCH_PARMS );
+
+  return CMN_SUCCESS;
+} /* end of function AZDW001BusAmnstatClick */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusAmnmapsClick
+**
+**  DESCRIPTION      : This function creates the Resident Maps window.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : CmnWindowCreate
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusAmnmapsClick )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  /*
+  ** Create the Resident Maps Window
+  */
+
+  CmnWindowCreate( "AZDW003",
+                   "",
+                   NULL,
+                   NULL,
+                   CMN_ARCH_PARMS );
+
+  return CMN_SUCCESS;
+ }  /* AZDW001BusAmnmapsClick */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusAmndataClick
+**
+**  DESCRIPTION      : This function creates the Resident Data window.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusAmndataClick )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  /*
+  ** Create the Resident Service Data Window
+  */
+
+  CmnWindowCreate( "AZDW004",
+                   "",
+                   NULL,
+                   NULL,
+                   CMN_ARCH_PARMS );
+
+  return CMN_SUCCESS;
+
+ } /* end of function AZDW001BusAmndataClick */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusAmnprntfClick
+**
+**  DESCRIPTION      : This function handles the printing of the error
+**                      messages to a file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusAmnprntfClick )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  /* Create the Statistics Window  */
+  CmnWindowCreate( "AZDW005",
+                   "",
+                   NULL,
+                   NULL,
+                   CMN_ARCH_PARMS );
+  return CMN_SUCCESS;
+ } /* End of function AZDW001BusAmnprntfClick */
+
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusAmnprntpClick
+**
+**  DESCRIPTION      : This function handles printing of the error messages
+**                      to the printer.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusAmnprntpClick )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  FILE *fhndFilePtr;
+  char szErrorMsg[255];
+  char szTitle[80];
+  USHORT usIndex;
+  BOOL bMore=TRUE;
+  _TranscriptLBRow ListBox;
+  USHORT usSelectedButton;
+  time_t tCurrentTime;
+  int nPad=43;
+
+/*
+** Open a file handle for the printer
+*/
+
+   fhndFilePtr = fopen("LPT1", "w");
+
+   if (fhndFilePtr == NULL)
+   {
+      strcpy(szErrorMsg, "Unable to open LPT1 for printing");
+
+      FndMsgBoxDisplayText( szErrorMsg,
+                            NULL,
+                            CBI_hwnd,
+                            FND_MSGBOX_OK,
+                            FND_MSGBOX_ERROR,
+                            FND_MSGBOX_IDOK,
+                            CSR_DIAG_APPL_NAME,
+                            &usSelectedButton,
+                            &FndGenErrorBlock );
+      return( CMN_FAIL );
+   }
+/*
+** Set the printer to landscape mode
+*/
+
+  FndGenRC = fprintf( fhndFilePtr, SET_LANDSCAPE );
+
+/*
+** Get the title of the list box to use as a heading on the printout
+*/
+
+  FndLstBoxTitleQuery( CBI_hwnd,
+                       "TranscriptLB",
+                       sizeof( szTitle ),
+                       szTitle,
+                       &FndGenErrorBlock );
+
+
+/*
+** Tell the user whats going on, whats going on
+*/
+
+  sprintf(szErrorMsg, "Printing %s ", szTitle);
+  FndMsgBoxDisplayMdlssText( szErrorMsg,
+                             "PrintMsgBox",
+                             CBI_hwnd,
+                             FND_MSGBOX_NOBUTTONS,
+                             FND_MSGBOX_INFORMATION,
+                             FND_MSGBOX_IDNOBUTTON,
+                             CSR_DIAG_APPL_NAME,
+                             &FndGenErrorBlock );
+
+/*
+** Print out a heading with Normal font
+*/
+ nPad = ( 106 - strlen( szTitle )) / 2;
+ FndGenRC = fprintf( fhndFilePtr,"%*c%s\n",' ', nPad, szTitle );
+
+ time( &tCurrentTime );
+ nPad = (106 - strlen(ctime(&tCurrentTime)) ) / 2;
+ FndGenRC = fprintf(fhndFilePtr,"%*c%s\n\n",' ',nPad ,ctime(&tCurrentTime));
+
+/*
+** Set the font to line printer (smaller font)
+*/
+
+  FndGenRC = fprintf( fhndFilePtr, LINE_PRINTER );
+
+/*
+** Set the line spacing to smaller
+*/
+
+  FndGenRC = fprintf( fhndFilePtr, VMI );
+
+
+/*
+** Loop thru the list box and read each line.
+**  Then write it out to the printer.
+*/
+
+ usIndex = 0;
+ bMore = TRUE;
+
+ while ( bMore )
+ {
+    CmnErrOverrides( NULL,
+                     CMN_OVERRIDE_FATAL,
+                     CMN_ERR_LOGGING_DEFAULT,
+                     CMN_RC_CONTINUE_PROCESSING,
+                     CMN_ARCH_PARMS );
+
+    FndLstBoxRowQueryData( CBI_hwnd,
+                           "TranscriptLB",
+                           usIndex,
+                           sizeof( _TranscriptLBRow ),
+                           &ListBox,
+                           &FndGenErrorBlock );
+
+  if ( FndGenRC != FND_SUCCESS && FndGenRC != LBOX_ROW_EMPTY )
+  {
+      return( CMN_FAIL );
+  }
+  else if ( FndGenRC == LBOX_ROW_EMPTY )
+  {
+      bMore = FALSE;
+  }
+  else
+  {
+      fprintf(fhndFilePtr, "%s\n", ListBox._TranscriptLBDataBufferData);
+      usIndex++;
+  }
+  } /* end of while more rows in list box */
+
+/*
+** reset the printer to defaults
+*/
+
+  FndGenRC = fprintf(fhndFilePtr, RESET_PRINTER);
+/*
+** Close the file handle to the printer
+*/
+  fclose(fhndFilePtr);
+
+/*
+** Take it easy for awhile to let the user read the message box.
+** Then kill it.
+*/
+
+  FndGenRC = DosSleep(2000L);
+
+  FndMsgBoxDestroy( "PrintMsgBox",
+                    &FndGenErrorBlock );
+  return CMN_SUCCESS;
+
+ } /* end of function AZDW001BusAmnprntpClick */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusServicesLBDblClick
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusServicesLBDblClick )
+ {
+
+/*   _FND_ERROR_BLOCK FndGenErrorBlock; */
+   USHORT FndGenRC = 0;
+
+/*
+** Set the BFCD current index to the selected row
+*/
+   BFCD_AZCD01->usCurrentIndex = CBI_ListRow;
+
+/*
+** Call the module to fill the message box with data from memory
+*/
+   FndGenRC = AZDW001BusFillMsgBox(pEventInfo,
+                                   pEAIA,
+                                   pBFCD,
+                                   pWesMap,
+                                   pWindContextData,
+                                   pABHI);
+
+   if (FndGenRC != CMN_SUCCESS)
+      {
+       return(CMN_FAIL);
+      }
+
+   return CMN_SUCCESS;
+ } /* End of function AZDW001BusServicesLBDblClick */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusOpenPipe
+**
+**  DESCRIPTION      : This function opens the named pipe between the CSR and
+**                       this application
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/11/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC (AZDW001BusOpenPipe)
+{
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+  USHORT usSelectedButton;
+  _CONTROL_BLOCK CsrControlBlock; /* The input buffer */
+  USHORT rc;                      /* return code */
+  USHORT BytesRead;               /* The number of bytes read from the pipe */
+  _CSR_CALL_REPLY *pCsrCallReply; /* The output buffer */
+  SEL sel;                        /* selector */
+  SHORT PathNotFoundCount = 0;    /* Path Not Found retries counter */
+
+
+    /*
+    ** Initialize and populate the CsrControlBlock
+    **  Copy the string into the requestid member.
+    **  Pass the window handle in the hwnd member.
+    */
+    strcpy( CsrControlBlock.RequestId, MESSAGE_MODE);
+    CsrControlBlock.hwnd = CBI_hwnd;
+
+    /* Allocate gettable memory for the client data area */
+    rc = DosAllocSeg( sizeof(_CSR_CALL_REPLY) + sizeof(_CONTROL_BLOCK),
+                      &sel,
+                      SEG_GETTABLE);
+
+    /* Convert selector to pointer */
+    CsrControlBlock.pGettableMem = MAKEP(sel, 0);
+
+    /* If the memory allocated successfully... */
+    if ( rc == CMN_SUCCESS )
+    {
+        /* Clear the CsrControlBlock.pGettableMem area. */
+        memset( CsrControlBlock.pGettableMem,
+                '\0',
+                (size_t)( sizeof(_CSR_CALL_REPLY) + sizeof(_CONTROL_BLOCK) ));
+        /*
+        ** Assign the memory address to a pointer
+        */
+        pCsrCallReply = (_CSR_CALL_REPLY *)CsrControlBlock.pGettableMem;
+
+        /* Copy the Pointer to pClientArea and pGettableMem into
+         * CsrCallReply.
+         */
+
+        pCsrCallReply->pGettableMem = CsrControlBlock.pGettableMem;
+        pCsrCallReply->GettableSel  = sel;
+
+        /* Copy the CsrControlBlock into Gettable Memory */
+        memcpy( CsrControlBlock.pGettableMem + sizeof(_CSR_CALL_REPLY),
+                &CsrControlBlock,
+                ( size_t )( sizeof( _CONTROL_BLOCK )));
+
+        /* Send the pointer to Gettable Memory
+         * down the named pipe to the CSR.
+         */
+        rc = DosCallNmPipe( CSR_PIPE_NAME,
+                            ( PVOID )  &CsrControlBlock.pGettableMem,
+                            sizeof( BYTE * ),
+                            ( PVOID ) pCsrCallReply,
+                            sizeof( _CSR_CALL_REPLY ),
+                            &BytesRead,
+                            CSR_DIAG_PIPE_TIMEOUT );
+
+        /* Wait and try two more times to call the name pipe again
+        ** if the return codes not ok
+        */
+        while (( rc == ERROR_SEM_TIMEOUT ||
+                 rc == ERROR_PIPE_BUSY   ||
+                 rc == ERROR_PATH_NOT_FOUND) && ( PathNotFoundCount < 2 ))
+        {
+            /*
+            ** The pipes busy wait until its free
+            */
+            if (rc == ERROR_PIPE_BUSY)
+               {
+                rc = DosWaitNmPipe( CSR_PIPE_NAME, CSR_PIPE_TIMEOUT );
+               }
+
+            /* If the wait was successful... */
+            if ( rc == CMN_SUCCESS )
+            {
+                /* Try to call the named pipe again. */
+                rc = DosCallNmPipe( CSR_PIPE_NAME,
+                                    (BYTE *) &CsrControlBlock.pGettableMem,
+                                    sizeof(BYTE *),
+                                    (BYTE *) pCsrCallReply,
+                                    sizeof(_CSR_CALL_REPLY),
+                                    &BytesRead,
+                                    CSR_DIAG_PIPE_TIMEOUT );
+            }
+            else
+            {
+                 PathNotFoundCount++;
+            }
+
+        } /* end of the while loop */
+
+        /* Display the error to the user if you cannot connect after 3 tries. */
+        if (( rc != CMN_SUCCESS     )
+         && ( rc != ERROR_PIPE_BUSY ) )
+
+
+        {
+          FndMsgBoxDisplayText("Error communicating with the CSR !! \n\n"
+                               "Make sure the CSR is running before starting this program. \n\n"
+                               "Exiting program ...",
+                               NULL,
+                               CBI_hwnd,
+                               FND_MSGBOX_OK,
+                               FND_MSGBOX_ERROR,
+                               FND_MSGBOX_IDOK,
+                               CSR_DIAG_APPL_NAME,
+                               &usSelectedButton,
+                               &FndGenErrorBlock);
+
+          exit(0);
+        }
+
+
+
+    } /* end of outer if */
+
+    else
+    {
+     /*
+     ** Error getting memory so let the user know and then quit the application
+     */
+     FndMsgBoxDisplayText(
+                     "Error allocating gettable memory !! \n Exiting Application...",
+                      NULL,
+                      CBI_hwnd,
+                      FND_MSGBOX_OK,
+                      FND_MSGBOX_ERROR,
+                      FND_MSGBOX_IDOK,
+                      CSR_DIAG_APPL_NAME,
+                      &usSelectedButton,
+                      &FndGenErrorBlock);
+
+       FndClientQuit( &FndGenErrorBlock );
+    }
+
+
+
+  /*
+  ** Save the handle of the Pipe to BFCD that came back from the CSR,
+  **   for use by other functions
+  */
+  if (pCsrCallReply->pClientArea)
+      {
+       sel = SELECTOROF(pCsrCallReply->pClientArea);
+       DosGetSeg(sel);
+
+       BFCD_CSRPROFILE = (_CSRPROFILE *) pCsrCallReply->pClientArea;
+      }
+  else
+      { /*
+        ** Bad pointer from CSR, things can't be good, so tell user and get
+        **  out.
+        */
+       CmnMsgBoxOverrides( CMN_MSGBOX_LOGGING_YES, CMN_ARCH_PARMS );
+
+       FndMsgBoxDisplayText(
+                     "Bad pointer to CSR received, can not continue.\n\n Exiting Application...",
+                      NULL,
+                      CBI_hwnd,
+                      FND_MSGBOX_OK,
+                      FND_MSGBOX_ERROR,
+                      FND_MSGBOX_IDOK,
+                      CSR_DIAG_APPL_NAME,
+                      &usSelectedButton,
+                      &FndGenErrorBlock);
+
+       FndWindowDestroy( CBI_hwnd, &FndGenErrorBlock );
+
+       return (CMN_FAIL);
+
+      }
+
+ return CMN_SUCCESS;
+
+}  /* end of function AZDW001BusOpenPipe */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusReadPipe
+**
+**  DESCRIPTION      : This function reads the named pipe between the CSR and
+**                       this application
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/11/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC (AZDW001BusReadPipe)
+{
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+  void * pBuffer;
+  USHORT usNumBytesRead;
+  USHORT usSelectedButton;
+
+  /*
+  ** Read any input from the CSR via the named pipe.
+  */
+
+  FndGenRC = DosRead( BFCD_AZCD01->CSRPipeHandle,
+                      pBuffer,
+                      sizeof( pBuffer ),
+                      &usNumBytesRead );
+
+  /*
+  ** If an error occured tell the user and exit the application.
+  */
+
+  if ( FndGenRC )
+  {
+      FndMsgBoxDisplayText( "Error Reading from the CSR Pipe ! \n Exiting ...",
+                             NULL,
+                             CBI_hwnd,
+                             FND_MSGBOX_OK,
+                             FND_MSGBOX_ERROR,
+                             FND_MSGBOX_IDOK,
+                             CSR_DIAG_APPL_NAME,
+                             &usSelectedButton,
+                             &FndGenErrorBlock );
+
+      FndWindowDestroy( CBI_hwnd, &FndGenErrorBlock );
+
+      return( CMN_FAIL );
+
+   }
+
+   return CMN_SUCCESS;
+
+}  /* end of function AZDW001BusReadPipe */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusInterWindow
+**
+**  DESCRIPTION      : This function handles messages recieved via the
+**                      InterWindow event. This is the method the CSR and
+**                      the diagnostic window communicate.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/11/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/11/93  C. Crampton           Original code.
+**
+***************************************************************************/
+
+WCBPROC (AZDW001BusInterWindow)
+{
+
+/*  _FND_ERROR_BLOCK FndGenErrorBlock; */
+  USHORT FndGenRC = 0;
+  short sRC = 0;
+
+  /*
+  ** Check the message type and if it is from the CSR call the
+  **  appropriate function to process the message.
+  */
+  switch( CBI_IWApplMsg )
+      { /* Start of swithc on Application Message number */
+
+       case CSR_REQUEST_MSG:      /* New Request Message */
+
+            sRC = AZDW001BusProcessRequestMsg( CMN_ARCH_PARMS );
+            if ( sRC != CMN_SUCCESS )
+            {
+                return( CMN_FAIL );
+            }
+            break;
+
+       case CSR_SERVICE_MSG: /* New Service Message */
+
+            sRC = AZDW001BusProcessServiceMsg( CMN_ARCH_PARMS );
+            if ( sRC != CMN_SUCCESS )
+            {
+                return( CMN_FAIL );
+            }
+            break;
+
+       case CSR_DETAIL_MSG: /* Detail Message */
+
+            sRC = AZDW001BusProcessDetailMsg( CMN_ARCH_PARMS );
+            if ( sRC != CMN_SUCCESS )
+            {
+                return( CMN_FAIL );
+            }
+            break;
+
+      } /* End of switch on Applicaiton Message Number */
+
+ return CMN_SUCCESS;
+}  /* end of function AZDW001BusInterWindow() */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusRBFldChg
+**
+**  DESCRIPTION      : This function handles the field change event for the
+**                       message type radio button group. When a field change
+**                       occurs the data in the transcript list box must be
+**                       updated.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/11/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC (AZDW001BusRBFldChg)
+{
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+  short sRC = 0;
+  USHORT usSelectedRow;
+
+
+/*
+** If Request radio button selected set current service in bfcd to -1
+** If the Service radio button was selected see if a row in the services
+**   listbox is selected. If it is set the bfcd current service to that row.
+** If the service radio button was selected and no row is selected in the
+**   services listbox just return. The list_select or Double click events
+**   will handle the filling of the listbox.
+** Call the function to fill the message listbox.
+**
+*/
+
+ if ( MsgLevelData == LT_Request )
+ {
+    BFCD_AZCD01->usCurrentIndex = -1;
+ }
+ else if ( MsgLevelData == LT_Service )
+ {
+    FndLstBoxRowQuerySelection( CBI_hwnd,
+                                "ServicesLB",
+                                FND_LSTBOX_START,
+                                &usSelectedRow,
+                                &FndGenErrorBlock );
+
+    if ( FndGenRC == FND_SUCCESS )
+    {
+        BFCD_AZCD01->usCurrentIndex = usSelectedRow;
+    }
+
+    else if ( FndGenRC == LBOX_NO_MORE_ROWS_SELECTED )
+    {
+        return( CMN_SUCCESS );
+    }
+    else
+    {
+        return( CMN_FAIL );
+    }
+ } /* end of else if */
+
+ FndGenRC = AZDW001BusFillMsgBox( pEventInfo,
+                                  pEAIA,
+                                  pBFCD,
+                                  pWesMap,
+                                  pWindContextData,
+                                  pABHI );
+
+ if ( FndGenRC != CMN_SUCCESS )
+ {
+    return( CMN_FAIL );
+ }
+
+ return ( CMN_SUCCESS );
+} /* end of function AZDW001BusRBFldChg() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusProcessRequestMsg
+**
+**  DESCRIPTION      : This function Processes a Request message from the
+**                       CSR. Whenever you get a Request message every thing
+**                       must be cleaned up.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/12/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+short AZDW001BusProcessRequestMsg(CMN_ARCH_PARM_TYPES)
+ {
+
+      _FND_ERROR_BLOCK FndGenErrorBlock;
+      USHORT FndGenRC = 0;
+      short sRC = 0;
+      USHORT usCounter;
+      SEL sel;
+      _CSR_DIAG_REQUEST_PKT *pMsgData;
+       HSYSSEM hssem;
+       void *pVoid;
+       USHORT usSelectedButton;
+       char szErrorMsg[255];
+       short sMsgLevel;
+
+/*
+** The Interwindow parameter is a pointer to the segment where the message
+**   resides.
+*/
+
+   /*
+   ** The parameter is cast as a pointer to char. So assign it to a void.
+   */
+   pVoid= CBI_IWApplParm;
+
+   /*
+   ** Turn the pointer into a selector.
+   ** Get access to this segment.
+   ** Make a far pointer out of the selector.
+   ** Copy the request id into BFCD and the Wes field.
+   */
+   sel  = SELECTOROF( pVoid );
+
+   FndGenRC = DosGetSeg( sel );
+
+   pMsgData = MAKEP( sel, 0 );
+
+   strcpy( BFCD_AZCD01->RequestID, pMsgData->RequestID );
+   strcpy( RequestIDData, pMsgData->RequestID );
+
+   /*
+   ** The foundation Send function does not work at this time so Post was
+   **  used along with setting a semaphore to force synchronization.
+   **  Since the data has been retrieved get the semaphore handle using
+   **  the name and then clear the semaphore.
+   */
+
+   FndGenRC = DosOpenSem( &hssem, CSR_REQUEST_SEM_NAME );
+
+   FndGenRC = DosSemClear( hssem );
+
+
+/*
+** When a new Request message is sent all of the existing data is trashed.
+** The following logic does the cleanup of BFCD.
+*/
+
+
+  /*
+  ** Free the allocated memory for the request block and then each of the
+  **     services
+  */
+
+  if ( BFCD_AZCD01->pRequestSeg )
+  {
+     DosFreeSeg( SELECTOROF( BFCD_AZCD01->pRequestSeg ));
+     fclose( BFCD_AZCD01->fptrRequestLog );
+     BFCD_AZCD01->fptrRequestLog = NULL;
+     strcpy( BFCD_AZCD01->szRequestLogName, "" );
+  }
+
+  for ( usCounter = 0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
+  {
+       DosFreeSeg( SELECTOROF( BFCD_AZCD01->Service[usCounter].pServiceSeg ));
+       fclose( BFCD_AZCD01->Service[usCounter].fptrServiceLog );
+       BFCD_AZCD01->Service[usCounter].fptrServiceLog = NULL;
+       strcpy( BFCD_AZCD01->Service[usCounter].szServiceLogName,"" );
+  }
+  /*
+  ** Set the BFCD Counters back to zero
+  */
+
+  BFCD_AZCD01->usNumServices    = 0;
+  BFCD_AZCD01->usNumRequestRows = 0;
+  BFCD_AZCD01->usCurrentIndex   = -1;
+
+/*
+** Setup BFCD for the New Request
+**
+**  Allocate a Segment of memory.
+**  Make the Segment selector into a far pointer to offset 0.
+**  Build the logging filename based on the request name.
+**  Open the logging file for this request.
+**  Clear the Services List Box.
+**  Clear the Detail Messages List Box.
+**  Call the Radio Button Field Change function to handle the filling of
+**    the listboxes.
+*/
+
+   FndGenRC = DosAllocSeg( 0 , &sel , SEG_GETTABLE );
+
+   BFCD_AZCD01->pRequestSeg = MAKEP( sel, 0 );
+
+   sprintf( BFCD_AZCD01->szRequestLogName,
+            "%s\\%s.LOG",
+            BFCD_AZCD01->szLogDirName,
+            BFCD_AZCD01->RequestID );
+
+   BFCD_AZCD01->fptrRequestLog = fopen( BFCD_AZCD01->szRequestLogName, "w" );
+   strcpy( szErrorMsg, BFCD_AZCD01->szRequestLogName );
+
+   if ( BFCD_AZCD01->fptrRequestLog == NULL )
+   {
+      FndMsgBoxDisplayText( "Unable to open the log file for the request",
+                             NULL,
+                             CBI_hwnd,
+                             FND_MSGBOX_OK,
+                             FND_MSGBOX_ERROR,
+                             FND_MSGBOX_IDOK,
+                             CSR_DIAG_APPL_NAME,
+                             &usSelectedButton,
+                             &FndGenErrorBlock );
+   }
+
+   FndLstBoxRowDeleteAll( CBI_hwnd,
+                          "ServicesLB",
+                          &FndGenErrorBlock );
+
+   FndLstBoxRowDeleteAll( CBI_hwnd,
+                          "TranscriptLB",
+                          &FndGenErrorBlock );
+
+   /*
+   ** Set the radio button to request
+   */
+   sMsgLevel = LT_Request;
+/*
+   FndGenRC = FndFieldSetValue( CBI_hwnd            ,
+                                "MsgLevel"          ,
+                                sizeof(sMsgLevel)   ,
+                                (void *) &sMsgLevel ,
+                                &FndGenErrorBlock)   ;
+*/
+   FndValueEnableItem( CBI_hwnd,
+                       "MsgLevel",
+                       ( void * )&sMsgLevel,
+                       &FndGenErrorBlock );
+
+   FndGenRC = AZDW001BusRBFldChg( pEventInfo,
+                                  pEAIA,
+                                  pBFCD,
+                                  pWesMap,
+                                  pWindContextData,
+                                  pABHI );
+
+  return CMN_SUCCESS;
+ } /* End of function AZDW001BusProcessServiceMsg() */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusProcessServiceMsg
+**
+**  DESCRIPTION      : This function Processes a New Service message from the
+**                       CSR.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/12/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+short AZDW001BusProcessServiceMsg(CMN_ARCH_PARM_TYPES)
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+   USHORT FndGenRC = 0;
+   short sRC = 0;
+   USHORT usSrvIndex;
+   SEL sel;
+   USHORT usSelectedButton;
+   _ServicesLBRow Row;
+   _CSR_DIAG_SERVICE_PKT *pMsgData;
+   HSYSSEM hssem;
+   void *pVoid;
+   char szErrorMsg[255];
+
+  /*
+  ** Make sure more services can fit in the list box
+  */
+    if ( BFCD_AZCD01->usNumServices < CSR_DIAG_SERVICE_MAX - 1 )
+    {
+       BFCD_AZCD01->usNumServices++;
+       usSrvIndex = BFCD_AZCD01->usNumServices - 1;
+    }
+    else
+    {
+       FndMsgBoxDisplayText(
+                     "The services list box is FULL\n Dropping new services",
+                     NULL,
+                     CBI_hwnd,
+                     FND_MSGBOX_OK,
+                     FND_MSGBOX_ERROR,
+                     FND_MSGBOX_IDOK,
+                     CSR_DIAG_APPL_NAME,
+                     &usSelectedButton,
+                     &FndGenErrorBlock );
+
+        FndGenRC = DosOpenSem( &hssem, CSR_SERVICE_SEM_NAME );
+
+        FndGenRC = DosSemClear( hssem );
+
+        return( CMN_FAIL );
+     }
+
+/*
+** The Interwindow parameter is a pointer to the segment where the message
+**   resides.
+*/
+
+   /*
+   ** The parameter is cast as a pointer to char. So assign it to a void.
+   */
+   pVoid= CBI_IWApplParm;
+
+   /*
+   ** Turn the pointer into a selector.
+   ** Get access to this segment.
+   ** Make a far pointer out of the selector.
+   ** Copy the Service data into BFCD and the Wes fields.
+   */
+   sel  = SELECTOROF( pVoid );
+
+   FndGenRC = DosGetSeg( sel );
+
+   pMsgData = MAKEP( sel, 0 );
+
+   BFCD_AZCD01->Service[usSrvIndex].ServiceKey       = pMsgData->ServiceKey;
+
+   BFCD_AZCD01->Service[usSrvIndex].Server           = pMsgData->Server;
+
+   BFCD_AZCD01->Service[usSrvIndex].Service          = pMsgData->Service;
+
+   BFCD_AZCD01->Service[usSrvIndex].usNumServiceRows = 0;
+
+   strcpy( BFCD_AZCD01->Service[usSrvIndex].TransMap, pMsgData->TransMap );
+
+   /*
+   ** The foundation Send function does not work at this time so Post was
+   **  used along with setting a semaphore to force synchronization.
+   **  Since the data has been retrieved get the semaphore handle using
+   **  the name and then clear the semaphore.
+   */
+
+   FndGenRC = DosOpenSem( &hssem, CSR_SERVICE_SEM_NAME );
+
+   FndGenRC = DosSemClear( hssem );
+
+   /*
+   ** Since this is a new service allocate a Segment of memory for
+   **  the services messages.
+   */
+
+
+   FndGenRC = DosAllocSeg( 0 , &sel , SEG_GETTABLE );
+
+   BFCD_AZCD01->Service[usSrvIndex].pServiceSeg = MAKEP( sel, 0 );
+
+   /*
+   ** Move the data into a local structure and then add it to the services
+   **  List Box.
+   */
+
+   Row._ServicesLBServerData    = BFCD_AZCD01->Service[usSrvIndex].Server;
+   Row._ServicesLBServiceIDData = BFCD_AZCD01->Service[usSrvIndex].Service;
+
+   strcpy( Row._ServicesLBTranMapData,
+           BFCD_AZCD01->Service[usSrvIndex].TransMap );
+
+   FndLstBoxRowAdd( CBI_hwnd,
+                    "ServicesLB",
+                    FND_LSTBOX_END,
+                    sizeof( Row ),
+                    &Row,
+                    &FndGenErrorBlock );
+
+    /*
+    ** Format the message for the log
+    */
+    sprintf( BFCD_AZCD01->Service[usSrvIndex].szServiceLogName,
+             "%s\\%s.LOG",
+             BFCD_AZCD01->szLogDirName,
+             BFCD_AZCD01->Service[usSrvIndex].TransMap );
+
+    /*
+    ** Open a log file for a copy of this services messages
+    */
+    BFCD_AZCD01->Service[usSrvIndex].fptrServiceLog =
+             fopen( BFCD_AZCD01->Service[usSrvIndex].szServiceLogName, "w" );
+
+    strcpy( szErrorMsg, BFCD_AZCD01->Service[usSrvIndex].szServiceLogName );
+
+    /*
+    ** If the log file did not open correctly tell the user.
+    */
+    if ( BFCD_AZCD01->Service[usSrvIndex].fptrServiceLog == NULL )
+    {
+       FndMsgBoxDisplayText( "Unable to open a service log file !!!",
+                             NULL,
+                             CBI_hwnd,
+                             FND_MSGBOX_OK,
+                             FND_MSGBOX_ERROR,
+                             FND_MSGBOX_IDOK,
+                             CSR_DIAG_APPL_NAME,
+                             &usSelectedButton,
+                             &FndGenErrorBlock );
+    }
+
+    return CMN_SUCCESS;
+   } /* End of function AZDW001BusProcessServiceMsg() */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusProcessDetailMsg
+**
+**  DESCRIPTION      : This function Processes a Detail message from the
+**                       CSR.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/12/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  C. Crampton           Original code.
+**
+**  10/15/93  C. Crampton           Changed logic so that each time the transcript
+**                                   listbox gets full delete all rows.
+**
+**  11/21/94  J. Looney             Commented out the FndMsgBoxDisplayText
+**                                  in the case the listbox is full of
+**                                  either request or service messages.
+***************************************************************************/
+SHORT AZDW001BusProcessDetailMsg(CMN_ARCH_PARM_TYPES)
+ {
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+    SHORT sRC = 0;
+    _TranscriptLBRow Row;
+    USHORT usCounter;
+    USHORT usServiceIndex;
+    USHORT usRowNum;
+    USHORT usSelectedButton;
+    HSYSSEM hssem;
+    VOID *pVoid;
+    _CSR_DIAG_DETAIL_PKT *pMsgData;
+    SEL sel;
+    CHAR szErrorMsg[255];
+    int nNumChars;
+    _AZCD01Global *pTemp;
+    USHORT usTemp;
+
+
+   pTemp  = ( _AZCD01Global * )pBFCD->pCSRDiagBFCD;
+   usTemp = NUMTRANSCRIPTLBROWS;
+
+/*
+** The Interwindow parameter is a pointer to the segment where the message
+**   resides.
+*/
+
+   /*
+   ** The parameter is cast as a pointer to char. So assign it to a void.
+   */
+   pVoid= CBI_IWApplParm;
+
+   /*
+   ** Turn the pointer into a selector.
+   ** Get access to this segment.
+   ** Make a far pointer out of the selector.
+   */
+   sel  = SELECTOROF( pVoid );
+
+   FndGenRC = DosGetSeg( sel );
+
+   pMsgData = MAKEP( sel, 0 );
+
+  /*
+  ** See if this message is for a service or a generic request level
+  **   The generic request have a key of 0.
+  */
+  if ( pMsgData->ServiceKey == 0 )
+  {
+     /*
+     ** Increment the number of request rows in BFCD.
+     ** Calculate the row relative to the list box size.
+     ** Copy the message into the correct BFCD slot for a request message.
+     */
+
+     usRowNum = BFCD_AZCD01->usNumRequestRows % NUMTRANSCRIPTLBROWS;
+
+
+     if ( usRowNum >= NUMTRANSCRIPTLBROWS )
+     {
+         sprintf( szErrorMsg,
+                  "Bad row number calculated: %s",
+                  usRowNum );
+         FndMsgBoxDisplayText( szErrorMsg,
+                               NULL,
+                               CBI_hwnd,
+                               FND_MSGBOX_OK,
+                               FND_MSGBOX_ERROR,
+                               FND_MSGBOX_IDOK,
+                               CSR_DIAG_APPL_NAME,
+                               &usSelectedButton,
+                               &FndGenErrorBlock );
+     }
+
+     strcpy( BFCD_AZCD01->pRequestSeg[usRowNum].Detail, pMsgData->Detail );
+
+     /*
+     ** Write the message out to the log
+     */
+     if ( BFCD_AZCD01->fptrRequestLog )
+     {
+         nNumChars = fprintf( BFCD_AZCD01->fptrRequestLog,
+                              "%s\n",
+                              pMsgData->Detail );
+         nNumChars = fflush( BFCD_AZCD01->fptrRequestLog );
+     }
+
+     /*
+     ** If the selected listbox is the request id level
+     **    add the message to the list box
+     */
+
+     if ( BFCD_AZCD01->usCurrentIndex == -1 )
+     {
+
+        /*
+        ** Move the data to the local list box row variable
+        */
+        strcpy( Row._TranscriptLBDataBufferData, pMsgData->Detail );
+
+
+        /*
+        ** If the listbox is full notify the user that you are going
+        **  to delete all rows and start filling it again.
+        */
+        if (( BFCD_AZCD01->usNumRequestRows != 0 ) &&
+            ( BFCD_AZCD01->usNumRequestRows % NUMTRANSCRIPTLBROWS ) == 0 )
+        {
+            sprintf( szErrorMsg,
+                     "Request %s has more messages than the listbox can hold.\n\nDeleting all old data.\n\n"
+                     "Check the disk log file to see all messages.",
+                     BFCD_AZCD01->RequestID );
+
+//            FndMsgBoxDisplayText( szErrorMsg,
+//                                  NULL,
+//                                  CBI_hwnd,
+//                                  FND_MSGBOX_OK,
+//                                  FND_MSGBOX_INFORMATION,
+//                                  FND_MSGBOX_IDOK,
+//                                  CSR_DIAG_APPL_NAME,
+//                                  &usSelectedButton,
+//                                  &FndGenErrorBlock );
+
+            FndLstBoxRowDeleteAll( CBI_hwnd,
+                                   "TranscriptLB",
+                                   &FndGenErrorBlock );
+         }
+         /*
+         ** Add the row to the list box
+         */
+         FndLstBoxRowAdd( CBI_hwnd,
+                          "TranscriptLB",
+                          FND_LSTBOX_END,
+                          sizeof( Row ),
+                          &Row,
+                          &FndGenErrorBlock );
+     } /* end of if current service == message service */
+
+     /*
+     ** The foundation Send function does not work at this time so Post was
+     **  used along with setting a semaphore to force synchronization.
+     **  Since the data has been retrieved get the semaphore handle using
+     **  the name and then clear the semaphore.
+     */
+
+     if ( BFCD_AZCD01->hsDetailSem == NULL )
+     {
+        FndGenRC = DosOpenSem( &hssem, CSR_DETAIL_SEM_NAME );
+        BFCD_AZCD01->hsDetailSem = hssem;
+     }
+
+     FndGenRC = DosSemClear( BFCD_AZCD01->hsDetailSem );
+
+     BFCD_AZCD01->usNumRequestRows++;
+
+     return( CMN_SUCCESS );
+
+  } /* end of if for request detail message */
+
+  /*
+  **  Find the Service key in BFCD that matches
+  */
+  usServiceIndex = -1;
+
+  for ( usCounter=0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
+  {
+      if ( BFCD_AZCD01->Service[usCounter].ServiceKey == pMsgData->ServiceKey )
+      {
+         usServiceIndex = usCounter;
+         break;
+      }
+  }
+
+  /*
+  ** If service not found report it to the user and exit
+  */
+  if ( usServiceIndex == -1 )
+  {
+     sprintf( szErrorMsg,
+              "Unable to find matching service key %lu for a detail message",
+              pMsgData->ServiceKey );
+
+     FndMsgBoxDisplayText( szErrorMsg,
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           CSR_DIAG_APPL_NAME,
+                           &usSelectedButton,
+                           &FndGenErrorBlock );
+
+     if ( BFCD_AZCD01->hsDetailSem == NULL )
+     {
+        FndGenRC = DosOpenSem( &hssem, CSR_DETAIL_SEM_NAME );
+        BFCD_AZCD01->hsDetailSem = hssem;
+     }
+
+     FndGenRC = DosSemClear( BFCD_AZCD01->hsDetailSem );
+
+     return( CMN_FAIL );
+  }
+
+  /*
+  ** Add the row to the BFCD memory for this service
+  */
+  usRowNum = BFCD_AZCD01->Service[usServiceIndex].usNumServiceRows % NUMTRANSCRIPTLBROWS;
+
+  if ( usRowNum >= NUMTRANSCRIPTLBROWS )
+  {
+
+     sprintf( szErrorMsg,
+              "Bad row number calculated: %s",
+              usRowNum );
+     FndMsgBoxDisplayText( szErrorMsg,
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           CSR_DIAG_APPL_NAME,
+                           &usSelectedButton,
+                           &FndGenErrorBlock );
+  }
+
+  strcpy( BFCD_AZCD01->Service[usServiceIndex].pServiceSeg[usRowNum].Detail,
+          pMsgData->Detail );
+  /*
+  ** write the message to the service log file
+  */
+  if ( BFCD_AZCD01->Service[usServiceIndex].fptrServiceLog )
+  {
+     nNumChars = fprintf(BFCD_AZCD01->Service[usServiceIndex].fptrServiceLog,
+                         "%s\n",
+                         pMsgData->Detail );
+     nNumChars = fflush(BFCD_AZCD01->Service[usServiceIndex].fptrServiceLog);
+  }
+  if ((BFCD_AZCD01->Service[usServiceIndex].usNumServiceRows !=0) &&
+      (BFCD_AZCD01->Service[usServiceIndex].usNumServiceRows % NUMTRANSCRIPTLBROWS) == 0)
+  {
+     sprintf( szErrorMsg,
+              "Server %lu \nService %d \nTranslation Map %s\n\n"
+              "Has received more messages than the listbox can hold.\n\n"
+              "Check %s for the complete list of messages.\n\n"
+              "Deleting current messages.\n\n",
+              BFCD_AZCD01->Service[usServiceIndex].Server,
+              BFCD_AZCD01->Service[usServiceIndex].Service,
+              BFCD_AZCD01->Service[usServiceIndex].TransMap,
+              BFCD_AZCD01->Service[usServiceIndex].szServiceLogName );
+
+//     FndMsgBoxDisplayText( szErrorMsg,
+//                           NULL,
+//                           CBI_hwnd,
+//                           FND_MSGBOX_OK,
+//                           FND_MSGBOX_INFORMATION,
+//                           FND_MSGBOX_IDOK,
+//                           CSR_DIAG_APPL_NAME,
+//                           &usSelectedButton,
+//                           &FndGenErrorBlock );
+
+  }
+
+  /*
+  ** If this service is the selected service add it to the list box
+  */
+
+  if ( BFCD_AZCD01->usCurrentIndex == usServiceIndex )
+  {
+     /*
+     ** Move the data to the local list box row variable
+     */
+     strcpy( Row._TranscriptLBDataBufferData,
+             BFCD_AZCD01->Service[usServiceIndex].pServiceSeg[usRowNum].
+             Detail );
+
+     /*
+     ** If the listbox is full delete all rows and start filling it again.
+     */
+     if (( BFCD_AZCD01->Service[usServiceIndex].usNumServiceRows !=0 ) &&
+         ( BFCD_AZCD01->Service[usServiceIndex].usNumServiceRows % NUMTRANSCRIPTLBROWS) == 0)
+     {
+
+        FndLstBoxRowDeleteAll( CBI_hwnd,
+                               "TranscriptLB",
+                               &FndGenErrorBlock );
+
+     }
+
+     /*
+     ** Add the row to the list box
+     */
+     FndLstBoxRowAdd( CBI_hwnd,
+                      "TranscriptLB",
+                      FND_LSTBOX_END,
+                      sizeof( Row ),
+                      &Row,
+                      &FndGenErrorBlock );
+
+  } /* end of if current service == message service */
+
+
+  /*
+  ** The foundation Send function does not work at this time so Post was
+  **  used along with setting a semaphore to force synchronization.
+  **  Since the data has been retrieved get the semaphore handle using
+  **  the name and then clear the semaphore.
+  */
+
+  if ( BFCD_AZCD01->hsDetailSem == NULL )
+  {
+     FndGenRC = DosOpenSem( &hssem, CSR_DETAIL_SEM_NAME );
+     BFCD_AZCD01->hsDetailSem = hssem;
+  }
+
+  FndGenRC = DosSemClear( BFCD_AZCD01->hsDetailSem );
+
+  BFCD_AZCD01->Service[usServiceIndex].usNumServiceRows++;
+
+  return CMN_SUCCESS;
+ } /* End of function AZDW001BusProcessDetailMsg() */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusFillMsgBox
+**
+**  DESCRIPTION      : This function fills the message list box with error
+**                       messages from the memory segment.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusFillMsgBox)
+ {
+
+   _FND_ERROR_BLOCK FndGenErrorBlock;
+   USHORT FndGenRC = 0;
+   USHORT usRowNumber;
+   USHORT usNumberRows;
+   _CSR_DIAG_DETAIL_LINE *pSeg;
+   _TranscriptLBRow Row;
+   CHAR szLBTitle[80];
+
+   _AZCD01Global *pTemp;
+
+   pTemp = BFCD_AZCD01;
+
+   /*
+   ** If the current index is a request
+   */
+   if ( BFCD_AZCD01->usCurrentIndex == -1 )
+   {
+      usNumberRows = BFCD_AZCD01->usNumRequestRows;
+      pSeg = BFCD_AZCD01->pRequestSeg;
+      sprintf(szLBTitle,"CSR Messages for Request Id %s", BFCD_AZCD01->RequestID);
+
+      FndLstBoxTitleSet( CBI_hwnd,
+                         "TranscriptLB",
+                         szLBTitle,
+                         &FndGenErrorBlock );
+
+   }
+   /*
+   ** Must be a Service, get the segment address and build a title for the LB.
+   */
+   else
+   {
+      usNumberRows = BFCD_AZCD01->Service[BFCD_AZCD01->usCurrentIndex].
+                     usNumServiceRows % NUMTRANSCRIPTLBROWS ;
+
+      pSeg = BFCD_AZCD01->Service[BFCD_AZCD01->usCurrentIndex].pServiceSeg;
+      sprintf( szLBTitle,
+               "CSR Messages for Server %lu Service %d Tran Map %s",
+               BFCD_AZCD01->Service[BFCD_AZCD01->usCurrentIndex].Server,
+               BFCD_AZCD01->Service[BFCD_AZCD01->usCurrentIndex].Service,
+               BFCD_AZCD01->Service[BFCD_AZCD01->usCurrentIndex].TransMap );
+
+      FndLstBoxTitleSet( CBI_hwnd,
+                         "TranscriptLB",
+                         szLBTitle,
+                         &FndGenErrorBlock );
+
+   }
+   /*
+   ** Delete all the rows and the listbox before refilling
+   */
+   FndLstBoxRowDeleteAll( CBI_hwnd,
+                          "TranscriptLB",
+                          &FndGenErrorBlock );
+
+   /*
+   ** Loop thru memory filling a local structure with the correct row data.
+   ** Then add the structure to the listbox.
+   */
+   for ( usRowNumber=0;
+         usRowNumber < usNumberRows && usRowNumber < NUMTRANSCRIPTLBROWS;
+         usRowNumber++ )
+   {
+       strcpy( Row._TranscriptLBDataBufferData,
+               ( pSeg->Detail ) + sizeof( _CSR_DIAG_DETAIL_LINE )
+               * usRowNumber );
+
+       FndLstBoxRowAdd( CBI_hwnd,
+                        "TranscriptLB",
+                        usRowNumber,
+                        sizeof( Row ),
+                        &Row,
+                        &FndGenErrorBlock );
+
+   }
+
+   return CMN_SUCCESS;
+ } /* End of function AZDW001BusFillMsgBox() */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusWriteSaveFile
+**
+**  DESCRIPTION      : This function handles printing of the error messages
+**                      to the save file. This prints only the current messages.
+**                     The log file contains all the messages that have been
+**                      received.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusWriteSaveFile )
+ {
+
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+
+  FILE *fhndFilePtr;
+  CHAR szErrorMsg[255];
+  CHAR szTitle[80];
+  USHORT usIndex;
+  BOOL bMore=TRUE;
+  _TranscriptLBRow ListBox;
+  USHORT usSelectedButton;
+  time_t tCurrentTime;
+
+  /*
+  ** Open a file handle for the printer
+  */
+
+  fhndFilePtr = fopen( BFCD_AZCD01->szSaveFileName, "w" );
+
+  if ( fhndFilePtr == NULL )
+  {
+     sprintf( szErrorMsg,
+              "Unable to open Save file %s",
+              BFCD_AZCD01->szSaveFileName );
+
+     FndMsgBoxDisplayText( szErrorMsg,
+                           NULL,
+                           CBI_hwnd,
+                           FND_MSGBOX_OK,
+                           FND_MSGBOX_ERROR,
+                           FND_MSGBOX_IDOK,
+                           CSR_DIAG_APPL_NAME,
+                           &usSelectedButton,
+                           &FndGenErrorBlock );
+     return( CMN_FAIL );
+  }
+
+  /*
+  ** Get the title of the list box to use as a heading on the printout
+  */
+
+  FndLstBoxTitleQuery( CBI_hwnd,
+                       "TranscriptLB",
+                       sizeof( szTitle ),
+                       szTitle,
+                       &FndGenErrorBlock );
+
+  /*
+  ** Tell the user whats going on, whats going on
+  */
+
+  sprintf( szErrorMsg,
+           "Saving CSR Messages to file %s",
+           BFCD_AZCD01->szSaveFileName );
+
+  FndMsgBoxDisplayMdlssText( szErrorMsg,
+                             "PrintMsgBox",
+                             CBI_hwnd,
+                             FND_MSGBOX_NOBUTTONS,
+                             FND_MSGBOX_INFORMATION,
+                             FND_MSGBOX_IDNOBUTTON,
+                             CSR_DIAG_APPL_NAME,
+                             &FndGenErrorBlock );
+
+  /*
+  ** Write out a heading with
+  */
+
+  FndGenRC = fprintf( fhndFilePtr,"%s\n",szTitle );
+  time( &tCurrentTime );
+  FndGenRC = fprintf( fhndFilePtr,"%s\n\n",ctime( &tCurrentTime ));
+
+  /*
+  ** Loop thru the list box and read each line.
+  **  Then write it out to the file.
+  */
+
+  usIndex = 0;
+  bMore = TRUE;
+
+  while ( bMore )
+  {
+     CmnErrOverrides( NULL,
+                      CMN_OVERRIDE_FATAL,
+                      CMN_ERR_LOGGING_DEFAULT,
+                      CMN_RC_CONTINUE_PROCESSING,
+                      CMN_ARCH_PARMS );
+
+     FndLstBoxRowQueryData( CBI_hwnd,
+                            "TranscriptLB",
+                            usIndex,
+                            sizeof( _TranscriptLBRow ),
+                            &ListBox,
+                            &FndGenErrorBlock );
+
+     if ( FndGenRC != FND_SUCCESS && FndGenRC != LBOX_ROW_EMPTY )
+     {
+        return( CMN_FAIL );
+     }
+     else if ( FndGenRC == LBOX_ROW_EMPTY )
+     {
+        bMore = FALSE;
+     }
+     else
+     {
+        fprintf( fhndFilePtr, "%s\n", ListBox._TranscriptLBDataBufferData );
+        usIndex++;
+     }
+  } /* end of while more rows in list box */
+
+
+  fclose( fhndFilePtr );
+
+  /*
+  ** Take it easy for awhile to let the user read the message box.
+  ** Then kill it.
+  */
+
+  FndGenRC = DosSleep( 2000L );
+
+
+  FndMsgBoxDestroy( "PrintMsgBox",
+                    &FndGenErrorBlock );
+
+  return CMN_SUCCESS;
+ } /* End of function AZDW001BusWriteSaveFile() */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusAboutMNClick
+**
+**  DESCRIPTION      : This function creates the About window.
+**
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW001BusAboutMNClick )
+{
+   USHORT FndGenRC     = 0;
+   _FND_ERROR_BLOCK    FndGenErrorBlock;
+   CHAR WindowName[]   = "AZDW006";
+   CHAR InstanceName[] = "";
+
+   CmnWindowCreate( WindowName,
+                    InstanceName,
+                    NULL,
+                    NULL,
+                    CMN_ARCH_PARMS );
+
+   return ( CMN_SUCCESS );
+} /* end of function AZDW001BusAboutMNClick */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusWindowClose
+**
+**  DESCRIPTION      : This function notifies the CSR that the CSR diagnostic
+**                       window application is terminating.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 10/06/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    10/06/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+
+WCBPROC (AZDW001BusWindowClose)
+{
+   USHORT usRC;
+   USHORT usCounter;
+
+   _CONTROL_BLOCK CsrControlBlock; /* The input buffer */
+   _CSR_CALL_REPLY *pCsrCallReply; /* The output buffer */
+   SEL sel;
+   USHORT usBytesRead;
+
+   FILE *fptrTemp;
+   USHORT FndGenRC = 0;
+   HSYSSEM hssem;
+
+   /*
+   ** Initialize and populate the CsrControlBlock
+   **  Copy the string into the requestid member.
+   **  Pass the window handle in the hwnd member.
+   */
+   strcpy( CsrControlBlock.RequestId, "NODEBUG" );
+   CsrControlBlock.hwnd = CBI_hwnd;
+
+   /* Allocate gettable memory for the client data area */
+   usRC = DosAllocSeg( sizeof( _CSR_CALL_REPLY ) + sizeof( _CONTROL_BLOCK ),
+                       &sel,
+                       SEG_GETTABLE );
+
+   /* Convert selector to pointer */
+   CsrControlBlock.pGettableMem = MAKEP( sel, 0 );
+
+   /* If the memory allocated successfully... */
+   if ( usRC == CMN_SUCCESS )
+   {
+      /* Clear the CsrControlBlock.pGettableMem area. */
+      memset( CsrControlBlock.pGettableMem,
+              '\0',
+              (size_t)( sizeof(_CSR_CALL_REPLY) + sizeof(_CONTROL_BLOCK) ));
+
+      pCsrCallReply = (_CSR_CALL_REPLY *)CsrControlBlock.pGettableMem;
+
+      /* Copy the Pointer to pClientArea and pGettableMem into
+       * CsrCallReply.
+       */
+
+      pCsrCallReply->pGettableMem = CsrControlBlock.pGettableMem;
+      pCsrCallReply->GettableSel  = sel;
+
+      /* Copy the CsrControlBlock into Gettable Memory */
+      memcpy( CsrControlBlock.pGettableMem + sizeof(_CSR_CALL_REPLY),
+              &CsrControlBlock,
+              ( size_t )( sizeof( _CONTROL_BLOCK )));
+
+      /*
+      ** Send the pointer to Gettable Memory
+      ** down the named pipe to the CSR.
+      */
+
+      usRC = DosCallNmPipe( CSR_PIPE_NAME,
+                            ( PVOID )  &CsrControlBlock.pGettableMem,
+                            sizeof( BYTE * ),
+                            (PVOID) pCsrCallReply,
+                            sizeof( _CSR_CALL_REPLY ),
+                            &usBytesRead,
+                            CSR_DIAG_PIPE_TIMEOUT );
+
+      /*
+      ** Free any outstanding semaphore locks for the csr
+      */
+
+      FndGenRC = DosOpenSem( &hssem, CSR_REQUEST_SEM_NAME );
+      if ( FndGenRC == 0 )
+      {
+         FndGenRC = DosSemClear( hssem );
+      }
+
+      FndGenRC = DosOpenSem( &hssem, CSR_SERVICE_SEM_NAME );
+      if ( FndGenRC == 0 )
+      {
+         FndGenRC = DosSemClear( hssem );
+      }
+
+      FndGenRC = DosOpenSem( &hssem, CSR_DETAIL_SEM_NAME );
+      if ( FndGenRC == 0 )
+      {
+         FndGenRC = DosSemClear( hssem );
+      }
+
+      /*
+      ** if return code from call to csr was bad return fail
+      */
+
+      if ( usRC )
+      {
+          return( CMN_FAIL );
+      }
+   } /* end of allocated memory cleanly */
+
+   /*
+   ** Free the memory for the Request Detail Messages
+   */
+   DosFreeSeg( SELECTOROF( BFCD_AZCD01->pRequestSeg ));
+
+   fptrTemp = BFCD_AZCD01->fptrRequestLog;
+   if ( BFCD_AZCD01->fptrRequestLog )
+   {
+      fclose( BFCD_AZCD01->fptrRequestLog );
+   }
+
+   /*
+   **  Free the memory for the Service Detail Messages
+   */
+   for ( usCounter = 0; usCounter < BFCD_AZCD01->usNumServices; usCounter++ )
+   {
+       DosFreeSeg( SELECTOROF(BFCD_AZCD01->Service[usCounter].pServiceSeg ));
+       fclose( BFCD_AZCD01->Service[usCounter].fptrServiceLog );
+   }
+} /* end of function AZDW001BusWindowClose */
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW001BusOtherGui
+**
+**  DESCRIPTION      : This function handles any messages that come in thru
+**                      Other Gui event. It can be used to trap Help manager
+**                      inform messages.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 10/06/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    10/06/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+
+WCBPROC (AZDW001BusOtherGui)
+{
+ SHORT sRC=0;
+ USHORT usPanelID = 0;
+
+ switch ( CBI_ApplMsg )
+     {
+
+      case HM_INFORM:  /* Help Manager INFORM message */
+           usPanelID = SHORT1FROMMP( CBI_ApplParm1 );
+           if ( usPanelID > 0 )
+           {
+               sRC = CmnHlpMgrDispPanelId( usPanelID,
+                                           CMN_ARCH_PARMS );
+           }
+           break; /* break out of case HM_INFORM logic */
+
+     } /* End of switch */
+
+ return ( CMN_SUCCESS );
+} /* end of function AZDW001Bus_Gui */

@@ -1,0 +1,176 @@
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  AZDW003.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window AZDW003
+**                     includes:
+**
+**                     AZDW003BusPredisplay
+**                     AZDW003BusFillLB
+**
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Creation
+**
+***************************************************************************/
+
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW003BusPredisplay
+**
+**  DESCRIPTION      : This function handles any preprocessing that needs to
+**                      occur before a window is displayed.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/10/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    08/10/93  C. Crampton              Original code.
+**
+***************************************************************************/
+
+WCBPROC( AZDW003BusPredisplay )
+ {
+
+  /*  _FND_ERROR_BLOCK FndGenErrorBlock; */
+  /*  USHORT FndGenRC = 0; */
+  SHORT sRC=0;
+
+  sRC = AZDW003BusFillLB(CMN_ARCH_PARMS);
+
+
+    return CMN_SUCCESS;
+ }
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZDW003BusFillLB
+**
+**  DESCRIPTION      : This function fills the listbox with data.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 08/12/93
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+SHORT AZDW003BusFillLB(CMN_ARCH_PARM_TYPES)
+{
+  _FND_ERROR_BLOCK FndGenErrorBlock;
+  USHORT FndGenRC = 0;
+  _ResMapLBRow Row;
+  _REQUEST_MAP_HEADER *pMap;
+
+  SEL sel;
+  USHORT rc;
+  char tmpbuf[10];
+  struct tm *ptmTmpBuf;
+
+    _CSRPROFILE *pTemp;
+
+    pTemp = BFCD_AZCD01->pCSRProfile;
+
+
+/*
+** Assign the Request maps link list head pointer to a local variable.
+** Loop thru each of the Request Maps in the link list.
+**  Move the Request Map data into a local copy of the list box row.
+**  Add the row to the end of the list box.
+**  Assign the next request map pointer to the local variable. The end is
+**  when the pointer is NULL.
+*/
+
+ pMap = BFCD_CSRPROFILE->pFirstReqMapHeader;
+
+ sel = SELECTOROF(pMap);
+
+ rc = DosGetSeg(sel);
+
+ while(pMap)
+  {
+   strcpy(Row._ResMapLBRequestIDData, pMap->ReqId);
+   strcpy(Row._ResMapLBRequestTypeData,pMap->ReqType);
+
+   ptmTmpBuf = localtime((time_t *) &pMap->MapLoadTime);
+
+   if (ptmTmpBuf)   /* not-null means good time value */
+   {
+       strftime(tmpbuf,
+                sizeof(tmpbuf)-1,
+                "%H:%M:%S",
+                ptmTmpBuf);
+   }
+   else
+   {
+       strcpy(tmpbuf, "N/A");
+   }
+
+   strcpy(Row._ResMapLBMapLoadTimeData, tmpbuf);
+
+   ptmTmpBuf = localtime((time_t *) &pMap->ExpirationTime);
+   if (ptmTmpBuf)
+   {
+       strftime(tmpbuf,
+                sizeof(tmpbuf)-1,
+                "%H:%M:%S",
+                 ptmTmpBuf);
+   }
+   else
+   {
+       strcpy(tmpbuf, "N/A");
+   }
+
+   strcpy(Row._ResMapLBExpirationTimeData, tmpbuf);
+
+
+   FndGenRC = FndLstBoxRowAdd (CBI_hwnd,
+                               "ResidentMapLB",
+                               FND_LSTBOX_END,
+                               sizeof(Row),
+                               &Row,
+                               &FndGenErrorBlock);
+
+   if (FndGenRC != FND_SUCCESS)
+      {
+       return(CMN_FAIL);
+      }
+  pMap = pMap->pNextReqMapHeader;
+  } /* end of While pMap Loop */
+
+  return CMN_SUCCESS;
+
+} /* end of function AZDW003BusFillLB() */
