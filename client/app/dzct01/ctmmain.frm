@@ -1,19 +1,20 @@
 VERSION 5.00
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
 Begin VB.Form frmMain 
-   Caption         =   "CTMBrowser"
+   Caption         =   "Codestable Explorer"
    ClientHeight    =   6000
    ClientLeft      =   165
    ClientTop       =   450
-   ClientWidth     =   11760
+   ClientWidth     =   10380
    ForeColor       =   &H80000008&
    Icon            =   "CTMMain.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    ScaleHeight     =   6000
-   ScaleWidth      =   11760
+   ScaleWidth      =   10380
+   StartUpPosition =   2  'CenterScreen
    Begin VB.Frame famTable 
       Caption         =   "Current Table:"
+      ClipControls    =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -24,168 +25,277 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1095
-      Left            =   150
+      Left            =   105
       TabIndex        =   4
-      Top             =   120
-      Width           =   10575
+      Top             =   135
+      Width           =   8895
+      Begin VB.CheckBox chkStatic 
+         Enabled         =   0   'False
+         Height          =   270
+         Left            =   7380
+         MaskColor       =   &H80000012&
+         TabIndex        =   17
+         TabStop         =   0   'False
+         Top             =   285
+         UseMaskColor    =   -1  'True
+         Width           =   255
+      End
       Begin VB.TextBox txtCenturyDelim 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   5925
+         Height          =   270
+         Left            =   6660
          Locked          =   -1  'True
-         TabIndex        =   18
+         TabIndex        =   15
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
-         Top             =   675
+         Top             =   645
          Width           =   495
       End
       Begin VB.TextBox txtTotalKeys 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   5925
+         Height          =   270
+         Left            =   6660
          Locked          =   -1  'True
-         TabIndex        =   16
-         TabStop         =   0   'False
-         ToolTipText     =   "Length of the current tables Decodes"
-         Top             =   300
-         Width           =   495
-      End
-      Begin VB.CheckBox chkSystem 
-         Caption         =   "System Code"
-         Enabled         =   0   'False
-         Height          =   255
-         Left            =   8475
-         TabIndex        =   15
-         TabStop         =   0   'False
-         ToolTipText     =   "The current table contains Codes used in C/1 source code"
-         Top             =   300
-         Width           =   1485
-      End
-      Begin VB.CheckBox chkCodes 
-         Caption         =   "Codes Tables"
-         Enabled         =   0   'False
-         Height          =   255
-         Left            =   6825
-         TabIndex        =   14
-         TabStop         =   0   'False
-         ToolTipText     =   "The current table contains Codes used within another Codes Table"
-         Top             =   675
-         Width           =   1485
-      End
-      Begin VB.CheckBox chkStatic 
-         Caption         =   "Static Tables"
-         Enabled         =   0   'False
-         Height          =   255
-         Left            =   6825
          TabIndex        =   13
          TabStop         =   0   'False
-         ToolTipText     =   "The current table contains Codes used in Static Tables"
-         Top             =   300
-         Width           =   1560
+         ToolTipText     =   "Length of the current tables Decodes"
+         Top             =   285
+         Width           =   495
       End
       Begin VB.TextBox txtDecodeLength 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   3600
+         Height          =   270
+         Left            =   4035
          Locked          =   -1  'True
          TabIndex        =   11
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
-         Top             =   675
+         Top             =   645
          Width           =   495
       End
       Begin VB.TextBox txtDecodeDisplacement 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   3600
+         Height          =   270
+         Left            =   4035
          Locked          =   -1  'True
          TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Length of the decode displacement"
-         Top             =   315
+         Top             =   285
          Width           =   495
       End
       Begin VB.TextBox txtKeyLength 
          BackColor       =   &H8000000B&
          BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   1275
+         Height          =   270
+         Left            =   1530
          Locked          =   -1  'True
          TabIndex        =   7
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
-         Top             =   675
+         Top             =   645
          Width           =   495
       End
       Begin VB.TextBox txtDataLength 
          BackColor       =   &H80000004&
          BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   1275
+         Height          =   270
+         Left            =   1530
          Locked          =   -1  'True
          TabIndex        =   6
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
-         Top             =   315
+         Top             =   285
          Width           =   495
       End
+      Begin VB.Label txtStatic 
+         Caption         =   "Static Table"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   7650
+         TabIndex        =   18
+         Top             =   300
+         Width           =   1140
+      End
       Begin VB.Label Label6 
+         Alignment       =   1  'Right Justify
          Caption         =   "Century Delimeter:"
-         Height          =   255
-         Left            =   4275
-         TabIndex        =   19
-         Top             =   705
-         Width           =   1590
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   4620
+         TabIndex        =   16
+         Top             =   645
+         Width           =   1950
       End
       Begin VB.Label Label5 
+         Alignment       =   1  'Right Justify
          Caption         =   "Total Number of Keys:"
-         Height          =   255
-         Left            =   4275
-         TabIndex        =   17
-         Top             =   330
-         Width           =   1590
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   4590
+         TabIndex        =   14
+         Top             =   285
+         Width           =   1950
       End
       Begin VB.Label Label4 
+         Alignment       =   1  'Right Justify
          Caption         =   "Decode Length:"
-         Height          =   255
-         Left            =   1920
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   1980
          TabIndex        =   12
-         Top             =   705
-         Width           =   1215
+         Top             =   645
+         Width           =   1995
       End
       Begin VB.Label Label3 
+         Alignment       =   1  'Right Justify
          Caption         =   "Decode Displacement:"
-         Height          =   255
-         Left            =   1920
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   1980
          TabIndex        =   10
-         Top             =   330
-         Width           =   1815
+         Top             =   285
+         Width           =   1995
       End
       Begin VB.Label Label2 
+         Alignment       =   1  'Right Justify
          Caption         =   "Key Length:"
-         Height          =   255
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
          Left            =   300
          TabIndex        =   8
-         Top             =   690
-         Width           =   975
+         Top             =   645
+         Width           =   1185
       End
       Begin VB.Label Label1 
+         Alignment       =   1  'Right Justify
          Caption         =   "Data Length:"
-         Height          =   255
-         Left            =   315
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   300
          TabIndex        =   5
-         Top             =   345
-         Width           =   975
+         Top             =   285
+         Width           =   1185
       End
    End
    Begin VB.PictureBox picSplitter 
@@ -246,8 +356,8 @@ Begin VB.Form frmMain
       Left            =   0
       TabIndex        =   2
       Top             =   5730
-      Width           =   11760
-      _ExtentX        =   20743
+      Width           =   10380
+      _ExtentX        =   18309
       _ExtentY        =   476
       SimpleText      =   ""
       _Version        =   327680
@@ -255,7 +365,7 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   20320
+            Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
             Key             =   ""
@@ -384,6 +494,7 @@ Const WES_CODE = 3
 
 
 
+
 '***************************************************************************************************************
 Private Sub Form_Load()
 '***************************************************************************************************************
@@ -398,10 +509,6 @@ Private Sub Form_Load()
         
     'Set up the list view to remain highlighted when a row is selected.
     lvListView.HideSelection = False
-    
-    chkSystem.Enabled = False
-    chkStatic.Enabled = False
-    chkCodes.Enabled = False
       
     'Set up the list view so that it highlights the entire row.
     SendMessage lvListView.hwnd, LVM_SETEXTEDEDLISTVIEWSTYLE, 0, 33
@@ -682,7 +789,7 @@ End Sub
 '***************************************************************************************************************
 Private Sub lvListView_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
-    'If ((Button = vbRightButton) And (bAdmin) And (CurTableType = 1)) Then
+    
     If ((Button = vbRightButton) And (bAdmin)) Then
         PopupMenu mnuPopup
         Me.Refresh
@@ -979,8 +1086,9 @@ End Sub
 '***************************************************************************************************************
 Private Sub mnuPrintTable_Click()
 '***************************************************************************************************************
-    Dim x As Integer, iStr As Integer, iPg As Integer
-    
+    Dim x As Integer, iStr As Integer, iPg As Integer, iDecodeLenth As Integer
+    Dim sDecode As String
+        
     On Error GoTo PrinterError
     
     Screen.MousePointer = vbHourglass
@@ -988,14 +1096,16 @@ Private Sub mnuPrintTable_Click()
     
     Printer.Orientation = vbPRORLandscape
     Printer.PrintQuality = vbPRPQHigh
+    Printer.ScaleMode = 1
     Printer.CurrentX = 0
     Printer.Line Step(5, 5)-Step(15000, 50), , BF
-    Printer.FontName = "System"
+    Printer.FontName = "Times New Roman"
     Printer.FontBold = True
     Printer.FontSize = 15
     Printer.Print vbLf & "Codes Table: " & CurTable
     Printer.FontBold = False
     Printer.FontSize = 10
+    
     If (Len(sbStatusBar.Panels(1).Text) > 170) Then
         iStr = InStr(170, sbStatusBar.Panels(1).Text, " ")
         
@@ -1005,33 +1115,30 @@ Private Sub mnuPrintTable_Click()
         Printer.Print vbLf & sbStatusBar.Panels(1).Text & vbLf
     End If
     
-    
     Printer.Line Step(5, 5)-Step(15000, 10), , BF
-    Printer.CurrentY = Printer.CurrentY + 10
+    Printer.CurrentY = Printer.CurrentY + 40
     
     Printer.FontBold = True
     Printer.CurrentX = 0
     Printer.Print "Key"
-    Printer.CurrentX = 1000
-    Printer.CurrentY = Printer.CurrentY - 234
-    Printer.Print "Decode"
-    Printer.CurrentX = 6000
+    Printer.CurrentX = 1750
     Printer.CurrentY = Printer.CurrentY - 234
     Printer.Print "Client"
-    Printer.CurrentX = 8000
+    Printer.CurrentX = 4000
     Printer.CurrentY = Printer.CurrentY - 234
-    Printer.Print "Entry Description"
+    Printer.Print "Decode"
     Printer.FontBold = False
     
-    Printer.CurrentY = Printer.CurrentY + 10
+    Printer.CurrentY = Printer.CurrentY + 40
     
     Printer.Line Step(5, 5)-Step(15000, 10), , BF
     
-    Printer.CurrentY = Printer.CurrentY + 10
+    Printer.CurrentY = Printer.CurrentY + 40
     
     For x = 1 To lvListView.ListItems.Count
         
         If (Printer.CurrentY > 10500) Then
+            
             Printer.CurrentY = 10800
             Printer.CurrentX = 0
             Printer.Line Step(5, 5)-Step(15000, 50), , BF
@@ -1055,41 +1162,66 @@ Private Sub mnuPrintTable_Click()
             Printer.FontBold = False
             Printer.FontSize = 10
             Printer.Line Step(5, 5)-Step(15000, 10), , BF
-            Printer.CurrentY = Printer.CurrentY + 10
+            Printer.CurrentY = Printer.CurrentY + 40
             
             Printer.FontBold = True
             Printer.CurrentX = 0
             Printer.Print "Key"
-            Printer.CurrentX = 1000
-            Printer.CurrentY = Printer.CurrentY - 234
-            Printer.Print "Decode"
-            Printer.CurrentX = 6000
+            Printer.CurrentX = 1750
             Printer.CurrentY = Printer.CurrentY - 234
             Printer.Print "Client"
-            Printer.CurrentX = 8000
+            Printer.CurrentX = 4000
             Printer.CurrentY = Printer.CurrentY - 234
-            Printer.Print "Entry Description"
+            Printer.Print "Decode"
             Printer.FontBold = False
-            Printer.CurrentY = Printer.CurrentY + 10
+            Printer.CurrentY = Printer.CurrentY + 40
             Printer.Line Step(5, 5)-Step(15000, 10), , BF
-            Printer.CurrentY = Printer.CurrentY + 10
+            Printer.CurrentY = Printer.CurrentY + 40
+        
+        End If
+        
+        Printer.CurrentX = 0
+        Printer.Print lvListView.ListItems(x).Text
+        Printer.CurrentX = 1750
+        Printer.CurrentY = Printer.CurrentY - 234
+        Printer.Print lvListView.ListItems(x).SubItems(2)
+        Printer.CurrentX = 4000
+        Printer.CurrentY = Printer.CurrentY - 234
+        
+        sDecode = lvListView.ListItems(x).SubItems(1)
+        
+        If (Len(sDecode) > 125) Then
             
+            iStr = InStr(125, sDecode, " ")
+            Printer.Print Left(sDecode, iStr)
+            Printer.CurrentX = 4000
+            Printer.CurrentY = Printer.CurrentY + 20
+            
+            sDecode = Mid(lvListView.ListItems(x).SubItems(1), iStr + 1, Len(sDecode))
+            
+            If (Len(sDecode) > 125) Then
+            
+                iStr = InStr(125, sDecode, " ")
+                Printer.Print Left(sDecode, iStr)
+                Printer.CurrentX = 4000
+                Printer.CurrentY = Printer.CurrentY + 20
+                Printer.Print Mid(sDecode, iStr + 1, Len(sDecode))
+                
+            Else
+            
+                Printer.Print sDecode
+                Printer.CurrentY = Printer.CurrentY + 20
+                
+            End If
         
         Else
-            Printer.CurrentX = 0
-            Printer.Print lvListView.ListItems(x).Text
-            Printer.CurrentX = 1000
-            Printer.CurrentY = Printer.CurrentY - 234
-            Printer.Print lvListView.ListItems(x).SubItems(1)
-            Printer.CurrentX = 6000
-            Printer.CurrentY = Printer.CurrentY - 234
-            Printer.Print lvListView.ListItems(x).SubItems(2)
-            Printer.CurrentX = 8000
-            Printer.CurrentY = Printer.CurrentY - 234
-            Printer.Print lvListView.ListItems(x).SubItems(8)
+            
+            Printer.Print sDecode
+            Printer.CurrentY = Printer.CurrentY + 20
+        
         End If
-    Next
     
+    Next
     
     Printer.CurrentY = 10800
     Printer.CurrentX = 0

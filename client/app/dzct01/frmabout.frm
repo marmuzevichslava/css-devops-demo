@@ -37,6 +37,7 @@ Begin VB.Form frmAbout
       BorderStyle     =   0  'None
       Height          =   495
       Left            =   240
+      Picture         =   "frmAbout.frx":030A
       ScaleHeight     =   495
       ScaleWidth      =   495
       TabIndex        =   1

@@ -6,7 +6,6 @@ Begin VB.Form frmAddModUMsg
    ClientWidth     =   7335
    Icon            =   "frmAddModUMsg.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3390
@@ -252,7 +251,7 @@ Begin VB.Form frmAddModUMsg
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
-      Caption         =   "Error Code:"
+      Caption         =   "Error Message:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -263,10 +262,10 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   405
+      Left            =   -315
       TabIndex        =   12
       Top             =   1020
-      Width           =   975
+      Width           =   1695
    End
    Begin VB.Label Label1 
       Alignment       =   1  'Right Justify

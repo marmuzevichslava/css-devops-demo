@@ -8,7 +8,6 @@ Begin VB.Form frmExportTable
    ClientWidth     =   5385
    Icon            =   "frmExportTbls.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4470
@@ -127,16 +126,16 @@ Begin VB.Form frmExportTable
          Left            =   150
          TabIndex        =   10
          ToolTipText     =   "Export only the ""CIS"" codes tables"
-         Top             =   900
+         Top             =   885
          Width           =   1965
       End
       Begin VB.OptionButton optExportCustom 
          Caption         =   "Custom Export"
          Height          =   240
-         Left            =   150
+         Left            =   135
          TabIndex        =   9
          ToolTipText     =   "Perform a custom export"
-         Top             =   600
+         Top             =   285
          Width           =   1965
       End
       Begin VB.OptionButton optExportAll 
@@ -145,7 +144,7 @@ Begin VB.Form frmExportTable
          Left            =   150
          TabIndex        =   8
          ToolTipText     =   "Export all the tables"
-         Top             =   300
+         Top             =   585
          Width           =   1515
       End
    End
@@ -379,9 +378,7 @@ End Sub
 Private Sub Form_Load()
 '***************************************************************************************************************
 
-    Me.Show
     Screen.MousePointer = vbHourglass
-    Me.Refresh
     
     'Get the list of valid codes tables and add them to the combo box.
     strsql = "select TableName From tblTables"
@@ -395,7 +392,6 @@ Private Sub Form_Load()
         DaoRS.Close
     End If
     
-    
     'Get the list of clients
     Call LoadClients
     
@@ -408,19 +404,22 @@ Private Sub Form_Load()
     'Get the list of platforms
     Call LoadPlatforms
     
-    'Set the default directory for the export path
-    
     
     'Set the default export type
-    optExportAll.Value = True
+    optExportCustom.Value = True
     
     'Set the default file option
     optCreateFile.Value = True
     
     Screen.MousePointer = vbNormal
+    
     'SelectTable.SetFocus
+
+    
+    'Set the default directory for the export path
     efPath.Text = "K:\DATA\TABLECHG\"
     
+    Me.Show
     Me.Refresh
 
 End Sub
@@ -488,14 +487,15 @@ Private Sub optExportCustom_Click()
     
     Screen.MousePointer = vbHourglass
     SelectTable.Enabled = False
-    
+
     For x = 0 To SelectTable.ListCount - 1
-        SelectTable.Selected(x) = True
+        SelectTable.Selected(x) = False
     Next
-    
+
+    SelectTable.Selected(0) = True
     SelectTable.Enabled = True
     cbClient.Enabled = True
-    
+
     Screen.MousePointer = vbNormal
     
     cmdFind.Enabled = True
@@ -655,7 +655,7 @@ End Sub
 '***************************************************************************************************************
 Public Sub SetExportButtonState()
 '***************************************************************************************************************
-    'If ((SelectTable.SelCount > 0) And (Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
+
     If ((Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
         pbOK.Enabled = True
     Else

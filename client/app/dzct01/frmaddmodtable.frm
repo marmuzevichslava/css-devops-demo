@@ -1,26 +1,19 @@
 VERSION 5.00
 Begin VB.Form frmAddModTable 
    Caption         =   "Modify Current Codes Table"
-   ClientHeight    =   4545
+   ClientHeight    =   3645
    ClientLeft      =   3345
    ClientTop       =   2490
-   ClientWidth     =   5520
+   ClientWidth     =   5790
    Icon            =   "frmAddModTable.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4545
-   ScaleWidth      =   5520
-   Begin VB.ComboBox cbxTblType 
-      Height          =   315
-      Left            =   1320
-      TabIndex        =   0
-      Top             =   120
-      Width           =   1455
-   End
-   Begin VB.Frame Frame1 
-      Caption         =   "Codes Table Flags:"
+   ScaleHeight     =   3645
+   ScaleWidth      =   5790
+   Begin VB.CommandButton cmdCancel 
+      Caption         =   "&Cancel"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -30,114 +23,12 @@ Begin VB.Form frmAddModTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   735
-      Left            =   120
-      TabIndex        =   22
-      Top             =   2160
-      Width           =   3255
-      Begin VB.CheckBox chkEffDate 
-         Caption         =   "Effective Date:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   9
-         Top             =   360
-         Width           =   1455
-      End
-      Begin VB.CheckBox chkResidency 
-         Caption         =   "Residency:"
-         Height          =   255
-         Left            =   1920
-         TabIndex        =   10
-         Top             =   360
-         Width           =   1215
-      End
-   End
-   Begin VB.TextBox txtDescription 
-      BackColor       =   &H00FFFFFF&
-      Height          =   615
-      Left            =   120
-      MultiLine       =   -1  'True
-      ScrollBars      =   2  'Vertical
-      TabIndex        =   11
-      ToolTipText     =   "Description for the table"
-      Top             =   3240
-      Width           =   5220
-   End
-   Begin VB.TextBox txtCenturyDelimeter 
-      Height          =   315
-      Left            =   4440
-      TabIndex        =   3
-      ToolTipText     =   "Codes Table Century Delimeter"
-      Top             =   480
-      Width           =   765
-   End
-   Begin VB.Frame Frame2 
-      Caption         =   "Table Usage:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   735
-      Left            =   120
-      TabIndex        =   14
-      Top             =   1320
-      Width           =   5280
-      Begin VB.CheckBox chkSysUsage 
-         Caption         =   "System Usage"
-         Height          =   375
-         Left            =   3720
-         TabIndex        =   8
-         Top             =   240
-         Width           =   1335
-      End
-      Begin VB.CheckBox chkCodesTable 
-         Caption         =   "Codes Table"
-         Height          =   375
-         Left            =   1920
-         TabIndex        =   7
-         Top             =   240
-         Width           =   1215
-      End
-      Begin VB.CheckBox chkStaticTable 
-         Caption         =   "Static Tables"
-         Height          =   375
-         Left            =   120
-         TabIndex        =   6
-         Top             =   240
-         Width           =   1335
-      End
-   End
-   Begin VB.TextBox txtKeyLength 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1320
-      TabIndex        =   2
-      ToolTipText     =   "Codes Table Max Key Length"
-      Top             =   480
-      Width           =   765
-   End
-   Begin VB.TextBox txtDecodeLength 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   4440
-      TabIndex        =   1
-      ToolTipText     =   "Codes Table Max Decode Lenght"
-      Top             =   120
-      Width           =   765
-   End
-   Begin VB.TextBox txtDecodeDisplacement 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   4440
-      TabIndex        =   5
-      ToolTipText     =   "Codes Table Max Decode Displacement"
-      Top             =   840
-      Width           =   765
+      Height          =   330
+      Left            =   3083
+      TabIndex        =   10
+      ToolTipText     =   "Return to main"
+      Top             =   3165
+      Width           =   1215
    End
    Begin VB.CommandButton cmdAddTbl 
       Caption         =   "&Modify Table"
@@ -152,14 +43,21 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      Left            =   1440
-      TabIndex        =   12
+      Left            =   1493
+      TabIndex        =   9
       ToolTipText     =   "Modify Codes Table"
-      Top             =   4080
+      Top             =   3165
       Width           =   1380
    End
-   Begin VB.CommandButton cmdCancel 
-      Caption         =   "&Cancel"
+   Begin VB.ComboBox cbxTblType 
+      Height          =   315
+      Left            =   1005
+      TabIndex        =   0
+      Top             =   135
+      Width           =   1905
+   End
+   Begin VB.Frame Frame1 
+      Caption         =   "Codes Table Flags:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -169,20 +67,125 @@ Begin VB.Form frmAddModTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   330
-      Left            =   3000
-      TabIndex        =   13
-      ToolTipText     =   "Return to main"
-      Top             =   4080
-      Width           =   1215
+      Height          =   1230
+      Left            =   270
+      TabIndex        =   18
+      Top             =   645
+      Width           =   2310
+      Begin VB.CheckBox chkStaticTable 
+         Enabled         =   0   'False
+         Height          =   255
+         Left            =   150
+         TabIndex        =   19
+         TabStop         =   0   'False
+         Top             =   870
+         Width           =   255
+      End
+      Begin VB.CheckBox chkEffDate 
+         Caption         =   "Effective Date"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   150
+         TabIndex        =   1
+         Top             =   285
+         Width           =   1695
+      End
+      Begin VB.CheckBox chkResidency 
+         Caption         =   "Residency"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   150
+         TabIndex        =   2
+         Top             =   585
+         Width           =   1695
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Static Tables"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   240
+         Left            =   435
+         TabIndex        =   20
+         Top             =   900
+         Width           =   1425
+      End
+   End
+   Begin VB.TextBox txtDescription 
+      BackColor       =   &H00FFFFFF&
+      Height          =   675
+      Left            =   210
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
+      TabIndex        =   8
+      ToolTipText     =   "Description for the table"
+      Top             =   2295
+      Width           =   5415
+   End
+   Begin VB.TextBox txtCenturyDelimeter 
+      Height          =   315
+      Left            =   4830
+      TabIndex        =   7
+      ToolTipText     =   "Codes Table Century Delimeter"
+      Top             =   1770
+      Width           =   765
+   End
+   Begin VB.TextBox txtKeyLength 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   4815
+      TabIndex        =   3
+      ToolTipText     =   "Codes Table Max Key Length"
+      Top             =   120
+      Width           =   765
+   End
+   Begin VB.TextBox txtDecodeLength 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   4830
+      TabIndex        =   5
+      ToolTipText     =   "Codes Table Max Decode Lenght"
+      Top             =   944
+      Width           =   765
+   End
+   Begin VB.TextBox txtDecodeDisplacement 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   4830
+      TabIndex        =   6
+      ToolTipText     =   "Codes Table Max Decode Displacement"
+      Top             =   1356
+      Width           =   765
    End
    Begin VB.TextBox txtDataLength 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   1320
+      Left            =   4830
       TabIndex        =   4
       ToolTipText     =   "Codes Table Max Data Length"
-      Top             =   840
+      Top             =   532
       Width           =   765
    End
    Begin VB.Label Label3 
@@ -197,9 +200,9 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   120
-      TabIndex        =   21
-      Top             =   3000
+      Left            =   195
+      TabIndex        =   17
+      Top             =   2085
       Width           =   1290
    End
    Begin VB.Label Label5 
@@ -215,10 +218,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2640
-      TabIndex        =   20
-      Top             =   510
-      Width           =   1725
+      Left            =   2670
+      TabIndex        =   16
+      Top             =   1830
+      Width           =   2085
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -233,9 +236,9 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   600
-      TabIndex        =   19
-      Top             =   120
+      Left            =   270
+      TabIndex        =   15
+      Top             =   165
       Width           =   615
    End
    Begin VB.Label Label6 
@@ -251,10 +254,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   120
-      TabIndex        =   18
-      Top             =   510
-      Width           =   1065
+      Left            =   2670
+      TabIndex        =   14
+      Top             =   180
+      Width           =   2085
    End
    Begin VB.Label Label7 
       Alignment       =   1  'Right Justify
@@ -269,10 +272,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2895
-      TabIndex        =   17
-      Top             =   165
-      Width           =   1440
+      Left            =   2655
+      TabIndex        =   13
+      Top             =   1004
+      Width           =   2085
    End
    Begin VB.Label Label8 
       Alignment       =   1  'Right Justify
@@ -287,9 +290,9 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   2295
-      TabIndex        =   16
-      Top             =   885
+      Left            =   2655
+      TabIndex        =   12
+      Top             =   1416
       Width           =   2085
    End
    Begin VB.Label Label9 
@@ -305,10 +308,10 @@ Begin VB.Form frmAddModTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   195
-      Left            =   -120
-      TabIndex        =   15
-      Top             =   885
-      Width           =   1335
+      Left            =   2670
+      TabIndex        =   11
+      Top             =   592
+      Width           =   2085
    End
 End
 Attribute VB_Name = "frmAddModTable"
@@ -316,6 +319,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
+
 
 Private Sub cmdAddTbl_Click()
 
@@ -342,31 +347,8 @@ Private Sub cmdAddTbl_Click()
              "Residency = " & Chr(34) & chkResidency.Value & Chr(34) & ", " & _
              "DataLen = " & Chr(34) & txtDataLength.Text & Chr(34) & ", " & _
              "KeyLen = " & Chr(34) & txtKeyLength.Text & Chr(34) & ", " & _
-             "CenturyDelim = " & Chr(34) & txtCenturyDelimeter.Text & Chr(34) & ", "
-    
-    'Add the System Usage Flags.
-    If (chkSysUsage.Value = 1) Then
-        strsql = strsql & "SystemUse = " & True & ", "
-    Else
-        strsql = strsql & "SystemUse = " & False & ", "
-    End If
-    
-    'Add the Static Table Usage Flags.
-    If (chkStaticTable.Value = 1) Then
-        strsql = strsql & "StaticTableUse = " & True & ", "
-    Else
-        strsql = strsql & "StaticTableUse = " & False & ", "
-    End If
-    
-    'Add the Codes Table Usage Flags.
-    If (chkCodesTable.Value = 1) Then
-        strsql = strsql & "CodesTableUse = " & True
-    Else
-        strsql = strsql & "CodesTableUse = " & False
-    End If
-    
-    'Finish the SQL string
-    strsql = strsql & " WHERE TableName = " & Chr(34) & CurTable & Chr(34)
+             "CenturyDelim = " & Chr(34) & txtCenturyDelimeter.Text & Chr(34) & _
+             " WHERE TableName = " & Chr(34) & CurTable & Chr(34)
     
     'Set up the error handling.
     On Error GoTo UpdateError
@@ -387,8 +369,6 @@ Private Sub cmdAddTbl_Click()
         frmMain.txtDecodeLength.Text = Me.txtDecodeLength.Text
         frmMain.txtCenturyDelim.Text = Me.txtCenturyDelimeter.Text
         frmMain.chkStatic.Value = Me.chkStaticTable.Value
-        frmMain.chkCodes.Value = Me.chkCodesTable.Value
-        frmMain.chkSystem.Value = Me.chkSysUsage.Value
         If (Len(Me.txtDescription.Text) = 0) Then
             frmMain.sbStatusBar.Panels(1).Text = "No Description Available"
         Else
@@ -427,7 +407,7 @@ Private Sub Form_Load()
     Next
 
     strsql = "select TableType, DecodeLen, DecodeDisplacement, EffDate,  " & _
-             "Residency, DataLen, KeyLen, CenturyDelim, SystemUse, StaticTableUse, CodesTableUse, Description " & _
+             "Residency, DataLen, KeyLen, CenturyDelim, StaticTableUse, Description " & _
              "from tblTables where TableName = " & Chr(34) & CurTable & Chr(34)
         
          Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -497,19 +477,9 @@ Private Sub Form_Load()
             Else
                 txtCenturyDelimeter.Text = " "
             End If
-        
+
             If Len(DaoRS(8).Value) > 0 Then
                 If (RTrim(DaoRS(8).Value) = False) Then
-                    chkSysUsage.Value = False
-                Else
-                    chkSysUsage.Value = 1
-                End If
-            Else
-                chkSysUsage.Value = False
-            End If
-
-            If Len(DaoRS(9).Value) > 0 Then
-                If (RTrim(DaoRS(9).Value) = False) Then
                     chkStaticTable.Value = False
                 Else
                     chkStaticTable.Value = 1
@@ -518,18 +488,8 @@ Private Sub Form_Load()
                 chkStaticTable.Value = False
             End If
 
-            If Len(DaoRS(10).Value) > 0 Then
-                If (RTrim(DaoRS(10).Value) = False) Then
-                    chkCodesTable.Value = False
-                Else
-                    chkCodesTable.Value = 1
-                End If
-            Else
-                chkCodesTable.Value = False
-            End If
-
-            If Len(DaoRS(11).Value) > 0 Then
-                txtDescription.Text = RTrim(DaoRS(11).Value)
+            If Len(DaoRS(9).Value) > 0 Then
+                txtDescription.Text = RTrim(DaoRS(9).Value)
             Else
                 txtDescription.Text = " "
             End If

@@ -5,15 +5,53 @@ Begin VB.Form frmAddModKey
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7545
+   FillStyle       =   6  'Cross
    Icon            =   "frmAddModKey.frx":0000
    LinkTopic       =   "Form1"
-   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3480
    ScaleWidth      =   7545
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CheckBox chkSystem 
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   1365
+      MaskColor       =   &H00000000&
+      TabIndex        =   18
+      TabStop         =   0   'False
+      ToolTipText     =   "Indicates the current Key is used to drive system logic"
+      Top             =   1845
+      UseMaskColor    =   -1  'True
+      Width           =   240
+   End
+   Begin VB.TextBox txtDesc 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   6
+      ToolTipText     =   "Decription of the current Key"
+      Top             =   2205
+      Width           =   5925
+   End
+   Begin VB.TextBox txtComments 
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   7
+      ToolTipText     =   "Comments for current Key"
+      Top             =   2565
+      Width           =   5925
+   End
    Begin VB.CommandButton cmdProcess 
       Caption         =   "&Add"
       Default         =   -1  'True
@@ -28,8 +66,8 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      Left            =   2475
-      TabIndex        =   11
+      Left            =   2392
+      TabIndex        =   8
       ToolTipText     =   "Add/Modify Key"
       Top             =   3015
       Width           =   1215
@@ -46,8 +84,8 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   330
-      Left            =   4020
-      TabIndex        =   12
+      Left            =   3937
+      TabIndex        =   9
       ToolTipText     =   "Return to main"
       Top             =   3015
       Width           =   1215
@@ -55,11 +93,11 @@ Begin VB.Form frmAddModKey
    Begin VB.ComboBox cbxClients 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   4920
+      Left            =   1350
       Style           =   2  'Dropdown List
-      TabIndex        =   1
+      TabIndex        =   2
       ToolTipText     =   "Client this entry applies to"
-      Top             =   255
+      Top             =   1005
       Width           =   2415
    End
    Begin VB.TextBox txtKey 
@@ -75,84 +113,55 @@ Begin VB.Form frmAddModKey
       Height          =   315
       Left            =   1350
       Style           =   2  'Dropdown List
-      TabIndex        =   3
-      Top             =   999
-      Width           =   2295
+      TabIndex        =   4
+      Top             =   1410
+      Width           =   2415
    End
    Begin VB.ComboBox cbxRelease 
       Height          =   315
-      Left            =   1350
+      Left            =   4920
       Style           =   2  'Dropdown List
       TabIndex        =   5
-      Top             =   1773
-      Width           =   2295
+      Top             =   1410
+      Width           =   2415
    End
    Begin VB.ComboBox cbxPlatform 
       Height          =   315
-      Left            =   1350
+      Left            =   4920
       Style           =   2  'Dropdown List
-      TabIndex        =   4
-      Top             =   1386
-      Width           =   2295
+      TabIndex        =   3
+      Top             =   1005
+      Width           =   2415
    End
    Begin VB.TextBox txtDecode 
       BackColor       =   &H00FFFFFF&
       Height          =   315
       Left            =   1350
-      TabIndex        =   2
+      TabIndex        =   1
       ToolTipText     =   "Decode for the current Key"
       Top             =   612
       Width           =   5970
    End
-   Begin VB.TextBox txtComments 
-      Height          =   1050
-      Left            =   4920
-      MultiLine       =   -1  'True
-      ScrollBars      =   2  'Vertical
-      TabIndex        =   6
-      ToolTipText     =   "Comments for current Key"
-      Top             =   1020
-      Width           =   2370
-   End
-   Begin VB.CheckBox chkStatic 
-      Caption         =   "Static Tables"
-      Height          =   255
-      Left            =   1267
-      TabIndex        =   8
-      ToolTipText     =   "Indicates the current Key is used in a Static Table"
-      Top             =   2655
-      Width           =   1560
-   End
-   Begin VB.CheckBox chkCodes 
-      Caption         =   "Codes Tables"
-      Height          =   255
-      Left            =   4942
-      TabIndex        =   10
-      ToolTipText     =   "Indicates the current Key is used in another Codes Table"
-      Top             =   2655
-      Width           =   1485
-   End
-   Begin VB.CheckBox chkSystem 
-      Caption         =   "System Code"
-      Height          =   255
-      Left            =   3142
-      TabIndex        =   9
-      ToolTipText     =   "Indicates the current Key is used in System Code"
-      Top             =   2655
-      Width           =   1485
-   End
-   Begin VB.TextBox txtDesc 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   7
-      ToolTipText     =   "Decription of the current Key"
-      Top             =   2160
-      Width           =   5925
+   Begin VB.Label Label5 
+      Caption         =   "Drives System Logic"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Left            =   1620
+      TabIndex        =   19
+      Top             =   1860
+      Width           =   1830
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
-      Caption         =   "Key:"
+      Caption         =   "Code:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -164,7 +173,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   645
-      TabIndex        =   20
+      TabIndex        =   17
       Top             =   285
       Width           =   615
    End
@@ -181,9 +190,9 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   4200
-      TabIndex        =   19
-      Top             =   285
+      Left            =   645
+      TabIndex        =   16
+      Top             =   1080
       Width           =   615
    End
    Begin VB.Label Label10 
@@ -199,9 +208,9 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   480
-      TabIndex        =   18
-      Top             =   1800
+      Left            =   4125
+      TabIndex        =   15
+      Top             =   1485
       Width           =   780
    End
    Begin VB.Label Label9 
@@ -217,9 +226,9 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   420
-      TabIndex        =   17
-      Top             =   1440
+      Left            =   4065
+      TabIndex        =   14
+      Top             =   1080
       Width           =   840
    End
    Begin VB.Label Label8 
@@ -236,8 +245,8 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   16
-      Top             =   1080
+      TabIndex        =   13
+      Top             =   1485
       Width           =   1095
    End
    Begin VB.Label Label7 
@@ -253,9 +262,9 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   3735
-      TabIndex        =   15
-      Top             =   1035
+      Left            =   180
+      TabIndex        =   12
+      Top             =   2610
       Width           =   1080
    End
    Begin VB.Label Label4 
@@ -272,8 +281,8 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   14
-      Top             =   2160
+      TabIndex        =   11
+      Top             =   2235
       Width           =   1095
    End
    Begin VB.Label Label1 
@@ -290,7 +299,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   420
-      TabIndex        =   13
+      TabIndex        =   10
       Top             =   630
       Width           =   840
    End
@@ -502,7 +511,7 @@ Private Sub Form_Load()
         
         myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
                  
-        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblEntries.Comments, tblEntries.Description, tblEntries.SystemUse, tblEntries.StaticTableUse, tblEntries.CodesTableUse" _
+        strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblEntries.Comments, tblEntries.Description, tblEntries.SystemUse" _
                  & " FROM (((tblEntries INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code" _
                  & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & CurKey & Chr(34) & " and tblEntries.Client = " & myClient.Displaycode
         
@@ -578,26 +587,6 @@ Private Sub Form_Load()
                 End If
             Else
                 Me.chkSystem.Value = 0
-            End If
-             
-            If (Len(DaoRS(9).Value) > 0) Then
-                If (DaoRS(9).Value = False) Then
-                    Me.chkStatic.Value = 0
-                Else
-                    Me.chkStatic.Value = 1
-                End If
-            Else
-                Me.chkStatic.Value = 0
-            End If
-
-            If (Len(DaoRS(10).Value) > 0) Then
-                If (DaoRS(10).Value = False) Then
-                    Me.chkCodes.Value = 0
-                Else
-                    Me.chkCodes.Value = 1
-                End If
-            Else
-                Me.chkCodes.Value = False
             End If
             
             DaoRS.Close
@@ -774,7 +763,7 @@ Public Function AddNewRecord() As Boolean
 '    hDecode = CheckForSpecialChars(txtDecode.Text)
     
     strsql = "INSERT INTO tblEntries" _
-            & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease, SystemUse, StaticTableUse, CodesTableUse) " _
+            & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease) " _
             & "VALUES (" _
             & Chr(34) & CurTable & Chr(34) & ", " _
             & Chr(34) & txtKey.Text & Chr(34) & ", " _
@@ -784,31 +773,7 @@ Public Function AddNewRecord() As Boolean
             & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
             & myApplication.Displaycode & ", " _
             & myPlatform.Displaycode & ", " _
-            & myRelease.Displaycode & ", "
-    
-    'Add the System Usage Flags.
-    If (chkSystem.Value = 1) Then
-        strsql = strsql & True & ", "
-    Else
-        strsql = strsql & False & ", "
-    End If
-    
-    'Add the Static Table Usage Flags.
-    If (chkStatic.Value = 1) Then
-        strsql = strsql & True & ", "
-    Else
-        strsql = strsql & False & ", "
-    End If
-    
-    'Add the Codes Table Usage Flags.
-    If (chkCodes.Value = 1) Then
-        strsql = strsql & True
-    Else
-        strsql = strsql & False
-    End If
-    
-    'Finish the SQL string
-    strsql = strsql & ");"
+            & myRelease.Displaycode & ");"
     
     'Set up the error handling.
     On Error GoTo InsertError
@@ -860,6 +825,7 @@ Public Function ModifyRecord() As Boolean
     myApplication.Decode = Me.cbxApplication.Text
     myPlatform.Decode = Me.cbxPlatform.Text
     myRelease.Decode = Me.cbxRelease.Text
+    myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
     
     'Figure out what the comment should be
     myComment.Text = Me.txtComments.Text
@@ -878,34 +844,10 @@ Public Function ModifyRecord() As Boolean
              & "Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
              & "Application = " & myApplication.Displaycode & ", " _
              & "Platform = " & myPlatform.Displaycode & ", " _
-             & "CSSRelease = " & myRelease.Displaycode & ", " _
-
-    'Add the System Usage Flags.
-    If (chkSystem.Value = 1) Then
-        strsql = strsql & "SystemUse = " & True & ", "
-    Else
-        strsql = strsql & "SystemUse = " & False & ", "
-    End If
-    
-    'Add the Static Table Usage Flags.
-    If (chkStatic.Value = 1) Then
-        strsql = strsql & "StaticTableUse = " & True & ", "
-    Else
-        strsql = strsql & "StaticTableUse = " & False & ", "
-    End If
-    
-    'Add the Codes Table Usage Flags.
-    If (chkCodes.Value = 1) Then
-        strsql = strsql & "CodesTableUse = " & True
-    Else
-        strsql = strsql & "CodesTableUse = " & False
-    End If
-    
-    'Finish the SQL string
-    myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
-    strsql = strsql & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & _
-                      " AND Key = " & Chr(34) & txtKey.Text & Chr(34) & _
-                      " AND Client = " & myClient.Displaycode
+             & "CSSRelease = " & myRelease.Displaycode _
+             & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) _
+             & " AND Key = " & Chr(34) & txtKey.Text & Chr(34) _
+             & " AND Client = " & myClient.Displaycode & ";"
     
     'Set up the error handling.
     On Error GoTo UpdateError
@@ -929,6 +871,7 @@ Public Function ModifyRecord() As Boolean
 Exit Function
 
 UpdateError:
+    Debug.Print strsql
     Dim msg As String, RC As Integer
     msg = "An error has occured within ModifyRecord of frmAddModKey" & vbCrLf & _
           "Error number = " & Err.Number & vbCrLf & _
