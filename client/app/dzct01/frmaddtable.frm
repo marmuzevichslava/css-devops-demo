@@ -174,7 +174,7 @@ Begin VB.Form frmAddTable
       Height          =   315
       Left            =   4590
       TabIndex        =   3
-      ToolTipText     =   "Codes Table Max Decode Lenght"
+      ToolTipText     =   "Codes Table Max Decode Length"
       Top             =   945
       Width           =   765
    End
@@ -457,7 +457,8 @@ Private Sub Form_Load()
     txtClass.Text = "A"
     txtCenturyDelimeter.Text = 0
     
-    For x = 0 To UBound(TableTypes)
+    'For x = 0 To UBound(TableTypes)
+    For x = 0 To 2
         cbxTblType.AddItem (TableTypes(x).TableTypeName)
     Next
     

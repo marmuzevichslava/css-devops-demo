@@ -29,7 +29,6 @@ Begin VB.Form frmInsertTbl
       _ExtentY        =   556
       _Version        =   327680
       Appearance      =   1
-      MouseIcon       =   "frminserttbl.frx":030A
    End
    Begin ComctlLib.StatusBar stbInsert 
       Align           =   2  'Align Bottom
@@ -49,11 +48,9 @@ Begin VB.Form frmInsertTbl
             AutoSize        =   1
             Object.Width           =   10425
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frminserttbl.frx":0326
    End
    Begin MSComDlg.CommonDialog ComDlg 
       Left            =   750
@@ -119,7 +116,6 @@ Begin VB.Form frmInsertTbl
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "frminserttbl.frx":0342
       NumItems        =   0
    End
    Begin VB.Label lblImportFile 

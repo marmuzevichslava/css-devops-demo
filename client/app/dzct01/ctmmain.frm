@@ -13,6 +13,27 @@ Begin VB.Form frmMain
    ScaleHeight     =   6000
    ScaleWidth      =   10380
    StartUpPosition =   2  'CenterScreen
+   Begin ComctlLib.ListView lvListView1 
+      Height          =   2040
+      Left            =   3015
+      TabIndex        =   2
+      Top             =   3465
+      Visible         =   0   'False
+      Width           =   4170
+      _ExtentX        =   7355
+      _ExtentY        =   3598
+      View            =   3
+      Sorted          =   -1  'True
+      MultiSelect     =   -1  'True
+      LabelWrap       =   -1  'True
+      HideSelection   =   -1  'True
+      _Version        =   327680
+      ForeColor       =   -2147483640
+      BackColor       =   -2147483643
+      BorderStyle     =   1
+      Appearance      =   1
+      NumItems        =   0
+   End
    Begin VB.Frame famTable 
       Caption         =   "Current Table:"
       ClipControls    =   0   'False
@@ -27,7 +48,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   1095
       Left            =   105
-      TabIndex        =   4
+      TabIndex        =   5
       Top             =   135
       Width           =   8895
       Begin VB.CheckBox chkStatic 
@@ -35,7 +56,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   7380
          MaskColor       =   &H80000012&
-         TabIndex        =   17
+         TabIndex        =   18
          TabStop         =   0   'False
          Top             =   285
          UseMaskColor    =   -1  'True
@@ -57,7 +78,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   6660
          Locked          =   -1  'True
-         TabIndex        =   15
+         TabIndex        =   16
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
          Top             =   645
@@ -79,9 +100,9 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   6660
          Locked          =   -1  'True
-         TabIndex        =   13
+         TabIndex        =   14
          TabStop         =   0   'False
-         ToolTipText     =   "Length of the current tables Decodes"
+         ToolTipText     =   "Number of keys found in the current table"
          Top             =   285
          Width           =   495
       End
@@ -101,7 +122,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   4035
          Locked          =   -1  'True
-         TabIndex        =   11
+         TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Length of the current tables Decodes"
          Top             =   645
@@ -123,7 +144,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   4035
          Locked          =   -1  'True
-         TabIndex        =   9
+         TabIndex        =   10
          TabStop         =   0   'False
          ToolTipText     =   "Length of the decode displacement"
          Top             =   285
@@ -145,7 +166,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   1530
          Locked          =   -1  'True
-         TabIndex        =   7
+         TabIndex        =   8
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
          Top             =   645
@@ -167,7 +188,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   1530
          Locked          =   -1  'True
-         TabIndex        =   6
+         TabIndex        =   7
          TabStop         =   0   'False
          ToolTipText     =   "Length of current Key"
          Top             =   285
@@ -186,7 +207,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   7650
-         TabIndex        =   18
+         TabIndex        =   19
          Top             =   300
          Width           =   1140
       End
@@ -204,7 +225,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   4620
-         TabIndex        =   16
+         TabIndex        =   17
          Top             =   645
          Width           =   1950
       End
@@ -222,7 +243,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   4590
-         TabIndex        =   14
+         TabIndex        =   15
          Top             =   285
          Width           =   1950
       End
@@ -240,7 +261,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   1980
-         TabIndex        =   12
+         TabIndex        =   13
          Top             =   645
          Width           =   1995
       End
@@ -258,7 +279,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   1980
-         TabIndex        =   10
+         TabIndex        =   11
          Top             =   285
          Width           =   1995
       End
@@ -276,7 +297,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   300
-         TabIndex        =   8
+         TabIndex        =   9
          Top             =   645
          Width           =   1185
       End
@@ -294,7 +315,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   270
          Left            =   300
-         TabIndex        =   5
+         TabIndex        =   6
          Top             =   285
          Width           =   1185
       End
@@ -308,7 +329,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   1672.101
       ScaleMode       =   0  'User
       ScaleWidth      =   780
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   1545
       Visible         =   0   'False
       Width           =   72
@@ -353,7 +374,7 @@ Begin VB.Form frmMain
       Align           =   2  'Align Bottom
       Height          =   270
       Left            =   0
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   5730
       Width           =   10380
       _ExtentX        =   18309
@@ -494,11 +515,7 @@ Const sglSplitLimit = 500
 Const CODES_TABLE = 1
 Const MSG_BOX = 2
 Const WES_CODE = 3
-
-
-
-
-
+Const STAT_TABLE = 4
 
 '***************************************************************************************************************
 Private Sub Form_Load()
@@ -514,9 +531,11 @@ Private Sub Form_Load()
         
     'Set up the list view to remain highlighted when a row is selected.
     lvListView.HideSelection = False
-      
+    lvListView1.HideSelection = False
+    
     'Set up the list view so that it highlights the entire row.
     SendMessage lvListView.hwnd, LVM_SETEXTEDEDLISTVIEWSTYLE, 0, 33
+    SendMessage lvListView1.hwnd, LVM_SETEXTEDEDLISTVIEWSTYLE, 0, 33
     
     'Display the form.
     Me.Show
@@ -609,7 +628,7 @@ Private Sub Form_Load()
         mnuAdmin.Visible = False
     End If
 
-
+        
     frmMain.tvTreeView.Nodes(1).Selected = True
 
     'Clean up the main form.
@@ -674,6 +693,8 @@ Private Sub Form_Unload(Cancel As Integer)
         SaveSetting App.Title, "Settings", "MainHeight", Me.Height
     End If
     SaveSetting App.Title, "Settings", "ViewMode", lvListView.View
+    SaveSetting App.Title, "Settings", "ViewMode", lvListView1.View
+    
 End Sub
 '***************************************************************************************************************
 Private Sub Form_Resize()
@@ -706,8 +727,7 @@ End Sub
 Private Sub imgSplitter_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
     Dim sglPos As Single
-    
-
+   
     If mbMoving Then
         sglPos = x + imgSplitter.Left
         If sglPos < sglSplitLimit Then
@@ -735,26 +755,30 @@ Sub SizeControls(x As Single)
 '***************************************************************************************************************
     On Error Resume Next
     
-
     'set the width
     If x < 1500 Then x = 1500
     If x > (Me.Width - 1500) Then x = Me.Width - 1500
     tvTreeView.Width = x
     imgSplitter.Left = x
     lvListView.Left = x + 40
+    lvListView1.Left = x + 40
+    
     lvListView.Width = Me.Width - (tvTreeView.Width + 140)
+    lvListView1.Width = Me.Width - (tvTreeView.Width + 140)
     
     famTable.Width = Me.Width - 400
-
 
     'set the top
     tvTreeView.Top = famTable.Height + 300
     lvListView.Top = tvTreeView.Top
-
+        
     'set the height
-     tvTreeView.Height = Me.ScaleHeight - (famTable.Top + famTable.Height + sbStatusBar.Height + 200)
-
+    tvTreeView.Height = Me.ScaleHeight - (famTable.Top + famTable.Height + sbStatusBar.Height + 200)
+    lvListView1.Top = tvTreeView.Top + tvTreeView.Height / 2
+     
     lvListView.Height = tvTreeView.Height
+    lvListView1.Height = tvTreeView.Height / 2
+    
     imgSplitter.Top = tvTreeView.Top
     imgSplitter.Height = tvTreeView.Height
 
@@ -773,7 +797,7 @@ End Sub
 '***************************************************************************************************************
 Private Sub lvListView_DblClick()
 '***************************************************************************************************************
-    If (bAdmin) Then
+    If (bAdmin) And (CurTableType <> STAT_TABLE) Then
         Call mnuModifyKey_Click
     End If
 End Sub
@@ -790,7 +814,7 @@ End Sub
 Private Sub lvListView_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
 '***************************************************************************************************************
     
-    If ((Button = vbRightButton) And (bAdmin)) Then
+    If ((Button = vbRightButton) And (bAdmin)) And (CurTableType <> 4) Then
         PopupMenu mnuPopup
         Me.Refresh
     End If
@@ -856,6 +880,7 @@ Private Sub mnuDeleteKey_Click()
                              " AND ErrorNumber = " & Val(lvListView.ListItems.Item(x).Text) & _
                              " AND SequenceNumber = " & Val(lvListView.ListItems.Item(x).SubItems(6)) & _
                              " AND Client = " & myClient.Displaycode
+                
                 End If
     
                 wsCTM.BeginTrans
@@ -1032,7 +1057,7 @@ Private Sub mnuModifyKey_Click()
         bAddNewKey = False
         frmAddModUMsg.Show vbModal
     Else
-        RC = MsgBox("Unable determin type of table. Please contact" & vbCrLf & _
+        RC = MsgBox("Unable to determine type of table. Please contact" & vbCrLf & _
                     "Development tools for assistance.", vbOKOnly + vbExclamation, "Codes Table Explorer")
     End If
     
@@ -1048,7 +1073,6 @@ Private Sub mnuModifyKey_Click()
     lvListView.SetFocus
     
 End Sub
-
 
 '***************************************************************************************************************
 Private Sub mnuAddKey_Click()
