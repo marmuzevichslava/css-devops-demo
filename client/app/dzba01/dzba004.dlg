@@ -1,0 +1,210 @@
+/***************************************************************************
+*                                                                          *
+*      W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N          *
+*                                                                          *
+*    (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+*                                                                          *
+****************************************************************************
+*                                                                          *
+*              Symbolic Definitions for: DZBA004                           *
+*                          Generated on: Thu Jan 30 09:46:52 1997          *
+*                                    by: IPEREZAR                          *
+*                     Short Description:                                   *
+*                                                                          *
+****************************************************************************/
+
+DZBA004ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,105,82
+    STYLE 0 
+     | WS_CAPTION
+     | WS_SYSMENU
+     | DS_MODALFRAME
+    CAPTION "Details for Import/Export"
+    
+Begin  /* controls */
+   CONTROL "Export File :",500,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,2,26,40,12
+
+   CONTROL "",100,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,52,26,50,0
+
+   CONTROL "Import File :",501,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,2,42,40,12
+
+   CONTROL "",101,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,52,42,50,0
+
+   CONTROL "Working Directory",502,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,2,10,60,12
+
+   CONTROL "",102,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,63,10,38,0
+
+   CONTROL "Cancel",1000,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,55,57,36,12
+
+   CONTROL "",5200,
+              FND_ENTRYFIELD,
+              WS_VISIBLE
+              ,4,70,101,12
+
+   CONTROL "OK",1001,
+              FND_PUSH_BUTTON,
+              WS_VISIBLE  | WS_GROUP | WS_TABSTOP
+              | BS_PUSHBUTTON
+              ,14,57,36,12
+
+End /* controls */
+
+
+/**********************************************
+*       FOUNDATION Widget Control Data        *
+**********************************************/
+
+DZBA004ID 332
+Begin
+   /*  Control Data for Static Text Export File :  */
+   FP_CONTROL_ID,                       "500\0"
+   FP_SCREEN_LENGTH,                    "13\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field ExportFile  */
+   FP_CONTROL_ID,                       "100\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Import File :  */
+   FP_CONTROL_ID,                       "501\0"
+   FP_SCREEN_LENGTH,                    "13\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field ImportFile  */
+   FP_CONTROL_ID,                       "101\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text Working Directory  */
+   FP_CONTROL_ID,                       "502\0"
+   FP_SCREEN_LENGTH,                    "17\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field WorkingDirectory  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Error Field TxMsgAreaA  */
+   FP_CONTROL_ID,                       "5200\0"
+   FP_SCREEN_LENGTH,                    "79\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
+   FP_FONT_SIZE,                        "10\0"
+   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   FP_END
+End
+
+
+/**********************************************
+*                Menu Template                *
+**********************************************/
+
+
+
+/**********************************************
+*              Accelerator Table              *
+**********************************************/
+
+DZBA004AccelID ACCELERATORS PRELOAD
+Begin
+VK_ESCAPE,1000,VIRTKEY
+End
+
+
+/**********************************************
+*            Window Minimize Icon             *
+**********************************************/
+
+
+
+/**********************************************
+*         Static Icons and Bitmaps            *
+**********************************************/
+
+
+
+/**********************************************
+*             Pushbutton Bitmaps              *
+**********************************************/
+
+
+
+/**********************************************
+*           Listbox Column Bitmaps            *
+**********************************************/
+
