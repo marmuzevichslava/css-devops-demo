@@ -1,17 +1,18 @@
 /***************************************************************************
-*                                                                          *
-*             O S / 2    W E S   M A P   D E F I N I T I O N               *
-*                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
-*                                                                          *
-****************************************************************************
-*                                                                          *
-*              Symbolic Definitions for: DZSM001                           *
-*                          Generated on: Wed Jan 18 11:43:32 1995          *
-*                                    by: ABURDEN                           *
-*                                                                          *
-****************************************************************************/
+ *                                                                         *
+ *         W I N D O W S   N T   W E S   M A P   D E F I N I T I O N       *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *             Symbolic Definitions for: DZSM001                           *
+ *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ ***************************************************************************/
 
 struct _DZSM001WesMap {
 
@@ -38,116 +39,134 @@ unsigned char _grpFiller;
    char _QueryTypeData[9];
 #define QueryTypeData              pWesMap->_QueryTypeData
 
-   char _PcNameData[9];
-#define PcNameData              pWesMap->_PcNameData
 
-   char _OTNumberData[9];
-#define OTNumberData              pWesMap->_OTNumberData
+#define  NUMDEV00600ACCUMRECROWS   50
 
-   char _LanIdData[9];
-#define LanIdData              pWesMap->_LanIdData
+    char _Dev00600AccumRecSelIndData[50];
+#define Dev00600AccumRecSelIndData    pWesMap->_Dev00600AccumRecSelIndData
 
+    char _Dev00600AccumRecDtTestData[50][11];
+#define Dev00600AccumRecDtTestData    pWesMap->_Dev00600AccumRecDtTestData
 
-#define  NUMDEV00600SMACCUMULATIONRECORDROWS   50
+    char _Dev00600AccumRecTmTimeData[50][9];
+#define Dev00600AccumRecTmTimeData    pWesMap->_Dev00600AccumRecTmTimeData
 
-    char _Dev00600SmAccumulationRecordSelIndData[50];
-#define Dev00600SmAccumulationRecordSelIndData    pWesMap->_Dev00600SmAccumulationRecordSelIndData
+    char _Dev00600AccumRecKyUserIdData[50][9];
+#define Dev00600AccumRecKyUserIdData    pWesMap->_Dev00600AccumRecKyUserIdData
 
-    FND_INT3DATE _Dev00600SmAccumulationRecordSmDateData[50];
-#define Dev00600SmAccumulationRecordSmDateData    pWesMap->_Dev00600SmAccumulationRecordSmDateData
+    char _Dev00600AccumRecTxPcNameData[50][9];
+#define Dev00600AccumRecTxPcNameData    pWesMap->_Dev00600AccumRecTxPcNameData
 
-    char _Dev00600SmAccumulationRecordSmTimeData[50][6];
-#define Dev00600SmAccumulationRecordSmTimeData    pWesMap->_Dev00600SmAccumulationRecordSmTimeData
+    char _Dev00600AccumRecTsSlamTmstmpData[50][27];
+#define Dev00600AccumRecTsSlamTmstmpData    pWesMap->_Dev00600AccumRecTsSlamTmstmpData
 
-    char _Dev00600SmAccumulationRecordPcNameData[50][9];
-#define Dev00600SmAccumulationRecordPcNameData    pWesMap->_Dev00600SmAccumulationRecordPcNameData
+    short _Dev00600AccumRecQyFiveTenthData[50];
+#define Dev00600AccumRecQyFiveTenthData    pWesMap->_Dev00600AccumRecQyFiveTenthData
 
-    char _Dev00600SmAccumulationRecordOTNumberData[50][9];
-#define Dev00600SmAccumulationRecordOTNumberData    pWesMap->_Dev00600SmAccumulationRecordOTNumberData
+    short _Dev00600AccumRecQyOneData[50];
+#define Dev00600AccumRecQyOneData    pWesMap->_Dev00600AccumRecQyOneData
 
-    char _Dev00600SmAccumulationRecordLanIdData[50][9];
-#define Dev00600SmAccumulationRecordLanIdData    pWesMap->_Dev00600SmAccumulationRecordLanIdData
+    short _Dev00600AccumRecQyOnePointFiveData[50];
+#define Dev00600AccumRecQyOnePointFiveData    pWesMap->_Dev00600AccumRecQyOnePointFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordFiveTenthData[50];
-#define Dev00600SmAccumulationRecordFiveTenthData    pWesMap->_Dev00600SmAccumulationRecordFiveTenthData
+    short _Dev00600AccumRecQyTwoData[50];
+#define Dev00600AccumRecQyTwoData    pWesMap->_Dev00600AccumRecQyTwoData
 
-    unsigned short _Dev00600SmAccumulationRecordOneData[50];
-#define Dev00600SmAccumulationRecordOneData    pWesMap->_Dev00600SmAccumulationRecordOneData
+    short _Dev00600AccumRecQyTwoPointFiveData[50];
+#define Dev00600AccumRecQyTwoPointFiveData    pWesMap->_Dev00600AccumRecQyTwoPointFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordOne_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordOne_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordOne_Point_FiveData
+    short _Dev00600AccumRecQyThreeData[50];
+#define Dev00600AccumRecQyThreeData    pWesMap->_Dev00600AccumRecQyThreeData
 
-    unsigned short _Dev00600SmAccumulationRecordTwoData[50];
-#define Dev00600SmAccumulationRecordTwoData    pWesMap->_Dev00600SmAccumulationRecordTwoData
+    short _Dev00600AccumRecQyThreePtFiveData[50];
+#define Dev00600AccumRecQyThreePtFiveData    pWesMap->_Dev00600AccumRecQyThreePtFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordTwo_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordTwo_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordTwo_Point_FiveData
+    short _Dev00600AccumRecQyFourData[50];
+#define Dev00600AccumRecQyFourData    pWesMap->_Dev00600AccumRecQyFourData
 
-    unsigned short _Dev00600SmAccumulationRecordThreeData[50];
-#define Dev00600SmAccumulationRecordThreeData    pWesMap->_Dev00600SmAccumulationRecordThreeData
+    short _Dev00600AccumRecQyFourPointFiveData[50];
+#define Dev00600AccumRecQyFourPointFiveData    pWesMap->_Dev00600AccumRecQyFourPointFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordThree_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordThree_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordThree_Point_FiveData
+    short _Dev00600AccumRecQyFiveData[50];
+#define Dev00600AccumRecQyFiveData    pWesMap->_Dev00600AccumRecQyFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordFourData[50];
-#define Dev00600SmAccumulationRecordFourData    pWesMap->_Dev00600SmAccumulationRecordFourData
+    short _Dev00600AccumRecQyOverFiveData[50];
+#define Dev00600AccumRecQyOverFiveData    pWesMap->_Dev00600AccumRecQyOverFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordFour_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordFour_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordFour_Point_FiveData
+    short _Dev00600AccumRecQyUnknWndwEvData[50];
+#define Dev00600AccumRecQyUnknWndwEvData    pWesMap->_Dev00600AccumRecQyUnknWndwEvData
 
-    unsigned short _Dev00600SmAccumulationRecordFiveData[50];
-#define Dev00600SmAccumulationRecordFiveData    pWesMap->_Dev00600SmAccumulationRecordFiveData
+    short _Dev00600AccumRecQySFiveTenthData[50];
+#define Dev00600AccumRecQySFiveTenthData    pWesMap->_Dev00600AccumRecQySFiveTenthData
 
-    unsigned short _Dev00600SmAccumulationRecordOverFiveData[50];
-#define Dev00600SmAccumulationRecordOverFiveData    pWesMap->_Dev00600SmAccumulationRecordOverFiveData
+    short _Dev00600AccumRecQySOneData[50];
+#define Dev00600AccumRecQySOneData    pWesMap->_Dev00600AccumRecQySOneData
 
-    unsigned short _Dev00600SmAccumulationRecordUnknownWindowEventData[50];
-#define Dev00600SmAccumulationRecordUnknownWindowEventData    pWesMap->_Dev00600SmAccumulationRecordUnknownWindowEventData
+    short _Dev00600AccumRecQySOnePointFiveData[50];
+#define Dev00600AccumRecQySOnePointFiveData    pWesMap->_Dev00600AccumRecQySOnePointFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordSFiveTenthData[50];
-#define Dev00600SmAccumulationRecordSFiveTenthData    pWesMap->_Dev00600SmAccumulationRecordSFiveTenthData
+    short _Dev00600AccumRecQySTwoData[50];
+#define Dev00600AccumRecQySTwoData    pWesMap->_Dev00600AccumRecQySTwoData
 
-    unsigned short _Dev00600SmAccumulationRecordSOneData[50];
-#define Dev00600SmAccumulationRecordSOneData    pWesMap->_Dev00600SmAccumulationRecordSOneData
+    short _Dev00600AccumRecQySTwoPointFiveData[50];
+#define Dev00600AccumRecQySTwoPointFiveData    pWesMap->_Dev00600AccumRecQySTwoPointFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordSOne_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordSOne_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordSOne_Point_FiveData
+    short _Dev00600AccumRecQySThreeData[50];
+#define Dev00600AccumRecQySThreeData    pWesMap->_Dev00600AccumRecQySThreeData
 
-    unsigned short _Dev00600SmAccumulationRecordSTwoData[50];
-#define Dev00600SmAccumulationRecordSTwoData    pWesMap->_Dev00600SmAccumulationRecordSTwoData
+    short _Dev00600AccumRecQySThreePtFiveData[50];
+#define Dev00600AccumRecQySThreePtFiveData    pWesMap->_Dev00600AccumRecQySThreePtFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordSTwo_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordSTwo_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordSTwo_Point_FiveData
+    short _Dev00600AccumRecQySFourData[50];
+#define Dev00600AccumRecQySFourData    pWesMap->_Dev00600AccumRecQySFourData
 
-    unsigned short _Dev00600SmAccumulationRecordSThreeData[50];
-#define Dev00600SmAccumulationRecordSThreeData    pWesMap->_Dev00600SmAccumulationRecordSThreeData
+    short _Dev00600AccumRecQySFourPtFiveData[50];
+#define Dev00600AccumRecQySFourPtFiveData    pWesMap->_Dev00600AccumRecQySFourPtFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordSThree_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordSThree_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordSThree_Point_FiveData
+    short _Dev00600AccumRecQySFiveData[50];
+#define Dev00600AccumRecQySFiveData    pWesMap->_Dev00600AccumRecQySFiveData
 
-    unsigned short _Dev00600SmAccumulationRecordSFourData[50];
-#define Dev00600SmAccumulationRecordSFourData    pWesMap->_Dev00600SmAccumulationRecordSFourData
+    short _Dev00600AccumRecQySSixData[50];
+#define Dev00600AccumRecQySSixData    pWesMap->_Dev00600AccumRecQySSixData
 
-    unsigned short _Dev00600SmAccumulationRecordSFour_Point_FiveData[50];
-#define Dev00600SmAccumulationRecordSFour_Point_FiveData    pWesMap->_Dev00600SmAccumulationRecordSFour_Point_FiveData
+    short _Dev00600AccumRecQySSevenData[50];
+#define Dev00600AccumRecQySSevenData    pWesMap->_Dev00600AccumRecQySSevenData
 
-    unsigned short _Dev00600SmAccumulationRecordSFiveData[50];
-#define Dev00600SmAccumulationRecordSFiveData    pWesMap->_Dev00600SmAccumulationRecordSFiveData
+    short _Dev00600AccumRecQySEightData[50];
+#define Dev00600AccumRecQySEightData    pWesMap->_Dev00600AccumRecQySEightData
 
-    unsigned short _Dev00600SmAccumulationRecordSOverFiveData[50];
-#define Dev00600SmAccumulationRecordSOverFiveData    pWesMap->_Dev00600SmAccumulationRecordSOverFiveData
+    short _Dev00600AccumRecQySNineData[50];
+#define Dev00600AccumRecQySNineData    pWesMap->_Dev00600AccumRecQySNineData
 
-    unsigned short _Dev00600SmAccumulationRecordUnknownSvcEventData[50];
-#define Dev00600SmAccumulationRecordUnknownSvcEventData    pWesMap->_Dev00600SmAccumulationRecordUnknownSvcEventData
+    short _Dev00600AccumRecQySTenData[50];
+#define Dev00600AccumRecQySTenData    pWesMap->_Dev00600AccumRecQySTenData
 
-    unsigned short _Dev00600SmAccumulationRecordErrorInServiceCallData[50];
-#define Dev00600SmAccumulationRecordErrorInServiceCallData    pWesMap->_Dev00600SmAccumulationRecordErrorInServiceCallData
+    short _Dev00600AccumRecQySFifteenData[50];
+#define Dev00600AccumRecQySFifteenData    pWesMap->_Dev00600AccumRecQySFifteenData
 
-    unsigned short _Dev00600SmAccumulationRecordMessageConvErrorsData[50];
-#define Dev00600SmAccumulationRecordMessageConvErrorsData    pWesMap->_Dev00600SmAccumulationRecordMessageConvErrorsData
+    short _Dev00600AccumRecQySOverFifteenData[50];
+#define Dev00600AccumRecQySOverFifteenData    pWesMap->_Dev00600AccumRecQySOverFifteenData
 
-    unsigned short _Dev00600SmAccumulationRecordTotalServiceCallsData[50];
-#define Dev00600SmAccumulationRecordTotalServiceCallsData    pWesMap->_Dev00600SmAccumulationRecordTotalServiceCallsData
+    short _Dev00600AccumRecQyUnknSvcEventData[50];
+#define Dev00600AccumRecQyUnknSvcEventData    pWesMap->_Dev00600AccumRecQyUnknSvcEventData
+
+    short _Dev00600AccumRecQyErrInSvcCallData[50];
+#define Dev00600AccumRecQyErrInSvcCallData    pWesMap->_Dev00600AccumRecQyErrInSvcCallData
+
+    short _Dev00600AccumRecQyMsgConvErrData[50];
+#define Dev00600AccumRecQyMsgConvErrData    pWesMap->_Dev00600AccumRecQyMsgConvErrData
+
+    short _Dev00600AccumRecQtTotSvcCallsData[50];
+#define Dev00600AccumRecQtTotSvcCallsData    pWesMap->_Dev00600AccumRecQtTotSvcCallsData
+
+   char _KyUserIdData[9];
+#define KyUserIdData              pWesMap->_KyUserIdData
+
+   char _TxPcNameData[9];
+#define TxPcNameData              pWesMap->_TxPcNameData
+
+   char _FlWindowModData[2];
+#define FlWindowModData              pWesMap->_FlWindowModData
 
 
     WESFLDCTL _QueryTypeCtl;
@@ -157,168 +176,192 @@ unsigned char _grpFiller;
 #define QueryTypeMsg                        pWesMap->_QueryTypeCtl.Msg
 #define QueryTypeCursor                     pWesMap->_QueryTypeCtl.Cursor
 
-    WESFLDCTL _PcNameCtl;
-#define PcNameAttr                       pWesMap->_PcNameCtl.Attr
-#define PcNameStatus                     pWesMap->_PcNameCtl.Status
-#define PcNameRights                     pWesMap->_PcNameCtl.Rights
-#define PcNameMsg                        pWesMap->_PcNameCtl.Msg
-#define PcNameCursor                     pWesMap->_PcNameCtl.Cursor
+    WESFLDCTL _Dev00600AccumRecCtl;
+#define Dev00600AccumRecAttr                       pWesMap->_Dev00600AccumRecCtl.Attr
+#define Dev00600AccumRecStatus                     pWesMap->_Dev00600AccumRecCtl.Status
+#define Dev00600AccumRecRights                     pWesMap->_Dev00600AccumRecCtl.Rights
+#define Dev00600AccumRecMsg                        pWesMap->_Dev00600AccumRecCtl.Msg
+#define Dev00600AccumRecCursor                     pWesMap->_Dev00600AccumRecCtl.Cursor
 
-    WESFLDCTL _OTNumberCtl;
-#define OTNumberAttr                       pWesMap->_OTNumberCtl.Attr
-#define OTNumberStatus                     pWesMap->_OTNumberCtl.Status
-#define OTNumberRights                     pWesMap->_OTNumberCtl.Rights
-#define OTNumberMsg                        pWesMap->_OTNumberCtl.Msg
-#define OTNumberCursor                     pWesMap->_OTNumberCtl.Cursor
+    WESFLDCTL _Dev00600AccumRecSelIndCtl[50];
+#define Dev00600AccumRecSelIndCtl      pWesMap->_Dev00600AccumRecSelIndCtl
 
-    WESFLDCTL _LanIdCtl;
-#define LanIdAttr                       pWesMap->_LanIdCtl.Attr
-#define LanIdStatus                     pWesMap->_LanIdCtl.Status
-#define LanIdRights                     pWesMap->_LanIdCtl.Rights
-#define LanIdMsg                        pWesMap->_LanIdCtl.Msg
-#define LanIdCursor                     pWesMap->_LanIdCtl.Cursor
+    WESFLDCTL _Dev00600AccumRecDtTestCtl[50];
+#define Dev00600AccumRecDtTestCtl      pWesMap->_Dev00600AccumRecDtTestCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordCtl;
-#define Dev00600SmAccumulationRecordAttr                       pWesMap->_Dev00600SmAccumulationRecordCtl.Attr
-#define Dev00600SmAccumulationRecordStatus                     pWesMap->_Dev00600SmAccumulationRecordCtl.Status
-#define Dev00600SmAccumulationRecordRights                     pWesMap->_Dev00600SmAccumulationRecordCtl.Rights
-#define Dev00600SmAccumulationRecordMsg                        pWesMap->_Dev00600SmAccumulationRecordCtl.Msg
-#define Dev00600SmAccumulationRecordCursor                     pWesMap->_Dev00600SmAccumulationRecordCtl.Cursor
+    WESFLDCTL _Dev00600AccumRecTmTimeCtl[50];
+#define Dev00600AccumRecTmTimeCtl      pWesMap->_Dev00600AccumRecTmTimeCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSelIndCtl[50];
-#define Dev00600SmAccumulationRecordSelIndCtl      pWesMap->_Dev00600SmAccumulationRecordSelIndCtl
+    WESFLDCTL _Dev00600AccumRecKyUserIdCtl[50];
+#define Dev00600AccumRecKyUserIdCtl      pWesMap->_Dev00600AccumRecKyUserIdCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSmDateCtl[50];
-#define Dev00600SmAccumulationRecordSmDateCtl      pWesMap->_Dev00600SmAccumulationRecordSmDateCtl
+    WESFLDCTL _Dev00600AccumRecTxPcNameCtl[50];
+#define Dev00600AccumRecTxPcNameCtl      pWesMap->_Dev00600AccumRecTxPcNameCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSmTimeCtl[50];
-#define Dev00600SmAccumulationRecordSmTimeCtl      pWesMap->_Dev00600SmAccumulationRecordSmTimeCtl
+    WESFLDCTL _Dev00600AccumRecTsSlamTmstmpCtl[50];
+#define Dev00600AccumRecTsSlamTmstmpCtl      pWesMap->_Dev00600AccumRecTsSlamTmstmpCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordPcNameCtl[50];
-#define Dev00600SmAccumulationRecordPcNameCtl      pWesMap->_Dev00600SmAccumulationRecordPcNameCtl
+    WESFLDCTL _Dev00600AccumRecQyFiveTenthCtl[50];
+#define Dev00600AccumRecQyFiveTenthCtl      pWesMap->_Dev00600AccumRecQyFiveTenthCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordOTNumberCtl[50];
-#define Dev00600SmAccumulationRecordOTNumberCtl      pWesMap->_Dev00600SmAccumulationRecordOTNumberCtl
+    WESFLDCTL _Dev00600AccumRecQyOneCtl[50];
+#define Dev00600AccumRecQyOneCtl      pWesMap->_Dev00600AccumRecQyOneCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordLanIdCtl[50];
-#define Dev00600SmAccumulationRecordLanIdCtl      pWesMap->_Dev00600SmAccumulationRecordLanIdCtl
+    WESFLDCTL _Dev00600AccumRecQyOnePointFiveCtl[50];
+#define Dev00600AccumRecQyOnePointFiveCtl      pWesMap->_Dev00600AccumRecQyOnePointFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordFiveTenthCtl[50];
-#define Dev00600SmAccumulationRecordFiveTenthCtl      pWesMap->_Dev00600SmAccumulationRecordFiveTenthCtl
+    WESFLDCTL _Dev00600AccumRecQyTwoCtl[50];
+#define Dev00600AccumRecQyTwoCtl      pWesMap->_Dev00600AccumRecQyTwoCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordOneCtl[50];
-#define Dev00600SmAccumulationRecordOneCtl      pWesMap->_Dev00600SmAccumulationRecordOneCtl
+    WESFLDCTL _Dev00600AccumRecQyTwoPointFiveCtl[50];
+#define Dev00600AccumRecQyTwoPointFiveCtl      pWesMap->_Dev00600AccumRecQyTwoPointFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordOne_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordOne_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordOne_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQyThreeCtl[50];
+#define Dev00600AccumRecQyThreeCtl      pWesMap->_Dev00600AccumRecQyThreeCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordTwoCtl[50];
-#define Dev00600SmAccumulationRecordTwoCtl      pWesMap->_Dev00600SmAccumulationRecordTwoCtl
+    WESFLDCTL _Dev00600AccumRecQyThreePtFiveCtl[50];
+#define Dev00600AccumRecQyThreePtFiveCtl      pWesMap->_Dev00600AccumRecQyThreePtFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordTwo_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordTwo_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordTwo_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQyFourCtl[50];
+#define Dev00600AccumRecQyFourCtl      pWesMap->_Dev00600AccumRecQyFourCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordThreeCtl[50];
-#define Dev00600SmAccumulationRecordThreeCtl      pWesMap->_Dev00600SmAccumulationRecordThreeCtl
+    WESFLDCTL _Dev00600AccumRecQyFourPointFiveCtl[50];
+#define Dev00600AccumRecQyFourPointFiveCtl      pWesMap->_Dev00600AccumRecQyFourPointFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordThree_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordThree_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordThree_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQyFiveCtl[50];
+#define Dev00600AccumRecQyFiveCtl      pWesMap->_Dev00600AccumRecQyFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordFourCtl[50];
-#define Dev00600SmAccumulationRecordFourCtl      pWesMap->_Dev00600SmAccumulationRecordFourCtl
+    WESFLDCTL _Dev00600AccumRecQyOverFiveCtl[50];
+#define Dev00600AccumRecQyOverFiveCtl      pWesMap->_Dev00600AccumRecQyOverFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordFour_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordFour_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordFour_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQyUnknWndwEvCtl[50];
+#define Dev00600AccumRecQyUnknWndwEvCtl      pWesMap->_Dev00600AccumRecQyUnknWndwEvCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordFiveCtl[50];
-#define Dev00600SmAccumulationRecordFiveCtl      pWesMap->_Dev00600SmAccumulationRecordFiveCtl
+    WESFLDCTL _Dev00600AccumRecQySFiveTenthCtl[50];
+#define Dev00600AccumRecQySFiveTenthCtl      pWesMap->_Dev00600AccumRecQySFiveTenthCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordOverFiveCtl[50];
-#define Dev00600SmAccumulationRecordOverFiveCtl      pWesMap->_Dev00600SmAccumulationRecordOverFiveCtl
+    WESFLDCTL _Dev00600AccumRecQySOneCtl[50];
+#define Dev00600AccumRecQySOneCtl      pWesMap->_Dev00600AccumRecQySOneCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordUnknownWindowEventCtl[50];
-#define Dev00600SmAccumulationRecordUnknownWindowEventCtl      pWesMap->_Dev00600SmAccumulationRecordUnknownWindowEventCtl
+    WESFLDCTL _Dev00600AccumRecQySOnePointFiveCtl[50];
+#define Dev00600AccumRecQySOnePointFiveCtl      pWesMap->_Dev00600AccumRecQySOnePointFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSFiveTenthCtl[50];
-#define Dev00600SmAccumulationRecordSFiveTenthCtl      pWesMap->_Dev00600SmAccumulationRecordSFiveTenthCtl
+    WESFLDCTL _Dev00600AccumRecQySTwoCtl[50];
+#define Dev00600AccumRecQySTwoCtl      pWesMap->_Dev00600AccumRecQySTwoCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSOneCtl[50];
-#define Dev00600SmAccumulationRecordSOneCtl      pWesMap->_Dev00600SmAccumulationRecordSOneCtl
+    WESFLDCTL _Dev00600AccumRecQySTwoPointFiveCtl[50];
+#define Dev00600AccumRecQySTwoPointFiveCtl      pWesMap->_Dev00600AccumRecQySTwoPointFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSOne_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordSOne_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordSOne_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQySThreeCtl[50];
+#define Dev00600AccumRecQySThreeCtl      pWesMap->_Dev00600AccumRecQySThreeCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSTwoCtl[50];
-#define Dev00600SmAccumulationRecordSTwoCtl      pWesMap->_Dev00600SmAccumulationRecordSTwoCtl
+    WESFLDCTL _Dev00600AccumRecQySThreePtFiveCtl[50];
+#define Dev00600AccumRecQySThreePtFiveCtl      pWesMap->_Dev00600AccumRecQySThreePtFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSTwo_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordSTwo_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordSTwo_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQySFourCtl[50];
+#define Dev00600AccumRecQySFourCtl      pWesMap->_Dev00600AccumRecQySFourCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSThreeCtl[50];
-#define Dev00600SmAccumulationRecordSThreeCtl      pWesMap->_Dev00600SmAccumulationRecordSThreeCtl
+    WESFLDCTL _Dev00600AccumRecQySFourPtFiveCtl[50];
+#define Dev00600AccumRecQySFourPtFiveCtl      pWesMap->_Dev00600AccumRecQySFourPtFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSThree_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordSThree_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordSThree_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQySFiveCtl[50];
+#define Dev00600AccumRecQySFiveCtl      pWesMap->_Dev00600AccumRecQySFiveCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSFourCtl[50];
-#define Dev00600SmAccumulationRecordSFourCtl      pWesMap->_Dev00600SmAccumulationRecordSFourCtl
+    WESFLDCTL _Dev00600AccumRecQySSixCtl[50];
+#define Dev00600AccumRecQySSixCtl      pWesMap->_Dev00600AccumRecQySSixCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSFour_Point_FiveCtl[50];
-#define Dev00600SmAccumulationRecordSFour_Point_FiveCtl      pWesMap->_Dev00600SmAccumulationRecordSFour_Point_FiveCtl
+    WESFLDCTL _Dev00600AccumRecQySSevenCtl[50];
+#define Dev00600AccumRecQySSevenCtl      pWesMap->_Dev00600AccumRecQySSevenCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSFiveCtl[50];
-#define Dev00600SmAccumulationRecordSFiveCtl      pWesMap->_Dev00600SmAccumulationRecordSFiveCtl
+    WESFLDCTL _Dev00600AccumRecQySEightCtl[50];
+#define Dev00600AccumRecQySEightCtl      pWesMap->_Dev00600AccumRecQySEightCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordSOverFiveCtl[50];
-#define Dev00600SmAccumulationRecordSOverFiveCtl      pWesMap->_Dev00600SmAccumulationRecordSOverFiveCtl
+    WESFLDCTL _Dev00600AccumRecQySNineCtl[50];
+#define Dev00600AccumRecQySNineCtl      pWesMap->_Dev00600AccumRecQySNineCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordUnknownSvcEventCtl[50];
-#define Dev00600SmAccumulationRecordUnknownSvcEventCtl      pWesMap->_Dev00600SmAccumulationRecordUnknownSvcEventCtl
+    WESFLDCTL _Dev00600AccumRecQySTenCtl[50];
+#define Dev00600AccumRecQySTenCtl      pWesMap->_Dev00600AccumRecQySTenCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordErrorInServiceCallCtl[50];
-#define Dev00600SmAccumulationRecordErrorInServiceCallCtl      pWesMap->_Dev00600SmAccumulationRecordErrorInServiceCallCtl
+    WESFLDCTL _Dev00600AccumRecQySFifteenCtl[50];
+#define Dev00600AccumRecQySFifteenCtl      pWesMap->_Dev00600AccumRecQySFifteenCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordMessageConvErrorsCtl[50];
-#define Dev00600SmAccumulationRecordMessageConvErrorsCtl      pWesMap->_Dev00600SmAccumulationRecordMessageConvErrorsCtl
+    WESFLDCTL _Dev00600AccumRecQySOverFifteenCtl[50];
+#define Dev00600AccumRecQySOverFifteenCtl      pWesMap->_Dev00600AccumRecQySOverFifteenCtl
 
-    WESFLDCTL _Dev00600SmAccumulationRecordTotalServiceCallsCtl[50];
-#define Dev00600SmAccumulationRecordTotalServiceCallsCtl      pWesMap->_Dev00600SmAccumulationRecordTotalServiceCallsCtl
+    WESFLDCTL _Dev00600AccumRecQyUnknSvcEventCtl[50];
+#define Dev00600AccumRecQyUnknSvcEventCtl      pWesMap->_Dev00600AccumRecQyUnknSvcEventCtl
 
+    WESFLDCTL _Dev00600AccumRecQyErrInSvcCallCtl[50];
+#define Dev00600AccumRecQyErrInSvcCallCtl      pWesMap->_Dev00600AccumRecQyErrInSvcCallCtl
+
+    WESFLDCTL _Dev00600AccumRecQyMsgConvErrCtl[50];
+#define Dev00600AccumRecQyMsgConvErrCtl      pWesMap->_Dev00600AccumRecQyMsgConvErrCtl
+
+    WESFLDCTL _Dev00600AccumRecQtTotSvcCallsCtl[50];
+#define Dev00600AccumRecQtTotSvcCallsCtl      pWesMap->_Dev00600AccumRecQtTotSvcCallsCtl
+
+
+    WESFLDCTL _KyUserIdCtl;
+#define KyUserIdAttr                       pWesMap->_KyUserIdCtl.Attr
+#define KyUserIdStatus                     pWesMap->_KyUserIdCtl.Status
+#define KyUserIdRights                     pWesMap->_KyUserIdCtl.Rights
+#define KyUserIdMsg                        pWesMap->_KyUserIdCtl.Msg
+#define KyUserIdCursor                     pWesMap->_KyUserIdCtl.Cursor
+
+    WESFLDCTL _TxPcNameCtl;
+#define TxPcNameAttr                       pWesMap->_TxPcNameCtl.Attr
+#define TxPcNameStatus                     pWesMap->_TxPcNameCtl.Status
+#define TxPcNameRights                     pWesMap->_TxPcNameCtl.Rights
+#define TxPcNameMsg                        pWesMap->_TxPcNameCtl.Msg
+#define TxPcNameCursor                     pWesMap->_TxPcNameCtl.Cursor
+
+    WESFLDCTL _FlWindowModCtl;
+#define FlWindowModAttr                       pWesMap->_FlWindowModCtl.Attr
+#define FlWindowModStatus                     pWesMap->_FlWindowModCtl.Status
+#define FlWindowModRights                     pWesMap->_FlWindowModCtl.Rights
+#define FlWindowModMsg                        pWesMap->_FlWindowModCtl.Msg
+#define FlWindowModCursor                     pWesMap->_FlWindowModCtl.Cursor
 };
 
 typedef struct
 {
-    FND_INT3DATE  _Dev00600SmAccumulationRecordSmDateData;
-    char  _Dev00600SmAccumulationRecordSmTimeData[6];
-    char  _Dev00600SmAccumulationRecordPcNameData[9];
-    char  _Dev00600SmAccumulationRecordOTNumberData[9];
-    char  _Dev00600SmAccumulationRecordLanIdData[9];
-    unsigned short  _Dev00600SmAccumulationRecordFiveTenthData;
-    unsigned short  _Dev00600SmAccumulationRecordOneData;
-    unsigned short  _Dev00600SmAccumulationRecordOne_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordTwoData;
-    unsigned short  _Dev00600SmAccumulationRecordTwo_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordThreeData;
-    unsigned short  _Dev00600SmAccumulationRecordThree_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordFourData;
-    unsigned short  _Dev00600SmAccumulationRecordFour_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordFiveData;
-    unsigned short  _Dev00600SmAccumulationRecordOverFiveData;
-    unsigned short  _Dev00600SmAccumulationRecordUnknownWindowEventData;
-    unsigned short  _Dev00600SmAccumulationRecordSFiveTenthData;
-    unsigned short  _Dev00600SmAccumulationRecordSOneData;
-    unsigned short  _Dev00600SmAccumulationRecordSOne_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordSTwoData;
-    unsigned short  _Dev00600SmAccumulationRecordSTwo_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordSThreeData;
-    unsigned short  _Dev00600SmAccumulationRecordSThree_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordSFourData;
-    unsigned short  _Dev00600SmAccumulationRecordSFour_Point_FiveData;
-    unsigned short  _Dev00600SmAccumulationRecordSFiveData;
-    unsigned short  _Dev00600SmAccumulationRecordSOverFiveData;
-    unsigned short  _Dev00600SmAccumulationRecordUnknownSvcEventData;
-    unsigned short  _Dev00600SmAccumulationRecordErrorInServiceCallData;
-    unsigned short  _Dev00600SmAccumulationRecordMessageConvErrorsData;
-    unsigned short  _Dev00600SmAccumulationRecordTotalServiceCallsData;
-}_Dev00600SmAccumulationRecordRow;
+    char  _Dev00600AccumRecDtTestData[11];
+    char  _Dev00600AccumRecTmTimeData[9];
+    char  _Dev00600AccumRecKyUserIdData[9];
+    char  _Dev00600AccumRecTxPcNameData[9];
+    char  _Dev00600AccumRecTsSlamTmstmpData[27];
+    short  _Dev00600AccumRecQyFiveTenthData;
+    short  _Dev00600AccumRecQyOneData;
+    short  _Dev00600AccumRecQyOnePointFiveData;
+    short  _Dev00600AccumRecQyTwoData;
+    short  _Dev00600AccumRecQyTwoPointFiveData;
+    short  _Dev00600AccumRecQyThreeData;
+    short  _Dev00600AccumRecQyThreePtFiveData;
+    short  _Dev00600AccumRecQyFourData;
+    short  _Dev00600AccumRecQyFourPointFiveData;
+    short  _Dev00600AccumRecQyFiveData;
+    short  _Dev00600AccumRecQyOverFiveData;
+    short  _Dev00600AccumRecQyUnknWndwEvData;
+    short  _Dev00600AccumRecQySFiveTenthData;
+    short  _Dev00600AccumRecQySOneData;
+    short  _Dev00600AccumRecQySOnePointFiveData;
+    short  _Dev00600AccumRecQySTwoData;
+    short  _Dev00600AccumRecQySTwoPointFiveData;
+    short  _Dev00600AccumRecQySThreeData;
+    short  _Dev00600AccumRecQySThreePtFiveData;
+    short  _Dev00600AccumRecQySFourData;
+    short  _Dev00600AccumRecQySFourPtFiveData;
+    short  _Dev00600AccumRecQySFiveData;
+    short  _Dev00600AccumRecQySSixData;
+    short  _Dev00600AccumRecQySSevenData;
+    short  _Dev00600AccumRecQySEightData;
+    short  _Dev00600AccumRecQySNineData;
+    short  _Dev00600AccumRecQySTenData;
+    short  _Dev00600AccumRecQySFifteenData;
+    short  _Dev00600AccumRecQySOverFifteenData;
+    short  _Dev00600AccumRecQyUnknSvcEventData;
+    short  _Dev00600AccumRecQyErrInSvcCallData;
+    short  _Dev00600AccumRecQyMsgConvErrData;
+    short  _Dev00600AccumRecQtTotSvcCallsData;
+}_Dev00600AccumRecRow;
 

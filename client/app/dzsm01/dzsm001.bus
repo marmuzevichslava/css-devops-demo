@@ -2,12 +2,15 @@
 **
 **               Customer Service System Business Logic Module
 **
-** FILENAME         :  <CUffnnn>.BUS
+** FILENAME         :  dzsm001.BUS
 **
-** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+** DESCRIPTION      :  Business Logic functions for window dzsm001
 **                     includes:
 **
-**                     <List Functions here>
+**                     DZSM001BusPredisplay
+**                     DZSM001FindPbClick
+**                     DZSM001ResetPbClick
+**                     SlamReportError
 **
 ** REVISION HISTORY
 **
@@ -19,41 +22,51 @@
 //#define CMN_SUCCESS 0
 //#define PERF 0
 
-#include <azpm0400.h>
+#include <azpm02.h>
 #include <C1CBASE.H> 
 #include <C1CERROR.H>
 #include <time.h>
 #include <cu1040am.h>
+#include <dzsm01.h>
+/*
+** mdc 3/17/98 removed
 #include <cu1040bm.h>
 #include <cu1040cm.h>
+*/
 
 /* Global Data Structures */
 
   SHORT              LbRowCounter = 0;
- _PMFUIDPASS         PmfData;
+ _UIDPASS            UIDData;
 
-/* Application # Defines */
+
+ /* Application # Defines */
+ /*
+ ** mdc 3/31/98 moved to dzsm01.h
 #define APPL_ID 1000
 #define SRVC_ID 1000
 #define SRVC_VER "01"
 #define MAP_NAME "CU1040AM"
 #define MAP_VER "01"
+ */
 
 /*
  * Function Prototypes
 */
-
+/*
+** mdc 3/16/98 moved to dzsm001.h
 SHORT SlamReportError( CHAR *FileName,
                       SHORT Severity,
                       SHORT ErrorNumber,
                       CHAR *FunctionName,
                       CHAR *ErrorText );
+*/
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : CUffnnnBusControlEvent
+**  FUNCTION         : DZSM001BusPredisplay
 **
 **  DESCRIPTION      :
 **
@@ -76,29 +89,225 @@ SHORT SlamReportError( CHAR *FileName,
 **
 ***************************************************************************/
 
-WCBPROC( Dzsm001buspredisplay )
+WCBPROC( DZSM001BusPredisplay )
 {
+	_FND_ERROR_BLOCK     FndGenErrorBlock;
     SHORT FndGenRC    = CMN_SUCCESS;
 	LONG  ErrNum      = 0,
 	      ComputerNameLength = MAX_COMPUTERNAME_LENGTH + 1;
 	CHAR ComputerName[ MAX_COMPUTERNAME_LENGTH + 1 ] = "";
+	/*
+	** mdc 3/16/98 added fields as required
+	*/
+	FILE                      *pfile;
+	CHAR                       IniFilePathAndName[DZSM001_FILE_PATH_LEN];
+	CHAR                       ApplName[] = DZSM001_APPL_NAME;
+	CHAR                       FirstKeyID[] = DZSM001_FKEY_ID;
+	CHAR                       SLAMIniDirKey[] = DZSM001_SLAM_INI_DIR_KEY;
+	USHORT                     regRC = 0;
+	CHAR                       DZSM001Parms[DZSM001_PARMS_MAX_LEN];
+	_UIDPASS                   UIDData;
+	CHAR                       KyUserId[AZSECEXT_KYUSERID_LEN];
+	CHAR					   Password[AZSECEXT_PASSWORD_LEN];
+	LONG                       Token = DZSM001_TOKEN_VALUE;
+	USHORT                     ReturnCode = 0;
+	USHORT                     SelectedButton;
+    CMN_HMEM   			       hPerfAccumData;
+   	LONG       				   FileDumpTimeInterval = 0;
+	USHORT			           IniInvokeAZPM02 = 0;
+
+
+
 	_FND_ERROR_BLOCK     ErrorBlock;
 
-/* Read OT Number & LanID from PMF for Population in Fields */
+	/*
+	** mdc 3/16/98 Get the location of the ini file from the registry
+	*/
+	memset(	IniFilePathAndName, 0, DZSM001_FILE_PATH_LEN);
+    memset(	Dzsm001SLAMDatPathAndFile, 0, DZSM001_FILE_PATH_LEN);
 
-	/* Initialize the Pmf data structure */
-	memset( &PmfData, 0, sizeof( _PMFUIDPASS ));
+	FndGenRC = CmnOsGetProfileValue(ApplName,
+	                                    FirstKeyID,
+	                                    SLAMIniDirKey,
+	                                    (SHORT)sizeof(IniFilePathAndName),
+	                                    CMN_PRF_FAIL_ON_ERROR,
+	                                    (void *)IniFilePathAndName,
+										&regRC,
+	                                    CMN_NULL_ARCH_PARMS);
 
-    /* Retrieve LanId, OT Number, and Password */
-    FndGenRC = PmfGetUidPass( NULL, &PmfData, &ErrNum );
+	if (FndGenRC != CMN_SUCCESS)
+	{
+		FndGenRC =    FndMsgBoxDisplayText( "Failed to read registry value for ini file",
+                         					"SLAM Registry Error ",
+                         					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM001 Predisplay",
+                           					&SelectedButton,
+                           					&FndGenErrorBlock);
+
+		return(CMN_FAIL);
+	}
+
+
+    pfile = fopen(IniFilePathAndName,"r");
+    
+	if( pfile != NULL )
+    {        
+		if ( fgets( DZSM001Parms, DZSM001_PARMS_MAX_LEN, pfile )  != NULL )
+		{
+			sscanf ( DZSM001Parms, "%d %ld %s",
+				     &IniInvokeAZPM02,
+					 &FileDumpTimeInterval,
+					 &Dzsm001SLAMDatPathAndFile);
+		}
+		else
+		{
+			FndGenRC =    FndMsgBoxDisplayText( "DZSM01 failed to read Ini parameters.",
+                         						"SLAM Read Error ",
+                         						CBI_hwnd,
+                           						FND_MSGBOX_OK,
+                           						FND_MSGBOX_CRITICAL,
+                           						FND_MSGBOX_OK,
+                           						"DZSM001 Predisplay",
+                           						&SelectedButton,
+                           						&FndGenErrorBlock);
+
+			
+			return (CMN_FAIL);
+		}
+
+	}
+	else
+    {
+		FndGenRC =    FndMsgBoxDisplayText( "Failed to open ini file",
+                         					"File Open Error ",
+                         					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01 SLAM Predisplay",
+                           					&SelectedButton,
+                           					&FndGenErrorBlock);
+
+		
+		return (CMN_FAIL);
+    }
+    fclose( pfile );
+
+
+
+
+/* Get user id and password data from security */
+
+	/* Initialize the user id and password  data structure */
+	memset( &UIDData, 0, sizeof( _UIDPASS ));
+
+    /* Retrieve User id and Password */
+	/*
+    **   Allocate the named shared memory for session data
+    */
+
+    FndGenRC = CmnMemAllocNamedShared( CMN_ACCUMRECORD_MEM_NAME,
+                                       sizeof( _ACCUMULATION_RECORD ),
+                                       &hPerfAccumData,
+                                       CMN_NULL_ARCH_PARMS );
+
+	if(FndGenRC == CMN_ERR_MEM_NAME_ALREADY_EXISTS)
+	{
+		FndGenRC =    FndMsgBoxDisplayText( "Shared memory already exists. Connecting to existing shared memory.",
+                         					"Shared Memory ",
+                         					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_INFORMATION,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01 SLAM Predisplay",
+                           					&SelectedButton,
+                           					&FndGenErrorBlock);
+
+	}
+	 else if(FndGenRC != CMN_SUCCESS)
+	{
+		FndGenRC =    FndMsgBoxDisplayText( "Could not allocate shared memory.",
+                         					"Shared Memory Error ",
+                         					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01 SLAM Predisplay",
+                           					&SelectedButton,
+                           					&FndGenErrorBlock);
+
+		/*return(CMN_FAIL);*/
+	}
+
+
+	/*
+	** mdc 3/16/98 removed, no longer used lan ID or PmfGetUidPass
+    FndGenRC = PmfGetUidPass( NULL, &UIDData, &ErrNum );
+	*/
+	FndGenRC = CmnSecCallSecurity( CMN_NULL_ARCH_PARMS,
+								   CMN_SEC_TRANSTYPE_GETUSERID,
+								   &ReturnCode,
+								   DZSM001_PRG_ID,
+                          		   Token,
+						           NULL,
+						  		   KyUserId,
+						  		   Password);
+
+  	if(FndGenRC != CMN_SUCCESS)
+	{
+	
+		FndGenRC =    FndMsgBoxDisplayText( "Could not retreive User ID and password.",
+                         					"Security Error ",
+                         					CBI_hwnd,
+                           					FND_MSGBOX_OK,
+                           					FND_MSGBOX_CRITICAL,
+                           					FND_MSGBOX_OK,
+                           					"DZSM01 SLAM Predisplay",
+                           					&SelectedButton,
+                           					&FndGenErrorBlock);
+		return(CMN_FAIL);
+	}
+
 
 /* Read PC Name for Population in WES Map */
     GetComputerName( ComputerName, 
  				     &ComputerNameLength );
-
+	/*
+	** mdc 3/24/98 This approach to updating window data is no longer supported or recommended by FCP
     strcpy ( PcNameData, ComputerName);
-	strncpy( OTNumberData, PmfData.OTNumber, PMF_OTNUM_LEN );
-	strncpy( LanIdData, PmfData.LanID, PMF_LANID_LEN );
+	*/
+	FndFieldSetValue(CBI_hwnd,
+		             "TxPcName",
+					 TXPCNAME_LEN,
+					 ComputerName,
+					 &FndGenErrorBlock);
+
+	FndFieldSetValue(CBI_hwnd,
+		             "KyUserId",
+					 KYUSERID_LEN,
+					 KyUserId,
+					 &FndGenErrorBlock);
+
+	/*
+	** mdc 03/30/98 disable fields after setting.
+	*/
+		FndFieldDisable( CBI_hwnd,
+			             "TxPcName",
+						 &FndGenErrorBlock );
+
+		FndFieldDisable( CBI_hwnd,
+			             "KyUserId",
+						 &FndGenErrorBlock );
+
+
+	/*
+	** mdc 3/16/98 No longer uses OTnumber or lan ID
+	strncpy( OTNumberData, UIDData.OTNumber, PMF_OTNUM_LEN );
+	strncpy( LanIdData, UIDData.LanID, PMF_LANID_LEN );
+	*/
 
 /* Make Find the Default Pushbutton */
 
@@ -119,7 +328,7 @@ return FndGenRC;
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : CUffnnnBusControlEvent
+**  FUNCTION         : DZSM001FindPbClick
 **
 **  DESCRIPTION      :
 **
@@ -142,7 +351,7 @@ return FndGenRC;
 **
 ***************************************************************************/
 
-WCBPROC( Dzsm001findpbclick )
+WCBPROC( DZSM001BusFindPbClick )
 {
    SHORT FndGenRC    = CMN_SUCCESS,
 	     OsSignalRC  = CMN_SUCCESS,
@@ -151,31 +360,36 @@ WCBPROC( Dzsm001findpbclick )
 	HANDLE            Signal;
 	_ACCUMULATION_RECORD *pAccumRecord;
 	_CMNINT3DATE         Date;
-	_Dev00600SmAccumulationRecordRow RowData;
+	_Dev00600AccumRecRow    RowData;
 	_FND_ERROR_BLOCK     ErrorBlock;
     SYSTEMTIME  SystemTime;
-	char                 TempHour[3];
-	char                 TempMinute[3];
+	char                 TempHour[DZSM001_TMP_HR_LEN];
+	char                 TempMinute[DZSM001_TMP_MIN_LEN];
 	SHORT                SelectedButton;
 	int                  NotDone = 1;
 	int                  rowcounter = 0;
     FILE                *fptr;
 	CHAR                *UpperCaseString;
-    CHAR                 FileInput[64] = "c:\\data\\slapm.dat";
-    CHAR                 Value[300] = "";
-	CHAR                 TimeBuffer[9];
-	CHAR                 DateBuffer[9];
+	/*
+	** mdc 3/24/98 not used
+    CHAR                 FileInput[64] = "c:\\slam.dat";
+	*/
+    CHAR                 Value[DZSM001_VAL_LEN] = "";
+	CHAR                 TimeBuffer[TMTIME_LEN];
+	CHAR                 DateBuffer[DTTEST_LEN];
 	CHAR                 TempData[2];
-	CHAR                 DB2DateBuffer[11];
+	CHAR                 DB2DateBuffer[DTTEST_LEN];
 	_CU1040AMTRANREC    *pSendData = NULL;
 	_CU1040AMTRANREC 	*pReturnData = NULL;
 	_CU1040AMTRANREC    *p1040ai = NULL;
 	_CU1040AMTRANREC 	*p1040ao = NULL;
+	/*
+	** mdc 3/24/98 not used
 	_CU1040BTRANREC		*p1040bi = NULL;
 	_CU1040BTRANREC		*p1040bo = NULL;
 	_CU1040CTRANREC		*p1040ci = NULL;
 	_CU1040CTRANREC     *p1040co = NULL;
-
+	*/
 	_MSG_PARM_BLOCK         ParmBlock;
 	_ABHI					ABHI;
 
@@ -198,40 +412,36 @@ WCBPROC( Dzsm001findpbclick )
     Date.day   = SystemTime.wDay;
 
     _strtime (TimeBuffer);
+	/*
+	** mdc 3/26/98 initialize temp fields
+	*/
+	memset( TempHour, 0, DZSM001_TMP_HR_LEN);
+	memset( TempMinute, 0, DZSM001_TMP_MIN_LEN);
 	memcpy ( TempHour, TimeBuffer, 2 );
 	memcpy ( TempMinute, TimeBuffer + 3, 2 );
 
-/*    itoa ( SystemTime.wHour, TempHour, 10);
-	if (SystemTime.wMinute > 9)
-	{
-    	itoa ( SystemTime.wMinute, TempMinute, 10);
-	}
-	else
-	{
-		strcpy (TempMinute, "0");
-		strcat ( TempMinute, itoa ( SystemTime.wMinute, TempMinute, 10));
-	}
-*/
    	/* Check to See if Type = Memory, Local, or Remote */
+
+
 	if  ( strcmp(QueryTypeData, LT_Memory) == 0 )
    	{
 
-		if (LbRowCounter > 48)
+		if (LbRowCounter >= DZSM001_MAX_ROWS)
 		{
 		  //  Clear The Listbox
-        FndGenRC =    FndMsgBoxDisplayText( "List Box Full - All Rows Will Be Deleted",
-                          					"TEST ",
-                           					CBI_hwnd,
-                           					FND_MSGBOX_OK,
-                           					FND_MSGBOX_CRITICAL,
-                           					FND_MSGBOX_OK,
-                           					"DZSM01BusFindPBClick",
-                           					&SelectedButton,
-                           					&ErrorBlock);
+			FndGenRC =    FndMsgBoxDisplayText( "List Box Full - All Rows Will Be Deleted",
+                          						"DZSM01 ",
+                           						CBI_hwnd,
+                           						FND_MSGBOX_OK,
+                           						FND_MSGBOX_CRITICAL,
+                           						FND_MSGBOX_OK,
+                           						"DZSM001BusFindPBClick",
+                           						&SelectedButton,
+                           						&ErrorBlock);
 
 
 	     FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
-      									  "DEV00600_SM_ACCUMULATION_RECORD",
+      									  "DEV00600_ACCUM_REC",
 										  &ErrorBlock );
 		 // Reset The Counter
 		 LbRowCounter = 0;
@@ -286,12 +496,12 @@ WCBPROC( Dzsm001findpbclick )
 					if ( FndGenRC != CMN_SUCCESS )
 					{
 			        	FndGenRC =    FndMsgBoxDisplayText( "Could Not Set Signal for Shared Memory - Try Again",
-                         									"TEST ",
+                         									"DZSM01 ",
                          					   				CBI_hwnd,
                            									FND_MSGBOX_OK,
                            									FND_MSGBOX_CRITICAL,
                            									FND_MSGBOX_OK,
-                           									"DZSM01BusFindPBClick",
+                           									"DZSM001BusFindPBClick",
                            									&SelectedButton,
                            									&ErrorBlock);
 
@@ -305,83 +515,114 @@ WCBPROC( Dzsm001findpbclick )
 
 
      				/* Copy All Data While Signal is Set*/
-					memcpy ( &RowData._Dev00600SmAccumulationRecordSmDateData, 
+					/*
+					** mdc 4/1/98 changed to character format for Date
+					memcpy ( &RowData._Dev00600AccumRecDtTestData, 
 							 &Date,
 			            	 sizeof ( _CMNINT3DATE ) );
-					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData, TempHour, 2 );
-					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 2, ":", 1);
-					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 3, TempMinute, 2 );
-					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 5, "\0", 1);
+							 */
+					sprintf(DateBuffer, "%d-%d-%d", Date.year, Date.month, Date.day);
+					memcpy(	&RowData._Dev00600AccumRecDtTestData,
+						    DateBuffer,
+							DTTEST_LEN );
 
-					strncpy( RowData._Dev00600SmAccumulationRecordPcNameData,
+					memcpy ( RowData._Dev00600AccumRecTmTimeData, TempHour, 2 );
+					memcpy ( RowData._Dev00600AccumRecTmTimeData + 2, ":", 1);
+					memcpy ( RowData._Dev00600AccumRecTmTimeData + 3, TempMinute, 2 );
+					memcpy ( RowData._Dev00600AccumRecTmTimeData + 5, "\0", 1);
+
+					strncpy( RowData._Dev00600AccumRecTxPcNameData,
 			        		 pAccumRecord->ComputerName, 
 			         		 9 );
+					/*
+					** mdc 3/17/98 Removed reference to OT numberand Lan ID and added user id
 					strncpy( RowData._Dev00600SmAccumulationRecordOTNumberData,
 			        		 pAccumRecord->AZPM02UserInfo.OTNumber,
 			         		 PMF_OTNUM_LEN );
-					strncpy( RowData._Dev00600SmAccumulationRecordLanIdData,
+				
+                	strncpy( RowData._Dev00600SmAccumulationRecordLanIdData,
 			         		 pAccumRecord->AZPM02UserInfo.LanID,
 			         		 PMF_LANID_LEN );
+					*/
+					strncpy(RowData._Dev00600AccumRecKyUserIdData,
+						    pAccumRecord->AZPM02UserInfo.UserID,
+							AZSECEXT_KYUSERID_LEN );
+					/*
+					** mdc 4/1/98 initialize the time stamp field. It is not used here
+					*/
+					memset(RowData._Dev00600AccumRecTsSlamTmstmpData, 0, TSSLAMTMSTMP_LEN );
 
-      				RowData._Dev00600SmAccumulationRecordFiveTenthData = 
+      				RowData._Dev00600AccumRecQyFiveTenthData = 
       				 		pAccumRecord->WindowDisplay.TimeInterval[0];
-      				RowData._Dev00600SmAccumulationRecordOneData = 
+      				RowData._Dev00600AccumRecQyOneData = 
       						pAccumRecord->WindowDisplay.TimeInterval[1];
-      				RowData._Dev00600SmAccumulationRecordOne_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyOnePointFiveData = 
       						pAccumRecord->WindowDisplay.TimeInterval[2];
-      				RowData._Dev00600SmAccumulationRecordTwoData = 
+      				RowData._Dev00600AccumRecQyTwoData = 
       						pAccumRecord->WindowDisplay.TimeInterval[3];
-      				RowData._Dev00600SmAccumulationRecordTwo_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyTwoPointFiveData = 
       						pAccumRecord->WindowDisplay.TimeInterval[4];
-      				RowData._Dev00600SmAccumulationRecordThreeData = 
+      				RowData._Dev00600AccumRecQyThreeData = 
       						pAccumRecord->WindowDisplay.TimeInterval[5];
-      				RowData._Dev00600SmAccumulationRecordThree_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyThreePtFiveData = 
       						pAccumRecord->WindowDisplay.TimeInterval[6];
-      				RowData._Dev00600SmAccumulationRecordFourData = 
+      				RowData._Dev00600AccumRecQyFourData = 
       						pAccumRecord->WindowDisplay.TimeInterval[7];
-      				RowData._Dev00600SmAccumulationRecordFour_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyFourPointFiveData = 
       						pAccumRecord->WindowDisplay.TimeInterval[8];
-      				RowData._Dev00600SmAccumulationRecordFiveData = 
+      				RowData._Dev00600AccumRecQyFiveData = 
       						pAccumRecord->WindowDisplay.TimeInterval[9];
-      				RowData._Dev00600SmAccumulationRecordOverFiveData = 
+      				RowData._Dev00600AccumRecQyOverFiveData = 
       						pAccumRecord->WindowDisplay.TimeInterval[10];
-      				RowData._Dev00600SmAccumulationRecordUnknownWindowEventData = 
+      				RowData._Dev00600AccumRecQyUnknWndwEvData = 
       						pAccumRecord->WindowDisplayOtherEvent;
-      				RowData._Dev00600SmAccumulationRecordSFiveTenthData = 
+      				RowData._Dev00600AccumRecQySFiveTenthData = 
       						pAccumRecord->ServiceCall.TimeInterval[0];
-      				RowData._Dev00600SmAccumulationRecordSOneData = 
+      				RowData._Dev00600AccumRecQySOneData = 
       						pAccumRecord->ServiceCall.TimeInterval[1];
-      				RowData._Dev00600SmAccumulationRecordSOne_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySOnePointFiveData = 
       						pAccumRecord->ServiceCall.TimeInterval[2];
-      				RowData._Dev00600SmAccumulationRecordSTwoData = 
+      				RowData._Dev00600AccumRecQySTwoData = 
       						pAccumRecord->ServiceCall.TimeInterval[3];
-      				RowData._Dev00600SmAccumulationRecordSTwo_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySTwoPointFiveData = 
       						pAccumRecord->ServiceCall.TimeInterval[4];
-      				RowData._Dev00600SmAccumulationRecordSThreeData = 
+      				RowData._Dev00600AccumRecQySThreeData = 
       						pAccumRecord->ServiceCall.TimeInterval[5];
-      				RowData._Dev00600SmAccumulationRecordSThree_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySThreePtFiveData = 
       						pAccumRecord->ServiceCall.TimeInterval[6];
-      				RowData._Dev00600SmAccumulationRecordSFourData = 
+      				RowData._Dev00600AccumRecQySFourData = 
       						pAccumRecord->ServiceCall.TimeInterval[7];
-      				RowData._Dev00600SmAccumulationRecordSFour_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySFourPtFiveData = 
       						pAccumRecord->ServiceCall.TimeInterval[8];
-      				RowData._Dev00600SmAccumulationRecordSFiveData = 
+      				RowData._Dev00600AccumRecQySFiveData = 
       						pAccumRecord->ServiceCall.TimeInterval[9];
-      				RowData._Dev00600SmAccumulationRecordSOverFiveData = 
+      				RowData._Dev00600AccumRecQySSixData = 
       						pAccumRecord->ServiceCall.TimeInterval[10];
-      				RowData._Dev00600SmAccumulationRecordUnknownSvcEventData = 
+      				RowData._Dev00600AccumRecQySSevenData = 
+      						pAccumRecord->ServiceCall.TimeInterval[11];
+      				RowData._Dev00600AccumRecQySEightData = 
+      						pAccumRecord->ServiceCall.TimeInterval[12];
+      				RowData._Dev00600AccumRecQySNineData = 
+      						pAccumRecord->ServiceCall.TimeInterval[13];
+      				RowData._Dev00600AccumRecQySTenData = 
+      						pAccumRecord->ServiceCall.TimeInterval[14];
+      				RowData._Dev00600AccumRecQySFifteenData = 
+      						pAccumRecord->ServiceCall.TimeInterval[15];
+      				RowData._Dev00600AccumRecQySOverFifteenData = 
+      						pAccumRecord->ServiceCall.TimeInterval[16];
+      				RowData._Dev00600AccumRecQyUnknSvcEventData = 
       						pAccumRecord->ServiceCallOtherEvent;
-      				RowData._Dev00600SmAccumulationRecordErrorInServiceCallData = 
+      				RowData._Dev00600AccumRecQyErrInSvcCallData = 
       						pAccumRecord->ServiceCallErrors;
-      				RowData._Dev00600SmAccumulationRecordMessageConvErrorsData = 
+      				RowData._Dev00600AccumRecQyMsgConvErrData = 
       						pAccumRecord->ServiceMsgConvErrors;
-      				RowData._Dev00600SmAccumulationRecordTotalServiceCallsData = 
+      				RowData._Dev00600AccumRecQtTotSvcCallsData = 
       						pAccumRecord->TotalServiceCalls;
 
 					FndGenRC = FndLstBoxRowAdd ( CBI_hwnd,
-			        		                     "DEV00600_SM_ACCUMULATION_RECORD",
+			        		                     "DEV00600_ACCUM_REC",
 												 FND_LSTBOX_START,
-												 sizeof( _Dev00600SmAccumulationRecordRow ),
+												 sizeof( _Dev00600AccumRecRow ),
 										 		( void * ) &RowData,
 										 		&ErrorBlock );
 
@@ -398,54 +639,66 @@ WCBPROC( Dzsm001findpbclick )
 	if  ( strcmp(QueryTypeData, LT_Local) == 0 )
 	{
 //  	Open Local Data File
-    	if (( fptr = fopen( FileInput, "rb" ) ) != NULL )
+    	if (( fptr = fopen( Dzsm001SLAMDatPathAndFile, "rb" ) ) != NULL )
       	{
 
 //  Clear The Listbox
 	    	FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
-      										  "DEV00600_SM_ACCUMULATION_RECORD",
+      										  "DEV00600_ACCUM_REC",
 											  &ErrorBlock );
        
 			while ( NotDone )
         	{
-        		memset (Value, '\0', 300 );
-          		if ( fgets( Value, 300, fptr )  != NULL )
+        		memset (Value, '\0', DZSM001_VAL_LEN );
+          		if ( fgets( Value, DZSM001_VAL_LEN, fptr )  != NULL )
 		    	{
 					rowcounter++;
-	        		sscanf( Value, "%s %s %s %s %s %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu "   
-			        	    "%hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %d\n", 
+	        		sscanf( Value, "%s %s %s %s %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu "   
+			        	    "%hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu %hu"
+							"%hu %hu %hu %hu %hu %hu %d %s\n", 
             				DateBuffer,
-            				RowData._Dev00600SmAccumulationRecordSmTimeData,
-            		 		RowData._Dev00600SmAccumulationRecordPcNameData,
-            				RowData._Dev00600SmAccumulationRecordLanIdData,
-            				RowData._Dev00600SmAccumulationRecordOTNumberData,
-            				&RowData._Dev00600SmAccumulationRecordFiveTenthData,
-            				&RowData._Dev00600SmAccumulationRecordOneData,
-            				&RowData._Dev00600SmAccumulationRecordOne_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordTwoData,
-            				&RowData._Dev00600SmAccumulationRecordTwo_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordThreeData,
-            				&RowData._Dev00600SmAccumulationRecordThree_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordFourData,
-            				&RowData._Dev00600SmAccumulationRecordFour_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordFiveData,
-            				&RowData._Dev00600SmAccumulationRecordOverFiveData,
-            				&RowData._Dev00600SmAccumulationRecordUnknownWindowEventData,
-            				&RowData._Dev00600SmAccumulationRecordSFiveTenthData,
-            				&RowData._Dev00600SmAccumulationRecordSOneData,
-            				&RowData._Dev00600SmAccumulationRecordSOne_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordSTwoData,
-            				&RowData._Dev00600SmAccumulationRecordSTwo_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordSThreeData,
-            				&RowData._Dev00600SmAccumulationRecordSThree_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordSFourData,
-            				&RowData._Dev00600SmAccumulationRecordSFour_Point_FiveData,
-            				&RowData._Dev00600SmAccumulationRecordSFiveData,
-            				&RowData._Dev00600SmAccumulationRecordSOverFiveData,
-            				&RowData._Dev00600SmAccumulationRecordUnknownSvcEventData,
-            				&RowData._Dev00600SmAccumulationRecordErrorInServiceCallData,
-            				&RowData._Dev00600SmAccumulationRecordMessageConvErrorsData,
-            				&RowData._Dev00600SmAccumulationRecordTotalServiceCallsData);
+            				RowData._Dev00600AccumRecTmTimeData,
+							RowData._Dev00600AccumRecTxPcNameData,
+							RowData._Dev00600AccumRecKyUserIdData,
+						/*
+							** mdc 3/24/98 removed lan id and ot number
+            				RowData._Dev00600AccumRecLanIdData,
+            				RowData._Dev00600AccumRecOTNumberData,
+							*/
+
+            				&RowData._Dev00600AccumRecQyFiveTenthData,
+            				&RowData._Dev00600AccumRecQyOneData,
+            				&RowData._Dev00600AccumRecQyOnePointFiveData,
+            				&RowData._Dev00600AccumRecQyTwoData,
+            				&RowData._Dev00600AccumRecQyTwoPointFiveData,
+            				&RowData._Dev00600AccumRecQyThreeData,
+            				&RowData._Dev00600AccumRecQyThreePtFiveData,
+            				&RowData._Dev00600AccumRecQyFourData,
+            				&RowData._Dev00600AccumRecQyFourPointFiveData,
+            				&RowData._Dev00600AccumRecQyFiveData,
+            				&RowData._Dev00600AccumRecQyOverFiveData,
+            				&RowData._Dev00600AccumRecQyUnknWndwEvData,
+            				&RowData._Dev00600AccumRecQySFiveTenthData,
+            				&RowData._Dev00600AccumRecQySOneData,
+            				&RowData._Dev00600AccumRecQySOnePointFiveData,
+            				&RowData._Dev00600AccumRecQySTwoData,
+            				&RowData._Dev00600AccumRecQySTwoPointFiveData,
+            				&RowData._Dev00600AccumRecQySThreeData,
+            				&RowData._Dev00600AccumRecQySThreePtFiveData,
+            				&RowData._Dev00600AccumRecQySFourData,
+            				&RowData._Dev00600AccumRecQySFourPtFiveData,
+            				&RowData._Dev00600AccumRecQySFiveData,
+            				&RowData._Dev00600AccumRecQySSixData,
+            				&RowData._Dev00600AccumRecQySSevenData,
+            				&RowData._Dev00600AccumRecQySEightData,
+            				&RowData._Dev00600AccumRecQySNineData,
+            				&RowData._Dev00600AccumRecQySTenData,
+                            &RowData._Dev00600AccumRecQySFifteenData,
+            				&RowData._Dev00600AccumRecQySOverFifteenData,
+            				&RowData._Dev00600AccumRecQyUnknSvcEventData,
+            				&RowData._Dev00600AccumRecQyErrInSvcCallData,
+            				&RowData._Dev00600AccumRecQyMsgConvErrData,
+            				&RowData._Dev00600AccumRecQtTotSvcCallsData);
 
 						    memset( &Date, 0, sizeof( _CMNINT3DATE ));
 						    memcpy( TempData, DateBuffer, 2);
@@ -455,28 +708,36 @@ WCBPROC( Dzsm001findpbclick )
 							memcpy( TempData, DateBuffer + 6, 2);
 							Date.year = atoi(TempData);
 
-
-							memcpy ( &RowData._Dev00600SmAccumulationRecordSmDateData, 
-									 &Date,
-			    		        	 sizeof ( _CMNINT3DATE ) );
+							/*
+							** mdc 3/30/98 replaced &Date with DateBuffer
+							*/
+							memcpy ( &RowData._Dev00600AccumRecDtTestData, 
+									 DateBuffer,
+			    		        	 DTTEST_LEN );
+							/*
+							** mdc 4/1/98 iniialize time stamp not used in local record
+							*/
+							memset(RowData._Dev00600AccumRecTsSlamTmstmpData,
+								   0,
+								   TSSLAMTMSTMP_LEN );
 
   					        FndGenRC = FndLstBoxRowAdd ( CBI_hwnd,
-			        		                     "DEV00600_SM_ACCUMULATION_RECORD",
-							   					  FND_LSTBOX_START,
-												  sizeof( _Dev00600SmAccumulationRecordRow ),
-										 		  ( void * ) &RowData,
-										 		  &ErrorBlock );
+			        									 "DEV00600_ACCUM_REC",
+							   							  FND_LSTBOX_START,
+														  sizeof( _Dev00600AccumRecRow ),
+										 				  ( void * ) &RowData,
+										 				  &ErrorBlock );
 
 		    			if (rowcounter > 49)
 			 			{
 			  				NotDone = 0;
-					       	FndGenRC =    FndMsgBoxDisplayText( "All Rows Not Displayed - Initialize C:\\DATA\\SLAPM.DAT",
-                           										"TEST ",
+					       	FndGenRC =    FndMsgBoxDisplayText( "All Rows Not Displayed - Initialize SLAM.DAT",
+                           										"SLAM Data Error ",
                         					   					CBI_hwnd,
                            										FND_MSGBOX_OK,
                            										FND_MSGBOX_CRITICAL,
                            										FND_MSGBOX_OK,
-                           										"DZSM01BusFindPBClick",
+                           										"SLAM Find PB CLick",
                            										&SelectedButton,
                            										&ErrorBlock);
 			 			}
@@ -497,16 +758,16 @@ WCBPROC( Dzsm001findpbclick )
 		else
 		{
         	FndGenRC =    FndMsgBoxDisplayText( "Local Log File Empty",
-           										"TEST ",
+           										"SLAM Log File Error ",
            					   					CBI_hwnd,
            										FND_MSGBOX_OK,
            										FND_MSGBOX_CRITICAL,
            										FND_MSGBOX_OK,
-          										"DZSM01BusFindPBClick",
+          										"SLAM Find PB CLick",
            										&SelectedButton,
            										&ErrorBlock);
 	    	FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
-      										  "DEV00600_SM_ACCUMULATION_RECORD",
+      										  "DEV00600_ACCUM_REC",
 											  &ErrorBlock );
 
 	   } // End of Else - File Pointer = Null
@@ -516,7 +777,7 @@ WCBPROC( Dzsm001findpbclick )
 	{
 
   	FndGenRC = FndLstBoxRowDeleteAll( CBI_hwnd,
-     							      "DEV00600_SM_ACCUMULATION_RECORD",
+     							      "DEV00600_ACCUM_REC",
 									  &ErrorBlock );
 	rowcounter = 0;
 	FndGenRC = CMN_FAIL;
@@ -526,24 +787,35 @@ WCBPROC( Dzsm001findpbclick )
 	pReturnData = malloc( sizeof( _CU1040AMTRANREC ));
     memset(pSendData, '\0', sizeof(_CU1040AMTRANREC));
 
-	if ((strlen(PcNameData) == 8))
+	if (strlen(TxPcNameData) == TXPCNAME_LEN - 1)
 	   {
        strncpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
-  	  		     PcNameData, TXPCNAME_LEN);
+  	  		     TxPcNameData, TXPCNAME_LEN);
        strncpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
-  	  		     PcNameData, TXPCNAME_LEN);
+  	  		     TxPcNameData, TXPCNAME_LEN);
 	   FndGenRC = CMN_SUCCESS;
 	   }
     else
 	   {
+		/*
+		** mdc 4/1/98 initialize TxPcName high value to high char value
+		**            so that it is ASCII/EBCDIC independent.
+		*/
        strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
-  	  		    "        \0");
-       strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
-  	  		    "99999999\0");
+  	  		    DZSM001_PC_NAME_LO_VALUE);
+       memset ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName,
+		        DZSM001_HI_CHAR_VAL,
+  	  		    TXPCNAME_LEN);
+   		FndGenRC = CMN_SUCCESS;
+
 	   }
-	if (strlen(OTNumberData) > 6) 
+	/*
+	** mdc 3/17/98 removed OT number and lan id no longer used
+	*/
+	if (strlen(KyUserIdData) > 0) 
 	   {
-		UpperCaseString = _strupr (_strdup (OTNumberData));
+		/*UpperCaseString = _strupr (_strdup (KyUserIdData));  */
+		UpperCaseString = KyUserIdData;
   	    strncpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
 		  	      UpperCaseString, KYUSERID_LEN);
   	    strncpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
@@ -552,11 +824,20 @@ WCBPROC( Dzsm001findpbclick )
 	   }
 	 else 
 	   {
+		/*
+		** 4/1/98 initialize Hi values and set to high char set value.  This will make it
+		**        platform EBCDIC/ASCII portable.
+		*/
   	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
-		  	      "        \0");
-  	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId, 
-		  	      "99999999\0");
+		  	      DZSM001_KYUSERID_LO_VAL);
+  	    memset ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId,
+			     DZSM001_HI_CHAR_VAL,
+				 AZSECEXT_KYUSERID_LEN );
+
+		FndGenRC = CMN_SUCCESS;
 	   }
+	 /*
+	 ** mdc 3/31/98 removed lan id 
 	 if (strlen(LanIdData) !=0)
 	   {
   	    strncpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId, 
@@ -572,22 +853,24 @@ WCBPROC( Dzsm001findpbclick )
   	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId, 
   			      "99999999\0");
 	   }
+	   */
+	  
 	if (FndGenRC == CMN_SUCCESS)
 	   {
 	     memset(&ParmBlock, '\0', sizeof(_MSG_PARM_BLOCK));
-    	 ParmBlock.src.service_id.appl = 101;
-	     memcpy(ParmBlock.environ, "D1", _ENVIRONMENT_LEN);
+    	 ParmBlock.src.service_id.appl = DZSM001_SRVC_ID;
+	     memcpy(ParmBlock.environ, DZSM001_ENV_ID, _ENVIRONMENT_LEN);
 	     memcpy (ParmBlock.commarea.ver, FND_MSG_VER, _VER_LEN);
 
   	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest, 
-  			      "0001-01-01\0");
+  			      DZSM001_LOW_DATE);
   	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest, 
-  			      "9999-12-31\0");
+  			      DZSM001_HI_DATE);
 
   	    strcpy ( pSendData->Cu1040alLoKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 
-  			      "00:00:01\0");
+  			      DZSM001_LOW_TIME);
   	    strcpy ( pSendData->Cu1040ahHiKey.Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 
-  			      "23:59:59\0");
+  			      DZSM001_HI_TIME);
   
 		/* Initiate a FOUNDATION Message Queue */
 
@@ -596,7 +879,7 @@ WCBPROC( Dzsm001findpbclick )
 		if (FndGenRC != MSGIO_SUCCESS)
 
 	  	{
-		    SlamReportError( "DZSM01",
+		    SlamReportError( DZSM001_PRG_ID,
     	                      FND_SEVERITY_FATAL,
         	            	  CMN_ERR_SLAM_CREATE_MUTEX,
             	              "MsgInit",
@@ -626,19 +909,23 @@ WCBPROC( Dzsm001findpbclick )
 	     ParmBlock.src.language = FND_LANGUAGE_C;
 	     memcpy (ParmBlock.translation.map_name, MAP_NAME, _FND_MAP_NAME_LEN);
 	  	 memcpy (ParmBlock.translation.map_version, MAP_VER, _VER_LEN);
-     	 memcpy( ParmBlock.secur.user_id, PmfData.OTNumber, 8);
-     	 memcpy( ParmBlock.secur.user_pw, PmfData.Password, 8);
+		 /*
+		 ** mdc 3/27/98 removed OT number added kyUserID
+     	 memcpy( ParmBlock.secur.user_id, UIDData.OTNumber, 8);
+		 */
+     	 memcpy( ParmBlock.secur.user_id, UIDData.UserID, AZPM02_KYUSERID_LEN);
+     	 memcpy( ParmBlock.secur.user_pw, UIDData.Password, AZPM02_PASSWORD_LEN);
 
 		/* Populate Data Send Area with Accumulation Record Totals */
 
-    	 strcpy (pSendData->DatAcsCpg.CdIOModId, "CU1040A ");
-     	 strcpy (pSendData->DatAcsCpg.CdAcsCmd, "F ");
-      	 strcpy (pSendData->DatAcsCpg.CdModTypeId, "CUCG001\n");
-		 strcpy (pSendData->DatAcsCpg.CdRngQal, "GELE\n");
-		 pSendData->DatAcsCpg.QyRowsRequested = 48;
+    	 strcpy (pSendData->DatAcsCpg.CdIOModId, DZSM001_IO_MOD_ID);
+     	 strcpy (pSendData->DatAcsCpg.CdAcsCmd, DZSM001_ACS_CMD);
+      	 strcpy (pSendData->DatAcsCpg.CdModTypeId, DZSM001_IO_MOD_TYPE_ID);
+		 strcpy (pSendData->DatAcsCpg.CdRngQal, DZSM001_RANG_QUAL);
+		 pSendData->DatAcsCpg.QyRowsRequested = DZSM001_MAX_ROWS;
 
 		 /* Produce Beep to Indicate Service Call Issued */
-		 Beep (1200, 20);
+		 Beep (DZSM001_BEEP_FREQ, DZSM001_BEEP_DURTN);
          FndGenRC = MSGConvUI (&ParmBlock, (_MSG_SEND_AREA) pSendData,
   						      (_MSG_RECV_AREA) pReturnData, &ABHI);
 
@@ -650,12 +937,12 @@ WCBPROC( Dzsm001findpbclick )
 			if (pReturnData->DatAcsCpg.QyALRAclCnt == 0)
 			   {
 					  FndGenRC =    FndMsgBoxDisplayText( "No Data Selected for Query",
-                           									"TEST ",
+                           									"Data Access Error ",
                         					   				CBI_hwnd,
                            									FND_MSGBOX_OK,
                            									FND_MSGBOX_CRITICAL,
                            									FND_MSGBOX_OK,
-                           									"DZSM01BusFindPBClick",
+                           									"SLAM Find PB Click",
                            									&SelectedButton,
                            									&ErrorBlock);
 					  NotDone = 0;
@@ -663,7 +950,11 @@ WCBPROC( Dzsm001findpbclick )
 
 			while ( NotDone )
         	{
-  	                strcpy ( DB2DateBuffer, pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest);
+  	                strcpy ( DB2DateBuffer, 
+						pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].\
+						Cu1040aKeyRecGrp.PkeyClientPerfm.DtTest);
+					/*
+					** mdc 3/31/98 new data types from FND use char for date
 			        memset( &Date, 0, sizeof( _CMNINT3DATE ));
 					memcpy( TempData, DB2DateBuffer + 5, 2);
 					Date.month = atoi( TempData );
@@ -671,83 +962,104 @@ WCBPROC( Dzsm001findpbclick )
 					Date.day = atoi( TempData );
 					memcpy( TempData, DB2DateBuffer + 2, 2);
 					Date.year = atoi(TempData);
-					memcpy ( &RowData._Dev00600SmAccumulationRecordSmDateData, 
-						     &Date,
-	    		        	 sizeof ( _CMNINT3DATE ) );
+					*/
+					memcpy ( &RowData._Dev00600AccumRecDtTestData, 
+						     &DB2DateBuffer,
+	    		        	 DTTEST_LEN );
 					
-					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData,pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 5 );
-					memcpy ( RowData._Dev00600SmAccumulationRecordSmTimeData + 5, "\0", 1);
+					memcpy ( RowData._Dev00600AccumRecTmTimeData,pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TmTime, 5 );
+					memcpy ( RowData._Dev00600AccumRecTmTimeData + 5, "\0", 1);
 
 
-					strncpy( RowData._Dev00600SmAccumulationRecordPcNameData,
+					strncpy( RowData._Dev00600AccumRecTxPcNameData,
 			        		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TxPcName, 
-			         		 9 );
-					strncpy( RowData._Dev00600SmAccumulationRecordOTNumberData,
+			         		 TXPCNAME_LEN );
+					strncpy( RowData._Dev00600AccumRecKyUserIdData,
 			        		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.KyUserId,
-			         		 PMF_OTNUM_LEN );
+			         		 AZSECEXT_KYUSERID_LEN );
+ 
+					strncpy( RowData._Dev00600AccumRecTsSlamTmstmpData,
+			        		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.TsSlamTmstmp,
+			         		 TSSLAMTMSTMP_LEN );
+
+					/*
+					** mdc 3/17/98 removed OT number and Lan id
 					strncpy( RowData._Dev00600SmAccumulationRecordLanIdData,
 			         		 pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].Cu1040aKeyRecGrp.PkeyClientPerfm.TxLanId,
 			         		 PMF_LANID_LEN );
+					*/
 
-      				RowData._Dev00600SmAccumulationRecordFiveTenthData = 
+      				RowData._Dev00600AccumRecQyFiveTenthData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFiveTenth;
-      				RowData._Dev00600SmAccumulationRecordOneData = 
+      				RowData._Dev00600AccumRecQyOneData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOne;
-      				RowData._Dev00600SmAccumulationRecordOne_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyOnePointFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOnePointFive;
-      				RowData._Dev00600SmAccumulationRecordTwoData = 
+      				RowData._Dev00600AccumRecQyTwoData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyTwo;       
-      				RowData._Dev00600SmAccumulationRecordTwo_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyTwoPointFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyTwoPointFive;
-      				RowData._Dev00600SmAccumulationRecordThreeData = 
+      				RowData._Dev00600AccumRecQyThreeData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyThree; 
-      				RowData._Dev00600SmAccumulationRecordThree_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyThreePtFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyThreePtFive;
-      				RowData._Dev00600SmAccumulationRecordFourData = 
+      				RowData._Dev00600AccumRecQyFourData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFour;     
-      				RowData._Dev00600SmAccumulationRecordFour_Point_FiveData = 
+      				RowData._Dev00600AccumRecQyFourPointFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFourPointFive;
-      				RowData._Dev00600SmAccumulationRecordFiveData = 
+      				RowData._Dev00600AccumRecQyFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyFive;
-      				RowData._Dev00600SmAccumulationRecordOverFiveData = 
+      				RowData._Dev00600AccumRecQyOverFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOverFive;
-      				RowData._Dev00600SmAccumulationRecordUnknownWindowEventData = 
+      				RowData._Dev00600AccumRecQyUnknWndwEvData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyUnknWndwEv;
-      				RowData._Dev00600SmAccumulationRecordSFiveTenthData = 
+      				RowData._Dev00600AccumRecQySFiveTenthData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFiveTenth;
-      				RowData._Dev00600SmAccumulationRecordSOneData = 
+      				RowData._Dev00600AccumRecQySOneData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySOne;
-      				RowData._Dev00600SmAccumulationRecordSOne_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySOnePointFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySOnePointFive;;
-      				RowData._Dev00600SmAccumulationRecordSTwoData = 
+      				RowData._Dev00600AccumRecQySTwoData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySTwo;          
-      				RowData._Dev00600SmAccumulationRecordSTwo_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySTwoPointFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySTwoPointFive;
-      				RowData._Dev00600SmAccumulationRecordSThreeData = 
+      				RowData._Dev00600AccumRecQySThreeData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySThree;    
-      				RowData._Dev00600SmAccumulationRecordSThree_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySThreePtFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySThreePtFive;
-      				RowData._Dev00600SmAccumulationRecordSFourData = 
+      				RowData._Dev00600AccumRecQySFourData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFour;
-      				RowData._Dev00600SmAccumulationRecordSFour_Point_FiveData = 
+      				RowData._Dev00600AccumRecQySFourPtFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFourPtFive;
-      				RowData._Dev00600SmAccumulationRecordSFiveData = 
+      				RowData._Dev00600AccumRecQySFiveData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFive;
-      				RowData._Dev00600SmAccumulationRecordSOverFiveData = 
-		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyOverFive;
-      				RowData._Dev00600SmAccumulationRecordUnknownSvcEventData = 
+      				RowData._Dev00600AccumRecQySSixData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySSix;
+      				RowData._Dev00600AccumRecQySSevenData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySSeven;
+      				RowData._Dev00600AccumRecQySEightData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySEight;
+      				RowData._Dev00600AccumRecQySNineData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySNine;
+      				RowData._Dev00600AccumRecQySTenData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySTen;
+      				RowData._Dev00600AccumRecQySFifteenData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySFifteen;
+      				RowData._Dev00600AccumRecQySOverFifteenData = 
+		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QySOverFifteen;
+      				RowData._Dev00600AccumRecQyUnknSvcEventData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyUnknSvcEvent;
-      				RowData._Dev00600SmAccumulationRecordErrorInServiceCallData = 
+      				RowData._Dev00600AccumRecQyErrInSvcCallData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyErrInSvcCall;
-      				RowData._Dev00600SmAccumulationRecordMessageConvErrorsData = 
+      				RowData._Dev00600AccumRecQyMsgConvErrData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QyMsgConvErr;
-      				RowData._Dev00600SmAccumulationRecordTotalServiceCallsData = 
+      				RowData._Dev00600AccumRecQtTotSvcCallsData = 
 		            	pReturnData->Cu1040agAlrGrp.Cu1040ax[rowcounter].ClientPerfMonitor.QtTotSvcCalls;
 
 					FndGenRC = FndLstBoxRowAdd ( CBI_hwnd,
-			        		                     "DEV00600_SM_ACCUMULATION_RECORD",
+			        		                     "DEV00600_ACCUM_REC",
 												 FND_LSTBOX_START,
-												 sizeof( _Dev00600SmAccumulationRecordRow ),
+												 sizeof( _Dev00600AccumRecRow ),
 										 		( void * ) &RowData,
 										 		&ErrorBlock );
 
@@ -766,13 +1078,13 @@ WCBPROC( Dzsm001findpbclick )
 		 } /* End if FndGenRC = CMN_SUCCESS for MSGConvUI*/
 	     else
 	     {
-       	   FndGenRC =    FndMsgBoxDisplayText( "Message Converse Failed - Examine STLOG",
-                           					   "TEST ",
+       	   FndGenRC =    FndMsgBoxDisplayText( "Message Converse Failed - Examine Session Transcript",
+                           					   "SLAM Converse Error ",
                            					   CBI_hwnd,
                            					   FND_MSGBOX_OK,
                            					   FND_MSGBOX_CRITICAL,
                            					   FND_MSGBOX_OK,
-                           					   "DZSM01BusFindPBClick",
+                           					   "SLAM Find PB Click",
                            					   &SelectedButton,
                            					   &ErrorBlock);
 	     }
@@ -783,12 +1095,12 @@ WCBPROC( Dzsm001findpbclick )
 	   else
 	   {
        	FndGenRC =    FndMsgBoxDisplayText( "Search Criteria Validation Failed - Please Re-Enter",
-                           					"TEST ",
+                           					"SLAM Search Criteria Error ",
                            					CBI_hwnd,
                            					FND_MSGBOX_OK,
                            					FND_MSGBOX_CRITICAL,
                            					FND_MSGBOX_OK,
-                           					"DZSM01BusFindPBClick",
+                           					"SLAM Find PB Click",
                            					&SelectedButton,
                            					&ErrorBlock);
 	   }
@@ -801,12 +1113,12 @@ WCBPROC( Dzsm001findpbclick )
     if (FndGenRC != CMN_SUCCESS)
     { 
        	FndGenRC =    FndMsgBoxDisplayText( "Row Insertion Failed",
-                           					"TEST ",
+                           					"SLAM Window Data Insertion Error ",
                            					CBI_hwnd,
                            					FND_MSGBOX_OK,
                            					FND_MSGBOX_CRITICAL,
                            					FND_MSGBOX_OK,
-                           					"DZSM01BusFindPBClick",
+                           					"SLAM Find PB Click",
                            					&SelectedButton,
                            					&ErrorBlock);
 
@@ -826,7 +1138,7 @@ WCBPROC( Dzsm001findpbclick )
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : CUffnnnBusControlEvent
+**  FUNCTION         : DZSM001BusResetPbClick
 **
 **  DESCRIPTION      :
 **
@@ -849,7 +1161,7 @@ WCBPROC( Dzsm001findpbclick )
 **
 ***************************************************************************/
 
-WCBPROC( Dzsm001resetpbclick )
+WCBPROC( DZSM001BusResetPbClick )
 {
 	SHORT FndGenRC = CMN_SUCCESS;
 	SHORT SelectedButton;
@@ -868,19 +1180,19 @@ WCBPROC( Dzsm001resetpbclick )
 
         FndGenRC =    FndMsgBoxDisplayText
                           ( "Cannot Initialize Accumulation Record Name Shared Memory",
-                            "TEST ",
+                            "SLAM Shared Memory Error ",
                             CBI_hwnd,
                             FND_MSGBOX_OK,
                             FND_MSGBOX_CRITICAL,
                             FND_MSGBOX_OK,
-                            "CmnInitializePerfSharedMem",
+                            "SLAM Reset PB Click",
                             &SelectedButton,
                             &FndGenErrorBlock);
 
         FndGenRC =    FndClientQuit(&FndGenErrorBlock);
 
 	}
-	return 0;
+	return (CMN_SUCCESS);
 }
 
 /***********************************************************************
@@ -1026,7 +1338,7 @@ SHORT SlamReportError( CHAR *FileName,
    /* Format the description */
    if ( ErrorText != NULL )
    {
-      UnformatDataBlock.desc_length  = 100;
+      UnformatDataBlock.desc_length  = DZSM001_ERR_DESCR_LEN;
       UnformatDataBlock.data_pointer = ErrorText;
    }
 
@@ -1049,66 +1361,57 @@ SHORT SlamReportError( CHAR *FileName,
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : CUffnnnBusApplicationDefined
+**  FUNCTION         : DZSM001BusTypeQry
 **
-**  DESCRIPTION      :
+**  DESCRIPTION      : Handles status of radio button indicating type of query.
 **
-**  INPUTS           : Parameter1 - description
-**
-**                     Parameter2 - description
-**
-**                     ParameterN - description
-**
-**                     CMN_ARCH_PARMS - Standard Callback parameters.
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
 **  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
 **
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : Performance
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 3/24/98
 **
 **  REVISION HISTORY :
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**   3/24/98      XXXXXXXX              Original code.
 **
 ***************************************************************************/
+WCBPROC( DZSM001BusTypeQry )
+{
+	_FND_ERROR_BLOCK        FndGenErrorBlock;
+	USHORT FndGenRC = CMN_SUCCESS;
 
-//SHORT CUffnnnBusApplicationDefined( TYPE Parameter1,
-//                                    TYPE Parameter2,
-//                                    TYPE ParameterN,
-//                                    CMN_ARCH_PARM_TYPES)
-//{
-  //---------------------------------------------------
-  //  S H E L L   I N S T R U C T I O N S
-  //
-  //  This is a shell Application Business logic
-  //  function.  This shell is used for application-
-  //  defined functions, rather than RAB-specified
-  //  functions.
-  //
-  //  Customize the function by changing the
-  //  function name according to the convention:
-  //
-  //  <CUffnnn>Bus<Application-DefinedName>
-  //
-  //  Then, add business logic as required.
-  //
-  //  Note: Place forward declaration for this function
-  //  in the windowname.h file.
-  //
-  //  REMOVE THIS COMMENT BLOCK WHEN DONE.
-  //
-  //---------------------------------------------------
+	if( (strcmp(QueryTypeData, LT_Local) == 0) || (strcmp(QueryTypeData, LT_Memory) == 0))
+	{
+		FndFieldDisable( CBI_hwnd,
+			             "TxPcName",
+						 &FndGenErrorBlock );
 
-  //  _FND_ERROR_BLOCK FndGenErrorBlock;
-  //  USHORT FndGenRC = 0;
+		FndFieldDisable( CBI_hwnd,
+			             "KyUserId",
+						 &FndGenErrorBlock );
 
-  //  Place Application Business Logic here
+	}
+	else
+	{
+		FndFieldEnable( CBI_hwnd,
+			            "TxPcName",
+						&FndGenErrorBlock );
 
-  //  return CMN_SUCCESS;
-//}
+		FndFieldEnable( CBI_hwnd,
+			            "KyUserId",
+						&FndGenErrorBlock );
+
+	}
+
+
+	return( CMN_SUCCESS);
+
+}/*end of DZSM001BusTypeQry*/

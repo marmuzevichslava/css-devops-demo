@@ -1,60 +1,67 @@
 /***************************************************************************
-*                                                                          *
-*           O S / 2    S Y M B O L I C   D E F I N I T I O N S             *
-*                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
-*                                                                          *
-****************************************************************************
-*                                                                          *
-*              Symbolic Definitions for: DZSM001                           *
-*                          Generated on: Wed Jan 18 11:43:32 1995          *
-*                                    by: ABURDEN                           *
-*                                                                          *
-****************************************************************************/
+ *                                                                         *
+ *      W I N D O W S   N T   S Y M B O L I C   D E F I N I T I O N S      *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *             Symbolic Definitions for: DZSM001                           *
+ *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ ***************************************************************************/
 
 /***************************************************************************
 *  Field IDs                                                               *
 ****************************************************************************/
 
 #define QueryType_FID                                  0
-#define PcName_FID                                     1
-#define OTNumber_FID                                   2
-#define LanId_FID                                      3
-#define Dev00600SmAccumulationRecord_FID               4
-#define Dev00600SmAccumulationRecordSelInd_FID         5
-#define Dev00600SmAccumulationRecordSmDate_FID         6
-#define Dev00600SmAccumulationRecordSmTime_FID         7
-#define Dev00600SmAccumulationRecordPcName_FID         8
-#define Dev00600SmAccumulationRecordOTNumber_FID       9
-#define Dev00600SmAccumulationRecordLanId_FID          10
-#define Dev00600SmAccumulationRecordFiveTenth_FID      11
-#define Dev00600SmAccumulationRecordOne_FID            12
-#define Dev00600SmAccumulationRecordOne_Point_Five_FID 13
-#define Dev00600SmAccumulationRecordTwo_FID            14
-#define Dev00600SmAccumulationRecordTwo_Point_Five_FID 15
-#define Dev00600SmAccumulationRecordThree_FID          16
-#define Dev00600SmAccumulationRecordThree_Point_Five_FID 17
-#define Dev00600SmAccumulationRecordFour_FID           18
-#define Dev00600SmAccumulationRecordFour_Point_Five_FID 19
-#define Dev00600SmAccumulationRecordFive_FID           20
-#define Dev00600SmAccumulationRecordOverFive_FID       21
-#define Dev00600SmAccumulationRecordUnknownWindowEvent_FID 22
-#define Dev00600SmAccumulationRecordSFiveTenth_FID     23
-#define Dev00600SmAccumulationRecordSOne_FID           24
-#define Dev00600SmAccumulationRecordSOne_Point_Five_FID 25
-#define Dev00600SmAccumulationRecordSTwo_FID           26
-#define Dev00600SmAccumulationRecordSTwo_Point_Five_FID 27
-#define Dev00600SmAccumulationRecordSThree_FID         28
-#define Dev00600SmAccumulationRecordSThree_Point_Five_FID 29
-#define Dev00600SmAccumulationRecordSFour_FID          30
-#define Dev00600SmAccumulationRecordSFour_Point_Five_FID 31
-#define Dev00600SmAccumulationRecordSFive_FID          32
-#define Dev00600SmAccumulationRecordSOverFive_FID      33
-#define Dev00600SmAccumulationRecordUnknownSvcEvent_FID 34
-#define Dev00600SmAccumulationRecordErrorInServiceCall_FID 35
-#define Dev00600SmAccumulationRecordMessageConvErrors_FID 36
-#define Dev00600SmAccumulationRecordTotalServiceCalls_FID 37
+#define Dev00600AccumRec_FID                           1
+#define KyUserId_FID                                   2
+#define TxPcName_FID                                   3
+#define FlWindowMod_FID                                4
+#define Dev00600AccumRecSelInd_FID                     5
+#define Dev00600AccumRecDtTest_FID                     6
+#define Dev00600AccumRecTmTime_FID                     7
+#define Dev00600AccumRecKyUserId_FID                   8
+#define Dev00600AccumRecTxPcName_FID                   9
+#define Dev00600AccumRecTsSlamTmstmp_FID               10
+#define Dev00600AccumRecQyFiveTenth_FID                11
+#define Dev00600AccumRecQyOne_FID                      12
+#define Dev00600AccumRecQyOnePointFive_FID             13
+#define Dev00600AccumRecQyTwo_FID                      14
+#define Dev00600AccumRecQyTwoPointFive_FID             15
+#define Dev00600AccumRecQyThree_FID                    16
+#define Dev00600AccumRecQyThreePtFive_FID              17
+#define Dev00600AccumRecQyFour_FID                     18
+#define Dev00600AccumRecQyFourPointFive_FID            19
+#define Dev00600AccumRecQyFive_FID                     20
+#define Dev00600AccumRecQyOverFive_FID                 21
+#define Dev00600AccumRecQyUnknWndwEv_FID               22
+#define Dev00600AccumRecQySFiveTenth_FID               23
+#define Dev00600AccumRecQySOne_FID                     24
+#define Dev00600AccumRecQySOnePointFive_FID            25
+#define Dev00600AccumRecQySTwo_FID                     26
+#define Dev00600AccumRecQySTwoPointFive_FID            27
+#define Dev00600AccumRecQySThree_FID                   28
+#define Dev00600AccumRecQySThreePtFive_FID             29
+#define Dev00600AccumRecQySFour_FID                    30
+#define Dev00600AccumRecQySFourPtFive_FID              31
+#define Dev00600AccumRecQySFive_FID                    32
+#define Dev00600AccumRecQySSix_FID                     33
+#define Dev00600AccumRecQySSeven_FID                   34
+#define Dev00600AccumRecQySEight_FID                   35
+#define Dev00600AccumRecQySNine_FID                    36
+#define Dev00600AccumRecQySTen_FID                     37
+#define Dev00600AccumRecQySFifteen_FID                 38
+#define Dev00600AccumRecQySOverFifteen_FID             39
+#define Dev00600AccumRecQyUnknSvcEvent_FID             40
+#define Dev00600AccumRecQyErrInSvcCall_FID             41
+#define Dev00600AccumRecQyMsgConvErr_FID               42
+#define Dev00600AccumRecQtTotSvcCalls_FID              43
 
 /***************************************************************************
 *  Widget IDs                                                              *
@@ -62,10 +69,12 @@
 
 #define groupBoxWidget_WID                             9000
 #define QueryType_WID                                  8000
-#define PcName_WID                                     101
-#define OTNumber_WID                                   102
-#define LanId_WID                                      103
-#define Dev00600SmAccumulationRecord_WID               104
+#define Dev00600AccumRec_WID                           101
+#define Dcdate_WID                                     5000
+#define Dccurtm_WID                                    5100
+#define KyUserId_WID                                   102
+#define TxPcName_WID                                   103
+#define FlWindowMod_WID                                104
 
 /***************************************************************************
 *  Command IDs                                                             *

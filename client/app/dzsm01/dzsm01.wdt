@@ -1,15 +1,16 @@
 /***************************************************************************
  *                                                                         *
- *      C   O S / 2    W I N D O W   D E F I N I T I O N   T A B L E S     *
+ * C  W I N D O W S   N T  W I N D O W   D E F I N I T I O N   T A B L E   *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
+ *                  Copyright (C) 1996 Andersen Consulting.                *
  *                         All rights reserved.                            *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *            Window Dispatch Table for: DZSM01                            *
- *                         Generated on: Mon Jan 16 14:01:47 1995          *
- *                                   by: ABURDEN                           *
+ *                         Generated on: Tue Mar 31 15:52:40 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************
 
@@ -45,11 +46,6 @@ EXEWINDOWLIST ExeWindowTable[] =
 };
 
 /***************************************************************************
- * COBOL window references from the EXE                                    *
- ***************************************************************************/
-
-
-/***************************************************************************
  * Window references for COBOL client EXE                                  *
  ***************************************************************************/
 CBLWINSETUPENTRY CBLwindowSetupTable[] =
@@ -65,7 +61,7 @@ CBLWINSETUPENTRY CBLwindowSetupTable[] =
 /***************************************************************************
  * Table of DLLs referenced in this EXE                                    *
  ***************************************************************************/
-DLLWINDOWINFO *pWindowsInDLLs[] =
+DLLWINDOWINFO  *pWindowsInDLLs[] =
 {
 
         0

@@ -2,14 +2,16 @@
  *                                                                         *
  *                     P R O G R A M   F R O N T   E N D                   *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
+ *                  Copyright (C) 1996 Andersen Consulting.                *
  *                         All rights reserved.                            *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
- *                Program Front End for: DZSM01                            *
- *                         Generated on: Mon Jan 16 14:01:47 1995          *
- *                                   by: ABURDEN                           *
+ *                Program Front End for: DZSM01                            *                        
+ *                         Generated on: Tue Mar 31 15:52:40 1998          *  
+ *                                   by: MCONNER                           *     
+ *                                                                         *
+ *                    Short Description:                                   *             
  *                                                                         *
  ***************************************************************************/
 
@@ -81,7 +83,6 @@
  ***************************************************************************/
 
 
-
 int WINAPI WinMain (HINSTANCE hInstance,      /* current instance handle        */
                     HINSTANCE hPrevInstance,  /* previous instance handle       */
                     LPSTR     lpCmdLine,      /* command line                   */
@@ -107,8 +108,8 @@ int WINAPI WinMain (HINSTANCE hInstance,      /* current instance handle        
    applInitData.initFlags.registerWithEL = REGISTER_WITH_EL;
    applInitData.initFlags.registerWithST = REGISTER_WITH_ST;
    applInitData.initFlags.registerWithMN = REGISTER_WITH_MN;
-   applInitData.initRoutine              = FND_PROGRAM_INIT_ROUTINE;
-   applInitData.termRoutine              = FND_PROGRAM_TERM_ROUTINE;
+   applInitData.initRoutine              = (SERVICE_FUNC_PTR) FND_PROGRAM_INIT_ROUTINE;
+   applInitData.termRoutine              = (SERVICE_FUNC_PTR) FND_PROGRAM_TERM_ROUTINE;
    applInitData.initUIRoutine            = (SERVICE_FUNC_PTR) FND_INTERFACE_INIT_ROUTINE;
    applInitData.termUIRoutine            = (SERVICE_FUNC_PTR) FND_INTERFACE_TERM_ROUTINE;
    applInitData.applDispatchTable        = dispatchTable;

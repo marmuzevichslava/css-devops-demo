@@ -1,17 +1,24 @@
 /***************************************************************************
  *                                                                         *
- *       C   O S / 2   W I N D O W   A P P L I C A T I O N   L O G I C     *
+ *               C  A P P L I C A T I O N   L O G I C                      *
  *                                                                         *
- *              Copyright (C) 1994, Andersen Consulting.                   *
+ *              Copyright (C) 1996, Andersen Consulting.                   *
  *                        All rights reserved.                             *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *                      Module File for: DZSM001                           *
- *                         Generated on: Wed Jan 18 11:43:32 1995          *
- *                                   by: ABURDEN                           *
+ *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                                   by: MCONNER                           *
+ *                                                                         *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *   User API Prototypes:                                                  *
  *                                                                         *
  ***************************************************************************/
+
+
 
 /***************************************************************************
  *
@@ -27,33 +34,38 @@
  ***************************************************************************/
 static WCBPROC(Hhongvvh3112_Predisplay)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
 
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "LanId",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "OTNumber",
-                             &FndGenErrorBlock);
+   FndGenRC = DZSM001BusPredisplay( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "PcName",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-FndGenRC = Dzsm001buspredisplay( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
-
-return 0;
-
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -68,80 +80,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Hhongvvh8119_Field_Change)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
-_FND_ERROR_BLOCK         FndGenErrorBlock;
-char                     spaces[9] = "\0";
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
 
 
-if ( ( strcmp(QueryTypeData, LT_Memory) == 0 ) || ( strcmp(QueryTypeData, LT_Local) == 0 ) )
-   {
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-   FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "LanId",
-                             &FndGenErrorBlock);
+   FndGenRC = DZSM001BusTypeQry( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-   FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "OTNumber",
-                             &FndGenErrorBlock);
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-   FndGenRC = FndFieldDisable(CBI_hwnd,
-                             "PcName",
-                             &FndGenErrorBlock);
-
-   FndGenRC = Dzsm001buspredisplay( pEventInfo,
-                                    pEAIA,
-                                    pBFCD,
-                                    pWesMap,
-                          			pWindContextData,
-                           			pABHI);
-
-
-   }
-else
-   {
-
-   FndGenRC = FndFieldSetValue(CBI_hwnd,
-   							   "LanId",
-							   9,
-							   &spaces,
-							   &FndGenErrorBlock);
-
-   FndGenRC = FndFieldSetValue(CBI_hwnd,
-   							   "OTNumber",
-							   9,
-							   &spaces,
-							   &FndGenErrorBlock);
-
-   FndGenRC = FndFieldSetValue(CBI_hwnd,
-   							   "PcName",
-							   9,
-							   &spaces,
-							   &FndGenErrorBlock);
-
-
-   FndGenRC = FndFieldEnable(CBI_hwnd,
-                            "LanId",
-                            &FndGenErrorBlock);
-  
-   FndGenRC = FndFieldEnable(CBI_hwnd,
-                            "OTNumber",
-                            &FndGenErrorBlock);
-
-   FndGenRC = FndFieldSetCursor(CBI_hwnd,
-   								"PcName",
-								CUR_MAKECURRENT,
-								&FndGenErrorBlock);
-
-   FndGenRC = FndFieldEnable(CBI_hwnd,
-                            "PcName",
-                            &FndGenErrorBlock);
-  
-   } /* end if */
-
-return 0;
-
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -156,20 +126,38 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Hhongvvh2535_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
 
 
-FndGenRC = Dzsm001resetpbclick( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = DZSM001BusResetPbClick( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
 
 }
+
+
+
 /***************************************************************************
  *
  *   Widget-Level Event
@@ -184,18 +172,33 @@ return 0;
  ***************************************************************************/
 static WCBPROC(Hhongvvh1405_Click)
 {
-unsigned short           FndGenRC = FND_SUCCESS;
+   unsigned short        FndGenRC = 0;
+
+CMN_ARCH_EXIT_INITIALIZE
 
 
-FndGenRC = Dzsm001findpbclick( pEventInfo,
-                           pEAIA,
-                           pBFCD,
-                           pWesMap,
-                           pWindContextData,
-                           pABHI);
+   FndGenRC = CmnArchInit( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
-return 0;
+   FndGenRC = DZSM001BusFindPbClick( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
 
+   FndGenRC = CmnArchTerm( pEventInfo,
+                              pEAIA,
+                              pBFCD,
+                              pWesMap,
+                              pWindContextData,
+                              pABHI);
+
+   return 0;
 
 }
 

@@ -1,19 +1,20 @@
 /***************************************************************************
-*                                                                          *
-*      W I N D O W S   N T    R E S O U R C E   D E F I N I T I O N        *
-*                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
-*                                                                          *
-****************************************************************************
-*                                                                          *
-*              Symbolic Definitions for: DZSM001                           *
-*                          Generated on: Wed Jan 18 11:43:32 1995          *
-*                                    by: ABURDEN                           *
-*                                                                          *
-****************************************************************************/
+ *                                                                         *
+ *     W I N D O W S   N T   R E S O U R C E   D E F I N I T I O N         *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *             Symbolic Definitions for: DZSM001                           *
+ *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ **************************************************************************/
 
-DZSM001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,254,113
+DZSM001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,292,116
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
@@ -22,91 +23,87 @@ DZSM001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,254,113
      | WS_THICKFRAME
      | DS_ABSALIGN
     CAPTION "CSS Service Level Agreeement Monitor"
+    
 Begin  /* controls */
    CONTROL "Search Criteria",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,2,1,104,55
+              ,3,1,126,55
 
    CONTROL "Query Type",8000,
               FND_RADIO_GROUP,
-              WS_VISIBLE | BS_GROUPBOX
-              ,107,1,53,56
+              WS_VISIBLE | WS_GROUP | BS_GROUPBOX
+              ,130,2,53,55
 
-   CONTROL "Memory",105,
+   CONTROL "&Memory",105,
               FND_RADIO_BUTTON,
-              WS_VISIBLE | WS_TABSTOP
+              WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,113,13,35,10
+              ,130,2,0,0
 
-   CONTROL "Local",106,
-              FND_RADIO_BUTTON,
-              WS_VISIBLE
-              | BS_RADIOBUTTON
-              ,113,27,35,10
-
-   CONTROL "Remote",107,
+   CONTROL "&Local",106,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,113,41,35,10
+              ,130,2,0,0
 
-   CONTROL "PC Name:",501,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,13,16,36,8
+   CONTROL "&Remote",107,
+              FND_RADIO_BUTTON,
+              WS_VISIBLE
+              | BS_RADIOBUTTON
+              ,130,2,0,0
 
-   CONTROL "",101,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,50,12,51,12
-
-   CONTROL "OT Number:",502,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,12,30,37,8
-
-   CONTROL "",102,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,50,26,50,12
-
-   CONTROL "Lan ID:",503,
-              FND_STATICTEXT,
-              WS_VISIBLE | SS_LEFT 
-              ,12,44,37,8
-
-   CONTROL "",103,
-              FND_ENTRYFIELD,
-              WS_VISIBLE | WS_TABSTOP
-              ,50,40,50,12
-
-   CONTROL "",104,
+   CONTROL "Perf Data",101,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,2,59,249,50
+              ,3,58,286,50
 
    CONTROL "",5000,
               FND_STATICDATE,
               WS_VISIBLE
-              ,178,7,36,0
+              ,204,6,41,0
 
-   CONTROL "Reset Memory",1000,
+   CONTROL "Re&set Memory",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,170,21,80,16
+              ,196,20,91,16
 
-   CONTROL "Find",1001,
+   CONTROL "&Find",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,170,39,80,16
+              ,196,38,91,16
 
    CONTROL "",5100,
               FND_STATICTIME,
               WS_VISIBLE
-              ,215,7,35,0
+              ,248,6,40,0
+
+   CONTROL "User ID:",502,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,11,26,45,12
+
+   CONTROL "",102,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,58,26,59,0
+
+   CONTROL "PC Name:",503,
+              FND_STATICTEXT,
+              WS_VISIBLE | SS_LEFT 
+              ,10,11,47,12
+
+   CONTROL "",103,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,59,11,59,12
+
+   CONTROL "",104,
+              FND_ENTRYFIELD,
+              WS_VISIBLE | WS_TABSTOP
+              ,187,4,0,0
 
 End /* controls */
 
@@ -121,110 +118,21 @@ Begin
    FP_CONTROL_ID,                       "8000\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
+   FP_TOP_MARGIN,                       "9\0"
+   FP_LEFT_MARGIN,                      "10\0"
+   FP_HORIZONTAL_SPACING,               "0\0"
+   FP_VERTICAL_SPACING,                 "4\0"
+   FP_DIRECTION,                        FPV_VERTICAL, "\0"
+   FP_BUTTONS_PER_ROW,                  "3\0"
    FP_BUTTON_INFO,                      "105,Memory\0"
    FP_BUTTON_INFO,                      "106,Local\0"
    FP_BUTTON_INFO,                      "107,Remote\0"
 
-   /*  Control Data for Static Text PC Name:  */
-   FP_CONTROL_ID,                       "501\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-
-   /*  Control Data for Entry Field PcName  */
+   /*  Control Data for List Box DEV00600_ACCUM_REC  */
    FP_CONTROL_ID,                       "101\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
-   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
-   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
-
-   /*  Control Data for Static Text OT Number:  */
-   FP_CONTROL_ID,                       "502\0"
-   FP_SCREEN_LENGTH,                    "10\0"
-   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-
-   /*  Control Data for Entry Field OTNumber  */
-   FP_CONTROL_ID,                       "102\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
-   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
-   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
-
-   /*  Control Data for Static Text Lan ID:  */
-   FP_CONTROL_ID,                       "503\0"
-   FP_SCREEN_LENGTH,                    "7\0"
-   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-
-   /*  Control Data for Entry Field LanId  */
-   FP_CONTROL_ID,                       "103\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
-   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
-   FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
-   FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
-   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
-
-   /*  Control Data for List Box DEV00600_SM_ACCUMULATION_RECORD  */
-   FP_CONTROL_ID,                       "104\0"
-   FP_CAPTION,                          "\0"
+   FP_CAPTION,                          "Perf Data\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_LEFTJUSTIFY, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_MAXIMUM_ROWS,                     "50\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
@@ -232,125 +140,83 @@ Begin
    FP_SHOW_TITLE,                       FPV_FALSE, "\0"
    FP_SHOW_COL_TITLES,                  FPV_TRUE, "\0"
    FP_SORTING_COLUMNS,                  FPV_NULL, "\0"
-   FP_COLUMNS_PER_LINE,                 "32\0"
+   FP_COLUMNS_PER_LINE,                 "38\0"
    FP_SHOW_PAGE_BUTTONS,                FPV_FALSE, "\0"
    FP_LAST_STATIC_COL,                  FPV_NO_STATIC_COLUMN, "\0"
    FP_SELECTION_MODE,                   FPV_SINGLE_SELECT, "\0"
    FP_HSCROLL_AUTO_CREATE,              FPV_TRUE, "\0"
 
-   /*  Control Data for List Box Column SM_DATE  */
+   /*  Control Data for List Box Column DtTest  */
    FP_COLUMN_ID,                        "0\0"
-   FP_CAPTION,                          "Date\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   FP_CAPTION,                          "PC Date\0"
+   FP_SCREEN_LENGTH,                    "10\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
-   FP_COLUMN_TYPE,                      FPV_DATE_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "30\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "41\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
-   FP_DATE_FORMAT,                      "MM/DD/YY\0"
-   FP_CENTURY_CUTOFF,                   "65\0"
 
-   /*  Control Data for List Box Column SM_TIME  */
+   /*  Control Data for List Box Column TmTime  */
    FP_COLUMN_ID,                        "1\0"
-   FP_CAPTION,                          "Time\0"
+   FP_CAPTION,                          "PC Time\0"
    FP_SCREEN_LENGTH,                    "8\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
-   /*  Control Data for List Box Column PcName  */
+   /*  Control Data for List Box Column KyUserId  */
    FP_COLUMN_ID,                        "2\0"
+   FP_CAPTION,                          "User ID\0"
+   FP_SCREEN_LENGTH,                    "10\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "41\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+
+   /*  Control Data for List Box Column TxPcName  */
+   FP_COLUMN_ID,                        "3\0"
    FP_CAPTION,                          "PC Name\0"
    FP_SCREEN_LENGTH,                    "8\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "48\0"
+   FP_COLUMN_FCUS,                      "57\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
-   /*  Control Data for List Box Column OTNumber  */
-   FP_COLUMN_ID,                        "3\0"
-   FP_CAPTION,                          "OT Number\0"
-   FP_SCREEN_LENGTH,                    "8\0"
-   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
-   FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "48\0"
-   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
-   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
-   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
-   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
-   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
-
-   /*  Control Data for List Box Column LanId  */
+   /*  Control Data for List Box Column TsSlamTmstmp  */
    FP_COLUMN_ID,                        "4\0"
-   FP_CAPTION,                          "Lan ID\0"
-   FP_SCREEN_LENGTH,                    "8\0"
+   FP_CAPTION,                          "Processed\0"
+   FP_SCREEN_LENGTH,                    "26\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_ALPHA_COLUMN, "\0"
-   FP_COLUMN_FCUS,                      "48\0"
+   FP_COLUMN_FCUS,                      "113\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
 
-   /*  Control Data for List Box Column FIVE_TENTH  */
+   /*  Control Data for List Box Column QyFiveTenth  */
    FP_COLUMN_ID,                        "5\0"
    FP_CAPTION,                          "0.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -359,29 +225,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column ONE  */
+   /*  Control Data for List Box Column QyOne  */
    FP_COLUMN_ID,                        "6\0"
    FP_CAPTION,                          "1.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -390,29 +247,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column ONE_POINT_FIVE  */
+   /*  Control Data for List Box Column QyOnePointFive  */
    FP_COLUMN_ID,                        "7\0"
    FP_CAPTION,                          "1.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -421,29 +269,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column TWO  */
+   /*  Control Data for List Box Column QyTwo  */
    FP_COLUMN_ID,                        "8\0"
    FP_CAPTION,                          "2.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -452,29 +291,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column TWO_POINT_FIVE  */
+   /*  Control Data for List Box Column QyTwoPointFive  */
    FP_COLUMN_ID,                        "9\0"
    FP_CAPTION,                          "2.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -483,29 +313,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column THREE  */
+   /*  Control Data for List Box Column QyThree  */
    FP_COLUMN_ID,                        "10\0"
    FP_CAPTION,                          "3.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -514,29 +335,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column THREE_POINT_FIVE  */
+   /*  Control Data for List Box Column QyThreePtFive  */
    FP_COLUMN_ID,                        "11\0"
    FP_CAPTION,                          "3.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -545,29 +357,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column FOUR  */
+   /*  Control Data for List Box Column QyFour  */
    FP_COLUMN_ID,                        "12\0"
    FP_CAPTION,                          "4.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -576,29 +379,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column FOUR_POINT_FIVE  */
+   /*  Control Data for List Box Column QyFourPointFive  */
    FP_COLUMN_ID,                        "13\0"
    FP_CAPTION,                          "4.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -607,29 +401,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column FIVE  */
+   /*  Control Data for List Box Column QyFive  */
    FP_COLUMN_ID,                        "14\0"
    FP_CAPTION,                          "5.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -638,29 +423,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column OVER_FIVE  */
+   /*  Control Data for List Box Column QyOverFive  */
    FP_COLUMN_ID,                        "15\0"
    FP_CAPTION,                          ">5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -669,29 +445,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column UNKNOWN_WINDOW_EVENT  */
+   /*  Control Data for List Box Column QyUnknWndwEv  */
    FP_COLUMN_ID,                        "16\0"
    FP_CAPTION,                          "Unknown\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -700,29 +467,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SFIVE_TENTH  */
+   /*  Control Data for List Box Column QySviceTenth  */
    FP_COLUMN_ID,                        "17\0"
    FP_CAPTION,                          "0.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -731,29 +489,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SONE  */
+   /*  Control Data for List Box Column QySone  */
    FP_COLUMN_ID,                        "18\0"
    FP_CAPTION,                          "1.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -762,29 +511,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SONE_POINT_FIVE  */
+   /*  Control Data for List Box Column QySOnePointFive  */
    FP_COLUMN_ID,                        "19\0"
    FP_CAPTION,                          "1.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -793,29 +533,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column STWO  */
+   /*  Control Data for List Box Column QySTwo  */
    FP_COLUMN_ID,                        "20\0"
    FP_CAPTION,                          "2.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -824,29 +555,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column STWO_POINT_FIVE  */
+   /*  Control Data for List Box Column QySTwoPointFive  */
    FP_COLUMN_ID,                        "21\0"
    FP_CAPTION,                          "2.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -855,29 +577,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column STHREE  */
+   /*  Control Data for List Box Column QySThree  */
    FP_COLUMN_ID,                        "22\0"
    FP_CAPTION,                          "3.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -886,29 +599,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column STHREE_POINT_FIVE  */
+   /*  Control Data for List Box Column QySThreePtFive  */
    FP_COLUMN_ID,                        "23\0"
    FP_CAPTION,                          "3.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -917,29 +621,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SFOUR  */
+   /*  Control Data for List Box Column QySFour  */
    FP_COLUMN_ID,                        "24\0"
    FP_CAPTION,                          "4.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -948,29 +643,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SFOUR_POINT_FIVE  */
+   /*  Control Data for List Box Column QySFourPtFive  */
    FP_COLUMN_ID,                        "25\0"
    FP_CAPTION,                          "4.5\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -979,29 +665,20 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SFIVE  */
+   /*  Control Data for List Box Column QySFive  */
    FP_COLUMN_ID,                        "26\0"
    FP_CAPTION,                          "5.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
@@ -1010,61 +687,175 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column SOVER_FIVE  */
+   /*  Control Data for List Box Column QySSix  */
    FP_COLUMN_ID,                        "27\0"
-   FP_CAPTION,                          ">5\0"
+   FP_CAPTION,                          "6.0\0"
    FP_SCREEN_LENGTH,                    "4\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column UNKNOWN_SVC_EVENT  */
+   /*  Control Data for List Box Column QySSeven  */
    FP_COLUMN_ID,                        "28\0"
+   FP_CAPTION,                          "7.0\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column QySEight  */
+   FP_COLUMN_ID,                        "29\0"
+   FP_CAPTION,                          "8.0\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column QySNine  */
+   FP_COLUMN_ID,                        "30\0"
+   FP_CAPTION,                          "9.0\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column QySTen  */
+   FP_COLUMN_ID,                        "31\0"
+   FP_CAPTION,                          "10.0\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column QySFifteen  */
+   FP_COLUMN_ID,                        "32\0"
+   FP_CAPTION,                          "15.0\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column QySOverFifteen  */
+   FP_COLUMN_ID,                        "33\0"
+   FP_CAPTION,                          ">15\0"
+   FP_SCREEN_LENGTH,                    "4\0"
+   FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
+   FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
+   FP_COLUMN_FCUS,                      "0\0"
+   FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
+   FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
+   FP_INTEGRAL_DIGITS,                  "4\0"
+   FP_FRACTIONAL_DIGITS,                "0\0"
+   FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
+   FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
+   FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
+   FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
+   FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
+
+   /*  Control Data for List Box Column QyUnknSvcEvent  */
+   FP_COLUMN_ID,                        "34\0"
    FP_CAPTION,                          "Unknown\0"
    FP_SCREEN_LENGTH,                    "4\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
@@ -1072,61 +863,43 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column ERROR_IN_SERVICE_CALL_  */
-   FP_COLUMN_ID,                        "29\0"
-   FP_CAPTION,                          "Svc Err\0"
+   /*  Control Data for List Box Column QyErrInSvcCall_  */
+   FP_COLUMN_ID,                        "35\0"
+   FP_CAPTION,                          "Srv Err\0"
    FP_SCREEN_LENGTH,                    "4\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
    FP_COLUMN_TYPE,                      FPV_NUMERIC_COLUMN, "\0"
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column MESSAGE_CONV_ERRORS  */
-   FP_COLUMN_ID,                        "30\0"
+   /*  Control Data for List Box Column QyMsgConvErr  */
+   FP_COLUMN_ID,                        "36\0"
    FP_CAPTION,                          "Msg Err\0"
    FP_SCREEN_LENGTH,                    "4\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
@@ -1134,30 +907,21 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
-   /*  Control Data for List Box Column TOTAL_SERVICE_CALLS  */
-   FP_COLUMN_ID,                        "31\0"
+   /*  Control Data for List Box Column QyTotSvcCalls  */
+   FP_COLUMN_ID,                        "37\0"
    FP_CAPTION,                          "Tot Svc\0"
    FP_SCREEN_LENGTH,                    "4\0"
    FP_INITIALLY_HIDDEN,                 FPV_FALSE, "\0"
@@ -1165,27 +929,18 @@ Begin
    FP_COLUMN_FCUS,                      "0\0"
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
-   FP_TITLE_FONT_NAME,                  FPV_SYSTEMPROP, "\0"
-   FP_TITLE_FONT_SIZE,                  "10\0"
-   FP_TITLE_FONT_STYLE,                 FPV_NORMAL_STYLE, "\0"
-   FP_TITLE_FONT_TYPE,                  FPV_FONT_VECTOR, "\0"
    FP_TITLE_JUST,                       FPV_CENTERJUSTIFY, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
-   FP_FONT_SIZE,                        "10\0"
-   FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_CENTERJUSTIFY, "\0"
    FP_INTEGRAL_DIGITS,                  "4\0"
    FP_FRACTIONAL_DIGITS,                "0\0"
    FP_LEADING_ZEROS,                    FPV_FALSE, "\0"
    FP_TRAILING_ZEROS,                   FPV_FALSE, "\0"
-   FP_BLANK_WHEN_ZERO,                  FPV_FALSE, "\0"
+   FP_BLANK_WHEN_ZERO,                  FPV_TRUE, "\0"
    FP_NEGATIVE_SIGN,                    FPV_MINUS_UNSIGNED, "\0"
    FP_DECIMAL_CHAR,                     FPV_PERIOD, "\0"
    FP_THOUSANDS_CHAR,                   FPV_NULL, "\0"
-   FP_CURRENCY,                         FPV_NULL, "\0"
 
    /*  Control Data for Current Date Field DCDATE  */
    FP_CONTROL_ID,                       "5000\0"
@@ -1194,10 +949,9 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_CONVERSION_MODE,                  FPV_NO_CONVERSION, "\0"
    FP_DATE_FORMAT,                      "MM/DD/YY\0"
@@ -1209,12 +963,74 @@ Begin
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
    FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
-   FP_FONT_NAME,                        FPV_SYSTEMPROP, "\0"
+   FP_FONT_CODE,                        "System Proportional\0"
    FP_FONT_SIZE,                        "10\0"
    FP_FONT_STYLE,                       FPV_NORMAL_STYLE, "\0"
-   FP_FONT_TYPE,                        FPV_FONT_VECTOR, "\0"
    FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
    FP_TIME_FORMAT,                      "HH:MM:SS 24\0"
+
+   /*  Control Data for Static Text User ID:  */
+   FP_CONTROL_ID,                       "502\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field KyUserId  */
+   FP_CONTROL_ID,                       "102\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Static Text PC Name:  */
+   FP_CONTROL_ID,                       "503\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_LITERAL_POSITION,                 FPV_POSITION_LEFT, "\0"
+
+   /*  Control Data for Entry Field TxPcName  */
+   FP_CONTROL_ID,                       "103\0"
+   FP_SCREEN_LENGTH,                    "8\0"
+   FP_DRAW_BORDER,                      FPV_TRUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
+
+   /*  Control Data for Entry Field FlWindowMod  */
+   FP_CONTROL_ID,                       "104\0"
+   FP_SCREEN_LENGTH,                    "1\0"
+   FP_DRAW_BORDER,                      FPV_FALSE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+   FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DEFAULTCOLOR, "\0"
+   FP_JUSTIFICATION_MODE,               FPV_LEFTJUSTIFY, "\0"
+   FP_REQUIRED,                         FPV_FALSE, "\0"
+   FP_ALPHA_ONLY,                       FPV_FALSE, "\0"
+   FP_CONVERSION_MODE,                  FPV_UPPERCASE, "\0"
+   FP_VALID_CONDITION,                  "==,Y\0"
+   FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
+   FP_DATA_FORMAT,                      "A\0"
 
    FP_END
 End
@@ -1235,6 +1051,9 @@ End
 /**********************************************
 *            Window Minimize Icon             *
 **********************************************/
+
+
+DZSM001IconID ICON SLAM.ICO
 
 
 

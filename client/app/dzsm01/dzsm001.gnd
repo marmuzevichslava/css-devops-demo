@@ -1,17 +1,18 @@
 /***************************************************************************
-*                                                                          *
-*                 O S / 2    D I S P A T C H   T A B L E                   *
-*                                                                          *
-*                Copyright (C) 1994, Andersen Consulting.                  *
-*                          All rights reserved.                            *
-*                                                                          *
-****************************************************************************
-*                                                                          *
-*                    Dispatch Table for: DZSM001                           *
-*                          Generated on: Wed Jan 18 11:43:32 1995          *
-*                                    by: ABURDEN                           *
-*                                                                          *
-****************************************************************************/
+ *                                                                         *
+ *            W I N D O W S   N T   D I S P A T C H   T A B L E            *
+ *                                                                         *
+ *               Copyright (C) 1996, Andersen Consulting.                  *
+ *                         All rights reserved.                            *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                   Dispatch Table for: DZSM001                           *
+ *                         Generated on: Fri Apr 03 14:30:51 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *             
+ *                                                                         *
+ ***************************************************************************/
 
 /****************************************************************************
  Window & Widget Function List
@@ -50,11 +51,14 @@ WDGDISPTBL DZSM001WidgDisp[] =
 
 FLDDEFTBLENTRY DZSM001FieldDefTbl[] =
 {
+    { "groupBoxWidget", groupBoxWidget_WID },
     { "QUERY_TYPE", QueryType_FID },
-    { "PcName", PcName_FID },
-    { "OTNumber", OTNumber_FID },
-    { "LanId", LanId_FID },
-    { "DEV00600_SM_ACCUMULATION_RECORD", Dev00600SmAccumulationRecord_FID },
+    { "DEV00600_ACCUM_REC", Dev00600AccumRec_FID },
+    { "DCDATE", Dcdate_WID },
+    { "DCCURTM", Dccurtm_WID },
+    { "KyUserId", KyUserId_FID },
+    { "TxPcName", TxPcName_FID },
+    { "FlWindowMod", FlWindowMod_FID },
     { "", 0}
 };
 
@@ -77,11 +81,11 @@ CMDDEFTBLENTRY DZSM001CommandDefTbl[] =
 
 WCTHEADER  DZSM001WCTHeader =
 { 
-    "21", 38, 5, 2,
+    "30", 44, 5, 2,
     sizeof(struct _DZSM001WesMap),
     offsetof(struct _DZSM001WesMap, _QueryTypeData),
     offsetof(struct _DZSM001WesMap, _QueryTypeCtl),
-    WLT_C, 0, 0, 0
+    WLT_C, 0, 15, 0
 }; 
 
 
@@ -100,333 +104,387 @@ WCTFIELD DZSM001WCTFieldTbl[] =
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_FNDENTRYFLD, "PcName", PcName_FID,
-      PcName_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _PcNameData),
-      8, 0, offsetof(struct _DZSM001WesMap, _PcNameData),
-      offsetof(struct _DZSM001WesMap, _PcNameCtl),
+    { WTP_FNDLISTBOX, "DEV00600_ACCUM_REC", Dev00600AccumRec_FID,
+      Dev00600AccumRec_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecSelIndData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecDtTestData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTmTimeData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecKyUserIdData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTsSlamTmstmpData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveTenthData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyOneData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyOnePointFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoPointFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyThreeData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyThreePtFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFourData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFourPointFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyOverFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknWndwEvData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveTenthData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySOneData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySOnePointFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoPointFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySThreeData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySThreePtFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFourData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFourPtFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySSixData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySSevenData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySEightData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySNineData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySTenData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFifteenData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySOverFifteenData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknSvcEventData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyErrInSvcCallData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyMsgConvErrData) + 
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQtTotSvcCallsData),
+      0, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecSelIndData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_FNDENTRYFLD, "OTNumber", OTNumber_FID,
-      OTNumber_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _OTNumberData),
-      8, 0, offsetof(struct _DZSM001WesMap, _OTNumberData),
-      offsetof(struct _DZSM001WesMap, _OTNumberCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD},
-  
-    { WTP_FNDENTRYFLD, "LanId", LanId_FID,
-      LanId_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _LanIdData),
-      8, 0, offsetof(struct _DZSM001WesMap, _LanIdData),
-      offsetof(struct _DZSM001WesMap, _LanIdCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD},
-  
-    { WTP_FNDLISTBOX, "DEV00600_SM_ACCUMULATION_RECORD", Dev00600SmAccumulationRecord_FID,
-      Dev00600SmAccumulationRecord_WID, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSelIndData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmDateData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmTimeData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordPcNameData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOTNumberData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordLanIdData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveTenthData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOneData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOne_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwoData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwo_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThreeData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThree_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFourData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFour_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOverFiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownWindowEventData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveTenthData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOneData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOne_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwoData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwo_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThreeData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThree_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFourData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFour_Point_FiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOverFiveData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownSvcEventData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordErrorInServiceCallData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordMessageConvErrorsData) + 
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTotalServiceCallsData),
-      0, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSelIndData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD},
-  
-    { WTP_LISTBOXSEL, "DEV00600_SM_ACCUMULATION_RECORDS", Dev00600SmAccumulationRecordSelInd_FID,
+    { WTP_LISTBOXSEL, "DEV00600_ACCUM_RECSelInd", Dev00600AccumRecSelInd_FID,
       0, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSelIndData[0]),
-      0, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSelIndData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSelIndCtl),
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecSelIndData[0]),
+      0, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecSelIndData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecSelIndCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SM_DATE", Dev00600SmAccumulationRecordSmDate_FID,
-      0, FND_IT_INT3DATE,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmDateData[0]),
-      6, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmDateData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmDateCtl),
-      0, 0, 0, AT_NORMAL, STS_WESVALID,
-      RGT_STANDARD},
-  
-    { WTP_LISTBOXCOLDEFN, "SM_TIME", Dev00600SmAccumulationRecordSmTime_FID,
+    { WTP_LISTBOXCOLDEFN, "DtTest", Dev00600AccumRecDtTest_FID,
       0, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmTimeData[0]),
-      6, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmTimeData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSmTimeCtl),
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecDtTestData[0]),
+      10, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecDtTestData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecDtTestCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "PcName", Dev00600SmAccumulationRecordPcName_FID,
+    { WTP_LISTBOXCOLDEFN, "TmTime", Dev00600AccumRecTmTime_FID,
       0, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordPcNameData[0]),
-      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordPcNameData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordPcNameCtl),
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTmTimeData[0]),
+      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTmTimeData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTmTimeCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "OTNumber", Dev00600SmAccumulationRecordOTNumber_FID,
+    { WTP_LISTBOXCOLDEFN, "KyUserId", Dev00600AccumRecKyUserId_FID,
       0, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOTNumberData[0]),
-      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOTNumberData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOTNumberCtl),
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecKyUserIdData[0]),
+      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecKyUserIdData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecKyUserIdCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "LanId", Dev00600SmAccumulationRecordLanId_FID,
+    { WTP_LISTBOXCOLDEFN, "TxPcName", Dev00600AccumRecTxPcName_FID,
       0, FND_IT_CHAR,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordLanIdData[0]),
-      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordLanIdData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordLanIdCtl),
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameData[0]),
+      8, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTxPcNameCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "FIVE_TENTH", Dev00600SmAccumulationRecordFiveTenth_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveTenthData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveTenthData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveTenthCtl),
+    { WTP_LISTBOXCOLDEFN, "TsSlamTmstmp", Dev00600AccumRecTsSlamTmstmp_FID,
+      0, FND_IT_CHAR,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecTsSlamTmstmpData[0]),
+      26, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTsSlamTmstmpData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecTsSlamTmstmpCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "ONE", Dev00600SmAccumulationRecordOne_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOneData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOneData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOneCtl),
+    { WTP_LISTBOXCOLDEFN, "QyFiveTenth", Dev00600AccumRecQyFiveTenth_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveTenthData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveTenthData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveTenthCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "ONE_POINT_FIVE", Dev00600SmAccumulationRecordOne_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOne_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOne_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOne_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QyOne", Dev00600AccumRecQyOne_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyOneData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyOneData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyOneCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "TWO", Dev00600SmAccumulationRecordTwo_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwoData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwoData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwoCtl),
+    { WTP_LISTBOXCOLDEFN, "QyOnePointFive", Dev00600AccumRecQyOnePointFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyOnePointFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyOnePointFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyOnePointFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "TWO_POINT_FIVE", Dev00600SmAccumulationRecordTwo_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwo_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwo_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTwo_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QyTwo", Dev00600AccumRecQyTwo_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "THREE", Dev00600SmAccumulationRecordThree_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThreeData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThreeData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThreeCtl),
+    { WTP_LISTBOXCOLDEFN, "QyTwoPointFive", Dev00600AccumRecQyTwoPointFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoPointFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoPointFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyTwoPointFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "THREE_POINT_FIVE", Dev00600SmAccumulationRecordThree_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThree_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThree_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordThree_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QyThree", Dev00600AccumRecQyThree_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyThreeData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyThreeData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyThreeCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "FOUR", Dev00600SmAccumulationRecordFour_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFourData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFourData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFourCtl),
+    { WTP_LISTBOXCOLDEFN, "QyThreePtFive", Dev00600AccumRecQyThreePtFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyThreePtFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyThreePtFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyThreePtFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "FOUR_POINT_FIVE", Dev00600SmAccumulationRecordFour_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFour_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFour_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFour_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QyFour", Dev00600AccumRecQyFour_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFourData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFourData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFourCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "FIVE", Dev00600SmAccumulationRecordFive_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordFiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QyFourPointFive", Dev00600AccumRecQyFourPointFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFourPointFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFourPointFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFourPointFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "OVER_FIVE", Dev00600SmAccumulationRecordOverFive_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOverFiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOverFiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordOverFiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QyFive", Dev00600AccumRecQyFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "UNKNOWN_WINDOW_EVENT", Dev00600SmAccumulationRecordUnknownWindowEvent_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownWindowEventData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownWindowEventData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownWindowEventCtl),
+    { WTP_LISTBOXCOLDEFN, "QyOverFive", Dev00600AccumRecQyOverFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyOverFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyOverFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyOverFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SFIVE_TENTH", Dev00600SmAccumulationRecordSFiveTenth_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveTenthData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveTenthData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveTenthCtl),
+    { WTP_LISTBOXCOLDEFN, "QyUnknWndwEv", Dev00600AccumRecQyUnknWndwEv_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknWndwEvData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknWndwEvData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknWndwEvCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SONE", Dev00600SmAccumulationRecordSOne_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOneData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOneData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOneCtl),
+    { WTP_LISTBOXCOLDEFN, "QySviceTenth", Dev00600AccumRecQySFiveTenth_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveTenthData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveTenthData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveTenthCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SONE_POINT_FIVE", Dev00600SmAccumulationRecordSOne_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOne_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOne_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOne_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QySone", Dev00600AccumRecQySOne_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySOneData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySOneData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySOneCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "STWO", Dev00600SmAccumulationRecordSTwo_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwoData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwoData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwoCtl),
+    { WTP_LISTBOXCOLDEFN, "QySOnePointFive", Dev00600AccumRecQySOnePointFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySOnePointFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySOnePointFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySOnePointFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "STWO_POINT_FIVE", Dev00600SmAccumulationRecordSTwo_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwo_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwo_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSTwo_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QySTwo", Dev00600AccumRecQySTwo_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "STHREE", Dev00600SmAccumulationRecordSThree_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThreeData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThreeData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThreeCtl),
+    { WTP_LISTBOXCOLDEFN, "QySTwoPointFive", Dev00600AccumRecQySTwoPointFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoPointFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoPointFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySTwoPointFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "STHREE_POINT_FIVE", Dev00600SmAccumulationRecordSThree_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThree_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThree_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSThree_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QySThree", Dev00600AccumRecQySThree_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySThreeData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySThreeData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySThreeCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SFOUR", Dev00600SmAccumulationRecordSFour_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFourData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFourData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFourCtl),
+    { WTP_LISTBOXCOLDEFN, "QySThreePtFive", Dev00600AccumRecQySThreePtFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySThreePtFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySThreePtFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySThreePtFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SFOUR_POINT_FIVE", Dev00600SmAccumulationRecordSFour_Point_Five_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFour_Point_FiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFour_Point_FiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFour_Point_FiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QySFour", Dev00600AccumRecQySFour_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFourData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFourData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFourCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SFIVE", Dev00600SmAccumulationRecordSFive_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSFiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QySFourPtFive", Dev00600AccumRecQySFourPtFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFourPtFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFourPtFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFourPtFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "SOVER_FIVE", Dev00600SmAccumulationRecordSOverFive_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOverFiveData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOverFiveData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordSOverFiveCtl),
+    { WTP_LISTBOXCOLDEFN, "QySFive", Dev00600AccumRecQySFive_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFiveCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "UNKNOWN_SVC_EVENT", Dev00600SmAccumulationRecordUnknownSvcEvent_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownSvcEventData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownSvcEventData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordUnknownSvcEventCtl),
+    { WTP_LISTBOXCOLDEFN, "QySSix", Dev00600AccumRecQySSix_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySSixData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySSixData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySSixCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "ERROR_IN_SERVICE_CALL_", Dev00600SmAccumulationRecordErrorInServiceCall_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordErrorInServiceCallData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordErrorInServiceCallData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordErrorInServiceCallCtl),
+    { WTP_LISTBOXCOLDEFN, "QySSeven", Dev00600AccumRecQySSeven_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySSevenData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySSevenData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySSevenCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "MESSAGE_CONV_ERRORS", Dev00600SmAccumulationRecordMessageConvErrors_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordMessageConvErrorsData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordMessageConvErrorsData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordMessageConvErrorsCtl),
+    { WTP_LISTBOXCOLDEFN, "QySEight", Dev00600AccumRecQySEight_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySEightData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySEightData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySEightCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
   
-    { WTP_LISTBOXCOLDEFN, "TOTAL_SERVICE_CALLS", Dev00600SmAccumulationRecordTotalServiceCalls_FID,
-      0, FND_IT_USHORT,
-      SIZEOF(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTotalServiceCallsData[0]),
-      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTotalServiceCallsData),
-      offsetof(struct _DZSM001WesMap, _Dev00600SmAccumulationRecordTotalServiceCallsCtl),
+    { WTP_LISTBOXCOLDEFN, "QySNine", Dev00600AccumRecQySNine_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySNineData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySNineData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySNineCtl),
       0, 0, 0, AT_NORMAL, STS_WESVALID,
       RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QySTen", Dev00600AccumRecQySTen_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySTenData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySTenData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySTenCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QySFifteen", Dev00600AccumRecQySFifteen_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySFifteenData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFifteenData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySFifteenCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QySOverFifteen", Dev00600AccumRecQySOverFifteen_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQySOverFifteenData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySOverFifteenData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQySOverFifteenCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QyUnknSvcEvent", Dev00600AccumRecQyUnknSvcEvent_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknSvcEventData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknSvcEventData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyUnknSvcEventCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QyErrInSvcCall_", Dev00600AccumRecQyErrInSvcCall_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyErrInSvcCallData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyErrInSvcCallData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyErrInSvcCallCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QyMsgConvErr", Dev00600AccumRecQyMsgConvErr_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQyMsgConvErrData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyMsgConvErrData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQyMsgConvErrCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_LISTBOXCOLDEFN, "QyTotSvcCalls", Dev00600AccumRecQtTotSvcCalls_FID,
+      0, FND_IT_SHORT,
+      SIZEOF(struct _DZSM001WesMap, _Dev00600AccumRecQtTotSvcCallsData[0]),
+      4, 0, offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQtTotSvcCallsData),
+      offsetof(struct _DZSM001WesMap, _Dev00600AccumRecQtTotSvcCallsCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "KyUserId", KyUserId_FID,
+      KyUserId_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSM001WesMap, _KyUserIdData),
+      8, 0, offsetof(struct _DZSM001WesMap, _KyUserIdData),
+      offsetof(struct _DZSM001WesMap, _KyUserIdCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "TxPcName", TxPcName_FID,
+      TxPcName_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSM001WesMap, _TxPcNameData),
+      8, 0, offsetof(struct _DZSM001WesMap, _TxPcNameData),
+      offsetof(struct _DZSM001WesMap, _TxPcNameCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD},
+  
+    { WTP_FNDENTRYFLD, "FlWindowMod", FlWindowMod_FID,
+      FlWindowMod_WID, FND_IT_CHAR,
+      SIZEOF(struct _DZSM001WesMap, _FlWindowModData),
+      1, 0, offsetof(struct _DZSM001WesMap, _FlWindowModData),
+      offsetof(struct _DZSM001WesMap, _FlWindowModCtl),
+      0, 0, 0, AT_NORMAL, STS_WESVALID,
+      RGT_STANDARD | RGT_HIDDEN_BIT},
 
     { 0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
@@ -455,11 +513,11 @@ WCTCOMMAND DZSM001WCTCommandTbl[] =
 
 WINDEFTBLENTRY DZSM001IDWindowDefn =
 {
-    "21", DZSM001ID, "", WTP_WESWINDOW,
+    "30", DZSM001ID, "", WTP_WESWINDOW,
     WMD_MODELESS, FALSE, WCR_TOP, DZSM001ID,
-    WOP_NOACCEL, WOP_NOMENU, WOP_NOICON, 0,
+    WOP_NOACCEL, WOP_NOMENU, DZSM001IconID, 0,
     DZSM001WidgDisp, DZSM001WindDisp, FND_WINCONTEXT_LEN,
     0, 0, &DZSM001WCTHeader, DZSM001WCTFieldTbl, 
-    DZSM001WCTCommandTbl, NULL, 0, 0, 0
+    DZSM001WCTCommandTbl, NULL, 24, DZSM001FieldDefTbl, 0
 };
 

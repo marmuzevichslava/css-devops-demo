@@ -1,15 +1,16 @@
 /***************************************************************************
  *                                                                         *
- *           O S / 2   S E R V I C E   D I S P A T C H   T A B L E         *
+ *    W I N D O W S   N T   S E R V I C E   D I S P A T C H   T A B L E    *
  *                                                                         *
- *                  Copyright (C) 1994 Andersen Consulting.                *
+ *                  Copyright (C) 1996 Andersen Consulting.                *
  *                         All rights reserved.                            *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
  *           Service Dispatch Table for: DZSM01                            *
- *                         Generated on: Mon Jan 16 14:01:47 1995          *
- *                                   by: ABURDEN                           *
+ *                         Generated on: Tue Mar 31 15:52:40 1998          *
+ *                                   by: MCONNER                           *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 
