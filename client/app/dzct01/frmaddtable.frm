@@ -259,6 +259,7 @@ Option Explicit
 Public CurrentTblType As Integer
 Public bEffDate As Boolean
 Public bResidency As Boolean
+Const DEFVALUE = 0
 
 '***************************************************************************************************************
 ' Private Sub chkEffDate_Click()
@@ -321,8 +322,11 @@ Private Sub cmdAddTbl_Click()
                           CurrentTblType & ", " & _
                           txtDecodeLength.Text & ", " & _
                           txtDecodeDisplacement.Text & ", " & _
+                          DEFVALUE & ", " & _
+                          DEFVALUE & ", " & _
                           txtDataLength.Text & ", " & _
                           txtKeyLength.Text & ", " & _
+                          DEFVALUE & ", " & _
                           Chr(34) & txtClass.Text & Chr(34) & ", " & _
                           Chr(34) & txtDescription.Text & Chr(34) & ");"
     
