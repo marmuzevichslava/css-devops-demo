@@ -9,6 +9,7 @@ Begin VB.Form frmTableLoad
    ClientWidth     =   3735
    Icon            =   "frmloadtable.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2265
@@ -18,14 +19,14 @@ Begin VB.Form frmTableLoad
       Caption         =   "Load Options:"
       Height          =   735
       Left            =   120
-      TabIndex        =   7
+      TabIndex        =   10
       Top             =   1200
       Width           =   3495
       Begin VB.OptionButton optXltOnly 
          Caption         =   "Xlt Only"
          Height          =   255
          Left            =   1200
-         TabIndex        =   10
+         TabIndex        =   3
          Top             =   360
          Width           =   975
       End
@@ -33,7 +34,7 @@ Begin VB.Form frmTableLoad
          Caption         =   "Dat Only"
          Height          =   255
          Left            =   2280
-         TabIndex        =   9
+         TabIndex        =   4
          Top             =   360
          Width           =   1095
       End
@@ -41,7 +42,7 @@ Begin VB.Form frmTableLoad
          Caption         =   "Both"
          Height          =   255
          Left            =   240
-         TabIndex        =   8
+         TabIndex        =   2
          Top             =   360
          Width           =   855
       End
@@ -49,19 +50,20 @@ Begin VB.Form frmTableLoad
    Begin ComctlLib.ProgressBar pBar 
       Height          =   255
       Left            =   2520
-      TabIndex        =   3
+      TabIndex        =   6
       Top             =   2040
       Width           =   2535
       _ExtentX        =   4471
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
+      MouseIcon       =   "frmloadtable.frx":030A
    End
    Begin VB.Frame Frame1 
       Caption         =   "Environment Settings:"
       Height          =   1095
       Left            =   120
-      TabIndex        =   4
+      TabIndex        =   7
       Top             =   0
       Width           =   3495
       Begin VB.ComboBox cboProject 
@@ -84,7 +86,7 @@ Begin VB.Form frmTableLoad
          Caption         =   "Environment:"
          Height          =   255
          Left            =   1800
-         TabIndex        =   6
+         TabIndex        =   9
          Top             =   240
          Width           =   1215
       End
@@ -92,7 +94,7 @@ Begin VB.Form frmTableLoad
          Caption         =   "Project:"
          Height          =   255
          Left            =   120
-         TabIndex        =   5
+         TabIndex        =   8
          Top             =   240
          Width           =   1215
       End
@@ -101,7 +103,7 @@ Begin VB.Form frmTableLoad
       Align           =   2  'Align Bottom
       Height          =   255
       Left            =   0
-      TabIndex        =   2
+      TabIndex        =   5
       Top             =   2010
       Width           =   3735
       _ExtentX        =   6588
@@ -112,19 +114,22 @@ Begin VB.Form frmTableLoad
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frmloadtable.frx":0326
    End
    Begin VB.Menu mnuFile 
       Caption         =   "&File"
       Begin VB.Menu mnuLoad 
          Caption         =   "&Process"
-         Shortcut        =   ^L
+         Shortcut        =   ^P
       End
       Begin VB.Menu mnuSeperator 
          Caption         =   "-"
@@ -414,12 +419,12 @@ Function PutTblFile() As Boolean
     Dim msg As String
     
     With myftp
-        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
         .RemoteFile = sRemoteKcodFile
         .LocalFile = sLocalKcodFile
+        .ErrorMessageBox = True
         .PutFile
     End With
 
@@ -444,12 +449,12 @@ Function RemoveRemoteXlt() As Boolean
     Dim RC As Integer
     
     With myftp
-        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
         .RemoteDirectory = sXltRemotePath
         .RemoteFile = "*.xlt"
+        .ErrorMessageBox = True
         .DeleteDirectory
     End With
 
@@ -744,6 +749,8 @@ Function GetXltMaps() As Boolean
     Dim msg As String
     Dim RC As Integer
     
+    On Error GoTo ErrorHandler
+    
     'Remove all files from the xlt map area
     sFile = Dir(sXltPath & "\*")
     Do While sFile <> ""
@@ -753,18 +760,17 @@ Function GetXltMaps() As Boolean
     
     'Get all xlt maps from remote server
     With myftp
-        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
         .RemoteDirectory = sXltRemotePath
         .LocalDirectory = sXltPath
         .RemoteFile = "*.xlt"
+        .ErrorMessageBox = True
         .GetDirectory
     End With
     
     If myftp.Error Then
-        
          msg = "Xlt maps were not ftp'd from " & sServer & vbCrLf _
                 & "Do you want to continue with process?" & vbCrLf
         
@@ -785,7 +791,15 @@ Function GetXltMaps() As Boolean
     Else
         GetXltMaps = True
     End If
-    
+ErrorHandler:
+            
+    msg = "An error occured while backing up " & KCOD_NAME & vbCrLf _
+                & "Number = " & Err.Number & vbCrLf _
+                & "Description: " & Err.Description & vbCrLf
+        
+    Screen.MousePointer = vbNormal
+    RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
+    GetXltMaps = False
 End Function
 '***************************************************************************************************************
 Function GetTblFile() As Boolean
@@ -793,53 +807,49 @@ Function GetTblFile() As Boolean
     Dim msg As String
     Dim RC As Integer
     
+    On Error GoTo ErrorHandler
+    
     'Get remote version of kcodf010.tbl
     With myftp
-        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
         .RemoteFile = sRemoteKcodFile
         .LocalFile = sLocalKcodFile
+        .ErrorMessageBox = True
         .GetFile
     End With
 
     'Check to see if get was successful
     If myftp.Error Then
-       
-         msg = "An error occured while getting " & sRemoteKcodFile & vbCrLf _
-                & "No tables or xlt maps will be loaded." & vbCrLf
-        
-        Screen.MousePointer = vbNormal
-        RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
-        GetTblFile = False
-        Exit Function
-    
+        Err.Raise 1, , "FTP ERROR.  Could not get file"
     End If
     
     With myftp
-        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
         .RemoteFile = sRemoteKcodFile
         .LocalFile = sArchiveKcodFile
+        .ErrorMessageBox = True
         .GetFile
     End With
     
     'Check to see if get was successful
     If myftp.Error Then
-        
-         msg = "An error occured while getting " & sRemoteKcodFile & vbCrLf _
-                & "No tables or xlt maps will be loaded." & vbCrLf
-        
-        Screen.MousePointer = vbNormal
-        RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
-        GetTblFile = False
-        Exit Function
+        Err.Raise 1, , "FTP ERROR.  Could not get file"
     End If
     
     GetTblFile = True
+    
+ErrorHandler:
+    Screen.MousePointer = vbNormal
+    msg = "An error occured while getting " & KCOD_NAME & vbCrLf _
+                & "Number = " & Err.Number & vbCrLf _
+                & "Description: " & Err.Description & vbCrLf
+    RC = MsgBox(msg, vbOKOnly + vbCritical, "PROCESS STOPPED - " & App.Title)
+    GetTblFile = False
+    
 End Function
 
 '***************************************************************************************************************
