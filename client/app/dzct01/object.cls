@@ -107,7 +107,7 @@ ReDim TableArray(0)
     Set wsCTM = DBEngine.Workspaces(0)
 
     'Attempt to open the database in shared edit mode. Comment this out to switch to using ODBC.
-    Set dbCTM = Workspaces(0).OpenDatabase(CTMDatabase, False, True)
+    Set dbCTM = Workspaces(0).OpenDatabase(CTMDatabase, False, False)
     
     'Set the length of the query timeouts.
     dbCTM.QueryTimeout = 15

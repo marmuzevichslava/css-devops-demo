@@ -505,12 +505,32 @@ End Sub
 '****************************************************************************
 Private Sub mnuAddRequestRecGrp_Click()
 On Error GoTo Err_mnuAddRequestRecGrp_Click
-
+    
+    Dim strTemp As String
+    Dim intI As Integer
+    
+    strTemp = txtSirNo.Text
+    
+    If Len(txtSirNo.Text) <= 5 And Len(txtSirNo.Text) > 0 And IsNumeric(strTemp) Then
+        
+        For intI = Len(strTemp) + 1 To 5
+            strTemp = "0" & strTemp
+        Next intI
+                    
+        'display 5 digit number
+        txtSirNo.Text = strTemp
+            
+        'assign the YYYYY portion of the SIR number
+        ySir = txtSirNo.Text
+    
+    End If
+    
     CheckFields
     
     'create file name if all required fields entered
     If CheckFields = True Then
-        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+        SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
         Call WriteSirInfo
         
     Else
@@ -518,7 +538,7 @@ On Error GoTo Err_mnuAddRequestRecGrp_Click
         MsgBox "Please complete all required fields before adding this template.", vbOKOnly, "Request Record Group Template"
         
    End If
-
+      
 Exit_mnuAddRequestRecGrp_Click:
     Exit Sub
     
@@ -1139,7 +1159,7 @@ On Error GoTo Err_txtSirNo_Change
     Else
         txtSirNo.BackColor = &HFFFF&   'Sets the color of the field to Yellow.
     End If
-    
+           
 Exit_txtSirNo_Change:
     Exit Sub
 

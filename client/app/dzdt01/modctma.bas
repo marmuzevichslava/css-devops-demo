@@ -136,23 +136,23 @@ Public Const LVM_SETEXTEDEDLISTVIEWSTYLE = LVM_FIRST + 54
 Public Function LongDirFix(Incomming As String, _
                            Max As Integer) As String
 '***************************************************************************************************************
-    Dim i As Integer, LblLen As Integer, StringLen As Integer, TempString As String
+    Dim i As Integer, LblLen As Integer, StringLen As Integer, strTemp As String
     
-    TempString = Incomming
+    strTemp = Incomming
     LblLen = Max
     
-    If Len(TempString) <= LblLen Then
-        LongDirFix = TempString
+    If Len(strTemp) <= LblLen Then
+        LongDirFix = strTemp
         Exit Function
     End If
                            
     LblLen = LblLen - 6
     
-    For i = Len(TempString) - LblLen To Len(TempString)
-        If Mid$(TempString, i, 1) = "\" Then Exit For
+    For i = Len(strTemp) - LblLen To Len(strTemp)
+        If Mid$(strTemp, i, 1) = "\" Then Exit For
     Next
                            
-    LongDirFix = Left$(TempString, 3) & "..." & Right$(TempString, Len(TempString) - (i - 1))
+    LongDirFix = Left$(strTemp, 3) & "..." & Right$(strTemp, Len(strTemp) - (i - 1))
     
 End Function
                                                                
