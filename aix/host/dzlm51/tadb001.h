@@ -19,7 +19,6 @@
 /* 07/21/1994    OT      Removed redundant constants                       */
 /* 10/08/1994    DG      Added CTA_DB_NULL_VALUE                           */
 /* 11/08/1994    DG      Added parameter sFuncRetCde to TaDbClose          */
-/* 04/05/1997 RWEINER    Add SQLCODE global variable                       */
 /*                                                                         */
 /***************************************************************************/
 /***************************************************************************/
@@ -65,6 +64,8 @@ typedef struct sqlca TTA_DB_ERR_BLOCK, * TTA_P_DB_ERR_BLOCK;
 /***************************************************************************/
 /* Global variables for this file                                          */
 /***************************************************************************/
+/* my definition */
+
 long SQLCODE;
 
 /***************************************************************************/
@@ -79,5 +80,4 @@ SHORT TaDbOpen(char * szDbName,
 SHORT TaDbRollback(void);
 SHORT TaDbCommit(void);
 SHORT TaDbClose();
-
 

@@ -4,7 +4,7 @@
 /* Subsystem       : Technical Architecture                                */
 /* Component       : Database - Informix version                           */
 /*                                                                         */
-/* File Name       : TADB001u.EC                                           */
+/* File Name       : TADB001u.PC                                           */
 /*                                                                         */
 /* Author          : Andersen Consulting                                   */
 /*                                                                         */
@@ -17,8 +17,8 @@
 /* Date        Revised By   Description                                    */
 /* ----        ----------   -----------                                    */
 /* 04/20/1995   OT          Ported to HP_UX - Informix                     */
-/* 04/05/1997   RWEINER     Ported to HP_UX - Oracle,change extension from */ 
-/*                          .ec to .pc                                     */
+/* 06/03/1997   RWEINER     Convertion to Oracle                           */
+/*                                                                         */
 /***************************************************************************/
 /***************************************************************************/
 /* #INCLUDEs                                                               */
@@ -80,23 +80,24 @@ SHORT TaDbOpen(char * szDbName,
    SHORT      sRetCode = FND_SUCCESS;
 
    EXEC SQL BEGIN DECLARE SECTION;
-      char username[UNAME_LEN];
-      char password[PWD_LEN];
+      char username[20];
+      char password[20];
    EXEC SQL END   DECLARE SECTION;
 
 /* Connect to ORACLE. */
 
-   strcpy(username, "fndrepos");
-   strcpy(password, "fndrepos");
+   strcpy(username, "madt4com");
+   strcpy(password, "madt4com");
+ 
+/*   EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--");*/
  
    EXEC SQL CONNECT :username IDENTIFIED BY :password;
    printf("\nConnected to ORACLE as user: %s\n", username);
  
-   printf("\nConnection %d.\n", SQLCODE);
-
    if (SQLCODE == 0)
    {
       sRetCode = FND_SUCCESS;
+/*      EXEC SQL SET ISOLATION TO DIRTY READ;*/
    }
    else
       sRetCode = ETA_DB_OPEN_ERR;

@@ -19,24 +19,12 @@
 * Designed by:     IPEREZAR                                                * 
 * Programmed by:   IPEREZAR                                                *
 *                                                                          *
-* Revision History:                                                        *
-*                                                                          *
-* Date        Revised By   Description                                     *
-* ----        ----------   -----------                                     *
-* 04/05/1997   RWEINER     Add the function rgetmsg to be compatible       * 
-*                          with the Informix version                       * 
 ****************************************************************************/
 
-int rgetmsg(short sqlcode, char *msg, short msglen)
-{
-   strncpy(msg, "Description not available - please see the manual", msglen-1);
-   msg[msglen-1] = '\0';
-   return(0);
-}
 
 /*
 **  err_chk() checks sqlca.sqlcode and if an error has occurred, it uses
-**  rgetmsg()  to display the message for the error condition in 
+**  rgetmsg() [Informix] to display the message for the error condition in 
 **  sqlca.
  */
 
@@ -48,8 +36,8 @@ short err_chk(char *name)
    {
       memset(errmsg, 0, sizeof(errmsg) );
 
-      /* check for the new function */
-      rgetmsg((short)sqlca.sqlcode, errmsg, sizeof(errmsg));
+      /* Informix function */
+      /*rgetmsg((short)sqlca.sqlcode, errmsg, sizeof(errmsg));*/
 
       printf("\nError %d during %s: %s\n",sqlca.sqlcode, name, errmsg);
 
@@ -76,4 +64,5 @@ short err_chk(char *name)
       if (rc != FND_SUCCESS)                                                  \
          return rc;                                                           \
    }
+
 

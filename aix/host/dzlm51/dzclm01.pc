@@ -15,13 +15,14 @@
  *                                                                         *
  * Designed by:                                                            *
  * Programmed by:                                                          *
- *
- * Revision History:                                                       *
  *                                                                         *
- * Date     Revised By     Description                                     *
- * ----     ----------     ------------                                    *
- * 04/04    RWEINER        Change from .ec to .pc                          *
-                           add extern sqlcode
+ *   Revision History:                                                     *
+ *                                                                         *
+ * Date        Revised By   Description                                    *
+ * ----        ----------   -----------                                    *
+ * 06/04/1997  RWEINER      Convert the sql statements to Oracle           *
+ *                          Convert call to the recursive functions        *
+ *                                                                         *
  ***************************************************************************
  * You may need to define other constants depending on the APIs used.      *
  ***************************************************************************/
@@ -89,7 +90,9 @@ extern unsigned long counter_lu;
 extern unsigned long counter_already_lu;
 extern unsigned long counter_unable_to_lu;
 
+/* my definition */
 extern long SQLCODE;
+
 
 /***************************************************************************
  * Copybooks                                                               *
@@ -242,7 +245,7 @@ unsigned short APIENTRY DZCLM01 (_SERVICE_DATA  *pfpb,
 		        0);
         else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
 		      "DECONTRL",8) == 0)
-                 LU_Control(
+                 LU_Control_Recursive(
                         pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
 		        nLockFlag, 
 		        nLockRecursiveFlag, 

@@ -9,14 +9,7 @@
  *                Program Front End for: dzlm51                            *
  *                         Generated on: Tue Mar 31 17:24:02 1997          *
  *                                   by: RWEINER                           *
- *                    Short Description: 
- *                                                                         *
- * Revision History:                                                       *
- *                                                                         *
- * Date        Revised By   Description                                    *
- * ----        ----------   -----------                                    *
- * 04/05/1997   RWEINER     Change the database access type to Oracle      *
- *                                                                         *
+ *                    Short Description:                                   *
  *                                                                         *
  ***************************************************************************/
 
@@ -32,7 +25,7 @@
  * Foundation Application Information                                      *
  ***************************************************************************/
 #define  FND_PROGRAM_NAME        "dzlm51"
-#define  FND_APPL_VERSION        "32"
+#define  FND_APPL_VERSION        "21"
 #define  FND_APPL_QUEUE          UNSOLICITED_Q_AU
 #define  FND_PROGRAM_TYPE        FND_APPL_TYPE_SERVER
 #define  FND_PROGRAM_LANG        FND_C_LANG

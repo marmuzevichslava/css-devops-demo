@@ -18,17 +18,13 @@
 * Designed by:     IPEREZAR                                                * 
 * Programmed by:   IPEREZAR                                                *
 *                                                                          *
-* Revision History:                                                        *
+*   Revision History:                                                      *
 *                                                                          *
-* Date     Revised By     Description                                      *
-* ----     ----------     ------------                                     *
-* 04/04     RWEINER       Add the function LU_Record_Group_Recursive       *
-*                         Change LU_Control to support recursion           *
-*                         Change calls to LU_Record_Group to               *
-*                         LU_Record_Group_Recursive                        *
-*                                                                          * 
-*                                                                          *
-*                                                                          *
+* Date        Revised By   Description                                     *
+* ----        ----------   -----------                                     *
+* 06/04/1997  RWEINER      Convert the sql statements to Oracle            *
+*                          Convert recursive cursors to nested cursors     *
+*                           
 ****************************************************************************/
 
 /***************************************************************************
@@ -92,11 +88,6 @@ short LU_Record( char *Object_Name,
 		 unsigned short Lock, 
 		 unsigned short Recurs_Lock, 
 		 short Level);
-
-short LU_Record_Group_Recursive( char *Object_Name,
-               unsigned short Lock,
-               unsigned short Recurs_Lock,
-               short Level);
 
 short LU_Record_Group( char *Object_Name, 
 		       unsigned short Lock, 
@@ -184,6 +175,17 @@ short LU_File( char *Object_Name,
 	       unsigned short Recurs_Lock, 
 	       short Level);
 
+short LU_Record_Group_Recursive ( char *Object_Name,
+                       unsigned short Lock,
+                       unsigned short Recurs_Lock,
+                       short Level);
+
+short LU_Control_Recursive( char *Object_Name,
+               unsigned short Lock,
+               unsigned short Recurs_Lock,
+               short Level);
+
+
 /***************************************************************************/
 /* Constants (#DEFINE)                                                     */
 /***************************************************************************/
@@ -227,8 +229,8 @@ short LU_Table( char *Table,
    if (Lock)
    {
       sprintf (sql_statement1,"update %s "
-                 " set entity_lock_by = :entity_lock_id1, "
-                 " entity_lock_type = :entity_lock_by1 "
+                 " set entity_lock_by = :entity_lock_by1, "
+                 " entity_lock_type = :entity_lock_type1 "
                  " where entity_id LIKE :entity_id1 "
                  " and entity_lock_by = ' '", Table);
 
@@ -326,7 +328,7 @@ short LU_Copybook(char *Object_Name,
    if (rc != FND_SUCCESS)
       return rc;
 
-  if (counter_select == 0)
+   if (counter_select == 0)
       return 0;
 
    rc = LU_Table("decopybk", Object_Name, Lock);
@@ -405,7 +407,7 @@ short LU_Record( char *Object_Name,
          EXEC SQL fetch recordcursor into :rgr_entity_id4;
          if (sqlca.sqlcode != 0)
             break;
-         rc=LU_Record_Group_Recursive(rgr_entity_id4, Lock, Recurs_Lock, Level+1);
+         rc=LU_Record_Group_Recursive(rgr_entity_id4, Lock, Recurs_Lock, 0);
          if (rc != FND_SUCCESS)
             break;
 
@@ -504,18 +506,18 @@ short LU_Record_Group( char *Object_Name,
    /* record group to record group */
    if (Recurs_Lock)
    {
-      EXEC SQL DECLARE rgrcursor CURSOR FOR
+      EXEC SQL declare rgrcursor cursor for
          select c.entity_id
             from drrgrrgr a, degroup b, degroup c
             where b.entity_id like :entity_id5
                and b.entity_internal_id = a.parent_internal_id
                and a.child_internal_id  = c.entity_internal_id;
       rc=err_chk("declare");
-      EXEC SQL OPEN rgrcursor;
+      EXEC SQL open rgrcursor;
       rc=err_chk("open");
       for (;;)
       {
-         EXEC SQL FETCH rgrcursor INTO :rgr_entity_id5;
+         EXEC SQL fetch rgrcursor into :rgr_entity_id5;
          rc=err_chk("fetch");
          if (sqlca.sqlcode != 0)
             break;
@@ -1065,7 +1067,6 @@ short LU_Control( char *Object_Name,
    EXEC SQL BEGIN DECLARE SECTION;
       char entity_id20[ ENTITY_ID_LEN ];
       char con_entity_id20[ ENTITY_ID_LEN ];
-      char ctrl_sel_query[300];
    EXEC SQL END DECLARE SECTION;
    short rc;
 
@@ -1088,86 +1089,23 @@ short LU_Control( char *Object_Name,
    /* menu to menu item*/
    if (Recurs_Lock)
    {
-      
-       sprintf(ctrl_sel_query,"%s %s %s %s %s",
-            "select c.entity_id",
-            "from drctlctl a, decontrl b, decontrl c",
-            "where b.entity_id like :entity_id20",
-            "and b.entity_internal_id = a.parent_internal_id",
-            "and a.child_internal_id  = c.entity_internal_id");
-
-       /* declares and opens a cursor according to level os recursion */
-       switch(Level)
-       {
-            case 0:
-                EXEC SQL PREPARE ctrl_cursor_stmt0 from  :ctrl_sel_query;
-                EXEC SQL DECLARE ctrl_cursor0 CURSOR FOR ctrl_cursor_stmt0;
-                rc=err_chk("declare");
-                EXEC SQL OPEN  ctrl_cursor0 USING :entity_id20;
-                break;
-            case 1:
-                EXEC SQL PREPARE ctrl_cursor_stmt1 from  :ctrl_sel_query;
-                EXEC SQL DECLARE ctrl_cursor1 CURSOR FOR ctrl_cursor_stmt1;
-                rc=err_chk("declare");
-                EXEC SQL OPEN  ctrl_cursor1 USING :entity_id20;
-                break;
-            case 2:
-                EXEC SQL PREPARE ctrl_cursor_stmt2 from  :ctrl_sel_query;
-                EXEC SQL DECLARE ctrl_cursor2 CURSOR FOR ctrl_cursor_stmt2;
-                rc=err_chk("declare");
-                EXEC SQL OPEN  ctrl_cursor2 USING :entity_id20;
-                break;
-            case 3:
-                EXEC SQL PREPARE ctrl_cursor_stmt3 from  :ctrl_sel_query;
-                EXEC SQL DECLARE ctrl_cursor3 CURSOR FOR ctrl_cursor_stmt3;
-                rc=err_chk("declare");
-                EXEC SQL OPEN  ctrl_cursor3 USING :entity_id20;
-                break;
-      }
-      rc=err_chk("open");
-      /* fetch data until it returns a code that there is no more
-           rows. ( sqlca.code = 100 ) */
+      EXEC SQL declare concursor3 cursor for
+         select c.entity_id
+            from drctlctl a, decontrl b, decontrl c
+            where b.entity_id like :entity_id20
+               and b.entity_internal_id = a.parent_internal_id
+               and a.child_internal_id  = c.entity_internal_id;
+      EXEC SQL open concursor3;
       for (;;)
       {
-           switch(Level)
-           {
-                case 0:
-                    EXEC SQL FETCH ctrl_cursor0 INTO :con_entity_id20;
-                    break; 
-                case 1:
-                    EXEC SQL FETCH ctrl_cursor1 INTO :con_entity_id20;
-                    break;
-                case 2:
-                    EXEC SQL FETCH ctrl_cursor2 INTO :con_entity_id20;
-                    break;
-                case 3:
-                    EXEC SQL FETCH ctrl_cursor3 INTO :con_entity_id20;
-                    break;
-           }
-           rc=err_chk("fetch");
-           if (sqlca.sqlcode != 0)
-                  break;
-           rc=LU_Control(con_entity_id20, Lock, 0, Level+1);
-           if (rc != FND_SUCCESS)
-                  break;
+         EXEC SQL fetch concursor3 into :con_entity_id20;
+         if (sqlca.sqlcode != 0)
+            break;
+         rc=LU_Control(con_entity_id20, Lock, 0, Level+1);
+         if (rc != FND_SUCCESS)
+            break;
       }
-   
-      /* Close the cursor */
-      switch(Level)
-      {
-           case 0:
-               EXEC SQL CLOSE ctrl_cursor0;
-               break;
-           case 1:
-               EXEC SQL CLOSE ctrl_cursor1;
-               break;
-           case 2:
-               EXEC SQL CLOSE ctrl_cursor2;
-               break;
-           case 3:
-               EXEC SQL CLOSE ctrl_cursor3;
-               break;
-      }
+      EXEC SQL close concursor3;
    }
    return rc;
 }
@@ -1203,6 +1141,7 @@ short LU_List_Box( char *Object_Name,
       return rc;
    return rc;
 }
+
 
 
 /***************************************************************************/
@@ -1335,7 +1274,7 @@ short LU_Window( char *Object_Name,
          EXEC SQL fetch concursor1 into :con_entity_id15;
          if (sqlca.sqlcode != 0)
             break;
-         rc=LU_Control(con_entity_id15, Lock, Recurs_Lock, 0);
+         rc=LU_Control_Recursive(con_entity_id15, Lock, Recurs_Lock, Level+1);
          if (rc != FND_SUCCESS)
             break;
       }
@@ -1833,7 +1772,7 @@ short LU_Table_WT( char *Table,
                  " entity_lock_type = :entity_lock_type1 "
                  " where entity_id LIKE :entity_id1 "
                  " and ( entity_type = :entity_type_low "
-                 " or entity_type = :entity_type_high ) "
+                 " or entity_type = :entity_type_upp ) "
                  " and entity_lock_by = ' '");
 
       printf("\n%s\n", sql_statement1 );
@@ -1877,7 +1816,7 @@ short LU_Table_WT( char *Table,
                              " where entity_id like :entity_id1 "
                              " and entity_lock_by   =  :entity_lock_by1 "
                              " and (entity_type = :entity_type_low "
-                             " or entity_type = :entity_type_high )");
+                             " or entity_type = :entity_type_upp )");
 
       printf("\n%s\n", sql_statement1 );
 
@@ -2059,24 +1998,29 @@ short LU_File( char *Object_Name,
    return rc;
 }
 
+/***************************************************************************/
+/*  LU_Record_Group_Recursive                                              */
+/***************************************************************************/
 
 short LU_Record_Group_Recursive( char *Object_Name,
-               unsigned short Lock,
-               unsigned short Recurs_Lock,
-               short Level)
+                       unsigned short Lock,
+                       unsigned short Recurs_Lock,
+                       short Level)
+
 {
+
    EXEC SQL BEGIN DECLARE SECTION;
-      char entity_id5[ ENTITY_ID_LEN ];
-      char rgr_entity_id5[ ENTITY_ID_LEN ];
-      char rgr_sel_query[300];
+      char str_query[400];
+      char entity_id[ ENTITY_ID_LEN ];
+      char rgr_entity_id[ ENTITY_ID_LEN ];
    EXEC SQL END DECLARE SECTION;
    short rc;
 
-   strcpy( entity_id5, Object_Name);
+   strcpy( entity_id, Object_Name);
    EXEC SQL select count(*)
       into :counter_select
       from degroup
-      where entity_id like :entity_id5;
+      where entity_id like :entity_id;
 
    printf("Conter Select = %d\n", counter_select);
    rc=err_chk("select");
@@ -2093,241 +2037,354 @@ short LU_Record_Group_Recursive( char *Object_Name,
       return rc;
    }
 
-   sprintf(rgr_sel_query,"%s %s %s %s %s",
-            "select c.entity_id",
-            "from drrgrrgr a, degroup b, degroup c",
-            "where b.entity_id like :entity_id5",
-            "and b.entity_internal_id = a.parent_internal_id",
-            "and a.child_internal_id  = c.entity_internal_id");
-         
-
    /* record group to record group */
    if (Recurs_Lock)
    {
-        /* declares and opens a cursor according to level os recursion */
-        switch(Level)
+        switch (Level)
         {
-                case 0:
-                    EXEC SQL PREPARE rgr_cursor_stmt0 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor0 CURSOR FOR rgr_cursor_stmt0;
-                    rc=err_chk("declare"); 
-                    EXEC SQL OPEN  rgr_cursor0 USING :entity_id5;
-                    break;
-                case 1:
-                    EXEC SQL PREPARE rgr_cursor_stmt1 from  :rgr_sel_query; 
-                    EXEC SQL DECLARE rgr_cursor1 CURSOR FOR rgr_cursor_stmt1;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor1 USING :entity_id5;
-                    break;
-                case 2:
-                    EXEC SQL PREPARE rgr_cursor_stmt2 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor2 CURSOR FOR rgr_cursor_stmt2;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor2 USING :entity_id5;
-                    break;
-                case 3: 
-                    EXEC SQL PREPARE rgr_cursor_stmt3 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor3 CURSOR FOR rgr_cursor_stmt3;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor3 USING :entity_id5;
-                    break;
-                case 4: 
-                    EXEC SQL PREPARE rgr_cursor_stmt4 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor4 CURSOR FOR rgr_cursor_stmt4;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor4 USING :entity_id5;
-                    break;
-                case 5: 
-                    EXEC SQL PREPARE rgr_cursor_stmt5 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor5 CURSOR FOR rgr_cursor_stmt5;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor5 USING :entity_id5;
-                    break;
-                case 6:
-                    EXEC SQL PREPARE rgr_cursor_stmt6 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor6 CURSOR FOR rgr_cursor_stmt6;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor6 USING :entity_id5;
-                    break;
-                case 7:
-                    EXEC SQL PREPARE rgr_cursor_stmt7 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor7 CURSOR FOR rgr_cursor_stmt7;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor7 USING :entity_id5;
-                    break;
-                case 8:
-                    EXEC SQL PREPARE rgr_cursor_stmt8 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor8 CURSOR FOR rgr_cursor_stmt8;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor8 USING :entity_id5;
-                    break;
-                case 9:
-                    EXEC SQL PREPARE rgr_cursor_stmt9 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor9 CURSOR FOR rgr_cursor_stmt9;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor9 USING :entity_id5;
-                    break;
-                case 10: 
-                    EXEC SQL PREPARE rgr_cursor_stmt10 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor10 CURSOR FOR rgr_cursor_stmt10;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor10 USING :entity_id5;
-                    break;
-                case 11:
-                    EXEC SQL PREPARE rgr_cursor_stmt11 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor11 CURSOR FOR rgr_cursor_stmt11;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor11 USING :entity_id5;
-                    break;
-                case 12:
-                    EXEC SQL PREPARE rgr_cursor_stmt12 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor12 CURSOR FOR rgr_cursor_stmt12;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor12 USING :entity_id5;
-                    break;
-                case 13:
-                    EXEC SQL PREPARE rgr_cursor_stmt13 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor13 CURSOR FOR rgr_cursor_stmt13;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor13 USING :entity_id5;
-                    break;
-                case 14:
-                    EXEC SQL PREPARE rgr_cursor_stmt14 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor14 CURSOR FOR rgr_cursor_stmt14;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor14 USING :entity_id5;
-                    break;
-                case 15:
-                    EXEC SQL PREPARE rgr_cursor_stmt15 from  :rgr_sel_query;
-                    EXEC SQL DECLARE rgr_cursor15 CURSOR FOR rgr_cursor_stmt15;
-                    rc=err_chk("declare");
-                    EXEC SQL OPEN  rgr_cursor15 USING :entity_id5;
-                    break;
-                default:
-                    
-                    break;
-        }
-        rc=err_chk("open");
-        /* fetch data until it returns a code that there is no more 
-           rows. ( sqlca.code = 100 ) */ 
+            case 0:
+               EXEC SQL DECLARE rgr_cursor0 CURSOR for 
+                  select c.entity_id 
+                  from drrgrrgr a, degroup b, degroup c 
+                  where b.entity_id like :entity_id 
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor0; 
+               break;
+
+            case 1:
+               EXEC SQL DECLARE rgr_cursor1 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor1;
+               break;
+            case 2:
+               EXEC SQL DECLARE rgr_cursor2 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor2;
+               break;
+
+            case 3:
+               EXEC SQL DECLARE rgr_cursor3 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor3;
+               break;
+
+            case 4:
+               EXEC SQL DECLARE rgr_cursor4 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor4;
+               break;
+
+            case 5:
+               EXEC SQL DECLARE rgr_cursor5 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor5;
+               break;
+
+            case 6:
+               EXEC SQL DECLARE rgr_cursor6 CURSOR for
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor6;
+               break;
+
+            case 7:
+               EXEC SQL DECLARE rgr_cursor7 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor7;
+               break;
+
+            case 8:
+               EXEC SQL DECLARE rgr_cursor8 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor8;
+               break;
+
+            case 9:
+               EXEC SQL DECLARE rgr_cursor9 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor9;
+               break;
+
+            case 10:
+               EXEC SQL DECLARE rgr_cursor10 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor10;
+               break;
+
+            case 11:
+               EXEC SQL DECLARE rgr_cursor11 CURSOR for 
+                  select c.entity_id
+                  from drrgrrgr a, degroup b, degroup c
+                  where b.entity_id like :entity_id
+                  and b.entity_internal_id = a.parent_internal_id
+                  and a.child_internal_id  = c.entity_internal_id ;
+               EXEC SQL OPEN rgr_cursor11;
+               break;
+        } 
         for (;;)
         {
-                switch(Level)
-                {
-                      case 0:
-                          EXEC SQL FETCH rgr_cursor0 INTO :rgr_entity_id5;
-                          break;  
-                      case 1:
-                          EXEC SQL FETCH rgr_cursor1 INTO :rgr_entity_id5;
-                          break;
-                      case 2:
-                          EXEC SQL FETCH rgr_cursor2 INTO :rgr_entity_id5;
-                          break;
-                      case 3:
-                          EXEC SQL FETCH rgr_cursor3 INTO :rgr_entity_id5;
-                          break;
-                      case 4:
-                          EXEC SQL FETCH rgr_cursor4 INTO :rgr_entity_id5;
-                          break;
-                      case 5:
-                          EXEC SQL FETCH rgr_cursor5 INTO :rgr_entity_id5;
-                          break;
-                      case 6:
-                          EXEC SQL FETCH rgr_cursor6 INTO :rgr_entity_id5;
-                          break;
-                      case 7:
-                          EXEC SQL FETCH rgr_cursor7 INTO :rgr_entity_id5;
-                          break;
-                      case 8:
-                          EXEC SQL FETCH rgr_cursor8 INTO :rgr_entity_id5;
-                          break;
-                      case 9:
-                          EXEC SQL FETCH rgr_cursor9 INTO :rgr_entity_id5;
-                          break;
-                      case 10:
-                          EXEC SQL FETCH rgr_cursor10 INTO :rgr_entity_id5;
-                          break;
-                      case 11:
-                          EXEC SQL FETCH rgr_cursor11 INTO :rgr_entity_id5;
-                          break;
-                      case 12:
-                          EXEC SQL FETCH rgr_cursor12 INTO :rgr_entity_id5;
-                          break;
-                      case 13:
-                          EXEC SQL FETCH rgr_cursor13 INTO :rgr_entity_id5;
-                          break;
-                      case 14:
-                          EXEC SQL FETCH rgr_cursor14 INTO :rgr_entity_id5;
-                          break;
-                      case 15:
-                          EXEC SQL FETCH rgr_cursor15 INTO :rgr_entity_id5;
-                          break;
-                }
-                rc=err_chk("fetch");
-                if (sqlca.sqlcode != 0)
-                      break;
-                rc=LU_Record_Group_Recursive(rgr_entity_id5, Lock, Recurs_Lock, Level+1);
-                if (rc != FND_SUCCESS)
-                      break;
+            switch (Level)
+            {
+                case 0:
+                   EXEC SQL fetch rgr_cursor0 into :rgr_entity_id;
+                   break;
+                case 1:
+                   EXEC SQL fetch rgr_cursor1 into :rgr_entity_id;
+                   break;
+                case 2:
+                   EXEC SQL fetch rgr_cursor2 into :rgr_entity_id;
+                   break;
+                case 3:
+                   EXEC SQL fetch rgr_cursor3 into :rgr_entity_id;
+                   break;
+                case 4:
+                   EXEC SQL fetch rgr_cursor4 into :rgr_entity_id;
+                   break;
+                case 5:
+                   EXEC SQL fetch rgr_cursor5 into :rgr_entity_id;
+                   break;
+                case 6:
+                   EXEC SQL fetch rgr_cursor6 into :rgr_entity_id;
+                   break;
+                case 7:
+                   EXEC SQL fetch rgr_cursor7 into :rgr_entity_id;
+                   break;
+                case 8:
+                   EXEC SQL fetch rgr_cursor8 into :rgr_entity_id;
+                   break;
+                case 9:
+                   EXEC SQL fetch rgr_cursor9 into :rgr_entity_id;
+                   break;
+                case 10:
+                   EXEC SQL fetch rgr_cursor10 into :rgr_entity_id;
+                   break;
+                case 11:
+                   EXEC SQL fetch rgr_cursor11 into :rgr_entity_id;
+                   break;
 
-        } /* end of for */
 
-        /* Close the cursor */
-        switch(Level)
+            } /* end of switch */
+            rc=err_chk("fetch");
+            if (sqlca.sqlcode != 0)
+                break;
+             rc=LU_Record_Group_Recursive(rgr_entity_id, Lock, Recurs_Lock, Level+1);
+             if (rc != FND_SUCCESS)
+                break;
+        } /* end of for */ 
+
+        switch (Level)
         {
-               case 0:
-                     EXEC SQL CLOSE rgr_cursor0;
-                     break;
-               case 1:
-                     EXEC SQL CLOSE rgr_cursor1;
-                     break;
-               case 2:
-                     EXEC SQL CLOSE rgr_cursor2;
-                     break;
-               case 3:
-                     EXEC SQL CLOSE rgr_cursor3;
-                     break;
-               case 4:
-                     EXEC SQL CLOSE rgr_cursor4;
-                     break;
-               case 5:
-                     EXEC SQL CLOSE rgr_cursor5;
-                     break;
-               case 6:
-                     EXEC SQL CLOSE rgr_cursor6;
-                     break;
-               case 7:
-                     EXEC SQL CLOSE rgr_cursor7;
-                     break;
-               case 8:
-                     EXEC SQL CLOSE rgr_cursor8;
-                     break;
-               case 9:
-                     EXEC SQL CLOSE rgr_cursor9;
-                     break;
-               case 10:
-                     EXEC SQL CLOSE rgr_cursor10;
-                     break;
-               case 11:
-                     EXEC SQL CLOSE rgr_cursor11;
-                     break;
-               case 12:
-                     EXEC SQL CLOSE rgr_cursor12;
-                     break;
-               case 13:
-                     EXEC SQL CLOSE rgr_cursor13;
-                     break;
-               case 14:
-                     EXEC SQL CLOSE rgr_cursor14;
-                     break;
-               case 15:
-                     EXEC SQL CLOSE rgr_cursor15;
-                     break;
+            case 0:
+                EXEC SQL CLOSE rgr_cursor0;
+                break;
+            case 1:
+                EXEC SQL CLOSE rgr_cursor1;
+                break;
+            case 2:
+                EXEC SQL CLOSE rgr_cursor2;
+                break;
+            case 3:
+                EXEC SQL CLOSE rgr_cursor3;
+                break;
+            case 4:
+                EXEC SQL CLOSE rgr_cursor4;
+                break;
+            case 5:
+                EXEC SQL CLOSE rgr_cursor5;
+                break;
+            case 6:
+                EXEC SQL CLOSE rgr_cursor6;
+                break;
+            case 7:
+                EXEC SQL CLOSE rgr_cursor7;
+                break;
+            case 8:
+                EXEC SQL CLOSE rgr_cursor8;
+                break;
+            case 9:
+                EXEC SQL CLOSE rgr_cursor9;
+                break;
+            case 10:
+                EXEC SQL CLOSE rgr_cursor10;
+                break;
+            case 11:
+                EXEC SQL CLOSE rgr_cursor11;
+                break;
 
         }
+ 
+  } /* end of if Recurs_LOck */
+  return FND_SUCCESS;
+}
 
-   }/* end if Recursv */
-   return rc;
+/***************************************************************************/
+/*  LU_Control_Recursive                                                   */
+/***************************************************************************/
 
+
+short LU_Control_Recursive( char *Object_Name,
+               unsigned short Lock,
+               unsigned short Recurs_Lock,
+               short Level)
+{
+   EXEC SQL BEGIN DECLARE SECTION;
+      char entity_id[ ENTITY_ID_LEN ];
+      char con_entity_id[ ENTITY_ID_LEN ];
+   EXEC SQL END DECLARE SECTION;
+   short rc;
+
+   strcpy( entity_id, Object_Name);
+   EXEC SQL select count(*)
+      into :counter_select
+      from decontrl
+      where entity_id like :entity_id;
+
+   rc=err_chk("select");
+
+   if (rc != FND_SUCCESS)
+      return rc;
+   if (counter_select == 0)
+      return 0;
+
+   rc = LU_Table("decontrl", Object_Name, Lock);
+   if (rc != FND_SUCCESS)
+      return rc;
+
+   /* menu to menu item*/
+   if (Recurs_Lock)
+   {
+       switch (Level)
+       {
+           case 0:
+               EXEC SQL declare contcursor0 cursor for
+                        select c.entity_id
+                        from drctlctl a, decontrl b, decontrl c
+                        where b.entity_id like :entity_id
+                        and b.entity_internal_id = a.parent_internal_id
+                        and a.child_internal_id  = c.entity_internal_id;
+               EXEC SQL open contcursor0;
+               break;
+
+           case 1:
+               EXEC SQL declare contcursor1 cursor for
+                        select c.entity_id
+                        from drctlctl a, decontrl b, decontrl c
+                        where b.entity_id like :entity_id
+                        and b.entity_internal_id = a.parent_internal_id
+                        and a.child_internal_id  = c.entity_internal_id;
+               EXEC SQL open contcursor1;
+               break;
+
+           case 2:
+               EXEC SQL declare contcursor2 cursor for
+                        select c.entity_id
+                        from drctlctl a, decontrl b, decontrl c
+                        where b.entity_id like :entity_id
+                        and b.entity_internal_id = a.parent_internal_id
+                        and a.child_internal_id  = c.entity_internal_id;
+               EXEC SQL open contcursor2;
+               break;
+
+           case 3:
+               EXEC SQL declare contcursor3 cursor for
+                        select c.entity_id
+                        from drctlctl a, decontrl b, decontrl c
+                        where b.entity_id like :entity_id
+                        and b.entity_internal_id = a.parent_internal_id
+                        and a.child_internal_id  = c.entity_internal_id;
+               EXEC SQL open contcursor3;
+               break;
+       }
+
+       for (;;)
+       {
+           switch(Level)
+           {
+               case 0:
+                   EXEC SQL fetch contcursor0 into :con_entity_id;
+                   break;
+
+               case 1:
+                   EXEC SQL fetch contcursor1 into :con_entity_id;
+                   break;
+
+               case 2:
+                   EXEC SQL fetch contcursor2 into :con_entity_id;
+                   break;
+
+               case 3:
+                   EXEC SQL fetch contcursor3 into :con_entity_id;
+                   break;
+
+           }
+           if (sqlca.sqlcode != 0)
+                break;
+           rc=LU_Control_Recursive(con_entity_id, Lock, 0, Level+1);
+           if (rc != FND_SUCCESS)
+                break;
+       } /* end for */
+       switch (Level)
+       {
+           case 0:
+               EXEC SQL close contcursor0;
+               break;
+
+           case 1:
+               EXEC SQL close contcursor1;
+               break;
+
+           case 2:
+               EXEC SQL close contcursor2;
+               break;
+
+           case 3:
+               EXEC SQL close contcursor3;
+               break;
+       }
+   } /* end if */
+   else
+   {
+       return FND_SUCCESS;
+   }
 }
 

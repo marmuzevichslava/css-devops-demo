@@ -30,7 +30,7 @@ EXEFLAGS		= $(DEBUGFLAG) $(GLBLFLAGSC) $(LISTFLAGC)
 #	C object compilation flags
 #
 #**************************************************************************
-BLDFLAG            = -DBUILD_ENV
+BLDFLAG            = -DBUILD_ENV +DAportable
 
 CFLAGS			= $(DEBUGFLAG) -c $(GLBLFLAGSC) $(BLDFLAG) $(LISTFLAGC)
 
@@ -50,13 +50,13 @@ ARCHLIBS		=-lol_dbio  \
 			-lol_dbio
 
 APPLLIBS		=
-
+ORA2LIBS                = $(ORACLE_HOME)/lib/libclntsh.sl -lcl -lm
 LIBRARIES		=\
 			$(APPLLIBS) \
 			$(ARCHLIBS) \
 			$(FNDLIBS) \
 			$(ISAMLIBS) \
-			$(ORALIBS) \
+			$(ORA2LIBS) \
 			$(SYSLIBS)
 
 #**************************************************************************
