@@ -5,38 +5,38 @@ CBLSVC - COBOL service file for OS/2 and Unix service modules.
       **                                                            **
       **           FOUNDATION FOR COOPERATIVE PROCESSING            **
       **                                                            **
-      **                         ~COBOLSvcDrvTitle    **
-      **                    COBOL ~ServiceFileType FILE X    **
+      **                         ~COBOLSvcDrvTitle ~@68.**
+      **                 COBOL ~ServiceFileType FILE ~@68.**
       **                                                            **
-      **           COPYRIGHT (C) 1992 ANDERSEN CONSULTING.          **
+      **           COPYRIGHT (C) 1996 ANDERSEN CONSULTING.          **
       **                    ALL RIGHTS RESERVED.                    **
       **                                                            **
       ****************************************************************
       **                                                            **
-      **  MODULE NAME:    ~PadModName                               **
+      **  MODULE NAME:    ~PadModName ~@68.**
       **                                                            **
-      **  DATE GENERATED: ~Time                  **
+      **  DATE GENERATED: ~GenTime ~@68.**
       **                                                            **
-      **  BY USER:        ~UserID                                  **
+      **  BY USER:        ~UserID ~@68.**
       **                                                            **
-      **  AUTHOR:         FLORIDA POWER CORPORATION &               **
-      **                  ANDERSEN CONSULTING - CSS PROJECT.        **
+      **  DESIGNER:       ~Designer ~@68.**
       **                                                            **
-      **  DESCRIPTION     ~Descr       **
+      **  PROGRAMMER:     ~Programmer ~@68.**
       **                                                            **
+      **  SHORT DESCRIPTION: ~ShortDescr    ~@68.**
       ****************************************************************
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID.   ~InvocationName.
-       INSTALLATION. COMPUTER SERVICES DIVISION.
-		     FLORIDA POWER CORPORATION.
+       INSTALLATION. SOLUTIONWORKS.
+		     ANDERSEN CONSULTING.
 		     ST.  PETERSBURG, FLORIDA.
-       AUTHOR.       FLORIDA POWER CORPORATION/ANDERSEN CONSULTING.
-       DATE-WRITTEN. ~Date..
+       AUTHOR.       ANDERSEN CONSULTING.
+       DATE-WRITTEN. 1997-01-01.
 
       **********************COPYRIGHT NOTICE*************************
-      ** COPYRIGHT 1992 FLORIDA POWER CORPORATION.  ALL RIGHTS     **
-      ** RESERVED.                                                 **
+      ** COPYRIGHT 1997 ANDERSEN CONSULTING/SOLUTIONWORKS          **
+      ** ALL RIGHTS RESERVED.                                      **
       ** NOTICE OF COPYRIGHT DOES NOT IMPLY PUBLICATION.           **
       **                                                           **
       **********************PROGRAM PURPOSE**************************
@@ -83,10 +83,16 @@ CBLSVC - COBOL service file for OS/2 and Unix service modules.
       ****************************************************************
       ** REPOSITORY WORKING STORAGE                                 **
       ****************************************************************
-~UnixSQLPrep
-~WSCopybooks
+       01  FND-CONSTANTS.
+         02  FND-SUCCESS                             PIC S9(4) VALUE 0.
+~ifWorkingStorage!
+~GenLogicVariables!
+~endIf!
 
-~SQL
+~WSCopybooks
+~UserWSCopybooks
+
+~DBMSStatement
       ****************************************************************
       ** ARCHITECTURE API-RELATED WORKING STORAGE                   **
       ****************************************************************
@@ -289,6 +295,7 @@ CBLSVC - COBOL service file for OS/2 and Unix service modules.
       ** USER LINKAGE COPYBOOKS                                     **
       ****************************************************************
 ~LSCopybooks
+~UserLSCopybooks
 
       ****************************************************************
       ** USER PROCEDURE DIVISION                                    **
@@ -380,7 +387,10 @@ CBLSVC - COBOL service file for OS/2 and Unix service modules.
 
 
 
-~Procedures
+~UserPRCopybooks
+~SourceFiles
+~ExtFuncs
+~RABLogic
 
        A1000-EXIT.
 	   EXIT.

@@ -20,6 +20,12 @@
   JSH: 07/01/96 ADDED CMN_ERR_ARCH_WRAP_FUNC and WINDOWNAME to support 
        C1C Architecture
 %
+
+% 
+  APB: 03/13/97 MODIFIED FOR FCP 3.2 REPLACING LowerWindowFilename with
+       LowerLogicFilename 
+%
+
 #define CMN_ERR_ARCH_WRAP_FUNC FALSE
 #define WINDOWNAME ~WindowName
 
@@ -96,7 +102,7 @@
 /***************************************************************************
  * WESMap Header File                                                      *
  ***************************************************************************/
-#include "~LowerWindowFilename..wmp"
+#include "~LowerLogicFilename..wmp"
 
 
 /*************************************************************************** 
@@ -104,8 +110,8 @@
  * window dispatch Tables.                                                 *
  ***************************************************************************/
 #include "~ExeName..gnz"
-#include "~LowerWindowFilename..gnh"
-#include "~LowerWindowFilename..gnd"
+#include "~LowerLogicFilename..gnh"
+#include "~LowerLogicFilename..gnd"
 
 /***************************************************************************
  * CSS Architecture Global Header File                                     *
@@ -139,7 +145,7 @@
 /***************************************************************************
  * Window Header File                                                      *
  ***************************************************************************/
-#include "~LowerWindowFilename..h"
+#include "~LowerLogicFilename..h"
 
 /***************************************************************************
  * Callbacks                                                               *
@@ -147,8 +153,8 @@
 %
   JSH: 07/01/96 ADDED to support C1C Architecture
 %
-#include "~LowerWindowFilename..aex"
+#include "~LowerLogicFilename..aex"
 #include "archhelp.cb"
 ~Callbacks
 
-#include "~LowerWindowFilename..src"
+#include "~LowerLogicFilename..src"

@@ -12,9 +12,9 @@
  ***************************************************************************/
 static WCBPROC(~CallbackName.)
 {
-~LocalStorage
+~LocalStorage!
 % JSH: 07/1/96 ADDED CMN_ARCH_EXIT_INITIALIZE %
+% APB: 03/17/97 Removed InitRoutines Keyword per FCP 3.2 Change %
 CMN_ARCH_EXIT_INITIALIZE
-~InitRoutines
-~Actions
+~Actions!
 }
