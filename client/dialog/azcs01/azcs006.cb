@@ -2,13 +2,6 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-SHORT FindClientMatch(CMN_ARCH_PARM_TYPES);
-SHORT FillLayoutLB(char *LBName,
-                   _LAYOUT_REC *pLayout,
-                   USHORT NumRec,
-                   enum LANGUAGE_TYPE Language,
-                   CMN_ARCH_PARM_TYPES);
-
 /***************************************************************************
 **
 **               CUSTOMER SERVICE SYSTEM Business Logic Function
@@ -87,6 +80,10 @@ static WCBPROC(AZCS006BUSAboutMNClick)
 **    03/06/96  mconner               Replaced strcpy to WES fields with
 **                                         FndFieldSetValue
 **
+**    03/25/99   N.Eyde               Allocated working storage to window
+**                                    in order to implement megascrolling
+**                                    to client and service listboxes
+**
 ***************************************************************************/
 
 static WCBPROC (UnLdAZCS6I)
@@ -97,8 +94,13 @@ static WCBPROC (UnLdAZCS6I)
      SHORT iy=0;
 
   _AZCS004I *pAzcs004i;
-
   pAzcs004i = (_AZCS004I *)CBI_pInitData;
+
+  /* NEYDE - 03/25/99 - Allocated window's working storage
+  */
+  WCD_pWorkingStorageData = (_AZCS006_WINDOWDATA *) malloc(sizeof(_AZCS006_WINDOWDATA));
+  memset(WCD_pWorkingStorageData, 0, sizeof(_AZCS006_WINDOWDATA));
+
 
  /*mdc -03/06/96 - Change for standards compliance
   strcpy(ClientLayoutData, pAzcs004i->ClientLayout);
@@ -240,11 +242,57 @@ FndGenRC = FndFieldSetValue( CBI_hwnd,
   }
 
 
-
-
   return(CMN_SUCCESS);
 }
 
+/***************************************************************************
+**
+**               CUSTOMER SERVICE SYSTEM Business Logic Function
+**
+**  FUNCTION         : AZCS006BUSPredestroy
+**
+**  DESCRIPTION      : This function controls the logic when the window is destroyed
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : N.Eyde
+**
+**  DATE CREATED     : 03/25/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/25/99  N.Eyde                Original code.
+**
+***************************************************************************/
+static WCBPROC (AZCS006BUSPredestroy)
+{
+  USHORT           FndGenRC = FND_SUCCESS;
+
+  /* NEYDE - 03/25/99 - Added a reference the window's working storage to access
+  **                    megascrolling data.  Removed (pop) all nodes from linked
+  **					list.
+  */
+  _AZCS006_WINDOWDATA *pDataPointer;
+  pDataPointer = (_AZCS006_WINDOWDATA *) WCD_pWorkingStorageData;
+
+  if(pDataPointer)
+  {
+	 AZCS01MegaScrollPopAll(&pDataPointer->pServiceMegaScroll,
+	                        CMN_ARCH_PARMS);
+
+	 free(pDataPointer);
+  }
+
+  return(CMN_SUCCESS);
+
+} /* end of AZCS006BUSPredestroy() */
 
 /***************************************************************************
 **
@@ -532,13 +580,26 @@ return(CMN_SUCCESS);
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
 **
+**    03/25/99   N.Eyde               Removed all megascrolling linked list
+**                                    nodes upon selecting a new service.
+**
 ***************************************************************************/
-
 static WCBPROC (AZCS006BUSNewService)
 {
   SHORT index=0;
   SHORT ServiceIndex=-1;
   USHORT  nRC=0;
+
+  /* NEYDE - 03/25/99 - Added a reference the window's working storage to access
+  **                    megascrolling data.  Removed (pop) all nodes from linked
+  **					list.
+  */
+  _AZCS006_WINDOWDATA *pDataPointer;
+  pDataPointer = (_AZCS006_WINDOWDATA *) WCD_pWorkingStorageData;
+
+  AZCS01MegaScrollPopAll(&pDataPointer->pServiceMegaScroll,
+	                     CMN_ARCH_PARMS);
+
   /*
   ** Compare the BFCD Services versus the Service name in WES
   */
@@ -2813,9 +2874,10 @@ return(CMN_SUCCESS);
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         :
+**  FUNCTION         : Azcs006busrlb01elbpagedown
 **
-**  DESCRIPTION      :
+**  DESCRIPTION      : This function is invoked when the page down control is
+**                       clicked on the Service LB.
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -2834,14 +2896,22 @@ return(CMN_SUCCESS);
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
 **
+**    03/25/99  N.Eyde                Added megascrolling to the client list-
+**                                    box to save the user's selected row.
+**
 ***************************************************************************/
-
-
-
 static WCBPROC(Azcs006busrlb01elbpagedown)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   USHORT FndGenRC;
+
+  /* NEYDE - 03/25/99 - Added variables to reference working storage, mega-
+  **                    scrolling and selected row data.  
+  */
+  USHORT           RowNum = 0;
+  _AZCS006_WINDOWDATA *pDataPointer;
+  _AZCS01_KEYS Elb1MegaData;
+  pDataPointer = (_AZCS006_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** Range check incrementing the offset for the client list box
@@ -2850,6 +2920,39 @@ static WCBPROC(Azcs006busrlb01elbpagedown)
           pBFCD->pCSRMapBFCD->ClientInfo.NumReposClientRows)
        {
         pWindContextData->WCD.ClientLBOffset += NUMRLB01ELBROWS;
+
+        /* NEYDE - 03/25/99 - Added query of selected row (if any) and stored
+		**                    (MegaScrollPush) in megascrolling data.
+        */
+
+        FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                               MAPGEN_CLIENT_LB_NAME,
+                                               FND_LSTBOX_START,
+                                               &RowNum,
+                                               &FndGenErrorBlock);
+
+        if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+        {
+            return(CMN_FAIL);
+        }
+
+	
+        if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
+        {
+            Elb1MegaData.KySelectedRow = ROW_NOT_SELECTED;
+        }
+		else
+        {
+            Elb1MegaData.KySelectedRow = RowNum;
+        }
+
+		AZCS01MegaScrollPush(&pDataPointer->pClientMegaScroll,
+			              (VOID *) &Elb1MegaData,
+						  sizeof(_AZCS01_KEYS),
+						  CMN_ARCH_PARMS);
+
+        /* NEYDE - 03/25/99 - End of changes
+        */
 
         FndGenRC = AZCS006BUSFillClientLB(pEventInfo,
                                 pEAIA,
@@ -2874,9 +2977,10 @@ static WCBPROC(Azcs006busrlb01elbpagedown)
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         :
+**  FUNCTION         : Azcs006busrlb01elbpageup
 **
-**  DESCRIPTION      :
+**  DESCRIPTION      : This function is invoked when the page up control is
+**                       clicked on the Service LB.
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -2895,13 +2999,21 @@ static WCBPROC(Azcs006busrlb01elbpagedown)
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
 **
+**    03/25/99  N.Eyde                Added megascrolling to the client list-
+**                                    box to save the user's selected row.
+**
 ***************************************************************************/
-
-
 static WCBPROC(Azcs006busrlb01elbpageup)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   USHORT FndGenRC;
+
+  /* NEYDE - 03/25/99 - Added variables to reference working storage and 
+  **                    megascrolling data.  
+  */
+  _AZCS006_WINDOWDATA *pDataPointer;
+  _AZCS01_KEYS *pElb1MegaData;
+  pDataPointer = (_AZCS006_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** Range check incrementing the offset for the client list box
@@ -2916,6 +3028,32 @@ static WCBPROC(Azcs006busrlb01elbpageup)
                                 pWesMap,
                                 pWindContextData,
                                 pABHI );
+
+        /* NEYDE - 03/25/99 - Re-select the row previously selected on this
+		**                    page using megascrolling data and remove (pop)
+		**					  the node from the megascrolling linked list.
+        */
+
+		if(pDataPointer->pClientMegaScroll != NULL)
+		{
+		   pElb1MegaData = (_AZCS01_KEYS *) pDataPointer->pClientMegaScroll->pKeys;
+		}
+
+        if (pElb1MegaData->KySelectedRow != ROW_NOT_SELECTED)
+        {
+            FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
+                                           MAPGEN_CLIENT_LB_NAME,
+                                           pElb1MegaData->KySelectedRow,
+                                           &FndGenErrorBlock);
+
+        }
+
+
+		AZCS01MegaScrollPop(&pDataPointer->pClientMegaScroll,
+						  CMN_ARCH_PARMS);
+								  
+        /* NEYDE - 03/25/99 - End of changes
+        */
 
        }
     else
@@ -2933,9 +3071,10 @@ static WCBPROC(Azcs006busrlb01elbpageup)
 **
 **               CUSTOMER/1-Cooperative Business Logic Function
 **
-**  FUNCTION         :
+**  FUNCTION         : Azcs006busrlb02elbpagedown
 **
-**  DESCRIPTION      :
+**  DESCRIPTION      : This function is invoked when the page down control is
+**                       clicked on the Service LB.
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -2954,13 +3093,23 @@ static WCBPROC(Azcs006busrlb01elbpageup)
 **    --------  -----------  -------  -------------------------------------
 **    09/26/93  C. Crampton           Original code.
 **
+**    03/25/99  N.Eyde                Added megascrolling to the service list-
+**                                    box to save the user's selected row.
+**
 ***************************************************************************/
-
 static WCBPROC(Azcs006busrlb02elbpagedown)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   SHORT ix;
   USHORT FndGenRC;
+
+  /* NEYDE - 03/25/99 - Added variables to reference working storage, mega-
+  **                    scrolling and selected row data.  
+  */
+  USHORT           RowNum = 0;
+  _AZCS006_WINDOWDATA *pDataPointer;
+  _AZCS01_KEYS Elb2MegaData;
+  pDataPointer = (_AZCS006_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** assign the current service index to a local variable
@@ -2975,6 +3124,39 @@ static WCBPROC(Azcs006busrlb02elbpagedown)
           pBFCD->pCSRMapBFCD->ServiceInfoTable[ix].NumReposServiceRows)
        {
         pWindContextData->WCD.ServiceLBOffset += NUMRLB02ELBROWS;
+
+        /* NEYDE - 03/25/99 - Added query of selected row (if any) and stored
+		**                    (MegaScrollPush) in megascrolling data.
+        */
+
+        FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd,
+                                               MAPGEN_SERVICE_LB_NAME,
+                                               FND_LSTBOX_START,
+                                               &RowNum,
+                                               &FndGenErrorBlock);
+
+        if (FndGenRC != FND_SUCCESS && FndGenRC != LBOX_NO_MORE_ROWS_SELECTED)
+        {
+            return(CMN_FAIL);
+        }
+
+	
+        if (FndGenRC == LBOX_NO_MORE_ROWS_SELECTED)
+        {
+            Elb2MegaData.KySelectedRow = ROW_NOT_SELECTED;
+        }
+		else
+        {
+            Elb2MegaData.KySelectedRow = RowNum;
+        }
+
+		AZCS01MegaScrollPush(&pDataPointer->pServiceMegaScroll,
+			              (VOID *) &Elb2MegaData,
+						  sizeof(_AZCS01_KEYS),
+						  CMN_ARCH_PARMS);
+
+        /* NEYDE - 03/25/99 - End of changes
+        */
 
         FndGenRC = FillServiceLB(pEventInfo,
                                 pEAIA,
@@ -2995,13 +3177,46 @@ static WCBPROC(Azcs006busrlb02elbpagedown)
  }
 
 
-
-
+/***************************************************************************
+**
+**               CUSTOMER/1-Cooperative Business Logic Function
+**
+**  FUNCTION         : Azcs006busrlb02elbpageup
+**
+**  DESCRIPTION      : This function is invoked when the page up control is
+**                       clicked on the Service LB.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    03/25/99  N.Eyde                Added megascrolling to the service list-
+**                                    box to save the user's selected row.
+**
+***************************************************************************/
 static WCBPROC(Azcs006busrlb02elbpageup)
  {
   _FND_ERROR_BLOCK FndGenErrorBlock;
   SHORT ix;
   USHORT FndGenRC;
+
+  /* NEYDE - 03/25/99 - Added variables to reference working storage and 
+  **                    megascrolling data.  
+  */
+  _AZCS006_WINDOWDATA *pDataPointer;
+  _AZCS01_KEYS *pElb2MegaData;
+  pDataPointer = (_AZCS006_WINDOWDATA *) WCD_pWorkingStorageData;
 
   /*
   ** assign the current service index to a local variable
@@ -3022,6 +3237,33 @@ static WCBPROC(Azcs006busrlb02elbpageup)
                                 pWesMap,
                                 pWindContextData,
                                 pABHI );
+
+        /* NEYDE - 03/25/99 - Re-select the row previously selected on this
+		**                    page using megascrolling data and remove (pop)
+		**					  the node from the megascrolling linked list.
+        */
+
+		if(pDataPointer->pServiceMegaScroll != NULL)
+		{
+		   pElb2MegaData = (_AZCS01_KEYS *) pDataPointer->pServiceMegaScroll->pKeys;
+		}
+
+        if (pElb2MegaData->KySelectedRow != ROW_NOT_SELECTED)
+        {
+            FndGenRC = FndLstBoxRowSelect( CBI_hwnd,
+                                           MAPGEN_SERVICE_LB_NAME,
+                                           pElb2MegaData->KySelectedRow,
+                                           &FndGenErrorBlock);
+
+        }
+
+
+		AZCS01MegaScrollPop(&pDataPointer->pServiceMegaScroll,
+						  CMN_ARCH_PARMS);
+								  
+        /* NEYDE - 03/25/99 - End of changes
+        */
+
        }
     else
        {

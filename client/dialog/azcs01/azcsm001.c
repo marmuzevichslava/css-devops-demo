@@ -42,7 +42,9 @@
 **                                         since foudation ver.2.4 and above does
 **                                         not support the C long double type.
 **
-**
+**  04/15/99    N EYDE                     Cleaned up the functions that check occuring
+**                                         groups to handle maps with multiple service
+**                                         calls.
 ***********************************************************************/
 #define  INCL_WIN
 #define  INCL_DOS
@@ -107,7 +109,6 @@
 /*mdc 12/11/96 Added for Check Occurring groups*/
 #define _MESSAGE_LEN  255
 #define CMN_MAPGEN_NAME "CSR Map Generator"
-
 
 USHORT CsrMapInitItem( _ENTITYDATA *pEntityData, _LAYOUT_REC *pLayoutRec,
                        CMN_ARCH_PARM_TYPES );
@@ -983,6 +984,9 @@ USHORT CsrMapProcessElement( _LAYOUT_REC DataElement,
 **
 **  DATE        REVISED BY      SIR #      DESCRIPTION OF CHANGE
 **  --------    ----------      -----      ---------------------
+**	04/14/99    N Eyde                     Changed the call to CheckServiceRPMH
+**										   to start with index 0 (zero) rather
+**										   than service index.
 **
 *****************************************************************************/
 USHORT CheckOccurGrps( CMN_ARCH_PARM_TYPES )
@@ -1005,9 +1009,13 @@ USHORT CheckOccurGrps( CMN_ARCH_PARM_TYPES )
                    LT_Primary ) == 0 )
       {
 
+	    /* NEYDE - 04/15/99 - Instead of passing the service index to parameter #3 , the call
+	    **                    to the following function will pass 0 (zero) as the starting
+		**                    point for evaluating the mapping data.
+        */
          FndGenRC = CheckServiceRPMH( BFCD_pCSRMapBFCD->ServiceInfoTable[i].pReposServiceLayoutTable,
                                       BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable,
-                                      i,
+                                      0,
                                       BFCD_pCSRMapBFCD->ServiceInfoTable[i].pRepeatingMaps,
                                       CMN_ARCH_PARMS);
 
@@ -1026,9 +1034,13 @@ USHORT CheckOccurGrps( CMN_ARCH_PARM_TYPES )
                       BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService )
                       == 0 ))
                 {
+  	              /* NEYDE - 04/15/99 - Instead of passing the service index to parameter #3 , 
+				  **                    the call to the following function will pass 0 (zero)
+				  **                    as the starting point for evaluating the mapping data.
+                  */
                   FndGenRC = CheckServiceRPMH( BFCD_pCSRMapBFCD->ServiceInfoTable[j].pReposServiceLayoutTable,
                                                BFCD_pCSRMapBFCD->ClientInfo.pReposClientLayoutTable,
-                                               j,
+                                               0,
                                                BFCD_pCSRMapBFCD->ServiceInfoTable[j].pRepeatingMaps,
                                                CMN_ARCH_PARMS);
 
@@ -1074,7 +1086,9 @@ USHORT CheckOccurGrps( CMN_ARCH_PARM_TYPES )
 **
 **    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
 **  --------      ----------     -----     ---------------------
-**
+**	04/14/99    N Eyde                     Changed how the the service layout
+**										   index is initialized based on whether
+**										   the first row is being evaluated.
 ******************************************************************/
 USHORT CheckServiceRPMH( _LAYOUT_REC  ServiceLayout[],
                  _LAYOUT_REC  ClientLayout[], 
@@ -1086,14 +1100,39 @@ USHORT CheckServiceRPMH( _LAYOUT_REC  ServiceLayout[],
     SHORT Index = 0;
     USHORT FndGenRC;
 
-    Index = ServiceLayout[CurIndex].ChildIndex;
+    /* NEYDE - 04/15/99 - The index variable is being initialized based on
+	**                    when this recursive function is called.  The first
+	**                    time it's called, the index must be initialized to
+	**                    zero to start processing at the beginning of the 
+	**                    service layout.  The first call can be determined by
+	**                    evaluating the parent index of the current row that
+	**                    is being evaluated.  The parent index will always be
+	**                    -1 if it is the first row of the of the service
+	**                    layout.
+    */
+
+	if(ServiceLayout[CurIndex].ParentIndex != -1)     
+	{												  
+		Index = ServiceLayout[CurIndex].ChildIndex;
+	}												  
+	else											  
+	{												  
+		Index = 0;									  
+	}												  
+
 
     while (Index != -1)
     {
-         if ((RPMH != NULL ) &&
-             (ServiceLayout[Index].ItemType == 'G') &&
-             (ServiceLayout[Index].ItemOccurs > 1))
+
+         /* NEYDE - 04/15/99 - An RPMH of null indicates that no relationships have
+		 **                    been mapped for this service layout.  Instead of evaluating
+		 **                    it in the follow "if" statement, it is now being evaluated 
+		 **                    in CheckRPMH where an appropriate error can be reported.
+         */
+		if ( (ServiceLayout[Index].ItemType == 'G') &&	
+             (ServiceLayout[Index].ItemOccurs > 1))		
          {
+
               FndGenRC = CheckRPMH(ServiceLayout,
                                    ClientLayout,
                                    Index,
@@ -1107,6 +1146,7 @@ USHORT CheckServiceRPMH( _LAYOUT_REC  ServiceLayout[],
          }
          else if (ServiceLayout[Index].ItemType == 'G')
          {
+
               FndGenRC = CheckServiceRPMH(ServiceLayout,
                                        ClientLayout,
                                        Index,
@@ -1119,7 +1159,21 @@ USHORT CheckServiceRPMH( _LAYOUT_REC  ServiceLayout[],
               }
          }
 
-         Index = ServiceLayout[Index].SiblingIndex;
+         /* NEYDE - 04/15/99 - The index variable is being initialized based on
+	     **                    when this recursive function is called.  The first 
+		 **                    call can be determined by evaluating the parent 
+		 **                    index of the current row that is being evaluated.
+		 **                    The parent index will always be -1 if it is the 
+		 **                    first row of the of the service layout.
+         */
+		 if(ServiceLayout[Index].ParentIndex != -1)		   
+		 {												   
+			 Index = ServiceLayout[Index].SiblingIndex;
+		 }												   
+		 else											   
+		 {												   
+			 Index = 1;									   
+		 }												   
     }
 
     return( CMN_SUCCESS );
@@ -1146,7 +1200,9 @@ USHORT CheckServiceRPMH( _LAYOUT_REC  ServiceLayout[],
 **
 **    DATE        REVISED BY     SIR #     DESCRIPTION OF CHANGE
 **  --------      ----------     -----     ---------------------
-**
+**	04/14/99    N Eyde                     Evaluated the relationship layout
+**										   (RPMH) to determine whether an 
+**										   error message should be reported.
 ******************************************************************/
 
 USHORT CheckRPMH( _LAYOUT_REC  ServiceLayout[],
@@ -1166,8 +1222,15 @@ USHORT CheckRPMH( _LAYOUT_REC  ServiceLayout[],
 
     memset( sMessage, 0, _MESSAGE_LEN );
 
-    if (( RPMH[CurIndex].ClientLayoutIndex == -1) &&
-        ( RPMH[CurIndex].SingleOccurence == 'N' ))
+    /* NEYDE - 04/15/99 - An RPMH of null indicates that no relationships have
+    **                    been mapped for this service layout.  Instead of evaluating
+	**                    it in the CheckServiceRPMH function, it is now being evaluated 
+	**                    here in order for an appropriate error to be reported.
+    */
+
+    if (( RPMH == NULL ) ||								   
+		(( RPMH[CurIndex].ClientLayoutIndex == -1) &&	   
+         ( RPMH[CurIndex].SingleOccurence == 'N' )))	   
     {
         sprintf( sMessage, "Occurring Groups not valid!\n"
                  "You MUST remap Occurring Groups before generating!\n"
@@ -1233,3 +1296,4 @@ USHORT CheckRPMH( _LAYOUT_REC  ServiceLayout[],
     return( CMN_SUCCESS );
 
 }  /*end of CheckRPMH */
+

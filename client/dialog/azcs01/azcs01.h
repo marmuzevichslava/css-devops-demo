@@ -17,6 +17,7 @@
 **
 **	 DATE	   REVISED BY	 SIR #		DESCRIPTION OF CHANGE
 **   ------    ----------    -----      ---------------------
+**   03/25/99  N.Eyde                   Added various megascrolling items.
 **
 *****************************************************************/
 
@@ -29,6 +30,33 @@
 #ifndef LT_Primary
 #define LT_Primary       "1"
 #endif
+
+/* NEYDE - 03/25/99 - Added this reference for a listbox without a 
+**                    selected row.
+*/
+#ifndef ROW_NOT_SELECTED
+#define ROW_NOT_SELECTED -1
+#endif
+
+/* NEYDE - 03/25/99 - This structure defines each megascrolling node.
+*/
+typedef struct __Azcs01MegaScroll
+{
+    VOID *pKeys;
+    struct __Azcs01MegaScroll *pNext;
+} _AZCS01MEGASCROLL;
+
+/* NEYDE - 03/25/99 - The following structure defines the data stored for
+**                    megascrolling data.
+*/
+ #ifndef  _AZCS01_KEYS_z
+ #define  _AZCS01_KEYS_z
+ typedef  struct __AZCS01_Keys
+ {
+   SHORT                KySelectedRow;                                                 
+
+ }_AZCS01_KEYS;
+ #endif
 
 /************************************************************************
 **
@@ -75,4 +103,16 @@ USHORT CheckRPMH( _LAYOUT_REC  ServiceLayout[],
                              _RELATE_RPMH RPMH[],
                              CMN_ARCH_PARM_TYPES);
 
+/* NEYDE - 03/25/99 - Added prototypes to this dialogs mega scrolling
+**                    functions.
+*/
+SHORT AZCS01MegaScrollPush(  _AZCS01MEGASCROLL **pMegaStruct,
+                             VOID *pNewKeys,
+                             size_t KeySize,
+                             CMN_ARCH_PARM_TYPES);
 
+SHORT AZCS01MegaScrollPop ( _AZCS01MEGASCROLL **pMegaStruct,
+                            CMN_ARCH_PARM_TYPES);
+
+SHORT AZCS01MegaScrollPopAll ( _AZCS01MEGASCROLL **pMegaStruct,
+                            CMN_ARCH_PARM_TYPES);

@@ -21,6 +21,8 @@
 **	 01/08/96   mconner               added malloc.h
 **   01/15/96   mconner               added help headers
 **   03/21/96   mconner               added AZCS006BUSAboutMNClick
+**   03/25/99   N.Eyde                added includes and defines for 
+**                                    megascrolling
 ***************************************************************************/
 
 /***************************************************************************/
@@ -29,6 +31,7 @@
 /*mdc - 01-08-96 - added  include malloc here and removed from azcs00n.c
  */
 #include <malloc.h>
+#include <azcs01.h> /* NEYDE - 03/25/99 - Added dialog header */
 #include "systcomm.hh"
 #include "roadmap.hh"
 
@@ -43,6 +46,21 @@
 /***************************************************************************/
 /* Application typedefs                                                    */
 /***************************************************************************/
+
+/* NEYDE - 03/25/99 - The following structure defines the window's working
+**                    storage.
+*/
+ #ifndef _AZCS006_WINDOWDATA_z
+ #define _AZCS006_WINDOWDATA_z
+ typedef struct __AZCS006_WindowData
+ {
+    _AZCS01MEGASCROLL *pClientMegaScroll;
+    _AZCS01MEGASCROLL *pServiceMegaScroll;
+	 
+ }_AZCS006_WINDOWDATA;
+ #endif
+
+#define WCD_pWorkingStorageData ( (_AZCS006_WINDOWDATA *) pWindContextData->pWorkingStorageData)
 
 
 /***************************************************************************/
@@ -96,4 +114,11 @@ SHORT CheckDataTypes( USHORT ClientIndex,
                       USHORT ServiceIndex,
                       USHORT ServiceNum,
                       CMN_ARCH_PARM_TYPES);
+
+SHORT FindClientMatch(CMN_ARCH_PARM_TYPES);
+SHORT FillLayoutLB(char *LBName,
+                   _LAYOUT_REC *pLayout,
+                   USHORT NumRec,
+                   enum LANGUAGE_TYPE Language,
+                   CMN_ARCH_PARM_TYPES);
 
