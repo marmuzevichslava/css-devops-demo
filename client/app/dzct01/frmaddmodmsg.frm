@@ -772,6 +772,13 @@ Private Sub txtDesc_Change()
 End Sub
 
 
+Private Sub txtDecode_Change()
+    bModified = True
+    
+    'Refresh the window controls
+    WindowRefresh
+End Sub
+
 '***************************************************************************************************************
 Private Sub txtKey_Change()
 '***************************************************************************************************************

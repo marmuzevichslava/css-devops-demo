@@ -251,7 +251,6 @@ Private Sub cmdSubmit_Click()
         'If this is an add, use the insert method, otherwise it's an update.
         If (UCase(Left(lvSIRData.ListItems.Item(x).SubItems(COL_METHOD), 1)) = "A") Then
             
-            
             '*******************************************************************************
             '**  ADD - USER DEFINED MESSAGE BOX                                           **
             '*******************************************************************************
@@ -348,7 +347,7 @@ Private Sub cmdSubmit_Click()
                          "Decode = " & Chr(34) & lvSIRData.ListItems.Item(x).SubItems(COL_DECODE) & Chr(34) & ", " & _
                          "Client = " & myClient.Displaycode & ", " & _
                          "Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " & _
-                         "Description = " & Chr(34) & lvSIRData.ListItems.Item(x).SubItems(COL_COMMENTS) & Chr(34) & _
+                         "Description = " & Chr(34) & " " & Chr(34) & _
                          " WHERE TableName = " & Chr(34) & lvSIRData.ListItems.Item(x).Text & Chr(34) & _
                          " AND Key = " & Chr(34) & lvSIRData.ListItems.Item(x).SubItems(COL_KEY) & Chr(34) & _
                          " AND Client = " & myClient.Displaycode

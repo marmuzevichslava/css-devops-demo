@@ -1,5 +1,5 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\WINNT\System32\STDOLE2.TLB#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\WINNT\System32\StdOle2.tlb#OLE Automation
 Object={F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0; COMDLG32.OCX
 Object={6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0; comctl32.ocx
 Reference=*\G{00025E01-0000-0000-C000-000000000046}#4.0#0#..\..\..\Program Files\Common Files\Microsoft Shared\DC:\Program Fi#Microsoft DAO 3.5 Object Library
@@ -39,7 +39,7 @@ Startup="frmMain"
 HelpFile=""
 Title="Codes Table Explorer"
 ExeName32="dzct01.exe"
-Command32="t:\codestbl\ctmsetup.ini"
+Command32="c:\codestbl\codesdat.mdb"
 Name="CTExplorer"
 HelpContextID="0"
 CompatibleMode="0"
