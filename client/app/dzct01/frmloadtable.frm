@@ -57,7 +57,6 @@ Begin VB.Form frmTableLoad
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
-      MouseIcon       =   "frmloadtable.frx":030A
    End
    Begin VB.Frame Frame1 
       Caption         =   "Environment Settings:"
@@ -114,16 +113,13 @@ Begin VB.Form frmTableLoad
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frmloadtable.frx":0326
    End
    Begin VB.Menu mnuFile 
       Caption         =   "&File"
@@ -303,7 +299,7 @@ Private Sub mnuLoad_Click()
         Unload Me
         Exit Sub
     End If
-      
+ 
     If Not bNoXlt Then
         'Get all xlt maps from remote server
         pBar.Value = pBar.Value + 1
@@ -334,7 +330,7 @@ Private Sub mnuLoad_Click()
             Exit Sub
         End If
     End If
-    
+
     'Archive xlt's and dat's
     pBar.Value = pBar.Value + 1
     sbStatusBar.Panels(1).Text = "Archiving dat's and xlt's"

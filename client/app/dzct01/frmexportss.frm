@@ -24,6 +24,7 @@ Begin VB.Form frmExportSS
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
+      MouseIcon       =   "frmexportss.frx":030A
    End
    Begin ComctlLib.StatusBar sbStatusBar 
       Align           =   2  'Align Bottom
@@ -40,13 +41,16 @@ Begin VB.Form frmExportSS
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
+            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
+      MouseIcon       =   "frmexportss.frx":0326
    End
    Begin VB.Frame Frame1 
       Caption         =   "Export Path"
@@ -112,7 +116,7 @@ Begin VB.Form frmExportSS
       Width           =   1935
       Begin VB.ListBox SelectTable 
          Height          =   3375
-         Left            =   120
+         Left            =   240
          MultiSelect     =   2  'Extended
          Sorted          =   -1  'True
          TabIndex        =   1
@@ -201,17 +205,18 @@ Public Sub mnuProcess_Click()
     Dim TblCnt As Integer, x As Integer, j As Integer, RC As Integer
     Dim sXls_Path As String
     Dim sXls_Name As String
+    Dim RetVal As Integer
     
     Const START_ROW = 13
     Const XLS_TEMP_NAME = "CTETemp.xls"
-    
+    Const XLS_TEMP_NAME2 = "CTETemp2.xls"
     sXls_Name = Me.txtName.Text
     
-    FileName = Dir("n:\dzct01\CTExport.xls")
+    FileName = Dir("c:\dzct01\CTExport.xls")
     If Len(FileName) <> 0 Then
-         sXls_Path = "n:\dzct01\CTExport.xls"
-    Else
          sXls_Path = "c:\dzct01\CTExport.xls"
+    Else
+         sXls_Path = "n:\dzct01\CTExport.xls"
     End If
     
     On Error GoTo FileCopyError
@@ -224,13 +229,12 @@ Public Sub mnuProcess_Click()
 
     Screen.MousePointer = vbHourglass
     
-    FileCopy sXls_Path, Dir1.Path & "\" & sXls_Name
+    FileCopy sXls_Path, Dir1.Path & "\" & XLS_TEMP_NAME
     
     On Error GoTo ExcelError
     
     Set xlApp = CreateObject("Excel.Application")
-    Set xlTemplate = xlApp.Workbooks.Open(Dir1.Path & "\" & sXls_Name, , True, , "c1admin", "c1admin", True)
-    
+    Set xlTemplate = xlApp.Workbooks.Open(Dir1.Path & "\" & XLS_TEMP_NAME, , True, , "c1admin", "c1admin", True)
     Set objSpreadSheet = xlApp.ActiveWorkbook.ActiveSheet
     
     j = START_ROW
@@ -324,30 +328,41 @@ Public Sub mnuProcess_Click()
     Next
     
     DaoRS.Close
-    
-    If optSave = True Then
-        FileName = Dir(Dir1.Path & "\" & XLS_TEMP_NAME)
-        If Len(FileName) <> 0 Then
-            Kill Dir1.Path & "\" & XLS_TEMP_NAME
-        End If
-        
-        xlTemplate.SaveAs Dir1.Path & "\" & XLS_TEMP_NAME
-        xlApp.Quit
-        
-        Kill Dir1.Path & "\" & sXls_Name
-        Name Dir1.Path & "\" & XLS_TEMP_NAME As Dir1.Path & "\" & sXls_Name
-        
-        Title = "Successful Export"
-        MsgLine = "Successfully created " & Dir1.Path & "\" & sXls_Name
-        MsgBox MsgLine, 64, Title
-    Else
-        xlApp.Visible = True
+    FileName = Dir(Dir1.Path & "\" & XLS_TEMP_NAME2)
+    If Len(FileName) <> 0 Then
+        Kill Dir1.Path & "\" & XLS_TEMP_NAME2
     End If
-
+    
+    FileName = Dir(Dir1.Path & "\" & sXls_Name)
+    If Len(FileName) <> 0 Then
+        Kill Dir1.Path & "\" & sXls_Name
+    End If
+   
+    xlTemplate.SaveAs Dir1.Path & "\" & XLS_TEMP_NAME2
+    xlApp.Quit
     Set xlApp = Nothing
     Set xlTemplate = Nothing
     Set objSpreadSheet = Nothing
     
+    FileCopy Dir1.Path & "\" & XLS_TEMP_NAME2, Dir1.Path & "\" & sXls_Name
+    Kill Dir1.Path & "\" & XLS_TEMP_NAME
+    Kill Dir1.Path & "\" & XLS_TEMP_NAME2
+         
+    If optSave = True Then
+        Title = "Successful Export"
+        MsgLine = "Successfully created " & Dir1.Path & "\" & sXls_Name
+        MsgBox MsgLine, 64, Title
+    Else
+        Set xlApp = CreateObject("Excel.Application")
+        Set xlTemplate = xlApp.Workbooks.Open(Dir1.Path & "\" & sXls_Name, , False, , "c1admin", "c1admin", True)
+        Set objSpreadSheet = xlApp.ActiveWorkbook.ActiveSheet
+        xlApp.Visible = True
+    End If
+    
+    Set xlApp = Nothing
+    Set xlTemplate = Nothing
+    Set objSpreadSheet = Nothing
+
     With pBar
         .Min = 0
         .Value = 0
