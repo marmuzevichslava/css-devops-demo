@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZIO002C                            *
-*                        Generated on: Mon Nov 04 17:40:03 1996            *
+*                        Generated on: Mon Dec 02 19:27:38 1996            *
 *                                  by: IPEREZAR                            *
 *                   Short Description:                                     *
 *                                                                          *
@@ -43,6 +43,10 @@ typedef struct __ArchData
 #define   DEV00330_LEN                          3
 #define   DDIOFUNCTIONCODE_LEN                  3
 #endif
+#ifndef   DEV00700_ORIGINATING_REPOSITORY_LEN
+#define   DEV00700_ORIGINATING_REPOSITORY_LEN   9
+#define   CDREPOSORG_LEN                        9
+#endif
 #ifndef _DZSR002XKEYS_z
 #define _DZSR002XKEYS_z
 
@@ -55,6 +59,7 @@ typedef struct __Dzsr002xKeys
    char                  TxObjectDesc[33];
    char                  WordReturn[2];
    char                  DdioFunctionCode[3];
+   char                  CdReposOrg[9];
 }  _DZSR002XKEYS;
 #endif
 /***************************************************************************

@@ -65,11 +65,21 @@ WCBPROC( DZIO002BusPrdis )
 
     /* Format the WCD request layout  */
 
-    strncpy(WCD_Rqst.Dzsr002xKeys.WordReturn, WORDRET,
-		sizeof(WCD_Rqst.Dzsr002xKeys.WordReturn) );
+    CmnStrCopy(WCD_Rqst.Dzsr002xKeys.WordReturn, 
+               "N",
+		       sizeof(WCD_Rqst.Dzsr002xKeys.WordReturn),
+               CMN_ARCH_PARMS );
 
-    strncpy(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode, FUNCTCODE,
-		sizeof(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode) );
+    CmnStrCopy(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode, 
+               "ER",
+		       sizeof(WCD_Rqst.Dzsr002xKeys.DdioFunctionCode),
+               CMN_ARCH_PARMS );
+
+    CmnStrCopy( WCD_Rqst.Dzsr002xKeys.CdReposOrg,
+              "FNDREPOS",
+              sizeof(WCD_Rqst.Dzsr002xKeys.CdReposOrg),
+              CMN_ARCH_PARMS );
+
 
 
     if (strcmp(pBFCD->DZIO01Hdr.SrcTyp,MODNAME) == 0)

@@ -61,6 +61,7 @@
 #define DZIO009X  "DZIO009X"
 #define DZIO010X  "DZIO010X"
 #define DZIO012X  "DZIO012X"
+#define DZIO015X  "DZIO015X"
 
 #define INST1	  "INST1"
 
@@ -89,6 +90,7 @@
 
 #define DESCKYS   "Desc Keys..."
 #define TBLJOINS  "Table Joins..."
+#define MASSGEN   "Mass Generation..."
 #define CHECKED   'Y'
 
 #define TITLE1	  "I/O Module Saved Successfully."

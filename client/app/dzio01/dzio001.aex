@@ -1464,10 +1464,53 @@ AEXPROC( ExitTlPopulateData )
     _TaskListRow      TaskListData;
     USHORT	       RowNumber = 0;
 
+
+
+    /*
+    | Setting Up Descending Keys Task List Item
+    */
+
+    memset(&TaskListData , 0, sizeof(TaskListData) );
+
+    RowNumber = 0;
+
+
+    /* Set Task List Row status to UNCHANGED */
+    TaskListData._TaskListCdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
+
+    /* Set Task Name of Task List row (how it will appear in Task List) */
+    CmnStrCopy( TaskListData._TaskListWnWindowTitleData,
+		DESCKYS,
+		sizeof(TaskListData._TaskListWnWindowTitleData),
+		CMN_ARCH_PARMS );
+
+    /* Set Window Name of Task List child window */
+    CmnStrCopy( TaskListData._TaskListWktWindowNameData,
+		DZIO007X,
+		sizeof(TaskListData._TaskListWktWindowNameData),
+		CMN_ARCH_PARMS );
+
+    /* Add Task List row to Task List */
+    FndLstBoxRowAdd( CBI_hwnd,
+		      CMN_LB_TLB_CONTROL_NAME,
+		      RowNumber,
+		      sizeof(_TaskListRow),
+		      &TaskListData,
+		      &FndGenErrorBlock );
+
+    FndLstBoxRowSetAttr( CBI_hwnd,
+			 CMN_LB_TLB_CONTROL_NAME,
+			 RowNumber,
+			 AT_NORMAL,
+			 &FndGenErrorBlock );
+
     /*
     | Setting Up Table Joins Task List Item
     */
 
+    memset(&TaskListData , 0, sizeof(TaskListData) );
+
+    RowNumber = 0;
 
 
 /*  Set Task List Row status to UNCHANGED   */
@@ -1503,43 +1546,6 @@ AEXPROC( ExitTlPopulateData )
 
 
 
-    /*
-    | Setting Up Descending Keys Task List Item
-    */
-
-    memset(&TaskListData , 0, sizeof(TaskListData) );
-
-    RowNumber = 1;
-
-
-    /* Set Task List Row status to UNCHANGED */
-    TaskListData._TaskListCdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
-
-    /* Set Task Name of Task List row (how it will appear in Task List) */
-    CmnStrCopy( TaskListData._TaskListWnWindowTitleData,
-		DESCKYS,
-		sizeof(TaskListData._TaskListWnWindowTitleData),
-		CMN_ARCH_PARMS );
-
-    /* Set Window Name of Task List child window */
-    CmnStrCopy( TaskListData._TaskListWktWindowNameData,
-		DZIO007X,
-		sizeof(TaskListData._TaskListWktWindowNameData),
-		CMN_ARCH_PARMS );
-
-    /* Add Task List row to Task List */
-    FndLstBoxRowAdd( CBI_hwnd,
-		      CMN_LB_TLB_CONTROL_NAME,
-		      RowNumber,
-		      sizeof(_TaskListRow),
-		      &TaskListData,
-		      &FndGenErrorBlock );
-
-    FndLstBoxRowSetAttr( CBI_hwnd,
-			 CMN_LB_TLB_CONTROL_NAME,
-			 RowNumber,
-			 AT_NORMAL,
-			 &FndGenErrorBlock );
 
 
     return CMN_SUCCESS;
@@ -1613,10 +1619,13 @@ AEXPROC( ExitTlSetChildInitData )
 				     sizeof(pBFCD->DZIO012Luw.PrimTab),
 				     CMN_ARCH_PARMS);
 
-
+	 /*
     CmnMemAllocPrivate( sizeof(_DZIO012I),
                         &pDZIO012I,
                         CMN_ARCH_PARMS);
+	 */
+
+	pDZIO012I = (_DZIO012I *) malloc(sizeof(_DZIO012I) );
 
     EAB_TlChildWindowData = pDZIO012I;
 

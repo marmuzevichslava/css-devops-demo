@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO001                           *
-*                          Generated on: Tue Nov 12 10:43:02 1996          *
+*                          Generated on: Mon Dec 02 19:27:38 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZIO001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,275,192
+DZIO001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,272,192
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
@@ -32,13 +32,12 @@ Begin  /* controls */
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,67,9,84,0
+              ,68,9,82,0
 
    CONTROL "",1000,
-              FND_PUSH_BUTTON,
+              FND_BUTTON,
               WS_VISIBLE  | WS_TABSTOP
-              | BS_PUSHBUTTON
-              ,154,9,13,12
+              ,157,9,13,12
 
    CONTROL "&Find...",1001,
               FND_PUSH_BUTTON,
@@ -71,25 +70,25 @@ Begin  /* controls */
    CONTROL "Functions",8002,
               FND_RADIO_GROUP,
               WS_VISIBLE | WS_GROUP | BS_GROUPBOX
-              ,7,45,81,43
+              ,6,43,81,48
 
    CONTROL "Standard",122,
               FND_RADIO_BUTTON,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
               | BS_RADIOBUTTON
-              ,7,45,0,0
+              ,6,43,0,0
 
    CONTROL "Limited",123,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,7,45,0,0
+              ,6,43,0,0
 
    CONTROL "Non Standard",124,
               FND_RADIO_BUTTON,
               WS_VISIBLE
               | BS_RADIOBUTTON
-              ,7,45,0,0
+              ,6,43,0,0
 
    CONTROL "Vie&w...",1004,
               FND_PUSH_BUTTON,
@@ -100,7 +99,7 @@ Begin  /* controls */
    CONTROL "Standard Functions",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,102,45,166,40
+              ,102,44,166,41
 
    CONTROL "Fetch",103,
               FND_CHECK_BOX,
@@ -130,7 +129,7 @@ Begin  /* controls */
    CONTROL "Special Functions",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,102,89,166,80
+              ,102,88,166,82
 
    CONTROL "Insert Set",108,
               FND_CHECK_BOX,
@@ -195,7 +194,7 @@ Begin  /* controls */
    CONTROL "Task List",120,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,7,93,80,42
+              ,6,94,80,42
 
    CONTROL "",5200,
               FND_ENTRYFIELD,
@@ -251,6 +250,14 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
+   /*  Control Data for Pushbutton FolderPB  */
+   FP_CONTROL_ID,                       "1000\0"
+   FP_IMAGE_SOURCE,                     "2009,BMP,EXE\0"
+   FP_SIZE_IMAGE,                       FPV_TRUE, "\0"
+   FP_TEXT_COLOR,                       FPV_DARKBLUE, "\0"
+   FP_BACKGROUND_COLOR,                 FPV_DARKBLUE, "\0"
+   FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
+
    /*  Control Data for Static Text ALR Copybook :  */
    FP_CONTROL_ID,                       "501\0"
    FP_SCREEN_LENGTH,                    "14\0"
@@ -285,10 +292,10 @@ Begin
    FP_CONTROL_ID,                       "8002\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
    FP_AUTOTOGGLE,                       FPV_TRUE, "\0"
-   FP_TOP_MARGIN,                       "3\0"
-   FP_LEFT_MARGIN,                      "10\0"
+   FP_TOP_MARGIN,                       "6\0"
+   FP_LEFT_MARGIN,                      "9\0"
    FP_HORIZONTAL_SPACING,               "9\0"
-   FP_VERTICAL_SPACING,                 "1\0"
+   FP_VERTICAL_SPACING,                 "0\0"
    FP_DIRECTION,                        FPV_VERTICAL, "\0"
    FP_BUTTONS_PER_ROW,                  "3\0"
    FP_BUTTON_INFO,                      "122,ppp\0"
@@ -369,7 +376,7 @@ Begin
    FP_TITLE_TEXT_COLOR,                 FPV_DEFAULTCOLOR, "\0"
    FP_TITLE_BK_COLOR,                   FPV_DEFAULTCOLOR, "\0"
    FP_REQUIRED,                         FPV_FALSE, "\0"
-   FP_MAXIMUM_ROWS,                     "2\0"
+   FP_MAXIMUM_ROWS,                     "3\0"
    FP_DRAW_HORZ_LINES,                  FPV_TRUE, "\0"
    FP_DRAW_VERT_LINES,                  FPV_TRUE, "\0"
    FP_SHOW_TITLE,                       FPV_TRUE, "\0"
@@ -586,6 +593,11 @@ DZIO001IconID ICON DZIOICON.ICO
 *             Pushbutton Bitmaps              *
 **********************************************/
 
+
+#ifndef BITMAP_RID_2009
+#define BITMAP_RID_2009
+2009 BITMAP MIGRATE.BMP
+#endif
 
 
 /**********************************************

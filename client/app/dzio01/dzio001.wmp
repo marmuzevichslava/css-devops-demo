@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO001                           *
-*                          Generated on: Tue Nov 12 10:43:02 1996          *
+*                          Generated on: Mon Dec 02 19:27:38 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -96,21 +96,21 @@ unsigned char _grpFiller;
 #define DynScrData              pWesMap->_DynScrData
 
 
-#define  NUMTASKLISTROWS   2
+#define  NUMTASKLISTROWS   3
 
-    char _TaskListSelIndData[2];
+    char _TaskListSelIndData[3];
 #define TaskListSelIndData    pWesMap->_TaskListSelIndData
 
-    unsigned short _TaskListCdStatusIconicData[2];
+    unsigned short _TaskListCdStatusIconicData[3];
 #define TaskListCdStatusIconicData    pWesMap->_TaskListCdStatusIconicData
 
-    char _TaskListWnWindowTitleData[2][42];
+    char _TaskListWnWindowTitleData[3][42];
 #define TaskListWnWindowTitleData    pWesMap->_TaskListWnWindowTitleData
 
-    char _TaskListWktWindowNameData[2][10];
+    char _TaskListWktWindowNameData[3][10];
 #define TaskListWktWindowNameData    pWesMap->_TaskListWktWindowNameData
 
-    char _TaskListWnTrackKeyData[2][10];
+    char _TaskListWnTrackKeyData[3][10];
 #define TaskListWnTrackKeyData    pWesMap->_TaskListWnTrackKeyData
 
    char _SumColData[9];
@@ -264,19 +264,19 @@ unsigned char _grpFiller;
 #define TaskListMsg                        pWesMap->_TaskListCtl.Msg
 #define TaskListCursor                     pWesMap->_TaskListCtl.Cursor
 
-    WESFLDCTL _TaskListSelIndCtl[2];
+    WESFLDCTL _TaskListSelIndCtl[3];
 #define TaskListSelIndCtl      pWesMap->_TaskListSelIndCtl
 
-    WESFLDCTL _TaskListCdStatusIconicCtl[2];
+    WESFLDCTL _TaskListCdStatusIconicCtl[3];
 #define TaskListCdStatusIconicCtl      pWesMap->_TaskListCdStatusIconicCtl
 
-    WESFLDCTL _TaskListWnWindowTitleCtl[2];
+    WESFLDCTL _TaskListWnWindowTitleCtl[3];
 #define TaskListWnWindowTitleCtl      pWesMap->_TaskListWnWindowTitleCtl
 
-    WESFLDCTL _TaskListWktWindowNameCtl[2];
+    WESFLDCTL _TaskListWktWindowNameCtl[3];
 #define TaskListWktWindowNameCtl      pWesMap->_TaskListWktWindowNameCtl
 
-    WESFLDCTL _TaskListWnTrackKeyCtl[2];
+    WESFLDCTL _TaskListWnTrackKeyCtl[3];
 #define TaskListWnTrackKeyCtl      pWesMap->_TaskListWnTrackKeyCtl
 
 

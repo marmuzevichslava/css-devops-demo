@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO009                           *
-*                          Generated on: Mon Nov 04 17:40:03 1996          *
+*                          Generated on: Mon Dec 02 19:27:38 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
@@ -21,7 +21,7 @@ DZIO009ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,198,54
     CAPTION "Primary Table Name"
     
 Begin  /* controls */
-   CONTROL "PRIMARY TABLE NAME:",500,
+   CONTROL "Primary Table Name :",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
               ,5,6,92,12
@@ -29,7 +29,7 @@ Begin  /* controls */
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE | WS_TABSTOP
-              ,97,6,94,0
+              ,97,6,95,0
 
    CONTROL "Cancel",1000,
               FND_PUSH_BUTTON,
@@ -37,7 +37,7 @@ Begin  /* controls */
               | BS_PUSHBUTTON
               ,50,36,37,12
 
-   CONTROL "ALR PREFIX:",501,
+   CONTROL "ALR Prefix :",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
               ,5,20,88,12
@@ -62,9 +62,9 @@ End /* controls */
 
 DZIO009ID 332
 Begin
-   /*  Control Data for Static Text PRIMARY TABLE NAME:  */
+   /*  Control Data for Static Text Primary Table Name :  */
    FP_CONTROL_ID,                       "500\0"
-   FP_SCREEN_LENGTH,                    "19\0"
+   FP_SCREEN_LENGTH,                    "20\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"
@@ -92,9 +92,9 @@ Begin
    FP_CREATE_SPIN_BUTTONS,              FPV_FALSE, "\0"
    FP_DATA_FORMAT,                      "A\0"
 
-   /*  Control Data for Static Text ALR PREFIX:  */
+   /*  Control Data for Static Text ALR Prefix :  */
    FP_CONTROL_ID,                       "501\0"
-   FP_SCREEN_LENGTH,                    "11\0"
+   FP_SCREEN_LENGTH,                    "12\0"
    FP_DRAW_BORDER,                      FPV_FALSE, "\0"
    FP_BORDER_COLOR,                     FPV_DEFAULTCOLOR, "\0"
    FP_TEXT_COLOR,                       FPV_DEFAULTCOLOR, "\0"

@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: DZIO012                           *
-*                          Generated on: Mon Nov 04 17:40:03 1996          *
+*                          Generated on: Mon Dec 02 19:27:38 1996          *
 *                                    by: IPEREZAR                          *
 *                     Short Description:                                   *
 *                                                                          *
 ****************************************************************************/
 
-DZIO012ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,243,166
+DZIO012ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,243,167
     STYLE 0 
      | WS_CAPTION
      | WS_SYSMENU
