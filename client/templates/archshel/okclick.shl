@@ -312,11 +312,11 @@ WCBPROC( <CUFFnnn>BusOK )
 	**  If the data is in a List Box, make an initial call to find the first selected row.
 	*/
 
-	FndLstBoxRowQuerySelection(CBI_hwnd,
-		                       "<ListBoxName>",
-							   FND_LSTBOX_START,
-							   &<RowNum>,
-							   &FndGenErrorBlock);
+    FndLstBoxRowQuerySelection( CBI_hwnd,
+                                "<ListBoxName>",
+                                FND_LSTBOX_START,
+                                &<RowNum>,
+                                &FndGenErrorBlock );
 
     /*
     ** Loop through each bulk row to add...
@@ -340,42 +340,43 @@ WCBPROC( <CUFFnnn>BusOK )
   //  REMOVE THIS COMMENT BLOCK WHEN DONE.
   //
   //---------------------------------------------------
+
         /*
         **  If the child window has data in a List box, build the row structure
         */
-        FndLstBoxRowQueryData(CBI_hwnd,
-                              "<ListBoxName>",
-							  <RowNum>,
-                              sizeof(<ELBRowData>),
-                              &<ELBRowData>,
-                              &FndGenErrorBlock);
+        FndLstBoxRowQueryData( CBI_hwnd,
+                               "<ListBoxName>",
+                               <RowNum>,
+                               sizeof(<ELBRowData>),
+                               &<ELBRowData>,
+                               &FndGenErrorBlock );
 
 
-        CmnStrCopy(<CUFFnnnOutput.FieldName>,
-                   <ELBRowData.FieldName>,
-                   <OUT Field Length>,
-                   CMN_ARCH_PARMS);
+        CmnStrCopy( <CUFFnnnOutput.FieldName>,
+                    <ELBRowData.FieldName>,
+                    <OUT Field Length>,
+                    CMN_ARCH_PARMS );
 
-		/*
-		**  Set your index variable equal to the current row number
-		*/
+        /*
+        **  Set your index variable equal to the current row number
+        */
 
-		<Index> = <RowNum>;
+        <Index> = <RowNum>;
 
 		
-		/*
-		**  Load values for any other widgets into the OUT layout <CUFFnnnOutput>
-		*/
-		FndFieldQueryValue( CBI_hwnd,
-			                "<FieldName>",
-							<OUT Field Length>,
-							<CUFFnnnOutput.FieldName>,
-							&FndGenErrorBlock );
+        /*
+        **  Load values for any other widgets into the OUT layout <CUFFnnnOutput>
+        */
+        FndFieldQueryValue( CBI_hwnd,
+                            "<FieldName>",
+                            <OUT Field Length>,
+                            <CUFFnnnOutput.FieldName>,
+                            &FndGenErrorBlock );
 
-		CmnStrCopy(<CUFFnnnOutput.FieldName>,
-                   <Source>,
-                   <OUT Field Length>,
-                   CMN_ARCH_PARMS);
+        CmnStrCopy( <CUFFnnnOutput.FieldName>,
+                    <Source>,
+                    <OUT Field Length>,
+                    CMN_ARCH_PARMS );
 
         /*
         **  Call the function CmnElbAddFromChild to add the row to the
@@ -383,7 +384,7 @@ WCBPROC( <CUFFnnn>BusOK )
         */
         CmnElbAddFromChild (&CUFFnnnOutput,
                             &RtrnMsgId,
-                            CMN_ARCH_PARMS);
+                            CMN_ARCH_PARMS );
 
         switch (RtrnMsgId)
         {
@@ -402,7 +403,7 @@ WCBPROC( <CUFFnnn>BusOK )
                 **  Reset the message type to Close After Cancel
                 **      for proper handling of the data.
                 */
-				EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
+                EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
 
                 break;
 
@@ -414,7 +415,7 @@ WCBPROC( <CUFFnnn>BusOK )
                 **  Reset the message type to Close After Cancel
                 **      for proper handling of the data.
                 */
-				EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
+                EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
 
                 break;
 
@@ -425,15 +426,15 @@ WCBPROC( <CUFFnnn>BusOK )
         } /* End of switch (RtrnMsgId) */
 
 
- 	    /*
-		**  If the data is in a List Box, find the next row that is selected
-		**  starting from the current row.
-		**/
-		FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd, 
-											   "<ListBoxName>",
-											   <Index>,
-											   &<RowNum>,
-											   &FndGenErrorBlock );
+       /*
+       **  If the data is in a List Box, find the next row that is selected
+       **  starting from the current row.
+       */
+       FndLstBoxRowQuerySelection( CBI_hwnd,
+                                   "<ListBoxName>",
+                                   <Index>,
+                                   &<RowNum>,
+                                   &FndGenErrorBlock );
 
     } /* End of while */
 
