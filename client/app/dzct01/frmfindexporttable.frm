@@ -117,7 +117,7 @@ On Error GoTo Err_SQL
     
     frmExportTable.SelectTable.Refresh
     
-    frmExportTable.efExportFile.Text = Trim$(frmExportTable.SelectTable.Text) & ".DAT"
+    frmExportTable.efExportFile.Text = LCase(Trim$(frmExportTable.SelectTable.Text)) & ".dat"
     
 Exit_Find_Table:
     Screen.MousePointer = vbNormal
