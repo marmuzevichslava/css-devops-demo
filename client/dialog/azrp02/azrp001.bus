@@ -495,6 +495,9 @@ while (*pszStr)
 							  psLongDesc,
 							  &FndGenErrorBlock);
 
+  /*mdc 05/20/96 free lon desc*/
+  free(psLongDesc);
+
   /*mdc 05/09/96 Added this logic to prevent the error caused by the 
   number of rows returned exceeding the number of rows that the list
   box can hold */
