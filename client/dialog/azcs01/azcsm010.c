@@ -138,6 +138,7 @@
 #include "azcs01b.gnb"
 #include "AZCS003.GNH"
 
+
 /**************************************************************************
 **
 **   C1/C Architecture #include
@@ -161,6 +162,10 @@ USHORT FormatHighValues(_LAYOUT_REC ServiceLayout,
 
 USHORT FileAdd(FILE *, FILE *);
 
+/*mdc 11/21/96 include global header file*/
+#include "azcs01.h"
+
+
 /**************************************************************************
 **
 **   AZCSM010.C Variable Declarations
@@ -169,6 +174,202 @@ USHORT FileAdd(FILE *, FILE *);
 CHAR FileNm[_CSR_MAP_FILENAME_LEN];
 FILE *Stream, *TmpFile;
 SHORT MapDataLength;
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : BuildFullName
+**
+**  DESCRIPTION      : This function builds a fully qualified name. Fully qualified
+**                      means it goes all the way thru its hierarchial structure to build
+**                      the name. This implies that a truly unique name can be built.
+**                      To do this the function calls itself recursively until it gets to the
+**                      top of its hierarchial tree (parent index = -1). Then as it returns
+**                      from each of the recursive calls it concatenates the C name of the element
+**                      at this level to the previous levels.
+**
+**                     **** NOTE **** The name is built in a static character array. Subsequent calls
+**                                     to this function will destroy the data in this array.
+**
+**
+**  INPUTS           : sElementx - Index of the variable whose name to build.
+**                     pLayout - pointer to the data layout.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : Itself - This function is recursive.
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up.
+**	03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**  11/21/96  mconner               Moved from azcs013.cb
+**
+***************************************************************************/
+CHAR *BuildFullName( SHORT sElementx, _LAYOUT_REC *pLayout)
+{
+    static CHAR szFullName[255];
+    CHAR *pszTemp;
+    SHORT sParentx;
+    static SHORT sNestedLevel=0;
+
+    /*HEAP_CHECK_BEEP*/
+
+    /*
+     * sParentx will be -1 when you are at the top of the hierarchy
+     */
+    sParentx = pLayout[sElementx].ParentIndex;
+
+    /* if not at top call yourself again, Also keep track of how deep in */
+    /*   the hierarchy you are. */
+    if ( sParentx != -1 )
+    {
+        sNestedLevel++;
+
+        BuildFullName( sParentx, pLayout );
+
+        sNestedLevel--;
+    }
+    else
+    {
+        strncpy( szFullName, "", sizeof( szFullName));
+
+        sElementx = 0;
+    }
+
+    /* Concatenate the C name onto the end of szFullName */
+    strcat( szFullName, pLayout[sElementx].ItemCName );
+
+    /*
+     * Find out if the end of the field is blank filled. If it is then
+     * we want to put a null where the first blank field is. pszTemp
+     * will contain the address of the first blank or Null if none exist.
+     * A  period is placed between each level in the hierarchy, but
+     * not at the end of the name.
+     */
+    pszTemp = strchr(szFullName, ' ');
+
+    /* Blank filled and not at the end */
+    if ( pszTemp && sNestedLevel != 0 )
+    {
+        strcpy(pszTemp,".");
+    }
+
+    /* blank filled and at the end */
+    else if ( pszTemp && sNestedLevel == 0 )
+    {
+        strcpy( pszTemp, "" );
+    }
+
+    /* Not Blank filled and not at end */
+    else if ( !pszTemp && sNestedLevel != 0 )
+    {
+        strcat(szFullName, ".");
+    }
+
+    /* Not Blank filled and at the end */
+    else
+    {
+        strcat(szFullName, "");
+    }
+
+    /*HEAP_CHECK_BEEP*/
+
+    return( szFullName );
+
+} /* end of BuildFullName */
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : FindFullName
+**
+**  DESCRIPTION      : This function looks in a layout_rec structure trying to find
+**                       an occurence of a Parent and Element name.
+**
+**  INPUTS           : sSavedIndex - Index into the saved data layout.
+**                     pSavedLayout - Pointer to the saved data layout.
+**                     pReposLayout - Pointer to the repository data layout.
+**                     sNumReposRows - Number of rows in the repository.
+**
+**  OUTPUTS          : sReposIndex - Matching index in the repository data layout.
+**                     Return Code - Number of matches found (0 or 1).
+**
+**  CALLED FUNCTIONS : BuildFullName
+**
+**  AUTHOR           : C. Crampton
+**
+**  DATE CREATED     : 11/08/93
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/08/93  C. Crampton           Original code.
+**
+**  10/18/94  J. Looney             Clean Up
+**  03/22/96  mconner               Commented out HEAP_CHECK_BEEP
+**  11/21/96  mconner               Moved from azcs013.cb as a global function
+**
+***************************************************************************/
+SHORT FindFullName(SHORT sSavedIndex,
+                   _LAYOUT_REC *pSavedLayout,
+                   _LAYOUT_REC *pReposLayout,
+                   SHORT sNumReposRows,
+                   SHORT *sReposIndex)
+{
+    SHORT sIndex;
+    CHAR szBuildName[255];
+    CHAR szTempName[255];
+
+    /*HEAP_CHECK_BEEP*/
+
+    /* Build the full name for the saved element */
+    strncpy( szBuildName,
+             BuildFullName(sSavedIndex, pSavedLayout),
+             sizeof( szBuildName ));
+
+    /*
+     * Loop thru all of the layout records looking for a match on the group
+     * and element name.  Only check records that have a non negative
+     * parent index.  A match occurs if the parent index matches the group
+     * and ItemId matches the element name
+     */
+    for ( sIndex = 0; sIndex < sNumReposRows; sIndex++ )
+    {
+        strncpy( szTempName,
+                 BuildFullName(sIndex, pReposLayout),
+                 sizeof( szTempName ));
+
+        if (strcmp(szBuildName, szTempName) == 0 )
+        {
+            *sReposIndex = sIndex;
+
+            /*HEAP_CHECK_BEEP*/
+
+            return(1);
+
+        } /* End of if element data type */
+
+    } /* end of for loop thru each layout record */
+
+    /*HEAP_CHECK_BEEP*/
+
+    return(0);
+
+} /* End of FindFullName */
+
 
 /*****************************************************************
 **
@@ -197,7 +398,11 @@ SHORT MapDataLength;
 USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 {
     CHAR CopyCommand[_COPY_COMMAND_LEN];
+    /*mdc 11/26/96 no longer used
     SHORT NumberClosed;
+    */
+    /*mdc 11/26/96 return code for file close*/
+    int rc = 0;
     SHORT i;
     SHORT j;
     USHORT FndGenRC;
@@ -254,7 +459,7 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                                       BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadKeys,
                                       BFCD_pCSRMapBFCD->ServiceInfoTable[i].pLoadData,
                                       i,
-                                      BFCD_pCSRMapBFCD->ServiceInfoTable );
+                                      BFCD_pCSRMapBFCD->ServiceInfoTable);
 
          if (( strcmp( BFCD_pCSRMapBFCD->ServiceInfoTable[i].AlternateService,
                "NULL" ) != 0 ))
@@ -274,7 +479,7 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                                                BFCD_pCSRMapBFCD->ServiceInfoTable[j].pLoadKeys,
                                                BFCD_pCSRMapBFCD->ServiceInfoTable[j].pLoadData,
                                                j,
-                                               BFCD_pCSRMapBFCD->ServiceInfoTable );
+                                               BFCD_pCSRMapBFCD->ServiceInfoTable);
                   break;
                 } /* end of 3rd if */
 
@@ -293,13 +498,21 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
 
     WriteRMH( CMN_ARCH_PARMS ); /* To a separate file */
 
-    /* Close all files */
-    if ((NumberClosed = fcloseall()) != 2)
+    /* mdc 11/26/96 Close tmp file and map file only 
+    if ( NumberClosed  != 2)
     {
        return(CMN_FAIL);
     }
+    */
+    rc = fclose(TmpFile);
+    if (rc) return CMN_FAIL;
+
+    rc = fclose(Stream);
+    if (rc) return CMN_FAIL;
+
 
     /* Combine RMH file with other file */
+    /*mdc 11/26/96 No longer needed
     FndGenRC = CmnStrCat( CMN_ARCH_PARMS,
                           CopyCommand,
                           _COPY_COMMAND_LEN,
@@ -310,6 +523,7 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
                           TmpFileNm,
                           " ",
                           FileNm );
+*/
 
    /*lSysRC = system(CopyCommand); */
    /*mdc reopen files and cat to FileNm*/
@@ -320,15 +534,23 @@ USHORT GenerateMap( CMN_ARCH_PARM_TYPES )
    		fprintf(stderr, "File open failure.");
 		return CMN_FAIL;
 	}
+    
+
+
    FndGenRC = FileAdd(Stream, TmpFile);
 
-    /* Close all files */
+    /* mdc 11/26/96 Close tmp file and map file only 
     if ((NumberClosed = fcloseall()) != 2)
     {
        return(CMN_FAIL);
     }
+    */
+    rc = fclose(TmpFile);
+    if (rc) return CMN_FAIL;
 
-
+    rc = fclose(Stream);
+    if (rc) return CMN_FAIL;
+    
 	/*mdc 04/09/96 remove temp file */
 	FndGenRC = remove(TmpFileNm);
 
@@ -436,7 +658,7 @@ USHORT GenerateService(_LAYOUT_REC  ServiceLayout[],
                        _RELATE_LK   LK[],
                        _RELATE_LD   LD[],
                        SHORT Index,
-                       _SERVICE_INFO ServiceInfoTable[] )
+                       _SERVICE_INFO ServiceInfoTable[])
 {
     char Flush;
 
@@ -549,7 +771,6 @@ USHORT GenerateService(_LAYOUT_REC  ServiceLayout[],
     return( CMN_SUCCESS );
 
 } /* end of GenerateService */
-
 
 /*****************************************************************
 **
@@ -1615,6 +1836,8 @@ USHORT WriteRPMHAndThenSome( _LAYOUT_REC  ServiceLayout[],
     fprintf( TmpFile, RPMH_LINE_1 );
     fprintf( TmpFile, RPMH_LINE_2 );
     fprintf( TmpFile, RPMH_LINE_3 );
+
+    
 
     if (( RPMH[CurIndex].ClientLayoutIndex == -1) &&
         ( RPMH[CurIndex].SingleOccurence == 'Y' ))
@@ -2944,4 +3167,39 @@ if (ServiceLayout.Precision > 0)
 return( CMN_SUCCESS );
 
 } /* End of function FormatHighValues */
-
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : LogError
+**
+**  DESCRIPTION      : This function opens the Error file for mass
+**                     generation.
+**
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : M. Conner
+**
+**  DATE CREATED     : 11/21/96
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  11/21/96  mconner               Created
+**
+***************************************************************************/
+USHORT LogError( char * psMsg )
+{
+    int rc;
+
+    rc = fprintf(fpError, "%s\n", psMsg);
+    if (rc < 0 ) return CMN_FAIL;
+
+ 
+    return CMN_SUCCESS;
+}/*End of LogError*/
