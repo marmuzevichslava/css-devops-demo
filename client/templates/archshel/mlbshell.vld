@@ -1,0 +1,260 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  CUffnnn.VLD
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**                     CUffnnnVld<MLBEntryFieldName>FC - MLB Entry Field FIELD_CHANGE logic
+**					   CUffnnnVldMLBEntryFieldChange   - Common function to perform
+**														 all MLB Entry Field validation
+**
+** 
+**					
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Original code.
+**
+***************************************************************************/
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnVld<MLBEntryFieldName>FC        ===
+		  //===  This program is called for an MLB      ===
+		  //===  entry field FIELD_CHANGE.              ===
+		  //===============================================
+		  //===============================================
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnVld<MLBEntryFieldName>FC
+**
+**  DESCRIPTION      : This function is called at an MLB Entry Field 
+**					   FIELD_CHANGE.  It will call a common function to
+**					   perform validation on all MLB entry fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( CUffnnnVld<MLBEntryFieldName>FC )
+{
+
+	//------------------------------------------------
+	//  SHELL INSTRUCTIONS
+	//  All logic for the entry fields should call the
+	//  same validation logic
+	//------------------------------------------------
+
+  	CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARMS);
+
+    return CMN_SUCCESS;
+}
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnVldMLBEntryFieldChange          ===
+		  //===  This common function is called to      ===
+		  //===  perform all the validation for the MLB ===
+		  //===  entry field FIELD_CHANGE event.        ===
+		  //===============================================
+		  //===============================================
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnVldMLBEntryFieldChange
+**
+**  DESCRIPTION      : This common function performs all the validation for
+**					   the MLB entry field FIELD_CHANGE event.The
+**					   following occurs:
+**					   Entry fields are validated
+**					   If a field fails validation, the status is set to
+**						  INVALID and the message field is set 
+**					   If all the fields pass validation then
+**						  the 'Enter' pushbuttons is enabled
+**						  the 'Enter' pushbutton is set as the default
+**						  the entry fields' status are set to INDETERMINATE
+**                            and the message field is set
+**					   If one field failed validation
+**						  reset any field's status to VALID if INDETERMINATE
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+SHORT CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARM_TYPES)
+{
+
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+	// Declare one status variable per MLB entry field
+	CHAR Status<EntryFieldName1>; /* Status of MLB entry field  */
+	CHAR Status<EntryFieldName2>; /* Status of MLB entry field  */
+	
+    /* Enable Reset pushbutton */
+	FndCommandEnable(CBI_hwnd,
+		             "<ResetPB>",
+					 &FndGenErrorBlock);
+
+	//--------------------------------------------------------------------------
+	//  SHELL INSTRUCTIONS
+  	//  Perform validation on MLB entry fields and set each status accordingly 
+	//--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    //  SHELL INSTRUCTIONS
+    //  Query the status of each entry field and set into local variable
+    //--------------------------------------------------------------------------	
+	FndFieldQueryStatus( CBI_hwnd,
+	                     "<MLBEntryFieldName1>",
+						 &Status<EntryFieldName1>,
+						 &FndGenErrorBlock);
+
+	FndFieldQueryStatus( CBI_hwnd,
+	                     "<MLBEntryFieldName1>",
+						 &Status<EntryFieldName2>,
+						 &FndGenErrorBlock);
+
+	/* If the status is VALID or WES_VALID or INDETERMINATE for all MLB entry fields:
+	 * Enable the 'Enter Reading' pushbutton,
+	 * Default the 'Enter Reading' pushbutton,
+	 * Set the status of the MLB Entry Fields to STS_INDETERMINATE 
+	 */
+	 if  ((	(Status<EntryFieldName1> == STS_VALID) 
+	     || (Status<EntryFieldName1> == STS_WESVALID) 
+	     || (Status<EntryFieldName1> == STS_INDETERMINATE) )
+		 &&
+		  (	(Status<EntryFieldName2> == STS_VALID) 
+	     || (Status<EntryFieldName2> == STS_WESVALID) 
+	     || (Status<EntryFieldName2> == STS_INDETERMINATE) ))
+	{
+
+	    /* Set 'Enter Reading' pushbutton as the default */
+	    FndCommandSetDefaultButton(CBI_hwnd,
+	                               "<ValidPB>",
+							       &FndGenErrorBlock);
+
+        /* Enable 'Enter Reading' pushbutton */
+		FndCommandEnable(CBI_hwnd,
+		                 "<ValidPB>",
+						 &FndGenErrorBlock);
+
+        /* Set the status of the MLB entry fields to STS_INDETERMINATE and set 
+           the message field */
+	    FndFieldSetStatus( CBI_hwnd,
+	                       "<MLBEntryFieldName1>",
+			    		   STS_INDETERMINATE,
+				    	   &FndGenErrorBlock);
+
+        FndFieldSetMsg(CBI_hwnd,
+		               "<MLBEntryFieldName1>",
+					   MF_XXXXXXX,
+					   &FndGenErrorBlock);
+
+        FndFieldSetStatus( CBI_hwnd,
+	                       "<MLBEntryFieldName2>",
+			    		   STS_INDETERMINATE,
+				    	   &FndGenErrorBlock);
+
+
+        FndFieldSetMsg(CBI_hwnd,
+		               "<MLBEntryFieldName2>",
+					   MF_XXXXXXX,
+					   &FndGenErrorBlock);
+
+	}
+
+	/* If one of the fields failed validation then each field that has a status of INDETERMINATE should
+	   be set to VALID and the message is reset*/
+	else 
+	{
+	    
+		if (Status<EntryFieldName1> == STS_INDETERMINATE)
+		{
+		    FndFieldSetStatus( CBI_hwnd,
+	                           "<MLBEntryFieldName1>",
+			    			   STS_VALID,
+				    		   &FndGenErrorBlock);
+
+            FndFieldSetMsg(CBI_hwnd,
+   		                   "<MLBEntryFieldName1>",
+				    	   MF_NO_MSG,
+					       &FndGenErrorBlock);
+
+		}
+
+		if (Status<EntryFieldName2> == STS_INDETERMINATE)
+		{
+		    FndFieldSetStatus( CBI_hwnd,
+	                           "<MLBEntryFieldName2>",
+			    			   STS_VALID,
+				    		   &FndGenErrorBlock);
+            FndFieldSetMsg(CBI_hwnd,
+		                   "<MLBEntryFieldName>",
+				     	   MF_NO_MSG,
+					       &FndGenErrorBlock);
+
+		}
+
+		/* Set 'Enter Reading' pushbutton as the default */
+	    FndCommandSetDefaultButton(CBI_hwnd,
+	                               "<OKPB>",
+							       &FndGenErrorBlock);
+
+        /* Enable 'Enter Reading' pushbutton */
+		FndCommandDisable(CBI_hwnd,
+		                  "<ValidPB>",
+					      &FndGenErrorBlock);
+	}
+
+	return CMN_SUCCESS;
+}

@@ -1,0 +1,628 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
+/***************************************************************************
+**
+**               Customer Service System Business Logic Module
+**
+** FILENAME         :  CUffnnn.BUS
+**
+** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+**                     includes:
+**
+**					   CUffnnnBus<MLBListBoxName>Sel   - MLB List Select Event
+**					   CUffnnnBus<EnterPBName>Click    - MLB 'Enter' Click Event
+**					   CUffnnnBusResetClick            - MLB 'Reset' Click Event
+**					   CUffnnnBusOkClick               - MLB OK logic
+**					   CUffnnnBusDisableMLB            - Common function to 
+**												         disable MLB
+**
+** FOUNDATION DESIGN NOTES:
+** Tab sequence:  MLB Listbox,
+**				  Non-output entry fields,
+**				  Enter pushbutton,
+**				  Reset pushbutton
+** Iconic column in MLB: Data Element.ARC00224
+** Entry field headings should be consistent with column headings
+** If entry fields are required, paint as required
+** The same validation logic should be invoked for FIELD_CHANGE and FIELD_NOWINVALID
+** 
+**					
+** REVISION HISTORY
+**
+** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+** --------    ----------  ------  ---------------------------------------
+** 99/99/99    XXXXXXXX            Original code.
+**
+***************************************************************************/
+
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnBus<LBName>Sel                  ===
+		  //===  This program is invoked for a MLB List ===
+		  //===  box LIST_SELECT.                       ===
+		  //===============================================
+		  //===============================================
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBus<MLBListBoxName>Sel
+**
+**  DESCRIPTION      : This logic is invoked for a MLB List Select. The
+**                     data from the MLB is moved from the listbox to the
+**					   corresponding entry fields.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( CUffnnnBus<MLBListBoxName>Sel )
+{
+  
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+	SHORT                    RowNumber = 0; /* Queried row number */
+	_<ListBoxRowStructure>   <ListBoxRow>;  /* Instance of LB row */
+
+    /* Initialize MLB Row data structure */
+    memset(&<ListBoxRow>, 0, sizeof(<ListBoxRow>));
+    	
+    /* Query selected row number */    
+	FndLstBoxRowQuerySelection( CBI_hwnd,
+                                "<ListBoxWidgetName>",
+                                FND_LSTBOX_START,
+                                &RowNumber,
+                                &FndGenErrorBlock);
+
+    /* Query data from selected row */
+    FndLstBoxRowQueryData( CBI_hwnd,
+                           "<ListBoxWidgetName>",
+                           RowNumber,        
+                           sizeof(<ListBoxRow>),
+                           &<ListBoxRow>,
+                           &FndGenErrorBlock );
+ 
+
+    //--------------------------------------------
+	//  SHELL INSTRUCTIONS
+	//  For each MLB entry field, copy the listbox
+	//  data to the entry field. 
+	//--------------------------------------------
+
+    /* Load data from row into MLB Entry Fields */
+    FndFieldSetValue( CBI_hwnd,
+                      "<MLBEntryFieldName>",
+                      sizeof(<ListBoxRow._LBNameColumnNameData>),
+                      &<ListBoxRow._LBNameColumnNameData>,
+                      &FndGenErrorBlock );
+
+	
+    return CMN_SUCCESS;
+
+} /* end CUffnnnBusMtrRdgLbSel */
+
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnBus<EnterPBName>Click           ===
+		  //===  This program is invoked for a MLB      ===
+		  //===  <Enter> pushbutton CLICK.              ===
+		  //===============================================
+		  //===============================================
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBus<EnterPBName>Click
+**
+**  DESCRIPTION      : This logic is invoked when the MLB <Enter> pushbutton
+**                     is clicked.  The following occurs:
+**
+**                     The MLB <Enter> and <Reset> pushbuttons are disabled
+**                     The <OK> pushbutton is set as default (if one exists)
+**                     The entry fields are queried and the data is moved
+**						   to the MLB listbox structure
+**					   The iconic column is set to changed
+**					   If the row's status is not VALID, it is set to valid
+**                     If the current row is not the last in the MLB, the next 
+**                         row's data is loaded into the MLB entry fields and
+**						   the cursor is set in the first non-output entry
+**						   field
+**                     If the current row is the last row in the MLB, the
+**					       entry field's status is changed from INDETERMINATE
+**						   to VALID	and reset message field
+**					   Set the application to valid if the status of all the
+**						   rows are VALID.
+**                     
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( CUffnnnBus<EnterPBName>Click )
+{
+  
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+    _<ListBoxRowStructure>   <ListBoxRow>;       /* Instance of the MLB row typedef */
+	SHORT                    RowNumber = 0;      /* Selected row number */
+	SHORT                    RowAttribute = 0;   /* Hold MLB Row attribute */
+	SHORT                    i = 0;              /* Loop index */
+	BOOL                     CompleteMLB = TRUE; /* Flag to indicate if all MLB rows are complete */
+
+    /* Initialize MLB Row structure */    
+    memset( &<ListBoxRow>, 0, sizeof( <ListBoxRow> ) );
+
+	/* Disable MLB 'Enter' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                       "<EnterPB>",
+                       &FndGenErrorBlock );
+
+    /* Disable MLB 'Reset' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                       "<ResetPB>",
+                       &FndGenErrorBlock );
+
+	/* Set OK pushbutton as the default (if it exists) */
+	FndCommandSetDefaultButton(CBI_hwnd,
+	                           "OKPB",
+							   &FndGenErrorBlock);
+
+    /* Query row number selected */
+    FndLstBoxRowQuerySelection( CBI_hwnd,
+                                "<ListBoxWidgetName>",
+                                FND_LSTBOX_START,
+                                &RowNumber,
+                                &FndGenErrorBlock);
+
+    /* Query data from selected row */
+    FndLstBoxRowQueryData( CBI_hwnd,
+                           "<ListBoxWidgetName>",
+                           RowNumber,
+                           sizeof(<ListBoxRow>),
+                           &<ListBoxRow>,
+                           &FndGenErrorBlock );
+
+	//------------------------------------------------------------
+	//  SHELL INSTRUCTIONS
+	//  Query each MLB entry field and move to the MLB Listbox
+	//  structure.
+	//------------------------------------------------------------
+
+    /*  Move MLB data from the entry fields to the row structure */
+	FndFieldQueryValue( CBI_hwnd,
+                        "<EntryFieldName>",
+                        sizeof(<ListBoxRow._LBNameColumnNameData>),
+                        <ListBoxRow._LBNameColumnNameData>,
+                        &FndGenErrorBlock );
+
+    /* Set the iconic column to CHANGED */
+	<ListBoxRow._LBNameCdStatusIconicData> = CMN_LBROW_STATUS_CHANGED;
+
+    /* Update the row selected with values from the entry fields   */
+    FndLstBoxRowSetData( CBI_hwnd,
+                         "<ListBoxWidgetName>",
+                         RowNumber,
+                         sizeof(<ListBoxRow>),
+                         &<ListBoxRow>,
+                         &FndGenErrorBlock );
+
+	/* Query the current status of the selected MLB Listbox row */
+    FndLstBoxCellQueryAttr( CBI_hwnd,
+                            "<ListBoxWidgetName>",
+                            RowNumber,
+							0,          /* Column Number */
+                            &RowAttribute,
+                            &FndGenErrorBlock);
+
+    /* If MLB row attribute is not normal, set the MLB row attribute to NORMAL */
+	if (RowAttribute != AT_NORMAL)
+	{
+
+         FndLstBoxRowSetAttr( CBI_hwnd,
+                             "<ListBoxWidgetName>",
+                             RowNumber,
+                             AT_NORMAL,
+                             &FndGenErrorBlock);
+	}
+ 
+    /* If the current row is not the last in the MLB, load the next row's data into the 
+     * MLB entry fields.
+     */ 
+	++RowNumber;
+	if ( (RowNumber < NUM<LBNAME>ROWS) && (RowNumber < <WCD_QyAlrAclCnt>) )
+	{
+		/* Initialize row structure */
+		memset(&<ListBoxRow>, 0, sizeof(<ListBoxRow>));
+
+        /* Select next row in the MLB */
+        FndLstBoxRowSelect( CBI_hwnd,
+                            "<ListBoxWidgetName>",
+                            RowNumber,
+                            &FndGenErrorBlock);
+
+        /* Query next row's data  in MLB */
+        FndLstBoxRowQueryData( CBI_hwnd,
+                               "<ListBoxWidgetName>",
+                               RowNumber,
+                               sizeof(<ListBoxRow>),
+                               &<ListBoxRow>,
+                               &FndGenErrorBlock );
+
+		//-------------------------------------------------------------
+		//  SHELL INSTRUCTIONS 
+		//  Set each MLB field with data from the MLB row 
+		//-------------------------------------------------------------
+		/* Set MLB Entry Field values with data from next row in MLB */
+		FndFieldSetValue( CBI_hwnd,
+                          "<MLBEntryFieldName>",
+                          sizeof(<ListBoxRow._LBNameColumnNameData>),
+                          &<ListBoxRow._LBNameColumnNameData>,
+                          &FndGenErrorBlock );
+
+        /* Set the cursor in the first non-output MLB entry field */
+        FndFieldSetCursor( CBI_hwnd,
+                           "<MLBEntryFieldName>",
+                           CUR_MAKECURRENT,
+                           &FndGenErrorBlock );
+
+        
+    }  /* end if ( (RowNumber < NUM<LBNAME>ROWS) && (RowNumber < <WCD_QyAlrAclCnt>) ) */  
+
+	/* Last row in listbox - Set the entry fields status from INDETERMINATE to VALID */
+    else
+    {
+		//-------------------------------------------------------
+		//  SHELL INSTRUCTIONS
+		//  Set all the status of the entry fields to VALID
+		//-------------------------------------------------------
+	    FndFieldSetStatus( CBI_hwnd,
+	                       "<MLBEntryFieldName>",
+			    		   STS_VALID,
+				    	   &FndGenErrorBlock);
+
+        FndFieldSetMsg(CBI_hwnd,
+		               "<MLBEntryFieldName>",
+					   MF_NO_MSG,
+					   &FndGenErrorBlock);
+    }
+    
+        
+	/* Determine if all the rows in the Listbox are NORMAL.  If so, set the
+	 * Application to Valid.
+	 */
+	for( i=0; (RowNumber < NUM<LBNAME>ROWS) && (RowNumber < <WCD_QyAlrAclCnt>); i++)
+    {
+        FndLstBoxCellQueryAttr( CBI_hwnd,
+                                "<ListBoxWidgetName>",
+                                i,          /* Row Number    */
+			    				0,          /* Column Number */
+                                &RowAttribute,
+                                &FndGenErrorBlock);
+
+	    if (RowAttribute != AT_NORMAL)
+	    {
+		    CompleteMLB = FALSE;
+			break;
+		}
+
+	} /* end for loop */
+
+	/* If all rows are complete, set the application to valid */
+	if (CompleteMLB)
+	{
+	    CmnWindowSetApplValid ( CMN_ARCH_PARMS );
+
+	}
+
+	/* else the MLB is not complete, set the application to invalid */
+	else
+	{
+	    CmnWindowSetApplInvalid( CMN_ARCH_PARMS);
+	}
+
+    return CMN_SUCCESS;
+
+}  /* end CUffnnnBus<EnterPBName>Click  */
+
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnBusResetClick                   ===
+		  //===  This program is invoked at a MLB       ===
+		  //===  Reset pushbutton CLICK.                ===
+		  //===============================================
+		  //===============================================
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusResetClick
+**
+**  DESCRIPTION      : This logic is invoked when the MLB Reset pushbutton is
+**                     clicked.  The following occurs:
+**					   Current row is queried and loaded into the entry fields
+**					   MLB Enter and Reset pushbuttons are disabled
+**					   Cursor is set in the first non-output field
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( CUffnnnBusResetClick )
+{
+  
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+	SHORT  RowNumber = 0;                  /* Selected row number */
+	_<ListBoxRowStructure>   <ListBoxRow>; /* Row data structure */
+
+	/* Initialize MLB row structure */
+    memset(&<ListBoxRow>, 0, sizeof(<ListBoxRow>));
+
+    /* Query row number selected */
+    FndLstBoxRowQuerySelection( CBI_hwnd,
+                                "<ListBoxWidgetName>",
+                                FND_LSTBOX_START,
+                                &RowNumber,
+                                &FndGenErrorBlock);
+
+    /* Query the data from the f irst row */
+    FndLstBoxRowQueryData( CBI_hwnd,
+                          "<ListBoxWidgetName>",
+                          RowNumber,  
+                          sizeof(<ListBoxRow>),
+                          &<ListBoxRow>,
+                          &FndGenErrorBlock );
+
+    //--------------------------------------------------
+	//  SHELL INSTRUCTIONS
+	//  Set all the MLB entry fields with the data from the
+	//  listbox.
+	//--------------------------------------------------
+
+	/* Load data from row to Entry Fields */
+	FndFieldSetValue( CBI_hwnd,
+                      "<MLBEntryFieldName>",
+                      sizeof(<ListBoxRow._LBNameColumnNameData>),
+                      &<ListBoxRow._LBNameColumnNameData>,
+                      &FndGenErrorBlock );
+
+    /* Disable MLB 'Enter' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                      "<EnterPB>",
+                      &FndGenErrorBlock );
+
+    /* Disable MLB 'Reset' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                       "<ResetPB>",
+                       &FndGenErrorBlock );
+
+	/* Set the cursor in the first non-output MLB entry field */
+    FndFieldSetCursor( CBI_hwnd,
+                       "<MLBEntryFieldName>",
+                       CUR_MAKECURRENT,
+                       &FndGenErrorBlock );
+
+    return CMN_SUCCESS;
+
+}  /* end CUffnnnBusMtrRdgLbSel */
+
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnBusOkClick                      ===
+		  //===  Add this logic to the OK Pushbutton    ===
+		  //===  business logic.                        ===
+		  //===============================================
+		  //===============================================
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusOkClick
+**
+**  DESCRIPTION      : Add the following logic to the OK Pushbutton:
+**                     Current row is queried and loaded into the entry fields
+**					   MLB Enter and Reset pushbuttons are disabled
+**					   Cursor is set in the first non-output field
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+WCBPROC( CUffnnnBusOkClick )
+{
+  
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+	SHORT  i = 0;                          /* loop index */
+	_<ListBoxRowStructure>   <ListBoxRow>; /* MLB row structure */
+
+    /* Initialize MLB row structure */
+	memset(&<ListBoxRow>, 0, sizeof(<ListBoxRow>));
+
+    /* Traverse MLB and move changed rows to output layout */
+    for( i=0; (RowNumber < NUM<LBNAME>ROWS) && (RowNumber < <WCD_QyAlrAclCnt>) ; i++)
+    {
+        /* Query the data from the f irst row */
+        FndLstBoxRowQueryData( CBI_hwnd,
+                              "<ListBoxWidgetName>",
+                              i,                   
+                              sizeof(<ListBoxRow>),
+                              &<ListBoxRow>,
+                              &FndGenErrorBlock );
+
+	    if (<ListBoxRow._LBNameCdStatusIconicData> == CMN_LBROW_STATUS_CHANGED)
+	    {
+			//----------------------------------------------------------------
+			//  SHELL INSTRUCTIONS
+		    //  Move MLB data from the listbox structure to the output layout 
+			//----------------------------------------------------------------
+			
+		    
+		} /* end if if (<ListBoxRow._LBNameCdStatusIconicData> == CMN_LBROW_STATUS_CHANGED) */
+
+	}  /* end for loop */
+  
+    return CMN_SUCCESS;
+}
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  CUffnnnBusDisableMLB                   ===
+		  //===  This common logic is called to set     ===
+		  //===  the MLB listbox, entry fields and     	===
+		  //===  pushbuttons to output if the MLB       ===
+		  //===  should be 'disabled'.                  ===
+		  //===============================================
+		  //===============================================
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : CUffnnnBusDisableMLB
+**
+**  DESCRIPTION      : This common function is called to set the listbox,
+**					   entry fields, and pushbuttons to display only.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+SHORT CUffnnnBusDisableMLB( CMN_ARCH_PARM_TYPES)
+{
+    _FND_ERROR_BLOCK FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+    /* Set the MLB listbox to output */
+	CmnLstBoxSetOutput ("<ListBoxWidgetName>",
+	                    CMN_ARCH_PARMS);
+
+
+	/* Disable MLB 'Enter' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                       "<EnterPB>",
+                       &FndGenErrorBlock );
+
+    /* Disable Reset Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                       "<ResetPB>",
+                       &FndGenErrorBlock );
+
+	//-----------------------------------------------------
+	//  SHELL INSTRUCTIONS
+	//  Set all entry fields status to VALID and call
+	//  CmnFieldSetOutput to set the field to output.
+	//-----------------------------------------------------
+
+	/*  Set the status of the MLB entry field to VALID */
+	FndFieldSetStatus( CBI_hwnd,
+	                   "<MLBEntryFieldName>",
+			    	   STS_VALID,
+				       &FndGenErrorBlock);
+
+    /* Set the MLB entry field to output */
+    CmnFieldSetOutput("<MLBEntryFieldName>",
+	                  CMN_ARCH_PARMS);
+
+
+    return CMN_SUCCESS;
+}

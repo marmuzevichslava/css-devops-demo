@@ -1,0 +1,237 @@
+/***************************************************************************
+**  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
+**  This work is protected by copyright law as an unpublished work.       **
+****************************************************************************/
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Module
+**
+**  FILENAME         : <CUFFnnn>.AEX
+**
+**  DESCRIPTION      : CSS Architecture Exit Functions:
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+          //===============================================
+		  //===============================================
+		  //===  SHELL INSTRUCTIONS                     ===
+		  //===                                         ===
+		  //===  Add the following MLB logic in         ===
+		  //===  ExitCsrNotification after a successful ===
+		  //===  CSR call.                              ===
+		  //===============================================
+		  //===============================================
+
+
+/***************************************************************************
+**
+**            Customer Service System Architecture Exit Function
+**
+**  FUNCTION         : ExitCsrNotification
+**
+**  DESCRIPTION      : This exit is invoked when the CSR request and reply
+**                     exchange is completed successfully.
+**
+**  INPUTS           : CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**
+**  REVISION HISTORY
+**
+**  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  ---------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+
+AEXPROC( ExitCsrNotification )
+{
+  
+    //------------------------------------------------------------
+    //  S H E L L   I N S T R U C T I O N S
+    //
+    //  The following MLB logic should be added after a successful
+    //	CSR call.  The data in the WCD is loaded into the listbox
+    //  for a count returned - QyAlrAclCnt.  Logic specific to the
+    //	dialog should be added if no rows are found.
+	//  The following logic occurs:
+	//  Listbox data is populated
+	//	If output layout exists, window data is overlayed
+	//  MLB entry fields that are display only are set to output
+	//  MLB 'Enter' and 'Reset' pushbuttons are disabled
+	//  If MLB rows exist,
+	//  	the first row is loaded into the MLB entry fields
+	//      the cursor is set in the first non-output MLB entry field
+    //-------------------------------------------------------------
+
+   _<ListBoxRowStructure>   <ListBoxRow>;    /* Instance of LB row */
+    SHORT                   i = 0;		     /* Loop index */
+  
+  
+    /* populate the MLB listbox structure with data from the WCD and add to MLB listbox */
+    for( i=0; (RowNumber < NUM<LBNAME>ROWS) && (RowNumber < <WCD_QyAlrAclCnt>); i++)
+    {
+  
+        /* Initialize MLB structure */
+        memset(&<ListBoxRow>, 0, sizeof(<ListBoxRow>));
+  
+       /* Set the MLB Iconic Column to UNCHANGED */
+       <LBRowDataName>._<LBRow>CdStatusIconicData = CMN_LBROW_STATUS_UNCHANGED;
+  
+       //------------------------------------------------         
+       //  SHELL INSTRUCTIONS
+       //  Copy MLB listbox fields with data from the WCD 
+       //------------------------------------------------
+  
+        /* Add the row to the listbox */
+        FndLstBoxRowAdd( CBI_hwnd,
+                         "<ListBoxWidgetName>",
+                         i,
+                         sizeof(<ListBoxRow>),
+                         (VOID *) &<ListBoxRow>,
+                         &FndGenErrorBlock );
+  
+
+        //------------------------------------------------
+		// SHELL INSTRUCTIONS
+		// Specific to the window, set the status of the
+		// MLB Listbox row.	 If the status is INVALID
+		// or INCOMPLETE then set the Application to 
+		// INVALID.
+		//------------------------------------------------
+
+        FndLstBoxRowSetAttr( CBI_hwnd,
+                             "<ListBoxWidgetName>",
+                             i,						 
+                             AT_INCOMPLETE,
+                             &FndGenErrorBlock);
+
+		//!! Remove if the application does not set the
+		//   attribute of a row to INVALID or INCOMPLETE
+        /* Set the window application validation flag to invalid 
+ 	       if any any row's status was set to INCOMPLETE or INVALID */
+        CmnWindowSetApplInvalid ( CMN_ARCH_PARMS );
+  
+    } /* end for( i=0; i < WCD_QyAlrAclCnt; i++) */
+
+
+	/* Check to see if there is data in the OUT layout */
+    /* (Omit this if this shell is for the Main window)   */
+    if( EAB_pWdtOutData != NULL)
+    {
+    /* Set up a pointer to the OUT layout <CUFFnnnOUTPUT> */
+      <_CUFFnnnOUTPUT> *p<CUFFnnnOutput>;
+      
+      p<CUFFnnnOutput> = EAB_pWdtOutData;
+      
+      /* Overlay window fields from OUT layout <CUFFnnnOutput> */
+      
+    }
+  
+    
+    //-----------------------------------------------------
+	// SHELL INSTRUCTIONS
+	// Set any MLB Entry Fields to output if they are
+	// display only
+	//-----------------------------------------------------
+
+	/* Set specific MLB Entry Fields to display only */
+	CmnFieldSetOutput("<EntryFieldName>",
+	                  CMN_ARCH_PARMS);
+
+    /* Disable MLB 'Enter' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                      "<EnterPB>",
+                      &FndGenErrorBlock );
+
+    /* Disable MLB 'Reset' Pushbutton */
+    FndCommandDisable( CBI_hwnd,
+                       "<ResetPB>",
+                       &FndGenErrorBlock );
+
+	//------------------------------------------------------------------------------------
+	//  SHELL INSTRUCTIONS
+    // Load first row in Entry Fields.  If at least one row is not returned, determine if
+    // a message box should appear to the user or if the MLB should be disabled.
+	//------------------------------------------------------------------------------------
+
+    /* If MLB is empty, call common function to disable the MLB */
+    if (<WCD_QyAlrAclCnt> == 0)
+	{
+	    // Note:  Perform specific window logic.  Either a message box is
+		// displayed when an error is returned from the service OR it is
+		// valid that no rows are returned so the MLB should be disabled.
+
+	    CUffnnnBusDisableMLB (CMN_ARCH_PARMS);
+
+	} /* if (<WCD_QyAlrAclCnt> == 0) */
+
+	/* Else - Load first row for the user */
+	else
+	{
+	    
+	    /* Select first row */
+        FndLstBoxRowSelect( CBI_hwnd,
+                            "<ListBoxWidgetName>",
+                            0,			 /* always select first row */
+                            &FndGenErrorBlock );
+
+  
+        /* Query the data from the first row */
+        FndLstBoxRowQueryData( CBI_hwnd,
+                              "<ListBoxWidgetName>",
+                              0,                    /* always load first row */
+                              sizeof(<ListBoxRow>),
+                              &<ListBoxRow>,
+                              &FndGenErrorBlock );
+ 
+        //-------------------------------------------------------
+		//  SHELL INSTRUCTIONS
+		//  Load the MLB entry fields with the data from the
+		//  first row in the MLB.
+		//-------------------------------------------------------
+
+    	/* Load data from row to Entry Fields */
+    	FndFieldSetValue( CBI_hwnd,
+                          "<MLBEntryFieldName>",
+                          sizeof(<ListBoxRow._LBNameColumnNameData>),
+                          &<ListBoxRow._LBNameColumnNameData>,
+                          &FndGenErrorBlock );
+
+
+        //----------------------------------------------------------
+		//  SHELL INSTRUCTIONS
+		//  Set cursor in first non-output entry field ONLY if other 
+		//  non-output fields do not reside on the window.  
+		//----------------------------------------------------------
+
+		/* Set the cursor in the first non-output MLB entry field */
+        FndFieldSetCursor( CBI_hwnd,
+                           "<MLBEntryFieldName>",
+                           CUR_MAKECURRENT,
+                           &FndGenErrorBlock );
+	} /* else not (<WCD_QyAlrAclCnt> == 0) */
+
+
+    return CMN_SUCCESS;
+
+} /* End of ExitCsrNotification */
+
