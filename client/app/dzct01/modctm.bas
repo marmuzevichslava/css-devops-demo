@@ -421,21 +421,21 @@ End Function
 
 
 '*********************************************************************************************************
-Public Function CheckForSpecialChars(s As String) As String
+Public Function CheckForSpecialChars(S As String) As String
 '*********************************************************************************************************
     Dim pos As Integer
     Dim res As String
 
-    res = s
-    s = ""
+    res = S
+    S = ""
     'Check for pipe character
     Do While InStr(res, Chr(124))
         pos = InStr(res, Chr(124))
-        s = s & Chr(39) & Left(res, pos - 1) & Chr(39) & " & Chr(124) & "
+        S = S & Chr(39) & Left(res, pos - 1) & Chr(39) & " & Chr(124) & "
         res = Mid(res, pos + 1)
     Loop
 
-    CheckForSpecialChars = s & Chr(39) & res & Chr(39)
+    CheckForSpecialChars = S & Chr(39) & res & Chr(39)
 
 End Function
 
@@ -668,16 +668,16 @@ Public Function ParseString(ByVal SrcString As String, _
                             Delimiter As String, _
                             Position As Integer) As String
 '**********************************************************************
-    Dim s As Integer, delpos As Integer
+    Dim S As Integer, delpos As Integer
     
     SrcString = SrcString & Delimiter
     
     If Position = 0 Then Position = 1
     
-    For s% = 1 To Position - 1
+    For S% = 1 To Position - 1
         delpos% = InStr(SrcString, Delimiter)
         SrcString = Mid$(SrcString, delpos% + 1, Len(SrcString))
-    Next s%
+    Next S%
     
     delpos% = InStr(SrcString, Delimiter)
     

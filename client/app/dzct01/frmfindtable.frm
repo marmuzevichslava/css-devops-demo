@@ -6,7 +6,7 @@ Begin VB.Form frmFindTable
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   3405
-   Icon            =   "frmFindTable.frx":0000
+   Icon            =   "frmfindtable.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False

@@ -5,7 +5,7 @@ Begin VB.Form frmAddModTable
    ClientLeft      =   3345
    ClientTop       =   2490
    ClientWidth     =   5790
-   Icon            =   "frmAddModTable.frx":0000
+   Icon            =   "frmaddmodtable.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False

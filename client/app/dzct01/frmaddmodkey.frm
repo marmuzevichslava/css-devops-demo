@@ -6,7 +6,7 @@ Begin VB.Form frmAddModKey
    ClientTop       =   330
    ClientWidth     =   7545
    FillStyle       =   6  'Cross
-   Icon            =   "frmAddModKey.frx":0000
+   Icon            =   "frmaddmodkey.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False

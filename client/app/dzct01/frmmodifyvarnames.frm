@@ -6,7 +6,7 @@ Begin VB.Form frmModifyVarNames
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   4095
-   Icon            =   "frmModifyVarNames.frx":0000
+   Icon            =   "frmmodifyvarnames.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False

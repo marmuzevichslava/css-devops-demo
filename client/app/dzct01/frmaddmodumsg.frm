@@ -4,7 +4,7 @@ Begin VB.Form frmAddModUMsg
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   7335
-   Icon            =   "frmAddModUMsg.frx":0000
+   Icon            =   "frmaddmodumsg.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -298,6 +298,17 @@ Public bDecodeOK As Boolean
 Public bKeyOK As Boolean
 Public bSeqOK As Boolean
 Public bChangeKey As Boolean
+
+Private Sub cbxClients_Click()
+
+    If (bFormLoaded = True) Then
+        
+        bChangeKey = True
+        bModified = True
+
+    End If
+End Sub
+
 '***************************************************************************************************************
 Private Sub cmdCancel_Click()
 '***************************************************************************************************************
@@ -584,6 +595,9 @@ Private Sub Form_Load()
 '***************************************************************************************************************
     Dim myClient As New Client
     Dim x As Integer
+
+    Const SEQNUM_DEFAULT = "1"
+    Const LANGUAGE_DEFAULT = "E"
     
     bFormLoaded = False
     bChangeKey = False
@@ -603,6 +617,8 @@ Private Sub Form_Load()
     If (bAddNewKey) Then
         Me.Caption = CurTable & " - Add New Error Code"
         cmdProcess.Caption = "&Add"
+        txtSeqNumber.Text = SEQNUM_DEFAULT 'Default this field to 0
+        txtLanguage.Text = LANGUAGE_DEFAULT 'Default this field to E (English)
     Else
         Me.Caption = CurTable & " - Modify Existing Error Code"
         cmdProcess.Caption = "&Modify"
@@ -675,7 +691,7 @@ Private Sub Form_Load()
             'Set up the Platform combo box.
             For x = 0 To UBound(PlatformArray)
                 If (DaoRS(8).Value = PlatformArray(x).Platform) Then
-                    cbxClients.ListIndex = x
+                    cbxPlatform.ListIndex = x
                     Exit For
                 End If
             Next

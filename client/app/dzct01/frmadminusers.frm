@@ -6,7 +6,7 @@ Begin VB.Form frmAdminUsers
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   4665
-   Icon            =   "frmAdminUsers.frx":0000
+   Icon            =   "frmadminusers.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False

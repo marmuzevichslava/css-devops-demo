@@ -4,7 +4,7 @@ Begin VB.Form frmAddModMsg
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   8295
-   Icon            =   "frmAddModMsg.frx":0000
+   Icon            =   "frmaddmodmsg.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False

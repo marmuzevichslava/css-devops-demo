@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0"; "COMDLG32.OCX"
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "Comctl32.ocx"
 Begin VB.Form frmInsertTbl 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Insert SIR Data"
@@ -8,7 +8,7 @@ Begin VB.Form frmInsertTbl
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   5940
-   Icon            =   "frmInsertTbl.frx":0000
+   Icon            =   "frminserttbl.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
@@ -29,7 +29,7 @@ Begin VB.Form frmInsertTbl
       _ExtentY        =   556
       _Version        =   327680
       Appearance      =   1
-      MouseIcon       =   "frmInsertTbl.frx":030A
+      MouseIcon       =   "frminserttbl.frx":030A
    End
    Begin ComctlLib.StatusBar stbInsert 
       Align           =   2  'Align Bottom
@@ -53,7 +53,7 @@ Begin VB.Form frmInsertTbl
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frmInsertTbl.frx":0326
+      MouseIcon       =   "frminserttbl.frx":0326
    End
    Begin MSComDlg.CommonDialog ComDlg 
       Left            =   750
@@ -119,7 +119,7 @@ Begin VB.Form frmInsertTbl
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "frmInsertTbl.frx":0342
+      MouseIcon       =   "frminserttbl.frx":0342
       NumItems        =   0
    End
    Begin VB.Label lblImportFile 
@@ -554,14 +554,14 @@ Private Sub Form_Load()
 
                 'Add the remaining data into the other cells.
                 itmX.SubItems(COL_KEY) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 2).Value)))
-                itmX.SubItems(COL_DECODE) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 3).Value)))
-                itmX.SubItems(COL_CLIENT) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 4).Value)))
-                itmX.SubItems(COL_METHOD) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 5).Value)))
-                itmX.SubItems(COL_COMMENTS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 6).Value)))
-                itmX.SubItems(COL_BUTTONS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 7).Value)))
-                itmX.SubItems(COL_ICONS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 8).Value)))
-                itmX.SubItems(COL_DEF_BUTTON) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 9).Value)))
-
+                itmX.SubItems(COL_DECODE) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 4).Value)))
+                itmX.SubItems(COL_CLIENT) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 5).Value)))
+                itmX.SubItems(COL_METHOD) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 6).Value)))
+                itmX.SubItems(COL_COMMENTS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 7).Value)))
+                itmX.SubItems(COL_BUTTONS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 8).Value)))
+                itmX.SubItems(COL_ICONS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 9).Value)))
+                itmX.SubItems(COL_DEF_BUTTON) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 10).Value)))
+                
                 x = x + 1
                 iTotalRec = iTotalRec + 1
                 ImportProgressBar.Value = iTotalRec

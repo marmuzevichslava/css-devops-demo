@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.1#0"; "COMDLG32.OCX"
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "Comctl32.ocx"
 Begin VB.Form frmSourceFileGenerator 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "CUV Source File Generator"
@@ -8,7 +8,7 @@ Begin VB.Form frmSourceFileGenerator
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7140
-   Icon            =   "frmSourceFileGenerator.frx":0000
+   Icon            =   "frmsourcefilegenerator.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
@@ -165,7 +165,7 @@ Begin VB.Form frmSourceFileGenerator
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "frmSourceFileGenerator.frx":030A
+      MouseIcon       =   "frmsourcefilegenerator.frx":030A
       NumItems        =   0
    End
    Begin VB.Frame Frame1 

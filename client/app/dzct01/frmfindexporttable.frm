@@ -5,7 +5,7 @@ Begin VB.Form frmFindExportTable
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   3375
-   Icon            =   "frmFindExportTable.frx":0000
+   Icon            =   "frmfindexporttable.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False

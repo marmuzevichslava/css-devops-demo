@@ -1,12 +1,12 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "Comctl32.ocx"
 Begin VB.Form frmImportStatus 
    Caption         =   "Import Status"
    ClientHeight    =   3195
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   6375
-   Icon            =   "frmImportStatus.frx":0000
+   Icon            =   "frmimportstatus.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    ScaleHeight     =   3195
@@ -81,7 +81,7 @@ Begin VB.Form frmImportStatus
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "frmImportStatus.frx":030A
+      MouseIcon       =   "frmimportstatus.frx":030A
       NumItems        =   0
    End
    Begin VB.Label txtFinalStatus 

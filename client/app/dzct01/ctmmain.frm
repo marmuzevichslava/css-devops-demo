@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "Comctl32.ocx"
 Begin VB.Form frmMain 
    Caption         =   "Codestable Explorer"
    ClientHeight    =   6000
@@ -365,7 +365,7 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   17886
+            Object.Width           =   17806
             Text            =   "Status"
             TextSave        =   "Status"
             Key             =   ""
@@ -831,10 +831,11 @@ Private Sub mnuDeleteKey_Click()
     If (RC = vbYes) Then
         
         Screen.MousePointer = vbHourglass
-    
+            
         For x = 1 To lvListView.ListItems.Count
+                       
             If lvListView.ListItems.Item(x).Selected = True Then
-        
+
                 'Get the client code for this key.
                 myClient.Decode = lvListView.ListItems.Item(x).SubItems(2)
                 
@@ -870,6 +871,7 @@ Private Sub mnuDeleteKey_Click()
     End If
 
     tvTreeView.SetFocus
+
     Me.Refresh
 
 End Sub
@@ -1035,8 +1037,6 @@ Private Sub mnuModifyKey_Click()
     'Get all the Keys and decodes.
     Screen.MousePointer = vbHourglass
     
-    Call RefreshCodeDecodeLB
-    
     Screen.MousePointer = vbDefault
     
     lvListView.ListItems(iSelected).Selected = True
@@ -1069,8 +1069,6 @@ Private Sub mnuAddKey_Click()
     
     Screen.MousePointer = vbHourglass
     
-    'Get all the Keys and decodes.
-    Call RefreshCodeDecodeLB
     tvTreeView.SetFocus
     
     Screen.MousePointer = vbNormal
@@ -1252,6 +1250,8 @@ Private Sub mnuRequest_Click()
 '***************************************************************************************************************
     Dim xlApp As Object, xlTemplate As Object, objSpreadSheet As Object
     
+    Screen.MousePointer = vbHourglass
+    
     Set xlApp = CreateObject("Excel.Application")
     
     'Set xlTemplate = xlApp.Workbooks.Open(App.Path & "\CTRequest.xlt", , True, , "c1admin", "c1admin", True)
@@ -1259,6 +1259,8 @@ Private Sub mnuRequest_Click()
     xlApp.ActiveWorkbook.RunAutoMacros xlAutoOpen
 
     xlApp.Visible = True
+    
+    Screen.MousePointer = vbNormal
     
 End Sub
 

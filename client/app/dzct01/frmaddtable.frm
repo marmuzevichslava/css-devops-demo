@@ -6,7 +6,7 @@ Begin VB.Form frmAddTable
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   5550
-   Icon            =   "frmAddTable.frx":0000
+   Icon            =   "frmaddtable.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
