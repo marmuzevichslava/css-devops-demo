@@ -765,27 +765,14 @@ Public Function AddNewRecord() As Boolean
     'Make sure that there is at least a space within each text field.
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     
-    hDecode = CheckForSpecialChars(txtDecode.Text)
-    
-''    strsql = "INSERT INTO tblEntries" _
-''            & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease, SystemUse, StaticTableUse, CodesTableUse) " _
-''            & "VALUES (" _
-''            & Chr(34) & CurTable & Chr(34) & ", " _
-''            & Chr(34) & txtKey.Text & Chr(34) & ", " _
-''            & Chr(34) & txtDecode.Text & Chr(34) & ", " _
-''            & myClient.Displaycode & ", " _
-''            & Chr(34) & txtDesc.Text & Chr(34) & ", " _
-''            & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
-''            & myApplication.Displaycode & ", " _
-''            & myPlatform.Displaycode & ", " _
-''            & myRelease.Displaycode & ", "
+'    hDecode = CheckForSpecialChars(txtDecode.Text)
     
     strsql = "INSERT INTO tblEntries" _
             & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease, SystemUse, StaticTableUse, CodesTableUse) " _
             & "VALUES (" _
             & Chr(34) & CurTable & Chr(34) & ", " _
             & Chr(34) & txtKey.Text & Chr(34) & ", " _
-            & Chr(34) & hDecode & Chr(34) & ", " _
+            & Chr(34) & txtDecode.Text & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
             & Chr(34) & txtDesc.Text & Chr(34) & ", " _
             & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
@@ -819,10 +806,10 @@ Public Function AddNewRecord() As Boolean
     
     'Set up the error handling.
     On Error GoTo InsertError
-Debug.Print strsql
+    
     'Begin a new transaction.
      wsCTM.BeginTrans
-Debug.Print strsql
+    
     'Execute the update.
     dbCTM.Execute strsql
             
@@ -875,12 +862,12 @@ Public Function ModifyRecord() As Boolean
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     
 'add logic to format decode text
-    hDecode = CheckForSpecialChars(txtDecode.Text)
+'    hDecode = CheckForSpecialChars(txtDecode.Text)
     
     'Put together the base update SQL
     strsql = "UPDATE tblEntries SET " _
              & "Key = " & Chr(34) & txtKey.Text & Chr(34) & ", " _
-             & "Decode = " & Chr(34) & hDecode & Chr(34) & ", " _
+             & "Decode = " & Chr(34) & txtDecode.Text & Chr(34) & ", " _
              & "Client = " & myClient.Displaycode & ", " _
              & "Description = " & Chr(34) & txtDesc.Text & Chr(34) & ", " _
              & "Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
@@ -918,7 +905,6 @@ Public Function ModifyRecord() As Boolean
     'Set up the error handling.
     On Error GoTo UpdateError
     
-Debug.Print strsql
     'Begin a new transaction.
      wsCTM.BeginTrans
 

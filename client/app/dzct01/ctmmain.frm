@@ -704,9 +704,6 @@ Private Sub mnuDeleteKey_Click()
     If (RC = vbYes) Then
         
         Screen.MousePointer = vbHourglass
-                
-        'Begin a new transaction.
-        wsCTM.BeginTrans
     
         For x = 1 To lvListView.ListItems.Count
             If lvListView.ListItems.Item(x).Selected = True Then
@@ -720,23 +717,22 @@ Private Sub mnuDeleteKey_Click()
                              " AND Key = " & Chr(34) & lvListView.ListItems.Item(x).Text & Chr(34) & _
                              " AND Client = " & myClient.Displaycode
         
-                'ElseIf (UCase(tvTreeView.SelectedItem.Text) = "C1CMBMSG") Then
                 ElseIf (CurTableType = MSG_BOX) Then
                     strsql = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & Chr(34) & tvTreeView.SelectedItem.Text & Chr(34) & _
                              " AND Code = " & Val(lvListView.ListItems.Item(x).Text) & _
                              " AND Client = " & myClient.Displaycode
+                
                 ElseIf (CurTableType = WES_CODE) Then
                     strsql = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(34) & tvTreeView.SelectedItem.Text & Chr(34) & _
                              " AND ErrorNumber = " & Val(lvListView.ListItems.Item(x).Text) & _
+                             " AND SequenceNumber = " & Val(lvListView.ListItems.Item(x).SubItems(6)) & _
                              " AND Client = " & myClient.Displaycode
                 End If
     
                 wsCTM.BeginTrans
-                
-                'Execute the SQL.
                 dbCTM.Execute strsql
-            
                 wsCTM.CommitTrans
+                
             End If
         Next
 
