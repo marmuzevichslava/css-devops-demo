@@ -356,7 +356,7 @@ Private Sub cmdSubmit_Click()
     Me.cmdSubmit.Enabled = False
     Me.lstOutput.Clear
     
-    'rc = InitTvList()
+    rc = InitTvList()
     'rc = InitTcpPipe("c1proxyhost", _
     '                 "c1proxy", 5)
     rc = SetTvPair(Me.txtTag1, _
@@ -451,7 +451,7 @@ End Sub
 
 Private Sub mnuExit_Click()
 
-    'End
+    End
     
 End Sub
 
