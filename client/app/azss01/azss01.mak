@@ -20,6 +20,7 @@
 # 12/01/94  L. Misfeldt          Conversion to use EAXBUILD.MAK to allow
 #                                  a build for either OS/2 or Windows NT.
 #
+# 07/29/96  CWOODS				 Visual C++ 4.0 - Added /NOD for LIBS_WIN32
 #--------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------
@@ -36,7 +37,7 @@ PROJ = AZSS01
 #--------------------------------------------------------------------------
 LIBS_OS2 = os2+llibcrt+crtexe+KZFPSAPI+KZFNTEND+KZFNDCOD+KZFNDAPI+KZMSGAPI+KZDDEAPI+C1CFUNC+PMFOS2
 
-LIBS_WIN32 = msvcrt.lib kernel32.lib user32.lib gdi32.lib \
+LIBS_WIN32 = /NOD msvcrt.lib kernel32.lib user32.lib gdi32.lib \
              winspool.lib comdlg32.lib \
              advapi32.lib shell32.lib wsock32.lib \
              ktfpsapi.lib ktfntend.lib ktfndcod.lib ktfndapi.lib \
