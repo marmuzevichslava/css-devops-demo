@@ -19,29 +19,39 @@
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
 **    99/99/99  XXXXXXXX              Original code.
+**    04/15/96  mconner               Added numerous functions and definitions
+**                                    to accomodate port to NT and generally 
+**                                    clean it up
 **
 ***************************************************************************/
 
 /***************************************************************************/
 /* Application #includes                                                   */
 /***************************************************************************/
-
-//---------------------------------------------------
-//  S H E L L   I N S T R U C T I O N S
-//
-//  If a dialogname.h file exists for the dialog that
-//  contains this window, and this window requires
-//  access to that header file, then uncomment the
-//  line below.  Otherwise, delete it.
-//
-//  REMOVE THIS COMMENT BLOCK WHEN DONE.
-//
-//---------------------------------------------------
-//#include CUffnn.H
+#include <malloc.h>
+#include <time.h>
+/*#include <ctype.h>*/
+#include "systcomm.hh"
+#include "roadmap.hh"
 
 /***************************************************************************/
 /* Application #defines                                                    */
 /***************************************************************************/
+#define ENTITY_ID_LEN   9
+#define ENTITY_TYPE_LEN 9
+#define LONG_DESC_LEN   641
+#define LINE_LEN        80
+#define SUB_STR_LEN     120
+#define NUM_SUBS        8
+#define PARSE_CHAR      '\n'
+#define PAD_CHAR        ' '
+#ifdef FND_WIN32
+#define PRINTPORT       "LPT2"
+#endif
+#ifdef FND_OS2
+#define PRINTPORT       "LPT1"
+#endif
+#define PAD_LEN         32
 
 /*             FMT    LEN   PREC  US    OCCUR BYTES OTHER */
 #define SEG_RPT_DTL_FMT \
@@ -65,17 +75,7 @@
 /* Forward declarations for Application Validation Functions               */
 /***************************************************************************/
 
-//---------------------------------------------------
-//  S H E L L   I N S T R U C T I O N S
-//
-//  Uncomment and duplicate the following line for every
-//  RAB-generated Application Validation function that has
-//  been added to the <CUffnnn>.VLD file.
-//
-//  REMOVE THIS COMMENT BLOCK WHEN DONE.
-//
-//---------------------------------------------------
-
+WCBFWD(	AZRP001BUSPredisplay )
 WCBFWD( AZRP001BusAmnprintClk )
 WCBFWD( AZRP001BusFindpbClk )
 WCBFWD( AZRP001BusAmnbatchClk )
@@ -91,79 +91,35 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
 
 SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
                    _REPLYHDR *pReplyHdr, _ENTITYDATA *pEntityDataTable,
-                   SHORT CurrPage, SHORT *pCurrLine );
+                   SHORT CurrPage, SHORT *pCurrLine, CMN_ARCH_PARM_TYPES );
 
 SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
                           _ENTITYDATA *pEntityDataTable, CHAR *PrintFile,
                           CHAR Duplex, CMN_ARCH_PARM_TYPES );
 
-//---------------------------------------------------
-//  S H E L L   I N S T R U C T I O N S
-//
-//  Uncomment and duplicate the following statement for every
-//  application-defined Application Validation function that
-//  has been added to the <CUffnnn>.VLD file.
-//
-//  REMOVE THIS COMMENT BLOCK WHEN DONE.
-//
-//---------------------------------------------------
-
-//SHORT CUffnnnVldApplicationDefined( TYPE Parameter1,
-//                                    TYPE Parameter2,
-//                                    TYPE ParameterN,
-//                                    CMN_ARCH_PARM_TYPES);
+USHORT FormatLongDesc(char *,
+                      USHORT *);
 
 
-/***************************************************************************/
-/* Forward declarations for Application Business Functions                 */
-/***************************************************************************/
+USHORT StrAllocateSubs(char *[],
+				       USHORT,
+				       USHORT);
 
-//---------------------------------------------------
-//  S H E L L   I N S T R U C T I O N S
-//
-//  Uncomment and duplicate the following line for every
-//  RAB-generated Application Business function that has
-//  been added to the <CUffnnn>.BUS file.
-//
-//  REMOVE THIS COMMENT BLOCK WHEN DONE.
-//
-//---------------------------------------------------
+USHORT FreeMemArray(void *[],
+                    USHORT);
 
-//WCBFWD( CUffnnnBusControlEvent )
+USHORT StrInsertCRLF(char *,
+		             USHORT *);
 
-//---------------------------------------------------
-//  S H E L L   I N S T R U C T I O N S
-//
-//  Uncomment and duplicate the following statement for every
-//  application-defined Application Business function that
-//  has been added to the <CUffnnn>.BUS file.
-//
-//  REMOVE THIS COMMENT BLOCK WHEN DONE.
-//
-//---------------------------------------------------
+USHORT StrParse(char *,
+				char *[],
+				char,
+				USHORT);
 
-//SHORT CUffnnnBusApplicationDefined( TYPE Parameter1,
-//                                    TYPE Parameter2,
-//                                    TYPE ParameterN,
-//                                    CMN_ARCH_PARM_TYPES);
+USHORT StrPad(char *,
+			  char,
+			  USHORT);
 
+USHORT StrAssemble(char *,
+				   char *[]);
 
-/***************************************************************************/
-/* Forward declarations for Architecture Exit Functions                    */
-/***************************************************************************/
-
-//---------------------------------------------------
-//  S H E L L   I N S T R U C T I O N S
-//
-//  Uncomment and duplicate the following statement for every
-//  application-defined Architecture Exit function that
-//  has been added to the <CUffnnn>.AEX file.
-//
-//  REMOVE THIS COMMENT BLOCK WHEN DONE.
-//
-//---------------------------------------------------
-
-//SHORT CUffnnnAexApplicationDefined( TYPE Parameter1,
-//                                    TYPE Parameter2,
-//                                    TYPE ParameterN,
-//                                    CMN_ARCH_PARM_TYPES);

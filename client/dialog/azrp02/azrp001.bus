@@ -22,6 +22,104 @@
 ***************************************************************************/
 
 
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP001BUSPredisplay
+**
+**  DESCRIPTION      :
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : XXXXXXXX
+**
+**  DATE CREATED     : 99/99/99
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  99/99/99  XXXXXXXX              Original code.
+**
+***************************************************************************/
+WCBPROC ( AZRP001BUSPredisplay )
+{
+    _FND_ERROR_BLOCK  FndGenErrorBlock;
+    USHORT FndGenRC = 0;
+
+	FndGenRC = FndValueInit( CBI_hwnd,
+	                         "EntityType",  
+	                         1,
+	                         8,
+	                         20,
+	                         &FndGenErrorBlock);
+
+	FndGenRC = FndValueAddItem( CBI_hwnd,
+	                            "EntityType",
+	                            1,
+	                            FND_VALUE_END,
+	                            "T",
+	                            "TABLE",
+	                            &FndGenErrorBlock);
+
+
+	FndGenRC = FndValueAddItem( CBI_hwnd,
+	                            "EntityType",
+	                            1,
+	                            FND_VALUE_END,
+	                            "F",
+	                            "FILE",
+	                            &FndGenErrorBlock);
+
+
+	FndGenRC = FndValueAddItem( CBI_hwnd,
+	                            "EntityType",
+	                            1,
+	                            FND_VALUE_END,
+	                            "C",
+	                            "COPYBOOK",
+	                            &FndGenErrorBlock);
+
+
+	FndGenRC = FndValueAddItem( CBI_hwnd,
+	                            "EntityType",
+	                            1,
+	                            FND_VALUE_END,
+	                            "R",
+	                            "RECORD",
+	                            &FndGenErrorBlock);
+
+
+	FndGenRC = FndValueAddItem( CBI_hwnd,
+	                            "EntityType",
+	                            1,
+	                            FND_VALUE_END,
+	                            "G",
+	                            "GROUP",
+	                            &FndGenErrorBlock);
+
+	FndGenRC = FndFieldHide(CBI_hwnd,
+	                        "CLength",
+							&FndGenErrorBlock);
+
+	FndGenRC = FndFieldHide(CBI_hwnd,
+	                        "CobolLength",
+							&FndGenErrorBlock);
+
+	FndGenRC = FndFieldHide(CBI_hwnd,
+	                        "Db2Length",
+							&FndGenErrorBlock);
+
+
+	return CMN_SUCCESS;
+
+}/*end of  AZRP001BUSPredisplay */
 
 /***************************************************************************
 **
@@ -54,7 +152,9 @@
 
 WCBPROC( AZRP001BusAmnprintClk )
 {
+/*mdc 03/27/96 not used in this function
     _FND_ERROR_BLOCK  FndGenErrorBlock;
+*/
     USHORT FndGenRC = 0;
 
     FndGenRC = CmnWindowCreate( "AZRP002X", "", NULL, NULL,
@@ -95,7 +195,9 @@ WCBPROC( AZRP001BusAmnprintClk )
 
 WCBPROC( AZRP001BusAmnbatchClk )
 {
+/*mdc 03/27/96 not used in this function
     _FND_ERROR_BLOCK  FndGenErrorBlock;
+*/
     USHORT FndGenRC = 0;
 
     FndGenRC = CmnWindowCreate( "AZRP003X", "", NULL, NULL,
@@ -158,20 +260,22 @@ WCBPROC( AZRP001BusFindpbClk )
 
   memcpy( FndStandardPB.ver, FND_MSG_VER, _VER_LEN );
   */
-
+ /*mdc 04/12/96 unreferenced local variables replaced by #defines in header
   CHAR EntityId[ 9 ];
   CHAR EntityType[ 9 ];
+  */
 
 //  _ENTITYDATA *pEntityDataTable;
 //  USHORT NumRows;
 
   /* Set up Request Header */
   FndGenRC = FndFieldQueryValue( CBI_hwnd, "EntityId",
-                                 sizeof( EntityId ),
+                                 ENTITY_ID_LEN,
                                  WCD_RequestHdr.EntityId,
                                  &FndGenErrorBlock );
+
   FndGenRC = FndFieldQueryValue( CBI_hwnd, "EntityType",
-                                 sizeof( EntityType ),
+                                 ENTITY_TYPE_LEN,
                                  WCD_RequestHdr.EntityType,
                                  &FndGenErrorBlock );
 
@@ -223,7 +327,7 @@ WCBPROC( AZRP001BusFindpbClk )
 
   /* Clear MLE */
   FndGenRC = FndFieldSetValue( CBI_hwnd, "LongDesc",
-                               sizeof( LongDescData ),
+                               LONG_DESC_LEN,
                                "",
                                &FndGenErrorBlock );
 
@@ -259,6 +363,7 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
   _FND_ERROR_BLOCK  FndGenErrorBlock;
   USHORT FndGenRC = 0;
   SHORT TextLen;
+  char *psLongDesc;
 
 //  for( i=0; i<_REPLYHDR__ENTITYTEXT_SIZE; i++ )
   for( i=0; i<pReplyHdr->NumTextRows; i++ )
@@ -273,17 +378,31 @@ SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
 
     TextLen = strlen(pReplyHdr->EntityText[i]);
 
-    pReplyHdr->EntityText[i][TextLen] = '\n';
+	/*mdc 04/11/96 Can't insert characters in array of text*/
+    /*pReplyHdr->EntityText[i][TextLen] = '\n';
     pReplyHdr->EntityText[i][TextLen+1] = '\0';
+	*/
   }
 
-  /* Populate MLE */
-  CmnStrCat( CMN_ARCH_PARMS, LongDescData, sizeof( LongDescData ),
+  /*mdc Allocate memory for long description string*/
+  psLongDesc = (char *)calloc(LONG_DESC_LEN, sizeof(char));
+  if(!psLongDesc) return CMN_FAIL;
+
+  /* Copy long description to string */
+  CmnStrCat( CMN_ARCH_PARMS, psLongDesc, LONG_DESC_LEN,
              8,
              pReplyHdr->EntityText[0], pReplyHdr->EntityText[1],
              pReplyHdr->EntityText[2], pReplyHdr->EntityText[3],
              pReplyHdr->EntityText[4], pReplyHdr->EntityText[5],
              pReplyHdr->EntityText[6], pReplyHdr->EntityText[7] );
+
+  /*mdc populate window with long description*/
+  FndGenRC = FndFieldSetValue(CBI_hwnd,
+                              "LongDesc",
+							  LONG_DESC_LEN,
+							  psLongDesc,
+							  &FndGenErrorBlock);
+
 
   for( i=0; i<pReplyHdr->RowsReturned; i++ )
   {
@@ -455,6 +574,10 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
 
   /* Open PrintFile */
   pfPrinter = fopen( PrintFile, "w" );
+  if(!pfPrinter) 
+  {
+  	return CMN_FAIL;
+  }
 
   /* Initialize PrintFile */
   fprintf( pfPrinter, PRINTER_RESET );
@@ -472,7 +595,7 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
     {
       /* Print Header Information */
       PrintHeader( pfPrinter, pRequestHdr, pReplyHdr, pEntityDataTable,
-                   CurrPage, &CurrLine );
+                   CurrPage, &CurrLine, CMN_ARCH_PARMS );
 
       while( CurrLine < MAX_LINES_PER_PAGE &&
              CurrRow < pReplyHdr->RowsReturned )
@@ -576,9 +699,12 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
 
 SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
                    _REPLYHDR *pReplyHdr, _ENTITYDATA *pEntityDataTable,
-                   SHORT CurrPage, SHORT *pCurrLine )
+                   SHORT CurrPage, SHORT *pCurrLine, CMN_ARCH_PARM_TYPES )
 {
   CHAR CurrDate[ 9 ];
+  /*USHORT i;*/
+  USHORT usNumLongDescRows = 0;
+  char *psLongDesc;
 
   fprintf( pfPrinter, "\n" );
   fprintf( pfPrinter, SEG_RPT_HDR1, CurrPage );
@@ -592,7 +718,6 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
 
   if( CurrPage == 1 )
   {
-    USHORT i;
 
     /* Print Page 1 header */
     fprintf( pfPrinter, "          %s CHARACTERISTICS\n",
@@ -608,7 +733,28 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
 
     if( pReplyHdr->NumTextRows > 0 )
     {
+	  
+	    /*mdc Allocate memory for long description string*/
+		  psLongDesc = (char *)calloc(LONG_DESC_LEN + 256, sizeof(char));
+		  if(!psLongDesc) return CMN_FAIL;
+
+		  /* Copy long description to string */
+		  CmnStrCat( CMN_ARCH_PARMS, psLongDesc, LONG_DESC_LEN,
+		             8,
+		             pReplyHdr->EntityText[0], pReplyHdr->EntityText[1],
+		             pReplyHdr->EntityText[2], pReplyHdr->EntityText[3],
+		             pReplyHdr->EntityText[4], pReplyHdr->EntityText[5],
+		             pReplyHdr->EntityText[6], pReplyHdr->EntityText[7] );
+
+		 /*mdc format the long description*/
+		 FormatLongDesc(psLongDesc, &usNumLongDescRows);
+
+		 /*mdc print the long desc and increment the line counter*/
+		 fprintf(pfPrinter, "%s\n", psLongDesc);
+		 *pCurrLine += usNumLongDescRows;
+
       /* Print first line of text */
+	  /*mdc 
       fprintf( pfPrinter, pReplyHdr->EntityText[0] );
 
       for( i=1; i<pReplyHdr->NumTextRows; i++ )
@@ -619,7 +765,10 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
                    pReplyHdr->EntityText[i] );
           *pCurrLine += 1;
         }
-      }
+	   
+      }*/
+	  /*mdc free memory*/
+	  free (psLongDesc);
     }
     else
     {
@@ -629,15 +778,15 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
     if( strcmp( pEntityDataTable[0].EntityType, "TABLE" ) == 0 )
     {
       /* Print TABLE-specific fields */
-      fprintf( pfPrinter, "                   TABLE NAME:  %s\n",
+      fprintf( pfPrinter, "\n                   TABLE NAME:  %s\n",
                pReplyHdr->TabName );
 
-      *pCurrLine += 1;
+      *pCurrLine += 2;
     }
 
 
-    fprintf( pfPrinter, "\n\n\n\n" );
-    *pCurrLine += 4;
+    fprintf( pfPrinter, "\n\n" );
+    *pCurrLine += 2;
   }
 
   fprintf( pfPrinter, "%s\n%s\n%s\n",
@@ -649,7 +798,396 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
   *pCurrLine += 3;   /* Adjust this based on size of header */
 
   return 0;
-}
+}/*end of PrintHeader*/	
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : FormatLongDesc
+**
+**  DESCRIPTION      : This function formats the long description for printing
+**                     a hard copy of the segment report.
+**
+**  INPUTS           : psStr - pointer to the long desc.
+**                     n     - pointer to the line counter.
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : StrInsertCRLF
+**                     StrAllocateSubs
+**                     StrParse
+**                     StrPad
+**                     StrAssemble
+**                     FreeMemArray
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+USHORT FormatLongDesc(char *psStr, 
+                     USHORT *n)
+{
+
+    USHORT i = 0;
+	USHORT j = 0;
+    char *ppStr[NUM_SUBS];
+    USHORT usNumRows = *n; /*set to passed in value*/
+    USHORT rc = 0;
+    char cParseChar = PARSE_CHAR;
+    char cPadChar = PAD_CHAR;
+    USHORT usNumChar = PAD_LEN;
+
+	/*insert all the newlines*/
+    rc = StrInsertCRLF(psStr, &usNumRows);
+
+
+	/*allocate memory for the string array*/
+    rc = StrAllocateSubs(ppStr,
+			 NUM_SUBS,
+			 SUB_STR_LEN);
+    if(rc)
+    {
+		fprintf(stderr, "\nThe memory allocation failed with %d\n",rc);
+		return(rc);
+    }
+	
+
+	/*parse the long desc on the newlines*/
+    rc = StrParse(psStr,ppStr,cParseChar, usNumRows);
+
+	/*pad the strings in the array for indentation alignment*/
+    for(i = 0; i < usNumRows - 1; ++i)
+    {
+		rc = StrPad(ppStr[i], cPadChar, usNumChar);
+    }
+
+	/*reassemble the long desc*/
+    rc = StrAssemble(psStr,ppStr);
+
+	/*free the allocated memory*/
+    FreeMemArray((void **)ppStr,usNumRows);
+
+	/*set the number of lines added to the page*/
+	*n = usNumRows + 1;
+
+    return(CMN_SUCCESS);
+
+}/*end of FormatLongDesc*/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : StrAssemble
+**
+**  DESCRIPTION      : This function assembles an array of strings into a single string
+**
+**  INPUTS           : s - pointer to the string.
+**                     ppStr     - pointer to the array of strings.
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+USHORT StrAssemble(char * s,
+		   char *ppStr[])
+{
+	USHORT i = 0;
+
+    /*initailize the passed in string */
+    *s = '\0';
+
+    /*assemble the string*/
+	for(i = 0; i < NUM_SUBS; ++i)
+	{
+		strcat(s, ppStr[i]);
+	}
+    return CMN_SUCCESS;
+
+}/*end of StrAssemble*/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : StrPad
+**
+**  DESCRIPTION      : This function pads a string with the designated number 
+**                     of characters of the passed in type.
+**
+**  INPUTS           : s - pointer to the string.
+**                     cPadChar - character to use for padding
+**                     usNum - number of characters to pad.
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+
+USHORT StrPad(char *s,
+	      char cPadChar,
+	      USHORT usNum)
+
+{
+    USHORT i = 0;
+    char *psStart = s;
+
+    /*move to the end of the string*/
+    while(*s) ++s;
+    for(i = 0; i < usNum && s < psStart + SUB_STR_LEN; ++i)
+    {
+		*(s + 1) = '\0'; /* move the NULL up */
+		*s = cPadChar;
+		++s;
+    }
+    return CMN_SUCCESS;
+}/*end of StrPad*/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : StrParse
+**
+**  DESCRIPTION      : This function parses a string on the designated character
+**                     into the passed in string array.
+**
+**  INPUTS           : psStr - pointer to the string.
+**                     ppStr - Target array of strings
+**                     cParseChar - character to parse on.
+**                     usNumStrs - number of strings.
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+USHORT StrParse(char *psStr,
+				char *ppStr[],
+				char cParseChar,
+				USHORT usNumStrs)
+
+{
+    USHORT i = 0;
+    char *s;
+
+    s = psStr;
+
+    /*move to the end of the string*/
+    while (*s) ++s;
+
+	i = usNumStrs - 1;
+    /*back up to each parse character and copy off the substring created*/
+    while(s > psStr && (i >= 0))
+    {
+		while(*s != cParseChar && s >= psStr) --s;
+		strcpy(ppStr[i], s + 1);
+		--i;
+		if(s > psStr)  /*account for last substring*/
+		{
+		   *(s + 1) = '\0'; /*chaop off the copied string*/
+		   --s; /*move off the parse character*/
+		}
+    }
+    return CMN_SUCCESS;
+}/*end of StrParse */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**
+**  FUNCTION         : StrInsertCRLF
+**
+**  DESCRIPTION      : This function inserts a newline at approximately every 
+**                     LINE_LEN chars from the begining of the string. It 
+**                     replces the closest space with \n
+**
+**  INPUTS           : psStr - pointer to the string.
+**                     usNumRows - number of rows created
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+USHORT StrInsertCRLF(char *psStr,
+		    USHORT *usNumRows)
+{
+    USHORT i;
+
+    /*initialize the line count just in case */
+    *usNumRows = 0;
+
+    while(*psStr) /*test for end of string*/
+    {
+		for(i = 0; i < LINE_LEN && *psStr; ++i) ++psStr;/*move up LINE_LEN*/
+		if(*psStr)
+		{
+		    while(*psStr != ' ') --psStr;/*back up to space */
+		    *psStr = '\n'; /*set space to newline*/
+		    ++*usNumRows; /*increment the number of lines created */
+		    ++psStr; /*move pointer ahead one and loop*/
+		}
+    }
+	++*usNumRows;/*add the last row*/
+    return CMN_SUCCESS;
+
+}/*end of StrInsertCRLF */
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**
+**  FUNCTION         : StrAllocateSubs
+**
+**  DESCRIPTION      : This function allocates memory for anumber of substrings in an array
+**                     of substrings. If it fails on any allocation it frees all and returns
+**                     a CMN_ERR_MEM_ALLOC_FAILED error.
+**
+**  INPUTS           : psStr - pointer to the string array.
+**                     usNumSubs - number of strings to allocate
+**                     usStrSize - size of each string
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+USHORT StrAllocateSubs(char *ppStr[],
+		       USHORT usNumSubs,
+		       USHORT usStrSize)
+{
+    USHORT i = 0;
+
+
+	/*allocate memeory for the pointers*/
+    for(i = 0; i < usNumSubs; ++i)
+    {
+		ppStr[i] = (char *)calloc(usStrSize, sizeof(char));
+		if(!ppStr[i])
+		{
+		    FreeMemArray((void **)ppStr, usNumSubs);
+		    return CMN_ERR_MEM_ALLOC_FAILED;
+		}
+
+    }
+    return CMN_SUCCESS;
+}/*end of StrAllocateSubs*/
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**
+**  FUNCTION         : FreeMemArray
+**
+**  DESCRIPTION      : This function frees an array of pointers
+**
+**  INPUTS           : pp - pointer to the string array.
+**                     usNumSubs - number of strings to free
+**
+**  OUTPUTS          : Return Code - USHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 04/15/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**    04/15/96  mconner              Original code.
+**
+***************************************************************************/
+
+
+USHORT FreeMemArray(void *pp[], USHORT usNumSubs)
+{
+    USHORT i = 0;
+
+	for (i = 0; i < usNumSubs; ++i)
+	{
+		free(pp[i]);
+	}
+    return CMN_SUCCESS;
+}/*end of FreeMemArray */
 
 
 SHORT SegRptRetrieveLayout( _REQUESTHDR *pRequestHdr,
@@ -720,12 +1258,16 @@ SHORT SegRptRetrieveLayout( _REQUESTHDR *pRequestHdr,
 
   memcpy( ParmBlock.translation.map_name, "AZCR001O", _FND_MAP_NAME_LEN );
   memcpy( ParmBlock.translation.map_version, "01", _VER_LEN );
+  
+  #ifdef FND_WIN32
+  FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
+                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
+  #endif
 
-//  FndGenRC = MSGConvUI( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
-//                      (_MSG_RECV_AREA) pMessageOutput, pABHI );
-
+  #ifdef FND_OS2
   FndGenRC = MSGConv( &ParmBlock, (_MSG_SEND_AREA) pMessageInput,
                       (_MSG_RECV_AREA) pMessageOutput, pABHI );
+  #endif
 
   if( FndGenRC == MSGIO_SUCCESS &&
       ParmBlock.appl_status.explan_code == FND_SUCCESS )

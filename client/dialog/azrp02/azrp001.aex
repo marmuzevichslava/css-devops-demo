@@ -166,7 +166,8 @@ static _CMN_ARCH_EXIT_INFO ArchExitTable[] =
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
 **    99/99/99  XXXXXXXX              Original code.
-**
+**	  04/16/96  mconner               Changed LPT1 to PRINTPORT defined in
+**                                    azrp001.h 
 ***************************************************************************/
 
 AEXPROC( ExitWktCloseAfterSave )
@@ -186,7 +187,7 @@ AEXPROC( ExitWktCloseAfterSave )
 
     if( pAZRP002Output->PrintDest[0] == 'P' )
     {
-      strcpy( PrintFile, "LPT1" );
+      strcpy( PrintFile, PRINTPORT );
     }
     else
     {

@@ -6,7 +6,7 @@
 **
 **               Customer Service System Business Logic Module
 **
-** FILENAME         :  <CUffnnn>.BUS
+** FILENAME         :  azrp002.bus
 **
 ** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
 **                     includes:
@@ -18,6 +18,8 @@
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
 ** 99/99/99    XXXXXXXX            Creation
+**
+** 03/28/96  mconner                  Added AZRP002BUSSetPrintFileStatus
 **
 ***************************************************************************/
 
@@ -117,7 +119,52 @@ WCBPROC( AZRP002BusOkpbClk )
   return CMN_SUCCESS;
 }
 
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP002BUSSetPrintFileStatus
+**
+**  DESCRIPTION      : Sets PrintFile status to required.
+**
+**  INPUTS           : Parameter1 - description
+**
+**                     Parameter2 - description
+**
+**                     ParameterN - description
+**
+**                     CMN_ARCH_PARMS - Standard Callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : mconner
+**
+**  DATE CREATED     : 03/28/96
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**   03/28/96  mconner                     Original code.
+**
+***************************************************************************/
 
+WCBPROC(AZRP002BUSSetPrintFileStatus)
+{
+   _FND_ERROR_BLOCK FndGenErrorBlock;
+   USHORT FndGenRC = 0;
+
+        FndGenRC = FndFieldSetStatus(CBI_hwnd,
+                                         "PrintFile",
+                                         STS_INCOMPLETE,
+                                         &FndGenErrorBlock);
+
+
+        return CMN_SUCCESS;
+}/*end of AZRP002BUSSetPrintFileStatus */
 
 /***************************************************************************
 **
@@ -186,3 +233,4 @@ WCBPROC( AZRP002BusOkpbClk )
 
   //  return CMN_SUCCESS;
 //}
+
