@@ -7,7 +7,7 @@ Begin VB.Form frmTableLoad
    ClientLeft      =   150
    ClientTop       =   435
    ClientWidth     =   3735
-   Icon            =   "frmLoadTable.frx":0000
+   Icon            =   "frmloadtable.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -56,7 +56,6 @@ Begin VB.Form frmTableLoad
       _ExtentY        =   450
       _Version        =   327680
       Appearance      =   0
-      MouseIcon       =   "frmLoadTable.frx":030A
    End
    Begin VB.Frame Frame1 
       Caption         =   "Environment Settings:"
@@ -113,16 +112,13 @@ Begin VB.Form frmTableLoad
          NumPanels       =   2
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
          BeginProperty Panel2 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             TextSave        =   ""
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "frmLoadTable.frx":0326
    End
    Begin VB.Menu mnuFile 
       Caption         =   "&File"
@@ -418,6 +414,7 @@ Function PutTblFile() As Boolean
     Dim msg As String
     
     With myftp
+        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
@@ -447,6 +444,7 @@ Function RemoveRemoteXlt() As Boolean
     Dim RC As Integer
     
     With myftp
+        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
@@ -755,6 +753,7 @@ Function GetXltMaps() As Boolean
     
     'Get all xlt maps from remote server
     With myftp
+        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
@@ -787,7 +786,6 @@ Function GetXltMaps() As Boolean
         GetXltMaps = True
     End If
     
-    
 End Function
 '***************************************************************************************************************
 Function GetTblFile() As Boolean
@@ -797,6 +795,7 @@ Function GetTblFile() As Boolean
     
     'Get remote version of kcodf010.tbl
     With myftp
+        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD
@@ -819,6 +818,7 @@ Function GetTblFile() As Boolean
     End If
     
     With myftp
+        .ErrorMessageBox = True
         .HostName = sServer
         .UserName = USER
         .Password = PWD

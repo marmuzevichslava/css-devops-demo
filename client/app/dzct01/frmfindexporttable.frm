@@ -132,10 +132,12 @@ Err_SQL:
     Exit Sub
 
 Err_Find:
-    MsgBox Error$
+    'MsgBox Error$
+    MsgLine = "Can not find table name: '" & SetValue & "'"
+    MsgBox MsgLine, 64, Title
     Screen.MousePointer = vbNormal
     Unload Me
-    'DoCmd.Close
+
     Exit Sub
     
 End Sub

@@ -170,7 +170,8 @@ Exit_Export:
     Exit Sub
 
 Err_Export:
-    MsgBox Error$
+    'MsgBox Error$
+    MsgBox "An error occured while exporting.", 64, Title
     MsgText = "Export Failed!"
     Resume Exit_Export
 
