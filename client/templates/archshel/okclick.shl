@@ -308,9 +308,8 @@ WCBPROC( <CUFFnnn>BusOK )
     SHORT   <Index>;
 
 
-
 	/*
-	**  Make an initial call to find the first selected row.
+	**  If the data is in a List Box, make an initial call to find the first selected row.
 	*/
 
 	FndLstBoxRowQuerySelection(CBI_hwnd,
@@ -342,7 +341,7 @@ WCBPROC( <CUFFnnn>BusOK )
   //
   //---------------------------------------------------
         /*
-        **  Format the following fields in the OUT layout <CUFFnnnOutput>
+        **  If the child window has data in a List box, build the row structure
         */
         FndLstBoxRowQueryData(CBI_hwnd,
                               "<ListBoxName>",
@@ -351,14 +350,29 @@ WCBPROC( <CUFFnnn>BusOK )
                               &<ELBRowData>,
                               &FndGenErrorBlock);
 
+
+        CmnStrCopy(<CUFFnnnOutput.FieldName>,
+                   <ELBRowData.FieldName>,
+                   <OUT Field Length>,
+                   CMN_ARCH_PARMS);
+
 		/*
 		**  Set your index variable equal to the current row number
 		*/
 
 		<Index> = <RowNum>;
 
+		
+		/*
+		**  Load values for any other widgets into the OUT layout <CUFFnnnOutput>
+		*/
+		FndFieldQueryValue( CBI_hwnd,
+			                "<FieldName>",
+							<OUT Field Length>,
+							<CUFFnnnOutput.FieldName>,
+							&FndGenErrorBlock );
 
-        CmnStrCopy(<CUFFnnnOutput.FieldName>,
+		CmnStrCopy(<CUFFnnnOutput.FieldName>,
                    <Source>,
                    <OUT Field Length>,
                    CMN_ARCH_PARMS);
@@ -388,6 +402,7 @@ WCBPROC( <CUFFnnn>BusOK )
                 **  Reset the message type to Close After Cancel
                 **      for proper handling of the data.
                 */
+				EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
 
                 break;
 
@@ -399,6 +414,7 @@ WCBPROC( <CUFFnnn>BusOK )
                 **  Reset the message type to Close After Cancel
                 **      for proper handling of the data.
                 */
+				EAB_WnMsgType = CMN_MSG_WIN_CLOSE_AFTER_CANCEL;
 
                 break;
 
@@ -407,6 +423,17 @@ WCBPROC( <CUFFnnn>BusOK )
                 //  An unknown error has occurred, contact architecture.
 
         } /* End of switch (RtrnMsgId) */
+
+
+ 	    /*
+		**  If the data is in a List Box, find the next row that is selected
+		**  starting from the current row.
+		**/
+		FndGenRC = FndLstBoxRowQuerySelection( CBI_hwnd, 
+											   "<ListBoxName>",
+											   <Index>,
+											   &<RowNum>,
+											   &FndGenErrorBlock );
 
     } /* End of while */
 
