@@ -1,0 +1,38 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "Table"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+Option Explicit
+Private sTableName As String
+Private iTableType As Integer
+Private sqlstr As String
+
+Property Let Name(N)
+    sTableName = N
+    
+    sqlstr = "SELECT DISTINCTROW tblTables.TableType" _
+             & " FROM tblTables" _
+             & " WHERE (((tblTables.TableName)= " & Chr(39) & sTableName & Chr(39) & "));"
+    
+        Set DaoRS = dbCTM.OpenRecordset(sqlstr, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+            
+    If Not DaoRS.EOF Then
+        iTableType = DaoRS(0)
+        DaoRS.Close
+    Else
+        iTableType = SQL_NOT_FOUND
+    End If
+
+End Property
+
+Property Get DisplayType()
+    DisplayType = iTableType
+End Property
+
+
+
