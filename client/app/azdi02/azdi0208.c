@@ -4,9 +4,21 @@
 ****************************************************************************/
 /*************************************************************************
 **
-**		AZDI0208.C - Get Session Transcript Information
+**	FILENAME:		AZDI0208.C - Get Session Transcript Information
 **
+**	DESCRIPTION:	This function opens the Session Transcript log file
+**                  and writes the results to a file.
+**
+**
+**  CREATED:
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+**  --------    ----------  ------  ---------------------------------------
+**  02/12/97    GHOWELL     16116   Changed hardcoded file names to macros
 *************************************************************************/
+
 
 #include <windows.h>
 #include <stdio.h>
@@ -24,13 +36,19 @@ SHORT GetSessTran( _SESSTRAN_HDR *pSessTranHdr )
   //_ST_DETAIL *pStDetail;
   SHORT rc = 0;
   FILE 	*hiWinFND;
-  CHAR 	*fiWinFND 	 = "c:\\winnt\\ktfnd.ini";
+  CHAR 	fiWinFND[64];
   CHAR 	szSourceLine[1024];
   CHAR  szFileName[256];
+  CHAR	PathEnvVar[64];
 
   memset( szFileName, 0, sizeof(szFileName) );
   pSessTranHdr->KTFNDFound = FALSE;
   pSessTranHdr->DataPathFound = FALSE;
+
+  GetEnvironmentVariable( "SystemRoot", PathEnvVar, 64 );
+  strcpy( fiWinFND, PathEnvVar);
+  strcat( fiWinFND, "\\" );
+  strcat( fiWinFND, FND_INI_FILE );  /* 02/12/97 GHOWELL - Changed from hardcoded file name */
 
   if ( (hiWinFND = fopen( fiWinFND, "rt" )) != NULL )
   {
@@ -68,7 +86,7 @@ SHORT GetSessTran( _SESSTRAN_HDR *pSessTranHdr )
     szFileName[i] = '\0';  
   }
 
-  strcat( szFileName, "\\ktstlog.txt");
+  strcat( szFileName, SESS_TRN_LOG_FILE); /* 02/12/97 GHOWELL - Changed from hardcoded file name */
 
   rc = OpenSTFile( szFileName, &hFile, &hFileMap,
                    &pFile, &FileSize );
@@ -98,7 +116,7 @@ SHORT RptSessTran( HANDLE hOut, _SESSTRAN_HDR *pSessTranHdr )
   CHAR  szOut[255];
   _ST_DETAIL *pSTDetail = pSessTranHdr->pSessTranDtl;
 
-  Report( hOut, "\n*** SESSION TRANSCRIPT LOG ***\n\n" );
+  Report( hOut, "\n\n*** SESSION TRANSCRIPT LOG ***\n\n" );
 
   if ( !pSessTranHdr->KTFNDFound )
   {
@@ -145,14 +163,14 @@ SHORT RptSessTranDtl( HANDLE hOut, _ST_DETAIL *pSessTranDtl )
   sprintf( szOut, "  %-76.76s\n", pSessTranDtl->MsgApplData );
   Report( hOut, szOut );
 
-   /*
-   char                MsgErrorArea[160];                          
-   char                MsgWinName[32];                              
-   long                MsgDepMsgNum;                                            
-   char                MsgDepMsgArea[160];                        
-   short               ExplanationCode;                                         
-   char                ErrorTagData[30];                          
-   */
+   
+   //char                MsgErrorArea[160];                          
+   //char                MsgWinName[32];                              
+   //long                MsgDepMsgNum;                                            
+   //char                MsgDepMsgArea[160];                        
+   //short               ExplanationCode;                                         
+   //char                ErrorTagData[30];                          
+   
 
   Report( hOut, "\n" );
 

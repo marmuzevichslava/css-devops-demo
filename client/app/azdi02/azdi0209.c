@@ -2,12 +2,6 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-#include <windows.h>
-#include <stdio.h>
-#include <string.h>
-#include <process.h>
-#include "AZDI02.H"
-
 /*************************************************************************
 **
 **	FILENAME:		AZDI0209.C - Get Distribution Services Information
@@ -28,95 +22,186 @@
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
 ** 03/29/95    DKOLODZI			   Creation
+** 02/13/97    GHOWELL     16116   Windows Sockets APIs are now used to get
+**                                    the Computer Name, Host Name, and IP
+**                                    Address information instead of querying
+**                                    the Registry. WinSock is portable, and
+**                                    IP Addresses are stored differently in
+**                                    the Registry for DHCP assigned IPs and
+**                                    statically assigned IPs.
 *************************************************************************/
+
+#include <windows.h>
+#include <stdio.h>
+#include <string.h>
+#include <process.h>
+#include "AZDI02.H"
 
 SHORT GetDistSvcs      ( _DISTSVCS_HDR    *pDSHdr    ) /* AZDI0209.C */
 {
 	FILE 	*hiWinFND;
-    CHAR 	*fiWinFND 	 = "c:\\winnt\\ktfnd.ini";
+    CHAR 	fiWinFND[64];
     CHAR 	szSourceLine[1024];
 	BOOL 	brc;	
 	ULONG 	lSize;
-    long    lrc;
-    DWORD   dwValueType, dwValueSize;
-    HKEY    hKey;
-    CHAR    sSubKey[128];
+   	CHAR	PathEnvVar[64];
 
-	pDSHdr->CmnHdrInfo.DtlCount = 1;
+    /* 02/13/97 GHOWELL - Commented out next four (used for Registry reads) */
+    // long    lrc;
+    // DWORD   dwValueType, dwValueSize;
+    // HKEY    hKey;                    
+    // CHAR    sSubKey[128];            
 
-	/******************************************
- 	* Get TCP/IP Address
- 	*/
-	memset( sSubKey, 0, sizeof(sSubKey) );
-	strcpy( sSubKey, "System\\CurrentControlSet\\Services\\SMCISA1\\Parameters\\Tcpip\\" );
+    /* 02/13/97 GHOWELL - Added next six */
+    USHORT          HostNameRC = 0,
+                    IPAddrRC   = 0;
+    LPHOSTENT       pHostInfo;
+    WSADATA         wsadata;
+    WORD            wVer;
+    struct in_addr  IPAddress;
 	
-    lrc = RegOpenKeyEx
-                (HKEY_LOCAL_MACHINE,
-                 sSubKey,
-                 0,
-                 KEY_READ,
-                 &hKey);
-    if (lrc != ERROR_SUCCESS)
-	{	
-		/*Error occurred, registry problem*/
-		strcpy( pDSHdr->TCPIPAddress, "Not found." );
-	}
-	else
-	/* Get IP Address */
-	{
-		dwValueSize = sizeof(pDSHdr->TCPIPAddress);
-    	lrc = RegQueryValueEx
-                (hKey,
-                 CMN_REG_IP_ADDRESS,
-                 NULL,
-                 &dwValueType,
-                 pDSHdr->TCPIPAddress,
-                 &dwValueSize );
-		if (lrc != ERROR_SUCCESS)
-		{
-			/*Value not found*/
-			strcpy( pDSHdr->TCPIPAddress, "Not found." );
-		}
-	} /*else*/
+    pDSHdr->CmnHdrInfo.DtlCount = 1;
 
-	/******************************************
- 	* Retrieve Hostname from registry
- 	*/
-	memset( sSubKey, 0, sizeof(sSubKey) );
-	strcpy( sSubKey, "System\\CurrentControlSet\\Services\\Tcpip\\Parameters\\" );
-	
-    lrc = RegOpenKeyEx
-                (HKEY_LOCAL_MACHINE,
-                 sSubKey,
-                 0,
-                 KEY_READ,
-                 &hKey);
-    if (lrc != ERROR_SUCCESS)
-	{	
-		/*Error occurred, registry problem*/
-		strcpy( pDSHdr->HostName, "Not found." );
-	}
-	else
-	/* Get Host Name */
-	{
-		dwValueSize = sizeof(pDSHdr->HostName);
-    	lrc = RegQueryValueEx
-                (hKey,
-                 CMN_REG_HOST_NAME,
-                 NULL,
-                 &dwValueType,
-                 pDSHdr->HostName,
-                 &dwValueSize );
-		if (lrc != ERROR_SUCCESS)
-		{
-			/*Value not found*/
-			strcpy( pDSHdr->HostName, "Not found." );
-		}
-	} /*else*/
+	GetEnvironmentVariable( "SystemRoot", PathEnvVar, 64 );
+	strcpy( fiWinFND, PathEnvVar);
+	strcat( fiWinFND, "\\" );
+    strcat( fiWinFND, FND_INI_FILE );  /* 02/12/97 GHOWELL - Changed from hardcoded file name */
 
-	/***************************************************
- 	* Open C:\WINDOWS\KTFND.INI in read text mode
- 	*/
+
+    /************************************************************************
+    **                                                                     **
+    **    GET HOSTNAME AND IP ADDRESS THROUGH WINDOWS SOCKETS API CALLS    **
+    **                                                                     **
+    ************************************************************************/
+    
+    /* 02/13/97 GHOWELL - Added logic to retrieve Hostname and IP Address 
+    **                    via Windows Sockets APIs
+    */
+    
+    /* Start up Windows Sockets. If we get get an error, no data was retrieved,
+    **     so set IP and Hostname accordingly.
+    */
+    wVer = MAKEWORD(1, 1);
+    if (WSAStartup(wVer, &wsadata) != NO_ERROR) 
+    {
+	    strcpy( pDSHdr->TCPIPAddress, "Not found." );
+        strcpy( pDSHdr->HostName, "Not found." );
+    }
+    else
+    {
+        /* C function to get Hostname */
+        HostNameRC = gethostname(pDSHdr->HostName, sizeof(pDSHdr->HostName));
+
+      	if ( HostNameRC )  /* if any return other than zero, an error occured */
+    	{
+		    strcpy( pDSHdr->HostName, "Not found." );
+	    }
+        
+        /*  C function to get host information based on the HostName, returning
+        **  a pointer to the information strucuture */
+        pHostInfo = gethostbyname(pDSHdr->HostName);
+    
+       	if ( !pHostInfo || HostNameRC )  /* if the structure is null (no data), or we
+                                         ** never got the host name, an error occured
+                                         */
+	    {
+            strcpy( pDSHdr->TCPIPAddress, "Not found." );
+    	}
+        else   /* we have information in the structure */
+        {
+            /* gets IP Address from information structure */
+            IPAddress = *(struct in_addr far *)pHostInfo->h_addr;  
+
+            /* convert IP Address to character string*/
+            strcpy(pDSHdr->TCPIPAddress, inet_ntoa(IPAddress));   
+        }
+    }
+
+    /* 02/13/97 GHOWELL - End get Hostname and IP Address */
+
+
+
+    /*************************************************************
+ 	**  OLD WAY  -  Retrieve Hostname from registry  -  OLD WAY
+ 	**/
+    /* 02/13/97 GHOWELL - Commented out code. Instead of Registry, 
+    **                    now use WinSock API to get HostName (done above)
+    */
+    //     memset( sSubKey, 0, sizeof(sSubKey) );
+	//     strcpy( sSubKey, "System\\CurrentControlSet\\Services\\Tcpip\\Parameters\\" );
+	//     
+    //     lrc = RegOpenKeyEx
+    //                 (HKEY_LOCAL_MACHINE,
+    //                  sSubKey,
+    //                  0,
+    //                  KEY_READ,
+    //                  &hKey);
+    //     if (lrc != ERROR_SUCCESS)
+	//     {	
+	//     	/* Error occurred, registry problem */
+	//     	strcpy( pDSHdr->HostName, "Not found." );
+	//     }
+	//     else
+	//     /* Get Host Name */
+	//     {
+	//     	dwValueSize = sizeof(pDSHdr->HostName);
+    //     	lrc = RegQueryValueEx
+    //                 (hKey,
+    //                  CMN_REG_HOST_NAME,
+    //                  NULL,
+    //                  &dwValueType,
+    //                  pDSHdr->HostName,
+    //                  &dwValueSize );
+	//      	if (lrc != ERROR_SUCCESS)
+	//         	{
+	//     	    	/* Value not found */
+	//     		    strcpy( pDSHdr->HostName, "Not found." );
+	//      	}
+    //   	} /* else */
+    
+    /************************************************
+ 	**  OLD WAY  -  Get TCP/IP Address  -  OLD WAY
+ 	**/
+    /* 02/13/97 GHOWELL - Commented out code. Instead of Registry, 
+    **                    now use WinSock API to get IP Address (done above)
+    */
+	//     memset( sSubKey, 0, sizeof(sSubKey) );
+	//     strcpy( sSubKey, "System\\CurrentControlSet\\Services\\SMCISA1\\Parameters\\Tcpip\\" );
+	//     
+    //     lrc = RegOpenKeyEx
+    //                 (HKEY_LOCAL_MACHINE,
+    //                  sSubKey,
+    //                  0,
+    //                  KEY_READ,
+    //                  &hKey);
+    //     if (lrc != ERROR_SUCCESS)
+	//     {	
+	//     	/* Error occurred, registry problem */
+	//     	strcpy( pDSHdr->TCPIPAddress, "Not found." );
+	//     }
+	//     else
+	//     /* Get IP Address */
+	//     {
+	//     	dwValueSize = sizeof(pDSHdr->TCPIPAddress);
+    //     	lrc = RegQueryValueEx
+    //                 (hKey,
+    //                  CMN_REG_IP_ADDRESS,
+    //                  NULL,
+    //                  &dwValueType,
+    //                  pDSHdr->TCPIPAddress,
+    //                  &dwValueSize );
+	//     	if (lrc != ERROR_SUCCESS)
+	//     	{
+	//     		/* Value not found */
+	//     		strcpy( pDSHdr->TCPIPAddress, "Not found." );
+	//     	}
+	//     } /* else */
+        
+
+    
+    /***************************************************
+ 	* Open C:\<SYSTEM_ROOT>\KTFND.INI in read text mode
+ 	**/
 	strcpy( pDSHdr->FndDdsSetting, "Not found.\n" );
 	strcpy( pDSHdr->LocalNodeDomain, "Not found.\n" );
 	strcpy( pDSHdr->LocalNodeStation, "Not found.\n" );
@@ -158,7 +243,7 @@ SHORT GetDistSvcs      ( _DISTSVCS_HDR    *pDSHdr    ) /* AZDI0209.C */
 				strcpy( pDSHdr->AddSrvNodeStation, szSourceLine+13 );
 			}
 
-			if ( strstr( szSourceLine, "INboundLH") != NULL )
+			if ( strstr( szSourceLine, "InboundLH") != NULL )
 			{
 				memset( pDSHdr->LocalNodeIPInfo, 0, sizeof(pDSHdr->LocalNodeIPInfo) );
 				strncpy( pDSHdr->LocalNodeIPInfo, szSourceLine, sizeof(pDSHdr->LocalNodeIPInfo) );
@@ -230,7 +315,7 @@ SHORT RptDistSvcs( HANDLE hOut, _DISTSVCS_HDR    *pDSHdr    ) /* AZDI0209.C */
 {
   CHAR szOut[255];
 
-  Report( hOut, "\n*** DS CONFIG INFO ***\n\n" );
+  Report( hOut, "\n\n*** DS CONFIG INFO ***\n\n" );
 
   sprintf( szOut, "Computer Name:           %s\n", pDSHdr->WinComputerName );
   Report( hOut, szOut );

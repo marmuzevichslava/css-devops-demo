@@ -2,11 +2,6 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
-#include <windows.h>
-#include <stdio.h>
-#include <string.h>
-#include "AZDI02.H"
-
 /*************************************************************************
 **
 **	FILENAME:		AZDI0204.C - Get PMF Information
@@ -21,6 +16,12 @@
 ** --------    ----------  ------  ---------------------------------------
 ** 03/27/95    DKOLODZI			   Creation
 *************************************************************************/
+#include <windows.h>
+#include <stdio.h>
+#include <string.h>
+#include "AZDI02.H"
+
+
 SHORT GetPmfInfo       ( _PMF_HDR         *pPmfHdr         ) /* AZDI0204.C */
 {
 	_PMFUIDPASS 	PmfData;

@@ -4,8 +4,19 @@
 ****************************************************************************/
 /*************************************************************************
 **
-**		AZDI0201.C - Get Burst Information
+**	FILENAME:		AZDI0201.C - Get Burst Information
 **
+**	DESCRIPTION:	This function sends a Burst to UNIX and CICS, and returns
+**                  either success or failure.  The result is written to a file.
+**
+**
+**  CREATED:
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+**  --------    ----------  ------  ---------------------------------------
+**  02/13/97    GHOWELL     16116   Replaced hardcodes with macros defined in header file
 *************************************************************************/
 
 #include <windows.h>
@@ -27,8 +38,6 @@
 /* Main FOUNDATION # Include File */
 #include <kglxk000.h>
 
-#define ENVIRON_LEN 2
-
 typedef struct
 {
   unsigned short burst_number;
@@ -48,21 +57,15 @@ typedef struct
   unsigned short  short2[8];
   unsigned long   long1[8];
   unsigned long   long2[7];
-  float      float1[7];
-  double   double1[7];
+  float           float1[7];
+  double          double1[7];
 } _MESSAGE_TYPE;
-
-
-#define UNIX_APPL_ID 989
-#define CICS_APPL_ID 987
-
-#define BURST_TIMEOUT_LEN 30
 
 SHORT SendBurstMsg( _BURST_HDR *pBurstHdr, _APPL Appl );
 
 SHORT GetBurstInfo( _BURST_HDR *pBurstHdr )
 {
-  SHORT rc;
+  SHORT rc = 0;
 
   /* Send Burst Messages */
   if( !rc )
@@ -73,10 +76,11 @@ SHORT GetBurstInfo( _BURST_HDR *pBurstHdr )
     strcpy( pBurstHdr->BurstDtl[pBurstHdr->CmnHdrInfo.DtlCount++].Platform,
 	        "UNIX" );
 
+
     rc = SendBurstMsg( pBurstHdr, CICS_APPL_ID );
-    strcpy( pBurstHdr->BurstDtl[pBurstHdr->CmnHdrInfo.DtlCount++].Platform,
-	        "CICS" );
-  }
+    strcpy( pBurstHdr->BurstDtl[pBurstHdr->CmnHdrInfo.DtlCount++].Platform,       
+            "CICS" );
+  }   
 
   return 0;
 }
@@ -110,9 +114,18 @@ SHORT SendBurstMsg( _BURST_HDR *pBurstHdr, _APPL Appl )
   ParmBlock.timeout_interval = BURST_TIMEOUT_LEN;
   ParmBlock.priority = MSGIO_PRIORITY_MEDIUM;
 
+
   /* Use translation map BURST2 */
-  memcpy( ParmBlock.translation.map_name, "BURST2  ", 8);
-  memcpy( ParmBlock.translation.map_version, "01", 2);
+
+  /* 02/12/97 GHOWELL - Replaced hardcodes with macros */
+  //memcpy( ParmBlock.translation.map_name, "BURST2  ", 8);
+  //memcpy( ParmBlock.translation.map_version, "01", 2);
+  
+  memcpy( ParmBlock.translation.map_name, BURST_XLT_NAME, \
+                 sizeof(ParmBlock.translation.map_name));
+
+  memcpy( ParmBlock.translation.map_version, BURST_XLT_VERSION, \
+                 sizeof(ParmBlock.translation.map_version));
 
   /* Populate userid/password */
   memcpy( ParmBlock.secur.user_id, "USERID  ", 8);
@@ -130,7 +143,7 @@ SHORT SendBurstMsg( _BURST_HDR *pBurstHdr, _APPL Appl )
     for (n = 0; n < 7; n++)
       SendDataBlock.long2[n] = n + 1000;
     for (p = 0; p < 7; p++)
-      SendDataBlock.float1[p] = (p + 100.0) / 10.0;
+      SendDataBlock.float1[p] = (float) ((p + 100.0) / 10.0);
     for (q = 0; q < 7; q++)
       SendDataBlock.double1[q] = (q + 1000) / 10;
 
@@ -147,18 +160,18 @@ SHORT SendBurstMsg( _BURST_HDR *pBurstHdr, _APPL Appl )
   pBurstHdr->BurstDtl[pBurstHdr->CmnHdrInfo.DtlCount].CommExplanCode =
       ParmBlock.commarea.status.explan_code;
 
-/*
-   if ((usRetCode) || (pb->appl_status.severity))
-   {
-    fprintf(fp, "     : MSGRecv failure (return code = %d, application return code = %d)\n",
-      usRetCode,  ParmBlock.appl_status.explan_code);
-    exit(1);
-  }
-  else
-  {
-    // ERROR: MSGInit failed
-  }
-*/
+
+//   if ((usRetCode) || (pb->appl_status.severity))
+//   {
+//    fprintf(fp, "     : MSGRecv failure (return code = %d, application return code = %d)\n",
+//      usRetCode,  ParmBlock.appl_status.explan_code);
+//    exit(1);
+//  }
+//  else
+//  {
+//       /* ERROR: MSGInit failed */
+//  }
+
 
   rc = MSGShut( &ParmBlock, &ABHI );
 
@@ -182,9 +195,11 @@ SHORT RptBurstInfo( HANDLE hOut, _BURST_HDR *pBurstHdr )
   //CHAR ExplainCode[32];
   SHORT i;
 
-  Report( hOut, "\n*** BURST INFORMATION ***\n\n" );
+  Report( hOut, "\n\n*** BURST INFORMATION ***\n\n" );
 
-  for( i=0; i<2; i++ )
+
+
+  for( i=0; i<2; i++ ) 
   {
 	if( pBurstHdr->BurstDtl[i].MsgConvRc == MSGIO_SUCCESS )
 	{

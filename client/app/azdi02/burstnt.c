@@ -22,7 +22,7 @@
 /*                                       with command line arg (switch).   */
 /*                                       2.Accept upper/lower case args.   */
 /*                                       3.Translation option uses message */
-/*                                       length to compute datasendmsg/recv  */
+/*                                       length to compute datasendmsg/recv*/
 /*                                       size, based on xlat struct size.  */
 /*                                                                         */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -441,7 +441,7 @@ _PARAMETERS *ub, _MESSAGE_TYPE **mbs, _MESSAGE_TYPE **mbr, _MESSAGE_TYPE *ms)
   for (n = 0; n < 7; n++)
    ms->long2[n] = n + 1000;
   for (p = 0; p < 7; p++)
-   ms->float1[p] = (p + 100) / 10;
+   ms->float1[p] = (float) ((p + 100) / 10);
   for (q = 0; q < 7; q++)
    ms->double1[q] = (q + 1000) / 10;
 

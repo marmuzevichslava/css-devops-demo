@@ -2,6 +2,21 @@
 **  (c) Copyright 1995 Andersen Consulting - All Rights Reserved.         **
 **  This work is protected by copyright law as an unpublished work.       **
 ****************************************************************************/
+/*************************************************************************
+**
+**	FILENAME:		AZDI0202.C - Get Drive Mappings
+**
+**	DESCRIPTION:	This function obtains all currently mapped drives and which
+**                  network directory to which the drives are mapped.
+**
+**  CREATED:
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+**  --------    ----------  ------  ---------------------------------------
+*************************************************************************/
+
 #include <windows.h>
 #include <winnetwk.h>
 #include <stdio.h>
@@ -9,12 +24,8 @@
 #include <conio.h>
 #include "AZDI02.H"
 
-/****************************************************************************
-**																	
-**		AZDI0202.C - Get Drive Mappings
-**																			
-****************************************************************************/
-SHORT GetDriveMappings( _DRIVEMAP_HDR *pDriveMapHdr ) 
+
+SHORT GetDriveConnections( _DRIVEMAP_HDR *pDriveMapHdr ) 
 {
   BOOL  bSuccess, bConnected;
   LPDWORD nBufferSize;
@@ -77,7 +88,7 @@ SHORT RptDriveMappings( HANDLE hOut, _DRIVEMAP_HDR *pDriveMapHdr )
   SHORT i;
   CHAR szOut[255];
 
-  Report( hOut, "\n*** DRIVE MAPPINGS ***\n\n" );
+  Report( hOut, "\n\n*** DRIVE MAPPINGS ***\n\n" );
 
   for( i=0; i<pDriveMapHdr->CmnHdrInfo.DtlCount; i++ )
   {

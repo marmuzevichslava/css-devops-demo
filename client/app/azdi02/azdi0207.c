@@ -4,15 +4,26 @@
 ****************************************************************************/
 /*************************************************************************
 **
-**		AZDI0207.C - Get Active Process Information
+**	FILENAME:		AZDI0207.C - Get Active Process Information
 **
+**	DESCRIPTION:	This function finds all active processes running on the
+**                  local machine.
+**
+**
+**  CREATED:
+**
+**  REVISION HISTORY
+**
+**  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
+**  --------    ----------  ------  ---------------------------------------
 *************************************************************************/
+
 
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
 #include "AZDI02.h"
-#include "AZDI0207.h"
+#include "azdi0207.h"
 
 int CompareProcNames( const _ACTIVEPROCS_DTL *pDtl1, const _ACTIVEPROCS_DTL *pDtl2 )
 {

@@ -4,8 +4,19 @@
 ****************************************************************************/
 /*************************************************************************
 **
-**		AZDI02.H - Common Data Structures/Function Prototypes
+**	FILENAME:		AZDI02.H - Common Data Structures/Function Prototypes
 **
+**	DESCRIPTION:	This is the header file for all files in CSS Diagnostics,
+**                  except for AZDI0207.c, which used its own.
+**
+**  CREATED:
+**
+**  REVISION HISTORY
+**
+**    DATE      REVISED BY  SIR #   DESCRIPTION OF CHANGE
+**  --------    ----------  ------  ---------------------------------------
+**  02/12/97    GHOWELL     16116    Added macros, changed Burst timeout,
+**                                     changed Max. # windows
 *************************************************************************/
 
 /*************************************************************************
@@ -14,11 +25,16 @@
 **
 *************************************************************************/
 
+#include "azrcsm01.h"
+
 /* Foundation Session Transcript Header file */
-#include "KSTA0001.H"
+/* 02/12/97 GHOWELL - Placed contents of this file (only one structure typedef)
+**                    into AZDI0208 header section of this file
+*/
+//#include "KSTA0001.H"  
 
 /* PMF Header file */
-#include "pmf.h"
+#include "pmf.h" 
 
 /*************************************************************************
 **
@@ -26,10 +42,18 @@
 **
 *************************************************************************/
 
+/* GHOWELL 02/12/97 - Added directory path section */
+/* #defines for directory paths */
+#define DIAG_OUTPUT_FILE  "c:\\css_diag.txt"
+
+
 /* #defines for Session Transcript Information */
 #define NUM_SESSTRAN_RECS 20
 
-#define MAX_WINDOWS       100
+/* 02/12/97 GHOWELL - Increased to 150 (many windows are hidden and do not
+**                    appear, so it's easy to have many windows open 
+*/
+#define MAX_WINDOWS       150
 #define HWND_TEXT_LEN     81
 
 /* #defines for Registry Information */
@@ -41,6 +65,11 @@
 #define CMN_REG_CSR_CONFIG_PATH		"CSR Configuration Path"
 #define CMN_REG_IP_ADDRESS			"IPAddress"
 #define CMN_REG_HOST_NAME			"HostName"
+#define CMN_MAX_INV_ENTRIES			100
+
+#define 	TRUE			1
+#define 	FALSE			0
+
 
 
 /*************************************************************************
@@ -78,6 +107,14 @@ typedef struct __BURST_HDR
   _BURST_DTL    BurstDtl[2];
 } _BURST_HDR;
 
+/* 02/12/97 GHOWELL - Moved #defines from .C file to header file */
+#define UNIX_APPL_ID       989
+#define CICS_APPL_ID       987
+#define BURST_TIMEOUT_LEN  MS_INFINITE_TIMEOUT  /* 02/14/96 GHOWELL - Changed timeout to prevent Sess Tran msg */
+#define ENVIRON_LEN          2
+#define BURST_XLT_NAME     "BURST2"
+#define BURST_XLT_VERSION  "01"
+
 
 /*************************************************************************
 **
@@ -85,16 +122,16 @@ typedef struct __BURST_HDR
 **
 *************************************************************************/
 
-typedef struct __DRIVEMAP_DTL
+typedef struct __DRIVEMAP_DETAIL
 {
   CHAR DriveLetter[3];
   CHAR DriveMapping[255];
-} _DRIVEMAP_DTL;
+} _DRIVEMAP_DETAIL;
 
 typedef struct __DRIVEMAP_HDR
 {
   _CMN_HDR_INFO CmnHdrInfo;
-  _DRIVEMAP_DTL DriveMapDtl[26];
+  _DRIVEMAP_DETAIL DriveMapDtl[26];
 } _DRIVEMAP_HDR;
 
 
@@ -104,15 +141,21 @@ typedef struct __DRIVEMAP_HDR
 **
 *************************************************************************/
 
+typedef struct __FILEINV_DTL
+{
+  char DtlString[255];
+} _FILEINV_DTL;
+
 typedef struct __FILEINV_HDR
 {
   _CMN_HDR_INFO CmnHdrInfo;
+  BOOL			InvFileFound;
+  SHORT			InSynchCount;
+  SHORT			OutSynchCount;
+  SHORT			TotalFiles;
+  _FILEINV_DTL  FileInvDtl[CMN_MAX_INV_ENTRIES];
 } _FILEINV_HDR;
 
-typedef struct __FILEINV_DTL
-{
-  char DetailString;
-} _FILEINV_DTL;
 
 
 /*************************************************************************
@@ -150,6 +193,35 @@ typedef struct __REGENTRIES_HDR
   CHAR  RegCSRConfigPath[32];
 } _REGENTRIES_HDR;
 
+typedef struct __ENUM_KEY
+{
+	CHAR sEnumSubKey[65];
+	struct __QUERY_SUBKEY_VALUE *pFirstSubKeyValue;
+	struct __ENUM_KEY *pNextSubKey;
+
+} _ENUM_KEY;
+
+typedef struct __QUERY_SUBKEY_VALUE
+{
+	CHAR *psSubKeyValue;
+	DWORD dwValueType;
+	CHAR *psValueData;
+	struct __QUERY_SUBKEY_VALUE *pNextValue;
+
+} _QUERY_SUBKEY_VALUE;
+
+typedef struct __REG_LIST_HDR
+{
+	_ENUM_KEY *pFirstSubKey;
+
+} _REG_LIST_HDR;
+
+/* 02/12/97 GHOWELL - Added macros to replace hardcodes */
+#define CMN_PROFILE_KEY_SW_TOP_KEY      "Software\\SolutionWorks\\"
+#define CMN_PROFILE_KEY_FPC_TOP_KEY     "Software\\FPC\\"
+#define CMN_PROFILE_KEY_NAME_CSS        "CSS"
+#define CMN_PROFILE_KEY_CURRENT_VERSION "\\CurrentVersion\\"
+#define CMN_PROFILE_KEY_RELEASE         "\\Release"
 
 /*************************************************************************
 **
@@ -158,8 +230,11 @@ typedef struct __REGENTRIES_HDR
 *************************************************************************/
 
 typedef struct __SESSDATA_HDR
-{
-  _CMN_HDR_INFO CmnHdrInfo;
+{					 
+  _CMN_HDR_INFO      CmnHdrInfo;
+  SHORT              RetCode;
+  _AZRCSM01ARCHDATA  ArchData;
+  _AZGRSM03APPLDATA  ApplData;
 } _SESSDATA_HDR;
 
 typedef struct __SESSDATA_DTL
@@ -167,6 +242,8 @@ typedef struct __SESSDATA_DTL
   SHORT Dummy;
 } _SESSDATA_DTL;
 
+/* 02/12/97 GHOWELL - Added macro to replace hardcoded text */
+#define SECURITY_ERROR_MESSAGE  "Security Get Rights"
 
 /*************************************************************************
 **
@@ -192,6 +269,32 @@ typedef struct __ACTIVEPROCS_HDR
 **
 *************************************************************************/
 
+/* 02/12/97 GHOWELL - inserted only contents of old KSTA0001.H into main header file
+*/
+typedef struct __ST_DETAIL                                                      
+{                                                                               
+   char                MsgVersion[2];                              
+   char                MsgSeverity[12];                            
+   char                MsgErrorType[12];                          
+   unsigned short      MsgErrorNum;                                             
+   char                MsgErrMsgDecode[81];                    
+   char                MsgApplType[10];                            
+   char                StDetailPgmName[8];                    
+   char                MsgErrorArea[160];                          
+   char                MsgSendTime[9];                            
+   char                MsgSendDate[9];                            
+   char                MsgWinName[32];                              
+   unsigned long       MsgProcessId;                                            
+   unsigned long       MsgThreadId;                                             
+   long                MsgDepMsgNum;                                            
+   char                MsgDepMsgArea[160];                        
+   unsigned long       MsgSendTimeStamp;                                        
+   unsigned short      MsgApplDataLength;                                       
+   char                MsgApplData[101];                            
+   short               ExplanationCode;                                         
+   char                ErrorTagData[30];                          
+}  _ST_DETAIL;                                                                  
+
 typedef struct __SESSTRAN_HDR
 {
   _CMN_HDR_INFO CmnHdrInfo;
@@ -200,6 +303,10 @@ typedef struct __SESSTRAN_HDR
   _ST_DETAIL    *pSessTranDtl; /* KSTA0001.H */
 } _SESSTRAN_HDR;
 
+
+/* 02/12/97 GHOWELL - Added macros to replace hardcodes */
+#define FND_INI_FILE      "KTFND.INI"
+#define SESS_TRN_LOG_FILE "\\ktstlog.txt"
 
 /*************************************************************************
 **
@@ -245,17 +352,19 @@ typedef struct __ACTIVEHWNDS_HDR
 } _ACTIVEHWNDS_HDR;
 
 
-/*
-#include "AZDI0201.H"
-#include "AZDI0202.H"
-#include "AZDI0203.H"
-#include "AZDI0204.H"
-#include "AZDI0205.H"
-#include "AZDI0206.H"
-#include "AZDI0207.H"
-#include "AZDI0208.H"
-#include "AZDI0209.H"
+/* Except for AZDI0207.H, these files no longer exist - all info has been
+** placed in this file.  AZDI0207.c includes AZDI0207.H itself
 */
+//#include "AZDI0201.H"
+//#include "AZDI0202.H"
+//#include "AZDI0203.H"
+//#include "AZDI0204.H"
+//#include "AZDI0205.H"
+//#include "AZDI0206.H"
+//#include "AZDI0207.H"
+//#include "AZDI0208.H"
+//#include "AZDI0209.H"
+
 
 
 /*************************************************************************
@@ -267,10 +376,10 @@ typedef struct __ACTIVEHWNDS_HDR
 SHORT Report( HANDLE hOut, CHAR *pszResults );
 
 SHORT GetBurstInfo     ( _BURST_HDR       *pBurstHdr       ); /* AZDI0201.C */
-SHORT GetDriveMappings ( _DRIVEMAP_HDR    *pDriveMapHdr    ); /* AZDI0202.C */
+SHORT GetDriveConnections ( _DRIVEMAP_HDR    *pDriveMapHdr    ); /* AZDI0202.C */
 SHORT GetFileInvInfo   ( _FILEINV_HDR     *pFileInvHdr     ); /* AZDI0203.C */
 SHORT GetPmfInfo       ( _PMF_HDR         *pPmfHdr         ); /* AZDI0204.C */
-SHORT GetRegEntries    ( _REGENTRIES_HDR  *pRegEntriesHdr  ); /* AZDI0205.C */
+SHORT GetRegEntries    ( _REGENTRIES_HDR  *pRegEntriesHdr, _REG_LIST_HDR *pRegListHdr,  int nRegAccessFlag ); /* AZDI0205.C */
 SHORT GetSessData      ( _SESSDATA_HDR    *pSessDataHdr    ); /* AZDI0206.C */
 SHORT GetActiveProcs   ( _ACTIVEPROCS_HDR *pActiveProcsHdr ); /* AZDI0207.C */
 SHORT GetSessTran      ( _SESSTRAN_HDR    *pSessTranHdr    ); /* AZDI0208.C */
@@ -281,7 +390,7 @@ SHORT RptBurstInfo     ( HANDLE hOut, _BURST_HDR       *pBurstHdr       ); /* AZ
 SHORT RptDriveMappings ( HANDLE hOut, _DRIVEMAP_HDR    *pDriveMapHdr    ); /* AZDI0202.C */
 SHORT RptFileInvInfo   ( HANDLE hOut, _FILEINV_HDR     *pFileInvHdr     ); /* AZDI0203.C */
 SHORT RptPmfInfo       ( HANDLE hOut, _PMF_HDR         *pPmfHdr         ); /* AZDI0204.C */
-SHORT RptRegEntries    ( HANDLE hOut, _REGENTRIES_HDR  *pRegEntriesHdr  ); /* AZDI0205.C */
+SHORT RptRegEntries    ( HANDLE hOut, _REGENTRIES_HDR  *pRegEntriesHdr, _REG_LIST_HDR *pRegListHdr, int nRegAccessFlag ); /* AZDI0205.C */
 SHORT RptSessData      ( HANDLE hOut, _SESSDATA_HDR    *pSessDataHdr    ); /* AZDI0206.C */
 SHORT RptActiveProcs   ( HANDLE hOut, _ACTIVEPROCS_HDR *pActiveProcsHdr ); /* AZDI0207.C */
 SHORT RptSessTran      ( HANDLE hOut, _SESSTRAN_HDR    *pSessTranHdr    ); /* AZDI0208.C */
@@ -289,6 +398,7 @@ SHORT RptSessTranDtl   ( HANDLE hOut, _ST_DETAIL       *pSessTranDtl    ); /* AZ
 SHORT RptDistSvcs      ( HANDLE hOut, _DISTSVCS_HDR    *pDistSvcsHdr    ); /* AZDI0209.C */
 SHORT RptActiveHwnds   ( HANDLE hOut, _ACTIVEHWNDS_HDR *pActiveHwndsHdr ); /* AZDI0210.C */ 
 
+SHORT FreeMemRegEntries(_REGENTRIES_HDR  *pRegEntriesHdr, _REG_LIST_HDR    *pRegListHdr);/* AZDI0205.C */
 
 SHORT OpenSTFile( CHAR *FileName, HFILE *phFile, HANDLE *phFileMap,
                   CHAR **ppFile, LONG *pFileSize );
