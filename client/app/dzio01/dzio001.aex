@@ -483,8 +483,8 @@ AEXPROC( ExitWktCloseAfterSave )
     memcpy(ParmBlock.commarea.ver,FND_MSG_VER,_VER_LEN);
 
     ParmBlock.actual_length_send = sizeof(_DZCL001INPUT);
-    ParmBlock.src.language = FND_LANGUAGE_C;
-    ParmBlock.buffer_size = sizeof(_DZCL001OUTPUT);
+    ParmBlock.src.language = 'A';
+    ParmBlock.buffer_size = 64000;
     ParmBlock.dest.service_id.appl = LUW_APPL_ID;
     ParmBlock.dest.service_id.srvc = LUW_SRVC_ID;
 
@@ -521,7 +521,7 @@ AEXPROC( ExitWktCloseAfterSave )
 				       BOX_TITLE,
 				       CBI_hwnd,
 				       FND_MSGBOX_OK,
-				       FND_MSGBOX_WARNING,
+				       FND_MSGBOX_INFORMATION,
 				       FND_MSGBOX_IDOK,
 				       BOX_TITLE,
 				       CMN_ARCH_PARMS);
@@ -533,7 +533,7 @@ AEXPROC( ExitWktCloseAfterSave )
 				       BOX_TITLE,
 				       CBI_hwnd,
 				       FND_MSGBOX_OK,
-				       FND_MSGBOX_ERROR,
+				       FND_MSGBOX_INFORMATION,
 				       FND_MSGBOX_IDOK,
 				       BOX_TITLE,
 				       CMN_ARCH_PARMS);
@@ -690,6 +690,23 @@ AEXPROC( ExitWktCloseAfterSave )
 
            memcpy( &(pBFCD->DZIO013Luw), &(MessageOutput->DZIO013Luw),  
 		             sizeof(_DZIO013LUW) );
+
+		   i=0;
+
+		   while(strcmp(pBFCD->DZIO013Luw.DZIO013BSelect[i].ElmId, "") != 0)
+		   {
+			        memset(pBFCD->DZIO013Luw.DZIO013BSelect[i].ElmTblNm, 0,
+					       sizeof(pBFCD->DZIO013Luw.DZIO013BSelect[i].ElmTblNm) );
+
+					CmnStrCopy (pBFCD->DZIO013Luw.DZIO013BSelect[i].ElmTblNm, 
+					            MessageOutput->Hdr_DZ0202.SecTabCNm ,
+						        sizeof(pBFCD->DZIO013Luw.DZIO013BSelect[i].ElmTblNm),
+								CMN_ARCH_PARMS );
+
+					i++;
+
+		   }
+
 
            memcpy( &(pBFCD->DZIO014Luw), &(MessageOutput->DZIO014Luw), 
 		             sizeof(_DZIO014LUW) );
@@ -966,6 +983,17 @@ AEXPROC( ExitWktCloseAfterSave )
 	       }
 
 
+/*********************************************************************************
+*										 *
+* Setting Primary and Secondary Tables			 *
+*										 *
+*********************************************************************************/
+
+
+
+
+
+
 	 } /* if ( strcmp(MessageOutput->Hdr_DZ0101.Alrcbook,NOTFOUND) == 0) */
 
    } /* (if FndGenRC == 0) */
@@ -1006,7 +1034,7 @@ AEXPROC( ExitWktCloseAfterSave )
 					     BOX_TITLE,
 					     CBI_hwnd,
 					     FND_MSGBOX_OK,
-					     FND_MSGBOX_WARNING,
+					     FND_MSGBOX_INFORMATION,
 					     FND_MSGBOX_IDOK,
 					     BOX_TITLE,
 					     CMN_ARCH_PARMS);
