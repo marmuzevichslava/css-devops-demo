@@ -1,0 +1,382 @@
+/***************************************************************************
+ *                                                                         *
+ *                          C  SERVICE  FILE                               *
+ *                                                                         *
+ *   (c) Copyright 1994,1996  Andersen Consulting.  All Rights Reserved.   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ *                      Module File for: DZCLM01                           *
+ *                         Generated on: Tue Oct 22 17:24:02 1996          *
+ *                                   by: IPEREZAR                          *
+ *                    Short Description:                                   *
+ *                                                                         *
+ ***************************************************************************
+ *                                                                         *
+ * Designed by:                                                            *
+ * Programmed by:                                                          *
+ *
+ * Revision History:                                                       *
+ *                                                                         *
+ * Date     Revised By     Description                                     *
+ * ----     ----------     ------------                                    *
+ * 04/04    RWEINER        Change from .ec to .pc                          *
+                           add extern sqlcode
+ ***************************************************************************
+ * You may need to define other constants depending on the APIs used.      *
+ ***************************************************************************/
+
+#define SERVICEMOD
+
+/***************************************************************************
+ * FOUNDATION Data Structures And Common Functions                         *
+ ***************************************************************************/
+#define  FND_VERSION2
+#define  FND_CD_INCL
+#define  FND_CF_INCL
+#define  FND_CTCONV_INCL
+#define  FND_EH_INCL
+#define  FND_IM_INCL
+#define  FND_ST_INCL
+#define  FND_MS_INCL
+#define  FND_INFORMIX_INCL
+
+EXEC SQL INCLUDE sqlca;
+
+
+/***************************************************************************
+ * User Supplied Definitions                                               *
+ ***************************************************************************/
+
+#define  MSG_RET_SUCCESS   "0"
+#define  MSG_RET_FAIL      "1"
+
+/***************************************************************************
+ * Platform Header Files                                                   *
+ ***************************************************************************/
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <limits.h>
+#include <float.h>
+
+/*************************************************************************** 
+ * Foundation Global Header File                                           *
+ ***************************************************************************/
+#include <kglhk000.h>
+
+/***************************************************************************
+ * Business Function Context Data Type Definition                          *
+ ***************************************************************************/
+#define _BFCD            void
+#define FND_BFCD_SIZE    0
+
+/***************************************************************************
+ * Input/Output Message Layouts                                            *
+ ***************************************************************************/
+#include "dzclm01i.h"
+#include "dzclm01o.h"
+
+#define INPUTMSG   _DZLM001INPUT
+#define OUTPUTMSG  _DZLM001OUTPUT
+
+/***************************************************************************
+ * User Headers                                                            *
+ ***************************************************************************/
+
+extern unsigned long counter_lu;
+extern unsigned long counter_already_lu;
+extern unsigned long counter_unable_to_lu;
+
+extern long SQLCODE;
+
+/***************************************************************************
+ * Copybooks                                                               *
+ ***************************************************************************/
+
+
+/***************************************************************************
+ * Declaration section for Host Variables                                  *
+ ***************************************************************************/
+
+EXEC SQL BEGIN DECLARE SECTION;
+
+
+
+EXEC SQL END   DECLARE SECTION;
+
+
+/***************************************************************************
+ * Process logic source code                                               *
+ ***************************************************************************/
+
+unsigned short APIENTRY DZCLM01 (_SERVICE_DATA  *pfpb,
+                                            _RTAF  *pRTAF,
+                                            _ABHI  *pABHI)
+{
+   unsigned short    rc = FND_SUCCESS;
+#ifdef INPUTMSG
+   INPUTMSG     *pInputMsg = ((INPUTMSG *) (pfpb->pTXN));
+#endif
+   
+#ifdef OUTPUTMSG
+   OUTPUTMSG    *pOutputMsg = ((OUTPUTMSG *) (pRTAF->pReply_txn_msg));
+   _TRANSLATION *pOutputMsgTransMap = (_TRANSLATION *)
+                  &(((_MSG_PARM_BLOCK *) pRTAF->pReply_txn_pb)->translation);
+   long         *pOutputMsgSize = (long *) &(pRTAF->Reply_txn_msg_len);
+#endif
+
+   _APPL_STATUS *pServiceStatus = (_APPL_STATUS *) &(((_MSG_PARM_BLOCK *)
+                                     (pfpb->pTXN_PB))->appl_status);
+
+
+/* User-coded source */
+
+/* User variable definitions */
+
+     short nDbRetCode = 0; 
+     unsigned short nLockFlag = 0,
+		    nLockRecursiveFlag = 0,
+		    i = 0; 
+
+
+/* Initialize object counters */
+
+     counter_lu = 0;
+     counter_already_lu = 0;
+     counter_unable_to_lu = 0;
+
+/* Display input from the client */
+    
+
+     printf("\n");
+     printf("%s\n", pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType); 
+     printf("%s\n", pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName); 
+     printf("%s\n", pInputMsg->DZLM001Message.DZLM001Keys.TxLockRepository); 
+     printf("%s\n", pInputMsg->DZLM001Message.DZLM001Keys.LockRefCheck); 
+     printf("%s\n", pInputMsg->DZLM001Message.DZLM001Keys.LockProcessType); 
+
+     if(strcmp(pInputMsg->DZLM001Message.DZLM001Keys.LockProcessType, "U") == 0)
+     {
+         nLockFlag = 0;
+     }
+     else
+     {
+         nLockFlag = 1;
+     }
+
+     if(strcmp(pInputMsg->DZLM001Message.DZLM001Keys.LockRefCheck,"Y") == 0) 
+     {
+         nLockRecursiveFlag = 1;
+     }
+     else
+     {
+         nLockRecursiveFlag = 0;
+     }
+
+     nDbRetCode =  TaDbOpen(
+                  pInputMsg->DZLM001Message.DZLM001Keys.TxLockRepository, 
+                  NULL,
+                  NULL);
+
+     printf("\nConnection results = %d\n", nDbRetCode ); 
+     
+     if (nDbRetCode == FND_SUCCESS)
+     {
+        if ( strcmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType, 
+		      "DECOPYBK") == 0)
+                 LU_Copybook(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if ( strcmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DERECORD") == 0)
+                 LU_Record(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEGROUP",7) == 0)
+                 LU_Record_Group_Recursive(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEMESSGE",8) == 0)
+                 LU_Message(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DESOURCE",8) == 0)
+                 LU_Source(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEPROGRM",8) == 0)
+                 LU_Program(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DESRVSTP",8) == 0)
+                 LU_Service(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DESERVER",8) == 0)
+                 LU_Server(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DECONTRL",8) == 0)
+                 LU_Control(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DESGROUP",8) == 0)
+                 LU_List_Box(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEWINRES",8) == 0)
+                 LU_Icon(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DESCREEN",8) == 0)
+                 LU_Window(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DECONV",6) == 0)
+                 LU_Client(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEEXUNIT",8) == 0)
+                 LU_Executable(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEDTELEM",8) == 0)
+                 LU_Data_Elt(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEDTSTRC",8) == 0)
+                 LU_Mask(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEDTABLE",8) == 0)
+                 LU_Relat_Table(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DECTABLE",8) == 0)
+                 LU_Codes_Table(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else if (strncmp(pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType,
+		      "DEFILE",6) == 0)
+                 LU_File(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+		        0);
+        else 
+                 LU_Generic_WT(
+                        pInputMsg->DZLM001Message.DZLM001Keys.LockObjectName, 
+		        nLockFlag, 
+		        nLockRecursiveFlag, 
+                        pInputMsg->DZLM001Message.DZLM001Keys.TxLockObjectType);
+
+        TaDbCommit();
+
+        if (SQLCODE == 0)
+        {
+          
+           strncpy(pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType,
+                   MSG_RET_SUCCESS, 
+               sizeof(pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType));
+
+           pOutputMsg->DZLM001Message.DZLM001Data.ObjsLocked = counter_lu;            
+
+           pOutputMsg->DZLM001Message.DZLM001Data.ObjsPrevLocked = 
+						 counter_already_lu;    
+
+           pOutputMsg->DZLM001Message.DZLM001Data.ObjsProcessed = counter_lu +
+						 counter_already_lu;    
+
+	}
+	else
+	{
+        strncpy(pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType,
+                  MSG_RET_FAIL, 
+              sizeof(pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType));
+
+        pOutputMsg->DZLM001Message.DZLM001Data.ObjsLocked = SQLCODE;           
+
+        printf("\nError  results = %d\n", 
+              pOutputMsg->DZLM001Message.DZLM001Data.ObjsLocked);
+
+
+	}
+
+     }
+     else
+     {
+        strncpy(pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType,
+                  MSG_RET_FAIL, 
+              sizeof(pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType));
+
+        pOutputMsg->DZLM001Message.DZLM001Data.ObjsLocked = SQLCODE;           
+
+        printf("\nError  results = %d\n", 
+              pOutputMsg->DZLM001Message.DZLM001Data.ObjsLocked);
+
+     }
+
+
+     printf("\nTransaction results = %s\n", 
+              pOutputMsg->DZLM001Message.DZLM001Data.LockProcessType);
+			
+
+
+   /*  User code should change the value of rc to return a value  */
+   /*  other than FND_SUCCESS, if necessary.                      */
+   return(rc);
+}
