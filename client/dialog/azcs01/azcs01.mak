@@ -82,7 +82,7 @@ AZCS001_DEP = $(PROJDIR)\AZCS001.c	\
         $(PROJDIR)\AZCS001.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS001.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS002
 AZCS002_DEP = $(PROJDIR)\AZCS002.c	\
@@ -98,7 +98,7 @@ AZCS002_DEP = $(PROJDIR)\AZCS002.c	\
         $(PROJDIR)\AZCS002.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS002.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS003
 AZCS003_DEP = $(PROJDIR)\AZCS003.c	\
@@ -115,7 +115,7 @@ AZCS003_DEP = $(PROJDIR)\AZCS003.c	\
         $(PROJDIR)\AZCS003.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS003.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS004
 AZCS004_DEP = $(PROJDIR)\AZCS004.c	\
@@ -130,7 +130,7 @@ AZCS004_DEP = $(PROJDIR)\AZCS004.c	\
         $(PROJDIR)\AZCS004.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS004.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS005
 AZCS005_DEP = $(PROJDIR)\AZCS005.c	\
@@ -146,7 +146,7 @@ AZCS005_DEP = $(PROJDIR)\AZCS005.c	\
         $(PROJDIR)\AZCS005.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS005.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS006
 AZCS006_DEP = $(PROJDIR)\AZCS006.c	\
@@ -162,7 +162,7 @@ AZCS006_DEP = $(PROJDIR)\AZCS006.c	\
         $(PROJDIR)\AZCS006.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS006.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS007
 AZCS007_DEP = $(PROJDIR)\AZCS007.c	\
@@ -178,7 +178,7 @@ AZCS007_DEP = $(PROJDIR)\AZCS007.c	\
         $(PROJDIR)\AZCS007.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS007.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS008
 AZCS008_DEP = $(PROJDIR)\AZCS008.c	\
@@ -194,7 +194,7 @@ AZCS008_DEP = $(PROJDIR)\AZCS008.c	\
         $(PROJDIR)\AZCS008.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS008.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS009
 AZCS009_DEP = $(PROJDIR)\AZCS009.c	\
@@ -209,7 +209,7 @@ AZCS009_DEP = $(PROJDIR)\AZCS009.c	\
         $(PROJDIR)\AZCS009.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS009.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS010
 AZCS010_DEP = $(PROJDIR)\AZCS010.c	\
@@ -225,7 +225,7 @@ AZCS010_DEP = $(PROJDIR)\AZCS010.c	\
         $(PROJDIR)\AZCS010.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS010.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS011
 AZCS011_DEP = $(PROJDIR)\AZCS011.c	\
@@ -240,7 +240,7 @@ AZCS011_DEP = $(PROJDIR)\AZCS011.c	\
         $(PROJDIR)\AZCS011.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS011.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS013
 AZCS013_DEP = $(PROJDIR)\AZCS013.c	\
@@ -255,7 +255,7 @@ AZCS013_DEP = $(PROJDIR)\AZCS013.c	\
         $(PROJDIR)\AZCS013.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS013.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 
 # Make C window module AZCS014
 AZCS014_DEP = $(PROJDIR)\AZCS014.c	\
@@ -270,7 +270,7 @@ AZCS014_DEP = $(PROJDIR)\AZCS014.c	\
         $(PROJDIR)\AZCS014.gnh     \
         $(PROJDIR)\AZCS01.gnz        \
         $(PROJDIR)\AZCS014.src	\
-		$(ARCHINC)\mapgen.h
+		$(PROJDIR)\mapgen.h
 				   
 # Make RC dependencies for AZCS01
 AZCS01_RCDEP = $(PROJDIR)\AZCS01.gnz    \

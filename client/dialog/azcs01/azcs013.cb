@@ -1996,8 +1996,12 @@ SHORT ChangeIt( SHORT sServ,
 
     /* See if any Repeating Maps Header relationships are defined for this
      * service
+     *mdc 04/29/97 Changed logic so that it would not make call if relationship
+     *             does not exist.
      */
-    if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pRepeatingMaps )
+    if (( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pRepeatingMaps ) &&
+        (  pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pRepeatingMaps[sIndex].
+            ClientLayoutIndex != -1))
     {
         FndGenRC = ChangeRPMH( sServ, sIndex, sNewReposIx, pSTDParms );
 

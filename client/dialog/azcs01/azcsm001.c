@@ -153,6 +153,8 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
 
   SHORT ReturnCode = 0;
   CHAR Message[ 255 ];
+  /*mdc 04/30/97 Added to satisfy Bounds Checker bad argument error*/
+  CHAR MsgBxName[32] = "ReposWait";
   USHORT SelectedButton;
 
   CHAR MsgBoxText[255];
@@ -195,11 +197,12 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
   strcat(MsgBoxText, " \n  from the Design Repository ...");
 
   /*mdc 11/25/96 Make this conditional on Mass Gen */
+  /*mdc 04/30/97 Chamged "ReposWait" to MsgBxName to satisfy BC error*/
   if (BFCD_pCSRMapBFCD->CsrFLMassGen != CMN_YES)
   {
 
       FndMsgBoxDisplayMdlssText( MsgBoxText,
-                                   "ReposWait",
+                                   MsgBxName,
                                    CBI_hwnd,
                                    FND_MSGBOX_NOBUTTONS,
                                    FND_MSGBOX_INFORMATION,
@@ -466,7 +469,7 @@ SHORT CsrMapRetrieveLayout( CHAR *EntityId, CHAR ClientLayoutFlag,
                                  &FndGenErrorBlock);
 
 
-    FndGenRC = FndMsgBoxDestroy("ReposWait",
+    FndGenRC = FndMsgBoxDestroy(MsgBxName,
                                &FndGenErrorBlock);
   }
 
