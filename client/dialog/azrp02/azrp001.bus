@@ -6,18 +6,44 @@
 **
 **               Customer Service System Business Logic Module
 **
-** FILENAME         :  <CUffnnn>.BUS
+** FILENAME         :  AZRP001.BUS
 **
-** DESCRIPTION      :  Business Logic functions for window CUffnnnX,
+** DESCRIPTION      :  Business Logic functions for window AZRP001X,
 **                     includes:
 **
-**                     <List Functions here>
+**                     AZRP001BUSPredisplay
+**                     AZRP001BusAmnprintClk
+**                     AZRP001BusAmnbatchClk
+**                     AZRP001BusFindpbClk
+**                     AZRP001PopulateWindow
+**                     GetEntityType
+**                     AZRP001BusPrintReport
+**                     AZRP001BusPrintHeader
+**                     AZRP001BusWriteReport
+**                     AZRP001BusWriteHeader
+**                     FormatLongDesc
+**                     StrAssemble
+**                     StrPad
+**                     StrParse
+**                     StrInsertCRLF
+**                     StrAllocateSubs
+**                     FreeMemArray
+**                     SegRptRetrieveLayout
 **
 ** REVISION HISTORY
 **
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
-** 99/99/99    XXXXXXXX            Creation
+**                                 Original Code.
+**
+** 10/30/97    MEVANS      T4      Updated to use new Architecture Print 
+**                                 Driver CmnPdPrintDriver.  This resolved
+**                                 the Netware print server incapability 
+**                                 issue.
+**                   
+** 01/28/97    B Lucas             rewrote AZRP001BusPrintReport and
+**                                 AZRP001BusFormatHeader using evans'
+**                                 print drivers.
 **
 ***************************************************************************/
 
@@ -37,15 +63,15 @@
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
 **  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **  --------  -----------  -------  -------------------------------------
-**  99/99/99  XXXXXXXX              Original code.
+**                                   Original code.
 **
 ***************************************************************************/
 WCBPROC ( AZRP001BUSPredisplay )
@@ -136,20 +162,19 @@ WCBPROC ( AZRP001BUSPredisplay )
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
 **  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **  --------  -----------  -------  -------------------------------------
-**  99/99/99  XXXXXXXX              Original code.
+**                                  Original code.
 **
 **  02/23/94  JLOONEY               Added FndGenErrorBlock for the macro
 **                                  wrappers.
 ***************************************************************************/
-
 WCBPROC( AZRP001BusAmnprintClk )
 {
 /*mdc 03/27/96 not used in this function
@@ -178,21 +203,20 @@ WCBPROC( AZRP001BusAmnprintClk )
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
 **  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **  --------  -----------  -------  -------------------------------------
-**  99/99/99  XXXXXXXX              Original code.
+**                                  Original code.
 **
 **  02/23/94  JLOONEY               Added FndGenErrorBlock for the macro
 **                                  wrappers.
 **
 ***************************************************************************/
-
 WCBPROC( AZRP001BusAmnbatchClk )
 {
 /*mdc 03/27/96 not used in this function
@@ -202,7 +226,6 @@ WCBPROC( AZRP001BusAmnbatchClk )
 
     FndGenRC = CmnWindowCreate( "AZRP003X", "", NULL, NULL,
                                 CMN_ARCH_PARMS );
-
 
     return CMN_SUCCESS;
 }
@@ -224,18 +247,17 @@ WCBPROC( AZRP001BusAmnbatchClk )
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**                                    Original code.
 **
 ***************************************************************************/
-
 WCBPROC( AZRP001BusFindpbClk )
 {
   #define DEST_APPL_ID   1
@@ -379,17 +401,17 @@ WCBPROC( AZRP001BusFindpbClk )
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**                                    Original code.
 **
-**  04/12/96   mconner                Removed insertion of carraige returns and 
+**    04/12/96  mconner               Removed insertion of carraige returns and 
 **                                    in long description. Concateneated
 **                                    8 incoming strings into a single
 **                                    string for SetValue of multiline field
@@ -402,7 +424,6 @@ WCBPROC( AZRP001BusFindpbClk )
 **   05/09/96  mconner                Added logic to cope with more rows being
 **                                    returned than can be displayed in the list box.
 ***************************************************************************/
-
 SHORT AZRP001PopulateWindow( _ENTITYDATA *pEntityDataTable,
                              _REPLYHDR *pReplyHdr,
                              CMN_ARCH_PARM_TYPES )
@@ -748,9 +769,9 @@ while (*pszStr)
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
@@ -788,13 +809,14 @@ USHORT GetEntityType(char *pszStr)
  
 }/*end of GetEntityType */
 
+
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : PrintSegmentReport
+**  FUNCTION         : AZRP001BusPrintReport
 **
-**  DESCRIPTION      : This function prints the segment report 
+**  DESCRIPTION      : This function prints the Segment Report 
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -803,28 +825,815 @@ USHORT GetEntityType(char *pszStr)
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : MEVANS
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 10/31/97
 **
 **  REVISION HISTORY :
 **
-**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
-**    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  10/31/97  MEVANS       T4       Original code.
+**
+**  01/27/98  B Lucas               rewrote function to incorporate new
+**                                  print driver
 **
 ***************************************************************************/
+SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr, 
+                             _REPLYHDR    *pReplyHdr,
+                             _ENTITYDATA  *pEntityDataTable, 
+                             CHAR         Duplex, 
+                             CMN_ARCH_PARM_TYPES )
+{
+    USHORT CurrRow   = 0;
+    USHORT CurrPage  = 1;
+    USHORT CurrLine  = 0;
+    SHORT  rc        = 0;
+	LONG   PrintSize = 0;
+    _CMN_PD_PRINT_DATA_PARMS_EXT PrintParms;
 
+    /* set print parms for desired format */
+	memset( &PrintParms, 0, sizeof( _CMN_PD_PRINT_DATA_PARMS_EXT ));
+    PrintParms.Font           = atoi( CDCONTROLCHAR_FONT_COURIER8 );
+    PrintParms.Orientation    = atoi( CDCONTROLCHAR_ORIENT_PORTRAIT );
+	PrintParms.Margins.Top    = DEFAULT_MARGIN_TOP;
+    PrintParms.Margins.Bottom = DEFAULT_MARGIN_BOTTOM;
+    PrintParms.Margins.Left   = DEFAULT_MARGIN_LEFT;
+    PrintParms.Margins.Right  = DEFAULT_MARGIN_RIGHT;
+
+    if( Duplex == CMN_YES )
+    {
+        PrintParms.Duplex = atoi( CDCONTROLCHAR_DOUBLE_SIDED );
+    }
+    else
+    {
+        PrintParms.Duplex = atoi( CDCONTROLCHAR_SINGLE_SIDED );
+    }
+
+    /* Allocate memory to store the segment report data */
+    PrintParms.DataToPrint = malloc ( 2 * NUMREPOSDATALBROWS * LINE_LEN );
+	memset( PrintParms.DataToPrint, 0, 2 * NUMREPOSDATALBROWS * LINE_LEN );
+
+    /* print data. do not exceed NUMREPOSDATALBROWS rows */
+    while (( CurrRow < NUMREPOSDATALBROWS )       && 
+           ( CurrRow < pReplyHdr->RowsReturned ))
+    {
+
+		/* print header information */  
+		AZRP001BusFormatHeader( PrintParms.DataToPrint,
+								&PrintSize, 
+								pRequestHdr, 
+								pReplyHdr, 
+								pEntityDataTable,
+								CurrPage, 
+								&CurrLine, 
+								CMN_ARCH_PARMS );
+
+		/* print entities for remainder of page */
+		while( CurrLine < MAX_LINES_PER_PAGE        &&
+               CurrRow  < NUMREPOSDATALBROWS        &&
+               CurrRow  < pReplyHdr->RowsReturned )
+		{
+
+			/* bold all entities except 'element' type */
+			if( WCD_EntityData[CurrRow].EntityType[0] != \
+				ENTITY_TYPE_ELEMENT )
+			{
+
+				PrintSize += sprintf( &PrintParms.DataToPrint[PrintSize], 
+								      "%c%s",
+
+									  /* bold on */
+									  CMN_PD_PRINT_PCL_TOKEN,
+									  CDCONTROLCHAR_BOLD_ON );
+			}
+
+			
+			/* all entities print doc id, item type, and item name */
+			PrintSize += sprintf( &PrintParms.DataToPrint[PrintSize], 
+								  "%*s%-*s%-*s%-*s",
+								  
+								  /* indent */
+								  WCD_EntityData[CurrRow].EntityLevel * \
+								  INDENT_FACTOR,
+								  "",
+
+								  /* doc id */
+								  COL_WIDTH_DOC_ID,
+								  &WCD_EntityData[CurrRow].EntityId,
+
+								  /* item type */
+								  COL_WIDTH_ITEM_TYPE,
+								  &WCD_EntityData[CurrRow].EntityType,
+
+								  /* 
+								  ** item name 
+								  ** both 'document id' and 'item type' have
+								  ** fixed lengths to print.  however, to
+								  ** keep 'item name' from overwriting the
+								  ** detail columns, it does not have a set
+								  ** width to print.  instead, it will print
+								  ** from the end of 'item type' to the 
+								  ** beginning of 'fmt'
+								  */
+								  ( FMT_START_COL - OFFSET_FMT ) -         \
+								  (( WCD_EntityData[CurrRow].EntityLevel * \
+								  INDENT_FACTOR ) + COL_WIDTH_DOC_ID +     \
+								  COL_WIDTH_ITEM_TYPE ),
+								  &WCD_EntityData[CurrRow].EntityCobolName );
+
+			/*
+			** print different columns depending on entity type:
+			**                fmt len prec us occur bytes other_char
+			**     copybook -
+			**     table    -
+			**     group    - 					x
+			**     element  -  x   x	x	x		  x			x
+			**
+			** when an item like 'group' and 'element' skip columns, 'spaces'
+			** are printed to hold the allignment 
+			*/
+			switch( WCD_EntityData[CurrRow].EntityType[0] )
+			{
+				case ENTITY_TYPE_COPYBOOK:
+					{						
+						PrintSize += sprintf( &PrintParms.DataToPrint\
+							                  [PrintSize], 
+											  "%c%s",
+
+											  /* bold off */
+											  CMN_PD_PRINT_PCL_TOKEN,
+											  CDCONTROLCHAR_BOLD_OFF );
+
+						break;
+					}
+
+				case ENTITY_TYPE_TABLE:
+					{
+						PrintSize += sprintf( &PrintParms.DataToPrint\
+							                  [PrintSize], 
+											  "%c%s",
+
+											  /* bold off */
+											  CMN_PD_PRINT_PCL_TOKEN,
+											  CDCONTROLCHAR_BOLD_OFF );
+
+						break;
+					}
+
+				case ENTITY_TYPE_RECORD:
+					{
+						PrintSize += sprintf( &PrintParms.DataToPrint\
+							                  [PrintSize ],
+											  "%c%s",
+
+											  /* bold off */
+											  CMN_PD_PRINT_PCL_TOKEN,
+											  CDCONTROLCHAR_BOLD_OFF );
+
+						break;
+					}
+
+				case ENTITY_TYPE_GROUP:
+					{
+
+						PrintSize += sprintf( &PrintParms.DataToPrint\
+							                  [PrintSize], 
+											  "%*s%*s%*s%*s%*s%*s%*s%*s" \
+											  "%*s%*s%c%s",
+
+											  /* fmt indent */
+											  OFFSET_FMT,
+											  "",
+
+											  /* dummy fmt */
+											  COL_WIDTH_FMT,
+											  "",
+
+											  /* len indent */
+											  OFFSET_LEN,
+											  "",
+
+											  /* dummy len */
+											  COL_WIDTH_LEN,
+											  "",
+
+											  /* prec indent */
+											  OFFSET_PREC,
+											  "",
+
+											  /* dummy prec */
+											  COL_WIDTH_PREC,
+											  "",
+
+											  /* us indent */
+											  OFFSET_US,
+											  "",
+
+											  /* dummy us */
+											  COL_WIDTH_US,
+											  "",										  
+
+											  /* occur indent */
+											  OFFSET_OCCUR,
+											  "",
+
+											  /* occur */
+											  COL_WIDTH_OCCUR,
+											  ReposDataLBOccursData\
+											  [CurrRow], 
+											  
+											  /* bold off */
+											  CMN_PD_PRINT_PCL_TOKEN,
+											  CDCONTROLCHAR_BOLD_OFF );
+
+						break;
+					}
+
+				case ENTITY_TYPE_ELEMENT:
+					{
+						PrintSize += sprintf( &PrintParms.DataToPrint\
+							                  [PrintSize], 
+											  "%*s%*c%*s%*d",
+
+											  /* fmt indent */
+											  OFFSET_FMT,
+											  "",
+
+											  /* fmt */
+											  COL_WIDTH_FMT,
+											  WCD_EntityData[CurrRow].\
+											  DteIntFormat,
+
+											  /* len indent */
+											  OFFSET_LEN,
+											  "",
+
+											  /* len */
+											  COL_WIDTH_LEN,
+											  WCD_EntityData[CurrRow].\
+											  DteIntLength );
+
+						/* 
+						** if this entity is numeric, print prec and us 
+						** attributes 
+						*/
+						if( WCD_EntityData[CurrRow].DteIntFormat == \
+							    ENTITY_TYPE_NUMERIC )
+						{
+						
+							PrintSize += sprintf( &PrintParms.DataToPrint\
+								                  [PrintSize],
+												  "%*s%*d%*s%*s",
+
+												  /* prec indent */
+												  OFFSET_PREC,
+												  "",
+
+												  /* prec */
+												  COL_WIDTH_PREC,
+												  WCD_EntityData[CurrRow].\
+												  DteIntPrecision,
+
+												  /* us indent */
+												  OFFSET_US,
+												  "",
+
+												  /* us */
+												  COL_WIDTH_US,
+												  &WCD_EntityData[CurrRow].\
+												  DteIntUsage );
+						}
+
+						/* if not, print 'spaces' */
+						else
+						{
+
+							PrintSize += sprintf( &PrintParms.DataToPrint
+								                  [PrintSize], 
+												  "%*s%*s%*s%*s",
+
+												  /* prec indent */
+												  OFFSET_PREC,
+												  "",
+
+												  /* dummy prec */
+												  COL_WIDTH_PREC,
+												  "",
+
+												  /* us indent */
+												  OFFSET_US,
+												  "",
+
+												  /* dummy us */
+												  COL_WIDTH_US,
+												  "" );
+						}
+
+						PrintSize += sprintf( &PrintParms.DataToPrint\
+							                  [PrintSize], 
+											  "%*s%*s%*s%*s%*s%-*s",
+
+											  /* occur indent */
+											  OFFSET_OCCUR,
+											  "",
+
+											  /* dummy occur */
+											  COL_WIDTH_OCCUR,
+											  "",
+
+											  /* bytes indent */
+											  OFFSET_BYTES,
+											  "",
+
+											  /* bytes */
+											  COL_WIDTH_BYTES,
+											  ReposDataLBBytesData[CurrRow],
+
+											  /* other char indent */
+											  OFFSET_OTHER_CHAR,
+											  "",
+
+											  /* other char */
+											  COL_WIDTH_OTHER_CHAR,
+											  ReposDataLBOther2Data\
+											  [CurrRow] );
+
+						break;
+					}
+			}
+
+			/* line feed */
+			PrintSize += sprintf( &PrintParms.DataToPrint[PrintSize], 
+								  "%c%s",
+								  CMN_PD_PRINT_PCL_TOKEN,
+								  CDCONTROLCHAR_LINE_FEED );
+
+			/* Increment counters */
+			CurrRow++;
+			CurrLine++;
+		}
+
+		/* check why loop ended */
+		if( CurrLine >= MAX_LINES_PER_PAGE      &&
+	        CurrRow < NUMREPOSDATALBROWS        &&
+			CurrRow < pReplyHdr->RowsReturned )
+		{
+			/* lines per page exceeded, but still data. start new page */
+			PrintSize += sprintf( &PrintParms.DataToPrint[PrintSize], 
+								  "%c%s",
+								  CMN_PD_PRINT_PCL_TOKEN,
+								  CDCONTROLCHAR_FORM_FEED );
+
+			CurrPage++;
+		}	
+    }    
+	
+	/* if there are more lines print a message */
+    if( CurrRow >= NUMREPOSDATALBROWS )
+    {
+		PrintSize += sprintf( &PrintParms.DataToPrint[PrintSize], 
+							  MSG_TOO_MANY_ROWS,
+
+							  /* double line feed */
+							  CMN_PD_PRINT_PCL_TOKEN,
+							  CDCONTROLCHAR_DBL_LINE_FEED, 
+
+							  /* bold on */
+							  CMN_PD_PRINT_PCL_TOKEN,
+							  CDCONTROLCHAR_BOLD_ON,
+
+							  /* max rows */
+							  NUMREPOSDATALBROWS,
+
+							  /* line feed */
+							  CMN_PD_PRINT_PCL_TOKEN,
+							  CDCONTROLCHAR_LINE_FEED,
+
+							  /* bold off */
+							  CMN_PD_PRINT_PCL_TOKEN,
+							  CDCONTROLCHAR_BOLD_OFF );
+    }
+
+	/* send data to print driver */
+	PrintParms.DataToPrintSize = PrintSize;
+	rc = CmnPdPrintDriver( PrintParms, CMN_ARCH_PARMS );
+
+	/* release print buffer */
+    free( PrintParms.DataToPrint );
+
+	return CMN_SUCCESS;		  
+} 
+
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP001BusFormatHeader
+**
+**  DESCRIPTION      : This function formats the segment report header.
+**
+**  INPUTS           : pDatatoPrint
+**                         pointer to print buffer
+**
+**                     DataToPrintSize
+**                         pointer to print buffer size counter
+**
+**                     pRequestHdr
+**                         pointer to request header
+**
+**                     pReplyHdr
+**                         pointer to service's reply header
+**
+**                     CurrPage
+**                         current page
+**
+**                     pCurrLine
+**                         pointer to current line counter
+**
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**  10/31/97  MEVANS       T4       Original code.
+**
+**  01/27/98  B Lucas               rewrote function to incorporate new
+**                                  print driver
+**
+***************************************************************************/
+SHORT AZRP001BusFormatHeader( CHAR         *pDatatoPrint,
+						      LONG         *pDatatoPrintSize,
+                              _REQUESTHDR  *pRequestHdr,
+                              _REPLYHDR    *pReplyHdr, 
+                              _ENTITYDATA  *pEntityDataTable,
+                              SHORT        CurrPage, 
+                              SHORT        *pCurrLine, 
+                              CMN_ARCH_PARM_TYPES )
+{
+
+    CHAR    *psLongDesc            = NULL;
+    CHAR    *pszStr                = NULL;
+    CHAR    CurrDate[DATE_STR_LEN] = "";
+    USHORT  usNumLongDescRows      = 0;
+    SHORT   i                      = 0;
+	SHORT   j                      = 0;
+	CHAR    *pWrappedWord          = NULL;
+
+	/* format the title section */
+    _strdate( CurrDate );
+	*pDatatoPrintSize  += sprintf( &pDatatoPrint[*pDatatoPrintSize], 
+		                           "%*s%c%s%-*s%*s%s%4.4d%c%s%*s%-*s%*s" \
+								   "%-s%c%s%*s%-s ( %s )%c%s%c%s",
+
+	                               /* fnd/css indent */
+						           OFFSET_FND_CSS,
+							       "",
+
+							       /* bold on */
+				                   CMN_PD_PRINT_PCL_TOKEN,
+							       CDCONTROLCHAR_BOLD_ON, 
+
+                                   /* foundation/css */
+							       COL_WIDTH_TITLE,
+							       LABEL_FND_CSS,
+
+	                               /* page offset */
+						           OFFSET_PAGE,
+							       "",
+
+	                               /* page number */
+							       LABEL_PAGE,
+							       CurrPage,
+
+                                   /* line feed */
+                                   CMN_PD_PRINT_PCL_TOKEN,
+                                   CDCONTROLCHAR_LINE_FEED,
+
+							       /* seg rpt indent */
+						           OFFSET_SEG_RPT,
+							       "",
+
+	                               /* segment reporting */
+							       COL_WIDTH_TITLE,
+							       LABEL_SEG_RPT,
+
+							       /* date indent */
+						           OFFSET_DATE,
+						           "",
+
+	                               /* date */
+							       CurrDate,
+
+                                   /* line feed */
+                                   CMN_PD_PRINT_PCL_TOKEN,
+                                   CDCONTROLCHAR_LINE_FEED,
+
+							       /* title indent */
+						           OFFSET_ENTITY,
+							       "",
+
+	                               /* entity name */
+							       pRequestHdr->EntityId,
+							       pEntityDataTable[0].EntityType,
+
+							       /* bold off */
+	                               CMN_PD_PRINT_PCL_TOKEN,
+							       CDCONTROLCHAR_BOLD_OFF, 
+
+                                   /* line feed */
+                                   CMN_PD_PRINT_PCL_TOKEN,
+                                   CDCONTROLCHAR_LINE_FEED );
+
+    /* update current line counter to reflect the 3 title lines */
+    *pCurrLine = 3;
+
+    /* if this is the first page, print description header */
+    if( CurrPage == 1 )
+    {
+		*pDatatoPrintSize += sprintf( &pDatatoPrint[*pDatatoPrintSize],
+			                          "%s %s%c%s%s%c%s",
+
+								      /* 'entity' characteristics */
+                                      pEntityDataTable[0].EntityType,
+								      LABEL_CHARACTERISTICS,
+
+								      /* line feed */
+								      CMN_PD_PRINT_PCL_TOKEN,
+								      CDCONTROLCHAR_LINE_FEED,
+
+								      /* ---- */
+                                      AZRP001_SEG_RPT_COLHDR1,
+
+								      /* line feed */
+  								      CMN_PD_PRINT_PCL_TOKEN,
+								      CDCONTROLCHAR_DBL_LINE_FEED );
+
+		/* if table report, print the table name */
+		if( pEntityDataTable[0].EntityType[0] == ENTITY_TYPE_TABLE )
+		{
+			*pDatatoPrintSize += sprintf( &pDatatoPrint[*pDatatoPrintSize], 
+				                          "%*s%c%s%*s%c%s%*s%s%c%s",
+
+									      /* tbl name label indent */
+									      OFFSET_TBL_NAME_LABEL,
+									      "",
+
+									      /* bold on */
+				                          CMN_PD_PRINT_PCL_TOKEN,
+									      CDCONTROLCHAR_BOLD_ON, 
+
+									      /* tbl name label*/
+									      COL_WIDTH_DESC,
+									      LABEL_TABLE_NAME,
+
+									      /* bold off */
+	                                      CMN_PD_PRINT_PCL_TOKEN,
+								          CDCONTROLCHAR_BOLD_OFF, 
+
+								          /* tbl name offset */
+								          OFFSET_TBL_NAME,
+									      "",
+
+									      /* tbl name */
+									      pReplyHdr->TabName,
+
+									      /* line feed */
+	   								      CMN_PD_PRINT_PCL_TOKEN,
+						                  CDCONTROLCHAR_LINE_FEED );
+
+			/* add to line count */
+			*pCurrLine += 1;
+		}
+
+		/* print short desc label, short desc, and long desc label */
+        *pDatatoPrintSize += sprintf( &pDatatoPrint[*pDatatoPrintSize],
+			                          "%*s%c%s%*s%c%s%*s%s%c%s%*s%c%s" \
+									  "%*s%c%s%*s",
+
+								      /* short desc label indent */
+								      OFFSET_SHORT_DESC_LABEL,
+								      "",
+
+								      /* bold on */
+				                      CMN_PD_PRINT_PCL_TOKEN,
+								      CDCONTROLCHAR_BOLD_ON, 
+
+								      /* short desc label */
+                                      COL_WIDTH_DESC,
+								      LABEL_SHORT_DESC,
+
+								      /* bold off */
+				                      CMN_PD_PRINT_PCL_TOKEN,
+								      CDCONTROLCHAR_BOLD_OFF, 
+
+								      /* short desc offset */
+								      OFFSET_SHORT_DESC,
+								      "",
+
+								      /* short desc */
+								      pEntityDataTable[0].EntityId,
+
+								      /* line feed */
+  								      CMN_PD_PRINT_PCL_TOKEN,
+					                  CDCONTROLCHAR_LINE_FEED,
+
+		                              /* long desc label indent */
+								      OFFSET_LONG_DESC_LABEL,
+								      "",
+
+								      /* bold on */
+				                      CMN_PD_PRINT_PCL_TOKEN,
+								      CDCONTROLCHAR_BOLD_ON, 						  
+
+		                              /* long desc label */
+                                      COL_WIDTH_DESC,
+								      LABEL_LONG_DESC,
+
+								      /* bold off */
+				                      CMN_PD_PRINT_PCL_TOKEN,
+								      CDCONTROLCHAR_BOLD_OFF, 
+
+		                              /* long desc offset */
+								      OFFSET_LONG_DESC,
+								      "" );
+
+        /* update line counter */
+        *pCurrLine += 4;
+
+		/* if long desc was returned */
+		if( pReplyHdr->NumTextRows )
+		{
+
+			/* format and print the long desc */
+			for( i = 0; i < pReplyHdr->NumTextRows; i++ )
+			{
+
+				/* init variables */
+				j = ENTITYTEXT_LEN - 2;
+
+				/* the last element is not a space */
+				if( pReplyHdr->EntityText[i][j] != ' ' )
+				{
+					
+					/* the last element is not a period */
+					if( pReplyHdr->EntityText[i][j] != '.' )
+					{
+
+						/* find last complete word */
+						for( ; pReplyHdr->EntityText[i][j] != ' '; j-- );
+
+						/* set pointer to beginning or wrapped word */
+						pWrappedWord = &pReplyHdr->EntityText[i][j+1];
+					}
+					else
+					{
+
+						/* last char was a period.  no word wrapped */
+						pWrappedWord = NULL;						  
+					}
+				}
+
+				/* last element is a space */
+				else
+				{
+
+					/* find end of string */
+					for( ; pReplyHdr->EntityText[i][j-1] == ' '; j-- );
+
+					/* 
+					** set pointer to null character.  cannot use NULL 
+					** because '(null)' will print
+					*/
+					pWrappedWord = &pReplyHdr->EntityText[i]\
+						                       [ENTITYTEXT_LEN - 1];
+
+				}
+
+				/* print line i of entity test */
+				*pDatatoPrintSize += sprintf( &pDatatoPrint[*pDatatoPrintSize],
+											  "%-.*s%c%s",
+											  j,
+											  &pReplyHdr->EntityText[i],
+											  CMN_PD_PRINT_PCL_TOKEN,
+											  CDCONTROLCHAR_LINE_FEED );
+
+				/* increment row count */
+				*pCurrLine += 1;
+
+				if( i < ( pReplyHdr->NumTextRows - 1 ))
+				{
+
+					/* not the last. add offset and wrapped word */
+					*pDatatoPrintSize += sprintf( &pDatatoPrint\
+												  [*pDatatoPrintSize],
+												  "%*s%*s%*s%s",
+
+												  /* long desc label indent */
+												  OFFSET_LONG_DESC_LABEL,
+												  "",
+							 
+												  /* dummy long desc label */
+												  COL_WIDTH_DESC,
+												  "",
+
+												  /* long desc offset */
+												  OFFSET_LONG_DESC,
+												  "",
+
+												  /* wrapped word */
+												  pWrappedWord );
+
+				}
+			}
+		}
+
+		/* no long desc */
+		else
+		{
+
+			/* line feed */
+			*pDatatoPrintSize += sprintf( &pDatatoPrint[*pDatatoPrintSize],
+										  "%c%s",
+										  CMN_PD_PRINT_PCL_TOKEN,
+										  CDCONTROLCHAR_LINE_FEED );
+		}
+    } 
+
+    /* Format the Column headers */
+    *pDatatoPrintSize += sprintf( &pDatatoPrint[*pDatatoPrintSize], 
+                                  "%c%s%s%c%s%c%s%s%c%s%c%s%s%c%s",
+ 							      CMN_PD_PRINT_PCL_TOKEN,
+							      CDCONTROLCHAR_LINE_FEED,
+                                  AZRP001_SEG_RPT_COLHDR1,
+							      CMN_PD_PRINT_PCL_TOKEN,
+				                  CDCONTROLCHAR_LINE_FEED,
+                                  CMN_PD_PRINT_PCL_TOKEN,
+							      CDCONTROLCHAR_BOLD_ON,
+                                  AZRP001_SEG_RPT_COLHDR2,
+                                  CMN_PD_PRINT_PCL_TOKEN,
+							      CDCONTROLCHAR_BOLD_OFF,
+							      CMN_PD_PRINT_PCL_TOKEN,
+				                  CDCONTROLCHAR_LINE_FEED,
+                                  AZRP001_SEG_RPT_COLHDR3,
+							      CMN_PD_PRINT_PCL_TOKEN,
+				                  CDCONTROLCHAR_LINE_FEED );
+
+    /* Reset CurrLine */
+    *pCurrLine += 4;
+
+    return CMN_SUCCESS;
+
+}
+ 
+
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**  FUNCTION         : AZRP001BusWriteReport
+**
+**  DESCRIPTION      : This function writes the segment report to a file.
+**
+**  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : NONE
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**  DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**  --------  -----------  -------  -------------------------------------
+**                                  Original code.
+**
+***************************************************************************/
+SHORT AZRP001BusWriteReport( _REQUESTHDR *pRequestHdr, 
+                             _REPLYHDR   *pReplyHdr,
+                             _ENTITYDATA *pEntityDataTable, 
+                             CHAR        *PrintFile,
+                             CHAR         Duplex, 
+                             CMN_ARCH_PARM_TYPES )
+{
 #define PRINTER_RESET         "\033E"
 #define FONT_LINE_PRINTER     "\033(0N\033(s0p16.67h8.5v0s0b0T"
 #define VMI                   "\033&l5.6C"
-#define MAX_LINES_PER_PAGE    80
 #define DUPLEX                "\033&l1S"
 
-SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
-                          _ENTITYDATA *pEntityDataTable, CHAR *PrintFile,
-                          CHAR Duplex, CMN_ARCH_PARM_TYPES )
-{
   FILE *pfPrinter;
   USHORT CurrRow = 0;
   USHORT CurrPage = 1;
@@ -856,8 +1665,13 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
             CurrRow < pReplyHdr->RowsReturned )
     {
       /* Print Header Information */
-      PrintHeader( pfPrinter, pRequestHdr, pReplyHdr, pEntityDataTable,
-                   CurrPage, &CurrLine, CMN_ARCH_PARMS );
+      AZRP001BusWriteHeader( pfPrinter, 
+                             pRequestHdr, 
+                             pReplyHdr, 
+                             pEntityDataTable,
+                             CurrPage, 
+                             &CurrLine, 
+                             CMN_ARCH_PARMS );
 
       while( CurrLine < MAX_LINES_PER_PAGE &&
              CurrRow < NUMREPOSDATALBROWS &&
@@ -947,8 +1761,13 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
             fprintf(pfPrinter, "\f" );
             ++CurrPage;
             /* Print Header Information */
-            PrintHeader( pfPrinter, pRequestHdr, pReplyHdr, pEntityDataTable,
-                   CurrPage, &CurrLine, CMN_ARCH_PARMS );
+            AZRP001BusWriteHeader( pfPrinter, 
+                                   pRequestHdr, 
+                                   pReplyHdr, 
+                                   pEntityDataTable,
+                                   CurrPage, 
+                                   &CurrLine, 
+                                   CMN_ARCH_PARMS );
 
         }
         fprintf(pfPrinter, "\n\n\tThe maximum number of printable lines is %d.", NUMREPOSDATALBROWS);
@@ -965,15 +1784,16 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
   }
 
   return CMN_SUCCESS;
-}/*end of PrintSegmentReport*/
+}/*end of AZRP001BusWriteReport*/
+
 
 /***************************************************************************
 **
 **               Customer Service System Business Logic Function
 **
-**  FUNCTION         : PrintHeader
+**  FUNCTION         : AZRP001BusWriteHeader
 **
-**  DESCRIPTION      : This function prints the segment report header. 
+**  DESCRIPTION      : This function writes the segment report header. 
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -982,35 +1802,33 @@ SHORT PrintSegmentReport( _REQUESTHDR *pRequestHdr, _REPLYHDR *pReplyHdr,
 **
 **  CALLED FUNCTIONS : NONE
 **
-**  AUTHOR           : XXXXXXXX
+**  AUTHOR           : 
 **
-**  DATE CREATED     : 99/99/99
+**  DATE CREATED     : 
 **
 **  REVISION HISTORY :
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**                                    Original code.
 **
 ***************************************************************************/
-
-
+SHORT AZRP001BusWriteHeader( FILE        *pfPrinter, 
+                             _REQUESTHDR *pRequestHdr,
+                             _REPLYHDR   *pReplyHdr, 
+                             _ENTITYDATA *pEntityDataTable,
+                             SHORT        CurrPage, 
+                             SHORT       *pCurrLine, 
+                             CMN_ARCH_PARM_TYPES )
+{
 #define SEG_RPT_HDR1 \
-"                                                          FOUNDATION 2.0/CSS                                              Page %4.4d\n"
+"                                                          FOUNDATION 3.2/CSS                                              Page %4.4d\n"
 #define SEG_RPT_HDR2 \
 "                                                          SEGMENT REPORTING                                                %8.8s\n"
 #define SEG_RPT_HDR3 \
 "                                                          %8.8s (%s)\n"
 
-
-SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
-                   _REPLYHDR *pReplyHdr, _ENTITYDATA *pEntityDataTable,
-                   SHORT CurrPage, SHORT *pCurrLine, CMN_ARCH_PARM_TYPES )
-{
   CHAR CurrDate[ 9 ];
-  /*mdc 05/07/96 unreferenced local variable
-  USHORT i;
-  */
   USHORT usNumLongDescRows = 0;
   char *psLongDesc;
   char *pszStr;
@@ -1117,7 +1935,7 @@ SHORT PrintHeader( FILE *pfPrinter, _REQUESTHDR *pRequestHdr,
   *pCurrLine += 3;   /* Adjust this based on size of header */
 
   return 0;
-}/*end of PrintHeader*/	
+}/*end of AZRP001BusWriteHeader*/	
 
 /***************************************************************************
 **
@@ -1499,8 +2317,6 @@ USHORT StrAllocateSubs(char *ppStr[],
 **    04/25/96  mconner              Increased free to accomodate max num
 **                                   of substrings.
 ***************************************************************************/
-
-
 USHORT FreeMemArray(void *pp[])
 {
     USHORT i = 0;
@@ -1513,6 +2329,33 @@ USHORT FreeMemArray(void *pp[])
 }/*end of FreeMemArray */
 
 
+/***************************************************************************
+**
+**               Customer Service System Business Logic Function
+**
+**
+**  FUNCTION         : SegRptRetrieveLayout
+**
+**  DESCRIPTION      : 
+**
+**  INPUTS           : 
+**
+**  OUTPUTS          : Return Code - SHORT (Valid: CMN_SUCCESS or CMN_FAIL).
+**
+**
+**  CALLED FUNCTIONS : none
+**
+**  AUTHOR           : 
+**
+**  DATE CREATED     : 
+**
+**  REVISION HISTORY :
+**
+**    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
+**    --------  -----------  -------  -------------------------------------
+**                                    Original code.
+**
+***************************************************************************/
 SHORT SegRptRetrieveLayout( _REQUESTHDR *pRequestHdr,
                             _REPLYHDR *pReplyHdr,
                             _ENTITYDATA *pEntityDataTable,
