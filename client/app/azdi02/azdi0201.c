@@ -17,7 +17,7 @@
 **  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 **  --------    ----------  ------  ---------------------------------------
 **  02/13/97    GHOWELL     16116   Replaced hardcodes with macros defined in header file
-**  10/28/97    B Lucas             added security exit for burst
+**  10/28/97    B Lucas     25378   added security exit for burst
 *************************************************************************/
 
 #include <windows.h>

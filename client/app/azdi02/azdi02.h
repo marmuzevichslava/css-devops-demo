@@ -18,7 +18,7 @@
 **  02/12/97    GHOWELL     16116    Added macros, changed Burst timeout,
 **                                     changed Max. # windows
 **
-**  10/28/97    B Lucas             added defines for default user/pass
+**  10/28/97    B Lucas     25378   added defines for default user/pass
 **                                  added include for security struct
 *************************************************************************/
 

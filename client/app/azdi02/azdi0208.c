@@ -17,6 +17,9 @@
 **  DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 **  --------    ----------  ------  ---------------------------------------
 **  02/12/97    GHOWELL     16116   Changed hardcoded file names to macros
+**  10/17/97	TZAK		24990	Added logic to handle when less than
+**                                    NUM_SESSTRAN_RECS entries exist in 
+**                                    log file
 *************************************************************************/
 
 
@@ -132,7 +135,19 @@ SHORT RptSessTran( HANDLE hOut, _SESSTRAN_HDR *pSessTranHdr )
 	return FALSE;
   }
 
-  i = pSessTranHdr->CmnHdrInfo.DtlCount - NUM_SESSTRAN_RECS;
+  /* TZAK 10/16/97 - Added logic to handle when less than NUM_SESSTRAN_RECS 
+  **                 entries exist in log file
+  */
+  if( pSessTranHdr->CmnHdrInfo.DtlCount > NUM_SESSTRAN_RECS )
+  {
+	  /* set counter to point to the last NUM_SESSTRAN_RECS records in memory */
+	  i = pSessTranHdr->CmnHdrInfo.DtlCount - NUM_SESSTRAN_RECS;
+  }
+  else
+  {
+	  /* set counter to point to the first record in memory */
+	  i = 0;
+  }
 
   while( i < pSessTranHdr->CmnHdrInfo.DtlCount )
   {											   
