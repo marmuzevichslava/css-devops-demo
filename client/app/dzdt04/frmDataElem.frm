@@ -2,19 +2,19 @@ VERSION 5.00
 Begin VB.Form frmDataElem 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Data Element Template"
-   ClientHeight    =   7320
+   ClientHeight    =   6720
    ClientLeft      =   990
    ClientTop       =   1080
    ClientWidth     =   10095
    LinkTopic       =   "Form8"
-   ScaleHeight     =   7320
+   ScaleHeight     =   6720
    ScaleWidth      =   10095
    Begin VB.TextBox txtPointsToCOBOLNm 
       Height          =   315
       Left            =   8040
       MaxLength       =   18
       TabIndex        =   23
-      Top             =   6480
+      Top             =   5880
       Width           =   1575
    End
    Begin VB.TextBox txtPointsToRecIDNo 
@@ -22,7 +22,7 @@ Begin VB.Form frmDataElem
       Left            =   4560
       MaxLength       =   8
       TabIndex        =   22
-      Top             =   6480
+      Top             =   5880
       Width           =   1575
    End
    Begin VB.ComboBox cboUsage 
@@ -30,178 +30,181 @@ Begin VB.Form frmDataElem
       Height          =   315
       Left            =   1200
       TabIndex        =   21
-      Top             =   6480
+      Top             =   5880
       Width           =   1620
    End
    Begin VB.TextBox txtRptStructure 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6360
+      Left            =   6480
       MaxLength       =   2
       TabIndex        =   15
-      Top             =   4200
+      Top             =   3600
       Width           =   1575
    End
    Begin VB.TextBox txtIntStructure 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6360
+      Left            =   6480
       MaxLength       =   2
       TabIndex        =   12
-      Top             =   3840
+      Top             =   3240
       Width           =   1575
    End
    Begin VB.TextBox txtWsStructure 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6360
+      Left            =   6480
       MaxLength       =   2
       TabIndex        =   9
-      Top             =   3480
+      Top             =   2880
       Width           =   1575
    End
    Begin VB.TextBox txtRptPrecision 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4680
+      Left            =   4800
       MaxLength       =   5
       TabIndex        =   14
-      Top             =   4200
+      Top             =   3600
       Width           =   1575
    End
    Begin VB.TextBox txtIntPrecision 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4680
+      Left            =   4800
       MaxLength       =   3
       TabIndex        =   11
-      Top             =   3840
+      Top             =   3240
       Width           =   1575
    End
    Begin VB.TextBox txtWsPrecision 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4680
+      Left            =   4800
       MaxLength       =   3
       TabIndex        =   8
-      Top             =   3480
+      Top             =   2880
       Width           =   1575
    End
    Begin VB.TextBox txtRptLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   3000
+      Left            =   3120
       MaxLength       =   3
       TabIndex        =   13
-      Top             =   4200
+      Top             =   3600
       Width           =   1575
    End
    Begin VB.TextBox txtIntLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   3000
+      Left            =   3120
       MaxLength       =   5
       TabIndex        =   10
-      Top             =   3840
+      Top             =   3240
       Width           =   1575
    End
    Begin VB.TextBox txtWsLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   3000
+      Left            =   3120
       MaxLength       =   3
       TabIndex        =   7
-      Top             =   3480
+      Top             =   2880
       Width           =   1575
    End
    Begin VB.TextBox txtLongDesc 
       BackColor       =   &H0000FFFF&
       Height          =   795
-      Left            =   240
+      Left            =   360
       MaxLength       =   300
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   3
-      Top             =   1080
-      Width           =   9615
+      Top             =   480
+      Width           =   9375
    End
    Begin VB.TextBox txtShortDesc 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   2160
+      Left            =   2280
       MaxLength       =   25
       TabIndex        =   4
-      Top             =   2040
+      Top             =   1440
       Width           =   4575
    End
    Begin VB.TextBox txtLiteral 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   1200
+      Left            =   1320
       MaxLength       =   18
       TabIndex        =   5
-      Top             =   2520
+      Top             =   1920
       Width           =   2655
    End
    Begin VB.TextBox txtColumnNam 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6960
+      Left            =   7080
       MaxLength       =   18
       TabIndex        =   19
-      Top             =   5160
+      Top             =   4560
       Width           =   2655
    End
    Begin VB.TextBox txtWidgetNam 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6960
+      Left            =   7080
       MaxLength       =   18
       TabIndex        =   17
-      Top             =   4800
+      Top             =   4200
       Width           =   2655
    End
    Begin VB.TextBox txtCName 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   2040
+      Left            =   2160
       MaxLength       =   18
       TabIndex        =   16
-      Top             =   4800
+      Top             =   4200
       Width           =   2775
    End
    Begin VB.TextBox txtCOBOLNam 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   2040
+      Left            =   2160
       MaxLength       =   18
       TabIndex        =   18
-      Top             =   5160
+      Top             =   4560
       Width           =   2775
    End
    Begin VB.TextBox txtSirNo 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   5520
+      Left            =   4680
       MaxLength       =   5
       TabIndex        =   1
-      Top             =   240
+      Top             =   7080
+      Visible         =   0   'False
       Width           =   1215
    End
    Begin VB.ComboBox cboDestination 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   7560
+      Left            =   6720
       TabIndex        =   2
-      Top             =   240
+      Top             =   7080
+      Visible         =   0   'False
       Width           =   1455
    End
    Begin VB.ComboBox cboOriging 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   3240
+      Left            =   2400
       TabIndex        =   0
-      Top             =   240
+      Top             =   7080
+      Visible         =   0   'False
       Width           =   1455
    End
    Begin VB.CommandButton cmdCOBOLVal 
@@ -216,9 +219,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   735
-      Left            =   8640
+      Left            =   8760
       TabIndex        =   25
-      Top             =   3840
+      Top             =   3360
       Width           =   975
    End
    Begin VB.CommandButton cmdListValues 
@@ -233,9 +236,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   735
-      Left            =   8640
+      Left            =   8760
       TabIndex        =   24
-      Top             =   3000
+      Top             =   2520
       Width           =   975
    End
    Begin VB.CommandButton Command1 
@@ -275,10 +278,10 @@ Begin VB.Form frmDataElem
    Begin VB.ComboBox cboWidgetType 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   2040
+      Left            =   2160
       TabIndex        =   20
       Text            =   "Single Line Entry Field"
-      Top             =   5520
+      Top             =   4920
       Width           =   2820
    End
    Begin VB.ComboBox cboDataType 
@@ -286,14 +289,14 @@ Begin VB.Form frmDataElem
       Height          =   315
       Left            =   6960
       TabIndex        =   6
-      Top             =   2520
+      Top             =   1920
       Width           =   2820
    End
    Begin VB.Image Image2 
       BorderStyle     =   1  'Fixed Single
       Height          =   735
       Left            =   240
-      Top             =   6240
+      Top             =   5640
       Width           =   9615
    End
    Begin VB.Label lblPRecord 
@@ -310,7 +313,7 @@ Begin VB.Form frmDataElem
       Height          =   375
       Left            =   6480
       TabIndex        =   50
-      Top             =   6480
+      Top             =   5880
       Width           =   1575
    End
    Begin VB.Label lblPoints 
@@ -327,7 +330,7 @@ Begin VB.Form frmDataElem
       Height          =   495
       Left            =   3120
       TabIndex        =   49
-      Top             =   6480
+      Top             =   5880
       Width           =   1335
    End
    Begin VB.Label lblUsage 
@@ -344,7 +347,7 @@ Begin VB.Form frmDataElem
       Height          =   255
       Left            =   480
       TabIndex        =   48
-      Top             =   6480
+      Top             =   5880
       Width           =   615
    End
    Begin VB.Label Label10 
@@ -361,14 +364,15 @@ Begin VB.Form frmDataElem
       Height          =   255
       Left            =   240
       TabIndex        =   47
-      Top             =   6000
+      Top             =   5400
       Width           =   735
    End
    Begin VB.Line Line1 
-      X1              =   0
-      X2              =   10080
-      Y1              =   720
-      Y2              =   720
+      Visible         =   0   'False
+      X1              =   -840
+      X2              =   9240
+      Y1              =   7560
+      Y2              =   7560
    End
    Begin VB.Label lblDash2 
       Caption         =   "--"
@@ -382,9 +386,10 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   135
-      Left            =   7080
+      Left            =   6240
       TabIndex        =   46
-      Top             =   240
+      Top             =   7080
+      Visible         =   0   'False
       Width           =   135
    End
    Begin VB.Label lblDash1 
@@ -399,9 +404,10 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   135
-      Left            =   5040
+      Left            =   4200
       TabIndex        =   45
-      Top             =   240
+      Top             =   7080
+      Visible         =   0   'False
       Width           =   135
    End
    Begin VB.Label lblSIRNo 
@@ -416,9 +422,10 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   1080
+      Left            =   240
       TabIndex        =   44
-      Top             =   240
+      Top             =   7080
+      Visible         =   0   'False
       Width           =   1815
    End
    Begin VB.Label lblUser 
@@ -434,16 +441,16 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   8
-      Left            =   1320
+      Left            =   1440
       TabIndex        =   41
-      Top             =   3000
+      Top             =   2400
       Width           =   3135
    End
    Begin VB.Image Image1 
       BorderStyle     =   1  'Fixed Single
       Height          =   1455
-      Left            =   1080
-      Top             =   3120
+      Left            =   1200
+      Top             =   2520
       Width           =   7095
    End
    Begin VB.Label lblUser 
@@ -459,9 +466,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   7
-      Left            =   1320
+      Left            =   1440
       TabIndex        =   40
-      Top             =   3840
+      Top             =   3240
       Width           =   735
    End
    Begin VB.Label lblUser 
@@ -477,9 +484,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   6
-      Left            =   1320
+      Left            =   1440
       TabIndex        =   39
-      Top             =   3480
+      Top             =   2880
       Width           =   1455
    End
    Begin VB.Label lblUser 
@@ -495,9 +502,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   5
-      Left            =   1320
+      Left            =   1440
       TabIndex        =   38
-      Top             =   4200
+      Top             =   3600
       Width           =   735
    End
    Begin VB.Label lblUser 
@@ -513,9 +520,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   3
-      Left            =   6360
+      Left            =   6480
       TabIndex        =   37
-      Top             =   3240
+      Top             =   2640
       Width           =   855
    End
    Begin VB.Label lblUser 
@@ -531,9 +538,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   2
-      Left            =   4680
+      Left            =   4800
       TabIndex        =   36
-      Top             =   3240
+      Top             =   2640
       Width           =   855
    End
    Begin VB.Label lblUser 
@@ -549,9 +556,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   1
-      Left            =   3000
+      Left            =   3120
       TabIndex        =   35
-      Top             =   3240
+      Top             =   2640
       Width           =   735
    End
    Begin VB.Label Label9 
@@ -566,9 +573,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   360
       TabIndex        =   34
-      Top             =   5520
+      Top             =   4920
       Width           =   1575
    End
    Begin VB.Label Label6 
@@ -583,9 +590,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   360
       TabIndex        =   33
-      Top             =   5160
+      Top             =   4560
       Width           =   1695
    End
    Begin VB.Label Label4 
@@ -600,9 +607,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   5160
+      Left            =   5280
       TabIndex        =   32
-      Top             =   5160
+      Top             =   4560
       Width           =   1575
    End
    Begin VB.Label Label3 
@@ -617,9 +624,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   360
       TabIndex        =   31
-      Top             =   4800
+      Top             =   4200
       Width           =   975
    End
    Begin VB.Label Label2 
@@ -634,9 +641,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   5160
+      Left            =   5280
       TabIndex        =   30
-      Top             =   4800
+      Top             =   4200
       Width           =   1575
    End
    Begin VB.Label Label5 
@@ -651,9 +658,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   360
       TabIndex        =   29
-      Top             =   840
+      Top             =   240
       Width           =   1815
    End
    Begin VB.Label lblShortDescription 
@@ -668,9 +675,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   360
       TabIndex        =   28
-      Top             =   2040
+      Top             =   1440
       Width           =   1815
    End
    Begin VB.Label lblUser 
@@ -686,9 +693,9 @@ Begin VB.Form frmDataElem
       EndProperty
       Height          =   255
       Index           =   0
-      Left            =   240
+      Left            =   360
       TabIndex        =   27
-      Top             =   2520
+      Top             =   1920
       Width           =   855
    End
    Begin VB.Label Label1 
@@ -703,9 +710,9 @@ Begin VB.Form frmDataElem
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   5160
+      Left            =   5280
       TabIndex        =   26
-      Top             =   2520
+      Top             =   1920
       Width           =   1215
    End
    Begin VB.Menu mnDataElement 
@@ -715,6 +722,12 @@ Begin VB.Form frmDataElem
       End
       Begin VB.Menu mnExit 
          Caption         =   "E&xit"
+      End
+   End
+   Begin VB.Menu mnuHelp 
+      Caption         =   "&Help"
+      Begin VB.Menu mnuInstructions 
+         Caption         =   "&Instructions"
       End
    End
 End
@@ -800,75 +813,74 @@ Err_cboDataType_LostFocus:
 End Sub
 
 Private Sub cboOriging_Change()
-On Error GoTo Err_cboOriging_Change
-
-    If cboOriging.Text = "" Then
-        cboOriging.BackColor = &HFFFF&
-    
-    Else
-        cboOriging.BackColor = &HFF&
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Data Element Template"
-        'set global string compare item
-        gblsComp = cboOriging.Text
-        cboOriging.Refresh
-        
-    End If
-    
-Exit_cboOriging_Change:
-    Exit Sub
-    
-Err_cboOriging_Change:
-    MsgBox Error$
-    Resume Err_cboOriging_Change
-
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_Change
+'
+'    If cboOriging.Text = "" Then
+'        cboOriging.BackColor = &HFFFF&
+'
+'    Else
+'        cboOriging.BackColor = &HFF&
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Data Element Template"
+'        'set global string compare item
+'        gblsComp = cboOriging.Text
+'        cboOriging.Refresh
+'
+'    End If
+'
+'Exit_cboOriging_Change:
+'    Exit Sub
+'
+'Err_cboOriging_Change:
+'    MsgBox Error$
+'    Resume Err_cboOriging_Change
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 End Sub
 
 Private Sub cboOriging_Click()
-On Error GoTo Err_cboOriging_Click
-
-   'update global string compare item
-    gblsComp = ""
-    
-    'set background color upon click event
-    With cboOriging
-        .BackColor = &HFFFFFF
-    End With
-    
-Exit_cboOriging_Click:
-    Exit Sub
-    
-Err_cboOriging_Click:
-    MsgBox Error$
-    Resume Err_cboOriging_Click
-           
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_Click
+'
+'   'update global string compare item
+'    gblsComp = ""
+'
+'    'set background color upon click event
+'    With cboOriging
+'        .BackColor = &HFFFFFF
+'    End With
+'
+'Exit_cboOriging_Click:
+'    Exit Sub
+'
+'Err_cboOriging_Click:
+'    MsgBox Error$
+'    Resume Err_cboOriging_Click
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 End Sub
 
 Private Sub cboOriging_LostFocus()
-On Error GoTo Err_cboOriging_LostFocus
-
-   If cboOriging.Text = "" Then
-        cboOriging.BackColor = &HFFFF&
-   
-   ElseIf (gblsComp = cboOriging.Text) Then
-        cboOriging.BackColor = &HFF&
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Data Element Template"
-        cboOriging.SetFocus
-        cboOriging.Refresh
-   
-   End If
-       
-Exit_cboOriging_LostFocus:
-    Exit Sub
-    
-Err_cboOriging_LostFocus:
-    MsgBox Error$
-    Resume Err_cboOriging_LostFocus
-       
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_LostFocus
+'
+'   If cboOriging.Text = "" Then
+'        cboOriging.BackColor = &HFFFF&
+'
+'   ElseIf (gblsComp = cboOriging.Text) Then
+'        cboOriging.BackColor = &HFF&
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Data Element Template"
+'        cboOriging.SetFocus
+'        cboOriging.Refresh
+'
+'   End If
+'
+'Exit_cboOriging_LostFocus:
+'    Exit Sub
+'
+'Err_cboOriging_LostFocus:
+'    MsgBox Error$
+'    Resume Err_cboOriging_LostFocus
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 End Sub
-
-
-
-
 
 Private Sub cboUsage_Change()
 On Error GoTo Err_cboUsage_Change
@@ -1163,59 +1175,35 @@ On Error GoTo Err_mnExit_Click
     Dim strMsg As String, strTitle As String
     Dim intStyle, intResponse As Integer
         
-    intStyle = vbYesNoCancel
-    strTitle = "Do you wish to exit?"
-    
-  '  Call CheckFields
+    intStyle = vbYesNo
+    strTitle = "Request Copybook Template"
+    strMsg = "Unable to save changes, return to form?"
     
     If CheckFields Then
-        
-        Beep
-        'Msg = "The Request Copybook Template has been filled out correctly. Click 'Yes' to " & _
-        '" exit with out saving information to the SIR repository. Click  'No' to return to form."
-        strMsg = "Save changes before exiting?"  ' Steve Bricker 10/2/97 Gui Standards
         intResponse = MsgBox(strMsg, intStyle, strTitle)
         
         If intResponse = vbNo Then
-            'user wishes to exit unload current form - end application
-            Unload frmDataElem
+            Unload Me
             Unload frmListValues
             Unload frmCOBOLVal
-
-        
-        ElseIf intResponse = vbYes Then
-        
-            'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-            SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
             
-            Call WriteSirInfo  'STB This module writes the Text to the form.
-        
+        Else
+            'do nothing
         End If
         
     Else
-    
-        Beep
-        'Msg = "The form contains required fields that do not contain entries. Click " & _
-        '"the  'No'  button to return to the form or the  'Yes'  button to close your " & _
-        '"form without saving data."
-        
-        strMsg = "Unable to save changes, return to form?"
-        intStyle = vbYesNo
-        
-        intResponse = MsgBox(strMsg, intStyle, strTitle)
-        
-        If intResponse = vbNo Then
-        
+         intResponse = MsgBox(strMsg, intStyle, strTitle)
+
+         If intResponse = vbNo Then
             'user choose to exit. close current form - exit application
-            Unload frmDataElem
+            Unload Me
             Unload frmListValues
             Unload frmCOBOLVal
 
-            
         End If
-        
+
     End If
-    
+ 
 Exit_mnExit_Click:
     Exit Sub
     
@@ -1228,47 +1216,59 @@ End Sub
 Private Sub mnProcess_Click()
 On Error GoTo Err_mnProcess_Click
 
-    Screen.MousePointer = vbHourglass
-
-    Dim strTemp As String
+    Dim strTemp As String, strFileNotFndMsg As String, strMsgTitle As String
     Dim intI As Integer
+    Dim strTempFile As String, strTempPath As String
+    Dim intFive As Integer, intZero As Integer, intOne As Integer
     
-    strTemp = txtSirNo.Text
-    
-    If Len(txtSirNo.Text) <= 5 And Len(txtSirNo.Text) > 0 And IsNumeric(strTemp) Then
-        
-        For intI = Len(strTemp) + 1 To 5
-            strTemp = "0" & strTemp
-        Next intI
-                    
-        'display 5 digit number
-        txtSirNo.Text = strTemp
-            
-        'assign the YYYYY portion of the SIR number
-        ySir = txtSirNo.Text
-    
-    End If
-    
+    strTempPath = "C:\Data\Template.tmp"
+    strTempFile = "TEMPLATE.TMP"
+    strFileNotFndMsg = "Unable to locate SIR text file."
+    strMsgTitle = "Request Copybook Template"
+    intFive = 5
+    intZero = 0
+    intOne = 1
 
-    'perform check on all required fields
+'''''''''''''''''''''Christina Mitchell TOSIRWB '''''''''''''''''''''''''''
+'    strTemp = txtSirNo.Text
+'
+'    If Len(txtSirNo.Text) <= intFive And Len(txtSirNo.Text) > intZero And IsNumeric(strTemp) Then
+'
+'        For intI = Len(strTemp) + intOne To intFive
+'            strTemp = intZero & strTemp
+'        Next intI
+'
+'        'display 5 digit number
+'        txtSirNo.Text = strTemp
+'
+'        'assign the YYYYY portion of the SIR number
+'        ySir = txtSirNo.Text
+'
+'    End If
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+     
     CheckFields
 
     If CheckFields = True Then
-
-        'if checks pass, the write file information
+    
+        If UCase(Dir(strTempPath)) = strTempFile Then
+            SirTemplate = strTempPath
+            Call WriteSirInfo
+        Else
+            MsgBox strFileNotFndMsg, vbInformation, strMsgTitle
+        End If
+        
         'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-        SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
-        Call WriteSirInfo
-                  
+        'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
+        'Call WriteSirInfo
+        
     Else
-
+    
         Beep
-        MsgBox "Please enter all required fields before processing this template.", vbOKOnly, "Data Element Template"
-
+        MsgBox "Please complete all required field before adding this template.", vbOKOnly, "Request CopyBook Template"
+        
    End If
 
-   Screen.MousePointer = vbNormal
-   
 Exit_mnProcess_Click:
     Exit Sub
     
@@ -1276,6 +1276,32 @@ Err_mnProcess_Click:
     MsgBox Error$
     Resume Err_mnProcess_Click
    
+End Sub
+
+Private Sub mnuInstructions_Click()
+On Error GoTo Err_mnuInstructions_Click
+
+' Specifying 1 as the second argument opens the application in
+' normal size and gives it the focus.
+
+    Dim strFilePath As String
+    Dim strPath As String
+    Dim intRetVal As Integer
+
+    'strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqDE.doc"
+    'strFilePath = "C:\Apps\Msoffice\Winword\Winword.exe" & " " & strPath
+    
+    strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqDE.txt"
+    strFilePath = "C:\WINNT\NOTEPAD.EXE" & " " & strPath
+    
+    intRetVal = Shell(strFilePath, 1)    ' Run Instructions.
+
+Exit_mnuInstructions_Click:
+    Exit Sub
+
+Err_mnuInstructions_Click:
+    MsgBox Error$
+    Resume Exit_mnuInstructions_Click
 End Sub
 
 Private Sub txtCName_Change()
@@ -2448,8 +2474,12 @@ End Sub
 Public Function CheckFields() As Boolean
 On Error GoTo Err_checkfields
     
-    If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
-        Or (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (cboDataType.Text = "") _
+''''''''''''' Christina Mitchell TOSIRWB '''''''''''''''''''''''''''''''''''''''''''''''''''
+'     If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
+'   This needs to be added into the if stmt when sir wb is taken out
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
+    If (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (cboDataType.Text = "") _
         Or (cboWidgetType.Text = "") Or (txtCName.Text = "") Or (txtCOBOLNam.Text = "") _
         Or (txtColumnNam.Text = "") Or (txtIntLength.Text = "") Or (txtIntPrecision.Text = "") _
         Or (txtIntStructure.Text = "") Or (txtLiteral.Text = "") Or (txtRptLength.Text = "") _
@@ -2613,7 +2643,7 @@ On Error GoTo Err_WriteSirInfo
     Open SirTemplate For Append As #1
 
 
-    Print #1, Tab(10); "Data Element Template"
+    Print #1, "                              Data Element Template"
     Print #1, ""
     Print #1, ""
     Print #1, ""
@@ -2797,6 +2827,7 @@ On Error GoTo Err_WriteSirInfo
     
         'user wants to enter another template
         Call ResetProperties
+        txtLongDesc.SetFocus
         
     Else
         'user is done, exit application

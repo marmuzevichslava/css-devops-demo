@@ -2,12 +2,12 @@ VERSION 5.00
 Begin VB.Form frmCopyBk 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Request Copy Book Template"
-   ClientHeight    =   6060
+   ClientHeight    =   5280
    ClientLeft      =   150
    ClientTop       =   720
    ClientWidth     =   9240
    LinkTopic       =   "Form5"
-   ScaleHeight     =   6060
+   ScaleHeight     =   5280
    ScaleWidth      =   9240
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtImage 
@@ -17,7 +17,7 @@ Begin VB.Form frmCopyBk
       Locked          =   -1  'True
       TabIndex        =   14
       Text            =   "Internal"
-      Top             =   4200
+      Top             =   3480
       Width           =   2175
    End
    Begin VB.TextBox txtSuffix 
@@ -26,7 +26,7 @@ Begin VB.Form frmCopyBk
       Left            =   2040
       MaxLength       =   4
       TabIndex        =   9
-      Top             =   3480
+      Top             =   2760
       Width           =   2175
    End
    Begin VB.CheckBox chkImplied 
@@ -44,7 +44,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   4635
       TabIndex        =   15
-      Top             =   4200
+      Top             =   3480
       Width           =   2415
    End
    Begin VB.CheckBox chkPrefix88 
@@ -62,7 +62,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   4650
       TabIndex        =   8
-      Top             =   3120
+      Top             =   2400
       Width           =   2415
    End
    Begin VB.TextBox txtCpyBkNam 
@@ -71,32 +71,35 @@ Begin VB.Form frmCopyBk
       Left            =   6795
       MaxLength       =   8
       TabIndex        =   6
-      Top             =   2760
+      Top             =   2040
       Width           =   2175
    End
    Begin VB.TextBox txtSirNo 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   4320
+      Left            =   4680
       MaxLength       =   5
       TabIndex        =   1
-      Top             =   240
+      Top             =   5400
+      Visible         =   0   'False
       Width           =   1095
    End
    Begin VB.ComboBox cboDestination 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6000
+      Left            =   6360
       TabIndex        =   2
-      Top             =   240
+      Top             =   5400
+      Visible         =   0   'False
       Width           =   1575
    End
    Begin VB.ComboBox cboOriging 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   2160
+      Left            =   2520
       TabIndex        =   0
-      Top             =   240
+      Top             =   5400
+      Visible         =   0   'False
       Width           =   1575
    End
    Begin VB.TextBox txtShortDesc 
@@ -105,7 +108,7 @@ Begin VB.Form frmCopyBk
       Left            =   2040
       MaxLength       =   25
       TabIndex        =   4
-      Top             =   2160
+      Top             =   1440
       Width           =   3975
    End
    Begin VB.TextBox txtLongDesc 
@@ -116,7 +119,7 @@ Begin VB.Form frmCopyBk
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   3
-      Top             =   1200
+      Top             =   480
       Width           =   8535
    End
    Begin VB.ComboBox cboPrefix 
@@ -124,7 +127,7 @@ Begin VB.Form frmCopyBk
       Height          =   315
       Left            =   2040
       TabIndex        =   7
-      Top             =   3120
+      Top             =   2400
       Width           =   2220
    End
    Begin VB.ComboBox cboInitial 
@@ -133,7 +136,7 @@ Begin VB.Form frmCopyBk
       Left            =   2400
       TabIndex        =   16
       Text            =   "3"
-      Top             =   5160
+      Top             =   4440
       Width           =   1500
    End
    Begin VB.ComboBox cboIncrement 
@@ -142,7 +145,7 @@ Begin VB.Form frmCopyBk
       Left            =   6120
       TabIndex        =   17
       Text            =   "2"
-      Top             =   5160
+      Top             =   4440
       Width           =   1500
    End
    Begin VB.ComboBox cboCpyBkType 
@@ -150,7 +153,7 @@ Begin VB.Form frmCopyBk
       Height          =   315
       Left            =   2040
       TabIndex        =   5
-      Top             =   2760
+      Top             =   2040
       Width           =   2220
    End
    Begin VB.ComboBox cboEntity 
@@ -158,7 +161,7 @@ Begin VB.Form frmCopyBk
       Height          =   315
       Left            =   6810
       TabIndex        =   10
-      Top             =   3480
+      Top             =   2760
       Width           =   2220
    End
    Begin VB.ComboBox cboValues 
@@ -166,7 +169,7 @@ Begin VB.Form frmCopyBk
       Height          =   315
       Left            =   2040
       TabIndex        =   11
-      Top             =   3840
+      Top             =   3120
       Width           =   2220
    End
    Begin VB.ComboBox cboLanguage 
@@ -174,14 +177,15 @@ Begin VB.Form frmCopyBk
       Height          =   315
       Left            =   6810
       TabIndex        =   13
-      Top             =   3840
+      Top             =   3120
       Width           =   2220
    End
    Begin VB.Line Line1 
-      X1              =   0
-      X2              =   8640
-      Y1              =   720
-      Y2              =   720
+      Visible         =   0   'False
+      X1              =   360
+      X2              =   9000
+      Y1              =   5880
+      Y2              =   5880
    End
    Begin VB.Label lblDash2 
       Caption         =   "--"
@@ -195,9 +199,10 @@ Begin VB.Form frmCopyBk
          Strikethrough   =   0   'False
       EndProperty
       Height          =   135
-      Left            =   5640
+      Left            =   6000
       TabIndex        =   32
-      Top             =   240
+      Top             =   5400
+      Visible         =   0   'False
       Width           =   135
    End
    Begin VB.Label lblDash1 
@@ -212,9 +217,10 @@ Begin VB.Form frmCopyBk
          Strikethrough   =   0   'False
       EndProperty
       Height          =   135
-      Left            =   3960
+      Left            =   4320
       TabIndex        =   31
-      Top             =   240
+      Top             =   5400
+      Visible         =   0   'False
       Width           =   135
    End
    Begin VB.Label lblSIRNo 
@@ -229,9 +235,10 @@ Begin VB.Form frmCopyBk
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   360
+      Left            =   720
       TabIndex        =   30
-      Top             =   240
+      Top             =   5400
+      Visible         =   0   'False
       Width           =   1815
    End
    Begin VB.Label Label14 
@@ -248,7 +255,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   29
-      Top             =   3120
+      Top             =   2400
       Width           =   855
    End
    Begin VB.Label Label13 
@@ -265,14 +272,14 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   28
-      Top             =   3480
+      Top             =   2760
       Width           =   855
    End
    Begin VB.Image Image1 
       BorderStyle     =   1  'Fixed Single
       Height          =   615
       Left            =   1560
-      Top             =   5040
+      Top             =   4320
       Width           =   6375
    End
    Begin VB.Label Label12 
@@ -289,7 +296,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   5160
       TabIndex        =   27
-      Top             =   5160
+      Top             =   4440
       Width           =   975
    End
    Begin VB.Label Label11 
@@ -306,7 +313,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   1800
       TabIndex        =   26
-      Top             =   5160
+      Top             =   4440
       Width           =   615
    End
    Begin VB.Label Label10 
@@ -323,7 +330,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   1560
       TabIndex        =   25
-      Top             =   4800
+      Top             =   4080
       Width           =   1935
    End
    Begin VB.Label Label5 
@@ -340,7 +347,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   24
-      Top             =   960
+      Top             =   240
       Width           =   1815
    End
    Begin VB.Label lblShortDesc 
@@ -357,7 +364,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   23
-      Top             =   2160
+      Top             =   1440
       Width           =   1815
    End
    Begin VB.Label lblUser 
@@ -374,7 +381,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   4680
       TabIndex        =   22
-      Top             =   2775
+      Top             =   2055
       Width           =   1695
    End
    Begin VB.Label Label1 
@@ -391,7 +398,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   21
-      Top             =   2760
+      Top             =   2040
       Width           =   1695
    End
    Begin VB.Label Label2 
@@ -408,7 +415,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   4680
       TabIndex        =   20
-      Top             =   3480
+      Top             =   2760
       Width           =   2055
    End
    Begin VB.Label Label3 
@@ -425,7 +432,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   19
-      Top             =   3840
+      Top             =   3120
       Width           =   975
    End
    Begin VB.Label Label4 
@@ -442,7 +449,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   4650
       TabIndex        =   18
-      Top             =   3840
+      Top             =   3120
       Width           =   1695
    End
    Begin VB.Label Label6 
@@ -459,7 +466,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   240
       TabIndex        =   12
-      Top             =   4200
+      Top             =   3480
       Width           =   975
    End
    Begin VB.Menu mnuCopyBook 
@@ -471,6 +478,12 @@ Begin VB.Form frmCopyBk
          Caption         =   "E&xit"
       End
    End
+   Begin VB.Menu mnuHelp 
+      Caption         =   "&Help"
+      Begin VB.Menu mnuInstructions 
+         Caption         =   "&Instructions"
+      End
+   End
 End
 Attribute VB_Name = "frmCopyBk"
 Attribute VB_GlobalNameSpace = False
@@ -480,6 +493,16 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cboCpyBkType_Change()
+'****************************************************************************
+' Name: cboCpyBkType_Change
+' Purpose: If the field is blank the field background turns yellow.  However
+'           if the user tries to type in a value a message is displayed and
+'           the field background turns red.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 On Error GoTo Err_cboCpyBkType_Change
 
     If cboCpyBkType.Text = "" Then
@@ -503,6 +526,14 @@ Err_cboCpyBkType_Change:
 End Sub
 
 Private Sub cboCpyBkType_Click()
+'****************************************************************************
+' Name: cboCpyBkType_Click
+' Purpose: When the user clicks on this field the background turns white.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 On Error GoTo Err_cboCpyBkType_Click
 
     With cboCpyBkType
@@ -523,8 +554,17 @@ Err_cboCpyBkType_Click:
 End Sub
 
 Private Sub cboCpyBkType_LostFocus()
-On Error GoTo Err_cboCpyBkType_LostFocus
+'****************************************************************************
+' Name: cboCpyBkType_LostFocus
+' Purpose: If the field is blank the field background turns yellow.  However
+'           if the user tries to type in a value a message is displayed and
+'           the field background turns red.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
+On Error GoTo Err_cboCpyBkType_LostFocus
     
     If cboCpyBkType.Text = "" Then
         cboCpyBkType.BackColor = &HFFFF&
@@ -545,80 +585,122 @@ Err_cboCpyBkType_LostFocus:
 End Sub
 
 Private Sub cboDestination_Change()
-On Error GoTo Err_cboDestination_Change
+'****************************************************************************
+' Name: cboDestination_Change
+' Purpose: Changes the background color of the field yellow if the field is
+'           blank and red if the user tries to enter in a value instead of
+'           slecting it from the combo box list
+'
+' Created by: Christina Mitchell
+' Date Created: 09/22/97
+'****************************************************************************
 
-    
-    If cboDestination.Text = "" Then
-        cboDestination.BackColor = &HFFFF&
-    Else
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
-        'set global string compare item
-        gblsComp = cboDestination.Text
-        cboDestination.BackColor = &HFF&
-        cboDestination.Refresh
-    End If
-    
-Exit_cboDestination_Change:
-    Exit Sub
+''''''''''''' Sbricker TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboDestination_Change
+'
+'
+'    If cboDestination.Text = "" Then
+'        cboDestination.BackColor = &HFFFF&
+'    Else
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
+'        'set global string compare item
+'        gblsComp = cboDestination.Text
+'        cboDestination.BackColor = &HFF&
+'        cboDestination.Refresh
+'    End If
+'
+'Exit_cboDestination_Change:
+'    Exit Sub
+'
+'Err_cboDestination_Change:
+'    MsgBox Error$
+'    GoTo Exit_cboDestination_Change
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Err_cboDestination_Change:
-    MsgBox Error$
-    GoTo Exit_cboDestination_Change
-    
 End Sub
 
 Private Sub cboDestination_Click()
-On Error GoTo Err_cboDestination_Click
-    
-    Dim tempString As String
-            
-    tempString = cboDestination.Text
-    tempString = Mid(tempString, 2, 2)
-    
-    zSir = tempString
-        
-    'update global string compare item
-    gblsComp = ""
-    
-    'set background color upon click event
-    With cboDestination
-        .BackColor = &HFFFFFF
-    End With
-    
-Exit_cboDestination_Click:
-    Exit Sub
-
-
-Err_cboDestination_Click:
-    MsgBox Error$
-    GoTo Exit_cboDestination_Click
-    
+'****************************************************************************
+' Name: cboDestination_Click
+' Purpose: Changes the background color of the field to white when the user
+'           clicks on the combo box.  The x part of the SIR is created.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+''''''''''''' Sbricker TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboDestination_Click
+'
+'    Dim tempString As String
+'
+'    tempString = cboDestination.Text
+'    tempString = Mid(tempString, 2, 2)
+'
+'    zSir = tempString
+'
+'    'update global string compare item
+'    gblsComp = ""
+'
+'    'set background color upon click event
+'    With cboDestination
+'        .BackColor = &HFFFFFF
+'    End With
+'
+'Exit_cboDestination_Click:
+'    Exit Sub
+'
+'
+'Err_cboDestination_Click:
+'    MsgBox Error$
+'    GoTo Exit_cboDestination_Click
+'''''''''''''''''''''''''''''''''''''''''''''''''''
     
 End Sub
 
+'****************************************************************************
+' Name: cboDestination_LostFocus
+' Purpose: Changes the background color of the field to red and will not let
+'           the user continue on unless a value has been selected from the
+'           list
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboDestination_LostFocus()
-On Error GoTo Err_cboDestination_LostFocus
-    
-    If cboDestination.Text = "" Then
-        cboDestination.BackColor = &HFFFF&
-    
-    ElseIf (gblsComp = cboDestination.Text) Then
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
-        cboDestination.BackColor = &HFF&
-        cboDestination.SetFocus
-        cboDestination.Refresh
-    
-    End If
-    
-Exit_cboDestination_LostFocus:
-    Exit Sub
 
-Err_cboDestination_LostFocus:
-    MsgBox Error$
-    GoTo Exit_cboDestination_LostFocus
+''''''''''''' Sbricker TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboDestination_LostFocus
+'
+'    If cboDestination.Text = "" Then
+'        cboDestination.BackColor = &HFFFF&
+'
+'    ElseIf (gblsComp = cboDestination.Text) Then
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
+'        cboDestination.BackColor = &HFF&
+'        cboDestination.SetFocus
+'        cboDestination.Refresh
+'
+'    End If
+'
+'Exit_cboDestination_LostFocus:
+'    Exit Sub
+'
+'Err_cboDestination_LostFocus:
+'    MsgBox Error$
+'    GoTo Exit_cboDestination_LostFocus
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
 End Sub
 
+'****************************************************************************
+' Name: cboEntity_Change
+' Purpose: Changes the background color of the field to red and will not let
+'           the user continue on unless a value has been selected from the
+'           list
+'
+' Created by: Christina Mitchell
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboEntity_Change()
 On Error GoTo Err_cboEntity_Change
     
@@ -664,7 +746,17 @@ Err_cboEntity_Click:
     
 End Sub
 
+'****************************************************************************
+' Name: cboEntity_LostFocus
+' Purpose: Changes the background color of the field to red and will not let
+'           the user continue on unless a value has been selected from the
+'           list
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboEntity_LostFocus()
+
 On Error GoTo Err_cboEntity_LostFocus
     
     If cboEntity.Text = "" Then
@@ -688,6 +780,15 @@ Err_cboEntity_LostFocus:
     
 End Sub
 
+'****************************************************************************
+' Name: cboIncrement_Change
+' Purpose: Changes the background color of the field to red and will not let
+'           the user continue on unless a value has been selected from the
+'           list
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboIncrement_Change()
 On Error GoTo Err_cboIncrement_Change
 
@@ -716,6 +817,13 @@ Err_cboIncrement_Change:
 
 End Sub
 
+'****************************************************************************
+' Name: cboIncrement_Click
+' Purpose: Sets the background color to white.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboIncrement_Click()
 On Error GoTo Err_cboIncrement_Click
     
@@ -734,9 +842,16 @@ Err_cboIncrement_Click:
     
 End Sub
 
+'****************************************************************************
+' Name: cboIncrement_LostFocus
+' Purpose: Sets the Increment to 2 if its blank.  If the user tries to enter
+'           a value a message is displayed and the background turns red.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboIncrement_LostFocus()
 On Error GoTo Err_cboIncrement_LostFocus
-
 
     'First see if nothing exists in the combo box
     If cboIncrement.Text = "" Then
@@ -786,6 +901,15 @@ Err_cboIncrement_LostFocus:
     
 End Sub
 
+'****************************************************************************
+' Name: cboInitial_Change
+' Purpose: If the combo box is empty it is filled in with a 3 and the background
+'           turns white.  If the user tries to type in a value a message is
+'           displayed and the background turns red.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboInitial_Change()
 On Error GoTo Err_cboInitial_Change
 
@@ -830,6 +954,15 @@ Err_cboInitial_Click:
     GoTo Exit_cboInitial_Click
     
 End Sub
+
+'****************************************************************************
+' Name: cboInitial_LostFocus
+' Purpose: Sets the Initial to 3 if its blank.  If the user tries to enter
+'           a value a message is displayed and the background turns red.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub cboInitial_LostFocus()
 On Error GoTo Err_cboInitial_LostFocus
@@ -883,6 +1016,15 @@ Err_cboInitial_LostFocus:
     
 End Sub
 
+'****************************************************************************
+' Name: cboLanguage_Change
+' Purpose: A message will be displayed and the field background will turn
+'           red if the user tries to enter in a value.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub cboLanguage_Change()
 On Error GoTo Err_cboLanguage_Change
     
@@ -930,6 +1072,15 @@ Err_cboLanguage_Click:
     
 End Sub
 
+'****************************************************************************
+' Name: cboLanguage_LostFocus
+' Purpose: A message is displayed and the field background turns red if the
+'           user tries to enter in a value.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub cboLanguage_LostFocus()
 On Error GoTo Err_cboLanguage_LostFocus
     
@@ -953,78 +1104,121 @@ Err_cboLanguage_LostFocus:
     
 End Sub
 
+'****************************************************************************
+' Name: cboOriging_Change
+' Purpose: Changes the background color of the field yellow if the field is
+'           blank and red if the user tries to enter in a value instead of
+'           slecting it from the combo box list
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboOriging_Change()
-On Error GoTo Err_cboOriging_Change
 
-    If cboOriging.Text = "" Then
-        cboOriging.BackColor = &HFFFF&
-    
-    Else
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
-        
-        'set global string compare item
-        gblsComp = cboOriging.Text
-        cboOriging.BackColor = &HFF&
-        cboOriging.Refresh
-    
-    End If
-    
-Exit_cboOriging_Change:
-    Exit Sub
-
-Err_cboOriging_Change:
-    MsgBox Error$
-    GoTo Exit_cboOriging_Change
+'''''''''''''''''''  Sbricker TOSIRWB '''''''''''''''''''
+'On Error GoTo Err_cboOriging_Change
+'
+'    If cboOriging.Text = "" Then
+'        cboOriging.BackColor = &HFFFF&
+'
+'    Else
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
+'
+'        'set global string compare item
+'        gblsComp = cboOriging.Text
+'        cboOriging.BackColor = &HFF&
+'        cboOriging.Refresh
+'
+'    End If
+'
+'Exit_cboOriging_Change:
+'    Exit Sub
+'
+'Err_cboOriging_Change:
+'    MsgBox Error$
+'    GoTo Exit_cboOriging_Change
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         
 End Sub
 
+'****************************************************************************
+' Name: cboOriging_Click
+' Purpose: Changes the background color of the field to white when the user
+'           clicks on the combo box.  The x part of the SIR is created.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub cboOriging_Click()
-On Error GoTo Err_cboOriging_Click
-    
-   
-    With cboOriging
-        .BackColor = &HFFFFFF
-    End With
-    
-       
-    'update global string compare item
-    gblsComp = ""
-    
 
-Exit_cboOriging_Click:
-    Exit Sub
-
-Err_cboOriging_Click:
-    MsgBox Error$
-    GoTo Exit_cboOriging_Click
+''''''''''''' Sbricker TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_Click
+'
+'
+'    With cboOriging
+'        .BackColor = &HFFFFFF
+'    End With
+'
+'
+'    'update global string compare item
+'    gblsComp = ""
+'
+'
+'Exit_cboOriging_Click:
+'    Exit Sub
+'
+'Err_cboOriging_Click:
+'    MsgBox Error$
+'    GoTo Exit_cboOriging_Click
+''''''''''''''''''''''''''''''''''''''''''''''''
     
            
 End Sub
 
+'****************************************************************************
+' Name: cboOriging_LostFocus
+' Purpose: Changes the background color of the field to red and will not let
+'           the user continue on unless a value has been selected from the
+'           list
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub cboOriging_LostFocus()
-On Error GoTo Err_cboOriging_LostFocus
-    
-    If cboOriging.Text = "" Then
-        cboOriging.BackColor = &HFFFF&
-    
-    ElseIf (gblsComp = cboOriging.Text) Then
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
-        cboOriging.BackColor = &HFF&
-        cboOriging.SetFocus
-        cboOriging.Refresh
-    
-    End If
 
-Exit_cboOriging_LostFocus:
-    Exit Sub
-
-Err_cboOriging_LostFocus:
-    MsgBox Error$
-    GoTo Exit_cboOriging_LostFocus
+''''''''''''''''''' Sbricker TOSIRWB ''''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_LostFocus
+'
+'    If cboOriging.Text = "" Then
+'        cboOriging.BackColor = &HFFFF&
+'
+'    ElseIf (gblsComp = cboOriging.Text) Then
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Copybook Template"
+'        cboOriging.BackColor = &HFF&
+'        cboOriging.SetFocus
+'        cboOriging.Refresh
+'
+'    End If
+'
+'Exit_cboOriging_LostFocus:
+'    Exit Sub
+'
+'Err_cboOriging_LostFocus:
+'    MsgBox Error$
+'    GoTo Exit_cboOriging_LostFocus
+'''''''''''''''''''''''''''''''''''''''''''''''''
    
 End Sub
 
-
+'****************************************************************************
+' Name: cboPrefix_Change
+' Purpose: Validates that the prefix enterd is not greater than four characters
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboPrefix_Change()
 On Error GoTo Err_cboPrefix_Change
         
@@ -1072,6 +1266,13 @@ Err_cboPrefix_Click:
     
 End Sub
 
+'****************************************************************************
+' Name: cboPrefix_LostFocus
+' Purpose: Validates that the value entered is not greater than four characters.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboPrefix_LostFocus()
 On Error GoTo Err_cboPrefix_LostFocus
 
@@ -1098,6 +1299,14 @@ Err_cboPrefix_LostFocus:
     
 End Sub
 
+'****************************************************************************
+' Name: cboValues_Change
+' Purpose: A message is displayed and the background turns red if the user
+'           tries to enter in a value.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub cboValues_Change()
 On Error GoTo Err_cboValues_Change
     
@@ -1120,6 +1329,15 @@ Err_cboValues_Change:
     
 End Sub
 
+'****************************************************************************
+' Name: cboValues_Click
+' Purpose: A message is displayed and the background turns red if the user
+'           tries to enter in a value.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub cboValues_Click()
 On Error GoTo Err_cboValues_Click
 
@@ -1140,6 +1358,15 @@ Err_cboValues_Click:
     
     
 End Sub
+
+'****************************************************************************
+' Name: cboValues_LostFocus
+' Purpose: A message is displayed and the background turns red if the user
+'           tries to enter in a value.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub cboValues_LostFocus()
 On Error GoTo Err_cboValues_LostFocus
@@ -1163,7 +1390,14 @@ Err_cboValues_LostFocus:
     
 End Sub
 
-
+'****************************************************************************
+' Name: chkImplied_Click
+' Purpose: Sets the value of strImplied equal to yes or no depending on if
+'           the box is checked.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub chkImplied_Click()
 On Error GoTo Err_chkImplied_Click
@@ -1184,6 +1418,15 @@ Err_chkImplied_Click:
     
 End Sub
 
+'****************************************************************************
+' Name: chkPrefix88_Click
+' Purpose: Sets the value of strImplied equal to yes or no depending on if
+'           the box is checked.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub chkPrefix88_Click()
 On Error GoTo Err_chkPrefix88_Click
     
@@ -1202,6 +1445,14 @@ Err_chkPrefix88_Click:
     
    
 End Sub
+
+'****************************************************************************
+' Name: Form_Load
+' Purpose: Loads the form with the appropriate beginning information
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub Form_Load()
 On Error GoTo Err_Form_Load
@@ -1232,34 +1483,50 @@ End Sub
 Private Sub mnuAddCpyBk_Click()
 On Error GoTo Err_mnuAddCpyBk_Click
 
-    Dim strTemp As String
+    Dim strTemp As String, strFileNotFndMsg As String, strMsgTitle As String
     Dim intI As Integer
+    Dim strTempFile As String, strTempPath As String
+    Dim intFive As Integer, intZero As Integer, intOne As Integer
     
+    strTempPath = "C:\Data\Template.tmp"
+    strTempFile = "TEMPLATE.TMP"
+    strFileNotFndMsg = "Unable to locate SIR text file."
+    strMsgTitle = "Request Copybook Template"
+    intFive = 5
+    intZero = 0
+    intOne = 1
+
     strTemp = txtSirNo.Text
     
-    If Len(txtSirNo.Text) <= 5 And Len(txtSirNo.Text) > 0 And IsNumeric(strTemp) Then
-        
-        For intI = Len(strTemp) + 1 To 5
-            strTemp = "0" & strTemp
-        Next intI
-                    
-        'display 5 digit number
-        txtSirNo.Text = strTemp
-            
-        'assign the YYYYY portion of the SIR number
-        ySir = txtSirNo.Text
-    
-    End If
-    
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'    If Len(txtSirNo.Text) <= intFive And Len(txtSirNo.Text) > intZero And IsNumeric(strTemp) Then
+'
+'        For intI = Len(strTemp) + intOne To intFive
+'            strTemp = intZero & strTemp
+'        Next intI
+'
+'        'display 5 digit number
+'        txtSirNo.Text = strTemp
+'
+'        'assign the YYYYY portion of the SIR number
+'        ySir = txtSirNo.Text
+'
+'    End If
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
      
     CheckFields
 
     If CheckFields = True Then
-    
-        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-        'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
-        Call WriteSirInfo
         
+        'Returns a String representing the name of a file that matches a specified pattern or file attribute, or the volume label of a drive.
+        If UCase(Dir(strTempPath)) = strTempFile Then
+            'writes information to the temporary file
+            SirTemplate = strTempPath
+            Call WriteSirInfo
+        Else
+            MsgBox strFileNotFndMsg, vbInformation, strMsgTitle
+        End If
+                
     Else
     
         Beep
@@ -1278,59 +1545,45 @@ Err_mnuAddCpyBk_Click:
    
 End Sub
 
+'****************************************************************************
+' Name: mnuExit_Click
+' Purpose: Displays a message allowing the user to decide if they would like to
+'           exit the form or not.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub mnuExit_Click()
 On Error GoTo Err_mnuExit_Click
  
     Dim strMsg As String, strTitle As String
     Dim intStyle, intResponse As Integer
         
-    intStyle = vbYesNoCancel
-    strTitle = "Do you wish to exit?"
-    
-  '  Call CheckFields
+    intStyle = vbYesNo
+    strTitle = "Request Copybook Template"
+    strMsg = "Unable to save changes, return to form?"
     
     If CheckFields Then
-        
-        Beep
-        'Msg = "The Request Copybook Template has been filled out correctly. Click 'Yes' to " & _
-        '" exit with out saving information to the SIR repository. Click  'No' to return to form."
-        strMsg = "Save changes before exiting?"  ' Steve Bricker 10/2/97 Gui Standards
         intResponse = MsgBox(strMsg, intStyle, strTitle)
         
         If intResponse = vbNo Then
-            'user wishes to exit unload current form - end application
             Unload Me
-        
-        ElseIf intResponse = vbYes Then
-        
-            SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-            'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
             
-            Call WriteSirInfo  'STB This module writes the Text to the form.
-        
+        Else
+            'do nothing
         End If
         
     Else
-    
-        Beep
-        'Msg = "The form contains required fields that do not contain entries. Click " & _
-        '"the  'No'  button to return to the form or the  'Yes'  button to close your " & _
-        '"form without saving data."
-        
-        strMsg = "Unable to save changes, return to form?"
-        intStyle = vbYesNo
-        
-        intResponse = MsgBox(strMsg, intStyle, strTitle)
-        
-        If intResponse = vbNo Then
-        
+         intResponse = MsgBox(strMsg, intStyle, strTitle)
+
+         If intResponse = vbNo Then
             'user choose to exit. close current form - exit application
             Unload Me
-            
+
         End If
-        
+
     End If
-    
+ 
 Exit_mnuExit_Click:
     Exit Sub
 
@@ -1341,6 +1594,52 @@ Err_mnuExit_Click:
         
 End Sub
 
+Private Sub mnuHelp_Click()
+
+End Sub
+
+'****************************************************************************
+' Name: mnuInstructions_Click
+' Purpose: Displays a notepad text file that contains the instructions on how
+'           to complete a template.
+'
+' Created by: Dave Zimmer
+' Date Created: 10/08/97
+'****************************************************************************
+
+Private Sub mnuInstructions_Click()
+On Error GoTo Err_mnuInstructions_Click
+
+' Specifying 1 as the second argument opens the application in
+' normal size and gives it the focus.
+
+    Dim strFilePath As String
+    Dim strPath As String
+    Dim intRetVal As Integer
+
+    'strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqCpyBk.doc"
+    'strFilePath = "C:\Apps\Msoffice\Winword\Winword.exe" & " " & strPath
+    
+    strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqCpyBk.txt"
+    strFilePath = "C:\WINNT\NOTEPAD.EXE" & " " & strPath
+    
+    intRetVal = Shell(strFilePath, 1)    ' Run Instructions.
+
+Exit_mnuInstructions_Click:
+    Exit Sub
+
+Err_mnuInstructions_Click:
+    MsgBox Error$
+    Resume Exit_mnuInstructions_Click
+End Sub
+
+'****************************************************************************
+' Name: txtCpyBkNam_Change
+' Purpose: Sets the background to the appropriate color depending on its contents.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 Private Sub txtCpyBkNam_Change()
 On Error GoTo Err_txtCpyBkNam_Change
 
@@ -1360,6 +1659,16 @@ Err_txtCpyBkNam_Change:
     
     
 End Sub
+
+'****************************************************************************
+' Name: txtCpyBkName_LostFocus
+' Purpose: Checks to see if the first character is numeric.  If it is then a
+'           message is displayed to the user and focus returns to the Copybook
+'           name text field.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub txtCpyBkNam_LostFocus()
 On Error GoTo Err_txtCpyBkNam_LostFocus
@@ -1410,6 +1719,15 @@ Err_txtImage_Click:
     
 End Sub
 
+'****************************************************************************
+' Name: txtLongDesc_Change
+' Purpose: Sets the background of the field to the appropriate color depending
+'           on its contents.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub txtLongDesc_Change()
 On Error GoTo Err_txtLongDesc_Change
 
@@ -1430,6 +1748,14 @@ Err_txtLongDesc_Change:
      
 End Sub
 
+'****************************************************************************
+' Name: txtLongDesc_LostFocus
+' Purpose: Sets the background of the field to yellow if it is blank.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub txtLongDesc_LostFocus()
 On Error GoTo Err_txtLongDesc_LostFocus
     
@@ -1447,6 +1773,15 @@ Err_txtLongDesc_LostFocus:
     
     
 End Sub
+
+'****************************************************************************
+' Name: txtShortDesc_Change
+' Purpose: Sets the background of the field to the appropriate color depending
+'           on its contents.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub txtShortDesc_Change()
 On Error GoTo Err_txtShortDesc_Change
@@ -1468,6 +1803,15 @@ Err_txtShortDesc_Change:
     
 End Sub
 
+'****************************************************************************
+' Name: txtShortDesc_LostFocus
+' Purpose: Sets the background of the field to the appropriate color depending
+'           on its contents.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Private Sub txtShortDesc_LostFocus()
 On Error GoTo Err_txtShortDesc_LostFocus
 
@@ -1487,116 +1831,128 @@ Err_txtShortDesc_LostFocus:
 End Sub
 
 Private Sub txtSirNo_Change()
-On Error GoTo Err_txtSirNo_Change
 
-
-    Dim tempString As String
-    
-    tempString = txtSirNo.Text
-    
-    txtSirNo.BackColor = &HFFFFFF ' set background to white
-    
-    If txtSirNo.Text = "" Then
-    
-        'set background to required
-        txtSirNo.BackColor = &HFFFF&
-        'do nothing else let losefocus handle that
-        
-    Else
-        If Not IsNumeric(tempString) Then
-            Beep
-            MsgBox "Please enter a five digit numeric value.", vbOKOnly, "Request Copybook Template"
-            txtSirNo.SetFocus
-            txtSirNo.BackColor = &HFF&
-            txtSirNo.SelStart = 0
-            txtSirNo.SelLength = Len(tempString)
-        End If
-    End If
-    
-Exit_txtSirNo_Change:
-    Exit Sub
-
-Err_txtSirNo_Change:
-    MsgBox Error$
-    GoTo Exit_txtSirNo_Change
-    
+'''''''''''''' Sbricker TOSIRWB '''''''''''''''''''''''''''
+'On Error GoTo Err_txtSirNo_Change
+'
+'
+'    Dim tempString As String
+'
+'    tempString = txtSirNo.Text
+'
+'    txtSirNo.BackColor = &HFFFFFF ' set background to white
+'
+'    If txtSirNo.Text = "" Then
+'
+'        'set background to required
+'        txtSirNo.BackColor = &HFFFF&
+'        'do nothing else let losefocus handle that
+'
+'    Else
+'        If Not IsNumeric(tempString) Then
+'            Beep
+'            MsgBox "Please enter a five digit numeric value.", vbOKOnly, "Request Copybook Template"
+'            txtSirNo.SetFocus
+'            txtSirNo.BackColor = &HFF&
+'            txtSirNo.SelStart = 0
+'            txtSirNo.SelLength = Len(tempString)
+'        End If
+'    End If
+'
+'Exit_txtSirNo_Change:
+'    Exit Sub
+'
+'Err_txtSirNo_Change:
+'    MsgBox Error$
+'    GoTo Exit_txtSirNo_Change
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         
 End Sub
 
 Private Sub txtSirNo_LostFocus()
-On Error GoTo Err_txtSirNo_LostFocus
 
-    
-    Dim tempString As String
-    Dim i As Integer
-    Dim index As Integer
-    
-    index = 0
-    
-    txtSirNo.BackColor = &HFFFFFF 'set the background color to white
-    
-    tempString = txtSirNo.Text
-    
-    'if there is nothing in the string then let them tab on or move focus elsewhere
-    If txtSirNo.Text = "" Then
-        txtSirNo.BackColor = &HFFFF&
-        Exit Sub
-    End If
-    
-    
-    'if the value is not numeric then make them change it
-    If Not IsNumeric(tempString) Then
-    
-        txtSirNo.SetFocus
-        txtSirNo.BackColor = &HFF&
-        txtSirNo.SelStart = 0
-        txtSirNo.SelLength = Len(tempString)
-        MsgBox "Please enter a five digit numeric value.", vbOKOnly, "Request Copybook Template"
-        Exit Sub
-        
-    End If
-    
-        
-    If Len(tempString) > 5 Then
-        MsgBox "This number cannot be greater than five characters", vbOKOnly, "Data Length Error"
-        'return focus to txtSirNo and highlight entry
-        txtSirNo.SetFocus
-        txtSirNo.SelStart = 0
-        txtSirNo.SelLength = Len(tempString)
-        
-    Else
-        'if txtSirNo is empty then set field back to yellow
-        If txtSirNo.Text = "" Then
-            txtSirNo.BackColor = &HFFFF&
-        Else
-            If Len(tempString) < 5 Then
-                For i = Len(tempString) + 1 To 5
-                    tempString = "0" & tempString
-                Next i
-            
-                'assign the YYYYY portion of the SIR number
-                ySir = tempString
-            
-            Else
-                ySir = tempString
-            End If
-        
-           'redisplay txtSirNo to reflect correct number
-            txtSirNo.Text = ySir
-        
-        End If
-                        
-    End If
-       
-Exit_txtSirNo_LostFocus:
-    Exit Sub
-    
-Err_txtSirNo_LostFocus:
-    MsgBox Error$
-    GoTo Exit_txtSirNo_LostFocus
-    
+'''  Sbricker TOSIRWB  '''''''''''''''''''''''''''''''''
+'On Error GoTo Err_txtSirNo_LostFocus
+'
+'
+'    Dim tempString As String
+'    Dim i As Integer
+'    Dim index As Integer
+'
+'    index = 0
+'
+'    txtSirNo.BackColor = &HFFFFFF 'set the background color to white
+'
+'    tempString = txtSirNo.Text
+'
+'    'if there is nothing in the string then let them tab on or move focus elsewhere
+'    If txtSirNo.Text = "" Then
+'        txtSirNo.BackColor = &HFFFF&
+'        Exit Sub
+'    End If
+'
+'
+'    'if the value is not numeric then make them change it
+'    If Not IsNumeric(tempString) Then
+'
+'        txtSirNo.SetFocus
+'        txtSirNo.BackColor = &HFF&
+'        txtSirNo.SelStart = 0
+'        txtSirNo.SelLength = Len(tempString)
+'        MsgBox "Please enter a five digit numeric value.", vbOKOnly, "Request Copybook Template"
+'        Exit Sub
+'
+'    End If
+'
+'
+'    If Len(tempString) > 5 Then
+'        MsgBox "This number cannot be greater than five characters", vbOKOnly, "Data Length Error"
+'        'return focus to txtSirNo and highlight entry
+'        txtSirNo.SetFocus
+'        txtSirNo.SelStart = 0
+'        txtSirNo.SelLength = Len(tempString)
+'
+'    Else
+'        'if txtSirNo is empty then set field back to yellow
+'        If txtSirNo.Text = "" Then
+'            txtSirNo.BackColor = &HFFFF&
+'        Else
+'            If Len(tempString) < 5 Then
+'                For i = Len(tempString) + 1 To 5
+'                    tempString = "0" & tempString
+'                Next i
+'
+'                'assign the YYYYY portion of the SIR number
+'                ySir = tempString
+'
+'            Else
+'                ySir = tempString
+'            End If
+'
+'           'redisplay txtSirNo to reflect correct number
+'            txtSirNo.Text = ySir
+'
+'        End If
+'
+'    End If
+'
+'Exit_txtSirNo_LostFocus:
+'    Exit Sub
+'
+'Err_txtSirNo_LostFocus:
+'    MsgBox Error$
+'    GoTo Exit_txtSirNo_LostFocus
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         
 End Sub
+
+'****************************************************************************
+' Name: DataLoad
+' Purpose: Loads the data into the combo boxes.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Public Sub DataLoad()
 On Error GoTo Err_DataLoad
@@ -1608,12 +1964,14 @@ On Error GoTo Err_DataLoad
     Dim myStr
     Dim length As Integer
     Dim myDatabase As String
-    
-          
+        
     myDatabase = "o:\tools\datateamtool\codestbl\Codesdat.mdb"
-    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-   
+    
+'''''''''''sbricker TOSIRWB '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
+'    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
     myDatabase = "o:\tools\DataTeamTool\codestbl\DataTeam.mdb"
   
     Call LoadProc(myDatabase, cboCpyBkType, "tblCopyBkType", "CopyBkTypeCd", "CopyBookTypeDcd", "", , True)
@@ -1635,11 +1993,24 @@ Err_DataLoad:
     
 End Sub
 
+'****************************************************************************
+' Name: CheckFields
+' Purpose: Checks to see if the appropriate fields have been entered with
+'           information.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Public Function CheckFields() As Boolean
 On Error GoTo Err_CheckFields
     
-    If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
-        Or (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (txtCpyBkNam.Text = "") _
+''''''''''''' Sbricker TOSIRWB ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'     If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
+'         Or (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (txtCpyBkNam.Text = "") _
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+     If (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (txtCpyBkNam.Text = "") _
         Or (cboCpyBkType.Text = "") Or (cboEntity.Text = "") Or (cboValues.Text = "") _
         Or (cboLanguage.Text = "") Or (cboInitial.Text = "") Or (cboIncrement.Text = "") Then
               CheckFields = False
@@ -1658,143 +2029,149 @@ Err_CheckFields:
       
 End Function
 
+'****************************************************************************
+' Name: WriteSirInfo
+' Purpose: Writes the information entered to the Sir Template.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
+
 Public Sub WriteSirInfo()
 On Error GoTo Err_WriteSirInfo
     
   Dim Msg As String, Title As String
-  Dim style
+  Dim intStyle As Integer
   Dim Response
   
-  style = vbYesNo
+  intStyle = vbYesNo
 
   If FileExists(SirTemplate) Then
   
     Open SirTemplate For Append As #1
 
 
-    Print #1, Tab(25); "Request Copybook Template"
+    Print #1, "                              Request Copybook Template"
     Print #1, ""
     Print #1, ""
     Print #1, ""
-    Print #1, "1. Long Description:"
+    Print #1, "     1. Long Description:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, txtLongDesc.Text
+    Print #1, "     "; txtLongDesc.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "2. Short Description:"
+    Print #1, "     2. Short Description:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, txtShortDesc.Text
+    Print #1, "     "; txtShortDesc.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "3. Copybook Type:"
+    Print #1, "     3. Copybook Type:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, cboCpyBkType.Text
+    Print #1, "     "; cboCpyBkType.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "4. Copybook Name:"
+    Print #1, "     4. Copybook Name:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, txtCpyBkNam.Text
+    Print #1, "     "; txtCpyBkNam.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "5. Prefix:"
+    Print #1, "     5. Prefix:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, cboPrefix.Text
+    Print #1, "     "; cboPrefix.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "6. Suffix:"
+    Print #1, "     6. Suffix:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, txtSuffix.Text
+    Print #1, "     "; txtSuffix.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "7. Entity Process Type:"
+    Print #1, "     7. Entity Process Type:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, cboEntity.Text
+    Print #1, "     "; cboEntity.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "8. Values:"
+    Print #1, "     8. Values:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, cboValues.Text
+    Print #1, "     "; cboValues.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "9. Language:"
+    Print #1, "     9. Language:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, cboLanguage.Text
+    Print #1, "     "; cboLanguage.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "10. Image:"
+    Print #1, "     10. Image:"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, txtImage.Text
+    Print #1, "     "; txtImage.Text
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "11. Prefix 88-Level Items(Y/N):"
+    Print #1, "     11. Prefix 88-Level Items(Y/N):"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, strPrefix88
+    Print #1, "     "; strPrefix88
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "12. Implied Redefinition(Y/N):"
+    Print #1, "     12. Implied Redefinition(Y/N):"
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
-    Print #1, strImplied
+    Print #1, "     "; strImplied
     Print #1, ""
-    Print #1, "_______________________________________________________________"
+    Print #1, "     _______________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, "13. Level Numbers:"
+    Print #1, "     13. Level Numbers:"
     Print #1, ""
-    Print #1, "     Initial         Increment"
+    Print #1, "          Initial         Increment"
     Print #1, ""
-    Print #1, "      " & cboInitial.Text & "               " & cboIncrement.Text
+    Print #1, "           " & cboInitial.Text & "               " & cboIncrement.Text
     Print #1, ""
     Print #1, ""
     Print #1, ""
-    Print #1, ""
-    Print #1, ""
-    Print #1, ""
+    
     
     Close #1
 
@@ -1803,13 +2180,15 @@ On Error GoTo Err_WriteSirInfo
     Title = "Request Copybook Template"
     
     Beep
-    Response = MsgBox(Msg, style, Title)
+    Response = MsgBox(Msg, intStyle, Title)
     
     
     If Response = vbYes Then
     
         'user wants to enter another template
         Call ResetProperties
+        txtLongDesc.SetFocus
+        
     Else
         'user is done, exit application
         Unload Me
@@ -1837,6 +2216,14 @@ Err_WriteSirInfo:
         
 End Sub
 
+'****************************************************************************
+' Name: txtSuffix_Change
+' Purpose: Displays a message to the user if the value entered is over 4
+'           characters long.
+'
+' Created by: Dave Zimmer
+' Date Created: 09/22/97
+'****************************************************************************
 
 Private Sub txtSuffix_Change()
 On Error GoTo Err_txtSuffix_Change

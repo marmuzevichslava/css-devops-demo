@@ -1,29 +1,30 @@
 VERSION 5.00
 Begin VB.Form frmRecGrp 
    Caption         =   "Request Record Group Template"
-   ClientHeight    =   4680
+   ClientHeight    =   3945
    ClientLeft      =   2415
    ClientTop       =   2010
    ClientWidth     =   6840
-   ControlBox      =   0   'False
    LinkTopic       =   "Form7"
-   ScaleHeight     =   4680
+   ScaleHeight     =   3945
    ScaleWidth      =   6840
    Begin VB.TextBox txtSirNo 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   3840
+      Left            =   3600
       MaxLength       =   5
-      TabIndex        =   2
-      Top             =   480
+      TabIndex        =   8
+      Top             =   4200
+      Visible         =   0   'False
       Width           =   975
    End
    Begin VB.ComboBox cboOriging 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   2040
-      TabIndex        =   1
-      Top             =   480
+      Left            =   1800
+      TabIndex        =   7
+      Top             =   4200
+      Visible         =   0   'False
       Width           =   1455
    End
    Begin VB.TextBox txtAlias 
@@ -31,8 +32,8 @@ Begin VB.Form frmRecGrp
       Height          =   315
       Left            =   3840
       MaxLength       =   50
-      TabIndex        =   9
-      Top             =   4080
+      TabIndex        =   6
+      Top             =   3240
       Width           =   2775
    End
    Begin VB.TextBox txtPrefix 
@@ -40,8 +41,8 @@ Begin VB.Form frmRecGrp
       Height          =   315
       Left            =   240
       MaxLength       =   4
-      TabIndex        =   8
-      Top             =   4080
+      TabIndex        =   5
+      Top             =   3240
       Width           =   2895
    End
    Begin VB.TextBox txtCName 
@@ -49,8 +50,8 @@ Begin VB.Form frmRecGrp
       Height          =   315
       Left            =   3840
       MaxLength       =   18
-      TabIndex        =   7
-      Top             =   3360
+      TabIndex        =   4
+      Top             =   2520
       Width           =   2775
    End
    Begin VB.TextBox txtCOBOLNm 
@@ -58,16 +59,17 @@ Begin VB.Form frmRecGrp
       Height          =   315
       Left            =   240
       MaxLength       =   18
-      TabIndex        =   6
-      Top             =   3360
+      TabIndex        =   3
+      Top             =   2520
       Width           =   2895
    End
    Begin VB.ComboBox cboDestination 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   5160
-      TabIndex        =   3
-      Top             =   480
+      Left            =   4920
+      TabIndex        =   9
+      Top             =   4200
+      Visible         =   0   'False
       Width           =   1455
    End
    Begin VB.TextBox txtShortDesc 
@@ -75,8 +77,8 @@ Begin VB.Form frmRecGrp
       Height          =   375
       Left            =   240
       MaxLength       =   25
-      TabIndex        =   5
-      Top             =   2520
+      TabIndex        =   2
+      Top             =   1680
       Width           =   3735
    End
    Begin VB.TextBox txtLongDesc 
@@ -87,15 +89,16 @@ Begin VB.Form frmRecGrp
       MaxLength       =   300
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   4
-      Top             =   1320
+      TabIndex        =   1
+      Top             =   480
       Width           =   6375
    End
    Begin VB.Line Line1 
-      X1              =   0
-      X2              =   6840
-      Y1              =   960
-      Y2              =   960
+      Visible         =   0   'False
+      X1              =   -240
+      X2              =   6600
+      Y1              =   4680
+      Y2              =   4680
    End
    Begin VB.Label lblSIRNo 
       Caption         =   "Add to SIR Number:"
@@ -109,9 +112,10 @@ Begin VB.Form frmRecGrp
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   0
       TabIndex        =   17
-      Top             =   480
+      Top             =   4200
+      Visible         =   0   'False
       Width           =   1815
    End
    Begin VB.Label lblDash1 
@@ -126,9 +130,10 @@ Begin VB.Form frmRecGrp
          Strikethrough   =   0   'False
       EndProperty
       Height          =   135
-      Left            =   3600
+      Left            =   3360
       TabIndex        =   16
-      Top             =   480
+      Top             =   4200
+      Visible         =   0   'False
       Width           =   135
    End
    Begin VB.Label lblDash2 
@@ -143,9 +148,10 @@ Begin VB.Form frmRecGrp
          Strikethrough   =   0   'False
       EndProperty
       Height          =   135
-      Left            =   4920
+      Left            =   4680
       TabIndex        =   15
-      Top             =   480
+      Top             =   4200
+      Visible         =   0   'False
       Width           =   135
    End
    Begin VB.Label Label2 
@@ -162,7 +168,7 @@ Begin VB.Form frmRecGrp
       Height          =   255
       Left            =   3840
       TabIndex        =   14
-      Top             =   3840
+      Top             =   3000
       Width           =   1695
    End
    Begin VB.Label Label1 
@@ -179,7 +185,7 @@ Begin VB.Form frmRecGrp
       Height          =   255
       Left            =   3840
       TabIndex        =   13
-      Top             =   3120
+      Top             =   2280
       Width           =   975
    End
    Begin VB.Label lblUser 
@@ -196,7 +202,7 @@ Begin VB.Form frmRecGrp
       Height          =   255
       Left            =   240
       TabIndex        =   12
-      Top             =   3120
+      Top             =   2280
       Width           =   1575
    End
    Begin VB.Label Label7 
@@ -213,7 +219,7 @@ Begin VB.Form frmRecGrp
       Height          =   255
       Left            =   240
       TabIndex        =   11
-      Top             =   2280
+      Top             =   1440
       Width           =   4575
    End
    Begin VB.Label Label5 
@@ -230,7 +236,7 @@ Begin VB.Form frmRecGrp
       Height          =   255
       Left            =   240
       TabIndex        =   10
-      Top             =   1080
+      Top             =   240
       Width           =   1815
    End
    Begin VB.Label Label14 
@@ -247,7 +253,7 @@ Begin VB.Form frmRecGrp
       Height          =   255
       Left            =   240
       TabIndex        =   0
-      Top             =   3840
+      Top             =   3000
       Width           =   1455
    End
    Begin VB.Menu mnuRequestRecGrp 
@@ -257,6 +263,12 @@ Begin VB.Form frmRecGrp
       End
       Begin VB.Menu mnuExit 
          Caption         =   "E&xit"
+      End
+   End
+   Begin VB.Menu mnuHelp 
+      Caption         =   "&Help"
+      Begin VB.Menu mnuInstructions 
+         Caption         =   "&Instructions"
       End
    End
 End
@@ -276,29 +288,32 @@ Option Explicit
 ' Created by: Christina Mitchell
 ' Date Created: 09/22/97
 '****************************************************************************
+
 Private Sub cboDestination_Change()
-On Error GoTo Err_cboDestination_Change
 
-    If cboDestination.Text = "" Then
-        cboDestination.BackColor = &HFFFF& 'Sets the color of the field to yellow.
-    
-    Else
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
-        
-        'set global string compare item
-        gblsComp = cboDestination.Text
-        cboDestination.BackColor = &HFF&
-        cboDestination.Refresh
-    
-    End If
-
-Exit_cboDestination_Change:
-    Exit Sub
-    
-Err_cboDestination_Change:
-    MsgBox Error$
-    Resume Exit_cboDestination_Change
-    
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboDestination_Change
+'
+'    If cboDestination.Text = "" Then
+'        cboDestination.BackColor = &HFFFF& 'Sets the color of the field to yellow.
+'
+'    Else
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
+'
+'        'set global string compare item
+'        gblsComp = cboDestination.Text
+'        cboDestination.BackColor = &HFF&
+'        cboDestination.Refresh
+'
+'    End If
+'
+'Exit_cboDestination_Change:
+'    Exit Sub
+'
+'Err_cboDestination_Change:
+'    MsgBox Error$
+'    Resume Exit_cboDestination_Change
+'
 End Sub
 
 '****************************************************************************
@@ -310,30 +325,31 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub cboDestination_Click()
-On Error GoTo Err_cboDestination_Click
-        
-    Dim strTemp As String
-    
-    'set background color upon click event
-    With cboDestination
-        .BackColor = &HFFFFFF
-    End With
-            
-    strTemp = cboDestination.Text
-    strTemp = Left(strTemp, 3)
-    
-    'create z part of SIR text file
-    zSir = strTemp
-    
-    'update global string compare item
-    gblsComp = ""
-    
-Exit_cboDestination_Click:
-    Exit Sub
-Err_cboDestination_Click:
-    MsgBox Error$
-    Resume Exit_cboDestination_Click
-    
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboDestination_Click
+'
+'    Dim strTemp As String
+'
+'    'set background color upon click event
+'    With cboDestination
+'        .BackColor = &HFFFFFF
+'    End With
+'
+'    strTemp = cboDestination.Text
+'    strTemp = Left(strTemp, 3)
+'
+'    'create z part of SIR text file
+'    zSir = strTemp
+'
+'    'update global string compare item
+'    gblsComp = ""
+'
+'Exit_cboDestination_Click:
+'    Exit Sub
+'Err_cboDestination_Click:
+'    MsgBox Error$
+'    Resume Exit_cboDestination_Click
+'
 End Sub
 
 '****************************************************************************
@@ -346,36 +362,38 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub cboDestination_LostFocus()
-On Error GoTo Err_cboDestination_LostFocus
-    
-    Dim strTemp As String
-
-    
-    strTemp = cboDestination.Text
-    strTemp = Mid(strTemp, 2, 2)
-    
-    
-    'create x part of SIR text file name
-    zSir = strTemp
-    
-    If cboDestination.Text = "" Then
-        cboDestination.BackColor = &HFFFF&
-    Else
-    
-        If gblsComp = cboDestination.Text Then
-            MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
-            cboDestination.BackColor = &HFF&
-            cboDestination.SetFocus
-            cboDestination.Refresh
-        End If
-    
-    End If
-    
-Exit_cboDestination_LostFocus:
-    Exit Sub
-Err_cboDestination_LostFocus:
-    MsgBox Error$
-    Resume Exit_cboDestination_LostFocus
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''''''''''''
+'On Error GoTo Err_cboDestination_LostFocus
+'
+'    Dim strTemp As String
+'
+'
+'    strTemp = cboDestination.Text
+'    strTemp = Mid(strTemp, 2, 2)
+'
+'
+'    'create x part of SIR text file name
+'    zSir = strTemp
+'
+'    If cboDestination.Text = "" Then
+'        cboDestination.BackColor = &HFFFF&
+'    Else
+'
+'        If gblsComp = cboDestination.Text Then
+'            MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
+'            cboDestination.BackColor = &HFF&
+'            cboDestination.SetFocus
+'            cboDestination.Refresh
+'        End If
+'
+'    End If
+'
+'Exit_cboDestination_LostFocus:
+'    Exit Sub
+'Err_cboDestination_LostFocus:
+'    MsgBox Error$
+'    Resume Exit_cboDestination_LostFocus
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 End Sub
 
@@ -389,27 +407,28 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub cboOriging_Change()
-On Error GoTo Err_cboOriging_Change
-    
-    cboOriging.BackColor = &HFFFFFF
-    
-    If cboOriging.Text = "" Then
-        cboOriging.BackColor = &HFFFF& 'Sets the color of the field to yellow.
-    
-    Else
-        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
-        gblsComp = cboOriging.Text
-        cboOriging.BackColor = &HFF& 'Sets the color of the field to red.
-        cboOriging.Refresh
-        cboOriging.SetFocus
-    End If
-
-Exit_cboOriging_Change:
-    Exit Sub
-Err_cboOriging_Change:
-    MsgBox Error$
-    Resume Exit_cboOriging_Change
-    
+''''''''''''' Christina Mitchell TOSIRWB '''''''''''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_Change
+'
+'    cboOriging.BackColor = &HFFFFFF
+'
+'    If cboOriging.Text = "" Then
+'        cboOriging.BackColor = &HFFFF& 'Sets the color of the field to yellow.
+'
+'    Else
+'        MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
+'        gblsComp = cboOriging.Text
+'        cboOriging.BackColor = &HFF& 'Sets the color of the field to red.
+'        cboOriging.Refresh
+'        cboOriging.SetFocus
+'    End If
+'
+'Exit_cboOriging_Change:
+'    Exit Sub
+'Err_cboOriging_Change:
+'    MsgBox Error$
+'    Resume Exit_cboOriging_Change
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 End Sub
 
 '****************************************************************************
@@ -421,19 +440,20 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub cboOriging_Click()
-On Error GoTo Err_cboOriging_Click
-
-    cboOriging.BackColor = &HFFFFFF
-           
-    'update global string compare item
-    gblsComp = ""
-    
-Exit_cboOriging_Click:
-    Exit Sub
-Err_cboOriging_Click:
-    MsgBox Error$
-    Resume Exit_cboOriging_Click
-    
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_Click
+'
+'    cboOriging.BackColor = &HFFFFFF
+'
+'    'update global string compare item
+'    gblsComp = ""
+'
+'Exit_cboOriging_Click:
+'    Exit Sub
+'Err_cboOriging_Click:
+'    MsgBox Error$
+'    Resume Exit_cboOriging_Click
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 End Sub
 
 '****************************************************************************
@@ -446,28 +466,29 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub cboOriging_LostFocus()
-On Error GoTo Err_cboOriging_LostFocus
-
-    If cboOriging.Text = "" Then
-        cboOriging.BackColor = &HFFFF&
-    
-    Else
-        If gblsComp = cboOriging.Text Then
-            MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
-            cboOriging.BackColor = &HFF&
-            cboOriging.SetFocus
-            cboOriging.Refresh
-        End If
-        
-    End If
-    
-Exit_cboOriging_LostFocus:
-    Exit Sub
-    
-Err_cboOriging_LostFocus:
-    MsgBox Error$
-    Resume Exit_cboOriging_LostFocus
-    
+''''''''''''' Christina Mitchell TOSIRWB ''''''''''''''''''''''''''
+'On Error GoTo Err_cboOriging_LostFocus
+'
+'    If cboOriging.Text = "" Then
+'        cboOriging.BackColor = &HFFFF&
+'
+'    Else
+'        If gblsComp = cboOriging.Text Then
+'            MsgBox "Please choose a value from the list.", vbOKOnly, "Request Record Group Template"
+'            cboOriging.BackColor = &HFF&
+'            cboOriging.SetFocus
+'            cboOriging.Refresh
+'        End If
+'
+'    End If
+'
+'Exit_cboOriging_LostFocus:
+'    Exit Sub
+'
+'Err_cboOriging_LostFocus:
+'    MsgBox Error$
+'    Resume Exit_cboOriging_LostFocus
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 End Sub
 
 '****************************************************************************
@@ -479,22 +500,23 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub Form_Load()
+
 On Error GoTo Err_Form_Load
 
     'Set variables
     bRequired = False
     bAdded = False
-    
+
     'Load required data
     Call DataLoad
-    
+
 Exit_Form_Load:
     Exit Sub
-    
+
 Err_Form_Load:
     MsgBox Error$
     Resume Exit_Form_Load
-    
+
 End Sub
 
 '****************************************************************************
@@ -506,41 +528,60 @@ End Sub
 ' Date Created: 09/22/97
 '****************************************************************************
 Private Sub mnuAddRequestRecGrp_Click()
-On Error GoTo Err_mnuAddRequestRecGrp_Click
-    
-    Dim strTemp As String
+
+    Dim strTemp As String, strFileNotFndMsg As String, strMsgTitle As String
     Dim intI As Integer
+    Dim strTempFile As String, strTempPath As String
+    Dim intFive As Integer, intZero As Integer, intOne As Integer
     
-    strTemp = txtSirNo.Text
-    
-    If Len(txtSirNo.Text) <= 5 And Len(txtSirNo.Text) > 0 And IsNumeric(strTemp) Then
-        
-        For intI = Len(strTemp) + 1 To 5
-            strTemp = "0" & strTemp
-        Next intI
-                    
-        'display 5 digit number
-        txtSirNo.Text = strTemp
-            
-        'assign the YYYYY portion of the SIR number
-        ySir = txtSirNo.Text
-    
-    End If
-    
+    strTempPath = "C:\Data\Template.tmp"
+    strTempFile = "TEMPLATE.TMP"
+    strFileNotFndMsg = "Unable to locate SIR text file."
+    strMsgTitle = "Request Record Group Template"
+    intFive = 5
+    intZero = 0
+    intOne = 1
+
+'''''''''''''''''''''Christina Mitchell TOSIRWB '''''''''''''''''''''''''''
+'    strTemp = txtSirNo.Text
+'
+'    If Len(txtSirNo.Text) <= intFive And Len(txtSirNo.Text) > intZero And IsNumeric(strTemp) Then
+'
+'        For intI = Len(strTemp) + intOne To intFive
+'            strTemp = intZero & strTemp
+'        Next intI
+'
+'        'display 5 digit number
+'        txtSirNo.Text = strTemp
+'
+'        'assign the YYYYY portion of the SIR number
+'        ySir = txtSirNo.Text
+'
+'    End If
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+     
     CheckFields
-    
-    'create file name if all required fields entered
+
     If CheckFields = True Then
-        SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
+    
+        If UCase(Dir(strTempPath)) = strTempFile Then
+            SirTemplate = strTempPath
+            Call WriteSirInfo
+        Else
+            MsgBox strFileNotFndMsg, vbInformation, strMsgTitle
+        End If
+        
+        'SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
         'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
-        Call WriteSirInfo
+        'Call WriteSirInfo
         
     Else
-        
-        MsgBox "Please complete all required fields before adding this template.", vbOKOnly, "Request Record Group Template"
+    
+        Beep
+        MsgBox "Please complete all required field before adding this template.", vbOKOnly, "Request CopyBook Template"
         
    End If
-      
+
 Exit_mnuAddRequestRecGrp_Click:
     Exit Sub
     
@@ -565,53 +606,31 @@ On Error GoTo Err_mnuExit_Click
     Dim strMsg As String, strTitle As String
     Dim intStyle, intResponse As Integer
         
-    intStyle = vbYesNoCancel
-    strTitle = "Do you wish to exit?"
-    
-  '  Call CheckFields
+    intStyle = vbYesNo
+    strTitle = "Request Copybook Template"
+    strMsg = "Unable to save changes, return to form?"
     
     If CheckFields Then
-        
-        Beep
-        'Msg = "The Request Record Group Template has been filled out correctly. Click 'Yes' to " & _
-        '" exit with out saving information to the SIR repository. Click  'No' to return to form."
-        strMsg = "Save changes before exiting?"  ' Steve Bricker 10/2/97 Gui Standards
         intResponse = MsgBox(strMsg, intStyle, strTitle)
         
         If intResponse = vbNo Then
-            'user wishes to exit unload current form - end application
             Unload Me
-        
-        ElseIf intResponse = vbYes Then
-        
-            SirTemplate = "K:\T4\TechnologyManagement\Tools\SirDocuments\S" & zSir & ySir & ".txt"
-            'SirTemplate = "V:\SIRWKBCH\FNDREPOS\DOCUMENT\S" & zSir & ySir & ".txt"
             
-            Call WriteSirInfo  'STB This module writes the Text to the form.
-        
+        Else
+            'do nothing
         End If
         
     Else
-    
-        Beep
-        'Msg = "The form contains required fields that do not contain entries. Click " & _
-        '"the  'No'  button to return to the form or the  'Yes'  button to close your " & _
-        '"form without saving data."
-        
-        strMsg = "Unable to save changes, return to form?"
-        intStyle = vbYesNo
-        
-        intResponse = MsgBox(strMsg, intStyle, strTitle)
-        
-        If intResponse = vbNo Then
-        
+         intResponse = MsgBox(strMsg, intStyle, strTitle)
+
+         If intResponse = vbNo Then
             'user choose to exit. close current form - exit application
             Unload Me
-            
+
         End If
-        
+
     End If
-    
+ 
 Exit_mnuExit_Click:
     Exit Sub
     
@@ -657,9 +676,13 @@ End Sub
 Public Function CheckFields()
 On Error GoTo Err_CheckFields
 
+''''''''''''' Christina Mitchell TOSIRWB '''''''''''''''''''''''''''''''''''''''''''''''''''
+'     If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
+'   This needs to be added into the if stmt when sir wb is taken out
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
     'check for blank required fields
-    If (cboOriging.Text = "") Or (cboDestination.Text = "") Or (txtSirNo.Text = "") _
-        Or (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (txtCOBOLNm.Text = "") _
+    If (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (txtCOBOLNm.Text = "") _
         Or (txtCName.Text = "") Then
               CheckFields = False
     Else
@@ -695,62 +718,62 @@ On Error GoTo Err_WriteSirInfo
     Open SirTemplate For Append As #1
 
 
-    Print #1, Tab(30); "Record Group Template"
+    Print #1, "                              Record Group Template"
     Print #1, ""
     Print #1, ""
     Print #1, ""
-    Print #1, Tab(5); "1. Long Description:"
+    Print #1, "     1. Long Description:"
     Print #1, ""
-    Print #1, Tab(5); "________________________________________________________________________"
+    Print #1, "     ________________________________________________________________________"
     Print #1, ""
-    Print #1, Tab(5); txtLongDesc.Text
+    Print #1, "     "; txtLongDesc.Text
     Print #1, ""
-    Print #1, Tab(5); "________________________________________________________________________"
-    Print #1, ""
-    Print #1, ""
-    Print #1, Tab(5); "2. Short Description:"
-    Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
-    Print #1, ""
-    Print #1, Tab(5); txtShortDesc.Text
-    Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     ________________________________________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, Tab(5); "3. COBOL Name:"
+    Print #1, "     2. Short Description:"
     Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     _________________________________________"
     Print #1, ""
-    Print #1, Tab(5); txtCOBOLNm.Text
+    Print #1, "     "; txtShortDesc.Text
     Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
-    Print #1, ""
-    Print #1, ""
-    Print #1, Tab(5); "4. C Name:"
-    Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
-    Print #1, ""
-    Print #1, Tab(5); txtCName.Text
-    Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     _________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, Tab(5); "5. COBOL Prefix:"
+    Print #1, "     3. COBOL Name:"
     Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     _________________________________________"
     Print #1, ""
-    Print #1, Tab(5); txtPrefix.Text
+    Print #1, "     "; txtCOBOLNm.Text
     Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     _________________________________________"
     Print #1, ""
     Print #1, ""
-    Print #1, Tab(5); "6. Alias of Records:"
+    Print #1, "     4. C Name:"
     Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     _________________________________________"
     Print #1, ""
-    Print #1, Tab(5); txtAlias.Text
+    Print #1, "     "; txtCName.Text
     Print #1, ""
-    Print #1, Tab(5); "_________________________________________"
+    Print #1, "     _________________________________________"
+    Print #1, ""
+    Print #1, ""
+    Print #1, "     5. COBOL Prefix:"
+    Print #1, ""
+    Print #1, "     _________________________________________"
+    Print #1, ""
+    Print #1, "     "; txtPrefix.Text
+    Print #1, ""
+    Print #1, "     _________________________________________"
+    Print #1, ""
+    Print #1, ""
+    Print #1, "     6. Alias of Records:"
+    Print #1, ""
+    Print #1, "     _________________________________________"
+    Print #1, ""
+    Print #1, "     "; txtAlias.Text
+    Print #1, ""
+    Print #1, "     _________________________________________"
     Print #1, ""
     Print #1, ""
     
@@ -767,7 +790,7 @@ On Error GoTo Err_WriteSirInfo
     
         'user wants to enter another template
         Call ResetProperties
-        cboOriging.SetFocus
+        txtLongDesc.SetFocus
         
     Else
         'user is done, exit application
@@ -789,11 +812,39 @@ Exit_WriteSirInfo:
         
 Err_WriteSirInfo:
     'Display error message to user
-    MsgBox "Error in attempting to write file", vbOKOnly, "Request Record Group"
+    MsgBox Error$
     GoTo Exit_WriteSirInfo
         
 
 End Sub
+
+Private Sub mnuInstructions_Click()
+On Error GoTo Err_mnuInstructions_Click
+
+' Specifying 1 as the second argument opens the application in
+' normal size and gives it the focus.
+
+    Dim strFilePath As String
+    Dim strPath As String
+    Dim intRetVal As Integer
+
+    'strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqRecordGrp.doc"
+    'strFilePath = "C:\Apps\Msoffice\Winword\Winword.exe" & " " & strPath
+    
+    strPath = "K:\T4\TechnologyManagement\Tools\Documentation\DTTool\WebReqRecordGrp.txt"
+    strFilePath = "C:\WINNT\NOTEPAD.EXE" & " " & strPath
+    
+    intRetVal = Shell(strFilePath, 1)    ' Run Instructions.
+
+Exit_mnuInstructions_Click:
+    Exit Sub
+
+Err_mnuInstructions_Click:
+    MsgBox Error$
+    Resume Exit_mnuInstructions_Click
+    
+End Sub
+
 
 '****************************************************************************
 ' Name: txtCName_Change
