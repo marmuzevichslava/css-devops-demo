@@ -390,6 +390,9 @@ static WCBPROC(AZCS013BUSPredistroy)
 **  10/18/94  J. Looney             Clean up.
 **
 **  07/29/96  J. Looney				Clean up again.
+**  
+**  10/06/96  M. Conner             Added warnings to logic for giving user
+**                                  option of using new layout.
 ***************************************************************************/
 WCBPROC(ProcessMsg)
 {
@@ -438,8 +441,10 @@ WCBPROC(ProcessMsg)
 		                                      "OKPB",
 											  &FndGenErrorBlock);
 
-
-        if (bError)
+	   /*mdc 10/06/96 This is Sunday work - added so that warnings would give user
+	                  the chance to use the new layout.
+	   */
+        if (bError || bWarn)
         {
             /*
              * See if the user wants to keep checking the map or revert back
