@@ -7,7 +7,7 @@
 ****************************************************************************
 *                                                                          *
 *                    Dispatch Table for: AZCS001                           *
-*                          Generated on: Wed Sep 25 13:30:28 1996          *
+*                          Generated on: Mon Oct 28 11:26:26 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS001X                          *
 *                                                                          *
@@ -33,6 +33,7 @@ WCBFWD (Erxuqhan0384_List_Select)
 WCBFWD (Erxuqhan0531_Double_Click)
 WCBFWD (Erxuqhan5820_Click)
 WCBFWD (Erxuqhan1824_Click)
+WCBFWD (Erxuqhan8491_Click)
 WCBFWD (Erxuqhan1914_Click)
 WCBFWD (Erxuqhan1930_Click)
 WCBFWD (Erxuqhan6340_Click)
@@ -78,6 +79,7 @@ WDGDISPTBL AZCS001WidgDisp[] =
     {TaskList_FID, FND_DOUBLE_CLICK, Erxuqhan0531_Double_Click},
     {AMNOPEN_CMD, BUTTON_CLICK, Erxuqhan5820_Click},
     {AMNGENERATE_CMD, BUTTON_CLICK, Erxuqhan1824_Click},
+    {AMNMASSGEN_CMD, BUTTON_CLICK, Erxuqhan8491_Click},
     {AMNSAVE_CMD, BUTTON_CLICK, Erxuqhan1914_Click},
     {AMNSAVEAS_CMD, BUTTON_CLICK, Erxuqhan1930_Click},
     {ExitMN_CMD, BUTTON_CLICK, Erxuqhan6340_Click},
@@ -122,6 +124,7 @@ CMDDEFTBLENTRY AZCS001CommandDefTbl[] =
     { "UndeletePB", UndeletePB_CMD },
     { "AMNOPEN", AMNOPEN_CMD },
     { "AMNGENERATE", AMNGENERATE_CMD },
+    { "AMNMASSGEN", AMNMASSGEN_CMD },
     { "AMNSAVE", AMNSAVE_CMD },
     { "AMNSAVEAS", AMNSAVEAS_CMD },
     { "ExitMN", ExitMN_CMD },
@@ -145,7 +148,7 @@ CMDDEFTBLENTRY AZCS001CommandDefTbl[] =
 
 WCTHEADER  AZCS001WCTHeader =
 { 
-    "30", 21, 6, 23,
+    "30", 21, 6, 24,
     sizeof(struct _AZCS001WesMap),
     offsetof(struct _AZCS001WesMap, _RequestIDData),
     offsetof(struct _AZCS001WesMap, _RequestIDCtl),
@@ -373,14 +376,17 @@ WCTCOMMAND AZCS001WCTCommandTbl[] =
     { WTP_MENUITEM, "AMNGENERATE", AMNGENERATE_CMD,
       AMNMAP_CMD, 1, FND_NODISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_MENUITEM, "AMNSAVE", AMNSAVE_CMD,
+    { WTP_MENUITEM, "AMNMASSGEN", AMNMASSGEN_CMD,
       AMNMAP_CMD, 2, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_MENUITEM, "AMNSAVEAS", AMNSAVEAS_CMD,
+    { WTP_MENUITEM, "AMNSAVE", AMNSAVE_CMD,
       AMNMAP_CMD, 3, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
-    { WTP_MENUITEM, "ExitMN", ExitMN_CMD,
+    { WTP_MENUITEM, "AMNSAVEAS", AMNSAVEAS_CMD,
       AMNMAP_CMD, 4, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
+
+    { WTP_MENUITEM, "ExitMN", ExitMN_CMD,
+      AMNMAP_CMD, 5, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},
 
     { WTP_MENU, "EditMN", EditMN_CMD,
       0, 0, FND_DISABLEONINVALID, 0, 0, 0, RGT_STANDARD},

@@ -7,13 +7,13 @@
 ****************************************************************************
 *                                                                          *
 *              Symbolic Definitions for: AZCS001                           *
-*                          Generated on: Wed Sep 25 13:30:28 1996          *
+*                          Generated on: Mon Oct 28 11:26:26 1996          *
 *                                    by: MCONNER                           *
 *                     Short Description: AZCS001X                          *
 *                                                                          *
 ****************************************************************************/
 
-AZCS001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,356,164
+AZCS001ID DIALOG LOADONCALL MOVEABLE DISCARDABLE 0,0,356,163
     STYLE 0 
      | WS_CAPTION
      | WS_MINIMIZEBOX
@@ -27,86 +27,86 @@ Begin  /* controls */
    CONTROL "Request ID",500,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,22,21,40,8
+              ,22,16,43,12
 
    CONTROL "",100,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,65,17,69,0
+              ,65,16,69,0
 
    CONTROL "Request Type",501,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,12,37,50,8
+              ,11,32,53,12
 
    CONTROL "",101,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,65,33,69,0
+              ,65,32,69,0
 
    CONTROL "Client Layout",502,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,12,53,50,8
+              ,12,48,50,12
 
    CONTROL "",102,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,65,49,69,0
+              ,65,48,69,0
 
    CONTROL "&Add...",1000,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,153,132,41,12
+              ,153,131,41,12
 
    CONTROL "&Change...",1001,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,205,132,41,12
+              ,205,131,41,12
 
    CONTROL "&Delete",1002,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,253,132,41,12
+              ,253,131,41,12
 
    CONTROL "&Undelete",1003,
               FND_PUSH_BUTTON,
               WS_VISIBLE  | WS_GROUP | WS_TABSTOP
               | BS_PUSHBUTTON
-              ,302,132,41,12
+              ,302,131,41,12
 
    CONTROL "Services",103,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,153,18,190,110
+              ,153,17,190,110
 
    CONTROL "Service Information",9000,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,147,6,203,144
+              ,147,5,203,144
 
    CONTROL "Task List",104,
               FND_LISTBOX,
               WS_VISIBLE | WS_TABSTOP | WS_GROUP
-              ,3,73,139,76
+              ,3,72,139,76
 
    CONTROL "Request Information",9001,
               FND_GROUP_BOX,
               WS_VISIBLE | BS_GROUPBOX
-              ,3,6,139,63
+              ,3,5,139,63
 
    CONTROL "GenerateStatus",505,
               FND_STATICTEXT,
               WS_VISIBLE | SS_LEFT 
-              ,191,140,53,8
+              ,187,135,59,12
 
    CONTROL "",105,
               FND_ENTRYFIELD,
               WS_VISIBLE
-              ,247,136,0,0
+              ,247,135,0,0
 
 End /* controls */
 
@@ -589,9 +589,10 @@ Begin  /*  menus  */
 Begin
      MENUITEM "&Open ...\tCtrl+O",1004
      MENUITEM "&Generate\tCtrl+G",1005
-     MENUITEM "&Save\tCtrl+S",1006
-     MENUITEM "Sa&ve As...\tCtrl+V",1007
-     MENUITEM "E&xit\tCtrl+X",1008
+     MENUITEM "&Mass Generate\tCtrl+M",1006
+     MENUITEM "&Save\tCtrl+S",1007
+     MENUITEM "Sa&ve As...\tCtrl+V",1008
+     MENUITEM "E&xit\tCtrl+X",1009
 End
      POPUP "&Edit"
 Begin
@@ -601,16 +602,16 @@ Begin
 End
      POPUP "&Options"
 Begin
-     MENUITEM "&Specify Directories....\tCtrl+S",1009
-     MENUITEM "Dum&p Tables\tCtrl+P",1010
+     MENUITEM "&Specify Directories....\tCtrl+S",1010
+     MENUITEM "Dum&p Tables\tCtrl+P",1011
 End
      POPUP "&Help"
 Begin
-     MENUITEM "&Help for Help...",1011
-     MENUITEM "&Extended Help...",1012
-     MENUITEM "&Keys Help...",1013
-     MENUITEM "Help &Index...",1014
-     MENUITEM SEPARATOR     MENUITEM "&About...",1015
+     MENUITEM "&Help for Help...",1012
+     MENUITEM "&Extended Help...",1013
+     MENUITEM "&Keys Help...",1014
+     MENUITEM "Help &Index...",1015
+     MENUITEM SEPARATOR     MENUITEM "&About...",1016
 End
 End  /*  menus  */
 
@@ -623,14 +624,15 @@ AZCS001AccelID ACCELERATORS PRELOAD
 Begin
 "O",1004,CONTROL,VIRTKEY
 "G",1005,CONTROL,VIRTKEY
-"S",1006,CONTROL,VIRTKEY
-"V",1007,CONTROL,VIRTKEY
-"X",1008,CONTROL,VIRTKEY
+"M",1006,CONTROL,VIRTKEY
+"S",1007,CONTROL,VIRTKEY
+"V",1008,CONTROL,VIRTKEY
+"X",1009,CONTROL,VIRTKEY
 VK_DELETE,3001,SHIFT,VIRTKEY
 VK_INSERT,3002,CONTROL,VIRTKEY
 VK_INSERT,3003,SHIFT,VIRTKEY
-"S",1009,CONTROL,VIRTKEY
-"P",1010,CONTROL,VIRTKEY
+"S",1010,CONTROL,VIRTKEY
+"P",1011,CONTROL,VIRTKEY
 End
 
 
