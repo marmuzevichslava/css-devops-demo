@@ -1380,10 +1380,10 @@ End Sub
 Private Sub txtCobolNam_Change()
 On Error GoTo Err_txtCOBOLNam_Change
 
-    If txtCOBOLNam.Text = "" Then
-        txtCOBOLNam.BackColor = &HFFFF& ' set color to yellow
+    If txtCobolNam.Text = "" Then
+        txtCobolNam.BackColor = &HFFFF& ' set color to yellow
     Else
-        txtCOBOLNam.BackColor = &HFFFFFF 'set color to white
+        txtCobolNam.BackColor = &HFFFFFF 'set color to white
     End If
     
 Exit_txtCOBOLNam_Change:
@@ -1406,33 +1406,33 @@ On Error GoTo Err_txtCOBOLNam
     intDash = 45
     intFour = 4
         
-    strTemp = txtCOBOLNam.Text
+    strTemp = txtCobolNam.Text
     
     
     If strTemp = "" Then
-        txtCOBOLNam.BackColor = &HFFFF&
+        txtCobolNam.BackColor = &HFFFF&
         Exit Sub
     End If
     
     
     If Len(strTemp) < intFour Then
          MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
-         txtCOBOLNam.SetFocus
-         txtCOBOLNam.SelStart = 0
-         txtCOBOLNam.SelLength = Len(strTemp)
+         txtCobolNam.SetFocus
+         txtCobolNam.SelStart = 0
+         txtCobolNam.SelLength = Len(strTemp)
          Exit Sub
          
     ElseIf Len(strTemp) >= intFour And SpecialCharsChk(strTemp, intDash, True) Then
     
          MsgBox "Please enter a COBOL Name between 4 and 18 characters that does not contain special characters and spaces.", vbOKOnly, "Data Element Template"
-         txtCOBOLNam.SetFocus
-         txtCOBOLNam.SelStart = 0
-         txtCOBOLNam.SelLength = Len(strTemp)
+         txtCobolNam.SetFocus
+         txtCobolNam.SelStart = 0
+         txtCobolNam.SelLength = Len(strTemp)
          Exit Sub
        
    End If
         
-   txtCOBOLNam.Text = UCase(strTemp)
+   txtCobolNam.Text = UCase(strTemp)
         
                
 Exit_txtCOBOLNam:
@@ -1772,8 +1772,8 @@ End Sub
 Private Sub txtPointsToCOBOLNm_Change()
 On Error GoTo Err_txtCOBOLNam_Change
 
-    If txtCOBOLNam.Text = "" Then
-        txtCOBOLNam.BackColor = &HFFFFFF 'set color to white
+    If txtCobolNam.Text = "" Then
+        txtCobolNam.BackColor = &HFFFFFF 'set color to white
     End If
     
 Exit_txtCOBOLNam_Change:
@@ -2480,7 +2480,7 @@ On Error GoTo Err_checkfields
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     If (txtLongDesc.Text = "") Or (txtShortDesc.Text = "") Or (cboDataType.Text = "") _
-        Or (cboWidgetType.Text = "") Or (txtCName.Text = "") Or (txtCOBOLNam.Text = "") _
+        Or (cboWidgetType.Text = "") Or (txtCName.Text = "") Or (txtCobolNam.Text = "") _
         Or (txtColumnNam.Text = "") Or (txtIntLength.Text = "") Or (txtIntPrecision.Text = "") _
         Or (txtIntStructure.Text = "") Or (txtLiteral.Text = "") Or (txtRptLength.Text = "") _
         Or (txtRptPrecision.Text = "") Or (txtRptStructure.Text = "") Or (txtWidgetNam.Text = "") _
@@ -2539,40 +2539,40 @@ On Error GoTo Err_WriteSirInfo
     sSixspc5 = "      "
     sSixspc6 = "      "
             
-    sSpace1 = "                          "
-    sSpace2 = "                          "
-    sSpace3 = "                          "
-    sSpace4 = "                          "
-    sSpace5 = "                          "
-    sSpace6 = "                          "
+    sSpace1 = "                                          "
+    sSpace2 = "                                          "
+    sSpace3 = "                                          "
+    sSpace4 = "                                          "
+    sSpace5 = "                                          "
+    sSpace6 = "                                          "
     
-    sSpaceB1 = "               "
-    sSpaceB2 = "               "
-    sSpaceB3 = "               "
-    sSpaceB4 = "               "
-    sSpaceB5 = "               "
-    sSpaceB6 = "               "
+    sSpaceB1 = "         "
+    sSpaceB2 = "         "
+    sSpaceB3 = "         "
+    sSpaceB4 = "         "
+    sSpaceB5 = "         "
+    sSpaceB6 = "         "
     
-    sSpaceC1 = "               "
-    sSpaceC2 = "               "
-    sSpaceC3 = "               "
-    sSpaceC4 = "               "
-    sSpaceC5 = "               "
-    sSpaceC6 = "               "
+    sSpaceC1 = "            "
+    sSpaceC2 = "            "
+    sSpaceC3 = "            "
+    sSpaceC4 = "            "
+    sSpaceC5 = "            "
+    sSpaceC6 = "            "
     
-    sSpaceD1 = "               "
-    sSpaceD2 = "               "
-    sSpaceD3 = "               "
-    sSpaceD4 = "               "
-    sSpaceD5 = "               "
-    sSpaceD6 = "               "
+    sSpaceD1 = "        "
+    sSpaceD2 = "        "
+    sSpaceD3 = "        "
+    sSpaceD4 = "        "
+    sSpaceD5 = "        "
+    sSpaceD6 = "        "
     
-    sSpaceE1 = "               "
-    sSpaceE2 = "               "
-    sSpaceE3 = "               "
-    sSpaceE4 = "               "
-    sSpaceE5 = "               "
-    sSpaceE6 = "               "
+    sSpaceE1 = "          "
+    sSpaceE2 = "          "
+    sSpaceE3 = "          "
+    sSpaceE4 = "          "
+    sSpaceE5 = "          "
+    sSpaceE6 = "          "
     
     sWsLength = "           " '11 spaces
     sIntLength = "           " '11 spaces
@@ -2717,7 +2717,7 @@ On Error GoTo Err_WriteSirInfo
     Print #1, ""
     Print #1, "________________________________________________________________"
     Print #1, ""
-    Print #1, txtCOBOLNam.Text
+    Print #1, txtCobolNam.Text
     Print #1, ""
     Print #1, "________________________________________________________________"
     Print #1, ""
@@ -2742,24 +2742,24 @@ On Error GoTo Err_WriteSirInfo
     Print #1, ""
     Print #1, "11. List Values:"
     Print #1, ""
+    Print #1, "                                                     Use As:               Intial Value"
+    Print #1, "Value Literal                                   Default  Validation  Screen  Internal  Report"
+    Print #1, "                                                Active"
+    Print #1, "                                                (Y/N)    (Y/N)       (Y/N)   (Y/N)     (Y/N)"
     Print #1, ""
-    Print #1, "                                   Use As:                        Intial Value"
-    Print #1, "     Value   Literal            Default Active   Validation        Screen        Internal       Report"
-    Print #1, "                                     (Y/N)          (Y/N)          (Y/N)          (Y/N)          (Y/N)"
-    Print #1, ""
-    Print #1, "1.   " & frmListValues.txtValue1 & sSixspc1 & frmListValues.txtLiteral1.Text & sSpace1 & frmListValues.cboDA1.Text & sSpaceB1 & frmListValues.cboVal1.Text & sSpaceC1 & frmListValues.cboScreen1 & sSpaceD1 & frmListValues.cboInternal1 & sSpaceB1 & frmListValues.cboReport1
-    Print #1, "2.   " & frmListValues.txtValue2 & sSixspc2 & frmListValues.txtLiteral2.Text & sSpace2 & frmListValues.cboDA2.Text & sSpaceB2 & frmListValues.cboVal2.Text & sSpaceC2 & frmListValues.cboScreen2 & sSpaceD2 & frmListValues.cboInternal2 & sSpaceE2 & frmListValues.cboReport2
-    Print #1, "3.   " & frmListValues.txtValue3 & sSixspc3 & frmListValues.txtLiteral3.Text & sSpace3 & frmListValues.cboDA3.Text & sSpaceB3 & frmListValues.cboVal3.Text & sSpaceC3 & frmListValues.cboScreen3 & sSpaceD3 & frmListValues.cboInternal3 & sSpaceE3 & frmListValues.cboReport3
-    Print #1, "4.   " & frmListValues.txtValue4 & sSixspc4 & frmListValues.txtLiteral4.Text & sSpace4 & frmListValues.cboDA4.Text & sSpaceB4 & frmListValues.cboVal4.Text & sSpaceC4 & frmListValues.cboScreen4 & sSpaceD4 & frmListValues.cboInternal4 & sSpaceE4 & frmListValues.cboReport4
-    Print #1, "5.   " & frmListValues.txtValue5 & sSixspc5 & frmListValues.txtLiteral5.Text & sSpace5 & frmListValues.cboDA5.Text & sSpaceB5 & frmListValues.cboVal5.Text & sSpaceC5 & frmListValues.cboScreen5 & sSpaceD5 & frmListValues.cboInternal5 & sSpaceE5 & frmListValues.cboReport5
-    Print #1, "6.   " & frmListValues.txtValue6 & sSixspc6 & frmListValues.txtLiteral6.Text & sSpace6 & frmListValues.cboDA6.Text & sSpaceB6 & frmListValues.cboVal6.Text & sSpaceC6 & frmListValues.cboScreen6 & sSpaceD6 & frmListValues.cboInternal6 & sSpaceE6 & frmListValues.cboReport6
+    Print #1, frmListValues.txtValue1 & sSixspc1 & frmListValues.txtLiteral1.Text & sSpace1 & frmListValues.cboDA1.Text & sSpaceB1 & frmListValues.cboVal1.Text & sSpaceC1 & frmListValues.cboScreen1 & sSpaceD1 & frmListValues.cboInternal1 & sSpaceE1 & frmListValues.cboReport1; ""
+    Print #1, frmListValues.txtValue2 & sSixspc2 & frmListValues.txtLiteral2.Text & sSpace2 & frmListValues.cboDA2.Text & sSpaceB2 & frmListValues.cboVal2.Text & sSpaceC2 & frmListValues.cboScreen2 & sSpaceD2 & frmListValues.cboInternal2 & sSpaceE2 & frmListValues.cboReport2; ""
+    Print #1, frmListValues.txtValue3 & sSixspc3 & frmListValues.txtLiteral3.Text & sSpace3 & frmListValues.cboDA3.Text & sSpaceB3 & frmListValues.cboVal3.Text & sSpaceC3 & frmListValues.cboScreen3 & sSpaceD3 & frmListValues.cboInternal3 & sSpaceE3 & frmListValues.cboReport3; ""
+    Print #1, frmListValues.txtValue4 & sSixspc4 & frmListValues.txtLiteral4.Text & sSpace4 & frmListValues.cboDA4.Text & sSpaceB4 & frmListValues.cboVal4.Text & sSpaceC4 & frmListValues.cboScreen4 & sSpaceD4 & frmListValues.cboInternal4 & sSpaceE4 & frmListValues.cboReport4; ""
+    Print #1, frmListValues.txtValue5 & sSixspc5 & frmListValues.txtLiteral5.Text & sSpace5 & frmListValues.cboDA5.Text & sSpaceB5 & frmListValues.cboVal5.Text & sSpaceC5 & frmListValues.cboScreen5 & sSpaceD5 & frmListValues.cboInternal5 & sSpaceE5 & frmListValues.cboReport5; ""
+    Print #1, frmListValues.txtValue6 & sSixspc6 & frmListValues.txtLiteral6.Text & sSpace6 & frmListValues.cboDA6.Text & sSpaceB6 & frmListValues.cboVal6.Text & sSpaceC6 & frmListValues.cboScreen6 & sSpaceD6 & frmListValues.cboInternal6 & sSpaceE6 & frmListValues.cboReport6
     Print #1, ""
     Print #1, ""
     Print #1, "12. Level 88-Values:"
     Print #1, "    COBOL Name                   Text"
     Print #1, ""
     Print #1, ""
-    Print #1, "              " & frmCOBOLVal.txtCOBOLNam.Text & "                         " & frmCOBOLVal.txtAliasDE.Text
+    Print #1, "              " & frmCOBOLVal.txtCobolNam.Text & "                         " & frmCOBOLVal.txtAliasDE.Text
     Print #1, ""
     Print #1, ""
     Print #1, ""
@@ -2793,7 +2793,7 @@ On Error GoTo Err_WriteSirInfo
     Print #1, "COBOL Name        Lower Bound        Operand 1        Operand 2        Upper Bound"
     Print #1, ""
     Print #1, ""
-    Print #1, frmCOBOLVal.txtCOBOLNam.Text & "          " & frmCOBOLVal.txtLB.Text & "          " & frmCOBOLVal.txtOper1.Text & "          " & frmCOBOLVal.txtOper2.Text & "          " & frmCOBOLVal.txtUB.Text
+    Print #1, frmCOBOLVal.txtCobolNam.Text & "          " & frmCOBOLVal.txtLB.Text & "          " & frmCOBOLVal.txtOper1.Text & "          " & frmCOBOLVal.txtOper2.Text & "          " & frmCOBOLVal.txtUB.Text
     Print #1, ""
     Print #1, ""
     Print #1, ""
