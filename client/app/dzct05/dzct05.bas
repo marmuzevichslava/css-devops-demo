@@ -21,13 +21,13 @@ Public fFTPInFile As String
 Public fFTPOutFile As String
 Public ErrorFound As Boolean
 Public LogError As Boolean
+Public sFTPParameter As String
 Const fErrorLogFile As String = "c:\temp\static_error.log"
 Const EXTRACT_TABLES As String = "E"
 Const CODES_ENTRIES As String = "C"
 Const BFA_ENTRIES As String = "B"
 Const RELATIONAL_ENTRIES = "R"
 Const USER As String = "pvcs"
-Const PWD As String = "frog42"
 Const TABLE_TYPE = 4
 
 '***********************************************************
@@ -48,6 +48,9 @@ Private Sub Main()
         
 End Sub
 
+'*************************************************************
+'**                     WriteToErrorLog                     **
+'*************************************************************
 Private Sub WriteToErrorLog()
     
     On Error GoTo FileOpenError
@@ -72,6 +75,73 @@ FileOpenError:
     SendEmail
 
 End Sub
+
+'************************************************************
+'**                       GetFTPParameters                 **
+'************************************************************
+Public Function GetFTPParameters()
+
+    Dim strsql As String
+    Dim DaoRS As Recordset
+  
+    On Error GoTo SQLError
+    
+    'Find out what server the project resides on.
+    strsql = "Select Value " _
+           & "From tblFTPParameter"
+             
+    On Error GoTo RecordsetError
+    
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+
+    On Error GoTo GetParameterError
+    
+    If Not DaoRS.EOF Then
+        sFTPParameter = DaoRS(0).Value
+    Else
+        Err.Raise 15, PutTblFile, "No more records in recordset."
+    End If
+    
+    DaoRS.Close
+    
+    GetFTPParameters = True
+    
+    Exit Function
+    
+SQLError:
+    GetFTPParameters = False
+    ErrorFound = True
+    msg = "An error occurred while trying to perform SQL query in the GetFTPParameters function." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+RecordsetError:
+    GetFTPParameters = False
+    ErrorFound = True
+    msg = "An error occurred while trying to open the recordset during when getting the FTP parameter." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+Exit Function
+
+GetParameterError:
+    GetFTPParameters = False
+    ErrorFound = True
+    msg = "An error occurred while trying to get the FTP parameter." & _
+          " Error number is " & Err.Number & _
+          " Error source is " & Err.Source & _
+          " Error description is " & Err.Description
+    'Send email.
+    SendEmail
+End Function
+   
+
 
 '************************************************************
 '**                          Email                         **
@@ -304,7 +374,7 @@ Public Function PutTblFile() As Boolean
         .ErrorMessageBox = False
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = fFTPOutFile
         .LocalFile = fCTempOutFile
         .PutFile
@@ -371,7 +441,7 @@ Public Function DeleteRelationalTables() As Boolean
     
     On Error GoTo SQLQueryError
         
-    'Query to see if static tables exist in tblTables.
+    'Query to see if static tables exist in tblRelTables.
     SQLQuery = "SELECT TableName " _
              & "FROM tblRelTables;"
                       
@@ -382,7 +452,7 @@ Public Function DeleteRelationalTables() As Boolean
     If Not DaoRS.EOF Then
         On Error GoTo SQLDeleteError
     
-        'Delete static tables from tblTables.
+        'Delete static tables from tblRelTables.
         SQLDelete = "DELETE * " _
                   & "FROM tblRelTables;"
                   
@@ -394,7 +464,7 @@ Public Function DeleteRelationalTables() As Boolean
         dbCTM.Execute SQLDelete, dbFailOnError
     
         If dbCTM.RecordsAffected = 0 Then
-            Err.Raise 4, "UpdateProcess", "The static tables were not deleted from tblTables."
+            Err.Raise 4, "UpdateProcess", "The static tables were not deleted from tblRelTables."
             wsCTM.Rollback
         Else
             'Commit DAO transaction.
@@ -422,7 +492,7 @@ Exit Function
 ProcessingRelationalTableDeleteError:
     DeleteRelationalTables = False
     LogError = True
-    msg = "An error occured while to delete the static tables from tblTables." & _
+    msg = "An error occured while to delete the static tables from tblRelTables." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
@@ -433,7 +503,7 @@ ProcessingRelationalTableDeleteError:
 RecordsetError1:
     DeleteRelationalTables = False
     ErrorFound = True
-    msg = "An error occurred while trying to open the recordset in DeleteCodesRealtions which checks to see if any static tables exists in tblTables before deleting them." & _
+    msg = "An error occurred while trying to open the recordset in DeleteCodesRelations which checks to see if any static tables exists in tblRelTables before deleting them." & _
           " Error number is " & Err.Number & _
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
@@ -617,50 +687,13 @@ End Function
 '**                    DeleteCodesRelations                 **
 '*************************************************************
 Public Function DeleteCodesRelations() As Boolean
- 
+         
     Dim SQLDelete As String
     Dim SQLQuery As String
     
     On Error GoTo SQLQueryError
         
-    'Query to see if static tables exist in tblTables.
-    SQLQuery = "SELECT TableName " _
-             & "FROM tblTables " _
-             & "WHERE TableType = 4;"
-                      
-    On Error GoTo RecordsetError1
-    
-    Set DaoRS = dbCTM.OpenRecordset(SQLQuery, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-    If Not DaoRS.EOF Then
-        On Error GoTo SQLDeleteError
-    
-        'Delete static tables from tblTables.
-        SQLDelete = "DELETE * " _
-                  & "FROM tblTables " _
-                  & "WHERE TableType = 4;"
-                      
-        On Error GoTo ProcessingStaticTableDeleteError
-                           
-        'Begin DAO transaction.
-        wsCTM.BeginTrans
-        'Execute SQL.
-        dbCTM.Execute SQLDelete, dbFailOnError
-    
-        If dbCTM.RecordsAffected = 0 Then
-            Err.Raise 4, "UpdateProcess", "The static tables were not deleted from tblTables."
-            wsCTM.Rollback
-        Else
-            'Commit DAO transaction.
-            wsCTM.CommitTrans
-        End If
-    Else
-        DaoRS.Close
-    End If
-        
-    On Error GoTo SQLQueryError
-        
-    'Query to see if static tables exist in tblTables.
+    'Query to see if codes table relationships exist in tblStaticCodesEntries.
     SQLQuery = "SELECT * " _
              & "FROM tblStaticCodesEntries;"
                       
@@ -695,7 +728,7 @@ Public Function DeleteCodesRelations() As Boolean
         
     On Error GoTo SQLQueryError
         
-    'Query to see if static tables exist in tblTables.
+    'Query to see if codes table exists in tblCodesLookup.
     SQLQuery = "SELECT * " _
              & "FROM tblCodesLookup;"
                       
@@ -743,17 +776,6 @@ SQLDeleteError:
     SendEmail
 Exit Function
 
-ProcessingStaticTableDeleteError:
-    DeleteCodesRelations = False
-    LogError = True
-    msg = "An error occured while to delete the static tables from tblTables." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-    'Place error message into error log file.
-    WriteToErrorLog
-    Resume Next
-
 ProcessingRelationshipDeleteError:
     DeleteCodesRelations = False
     LogError = True
@@ -775,17 +797,6 @@ ProcessingCodesLookupDeleteError:
     'Place error message into error log file.
     WriteToErrorLog
     Resume Next
-
-RecordsetError1:
-    DeleteCodesRelations = False
-    ErrorFound = True
-    msg = "An error occurred while trying to open the recordset in DeleteCodesRealtions which checks to see if any static tables exists in tblTables before deleting them." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-    'Send email.
-    SendEmail
-Exit Function
 
 RecordsetError2:
     DeleteCodesRelations = False
@@ -903,45 +914,7 @@ Public Function CodesUpdateProcess() As Boolean
         Else
              wsCTM.CommitTrans
         End If
-                
-        On Error GoTo SQLQueryError
-        
-        'Query to see if static table exists in tblTables.
-        SQLQuery = "SELECT TableName " _
-                 & "FROM tblTables " _
-                 & "WHERE TableName = " & Chr(34) & sStaticTabNum & Chr(34)
-                      
-        On Error GoTo RecordsetError1
-    
-        Set DaoRS = dbCTM.OpenRecordset(SQLQuery, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-        On Error GoTo StaticTablesSQLInsertError
-    
-        If DaoRS.EOF Then
-            'Set SQL string.
-            SQLInsert = "INSERT INTO tblTables " _
-                      & "SELECT " & Chr(34) & sStaticTabNum & Chr(34) & " As TableName," _
-                      & Chr(34) & TABLE_TYPE & Chr(34) & " AS TableType," _
-                      & Chr(34) & sTimestamp & Chr(34) & " AS FlagUpdateTS;"
-        
-            On Error GoTo ProcessingStaticTablesError
-        
-            'Begin DAO transaction.
-            wsCTM.BeginTrans
-            'Execute SQL.
-            dbCTM.Execute SQLInsert, dbFailOnError
-    
-            If dbCTM.RecordsAffected = 0 Then
-                Err.Raise 4, "UpdateProcess", "tblTables was not updated for " & sStaticTabNum & "."
-                wsCTM.Rollback
-            Else
-                'Commit DAO transaction.
-                wsCTM.CommitTrans
-            End If
-        Else
-            DaoRS.Close
-        End If
-                         
+                                
         On Error GoTo SQLQueryError
         
         'Query to see if codes table exists in tblCodesLookup.
@@ -1021,17 +994,6 @@ ProcessingRelationshipError:
     'Place error message into error log file.
     WriteToErrorLog
     Resume Next
-
-ProcessingStaticTablesError:
-    CodesUpdateProcess = False
-    LogError = True
-    msg = "An error occured while trying to insert the static table " & sStaticTabNum & " into tblTables." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-    'Place error message into error log file.
-    WriteToErrorLog
-    Resume Next
     
 ProcessingCodesLookupError:
     CodesUpdateProcess = False
@@ -1043,17 +1005,6 @@ ProcessingCodesLookupError:
     'Place error message into error log file.
     WriteToErrorLog
     Resume Next
-    
-RecordsetError1:
-    CodesUpdateProcess = False
-    ErrorFound = True
-    msg = "An error occurred while trying to open the recordset in CodesUpdateProcess which checks to see if the static table exists in tblTables." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-    'Send email.
-    SendEmail
-Exit Function
 
 RecordsetError2:
     CodesUpdateProcess = False
@@ -1063,17 +1014,6 @@ RecordsetError2:
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
     'Send email.
-    SendEmail
-Exit Function
-
-StaticTablesSQLInsertError:
-    CodesUpdateProcess = False
-    ErrorFound = True
-    msg = "An error occurred while performing SQLInsert for static table names in CodesUpdateProcess." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-   'Send email.
     SendEmail
 Exit Function
 
@@ -1134,7 +1074,7 @@ Public Function GetTblFile() As Boolean
         .ErrorMessageBox = False
         .HostName = sServer
         .UserName = USER
-        .Password = PWD
+        .Password = sFTPParameter
         .RemoteFile = fFTPInFile
         .LocalFile = fCTempInFile
         .GetFile
@@ -1428,44 +1368,6 @@ Public Function BFAUpdateProcess() As Boolean
             
         On Error GoTo SQLQueryError
         
-        'Query to see if static table exists in tblTables.
-        SQLQuery = "SELECT TableName " _
-                 & "FROM tblTables " _
-                 & "WHERE TableName = " & Chr(34) & sStaticTabNum & Chr(34)
-                      
-        On Error GoTo RecordsetError1
-    
-        Set DaoRS = dbCTM.OpenRecordset(SQLQuery, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-
-        On Error GoTo StaticTablesSQLInsertError
-    
-        If DaoRS.EOF Then
-            'Set SQL string.
-            SQLInsert = "INSERT INTO tblTables " _
-                      & "SELECT " & Chr(34) & sStaticTabNum & Chr(34) & " As TableName," _
-                      & Chr(34) & TABLE_TYPE & Chr(34) & " AS TableType," _
-                      & Chr(34) & sTimestamp & Chr(34) & " AS FlagUpdateTS;"
-        
-            On Error GoTo ProcessingStaticTablesError
-        
-            'Begin DAO transaction.
-            wsCTM.BeginTrans
-            'Execute SQL.
-            dbCTM.Execute SQLInsert, dbFailOnError
-    
-            If dbCTM.RecordsAffected = 0 Then
-                Err.Raise 4, "UpdateProcess", "tblTables was not updated for " & sStaticTabNum & "."
-                wsCTM.Rollback
-            Else
-                'Commit DAO transaction.
-                wsCTM.CommitTrans
-            End If
-        Else
-            DaoRS.Close
-        End If
-        
-        On Error GoTo SQLQueryError
-        
         'Query to see if codes table exists in tblCodesLookup.
         SQLQuery = "SELECT CopybookName " _
                  & "FROM tblBFALookup " _
@@ -1544,17 +1446,6 @@ ProcessingBFALookupError:
     WriteToErrorLog
     Resume Next
 
-ProcessingStaticTablesError:
-    BFAUpdateProcess = False
-    LogError = True
-    msg = "An error occured while trying to insert the static table " & sStaticTabNum & " into tblTables." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-    'Place error message into error log file.
-    WriteToErrorLog
-    Resume Next
-
 ProcessingRelationshipError:
     BFAUpdateProcess = False
     LogError = True
@@ -1566,17 +1457,6 @@ ProcessingRelationshipError:
     WriteToErrorLog
     Resume Next
 
-RecordsetError1:
-    BFAUpdateProcess = False
-    ErrorFound = True
-    msg = "An error occurred while trying to open the recordset in BFAUpdateProcess which checks to see if the static table exists in tblTables." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-    'Send email.
-    SendEmail
-Exit Function
-
 SQLQueryError:
     BFAUpdateProcess = False
     ErrorFound = True
@@ -1585,17 +1465,6 @@ SQLQueryError:
           " Error source is " & Err.Source & _
           " Error description is " & Err.Description
     'Send email.
-    SendEmail
-Exit Function
-
-StaticTablesSQLInsertError:
-    BFAUpdateProcess = False
-    ErrorFound = True
-    msg = "An error occurred while performing SQLInsert for static table names in BFAUpdateProcess." & _
-          " Error number is " & Err.Number & _
-          " Error source is " & Err.Source & _
-          " Error description is " & Err.Description
-   'Send email.
     SendEmail
 Exit Function
 
@@ -1700,6 +1569,12 @@ Public Function Process() As Boolean
     
     On Error GoTo InvalidFunction
     
+    If Not GetFTPParameters Then
+        Process = False
+    Else
+        Process = True
+    End If
+        
     'Perform either Codes Entries or BFA Entries.
     Select Case sRelationType
         Case EXTRACT_TABLES
@@ -1797,7 +1672,7 @@ Public Function WrapUp() As Boolean
                      .ErrorMessageBox = False
                      .HostName = sServer
                      .UserName = USER
-                     .Password = PWD
+                     .Password = sFTPParameter
                      .RemoteDirectory = fUNIXPath
                      .RemoteFile = fWorkFile & "*"
                      .DeleteDirectory
@@ -1841,7 +1716,7 @@ Public Function WrapUp() As Boolean
                      .ErrorMessageBox = False
                      .HostName = sServer
                      .UserName = USER
-                     .Password = PWD
+                     .Password = sFTPParameter
                      .RemoteDirectory = fUNIXPath
                      .RemoteFile = fWorkFile & "*"
                      .DeleteDirectory
@@ -1885,7 +1760,7 @@ Public Function WrapUp() As Boolean
                      .ErrorMessageBox = False
                      .HostName = sServer
                      .UserName = USER
-                     .Password = PWD
+                     .Password = sFTPParameter
                      .RemoteDirectory = fUNIXPath
                      .RemoteFile = fWorkFile & "*"
                      .DeleteDirectory
