@@ -784,7 +784,6 @@ VOID CompareLayouts(_STDParms *pSTDParms)
              pSTDParms );
 
 	//HEAP_CHECK_BEEP
-
     if( bRemap )
     {
         FndGenRC = CmnOsSignalSet(hsemLock);
@@ -799,6 +798,7 @@ VOID CompareLayouts(_STDParms *pSTDParms)
 
         return;
     }
+   
 
     MsgID = CMN_MAPGEN_MSG_INFO;
     sprintf( MsgData,                                              /* 255 */
@@ -3052,8 +3052,14 @@ SHORT ChangeRPMH( SHORT sServ,
       pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex];
 
     /* If a relationship exists see what the client indexes are */
+    /*mdc 01/27/97 added single occurrence condition.  At this point
+    some groups have 'Y' in their pRepeatingMaps structure although they no
+    longer have occurring groups that are mapped.
+    */
     if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
-         pSavedRepeatingMaps[sIndex].ClientLayoutIndex > 0 )
+         pSavedRepeatingMaps[sIndex].ClientLayoutIndex > 0 || 
+         pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex].
+         SingleOccurence == 'Y')
     {
         /* Make sure the number of Occurs has not changed */
         /* If so and a relationship exists drop relationship and notify user */
@@ -3111,6 +3117,17 @@ SHORT ChangeRPMH( SHORT sServ,
 
             pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
                    pRepeatingMaps[sNewReposIx].ClientLayoutIndex = -1;
+
+			/*mdc 01/28/97 added to remove occurrence data from the BFCD for this
+			item
+			*/
+			if ( pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].
+                   pReposServiceLayoutTable[sNewReposIx].ItemOccurs <= 1)
+			{
+				pBFCD->pCSRMapBFCD->ServiceInfoTable[sServ].pSavedRepeatingMaps[sIndex].
+                                SingleOccurence = 'N';
+			}
+
 
             /*HEAP_CHECK_BEEP*/
 
