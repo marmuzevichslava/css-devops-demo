@@ -368,7 +368,7 @@ Begin VB.Form frmCopyBk
       Width           =   1815
    End
    Begin VB.Label lblUser 
-      Caption         =   "4. Copybook ID:"
+      Caption         =   "4. Copybook Id:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -381,7 +381,7 @@ Begin VB.Form frmCopyBk
       Height          =   255
       Left            =   4680
       TabIndex        =   22
-      Top             =   2055
+      Top             =   2040
       Width           =   1695
    End
    Begin VB.Label Label1 
@@ -1480,10 +1480,6 @@ Err_Form_Load:
  
 End Sub
 
-Private Sub lblUser_Click()
-
-End Sub
-
 Private Sub mnuAddCpyBk_Click()
 On Error GoTo Err_mnuAddCpyBk_Click
 
@@ -1596,10 +1592,6 @@ Err_mnuExit_Click:
     GoTo Exit_mnuExit_Click
     
         
-End Sub
-
-Private Sub mnuHelp_Click()
-
 End Sub
 
 '****************************************************************************
@@ -1962,22 +1954,16 @@ Public Sub DataLoad()
 On Error GoTo Err_DataLoad
 
     
-    Dim counter As Integer
+    Dim dllFindPath As New DataTeamToolDLL.PathtoCodes   'added 10/30/97 CMitchell
     Dim myCodestable As New CodesTable
-    Dim tempString As String
-    Dim myStr
-    Dim length As Integer
     Dim myDatabase As String
-        
-    myDatabase = "o:\tools\datateamtool\codestbl\Codesdat.mdb"
     
-'''''''''''sbricker TOSIRWB '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'    Call LoadProc(myDatabase, cboOriging, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-'    Call LoadProc(myDatabase, cboDestination, "tblEntries", "Key", "Decode", "DEV00701", "TableName")
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    myDatabase = "o:\tools\DataTeamTool\codestbl\DataTeam.mdb"
-  
+    'myDatabase = dllFindPath.glrGetRegistryValueFromPath(PATH_TO_CODESDAT_MDB)
+    
+    'Finds the path to where the database DataTeam.mdb is located on users machine
+    'which contains the info for the combo boxes.   Added 10/30/97 by Christina Mitchell
+    myDatabase = dllFindPath.glrGetRegistryValueFromPath(PATH_TO_DATATEAM_MDB)
+    
     Call LoadProc(myDatabase, cboCpyBkType, "tblCopyBkType", "CopyBkTypeCd", "CopyBookTypeDcd", "", , True)
     Call LoadProc(myDatabase, cboPrefix, "tblPrefix", "PrefixCd", "PrefixDcd", "", , True)
     Call LoadProc(myDatabase, cboEntity, "tblProcessType", "ProcessTypeCd", "ProcessTypeDcd", "", , True)
@@ -1992,9 +1978,7 @@ Exit_DataLoad:
 Err_DataLoad:
     MsgBox Error$
     GoTo Exit_DataLoad
-    
-    
-    
+     
 End Sub
 
 '****************************************************************************
@@ -2253,3 +2237,25 @@ Err_txtSuffix_Change:
     
 End Sub
 
+
+Public Function ResetProperties()
+
+    'clear out any data in fields after file has been written
+    frmCopyBk.cboCpyBkType.Text = ""
+    frmCopyBk.cboDestination.Text = ""
+    frmCopyBk.cboEntity.Text = ""
+    frmCopyBk.cboIncrement.Text = "2"
+    frmCopyBk.cboInitial.Text = "3"
+    frmCopyBk.cboLanguage.Text = ""
+    frmCopyBk.cboOriging.Text = ""
+    frmCopyBk.cboPrefix.Text = ""
+    frmCopyBk.cboValues.Text = ""
+    frmCopyBk.txtCpyBkNam.Text = ""
+    frmCopyBk.txtLongDesc.Text = ""
+    frmCopyBk.txtShortDesc.Text = ""
+    frmCopyBk.txtSirNo.Text = ""
+    frmCopyBk.txtSuffix.Text = ""
+    frmCopyBk.chkImplied.Value = 0
+    frmCopyBk.chkPrefix88.Value = 0
+
+End Function
