@@ -2,14 +2,14 @@ VERSION 5.00
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
 Begin VB.Form frmImportStatus 
    Caption         =   "Import Status"
-   ClientHeight    =   3570
+   ClientHeight    =   3195
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   6375
    Icon            =   "frmImportStatus.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
-   ScaleHeight     =   3570
+   ScaleHeight     =   3195
    ScaleWidth      =   6375
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdPrint 
@@ -23,10 +23,10 @@ Begin VB.Form frmImportStatus
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
+      Height          =   315
       Left            =   1155
-      TabIndex        =   2
-      Top             =   2925
+      TabIndex        =   0
+      Top             =   2820
       Width           =   1215
    End
    Begin VB.CommandButton cmdCommit 
@@ -41,10 +41,10 @@ Begin VB.Form frmImportStatus
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   4005
-      TabIndex        =   0
-      Top             =   2925
+      Height          =   315
+      Left            =   4020
+      TabIndex        =   2
+      Top             =   2820
       Width           =   1215
    End
    Begin VB.CommandButton cmdRollback 
@@ -58,10 +58,10 @@ Begin VB.Form frmImportStatus
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
+      Height          =   315
       Left            =   2580
       TabIndex        =   1
-      Top             =   2925
+      Top             =   2820
       Width           =   1215
    End
    Begin ComctlLib.ListView lvErrorList 
@@ -257,7 +257,7 @@ Private Sub Form_Load()
         Set itmX = lvErrorList.ListItems.Add(, , ImportErrArray(x).Table)
             itmX.SubItems(1) = ImportErrArray(x).Key
             itmX.SubItems(2) = ImportErrArray(x).Decode
-            itmX.SubItems(3) = ImportErrArray(x).client
+            itmX.SubItems(3) = ImportErrArray(x).Client
             itmX.SubItems(4) = ImportErrArray(x).Action
     Next
     

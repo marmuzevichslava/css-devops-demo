@@ -1,100 +1,19 @@
 VERSION 5.00
 Begin VB.Form frmAddModKey 
    BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   3570
+   ClientHeight    =   3480
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   7695
+   ClientWidth     =   7545
    Icon            =   "frmAddModKey.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3570
-   ScaleWidth      =   7695
+   ScaleHeight     =   3480
+   ScaleWidth      =   7545
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.ComboBox cbxApplication 
-      Height          =   315
-      ItemData        =   "frmAddModKey.frx":030A
-      Left            =   1350
-      List            =   "frmAddModKey.frx":030C
-      Style           =   2  'Dropdown List
-      TabIndex        =   2
-      Top             =   999
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxRelease 
-      Height          =   315
-      Left            =   1350
-      Style           =   2  'Dropdown List
-      TabIndex        =   6
-      Top             =   1773
-      Width           =   2295
-   End
-   Begin VB.ComboBox cbxPlatform 
-      Height          =   315
-      Left            =   1350
-      Style           =   2  'Dropdown List
-      TabIndex        =   4
-      Top             =   1386
-      Width           =   2295
-   End
-   Begin VB.TextBox txtKey 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   0
-      ToolTipText     =   "Key Code to Add/Modify"
-      Top             =   225
-      Width           =   2295
-   End
-   Begin VB.TextBox txtDecode 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   1350
-      TabIndex        =   1
-      ToolTipText     =   "Decode for the current Key"
-      Top             =   612
-      Width           =   5970
-   End
-   Begin VB.TextBox txtComments 
-      Height          =   675
-      Left            =   4920
-      MultiLine       =   -1  'True
-      ScrollBars      =   2  'Vertical
-      TabIndex        =   7
-      ToolTipText     =   "Comments for current Key"
-      Top             =   1440
-      Width           =   2370
-   End
-   Begin VB.ComboBox cbxClients 
-      BackColor       =   &H00FFFFFF&
-      Height          =   315
-      Left            =   4920
-      Style           =   2  'Dropdown List
-      TabIndex        =   3
-      ToolTipText     =   "Client this entry applies to"
-      Top             =   1017
-      Width           =   2415
-   End
-   Begin VB.CommandButton cmdCancel 
-      Caption         =   "&Close"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   4080
-      TabIndex        =   12
-      ToolTipText     =   "Add the current user id"
-      Top             =   3015
-      Width           =   1215
-   End
    Begin VB.CommandButton cmdProcess 
       Caption         =   "&Add"
       Default         =   -1  'True
@@ -108,17 +27,99 @@ Begin VB.Form frmAddModKey
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   2520
+      Height          =   330
+      Left            =   2475
       TabIndex        =   11
       ToolTipText     =   "Add the current user id"
       Top             =   3015
       Width           =   1215
    End
+   Begin VB.CommandButton cmdCancel 
+      Caption         =   "&Close"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   330
+      Left            =   4020
+      TabIndex        =   12
+      ToolTipText     =   "Add the current user id"
+      Top             =   3015
+      Width           =   1215
+   End
+   Begin VB.ComboBox cbxClients 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   4920
+      Style           =   2  'Dropdown List
+      TabIndex        =   1
+      ToolTipText     =   "Client this entry applies to"
+      Top             =   255
+      Width           =   2415
+   End
+   Begin VB.TextBox txtKey 
+      BackColor       =   &H0000FFFF&
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   0
+      ToolTipText     =   "Key Code to Add/Modify"
+      Top             =   255
+      Width           =   2295
+   End
+   Begin VB.ComboBox cbxApplication 
+      Height          =   315
+      ItemData        =   "frmAddModKey.frx":030A
+      Left            =   1350
+      List            =   "frmAddModKey.frx":030C
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   999
+      Width           =   2295
+   End
+   Begin VB.ComboBox cbxRelease 
+      Height          =   315
+      Left            =   1350
+      Style           =   2  'Dropdown List
+      TabIndex        =   5
+      Top             =   1773
+      Width           =   2295
+   End
+   Begin VB.ComboBox cbxPlatform 
+      Height          =   315
+      Left            =   1350
+      Style           =   2  'Dropdown List
+      TabIndex        =   4
+      Top             =   1386
+      Width           =   2295
+   End
+   Begin VB.TextBox txtDecode 
+      BackColor       =   &H00FFFFFF&
+      Height          =   315
+      Left            =   1350
+      TabIndex        =   2
+      ToolTipText     =   "Decode for the current Key"
+      Top             =   612
+      Width           =   5970
+   End
+   Begin VB.TextBox txtComments 
+      Height          =   1050
+      Left            =   4920
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
+      TabIndex        =   6
+      ToolTipText     =   "Comments for current Key"
+      Top             =   1020
+      Width           =   2370
+   End
    Begin VB.CheckBox chkStatic 
       Caption         =   "Static Tables"
       Height          =   255
-      Left            =   1740
+      Left            =   1267
       TabIndex        =   8
       ToolTipText     =   "Indicates the current Key is used in a Static Table"
       Top             =   2655
@@ -127,7 +128,7 @@ Begin VB.Form frmAddModKey
    Begin VB.CheckBox chkCodes 
       Caption         =   "Codes Tables"
       Height          =   255
-      Left            =   5490
+      Left            =   4942
       TabIndex        =   10
       ToolTipText     =   "Indicates the current Key is used in another Codes Table"
       Top             =   2655
@@ -136,7 +137,7 @@ Begin VB.Form frmAddModKey
    Begin VB.CheckBox chkSystem 
       Caption         =   "System Code"
       Height          =   255
-      Left            =   3615
+      Left            =   3142
       TabIndex        =   9
       ToolTipText     =   "Indicates the current Key is used in System Code"
       Top             =   2655
@@ -146,10 +147,46 @@ Begin VB.Form frmAddModKey
       BackColor       =   &H00FFFFFF&
       Height          =   315
       Left            =   1350
-      TabIndex        =   5
+      TabIndex        =   7
       ToolTipText     =   "Decription of the current Key"
       Top             =   2160
       Width           =   5925
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Key:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Left            =   645
+      TabIndex        =   20
+      Top             =   285
+      Width           =   615
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Client:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Left            =   4200
+      TabIndex        =   19
+      Top             =   285
+      Width           =   615
    End
    Begin VB.Label Label10 
       Alignment       =   1  'Right Justify
@@ -165,7 +202,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   480
-      TabIndex        =   20
+      TabIndex        =   18
       Top             =   1800
       Width           =   780
    End
@@ -183,7 +220,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   420
-      TabIndex        =   19
+      TabIndex        =   17
       Top             =   1440
       Width           =   840
    End
@@ -201,7 +238,7 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   18
+      TabIndex        =   16
       Top             =   1080
       Width           =   1095
    End
@@ -218,9 +255,9 @@ Begin VB.Form frmAddModKey
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   3720
-      TabIndex        =   17
-      Top             =   1440
+      Left            =   3735
+      TabIndex        =   15
+      Top             =   1035
       Width           =   1080
    End
    Begin VB.Label Label4 
@@ -237,27 +274,9 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   16
+      TabIndex        =   14
       Top             =   2160
       Width           =   1095
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Client:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   4200
-      TabIndex        =   15
-      Top             =   1155
-      Width           =   615
    End
    Begin VB.Label Label1 
       Alignment       =   1  'Right Justify
@@ -273,27 +292,9 @@ Begin VB.Form frmAddModKey
       EndProperty
       Height          =   240
       Left            =   420
-      TabIndex        =   14
+      TabIndex        =   13
       Top             =   630
       Width           =   840
-   End
-   Begin VB.Label Label2 
-      Alignment       =   1  'Right Justify
-      Caption         =   "Key:"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Left            =   645
-      TabIndex        =   13
-      Top             =   255
-      Width           =   615
    End
 End
 Attribute VB_Name = "frmAddModKey"
@@ -333,7 +334,7 @@ Private Sub cmdProcess_Click()
 '***************************************************************************************************************
     Dim RC As Integer
     Dim strsql As String
-    Dim myClient As New client
+    Dim myClient As New Client
     
     'Are we in 'add' mode?
     If (bAddNewKey) Then
@@ -465,7 +466,7 @@ End Sub
 Private Sub Form_Load()
 '***************************************************************************************************************
     Dim RC As Integer, x As Integer
-    Dim myClient As New client
+    Dim myClient As New Client
     bFormLoaded = False
     bChangeKey = False
     
@@ -488,7 +489,6 @@ Private Sub Form_Load()
         cmdProcess.Caption = "&Add"
         txtKey.Text = "E"
         txtKey.SelStart = Len(txtKey.Text) + 1
-        
     
     'We are modifying a current Key.
     Else
@@ -503,7 +503,8 @@ Private Sub Form_Load()
                  & " FROM (((tblEntries INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code" _
                  & " WHERE TableName = " & Chr(39) & CurTable & Chr(39) & "AND Key = " & Chr(39) & CurKey & Chr(39) & " and tblEntries.Client = " & myClient.Displaycode
                  
-         Debug.Print strsql
+        Debug.Print strsql
+        
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
         If Not DaoRS.EOF Then
@@ -524,7 +525,7 @@ Private Sub Form_Load()
             
             'Set up the client combo box.
             For x = 0 To UBound(ClientArray)
-                If (DaoRS(2).Value = ClientArray(x).client) Then
+                If (DaoRS(2).Value = ClientArray(x).Client) Then
                     cbxClients.ListIndex = x
                     Exit For
                 End If
@@ -656,14 +657,11 @@ Private Sub txtKey_Change()
     If (bFormLoaded = True) Then
         bChangeKey = True
     End If
-        
     
     'Refresh the window controls
     WindowRefresh
     
 End Sub
-
-
 
 '***************************************************************************************************************
 Public Sub WindowRefresh()
@@ -713,7 +711,6 @@ Public Sub WindowRefresh()
             
             bKeyOK = False
     End If
-
     
     'Take care of the decode field.
     DecodeMaxLen% = frmMain.txtDecodeLength.Text
@@ -742,20 +739,16 @@ Public Sub WindowRefresh()
         cmdProcess.Enabled = False
     End If
 
-
 End Sub
-
-
 
 '***************************************************************************************************************
 Public Function AddNewRecord() As Boolean
 '***************************************************************************************************************
-    Dim myClient As New client
+    Dim myClient As New Client
     Dim myApplication As New Application
     Dim myPlatform As New Platform
     Dim myRelease As New Release
     Dim myComment As New Comment
-    Dim lFromLen As Long, lLen As Long, lLeft As Long
     
     myClient.Decode = Me.cbxClients.Text
     myApplication.Decode = Me.cbxApplication.Text
@@ -788,14 +781,12 @@ Public Function AddNewRecord() As Boolean
         strsql = strsql & False & ", "
     End If
     
-    
     'Add the Static Table Usage Flags.
     If (chkStatic.Value = 1) Then
         strsql = strsql & True & ", "
     Else
         strsql = strsql & False & ", "
     End If
-    
     
     'Add the Codes Table Usage Flags.
     If (chkCodes.Value = 1) Then
@@ -848,18 +839,14 @@ InsertError:
     Resume Next
 End Function
 
-
-
 '***************************************************************************************************************
 Public Function ModifyRecord() As Boolean
 '***************************************************************************************************************
-    Dim myClient As New client
+    Dim myClient As New Client
     Dim myApplication As New Application
     Dim myPlatform As New Platform
     Dim myRelease As New Release
     Dim myComment As New Comment
-
-
     
     myClient.Decode = Me.cbxClients.Text
     myApplication.Decode = Me.cbxApplication.Text
@@ -883,7 +870,6 @@ Public Function ModifyRecord() As Boolean
              & "Platform = " & myPlatform.Displaycode & ", " _
              & "CSSRelease = " & myRelease.Displaycode & ", " _
 
-
     'Add the System Usage Flags.
     If (chkSystem.Value = 1) Then
         strsql = strsql & "SystemUse = " & True & ", "
@@ -898,7 +884,6 @@ Public Function ModifyRecord() As Boolean
         strsql = strsql & "StaticTableUse = " & False & ", "
     End If
     
-    
     'Add the Codes Table Usage Flags.
     If (chkCodes.Value = 1) Then
         strsql = strsql & "CodesTableUse = " & True
@@ -906,14 +891,13 @@ Public Function ModifyRecord() As Boolean
         strsql = strsql & "CodesTableUse = " & False
     End If
     
-    
     'Finish the SQL string
     myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
     strsql = strsql & " WHERE TableName = " & Chr(39) & CurTable & Chr(39) & _
                       " AND Key = " & Chr(39) & txtKey.Text & Chr(39) & _
                       " AND Client = " & myClient.Displaycode
     
-Debug.Print strsql
+    Debug.Print strsql
     
     'Set up the error handling.
     On Error GoTo UpdateError
@@ -933,7 +917,6 @@ Debug.Print strsql
     
         wsCTM.Rollback
         ModifyRecord = False
-    Debug.Print strsql
     End If
 
 Exit Function
@@ -951,40 +934,3 @@ UpdateError:
     RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
     Resume Next
 End Function
-
-
-''***************************************************************************************************************
-'Public Sub GetClientCBox()
-''***************************************************************************************************************
-'
-'    ReDim ClientArray(0)
-'
-'    cbxClients.Enabled = False
-'    cbxClients.Clear
-'    Screen.MousePointer = vbHourglass
-'
-'    strsql = "select Client, Code from tblClients order by Code"
-'    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-'
-'    If Not DaoRS.EOF Then
-'
-'        While Not DaoRS.EOF
-'            cbxClients.AddItem DaoRS(0).Value
-'            ClientArray(UBound(ClientArray)).Client = DaoRS(0).Value
-'            ClientArray(UBound(ClientArray)).Code = DaoRS(1).Value
-'            ReDim Preserve ClientArray(UBound(ClientArray) + 1)
-'            DaoRS.MoveNext
-'        Wend
-'
-'        DaoRS.Close
-'        cbxClients.ListIndex = 0
-'    End If
-'
-'    Screen.MousePointer = vbNormal
-'
-'    'Enable the combo box.
-'    cbxClients.Enabled = True
-'
-'End Sub
-
-

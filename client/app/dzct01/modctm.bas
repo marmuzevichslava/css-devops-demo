@@ -62,14 +62,14 @@ Type ImportError
     Table As String
     Key As String
     Decode As String
-    client As String
+    Client As String
     Action As String * 1
 End Type
 Public ImportErrArray() As ImportError
 
 'Structure for adding & modifying Key codes.
 Type objClient
-    client As String
+    Client As String
     Code As Integer
 End Type
 Public ClientArray() As objClient
@@ -358,13 +358,13 @@ End Sub
 '***************************************************************************************************************
 Public Function CheckUMsgKeyExists(ByVal TableName As String, _
                                ByVal Key As Integer, _
-                               ByVal client As Integer, _
+                               ByVal Client As Integer, _
                                ByVal SeqNumber As Integer) As Boolean
 '***************************************************************************************************************
     
     'Put together the sql to perform the check.
     strsql = "SELECT 1 FROM tblUserErrorMsgEntries" _
-                 & " Where TableName = " & Chr(39) & TableName & Chr(39) & " AND Client = " & client & " AND ErrorNumber = " & Key & " AND SequenceNumber = " & SeqNumber
+                 & " Where TableName = " & Chr(39) & TableName & Chr(39) & " AND Client = " & Client & " AND ErrorNumber = " & Key & " AND SequenceNumber = " & SeqNumber
         
     'Open the recordset.
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -374,7 +374,6 @@ Public Function CheckUMsgKeyExists(ByVal TableName As String, _
         CheckUMsgKeyExists = True
     Else
         CheckUMsgKeyExists = False
-        Debug.Print strsql
     End If
     
     'Close the recordset.
@@ -382,16 +381,44 @@ Public Function CheckUMsgKeyExists(ByVal TableName As String, _
 
 End Function
 
+
+'***************************************************************************************************************
+Public Function CheckMsgKeyExists(ByVal TableName As String, _
+                               ByVal Code As Integer, _
+                               ByVal Client As Integer) As Boolean
+'***************************************************************************************************************
+    
+    'Put together the sql to perform the check.
+    strsql = " SELECT 1 FROM tblMsgBoxEntries " _
+             & " Where TableName = " & Chr(39) & TableName & Chr(39) _
+             & " AND Client = " & Client _
+             & " AND Code = " & Code
+        
+    'Open the recordset.
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    
+    'If the recordset is NOT empty then the key already exists.
+    If Not DaoRS.EOF Then
+        CheckMsgKeyExists = True
+    Else
+        CheckMsgKeyExists = False
+    End If
+    
+    'Close the recordset.
+    DaoRS.Close
+
+End Function
+
+
 '***************************************************************************************************************
 Public Function CheckKeyExists(ByVal TableName As String, _
                                ByVal Key As String, _
-                               ByVal client As Integer) As Boolean
+                               ByVal Client As Integer) As Boolean
 '***************************************************************************************************************
     
     'Put together the sql to perform the check.
     strsql = "SELECT 1 FROM tblEntries WHERE TableName = " & Chr(39) & TableName & Chr(39) & " " & _
-             "AND Key = " & Chr(39) & Key & Chr(39) & "AND Client = " & client
-    Debug.Print strsql
+             "AND Key = " & Chr(39) & Key & Chr(39) & "AND Client = " & Client
     
     'Open the recordset.
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -609,8 +636,6 @@ Public Sub RefreshCodeDecodeLB()
         frmMain.txtTotalKeys.Text = 0
     End If
     
-    Debug.Print strsql
-
 Exit Sub
 
 
@@ -659,79 +684,6 @@ End Function
 
 
 '***************************************************************************************************************
-Public Function GetButtonCode(strButton As String) As Integer
-'***************************************************************************************************************
-    strsql = "select [Button ID] From tblMsgBoxButtons where Buttons = 'FND_MSGBOX_" & strButton & Chr(39)
-                
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-            
-    If Not DaoRS.EOF Then
-        GetButtonCode = DaoRS(0)
-    Else
-        'Default to just the OK button if nothing was found.
-        GetButtonCode = 1
-    End If
-            
-    DaoRS.Close
-End Function
-
-'***************************************************************************************************************
-Public Function GetIconCode(strIcon As String) As Integer
-'***************************************************************************************************************
-    strsql = "select [Icon ID] From tblMsgBoxIcons where Icon = 'FND_MSGBOX_" & strIcon & Chr(39)
-                
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-            
-    If Not DaoRS.EOF Then
-        GetIconCode = DaoRS(0)
-    Else
-                
-        'Default to the information icon.
-        GetIconCode = 4
-    End If
-            
-    DaoRS.Close
-
-End Function
-
-
-'***************************************************************************************************************
-Public Function GetDefaultButtonCode(strButton As String) As Integer
-'***************************************************************************************************************
-    strsql = "select [Default Button ID] From tblMsgBoxDefaultButtons where [Defualt Button] = 'FND_MSGBOX_" & strButton & Chr(39)
-                
-    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-            
-    If Not DaoRS.EOF Then
-        GetDefaultButtonCode = DaoRS(0)
-    Else
-        'Default to the ok button.
-        GetDefaultButtonCode = 1
-    End If
-            
-    DaoRS.Close
-    
-End Function
-
-
-''***************************************************************************************************************
-'Public Function GetClientDecode(strClient As String) As Integer
-''***************************************************************************************************************
-'    strsql = "select Code From tblClients where Client = " & Chr(39) & strClient & Chr(39)
-'
-'    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
-'
-'    If Not DaoRS.EOF Then
-'        GetClientDecode = DaoRS(0)
-'        DaoRS.Close
-'    Else
-'        GetClientDecode = SQL_NOT_FOUND
-'    End If
-'
-'End Function
-
-
-'***************************************************************************************************************
 Public Sub GetClientCBox(cboSource As Control)
 '***************************************************************************************************************
 
@@ -751,7 +703,7 @@ Public Sub GetClientCBox(cboSource As Control)
 
         While Not DaoRS.EOF
             cboSource.AddItem DaoRS(0).Value
-            ClientArray(UBound(ClientArray)).client = DaoRS(0).Value
+            ClientArray(UBound(ClientArray)).Client = DaoRS(0).Value
             ClientArray(UBound(ClientArray)).Code = DaoRS(1).Value
             ReDim Preserve ClientArray(UBound(ClientArray) + 1)
             DaoRS.MoveNext

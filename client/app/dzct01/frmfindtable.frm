@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmFindTable 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Find Codes Table"
-   ClientHeight    =   1395
+   ClientHeight    =   1230
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   3405
@@ -11,7 +11,7 @@ Begin VB.Form frmFindTable
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1395
+   ScaleHeight     =   1230
    ScaleWidth      =   3405
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -26,11 +26,11 @@ Begin VB.Form frmFindTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
-      Left            =   1882
-      TabIndex        =   3
-      Top             =   825
-      Width           =   990
+      Height          =   330
+      Left            =   1785
+      TabIndex        =   2
+      Top             =   735
+      Width           =   1215
    End
    Begin VB.CommandButton cmdFind 
       Caption         =   "&Find"
@@ -44,11 +44,11 @@ Begin VB.Form frmFindTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
-      Left            =   532
-      TabIndex        =   2
-      Top             =   825
-      Width           =   990
+      Height          =   330
+      Left            =   435
+      TabIndex        =   1
+      Top             =   735
+      Width           =   1215
    End
    Begin VB.TextBox txtFindTable 
       BackColor       =   &H00FFFFFF&
@@ -71,7 +71,7 @@ Begin VB.Form frmFindTable
       EndProperty
       Height          =   240
       Left            =   150
-      TabIndex        =   1
+      TabIndex        =   3
       Top             =   255
       Width           =   1665
    End

@@ -1,40 +1,41 @@
 VERSION 5.00
 Begin VB.Form frmAddModUMsg 
-   ClientHeight    =   3285
+   ClientHeight    =   3390
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   7500
+   ClientWidth     =   7335
    Icon            =   "frmAddModUMsg.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3285
-   ScaleWidth      =   7500
+   ScaleHeight     =   3390
+   ScaleWidth      =   7335
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox cbxPlatform 
       Height          =   315
-      Left            =   1440
+      Left            =   1425
       Style           =   2  'Dropdown List
       TabIndex        =   6
-      Top             =   1680
+      Top             =   2088
       Width           =   2295
    End
    Begin VB.ComboBox cbxApplication 
       Height          =   315
       ItemData        =   "frmAddModUMsg.frx":030A
-      Left            =   1440
+      Left            =   1425
       List            =   "frmAddModUMsg.frx":030C
       Style           =   2  'Dropdown List
-      TabIndex        =   4
-      Top             =   1320
+      TabIndex        =   5
+      Top             =   1716
       Width           =   2295
    End
    Begin VB.ComboBox cbxRelease 
       Height          =   315
-      Left            =   1440
+      Left            =   1425
       Style           =   2  'Dropdown List
       TabIndex        =   7
-      Top             =   2040
+      Top             =   2460
       Width           =   2295
    End
    Begin VB.CommandButton cmdProcess 
@@ -49,62 +50,62 @@ Begin VB.Form frmAddModUMsg
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   2760
-      TabIndex        =   8
-      Top             =   2640
+      Height          =   330
+      Left            =   2573
+      TabIndex        =   9
+      Top             =   2940
       Width           =   1215
    End
    Begin VB.ComboBox cbxClients 
       Height          =   315
-      Left            =   4920
+      Left            =   1425
       Style           =   2  'Dropdown List
-      TabIndex        =   5
-      Top             =   1320
+      TabIndex        =   1
+      Top             =   615
       Width           =   2295
    End
    Begin VB.TextBox txtSeqNumber 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   6720
+      Left            =   5085
       TabIndex        =   2
       ToolTipText     =   "Key Code to Add/Modify"
-      Top             =   240
+      Top             =   615
       Width           =   450
    End
    Begin VB.TextBox txtComments 
       BackColor       =   &H00FFFFFF&
-      Height          =   675
-      Left            =   4920
+      Height          =   1050
+      Left            =   4830
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   14
+      TabIndex        =   8
       ToolTipText     =   "Key Code to Add/Modify"
-      Top             =   1680
+      Top             =   1725
       Width           =   2325
    End
    Begin VB.TextBox txtLanguage 
       BackColor       =   &H00FFFFFF&
       Height          =   315
-      Left            =   4680
-      TabIndex        =   1
+      Left            =   6780
+      TabIndex        =   3
       ToolTipText     =   "Key Code to Add/Modify"
-      Top             =   240
+      Top             =   615
       Width           =   330
    End
    Begin VB.TextBox txtDecode 
       BackColor       =   &H00FFFFFF&
       Height          =   675
-      Left            =   1440
-      TabIndex        =   3
+      Left            =   1425
+      TabIndex        =   4
       ToolTipText     =   "Key Code to Add/Modify"
-      Top             =   600
+      Top             =   984
       Width           =   5730
    End
    Begin VB.TextBox txtKey 
       BackColor       =   &H0000FFFF&
       Height          =   315
-      Left            =   1440
+      Left            =   1425
       TabIndex        =   0
       ToolTipText     =   "Key Code to Add/Modify"
       Top             =   240
@@ -121,10 +122,10 @@ Begin VB.Form frmAddModUMsg
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   4200
+      Height          =   330
+      Left            =   4013
       TabIndex        =   10
-      Top             =   2640
+      Top             =   2940
       Width           =   1215
    End
    Begin VB.Label Label8 
@@ -140,9 +141,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   240
+      Left            =   285
       TabIndex        =   19
-      Top             =   1350
+      Top             =   1753
       Width           =   1095
    End
    Begin VB.Label Label9 
@@ -158,9 +159,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   495
+      Left            =   540
       TabIndex        =   18
-      Top             =   1710
+      Top             =   2125
       Width           =   840
    End
    Begin VB.Label Label10 
@@ -176,9 +177,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   555
+      Left            =   615
       TabIndex        =   17
-      Top             =   2070
+      Top             =   2497
       Width           =   780
    End
    Begin VB.Label Label6 
@@ -194,9 +195,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   3840
+      Left            =   405
       TabIndex        =   16
-      Top             =   1350
+      Top             =   645
       Width           =   975
    End
    Begin VB.Label Label4 
@@ -211,11 +212,11 @@ Begin VB.Form frmAddModUMsg
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   315
-      Left            =   5280
+      Height          =   210
+      Left            =   3705
       TabIndex        =   15
-      Top             =   240
-      Width           =   1335
+      Top             =   660
+      Width           =   1305
    End
    Begin VB.Label Label5 
       Alignment       =   1  'Right Justify
@@ -231,8 +232,8 @@ Begin VB.Form frmAddModUMsg
       EndProperty
       Height          =   255
       Left            =   3840
-      TabIndex        =   13
-      Top             =   1680
+      TabIndex        =   14
+      Top             =   1755
       Width           =   975
    End
    Begin VB.Label Label3 
@@ -248,10 +249,10 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   3360
-      TabIndex        =   12
-      Top             =   240
-      Width           =   1215
+      Left            =   5805
+      TabIndex        =   13
+      Top             =   645
+      Width           =   900
    End
    Begin VB.Label Label2 
       Alignment       =   1  'Right Justify
@@ -266,9 +267,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   360
-      TabIndex        =   11
-      Top             =   600
+      Left            =   405
+      TabIndex        =   12
+      Top             =   1020
       Width           =   975
    End
    Begin VB.Label Label1 
@@ -284,9 +285,9 @@ Begin VB.Form frmAddModUMsg
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   120
-      TabIndex        =   9
-      Top             =   240
+      Left            =   165
+      TabIndex        =   11
+      Top             =   270
       Width           =   1215
    End
 End
@@ -312,7 +313,7 @@ End Sub
 '***************************************************************************************************************
 Public Function AddNewUMsgRecord() As Boolean
 '***************************************************************************************************************
-    Dim myClient As New client
+    Dim myClient As New Client
     Dim myApplication As New Application
     Dim myPlatform As New Platform
     Dim myRelease As New Release
@@ -338,14 +339,14 @@ Public Function AddNewUMsgRecord() As Boolean
              & myApplication.Displaycode & ", " _
              & myPlatform.Displaycode & ", " _
              & myRelease.Displaycode & ") "
-    
+        
     Debug.Print strsql
     
     'Set up the error handling.
     On Error GoTo InsertError
     
     'Begin a new transaction.
-     wsCTM.BeginTrans
+    wsCTM.BeginTrans
 
     'Execute the update.
     dbCTM.Execute strsql
@@ -383,7 +384,7 @@ Private Sub cmdProcess_Click()
 '***************************************************************************************************************
 
 Dim RC As Integer
-Dim myClient As New client
+Dim myClient As New Client
 
     'Are we in 'add' mode?
     If (bAddNewKey) Then
@@ -515,7 +516,7 @@ End Sub
 '***************************************************************************************************************
 Public Function ModifyUMsgRecord() As Boolean
 '***************************************************************************************************************
-    Dim myClient As New client
+    Dim myClient As New Client
     Dim myApplication As New Application
     Dim myPlatform As New Platform
     Dim myRelease As New Release
@@ -547,7 +548,9 @@ Public Function ModifyUMsgRecord() As Boolean
                       " AND ErrorNumber = " & txtKey.Text & _
                       " AND Client = " & myClient.Displaycode & _
                       " AND SequenceNumber = " & Me.txtSeqNumber
+    
     Debug.Print strsql
+    
     'Set up the error handling.
     On Error GoTo UpdateError
     
@@ -584,7 +587,7 @@ End Function
 '***************************************************************************************************************
 Private Sub Form_Load()
 '***************************************************************************************************************
-    Dim myClient As New client
+    Dim myClient As New Client
     Dim x As Integer
     
     bFormLoaded = False
@@ -615,6 +618,8 @@ Private Sub Form_Load()
                   & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code" _
                   & " WHERE (((tblUserErrorMsgEntries.ErrorNumber)= " & CurKey & ") AND ((tblUserErrorMsgEntries.SequenceNumber)= " & frmMain.lvListView.SelectedItem.SubItems(6) & ") AND ((tblUserErrorMsgEntries.Client)= " & myClient.Displaycode & ") AND ((tblUserErrorMsgEntries.TableName)= " & Chr(39) & CurTable & Chr(39) & "));"
                     
+        Debug.Print strsql
+                    
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
         If Not DaoRS.EOF Then
@@ -640,7 +645,7 @@ Private Sub Form_Load()
 
             'Set up the client combo box.
             For x = 0 To UBound(ClientArray)
-                If (DaoRS(3).Value = ClientArray(x).client) Then
+                If (DaoRS(3).Value = ClientArray(x).Client) Then
                     cbxClients.ListIndex = x
                     Exit For
                 End If
@@ -681,7 +686,6 @@ Private Sub Form_Load()
                     Exit For
                 End If
             Next
-
         
         End If
     End If
@@ -710,8 +714,16 @@ Public Sub WindowRefresh()
         txtKey.BackColor = &H80000005
         bKeyOK = True
         
-        'Force the characters to be upper case.
-        txtKey.Text = UCase(txtKey.Text)
+        'Insure that the message code is numeric, if not send error message
+        If Not IsNumeric(txtKey.Text) Then
+            
+            txtKey.BackColor = &HFF&
+            bKeyOK = False
+            RC = MessageBox(Me.hwnd, _
+                            "Error Number must be numeric!", _
+                            "Codes Table Explorer", _
+                            MB_OK)
+        End If
     
     ElseIf (Len(txtKey.Text) > KeyMaxLen) Then
         txtKey.BackColor = &HFF&
@@ -727,7 +739,7 @@ Public Sub WindowRefresh()
 
     DecodeMaxLen% = frmMain.txtDecodeLength.Text
     
-2    If ((Len(txtDecode.Text) > 0) And (Len(txtDecode.Text) <= DecodeMaxLen)) Then
+    If ((Len(txtDecode.Text) > 0) And (Len(txtDecode.Text) <= DecodeMaxLen)) Then
         txtDecode.BackColor = &H80000005
         bDecodeOK = True
     ElseIf (Len(txtDecode.Text) > DecodeMaxLen) Then
@@ -747,6 +759,17 @@ Public Sub WindowRefresh()
     If (Len(txtSeqNumber.Text) > 0) Then
         txtSeqNumber.BackColor = &H80000005
         bSeqOK = True
+                
+        If Not IsNumeric(txtSeqNumber.Text) Then
+            
+            txtSeqNumber.BackColor = &HFF&
+            bSeqOK = False
+            RC = MessageBox(Me.hwnd, _
+                            "Sequence Numbers must be numeric!", _
+                            "Codes Table Explorer", _
+                            MB_OK)
+        End If
+
     ElseIf (Len(txtSeqNumber.Text) = 0) Then
         txtSeqNumber.BackColor = &HFFFF&
         bSeqOK = False
@@ -789,3 +812,25 @@ Private Sub txtSeqNumber_Change()
     WindowRefresh
 
 End Sub
+
+'***************************************************************************************************************
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+'***************************************************************************************************************
+    Dim RC As Integer
+    
+    'If something was modified then query to save changes.
+    If ((bModified) And (cmdProcess.Enabled)) Then
+        RC = MessageBox(Me.hwnd, _
+                        "Some of the fields have been modified." & vbCrLf & _
+                        "Do you wish to save these changes?", _
+                        "Codes Table Explorer", _
+                        MB_YESNO Or MB_ICONQUESTION Or MB_DEFBUTTON1)
+    
+        If (RC = IDYES) Then
+            cmdProcess_Click
+        End If
+    
+    End If
+End Sub
+
+

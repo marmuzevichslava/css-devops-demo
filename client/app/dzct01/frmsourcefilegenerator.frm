@@ -4,7 +4,7 @@ Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.2#0"; "comctl32.ocx"
 Begin VB.Form frmSourceFileGenerator 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "CUV Source File Generator"
-   ClientHeight    =   4590
+   ClientHeight    =   4485
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7140
@@ -13,7 +13,7 @@ Begin VB.Form frmSourceFileGenerator
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4590
+   ScaleHeight     =   4485
    ScaleWidth      =   7140
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
@@ -35,11 +35,11 @@ Begin VB.Form frmSourceFileGenerator
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   5363
-      TabIndex        =   10
+      Height          =   330
+      Left            =   5318
+      TabIndex        =   11
       Top             =   3975
-      Width           =   1590
+      Width           =   1215
    End
    Begin VB.CommandButton pbGenerate 
       Caption         =   "&Generate"
@@ -54,11 +54,11 @@ Begin VB.Form frmSourceFileGenerator
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   3638
-      TabIndex        =   9
+      Height          =   330
+      Left            =   3983
+      TabIndex        =   10
       Top             =   3975
-      Width           =   1590
+      Width           =   1215
    End
    Begin VB.CommandButton pbValues 
       Caption         =   "&Multiple Values"
@@ -72,11 +72,11 @@ Begin VB.Form frmSourceFileGenerator
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   1913
-      TabIndex        =   8
+      Height          =   330
+      Left            =   2288
+      TabIndex        =   9
       Top             =   3975
-      Width           =   1590
+      Width           =   1560
    End
    Begin VB.CommandButton pbAbbreviated 
       Caption         =   "Create &Variables"
@@ -90,11 +90,11 @@ Begin VB.Form frmSourceFileGenerator
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   188
-      TabIndex        =   11
+      Height          =   330
+      Left            =   608
+      TabIndex        =   8
       Top             =   3975
-      Width           =   1590
+      Width           =   1560
    End
    Begin VB.Frame Frame2 
       Caption         =   "File Options"
@@ -187,11 +187,20 @@ Begin VB.Form frmSourceFileGenerator
          Alignment       =   1  'Right Justify
          Caption         =   "Signed:"
          Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   5775
+         Left            =   5610
          TabIndex        =   1
          Top             =   300
-         Width           =   915
+         Width           =   1020
       End
       Begin VB.ComboBox cboComp 
          Enabled         =   0   'False
@@ -216,7 +225,7 @@ Begin VB.Form frmSourceFileGenerator
       End
       Begin VB.ComboBox cboDataType 
          Height          =   315
-         Left            =   1320
+         Left            =   1500
          Style           =   2  'Dropdown List
          TabIndex        =   2
          Top             =   675
@@ -225,47 +234,83 @@ Begin VB.Form frmSourceFileGenerator
       Begin VB.TextBox DataElement 
          BackColor       =   &H0000FFFF&
          Height          =   315
-         Left            =   1320
+         Left            =   1500
          TabIndex        =   0
-         Top             =   263
+         Top             =   270
          Width           =   2490
       End
       Begin VB.Label lblIntType 
          Alignment       =   1  'Right Justify
          Caption         =   "Integer Type:"
          Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   3675
+         Left            =   3570
          TabIndex        =   17
-         Top             =   750
-         Width           =   990
+         Top             =   720
+         Width           =   1200
       End
       Begin VB.Label Label7 
          Alignment       =   1  'Right Justify
          Caption         =   "Length:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   4290
+         Left            =   4245
          TabIndex        =   15
          Top             =   300
-         Width           =   615
+         Width           =   675
       End
       Begin VB.Label Label6 
          Alignment       =   1  'Right Justify
          Caption         =   "Data Type:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   300
+         Left            =   480
          TabIndex        =   14
-         Top             =   750
-         Width           =   915
+         Top             =   712
+         Width           =   990
       End
       Begin VB.Label Label5 
          Alignment       =   1  'Right Justify
          Caption         =   "Element Name:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   165
-         Left            =   75
+         Left            =   165
          TabIndex        =   13
          Top             =   338
-         Width           =   1140
+         Width           =   1305
       End
    End
    Begin VB.Label Label10 
@@ -297,10 +342,10 @@ Begin VB.Form frmSourceFileGenerator
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   150
+      Left            =   555
       TabIndex        =   19
-      Top             =   3022
-      Width           =   615
+      Top             =   3015
+      Width           =   510
    End
 End
 Attribute VB_Name = "frmSourceFileGenerator"
@@ -314,18 +359,6 @@ Public bLoading As Boolean
 Public FileName As String
 Public DataType As String
 Public CompType As String
-
-
-
-
-
-
-'***************************************************************************************************************
-Private Sub cboComp_Change()
-'***************************************************************************************************************
-
-
-End Sub
 
 '***************************************************************************************************************
 Private Sub cboComp_Click()
@@ -375,17 +408,11 @@ End Sub
      End If
 
 End Sub
-'***************************************************************************************************************
-Private Sub cboDataType_LostFocus()
-'***************************************************************************************************************
-
-
-End Sub
-
 
 '***************************************************************************************************************
 Private Sub DataElement_Change()
 '***************************************************************************************************************
+    
     If (Len(DataElement.Text) < 1) Then
         DataElement.BackColor = &HFFFF&
         pbAbbreviated.Enabled = False
@@ -407,11 +434,13 @@ Private Sub efCUVFile_Change()
     End If
 
     Call SetExportButtonState
+
 End Sub
 
 '***************************************************************************************************************
 Private Sub efPath_Change()
 '***************************************************************************************************************
+    
     If (Len(efPath.Text) < 1) Then
         efPath.BackColor = &HFFFF&
     Else
@@ -542,6 +571,7 @@ Private Sub Form_Load()
             RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
             wsCTM.Rollback
         End If
+    
     End If
     
     DaoRS.Close
@@ -549,7 +579,6 @@ Private Sub Form_Load()
     Me.Caption = "Generate CUV Copybook - " & frmMain.tvTreeView.SelectedItem.Text
     efPath.Text = "c:\temp"
     Length.Text = frmMain.txtKeyLength.Text - 1
-    
     
     If (Left(frmMain.tvTreeView.SelectedItem.Text, 3) = "CIS") Then
         FileName = "CUV" & Right(frmMain.tvTreeView.SelectedItem.Text, 5)
@@ -569,6 +598,10 @@ Private Sub Form_Load()
     
     Me.Refresh
     
+End Sub
+
+Private Sub Label5_Click()
+
 End Sub
 
 '***************************************************************************************************************
@@ -612,6 +645,7 @@ End Sub
 '***************************************************************************************************************
 Public Sub SetExportButtonState()
 '***************************************************************************************************************
+    
     If ((Len(efPath.Text) > 0) And _
         (Len(DataElement.Text) > 0) And _
         (Len(efCUVFile.Text) > 0)) Then
@@ -619,7 +653,6 @@ Public Sub SetExportButtonState()
     Else
         pbGenerate.Enabled = False
     End If
-
 
 End Sub
 
@@ -673,6 +706,7 @@ Public Sub PopulateListView()
         Wend
         
         DaoRS.Close
+    
     End If
 
 End Sub
@@ -701,8 +735,6 @@ Private Sub pbGenerate_Click()
     strsql = strsql & ", tblCUVHeaderData.Signed = " & bSignedFlag
     strsql = strsql & " WHERE (((tblCUVHeaderData.TableName)=" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "));"
 
-Debug.Print strsql
-
     wsCTM.BeginTrans
     dbCTM.Execute strsql
     
@@ -724,7 +756,6 @@ Debug.Print strsql
         Col = 2
     End If
     
-    
     'Check to see if all the variables have been generated.
     For x = 1 To lvSrcGenerate.ListItems.Count
         If (IsNull(lvSrcGenerate.ListItems(x).SubItems(Col)) Or _
@@ -736,7 +767,6 @@ Debug.Print strsql
     
     If Not bFound Then
         Call GenerateCopybook
-        'Unload Me
     Else
         lvSrcGenerate.ListItems(x).Selected = True
         Set lvSrcGenerate.SelectedItem = lvSrcGenerate.ListItems(x)
@@ -761,11 +791,8 @@ Public Function FindExistingCopybook(TblName As String) As String
     
     On Error GoTo ErrComDlg
 
-
 RedisplayDlg:
-
-
-
+    
     ComDlg.CancelError = True
     ComDlg.DialogTitle = "Open Existing Copybook..."
     
@@ -794,7 +821,6 @@ RedisplayDlg:
             FindExistingCopybook = ""
         End If
     End If
-
 
 Exit Function
 
@@ -901,7 +927,6 @@ Public Sub GenerateCNames()
             'Determine if this is a line containg a key definition.
             If (InStr(sLine, "#define ") > 0) Then
                 
-                
                 'Get rid of the leading and trailing spaces.
                 sLine = Trim(sLine)
                 
@@ -909,7 +934,6 @@ Public Sub GenerateCNames()
                 pos = InStr(sLine, " ")
                 TempString = Mid(sLine, pos, Len(sLine))
                 TempString = Trim(TempString)
-                
 
                 'Get the data element name - just the first time though.
                 If (Not bDataElementFound) Then
@@ -918,12 +942,10 @@ Public Sub GenerateCNames()
                     DataElement.Text = ParseString(TempString, "_", 1)
                 End If
                 
-
                 'Get the variable name.
                 pos = InStr(TempString, " ")
                 TempString = Left(TempString, pos)
                 TempString = Trim(TempString)
-
 
                 'Find the double quote.
                 pos = InStr(sLine, Chr(34))
@@ -1097,7 +1119,6 @@ Public Sub GenerateCobolNames()
                 DataElement.Text = Left(TempString, pos - 1)
             
             End If
-
 
             'If this is an 88 level, then we first need the value.
             If (Not (Mid(sLine, 7, 1) = "*") And (InStr(sLine, " 88 ") > 0) _

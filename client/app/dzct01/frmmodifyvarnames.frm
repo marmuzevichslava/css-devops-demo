@@ -2,16 +2,17 @@ VERSION 5.00
 Begin VB.Form frmModifyVarNames 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Modify Variable"
-   ClientHeight    =   1845
+   ClientHeight    =   1410
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   4020
+   ClientWidth     =   4095
    Icon            =   "frmModifyVarNames.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1845
-   ScaleWidth      =   4020
+   ScaleHeight     =   1410
+   ScaleWidth      =   4095
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdCancel 
@@ -26,10 +27,10 @@ Begin VB.Form frmModifyVarNames
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   2153
+      Height          =   315
+      Left            =   2137
       TabIndex        =   3
-      Top             =   1275
+      Top             =   930
       Width           =   1215
    End
    Begin VB.CommandButton cmdOK 
@@ -45,28 +46,28 @@ Begin VB.Form frmModifyVarNames
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
-      Left            =   653
+      Height          =   315
+      Left            =   742
       TabIndex        =   2
       ToolTipText     =   "Add the current user id"
-      Top             =   1275
+      Top             =   930
       Width           =   1215
    End
    Begin VB.TextBox txtCobolName 
       Height          =   315
-      Left            =   1500
+      Left            =   1260
       TabIndex        =   1
       ToolTipText     =   "Variable name for Cobol generation"
-      Top             =   675
-      Width           =   2340
+      Top             =   480
+      Width           =   2700
    End
    Begin VB.TextBox txtCName 
       Height          =   315
-      Left            =   1500
+      Left            =   1245
       TabIndex        =   0
       ToolTipText     =   "Variable name for C generation"
-      Top             =   225
-      Width           =   2340
+      Top             =   90
+      Width           =   2700
    End
    Begin VB.Label Label2 
       Caption         =   "Cobol Name:"
@@ -80,10 +81,10 @@ Begin VB.Form frmModifyVarNames
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   150
+      Left            =   90
       TabIndex        =   5
-      Top             =   712
-      Width           =   1215
+      Top             =   510
+      Width           =   1140
    End
    Begin VB.Label Label1 
       Caption         =   "C Name:"
@@ -97,10 +98,10 @@ Begin VB.Form frmModifyVarNames
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   150
+      Left            =   435
       TabIndex        =   4
-      Top             =   262
-      Width           =   1215
+      Top             =   120
+      Width           =   795
    End
 End
 Attribute VB_Name = "frmModifyVarNames"

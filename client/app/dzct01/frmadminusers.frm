@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmAdminUsers 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add/Delete Administrators"
-   ClientHeight    =   2550
+   ClientHeight    =   1590
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   4665
@@ -11,7 +11,7 @@ Begin VB.Form frmAdminUsers
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2550
+   ScaleHeight     =   1590
    ScaleWidth      =   4665
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
@@ -26,10 +26,10 @@ Begin VB.Form frmAdminUsers
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
+      Height          =   330
       Left            =   3112
-      TabIndex        =   1
-      Top             =   1950
+      TabIndex        =   3
+      Top             =   1170
       Width           =   1215
    End
    Begin VB.CommandButton cmdDelete 
@@ -44,11 +44,11 @@ Begin VB.Form frmAdminUsers
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
+      Height          =   315
       Left            =   1762
-      TabIndex        =   3
+      TabIndex        =   2
       ToolTipText     =   "Delete the current user id"
-      Top             =   1950
+      Top             =   1170
       Width           =   1215
    End
    Begin VB.CommandButton cmdAdd 
@@ -64,19 +64,19 @@ Begin VB.Form frmAdminUsers
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
+      Height          =   330
       Left            =   337
-      TabIndex        =   2
+      TabIndex        =   1
       ToolTipText     =   "Add the current user id"
-      Top             =   1950
+      Top             =   1170
       Width           =   1215
    End
    Begin VB.ComboBox cbxAdminList 
       Height          =   315
-      Left            =   975
+      Left            =   990
       TabIndex        =   0
       ToolTipText     =   "User ID of Administrator"
-      Top             =   1125
+      Top             =   735
       Width           =   2565
    End
    Begin VB.Label Label2 

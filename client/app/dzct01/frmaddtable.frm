@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmAddTable 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add New Codes Table"
-   ClientHeight    =   5100
+   ClientHeight    =   4920
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   5670
@@ -11,14 +11,14 @@ Begin VB.Form frmAddTable
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5100
+   ScaleHeight     =   4920
    ScaleWidth      =   5670
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox txtClass 
       Height          =   285
       Left            =   4080
-      TabIndex        =   25
+      TabIndex        =   0
       TabStop         =   0   'False
       Text            =   "Text1"
       Top             =   2760
@@ -38,14 +38,14 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   735
       Left            =   240
-      TabIndex        =   24
+      TabIndex        =   25
       Top             =   1800
       Width           =   5175
       Begin VB.CheckBox Check2 
          Caption         =   "Codes Table"
          Height          =   255
          Left            =   1800
-         TabIndex        =   8
+         TabIndex        =   9
          Top             =   360
          Width           =   1215
       End
@@ -53,7 +53,7 @@ Begin VB.Form frmAddTable
          Caption         =   "Static Tables"
          Height          =   255
          Left            =   240
-         TabIndex        =   7
+         TabIndex        =   8
          Top             =   360
          Width           =   1695
       End
@@ -61,7 +61,7 @@ Begin VB.Form frmAddTable
          Caption         =   "System Usage"
          Height          =   255
          Left            =   3360
-         TabIndex        =   9
+         TabIndex        =   10
          Top             =   360
          Width           =   1575
       End
@@ -79,14 +79,14 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   735
       Left            =   240
-      TabIndex        =   23
+      TabIndex        =   24
       Top             =   2640
       Width           =   3360
       Begin VB.CheckBox chkEffDate 
          Caption         =   "Effective Date"
          Height          =   195
          Left            =   240
-         TabIndex        =   10
+         TabIndex        =   11
          Top             =   360
          Width           =   1365
       End
@@ -94,7 +94,7 @@ Begin VB.Form frmAddTable
          Caption         =   "Residency"
          Height          =   195
          Left            =   1800
-         TabIndex        =   11
+         TabIndex        =   12
          Top             =   360
          Width           =   1140
       End
@@ -105,7 +105,7 @@ Begin VB.Form frmAddTable
       Left            =   240
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   12
+      TabIndex        =   13
       ToolTipText     =   "Description for the table"
       Top             =   3720
       Width           =   5220
@@ -113,7 +113,7 @@ Begin VB.Form frmAddTable
    Begin VB.TextBox txtTblName 
       Height          =   315
       Left            =   1440
-      TabIndex        =   0
+      TabIndex        =   1
       Text            =   "CIS"
       ToolTipText     =   "Codes Table Name"
       Top             =   225
@@ -122,7 +122,7 @@ Begin VB.Form frmAddTable
    Begin VB.TextBox txtCenturyDelimeter 
       Height          =   315
       Left            =   4590
-      TabIndex        =   4
+      TabIndex        =   5
       ToolTipText     =   "Codes Table Century Delimeter"
       Top             =   937
       Width           =   765
@@ -131,16 +131,16 @@ Begin VB.Form frmAddTable
       Height          =   315
       Left            =   1440
       Style           =   2  'Dropdown List
-      TabIndex        =   1
+      TabIndex        =   2
       ToolTipText     =   "Table Type"
-      Top             =   590
+      Top             =   555
       Width           =   1515
    End
    Begin VB.TextBox txtDataLength 
       BackColor       =   &H0000FFFF&
       Height          =   315
       Left            =   1440
-      TabIndex        =   5
+      TabIndex        =   6
       ToolTipText     =   "Codes Table Max Data Length"
       Top             =   1320
       Width           =   765
@@ -156,8 +156,8 @@ Begin VB.Form frmAddTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   2813
+      Height          =   330
+      Left            =   2978
       TabIndex        =   15
       ToolTipText     =   "Create New Table"
       Top             =   4440
@@ -176,9 +176,9 @@ Begin VB.Form frmAddTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   465
-      Left            =   1313
-      TabIndex        =   13
+      Height          =   330
+      Left            =   1478
+      TabIndex        =   14
       ToolTipText     =   "Create New Table"
       Top             =   4440
       Width           =   1215
@@ -187,7 +187,7 @@ Begin VB.Form frmAddTable
       BackColor       =   &H0000FFFF&
       Height          =   315
       Left            =   4590
-      TabIndex        =   6
+      TabIndex        =   7
       ToolTipText     =   "Codes Table Max Decode Displacement"
       Top             =   1320
       Width           =   765
@@ -196,7 +196,7 @@ Begin VB.Form frmAddTable
       BackColor       =   &H0000FFFF&
       Height          =   315
       Left            =   4590
-      TabIndex        =   2
+      TabIndex        =   3
       ToolTipText     =   "Codes Table Max Decode Lenght"
       Top             =   555
       Width           =   765
@@ -205,7 +205,7 @@ Begin VB.Form frmAddTable
       BackColor       =   &H0000FFFF&
       Height          =   315
       Left            =   1440
-      TabIndex        =   3
+      TabIndex        =   4
       ToolTipText     =   "Codes Table Max Key Length"
       Top             =   955
       Width           =   765
@@ -223,7 +223,7 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   240
       Left            =   240
-      TabIndex        =   22
+      TabIndex        =   23
       Top             =   3480
       Width           =   1290
    End
@@ -241,7 +241,7 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   165
       Left            =   600
-      TabIndex        =   21
+      TabIndex        =   22
       Top             =   240
       Width           =   690
    End
@@ -259,7 +259,7 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   195
       Left            =   2760
-      TabIndex        =   20
+      TabIndex        =   21
       Top             =   1035
       Width           =   1725
    End
@@ -277,8 +277,8 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   195
       Left            =   720
-      TabIndex        =   19
-      Top             =   600
+      TabIndex        =   20
+      Top             =   615
       Width           =   615
    End
    Begin VB.Label Label9 
@@ -295,7 +295,7 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   195
       Left            =   120
-      TabIndex        =   18
+      TabIndex        =   19
       Top             =   1380
       Width           =   1215
    End
@@ -313,7 +313,7 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   195
       Left            =   2565
-      TabIndex        =   17
+      TabIndex        =   18
       Top             =   1380
       Width           =   1965
    End
@@ -331,8 +331,8 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   195
       Left            =   3120
-      TabIndex        =   16
-      Top             =   600
+      TabIndex        =   17
+      Top             =   615
       Width           =   1440
    End
    Begin VB.Label Label6 
@@ -349,7 +349,7 @@ Begin VB.Form frmAddTable
       EndProperty
       Height          =   195
       Left            =   270
-      TabIndex        =   14
+      TabIndex        =   16
       Top             =   1035
       Width           =   1065
    End

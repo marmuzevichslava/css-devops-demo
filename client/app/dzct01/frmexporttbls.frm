@@ -2,17 +2,17 @@ VERSION 5.00
 Begin VB.Form frmExportTable 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Export Tables"
-   ClientHeight    =   5115
+   ClientHeight    =   4470
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   5130
+   ClientWidth     =   5385
    Icon            =   "frmExportTbls.frx":0000
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5115
-   ScaleWidth      =   5130
+   ScaleHeight     =   4470
+   ScaleWidth      =   5385
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdFind 
@@ -26,11 +26,11 @@ Begin VB.Form frmExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
-      Left            =   3840
-      TabIndex        =   14
-      Top             =   2760
-      Width           =   1140
+      Height          =   330
+      Left            =   3960
+      TabIndex        =   7
+      Top             =   2385
+      Width           =   1215
    End
    Begin VB.Frame Frame3 
       Caption         =   "File &Options"
@@ -44,15 +44,15 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   915
-      Left            =   2625
+      Left            =   2820
       TabIndex        =   24
-      Top             =   3525
-      Width           =   2340
+      Top             =   2970
+      Width           =   2355
       Begin VB.OptionButton optCreateFile 
          Caption         =   "Create New File"
          Height          =   240
          Left            =   150
-         TabIndex        =   10
+         TabIndex        =   11
          ToolTipText     =   "Create a new export file"
          Top             =   300
          Width           =   1590
@@ -61,7 +61,7 @@ Begin VB.Form frmExportTable
          Caption         =   "Append to existing file"
          Height          =   240
          Left            =   150
-         TabIndex        =   11
+         TabIndex        =   12
          ToolTipText     =   "Append to an existing export file"
          Top             =   600
          Width           =   1965
@@ -78,11 +78,11 @@ Begin VB.Form frmExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
-      Left            =   3825
-      TabIndex        =   13
-      Top             =   4575
-      Width           =   1140
+      Height          =   330
+      Left            =   3960
+      TabIndex        =   14
+      Top             =   4005
+      Width           =   1215
    End
    Begin VB.CommandButton pbOK 
       Caption         =   "&Export"
@@ -96,12 +96,12 @@ Begin VB.Form frmExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
+      Height          =   330
       Left            =   2625
-      TabIndex        =   12
+      TabIndex        =   13
       ToolTipText     =   "Perform"
-      Top             =   4560
-      Width           =   1140
+      Top             =   4005
+      Width           =   1215
    End
    Begin VB.Frame Frame2 
       Caption         =   "Export T&ype"
@@ -115,15 +115,15 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1290
-      Left            =   150
+      Left            =   135
       TabIndex        =   23
-      Top             =   3525
-      Width           =   2340
+      Top             =   2970
+      Width           =   2355
       Begin VB.OptionButton optExportCISOnly 
          Caption         =   """CIS"" Codes Tables"
          Height          =   240
          Left            =   150
-         TabIndex        =   9
+         TabIndex        =   10
          ToolTipText     =   "Export only the ""CIS"" codes tables"
          Top             =   900
          Width           =   1965
@@ -132,7 +132,7 @@ Begin VB.Form frmExportTable
          Caption         =   "Custom Export"
          Height          =   240
          Left            =   150
-         TabIndex        =   8
+         TabIndex        =   9
          ToolTipText     =   "Perform a custom export"
          Top             =   600
          Width           =   1965
@@ -141,7 +141,7 @@ Begin VB.Form frmExportTable
          Caption         =   "Export All Clients"
          Height          =   240
          Left            =   150
-         TabIndex        =   7
+         TabIndex        =   8
          ToolTipText     =   "Export all the tables"
          Top             =   300
          Width           =   1515
@@ -149,19 +149,19 @@ Begin VB.Form frmExportTable
    End
    Begin VB.TextBox efExportFile 
       Height          =   285
-      Left            =   1275
+      Left            =   1245
       TabIndex        =   6
       ToolTipText     =   "Name of file to export to"
-      Top             =   3000
-      Width           =   2370
+      Top             =   2595
+      Width           =   2625
    End
    Begin VB.TextBox efPath 
       Height          =   285
-      Left            =   1275
+      Left            =   1245
       TabIndex        =   5
       ToolTipText     =   "Output directory for export"
-      Top             =   2625
-      Width           =   2370
+      Top             =   2243
+      Width           =   2625
    End
    Begin VB.Frame Frame1 
       Caption         =   "Export Table &For"
@@ -174,75 +174,111 @@ Begin VB.Form frmExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2070
+      Height          =   1890
       Left            =   1890
       TabIndex        =   16
       Top             =   225
-      Width           =   3090
+      Width           =   3285
       Begin VB.ComboBox cbPlatform 
          Height          =   315
-         Left            =   1125
+         Left            =   1290
          TabIndex        =   4
-         Top             =   1680
+         Top             =   1440
          Width           =   1815
       End
       Begin VB.ComboBox cbApplication 
          Height          =   315
-         Left            =   1125
+         Left            =   1305
          TabIndex        =   3
-         Top             =   1200
+         Top             =   1050
          Width           =   1815
       End
       Begin VB.ComboBox cbRelease 
          Height          =   315
-         Left            =   1125
+         Left            =   1305
          TabIndex        =   2
-         Top             =   750
+         Top             =   660
          Width           =   1815
       End
       Begin VB.ComboBox cbClient 
          Enabled         =   0   'False
          Height          =   315
-         Left            =   1125
+         Left            =   1290
          TabIndex        =   1
-         Top             =   300
+         Top             =   285
          Width           =   1815
       End
       Begin VB.Label Label5 
          Caption         =   "Platform:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   150
+         Left            =   450
          TabIndex        =   20
-         Top             =   1680
-         Width           =   915
+         Top             =   1470
+         Width           =   810
       End
       Begin VB.Label Label4 
          Caption         =   "Application:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   150
+         Left            =   165
          TabIndex        =   19
-         Top             =   1230
-         Width           =   1065
+         Top             =   1080
+         Width           =   1095
       End
       Begin VB.Label Label3 
          Caption         =   "Release:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   150
+         Left            =   465
          TabIndex        =   18
-         Top             =   780
-         Width           =   915
+         Top             =   690
+         Width           =   795
       End
       Begin VB.Label Label2 
          Caption         =   "Client:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   240
-         Left            =   150
+         Left            =   660
          TabIndex        =   17
-         Top             =   330
-         Width           =   915
+         Top             =   315
+         Width           =   600
       End
    End
    Begin VB.ListBox SelectTable 
-      Height          =   1815
+      Height          =   1620
       ItemData        =   "frmExportTbls.frx":030A
       Left            =   120
       List            =   "frmExportTbls.frx":030C
@@ -250,7 +286,7 @@ Begin VB.Form frmExportTable
       Sorted          =   -1  'True
       TabIndex        =   0
       ToolTipText     =   "Selected table(s) for exporting"
-      Top             =   450
+      Top             =   420
       Width           =   1590
    End
    Begin VB.Label Label7 
@@ -265,9 +301,9 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   150
+      Left            =   195
       TabIndex        =   22
-      Top             =   3075
+      Top             =   2617
       Width           =   990
    End
    Begin VB.Label Label6 
@@ -282,9 +318,9 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   675
+      Left            =   720
       TabIndex        =   21
-      Top             =   2670
+      Top             =   2265
       Width           =   465
    End
    Begin VB.Label Label1 

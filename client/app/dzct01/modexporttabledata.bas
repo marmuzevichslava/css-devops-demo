@@ -19,11 +19,9 @@ Public Sub ExportProcedure()
 
     On Error GoTo Err_Export
 
-
     TblCnt = 0   ' Exported table counter
 
     FileName = frmExportTable.efPath & "\" & frmExportTable.efExportFile
-
 
     'Check to see if this directory exists.
     If (Dir(frmExportTable.efPath, vbDirectory) = "") Then
@@ -40,7 +38,6 @@ Public Sub ExportProcedure()
     End If
 
     frmExportTable.Refresh
-    
     
     'Check to see if the file DOES exist.
     If (Not Dir(FileName, vbNormal) = "") Then
@@ -85,8 +82,8 @@ Public Sub ExportProcedure()
     frmExportTable.Refresh
 
     'Get the client code value.
-    strSQL = "select Code from tblClients where Client = " & Chr(39) & frmExportTable.cbClient.Text & Chr(39)
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select Code from tblClients where Client = " & Chr(39) & frmExportTable.cbClient.Text & Chr(39)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         nClient% = DaoRS(0).Value
@@ -95,8 +92,8 @@ Public Sub ExportProcedure()
 
     
     'Get the release code.
-    strSQL = "select Code from tblReleases where Release = " & Chr(39) & frmExportTable.cbRelease.Text & Chr(39)
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select Code from tblReleases where Release = " & Chr(39) & frmExportTable.cbRelease.Text & Chr(39)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         nRelease% = DaoRS(0).Value
@@ -105,8 +102,8 @@ Public Sub ExportProcedure()
     
 
     'Get the platform code.
-    strSQL = "select Code from tblPlatforms where Platform = " & Chr(39) & frmExportTable.cbPlatform.Text & Chr(39)
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select Code from tblPlatforms where Platform = " & Chr(39) & frmExportTable.cbPlatform.Text & Chr(39)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         nPlatform% = DaoRS(0).Value
@@ -115,8 +112,8 @@ Public Sub ExportProcedure()
     
     
     'Get the application code.
-    strSQL = "select Code from tblApplications where Application = " & Chr(39) & frmExportTable.cbApplication.Text & Chr(39)
-    Set DaoRS = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+    strsql = "select Code from tblApplications where Application = " & Chr(39) & frmExportTable.cbApplication.Text & Chr(39)
+    Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
         nAppl% = DaoRS(0).Value
@@ -128,10 +125,10 @@ Public Sub ExportProcedure()
     For x = 0 To frmExportTable.SelectTable.ListCount - 1
         If (frmExportTable.SelectTable.Selected(x) = True) Then
     
-            strSQL = "SELECT * from tblTables where TableName = " & _
+            strsql = "SELECT * from tblTables where TableName = " & _
                       Chr(39) & frmExportTable.SelectTable.List(x) & Chr(39)
     
-            Set TableSet = dbCTM.OpenRecordset(strSQL, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
+            Set TableSet = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     
             If Not IsEmpty(TableSet!TableName) Then

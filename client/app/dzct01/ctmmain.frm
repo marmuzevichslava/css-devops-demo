@@ -217,7 +217,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0614
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -238,7 +237,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0630
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -256,7 +254,7 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   20320
+            Object.Width           =   20241
             Text            =   "Status"
             TextSave        =   "Status"
             Object.Tag             =   ""
@@ -389,12 +387,10 @@ Private Sub Form_Load()
     
     Dim CTMDatabase As String, msg As String, RC As Integer, sTransfer As String, x As Integer
     
-    
     Me.Width = GetSetting(App.Title, "Settings", "MainWidth", (Screen.Width * 0.75))
     Me.Height = GetSetting(App.Title, "Settings", "MainHeight", (Screen.Height * 0.6))
     Me.Left = GetSetting(App.Title, "Settings", "MainLeft", (Screen.Width - Me.Width) / 2)
     Me.Top = GetSetting(App.Title, "Settings", "MainTop", (Screen.Height - Me.Height) / 2)
-
         
     'Set up the list view to remain highlighted when a row is selected.
     lvListView.HideSelection = False
@@ -469,7 +465,6 @@ Private Sub Form_Load()
         bAdmin = False
     End If
 
-
     'Set the administrative options based on the authority level.
     If (bAdmin) Then
         mnuAdmin.Visible = True
@@ -485,7 +480,6 @@ Private Sub Form_Load()
     Screen.MousePointer = vbNormal
 
 Exit Sub
-
 
 ODBCError:
     
@@ -504,7 +498,6 @@ ODBCError:
             End
         End If
     End If
-    
     
     'Display the error information and exit.
     msg = "An error has occured during Form_Load" & vbCrLf & _
@@ -538,7 +531,6 @@ Private Sub Form_Unload(Cancel As Integer)
     dbCTM.Close
     wsCTM.Close
 
-
     'close all sub forms
     For i = Forms.Count - 1 To 1 Step -1
         Unload Forms(i)
@@ -561,7 +553,6 @@ Private Sub Form_Resize()
     If Me.Width < 3000 Then Me.Width = 3000
     SizeControls imgSplitter.Left
 End Sub
-
 
 Private Sub Frame1_DblClick()
     If (bAdmin) Then
@@ -703,7 +694,7 @@ End Sub
 Private Sub mnuDeleteKey_Click()
 '***************************************************************************************************************
     Dim RC As Integer, x As Integer, hDBTableName As String
-    Dim myClient As New client
+    Dim myClient As New Client
     
     'Check to see if this what they really want to do.
     RC = MsgBox("Are you sure you wish to the selected line(s)?", _
@@ -720,7 +711,7 @@ Private Sub mnuDeleteKey_Click()
             If lvListView.ListItems.Item(x).Selected = True Then
         
                 'Get the client code for this key.
-                myClient.Decode = lvListView.SelectedItem.SubItems(2)
+                myClient.Decode = lvListView.ListItems.Item(x).SubItems(2)
                 
                 'Figure out which database table to delete from.
                 If (CurTableType = CODES_TABLE) Then
@@ -750,11 +741,7 @@ Private Sub mnuDeleteKey_Click()
             End If
         Next
 
-        'Commit the delete transactions.
-        'wsCTM.CommitTrans
-
         Screen.MousePointer = vbNormal
-
         
         Call RefreshCodeDecodeLB
         
@@ -763,8 +750,6 @@ Private Sub mnuDeleteKey_Click()
     tvTreeView.SetFocus
     Me.Refresh
 
-
-
 End Sub
 
 '***************************************************************************************************************
@@ -772,7 +757,6 @@ Private Sub mnuDeleteTable_Click()
 '***************************************************************************************************************
     Dim RC As Integer, i As Integer
     
-    'If (Left(CurTable, 3) = "CIS") Then
     If (CurTableType = CODES_TABLE) Then
         RC = MsgBox("Are you sure you wish to delete the current table and " & _
                     vbCrLf & "all the Keys that it contains?", _
@@ -1095,6 +1079,7 @@ Private Sub mnuRequest_Click()
     Set xlApp = CreateObject("Excel.Application")
     
     Set xlTemplate = xlApp.Workbooks.Open(App.Path & "\CTRequest.xlt", , True, , "c1admin", "c1admin", True)
+    xlApp.ActiveWorkbook.RunAutoMacros xlAutoOpen
     
     xlApp.Visible = True
     

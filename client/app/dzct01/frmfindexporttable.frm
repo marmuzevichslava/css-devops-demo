@@ -1,15 +1,16 @@
 VERSION 5.00
 Begin VB.Form frmFindExportTable 
    Caption         =   "Find Codes Table"
-   ClientHeight    =   1365
+   ClientHeight    =   1185
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   3375
    Icon            =   "frmFindExportTable.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1365
+   ScaleHeight     =   1185
    ScaleWidth      =   3375
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox efTableName 
@@ -31,11 +32,11 @@ Begin VB.Form frmFindExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
-      Left            =   495
+      Height          =   330
+      Left            =   405
       TabIndex        =   1
-      Top             =   840
-      Width           =   990
+      Top             =   750
+      Width           =   1215
    End
    Begin VB.CommandButton cmdCancel 
       Caption         =   "&Cancel"
@@ -48,11 +49,11 @@ Begin VB.Form frmFindExportTable
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   390
-      Left            =   1845
+      Height          =   330
+      Left            =   1755
       TabIndex        =   2
-      Top             =   825
-      Width           =   990
+      Top             =   735
+      Width           =   1215
    End
    Begin VB.Label Label1 
       Caption         =   "Enter Table Name:"

@@ -74,7 +74,7 @@ Begin VB.Form frmInsertTbl
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
+      Height          =   315
       Left            =   3030
       TabIndex        =   1
       Top             =   3090
@@ -93,7 +93,7 @@ Begin VB.Form frmInsertTbl
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
+      Height          =   330
       Left            =   1590
       TabIndex        =   0
       ToolTipText     =   "Submit the current import file"
@@ -184,6 +184,7 @@ Private Sub cmdCancel_Click()
     Else
         Unload Me
     End If
+
 End Sub
 
 
@@ -193,9 +194,12 @@ Private Sub cmdSubmit_Click()
 '***************************************************************************************************************
     Dim RC As Integer, x As Integer, hDesc As String, hDecode As String
     Dim bBadClient As Boolean, hButton As Integer, hIcon As Integer, hDefButton As Integer
-    Dim myClient As New client
+    Dim myClient As New Client
     Dim myTable As New Table
     Dim myComment As New Comment
+    Dim myMsgButtons As New MsgButtons
+    Dim myMsgIcon As New MsgIcon
+    Dim myMsgDefaultButton As New MsgDefaultButtons
     
     RC = MessageBox(Me.hwnd, _
                     "Are you sure you wish to import the displayed Key(s)?", _
@@ -204,13 +208,11 @@ Private Sub cmdSubmit_Click()
     
     Me.Refresh
     
-    
     If (RC = IDYES) Then
             
         'Set up the error handling
         On Error GoTo DAOError
             
-    
         Screen.MousePointer = vbHourglass
         bRunning = True
         
@@ -234,13 +236,6 @@ Private Sub cmdSubmit_Click()
             
             'Check to see if there is a description.
              myComment.Text = lvSIRData.ListItems.Item(x).SubItems(COL_COMMENTS)
-
-'            If (lvSIRData.ListItems.Item(x).SubItems(COL_COMMENTS) = "") Then
-'                hComments = "Added on " & Date & " - " & Time & " by " & UCase(CurrentUser)
-'            Else
-'                hComments = lvSIRData.ListItems.Item(x).SubItems(COL_COMMENTS)
-'            End If
-            
             
             'Check to see if there are any single quotes in the decode.
             hDecode = FormatDecode(lvSIRData.ListItems.Item(x).SubItems(COL_DECODE))
@@ -251,6 +246,15 @@ Private Sub cmdSubmit_Click()
             'Get Table Type
             myTable.Name = UCase(lvSIRData.ListItems.Item(x).Text)
             
+            'Get Message Box Buttons
+            myMsgButtons.Decode = lvSIRData.ListItems.Item(x).SubItems(COL_BUTTONS)
+            
+            'Get Message Box Icon
+            myMsgIcon.Decode = lvSIRData.ListItems.Item(x).SubItems(COL_ICONS)
+            
+            'Get Message Box Default Button
+            myMsgDefaultButton.Decode = lvSIRData.ListItems.Item(x).SubItems(COL_DEF_BUTTON)
+            
             If (myClient.Displaycode = SQL_NOT_FOUND) Then bBadClient = True
             
             'If this is an add, use the insert method, otherwise it's an update.
@@ -260,7 +264,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  ADD - USER DEFINED MESSAGE BOX                                           **
                 '*******************************************************************************
-                'If (UCase(lvSIRData.ListItems.Item(x).text) = "C1CMBMSG") Then
+                 
                  If (myTable.DisplayType = MSG_BOX) Then
         
                     'Create the SQL to perform the insert.
@@ -271,14 +275,14 @@ Private Sub cmdSubmit_Click()
                               Chr(39) & hDecode & Chr(39) & ", " & _
                               myClient.Displaycode & ", " & _
                               Chr(39) & myComment.DisplayComment & Chr(39) & ", " & _
-                              GetButtonCode(lvSIRData.ListItems.Item(x).SubItems(COL_BUTTONS)) & ", " & _
-                              GetIconCode(lvSIRData.ListItems.Item(x).SubItems(COL_ICONS)) & ", " & _
-                              GetDefaultButtonCode(lvSIRData.ListItems.Item(x).SubItems(COL_DEF_BUTTON)) & ");"
+                              myMsgButtons.Displaycode & ", " & _
+                              myMsgIcon.Displaycode & ", " & _
+                              myMsgDefaultButton.Displaycode & ");"
                 
                 '*******************************************************************************
                 '**  ADD - WES ERROR MESSAGE                                                  **
                 '*******************************************************************************
-                'ElseIf (UCase(lvSIRData.ListItems.Item(x).text) = "UERRMSGS") Then
+                
                 ElseIf (myTable.DisplayType = WES_CODE) Then
                     strsql = "INSERT INTO tblUserErrorMsgEntries (TableName, ErrorNumber, " & _
                              "ErrorCode, Client, Coments, SequenceNumber, Language) VALUES (" & _
@@ -291,6 +295,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  ADD - TYPICAL CODES TABLE                                                **
                 '*******************************************************************************
+                
                 ElseIf (myTable.DisplayType = CODES_TABLE) Then
                     strsql = "INSERT INTO tblEntries (TableName, Key, Decode, Client, Comments) VALUES (" & _
                               Chr(39) & lvSIRData.ListItems.Item(x).Text & Chr(39) & ", " & _
@@ -307,6 +312,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  CHANGE - USER DEFINED MESSAGE BOX                                        **
                 '*******************************************************************************
+                
                 If (myTable.DisplayType = MSG_BOX) Then
                     
                     strsql = "UPDATE tblMsgBoxEntries SET " & _
@@ -314,10 +320,10 @@ Private Sub cmdSubmit_Click()
                              "Code = " & Val(lvSIRData.ListItems.Item(x).SubItems(COL_KEY)) & ", " & _
                              "MsgBoxText = " & Chr(39) & hDecode & Chr(39) & ", " & _
                              "Client = " & myClient.Displaycode & ", " & _
-                             "Description = " & Chr(39) & lvSIRData.ListItems.Item(x).SubItems(COL_COMMENTS) & Chr(39) & ", " & _
-                             "Buttons = " & GetButtonCode(lvSIRData.ListItems.Item(x).SubItems(COL_BUTTONS)) & ", " & _
-                             "Icon = " & GetIconCode(lvSIRData.ListItems.Item(x).SubItems(COL_ICONS)) & ", " & _
-                             "DefaultButton = " & GetDefaultButtonCode(lvSIRData.ListItems.Item(x).SubItems(COL_DEF_BUTTON)) & _
+                             "Comments = " & Chr(39) & myComment.DisplayComment & Chr(39) & ", " & _
+                             "Buttons = " & myMsgButtons.Displaycode & ", " & _
+                             "Icon = " & myMsgIcon.Displaycode & ", " & _
+                             "DefaultButton = " & myMsgDefaultButton.Displaycode & _
                              " WHERE TableName = " & Chr(39) & lvSIRData.ListItems.Item(x).Text & Chr(39) & _
                              " AND Code = " & Val(lvSIRData.ListItems.Item(x).SubItems(COL_KEY)) & _
                              " AND Client = " & myClient.Displaycode
@@ -325,6 +331,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  CHANGE - WES ERROR MESSAGE                                               **
                 '*******************************************************************************
+                
                 ElseIf (myTable.DisplayType = WES_CODE) Then
                     
                     strsql = "UPDATE tblUserErrorMsgEntries SET " & _
@@ -341,6 +348,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  CHANGE - TYPICAL CODES TABLE                                             **
                 '*******************************************************************************
+                
                 ElseIf (myTable.DisplayType = CODES_TABLE) Then
                 
                     strsql = "UPDATE tblEntries SET " & _
@@ -363,6 +371,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  DELETE - USER DEFINED MESSAGE BOX                                        **
                 '*******************************************************************************
+                
                 If (myTable.DisplayType = MSG_BOX) Then
     
                     strsql = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & _
@@ -373,6 +382,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  DELETE - WES ERROR MESSAGE                                               **
                 '*******************************************************************************
+                
                 ElseIf (myTable.DisplayType = WES_CODE) Then
                 
                     strsql = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(39) & lvSIRData.ListItems.Item(x).Text & Chr(39) & _
@@ -382,6 +392,7 @@ Private Sub cmdSubmit_Click()
                 '*******************************************************************************
                 '**  DELETE - TYPICAL CODES TABLE                                             **
                 '*******************************************************************************
+                
                 ElseIf (myTable.DisplayType = CODES_TABLE) Then
                 
                     strsql = "DELETE FROM tblEntries WHERE TableName = " & _
@@ -394,7 +405,6 @@ Private Sub cmdSubmit_Click()
        
             End If
             
-            
             If (Not bBadClient) Then
             
                 Debug.Print strsql
@@ -402,11 +412,9 @@ Private Sub cmdSubmit_Click()
                 'Execute the SQL.
                 dbCTM.Execute strsql
             
-            
                 'Update the progress bar.
                 ImportProgressBar.Value = ImportCntr
                 Me.Refresh
-            
             
                 'Check the number of affected rows.
                 If (dbCTM.RecordsAffected = 1) Then
@@ -415,7 +423,7 @@ Private Sub cmdSubmit_Click()
                     ImportErrArray(UBound(ImportErrArray)).Table = lvSIRData.ListItems.Item(x).Text
                     ImportErrArray(UBound(ImportErrArray)).Key = lvSIRData.ListItems.Item(x).SubItems(COL_KEY)
                     ImportErrArray(UBound(ImportErrArray)).Decode = hDecode
-                    ImportErrArray(UBound(ImportErrArray)).client = UCase(lvSIRData.ListItems.Item(x).SubItems(COL_CLIENT))
+                    ImportErrArray(UBound(ImportErrArray)).Client = UCase(lvSIRData.ListItems.Item(x).SubItems(COL_CLIENT))
                     ImportErrArray(UBound(ImportErrArray)).Action = UCase(Left(lvSIRData.ListItems.Item(x).SubItems(COL_METHOD), 1))
                     ReDim Preserve ImportErrArray(UBound(ImportErrArray) + 1)
                 End If
@@ -423,7 +431,7 @@ Private Sub cmdSubmit_Click()
                 ImportErrArray(UBound(ImportErrArray)).Table = lvSIRData.ListItems.Item(x).Text
                 ImportErrArray(UBound(ImportErrArray)).Key = lvSIRData.ListItems.Item(x).SubItems(COL_KEY)
                 ImportErrArray(UBound(ImportErrArray)).Decode = hDecode
-                ImportErrArray(UBound(ImportErrArray)).client = UCase(lvSIRData.ListItems.Item(x).SubItems(COL_CLIENT))
+                ImportErrArray(UBound(ImportErrArray)).Client = UCase(lvSIRData.ListItems.Item(x).SubItems(COL_CLIENT))
                 ImportErrArray(UBound(ImportErrArray)).Action = UCase(Left(lvSIRData.ListItems.Item(x).SubItems(COL_METHOD), 1))
                 ReDim Preserve ImportErrArray(UBound(ImportErrArray) + 1)
                 bBadClient = False
@@ -457,7 +465,6 @@ Private Sub cmdSubmit_Click()
     
     Unload Me
 
-
 Exit Sub
 
 DAOError:
@@ -466,7 +473,7 @@ DAOError:
     Screen.MousePointer = vbNormal
     RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
     Unload Me
-   
+    Debug.Print strsql
 End Sub
 
 
@@ -474,14 +481,14 @@ End Sub
 Private Sub Form_Load()
 '***************************************************************************************************************
     Dim x As Integer, itmX As ListItem
-    Dim xlApp As Object, objSS As Object, objSpreadSheet As Object
-    
-    
+    Dim xlApp As Object, xlSpreadSheet As Object
+    Dim tStart As Date, iRefresh As Integer
     
     bCloseImport = False
     bCancel = False
     bRunning = False
     iTotalRec = 0
+    iRefresh = 2 'Refresh interval in seconds
     Me.Caption = "Import SIR Data"
     
     'Add the column headers
@@ -494,8 +501,6 @@ Private Sub Form_Load()
     lvSIRData.ColumnHeaders.Add , , "Button(s)", 1000, 0
     lvSIRData.ColumnHeaders.Add , , "Icon", 1000, 0
     lvSIRData.ColumnHeaders.Add , , "Default Button", 1000, 0
-    'lvSIRData.ColumnHeaders.Add , , "Seq. No.", 800, 0
-    'lvSIRData.ColumnHeaders.Add , , "Language", 800, 0
     
     Me.Show
     Me.Refresh
@@ -518,66 +523,64 @@ Private Sub Form_Load()
     
     'Open the spreadsheet
     If Not (bCloseImport) Then
-        
-        'Open up the excel object.
-        'Set xlApp = CreateObject("Excel.Application")
-        
+    
         'Get the filename.
         xlsFile = ComDlg.FileName
-    
-        Set objSS = GetObject(xlsFile)
-        'Set objSS = xlApp.Workbooks.Open(xlsFile, , True, , "c1admin", "c1admin", True)
-        'Set objSpreadSheet = xlApp.ActiveWorkbook.ActiveSheet
 
+        Set xlApp = CreateObject("Excel.Application")
+        xlApp.Workbooks.Open (xlsFile)
+        xlApp.Visible = False
+
+        Set xlSpreadSheet = xlApp.ActiveWorkbook.ActiveSheet
+    
         stbInsert.Panels(1).Text = "Reading Excel Workbook..."
         Me.Refresh
+        
+        tStart = Now
 
         'Loop down the spreadsheet until there are no more Keys.
         x = TEMPLATE_STARTING_ROW
-        
-        
-        While Not (objSS.Cells(x, 1).Value = "")
-        'While Not (objSpreadSheet.Cells(x, 1).Value = "")
-            
+
+        While Not (xlSpreadSheet.Cells(x, 1).Value = "")
+
             'Add the table name into the first column of the list view.
-            Set itmX = lvSIRData.ListItems.Add(, , RTrim(CStr(objSS.Cells(x, 1).Value)))
-                
+            Set itmX = lvSIRData.ListItems.Add(, , RTrim(CStr(xlSpreadSheet.Cells(x, 1).Value)))
+
                 'Add the remaining data into the other cells.
-                itmX.SubItems(COL_KEY) = LTrim(RTrim(CStr(objSS.Cells(x, 2).Value)))
-                itmX.SubItems(COL_DECODE) = LTrim(RTrim(CStr(objSS.Cells(x, 3).Value)))
-                itmX.SubItems(COL_CLIENT) = LTrim(RTrim(CStr(objSS.Cells(x, 4).Value)))
-                itmX.SubItems(COL_METHOD) = LTrim(RTrim(CStr(objSS.Cells(x, 5).Value)))
-                itmX.SubItems(COL_COMMENTS) = LTrim(RTrim(CStr(objSS.Cells(x, 6).Value)))
-                itmX.SubItems(COL_BUTTONS) = LTrim(RTrim(CStr(objSS.Cells(x, 7).Value)))
-                itmX.SubItems(COL_ICONS) = LTrim(RTrim(CStr(objSS.Cells(x, 8).Value)))
-                itmX.SubItems(COL_DEF_BUTTON) = LTrim(RTrim(CStr(objSS.Cells(x, 9).Value)))
-                'itmX.SubItems(COL_SEQ_NO) = LTrim(RTrim(CStr(objSS.Cells(x, 10).Value)))
-                'itmX.SubItems(COL_LANGUAGE) = LTrim(RTrim(CStr(objSS.Cells(x, 11).Value)))
-            
+                itmX.SubItems(COL_KEY) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 2).Value)))
+                itmX.SubItems(COL_DECODE) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 3).Value)))
+                itmX.SubItems(COL_CLIENT) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 4).Value)))
+                itmX.SubItems(COL_METHOD) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 5).Value)))
+                itmX.SubItems(COL_COMMENTS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 6).Value)))
+                itmX.SubItems(COL_BUTTONS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 7).Value)))
+                itmX.SubItems(COL_ICONS) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 8).Value)))
+                itmX.SubItems(COL_DEF_BUTTON) = LTrim(RTrim(CStr(xlSpreadSheet.Cells(x, 9).Value)))
+
             x = x + 1
             iTotalRec = iTotalRec + 1
-               
+
+            If (DateDiff("s", tStart, Now) > iRefresh) Then
+                tStart = Now
+                stbInsert.Panels(1).Text = "Processing Excel Workbook...currently at record " & iTotalRec
+                Me.Refresh
+            End If
+            
         Wend
-    
-        Set objSS = Nothing
-        
-        'Free up the memory of excel.
-        'Set objSS = Nothing
-        'Set objSpreadSheet = Nothing
-        'Set xlApp = Nothing
-        
+
+        Set xlSpreadSheet = Nothing
+        xlApp.Quit
+        Set xlApp = Nothing
+
         'Enable the submit button.
         cmdSubmit.Enabled = True
         
     End If
-    
     
     Screen.MousePointer = vbNormal
     
     'Update the total displayed in the status bar.
     If iTotalRec = 0 Then iTotalRec = 1
     stbInsert.Panels(1).Text = "Total Number of Records = " & iTotalRec
-    
     
 Exit Sub
 

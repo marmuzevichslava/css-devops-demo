@@ -134,27 +134,27 @@ Public Sub CreateVariableNames()
             'Update the field on the entries table (tblEntries).
             If iFileType = 1 Then
                 
-                strSQL = "UPDATE tblEntries SET CName = " & Chr(39) & szAbbrDecode & Chr(39) & _
+                strsql = "UPDATE tblEntries SET CName = " & Chr(39) & szAbbrDecode & Chr(39) & _
                          " WHERE TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                          " AND Key = " & Chr(39) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(39)
                 
-                dbCTM.Execute strSQL
+                dbCTM.Execute strsql
                 
                 'If the array name is null, then update that value as well.
                 If IsNull(frmSourceFileGenerator.lvSrcGenerate.ListItems(x).SubItems(4)) Then
-                    strSQL = "UPDATE tblEntries SET ArrayName = " & Chr(39) & szAbbrDecode & Chr(39) & _
+                    strsql = "UPDATE tblEntries SET ArrayName = " & Chr(39) & szAbbrDecode & Chr(39) & _
                              " WHERE TableName = " & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                              " AND Key = " & Chr(39) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(39)
                 
-                    dbCTM.Execute strSQL
+                    dbCTM.Execute strsql
                 End If
                 
             Else
-                strSQL = "UPDATE tblEntries SET CobolName = " & Chr(39) & szAbbrDecode & Chr(39) & _
+                strsql = "UPDATE tblEntries SET CobolName = " & Chr(39) & szAbbrDecode & Chr(39) & _
                          " WHERE TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
                          " AND Key = " & Chr(39) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(39)
                 
-                dbCTM.Execute strSQL
+                dbCTM.Execute strsql
             
             End If
                 
@@ -853,7 +853,7 @@ Public Sub WriteMultipleValues(FileEntries As Recordset, ValuesSet As Recordset,
             If ((Len(szLine)) + (Len(szValue)) + (2)) > 70 Then  'won't fit on line
                 
                 If iCounter < iRowCount Then
-                    'szValue = szValue
+                    
                     If iCounter = 1 Then
                         Print #1, szLine
                         

@@ -1,23 +1,24 @@
 VERSION 5.00
 Begin VB.Form frmAbout 
    BorderStyle     =   3  'Fixed Dialog
-   ClientHeight    =   1875
+   ClientHeight    =   1770
    ClientLeft      =   45
    ClientTop       =   45
    ClientWidth     =   4035
    ControlBox      =   0   'False
    Icon            =   "frmAbout.frx":0000
    LinkTopic       =   "Form1"
+   LockControls    =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1875
+   ScaleHeight     =   1770
    ScaleWidth      =   4035
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdCancel 
       Caption         =   "&Cancel"
       Default         =   -1  'True
-      Height          =   375
+      Height          =   330
       Left            =   1440
       TabIndex        =   3
       Top             =   1200
