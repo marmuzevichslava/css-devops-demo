@@ -21,7 +21,14 @@
 **
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
-** 99/99/99    XXXXXXXX            Original code.
+** 02/06/96    CWOODS              Creation
+** 02/29/96    CWOODS 			   Manually set status to Incomplete due
+**								   to problems with the Indeterminate status
+** 03/01/96    CWOODS              Removed setting indeterminate status back
+**								   to valid if the 'Enter' pushbutton is
+**								   not enabled
+** 03/10/96    CWOODS              Set the message field when setting the
+**								   status to Required 
 **
 ***************************************************************************/
 
@@ -61,7 +68,7 @@
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
 **
 ***************************************************************************/
 
@@ -126,7 +133,15 @@ WCBPROC( CUffnnnVld<MLBEntryFieldName>FC )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Creation
+**    02/29/96  CWOODS 			      Manually set status to Incomplete due
+**						              to problems with the Indeterminate status
+**    03/11/96  CWOODS                Set the message field when setting the
+**								      status to Required 
+**    03/11/96  CWOODS                If the field passes validation, set the
+**								      status to Indeterminate.  Removed setting
+**									  setting the status to Indeterminate if
+**									  all fields pass validation.
 **
 ***************************************************************************/
 
@@ -161,15 +176,33 @@ SHORT CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARM_TYPES)
                         &FndGenErrorBlock );
 
 	/* 02/29/96 */
-	/* Set status to INCOMPLETE if the entry field value is NULL */
+	/* Set status to INCOMPLETE if the entry field value is NULL, to INDETERMINATE
+	   if valid.  */
     if (strcmp(EntryFieldLocalVariable,"")==0)
 	{
-	    FndFieldSetStatus(CBI_hwnd,
-		                  "<EntryFieldName>",
+	    /* CWOODS 03/11/96 - Changed to CssFieldSetStatus to set the message also */
+	    CssFieldSetStatus("<EntryFieldName>",
 						  STS_INCOMPLETE,
-						  &FndGenErrorBlock);
+						  STSM_FIELD_REQUIRED,
+						  CMN_ARCH_PARMS);
 	}
 
+	// 03/11/96
+	// Perform any validation here and set status to INVALID if the validation fails
+	if (validation succeeded)
+	{
+	    CssFieldSetStatus("<EntryFieldName>",
+						  STS_INDETERMINATE,
+						  MF_xxxxxxx,
+						  CMN_ARCH_PARMS);
+	}
+	else
+	{
+	    CssFieldSetStatus("<EntryFieldName>",
+						  STS_INVALID,
+						  MF_xxxxxxx,
+						  CMN_ARCH_PARMS);
+	}
 
 	//--------------------------------------------------------------------------
 	//  SHELL INSTRUCTIONS
@@ -190,18 +223,15 @@ SHORT CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARM_TYPES)
 						 &Status<EntryFieldName2>,
 						 &FndGenErrorBlock);
 
-	/* If the status is VALID or WES_VALID or INDETERMINATE for all MLB entry fields:
+	/* If the status is INDETERMINATE for all MLB entry fields:
 	 * Enable the 'Enter Reading' pushbutton,
 	 * Default the 'Enter Reading' pushbutton,
-	 * Set the status of the MLB Entry Fields to STS_INDETERMINATE 
 	 */
-	 if  ((	(Status<EntryFieldName1> == STS_VALID) 
-	     || (Status<EntryFieldName1> == STS_WESVALID) 
-	     || (Status<EntryFieldName1> == STS_INDETERMINATE) )
+	 // 03/11/96 - Changed evaluation to check if MLB Entry Fields' statuses
+	 // are set to Indeterminate
+	 if  ((Status<EntryFieldName1> == STS_INDETERMINATE) 
 		 &&
-		  (	(Status<EntryFieldName2> == STS_VALID) 
-	     || (Status<EntryFieldName2> == STS_WESVALID) 
-	     || (Status<EntryFieldName2> == STS_INDETERMINATE) ))
+		  (Status<EntryFieldName2> == STS_INDETERMINATE) )
 	{
 
 	    /* Set 'Enter Reading' pushbutton as the default */
@@ -214,29 +244,8 @@ SHORT CUffnnnVldMLBEntryFieldChange( CMN_ARCH_PARM_TYPES)
 		                 "<ValidPB>",
 						 &FndGenErrorBlock);
 
-        /* Set the status of the MLB entry fields to STS_INDETERMINATE and set 
-           the message field */
-	    FndFieldSetStatus( CBI_hwnd,
-	                       "<MLBEntryFieldName1>",
-			    		   STS_INDETERMINATE,
-				    	   &FndGenErrorBlock);
-
-        FndFieldSetMsg(CBI_hwnd,
-		               "<MLBEntryFieldName1>",
-					   MF_XXXXXXX,
-					   &FndGenErrorBlock);
-
-        FndFieldSetStatus( CBI_hwnd,
-	                       "<MLBEntryFieldName2>",
-			    		   STS_INDETERMINATE,
-				    	   &FndGenErrorBlock);
-
-
-        FndFieldSetMsg(CBI_hwnd,
-		               "<MLBEntryFieldName2>",
-					   MF_XXXXXXX,
-					   &FndGenErrorBlock);
-
+		// 03/11/96 - Removed setting the fields to Indeterminate
+        
 	}
 
 	/* If one of the fields failed validation then each field that has a status of INDETERMINATE should

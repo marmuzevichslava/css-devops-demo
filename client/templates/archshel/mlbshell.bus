@@ -19,6 +19,7 @@
 **												         disable MLB
 **
 ** FOUNDATION DESIGN NOTES:
+** The MLB Entry fields must NOT be painted as Required. 
 ** Tab sequence:  MLB Listbox,
 **				  Non-output entry fields,
 **				  Enter pushbutton,
@@ -33,7 +34,13 @@
 **
 ** DATE        REVISED BY  SIR #   DESCRIPTION OF CHANGE
 ** --------    ----------  ------  ---------------------------------------
-** 99/99/99    XXXXXXXX            Original code.
+** Shell revisions
+** 02/06/96    CWOODS              Creation
+** 02/29/96    CWOODS 			   Manually set status to Incomplete due
+**								   to problems with the Indeterminate status
+** 03/01/96    CWOODS              CUffnnnBusOkClick - Increment BFCD Counter
+** 03/11/96    CWOODS              Set the message field when setting the
+**								   status to Required 
 **
 ***************************************************************************/
 
@@ -54,9 +61,11 @@
 **
 **  FUNCTION         : CUffnnnBus<MLBListBoxName>Sel
 **
-**  DESCRIPTION      : This logic is invoked for a MLB List Select. The
-**                     data from the MLB is moved from the listbox to the
-**					   corresponding entry fields.
+**  DESCRIPTION      : This function is invoked when a row is selected in 
+**					   the MLB. The listbox row is queried and the data is
+**					   set in the corresponding MLB entry fields.  For each
+**					   entry field, the status must be set manually to 
+**					   Incomplete if the data is NULL.
 **
 **  INPUTS           : WCBPROC - Six standard FOUNDATION callback parameters.
 **
@@ -73,7 +82,11 @@
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
+**    02/29/96  CWOODS  			  Manually set status to Incomplete due
+**								      to problems with the Indeterminate status
+**    03/10/96  CWOODS                Set the message field when setting the
+**								      status to Required 
 **
 ***************************************************************************/
 
@@ -122,10 +135,11 @@ WCBPROC( CUffnnnBus<MLBListBoxName>Sel )
 	// if the field is required
 	if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
 	{
-	    FndFieldSetStatus(CBI_hwnd,
-		                  "<MLBEntryFieldName>",
+	    // 03/11/96 - Set the message field when setting the status to Incomplete
+	    CssFieldSetStatus("<MLBEntryFieldName>",
 						  STS_INCOMPLETE,
-						  &FndGenErrorBlock);
+						  STSM_FIELD_REQUIRED,
+						  CMN_ARCH_PARMS);
 	}
 
     return CMN_SUCCESS;
@@ -161,7 +175,8 @@ WCBPROC( CUffnnnBus<MLBListBoxName>Sel )
 **                     If the current row is not the last in the MLB, the next 
 **                         row's data is loaded into the MLB entry fields and
 **						   the cursor is set in the first non-output entry
-**						   field
+**						   field.  Set the status of each entry field
+**						   to Incomplete if the data is NULL.
 **                     If the current row is the last row in the MLB, the
 **					       entry field's status is changed from INDETERMINATE
 **						   to VALID	and reset message field
@@ -184,7 +199,14 @@ WCBPROC( CUffnnnBus<MLBListBoxName>Sel )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
+**    02/06/96  CWOODS                Original code.
+**    02/29/96  CWOODS  			  Manually set status to Incomplete due
+**								      to problems with the Indeterminate status
+**    03/10/96  CWOODS                Set the message field when setting the
+**								      status to Required 
+**    03/11/96  CWOODS                Set data modified flag after the
+**									  'Enter' click
 **
 ***************************************************************************/
 
@@ -202,6 +224,10 @@ WCBPROC( CUffnnnBus<EnterPBName>Click )
 
     /* Initialize MLB Row structure */    
     memset( &<ListBoxRow>, 0, sizeof( <ListBoxRow> ) );
+
+	/* 03/11/96 - If an MLB field changes from valid to indeterminate, a window change
+	   is not registered.  */
+	CmnWindowSetDataModified (CMN_ARCH_PARMS);
 
 	/* Disable MLB 'Enter' Pushbutton */
     FndCommandDisable( CBI_hwnd,
@@ -314,10 +340,11 @@ WCBPROC( CUffnnnBus<EnterPBName>Click )
 		// if the field is required	and the value is NULL
 		if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
 		{
-		    FndFieldSetStatus(CBI_hwnd,
-			                  "<MLBEntryFieldName>",
+		    /* CWOODS 03/11/96 - Changed to CssFieldSetStatus to set the message also */
+		    CssFieldSetStatus("<MLBEntryFieldName>",
 							  STS_INCOMPLETE,
-							  &FndGenErrorBlock);
+							  STSM_FIELD_REQUIRED,
+							  CMN_ARCH_PARMS);
 		}
 
         /* Set the cursor in the first non-output MLB entry field */
@@ -423,7 +450,12 @@ WCBPROC( CUffnnnBus<EnterPBName>Click )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
+**    02/06/96  CWOODS                Original code.
+**    02/29/96  CWOODS  			  Manually set status to Incomplete due
+**								      to problems with the Indeterminate status
+**    03/10/96  CWOODS                Set the message field when setting the
+**								      status to Required 
 **
 ***************************************************************************/
 
@@ -471,10 +503,11 @@ WCBPROC( CUffnnnBusResetClick )
 	// if the field is required	and the value is NULL
 	if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
 	{
-	    FndFieldSetStatus(CBI_hwnd,
-		                  "<MLBEntryFieldName>",
+	     // CWOODS 03/11/96 - Changed to CssFieldSetStatus to set the message also 
+	     CssFieldSetStatus("<MLBEntryFieldName>",
 						  STS_INCOMPLETE,
-						  &FndGenErrorBlock);
+						  STSM_FIELD_REQUIRED,
+						  CMN_ARCH_PARMS);
 	}
 
     /* Disable MLB 'Enter' Pushbutton */
@@ -534,7 +567,9 @@ WCBPROC( CUffnnnBusResetClick )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
+**    03/01/96  CWOODS				  Increment BFCD count for each MLB
+**									  row data moved to the BFCD
 **
 ***************************************************************************/
 
@@ -616,7 +651,7 @@ WCBPROC( CUffnnnBusOkClick )
 **
 **    DATE      REVISED BY   SIR #    DESCRIPTION OF CHANGE
 **    --------  -----------  -------  -------------------------------------
-**    99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
 **
 ***************************************************************************/
 

@@ -58,7 +58,11 @@
 **
 **  DATE      REVISED  BY   SIR #    DESCRIPTION OF CHANGE
 **  --------  -----------  -------  ---------------------------------------
-**  99/99/99  XXXXXXXX              Original code.
+**    02/06/96  CWOODS                Original code.
+**    02/29/96  CWOODS  			  Manually set status to Incomplete due
+**								      to problems with the Indeterminate status
+**    03/10/96  CWOODS                Set the message field when setting the
+**								      status to Required 
 **
 ***************************************************************************/
 
@@ -224,10 +228,11 @@ AEXPROC( ExitCsrNotification )
 		// if the field is required	and the value is NULL
 		if (strcmp(<ListBoxRow._LBNameColumnNameData>,"")==0)
 		{
-		    FndFieldSetStatus(CBI_hwnd,
-			                  "<MLBEntryFieldName>",
+		    /* CWOODS 03/11/96 - Changed to CssFieldSetStatus to set the message also */
+		    CssFieldSetStatus("<EntryFieldName>",
 							  STS_INCOMPLETE,
-							  &FndGenErrorBlock);
+							  STSM_FIELD_REQUIRED,
+							  CMN_ARCH_PARMS);
 		}
 
 
