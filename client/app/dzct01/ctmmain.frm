@@ -7,7 +7,7 @@ Begin VB.Form frmMain
    ClientTop       =   450
    ClientWidth     =   10380
    ForeColor       =   &H80000008&
-   Icon            =   "CTMMain.frx":0000
+   Icon            =   "ctmmain.frx":0000
    LinkTopic       =   "Form1"
    ScaleHeight     =   6000
    ScaleWidth      =   10380
@@ -326,7 +326,6 @@ Begin VB.Form frmMain
       LabelEdit       =   1
       Style           =   7
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":030A
    End
    Begin ComctlLib.ListView lvListView 
       Height          =   4080
@@ -347,7 +346,6 @@ Begin VB.Form frmMain
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      MouseIcon       =   "CTMMain.frx":0326
       NumItems        =   0
    End
    Begin ComctlLib.StatusBar sbStatusBar 
@@ -365,14 +363,12 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   17806
+            Object.Width           =   17886
             Text            =   "Status"
             TextSave        =   "Status"
-            Key             =   ""
             Object.Tag             =   ""
          EndProperty
       EndProperty
-      MouseIcon       =   "CTMMain.frx":0342
    End
    Begin VB.Image imgSplitter 
       Height          =   4065
@@ -422,6 +418,10 @@ Begin VB.Form frmMain
       Begin VB.Menu mnuExport 
          Caption         =   "&Export To Foundation"
          Shortcut        =   ^E
+      End
+      Begin VB.Menu mnuTableLoad 
+         Caption         =   "&Table Load"
+         Shortcut        =   ^T
       End
       Begin VB.Menu mnuSep1 
          Caption         =   "-"
@@ -647,8 +647,6 @@ ODBCError:
     
 End Sub
 
-
-
 '***************************************************************************************************************
 Private Sub Form_Unload(Cancel As Integer)
 '***************************************************************************************************************
@@ -672,9 +670,6 @@ Private Sub Form_Unload(Cancel As Integer)
     End If
     SaveSetting App.Title, "Settings", "ViewMode", lvListView.View
 End Sub
-
-
-
 '***************************************************************************************************************
 Private Sub Form_Resize()
 '***************************************************************************************************************
@@ -1261,6 +1256,10 @@ Private Sub mnuRequest_Click()
 
     xlApp.Visible = True
     
+End Sub
+
+Private Sub mnuTableLoad_Click()
+    frmTableLoad.Show
 End Sub
 
 '***************************************************************************************************************

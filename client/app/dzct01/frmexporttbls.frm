@@ -2,35 +2,33 @@ VERSION 5.00
 Begin VB.Form frmExportTable 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Export Tables"
-   ClientHeight    =   4470
+   ClientHeight    =   4230
    ClientLeft      =   45
-   ClientTop       =   330
-   ClientWidth     =   5385
+   ClientTop       =   615
+   ClientWidth     =   5295
    Icon            =   "frmExportTbls.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4470
-   ScaleWidth      =   5385
+   ScaleHeight     =   4230
+   ScaleWidth      =   5295
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton cmdFind 
-      Caption         =   "&Find"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   330
-      Left            =   3960
-      TabIndex        =   7
-      ToolTipText     =   "Find a codes table"
-      Top             =   2385
-      Width           =   1215
+   Begin VB.ComboBox efPath 
+      Height          =   315
+      Left            =   720
+      Style           =   2  'Dropdown List
+      TabIndex        =   21
+      Top             =   2115
+      Width           =   4425
+   End
+   Begin VB.TextBox efExportFile 
+      Height          =   285
+      Left            =   720
+      TabIndex        =   20
+      ToolTipText     =   "Name of file to export to"
+      Top             =   2475
+      Width           =   4425
    End
    Begin VB.Frame Frame3 
       Caption         =   "File &Options"
@@ -44,15 +42,15 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   915
-      Left            =   2820
-      TabIndex        =   24
-      Top             =   2970
-      Width           =   2355
+      Left            =   2700
+      TabIndex        =   19
+      Top             =   2850
+      Width           =   2475
       Begin VB.OptionButton optCreateFile 
          Caption         =   "Create New File"
          Height          =   240
          Left            =   150
-         TabIndex        =   11
+         TabIndex        =   8
          ToolTipText     =   "Create a new export file"
          Top             =   300
          Width           =   1590
@@ -61,48 +59,11 @@ Begin VB.Form frmExportTable
          Caption         =   "Append to existing file"
          Height          =   240
          Left            =   150
-         TabIndex        =   12
+         TabIndex        =   9
          ToolTipText     =   "Append to an existing export file"
          Top             =   600
          Width           =   1965
       End
-   End
-   Begin VB.CommandButton pbCancel 
-      Caption         =   "&Close"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   330
-      Left            =   3960
-      TabIndex        =   14
-      ToolTipText     =   "Return to main"
-      Top             =   4005
-      Width           =   1215
-   End
-   Begin VB.CommandButton pbOK 
-      Caption         =   "&Export"
-      Default         =   -1  'True
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   330
-      Left            =   2625
-      TabIndex        =   13
-      ToolTipText     =   "Export table"
-      Top             =   4005
-      Width           =   1215
    End
    Begin VB.Frame Frame2 
       Caption         =   "Export T&ype"
@@ -116,15 +77,15 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1290
-      Left            =   135
-      TabIndex        =   23
-      Top             =   2970
+      Left            =   120
+      TabIndex        =   18
+      Top             =   2850
       Width           =   2355
       Begin VB.OptionButton optExportCISOnly 
          Caption         =   """CIS"" Codes Tables"
          Height          =   240
          Left            =   150
-         TabIndex        =   10
+         TabIndex        =   7
          ToolTipText     =   "Export only the ""CIS"" codes tables"
          Top             =   885
          Width           =   1965
@@ -132,8 +93,8 @@ Begin VB.Form frmExportTable
       Begin VB.OptionButton optExportCustom 
          Caption         =   "Custom Export"
          Height          =   240
-         Left            =   135
-         TabIndex        =   9
+         Left            =   150
+         TabIndex        =   6
          ToolTipText     =   "Perform a custom export"
          Top             =   285
          Width           =   1965
@@ -142,27 +103,11 @@ Begin VB.Form frmExportTable
          Caption         =   "Export All Clients"
          Height          =   240
          Left            =   150
-         TabIndex        =   8
+         TabIndex        =   5
          ToolTipText     =   "Export all the tables"
          Top             =   585
          Width           =   1515
       End
-   End
-   Begin VB.TextBox efExportFile 
-      Height          =   285
-      Left            =   1245
-      TabIndex        =   6
-      ToolTipText     =   "Name of file to export to"
-      Top             =   2595
-      Width           =   2625
-   End
-   Begin VB.TextBox efPath 
-      Height          =   285
-      Left            =   1245
-      TabIndex        =   5
-      ToolTipText     =   "Output directory for export"
-      Top             =   2243
-      Width           =   2625
    End
    Begin VB.Frame Frame1 
       Caption         =   "Export Table &For"
@@ -177,8 +122,8 @@ Begin VB.Form frmExportTable
       EndProperty
       Height          =   1890
       Left            =   1890
-      TabIndex        =   16
-      Top             =   225
+      TabIndex        =   11
+      Top             =   105
       Width           =   3285
       Begin VB.ComboBox cbPlatform 
          Height          =   315
@@ -189,14 +134,14 @@ Begin VB.Form frmExportTable
       End
       Begin VB.ComboBox cbApplication 
          Height          =   315
-         Left            =   1305
+         Left            =   1290
          TabIndex        =   3
          Top             =   1050
          Width           =   1815
       End
       Begin VB.ComboBox cbRelease 
          Height          =   315
-         Left            =   1305
+         Left            =   1290
          TabIndex        =   2
          Top             =   660
          Width           =   1815
@@ -222,7 +167,7 @@ Begin VB.Form frmExportTable
          EndProperty
          Height          =   240
          Left            =   450
-         TabIndex        =   20
+         TabIndex        =   15
          Top             =   1470
          Width           =   810
       End
@@ -239,7 +184,7 @@ Begin VB.Form frmExportTable
          EndProperty
          Height          =   240
          Left            =   165
-         TabIndex        =   19
+         TabIndex        =   14
          Top             =   1080
          Width           =   1095
       End
@@ -256,7 +201,7 @@ Begin VB.Form frmExportTable
          EndProperty
          Height          =   240
          Left            =   465
-         TabIndex        =   18
+         TabIndex        =   13
          Top             =   690
          Width           =   795
       End
@@ -273,7 +218,7 @@ Begin VB.Form frmExportTable
          EndProperty
          Height          =   240
          Left            =   660
-         TabIndex        =   17
+         TabIndex        =   12
          Top             =   315
          Width           =   600
       End
@@ -285,11 +230,11 @@ Begin VB.Form frmExportTable
       Sorted          =   -1  'True
       TabIndex        =   0
       ToolTipText     =   "Selected table(s) for exporting"
-      Top             =   420
+      Top             =   300
       Width           =   1590
    End
    Begin VB.Label Label7 
-      Caption         =   "&Export File:"
+      Caption         =   "&File:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -301,9 +246,9 @@ Begin VB.Form frmExportTable
       EndProperty
       Height          =   240
       Left            =   195
-      TabIndex        =   22
-      Top             =   2617
-      Width           =   990
+      TabIndex        =   17
+      Top             =   2490
+      Width           =   510
    End
    Begin VB.Label Label6 
       Caption         =   "&Path:"
@@ -317,9 +262,9 @@ Begin VB.Form frmExportTable
          Strikethrough   =   0   'False
       EndProperty
       Height          =   240
-      Left            =   720
-      TabIndex        =   21
-      Top             =   2265
+      Left            =   195
+      TabIndex        =   16
+      Top             =   2145
       Width           =   465
    End
    Begin VB.Label Label1 
@@ -335,9 +280,30 @@ Begin VB.Form frmExportTable
       EndProperty
       Height          =   240
       Left            =   165
-      TabIndex        =   15
-      Top             =   195
+      TabIndex        =   10
+      Top             =   75
       Width           =   915
+   End
+   Begin VB.Menu mnuFile 
+      Caption         =   "&File"
+      Begin VB.Menu mnuExport 
+         Caption         =   "&Export"
+         Shortcut        =   ^E
+      End
+      Begin VB.Menu mnuSeparator 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuClose 
+         Caption         =   "&Close"
+         Shortcut        =   ^C
+      End
+   End
+   Begin VB.Menu mnuTable 
+      Caption         =   "&Table"
+      Begin VB.Menu mnuFind 
+         Caption         =   "&Find"
+         Shortcut        =   ^F
+      End
    End
 End
 Attribute VB_Name = "frmExportTable"
@@ -347,9 +313,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Public OldPath As String
 
-Private Sub cmdFind_Click()
-    frmFindExportTable.Show vbModal
-End Sub
+
 
 '***************************************************************************************************************
 Private Sub efPath_Change()
@@ -377,7 +341,9 @@ End Sub
 '***************************************************************************************************************
 Private Sub Form_Load()
 '***************************************************************************************************************
-
+    Dim mycodestable As New CodesTable
+    Dim ctr As String
+    
     Screen.MousePointer = vbHourglass
     
     'Get the list of valid codes tables and add them to the combo box.
@@ -404,6 +370,26 @@ Private Sub Form_Load()
     'Get the list of platforms
     Call LoadPlatforms
     
+    'Get the list of paths
+    ctr = 0
+    With mycodestable
+        .Table = "tblExportPath"
+        .CodeColumn = "code"
+        .DecodeColumn = "path"
+        .SortCode = True
+    End With
+
+    mycodestable.Retrieve
+
+    Do
+        If (mycodestable.Decode(ctr) = vbNullChar) Then Exit Do
+            If Len(mycodestable.Decode(ctr)) Then
+                efPath.AddItem mycodestable.Decode(ctr)
+            End If
+            ctr = ctr + 1
+    Loop
+    
+    efPath.Text = mycodestable.Decode(0)
     
     'Set the default export type
     optExportCustom.Value = True
@@ -413,17 +399,35 @@ Private Sub Form_Load()
     
     Screen.MousePointer = vbNormal
     
-    'SelectTable.SetFocus
-
-    
-    'Set the default directory for the export path
-    efPath.Text = "K:\DATA\TABLECHG\"
-    
     Me.Show
     Me.Refresh
 
 End Sub
 
+'***************************************************************************************************************
+Private Sub mnuClose_Click()
+'***************************************************************************************************************
+    Unload Me
+End Sub
+'***************************************************************************************************************
+Private Sub mnuExport_Click()
+'***************************************************************************************************************
+    
+    'Set the mouse pointer accordingly
+    Screen.MousePointer = vbHourglass
+    
+    'Process all the selected tables
+    Call ExportProcedure
+    
+    'Reset the mouse pointer
+    Screen.MousePointer = vbNormal
+End Sub
+
+'***************************************************************************************************************
+Private Sub mnuFind_Click()
+'***************************************************************************************************************
+    frmFindExportTable.Show vbModal
+End Sub
 
 '***************************************************************************************************************
 Private Sub optExportAll_Click()
@@ -441,7 +445,8 @@ Private Sub optExportAll_Click()
     cbClient.Enabled = False
     SelectTable.Enabled = True
     
-    cmdFind.Enabled = True
+    'cmdFind.Enabled = True
+    mnuFind.Enabled = True
     
     Me.Refresh
     
@@ -472,7 +477,9 @@ Private Sub optExportCISOnly_Click()
     
     efExportFile.Text = "TCODF010.DAT"
     
-    cmdFind.Enabled = False
+    'cmdFind.Enabled = False
+    mnuFind.Enabled = False
+    
     
     Me.Refresh
     
@@ -498,18 +505,13 @@ Private Sub optExportCustom_Click()
 
     Screen.MousePointer = vbNormal
     
-    cmdFind.Enabled = True
+'    cmdFind.Enabled = True
+    mnuFind.Enabled = True
     
     Me.Refresh
     
 End Sub
 
-
-'***************************************************************************************************************
-Private Sub pbCancel_Click()
-'***************************************************************************************************************
-    Unload Me
-End Sub
 
 
 
@@ -616,20 +618,7 @@ Public Sub LoadPlatforms()
 End Sub
 
 
-'***************************************************************************************************************
-Private Sub pbOK_Click()
-'***************************************************************************************************************
-    
-    'Set the mouse pointer accordingly
-    Screen.MousePointer = vbHourglass
-    
-    'Process all the selected tables
-    Call ExportProcedure
-    
-    'Reset the mouse pointer
-    Screen.MousePointer = vbNormal
 
-End Sub
 
 '***************************************************************************************************************
 Private Sub SelectTable_Click()
@@ -650,22 +639,20 @@ Private Sub SelectTable_Click()
     Call SetExportButtonState
         
 End Sub
-
-
 '***************************************************************************************************************
 Public Sub SetExportButtonState()
 '***************************************************************************************************************
 
     If ((Len(efPath.Text) > 0) And (Len(efExportFile.Text) > 0)) Then
-        pbOK.Enabled = True
+        mnuExport.Enabled = True
     Else
-        pbOK.Enabled = False
+        mnuExport.Enabled = False
     End If
 
     If (optExportCISOnly = True) Then
-        cmdFind.Enabled = False
+        mnuFind.Enabled = False
     Else
-        cmdFind.Enabled = True
+        mnuFind.Enabled = True
     End If
     
 End Sub

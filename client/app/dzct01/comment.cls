@@ -13,7 +13,6 @@ Private sOutComment As String
 Private sCommentsTemp As String
 Dim lFromLen As Long, lLen As Long, lLeft As Long
 
-
 Property Let Text(T)
     sInComment = T
     
