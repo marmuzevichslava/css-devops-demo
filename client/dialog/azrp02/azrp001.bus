@@ -844,6 +844,9 @@ USHORT GetEntityType(char *pszStr)
 **  04/17/98  JRICE                 Added logic to concatenate item name 
 **                                  when the value is too long
 **
+**  04/24/98  JRICE                 Modified code to include usage for 
+**                                  non-numeric elements
+**
 ***************************************************************************/
 SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr, 
                              _REPLYHDR    *pReplyHdr,
@@ -1122,7 +1125,9 @@ SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr,
 												  &WCD_EntityData[CurrRow].\
 												  DteIntUsage );
 						}
-
+						/* JRICE 04/24/98
+						** Modified code to include usage for non numeric elements
+						*/
 						/* if not, print 'spaces' */
 						else
 						{
@@ -1145,7 +1150,8 @@ SHORT AZRP001BusPrintReport( _REQUESTHDR  *pRequestHdr,
 
 												  /* dummy us */
 												  COL_WIDTH_US,
-												  "" );
+												  &WCD_EntityData[CurrRow].\
+												  DteIntUsage );
 						}
 						/* JRICE 04/13/98
 						** Modified code to include occurences for elements
