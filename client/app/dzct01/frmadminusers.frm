@@ -151,7 +151,7 @@ Private Sub cmdAdd_Click()
 
 
     'If we made it here, then this is a new ID.
-    strsql = "INSERT INTO tblAdmin (AdminName) VALUES (" & Chr(39) & cbxAdminList.Text & Chr(39) & ");"
+    strsql = "INSERT INTO tblAdmin (AdminName) VALUES (" & Chr(34) & cbxAdminList.Text & Chr(34) & ");"
 
 
     'Begin a new transaction.
@@ -229,7 +229,7 @@ Private Sub cmdDelete_Click()
         
 
     'If we made it here, then this id exists.
-    strsql = "DELETE * FROM tblAdmin WHERE AdminName = " & Chr(39) & cbxAdminList.Text & Chr(39)
+    strsql = "DELETE * FROM tblAdmin WHERE AdminName = " & Chr(34) & cbxAdminList.Text & Chr(34)
 
     'Begin a new transaction.
     wsCTM.BeginTrans

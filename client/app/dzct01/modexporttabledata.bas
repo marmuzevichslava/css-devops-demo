@@ -82,7 +82,7 @@ Public Sub ExportProcedure()
     frmExportTable.Refresh
 
     'Get the client code value.
-    strsql = "select Code from tblClients where Client = " & Chr(39) & frmExportTable.cbClient.Text & Chr(39)
+    strsql = "select Code from tblClients where Client = " & Chr(34) & frmExportTable.cbClient.Text & Chr(34)
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
@@ -92,7 +92,7 @@ Public Sub ExportProcedure()
 
     
     'Get the release code.
-    strsql = "select Code from tblReleases where Release = " & Chr(39) & frmExportTable.cbRelease.Text & Chr(39)
+    strsql = "select Code from tblReleases where Release = " & Chr(34) & frmExportTable.cbRelease.Text & Chr(34)
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
@@ -102,7 +102,7 @@ Public Sub ExportProcedure()
     
 
     'Get the platform code.
-    strsql = "select Code from tblPlatforms where Platform = " & Chr(39) & frmExportTable.cbPlatform.Text & Chr(39)
+    strsql = "select Code from tblPlatforms where Platform = " & Chr(34) & frmExportTable.cbPlatform.Text & Chr(34)
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
@@ -112,7 +112,7 @@ Public Sub ExportProcedure()
     
     
     'Get the application code.
-    strsql = "select Code from tblApplications where Application = " & Chr(39) & frmExportTable.cbApplication.Text & Chr(39)
+    strsql = "select Code from tblApplications where Application = " & Chr(34) & frmExportTable.cbApplication.Text & Chr(34)
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then
@@ -126,7 +126,7 @@ Public Sub ExportProcedure()
         If (frmExportTable.SelectTable.Selected(x) = True) Then
     
             strsql = "SELECT * from tblTables where TableName = " & _
-                      Chr(39) & frmExportTable.SelectTable.List(x) & Chr(39)
+                      Chr(34) & frmExportTable.SelectTable.List(x) & Chr(34)
     
             Set TableSet = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     

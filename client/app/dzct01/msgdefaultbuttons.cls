@@ -32,7 +32,7 @@ End Property
 Property Let Decode(D)
     sDecode = D
     
-    mysql = "select [Default Button ID] From tblMsgBoxDefaultButtons where [Defualt Button] = " & Chr(39) & sDecode & Chr(39)
+    mysql = "select [Default Button ID] From tblMsgBoxDefaultButtons where [Defualt Button] = " & Chr(34) & sDecode & Chr(34)
                 
     Set DaoRS = dbCTM.OpenRecordset(mysql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             
@@ -42,7 +42,6 @@ Property Let Decode(D)
     Else
         iCode = SQL_NOT_FOUND
     End If
-    Debug.Print mysql
 End Property
 
 Property Get Displaydecode()

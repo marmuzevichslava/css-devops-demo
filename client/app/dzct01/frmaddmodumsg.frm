@@ -327,18 +327,16 @@ Public Function AddNewUMsgRecord() As Boolean
     
     strsql = "INSERT INTO tblUserErrorMsgEntries (TableName, ErrorNumber, ErrorCode, Client, SequenceNumber, Language, Coments, Application, Platform, CSSRelease)" _
              & " VALUES (" _
-             & Chr(39) & CurTable & Chr(39) & ", " _
+             & Chr(34) & CurTable & Chr(34) & ", " _
              & Me.txtKey & ", " _
-             & Chr(39) & Me.txtDecode & Chr(39) & ", " _
+             & Chr(34) & Me.txtDecode & Chr(34) & ", " _
              & myClient.Displaycode & ", " _
              & Me.txtSeqNumber & ", " _
-             & Chr(39) & Me.txtLanguage & Chr(39) & ", " _
-             & Chr(39) & myComment.DisplayComment & Chr(39) & ", " _
+             & Chr(34) & Me.txtLanguage & Chr(34) & ", " _
+             & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
              & myApplication.Displaycode & ", " _
              & myPlatform.Displaycode & ", " _
              & myRelease.Displaycode & ") "
-        
-    Debug.Print strsql
     
     'Set up the error handling.
     On Error GoTo InsertError
@@ -535,24 +533,22 @@ Public Function ModifyUMsgRecord() As Boolean
     
     'Put together the base update SQL
     strsql = "UPDATE tblUserErrorMsgEntries SET " _
-             & "ErrorNumber = " & Chr(39) & Me.txtKey.Text & Chr(39) & ", " _
-             & "ErrorCode = " & Chr(39) & Me.txtDecode.Text & Chr(39) & ", " _
+             & "ErrorNumber = " & Chr(34) & Me.txtKey.Text & Chr(34) & ", " _
+             & "ErrorCode = " & Chr(34) & Me.txtDecode.Text & Chr(34) & ", " _
              & "Client = " & myClient.Displaycode & ", " _
-             & "Coments = " & Chr(39) & myComment.DisplayComment & Chr(39) & ", " _
+             & "Coments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
              & "Application = " & myApplication.Displaycode & ", " _
              & "Platform = " & myPlatform.Displaycode & ", " _
              & "CSSRelease = " & myRelease.Displaycode & ", " _
-             & "Language = " & Chr(39) & Me.txtLanguage & Chr(39) & ", " _
+             & "Language = " & Chr(34) & Me.txtLanguage & Chr(34) & ", " _
              & "SequenceNumber = " & Me.txtSeqNumber
              
     'Finish the SQL string
     
-    strsql = strsql & " WHERE TableName = " & Chr(39) & CurTable & Chr(39) & _
+    strsql = strsql & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & _
                       " AND ErrorNumber = " & txtKey.Text & _
                       " AND Client = " & myClient.Displaycode & _
                       " AND SequenceNumber = " & Me.txtSeqNumber
-    
-    Debug.Print strsql
     
     'Set up the error handling.
     On Error GoTo UpdateError
@@ -571,7 +567,6 @@ Public Function ModifyUMsgRecord() As Boolean
     Else
         wsCTM.Rollback
         ModifyUMsgRecord = False
-    Debug.Print strsql
     End If
 
 Exit Function
@@ -619,9 +614,7 @@ Private Sub Form_Load()
         
         strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.SequenceNumber, tblClients.Client, tblUserErrorMsgEntries.ErrorCode, tblUserErrorMsgEntries.Coments, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform" _
                   & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code" _
-                  & " WHERE (((tblUserErrorMsgEntries.ErrorNumber)= " & CurKey & ") AND ((tblUserErrorMsgEntries.SequenceNumber)= " & frmMain.lvListView.SelectedItem.SubItems(6) & ") AND ((tblUserErrorMsgEntries.Client)= " & myClient.Displaycode & ") AND ((tblUserErrorMsgEntries.TableName)= " & Chr(39) & CurTable & Chr(39) & "));"
-                    
-        Debug.Print strsql
+                  & " WHERE (((tblUserErrorMsgEntries.ErrorNumber)= " & CurKey & ") AND ((tblUserErrorMsgEntries.SequenceNumber)= " & frmMain.lvListView.SelectedItem.SubItems(6) & ") AND ((tblUserErrorMsgEntries.Client)= " & myClient.Displaycode & ") AND ((tblUserErrorMsgEntries.TableName)= " & Chr(34) & CurTable & Chr(34) & "));"
                     
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     

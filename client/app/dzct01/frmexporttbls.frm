@@ -387,7 +387,6 @@ Private Sub Form_Load()
     
     'Get the list of valid codes tables and add them to the combo box.
     strsql = "select TableName From tblTables"
-    Debug.Print strsql
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
     If Not DaoRS.EOF Then

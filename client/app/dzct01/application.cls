@@ -32,7 +32,7 @@ End Property
 
 Property Let Decode(D)
     sDecode = D
-    mysql = "select Code From tblApplications where Application = " & Chr(39) & sDecode & Chr(39)
+    mysql = "select Code From tblApplications where Application = " & Chr(34) & sDecode & Chr(34)
                 
     Set DaoRS = dbCTM.OpenRecordset(mysql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             

@@ -370,15 +370,12 @@ Private Sub Form_Load()
         
         strsql = "SELECT MsgBoxText, Buttons, Icon, DefaultButton, Application, Platform, CSSRelease, Comments " & _
                  " From tblMsgBoxEntries " & _
-                 " WHERE TableName = " & Chr(39) & CurTable & Chr(39) & _
+                 " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & _
                  " AND   Code = " & CurKey & _
                  " AND   Client = " & myClient.Displaycode
         
-        Debug.Print strsql
-        
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
-                
         If Not DaoRS.EOF Then
 
             'Get the current message box text
@@ -618,7 +615,7 @@ Public Function AddNewRecord() As Boolean
     strsql = "INSERT INTO tblMsgBoxEntries " _
             & " (TableName, Client, Application, CSSRelease, Platform, Code, Buttons, Icon, DefaultButton, MsgBoxText, Comments) " _
             & "VALUES (" _
-            & Chr(39) & CurTable & Chr(39) & ", " _
+            & Chr(34) & CurTable & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
             & myApplication.Displaycode & ", " _
             & myRelease.Displaycode & ", " _
@@ -627,10 +624,8 @@ Public Function AddNewRecord() As Boolean
             & myMsgButtons.Displaycode & ", " _
             & myMsgIcon.Displaycode & ", " _
             & myMsgDefaultButton.Displaycode & ", " _
-            & Chr(39) & txtDecode.Text & Chr(39) & ", " _
-            & Chr(39) & myComment.DisplayComment & Chr(39) & ");"
-    
-    Debug.Print strsql
+            & Chr(34) & txtDecode.Text & Chr(34) & ", " _
+            & Chr(34) & myComment.DisplayComment & Chr(34) & ");"
     
     'Set up the error handling.
     On Error GoTo InsertError
@@ -659,9 +654,6 @@ InsertError:
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
-    
-    Debug.Print Err.Number
-    Debug.Print Err.Description
     
     RC = MsgBox(msg, _
                 vbOKOnly + vbCritical + vbMsgBoxHelpButton, _
@@ -706,13 +698,11 @@ Public Function ModifyRecord() As Boolean
              & " Buttons = " & myMsgButtons.Displaycode & ", " _
              & " Icon = " & myMsgIcon.Displaycode & ", " _
              & " DefaultButton = " & myMsgDefaultButton.Displaycode & ", " _
-             & " MsgBoxText = " & Chr(39) & txtDecode.Text & Chr(39) & ", " _
-             & " Comments = " & Chr(39) & myComment.DisplayComment & Chr(39) _
-             & " WHERE TableName = " & Chr(39) & CurTable & Chr(39) _
+             & " MsgBoxText = " & Chr(34) & txtDecode.Text & Chr(34) & ", " _
+             & " Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) _
+             & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) _
              & " AND Code = " & txtKey.Text _
              & " AND Client = " & myClient.Displaycode
-    
-    Debug.Print strsql
     
     'Set up the error handling.
     On Error GoTo UpdateError
@@ -732,7 +722,6 @@ Public Function ModifyRecord() As Boolean
     
         wsCTM.Rollback
         ModifyRecord = False
-        Debug.Print strsql
     End If
 
 Exit Function
@@ -743,9 +732,6 @@ UpdateError:
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
-    Debug.Print strsql
-    Debug.Print Err.Number
-    Debug.Print Err.Description
     
     RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
     Resume Next

@@ -385,7 +385,7 @@ Private Sub cmdAddTbl_Click()
     Dim nodx As Node, RC As Integer, x As Integer
     
     'First find out if this table already exists.
-    strsql = "Select 1 From tblTables where TableName = " & Chr(39) & txtTblName.Text & Chr(39)
+    strsql = "Select 1 From tblTables where TableName = " & Chr(34) & txtTblName.Text & Chr(34)
     
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
@@ -422,7 +422,7 @@ Private Sub cmdAddTbl_Click()
                                     "Class, " & _
                                     "Description, " & _
                                     "SystemUse, StaticTableUse, CodesTableUse) " & _
-             "VALUES (" & Chr(39) & txtTblName.Text & Chr(39) & ", " & _
+             "VALUES (" & Chr(34) & txtTblName.Text & Chr(34) & ", " & _
                           CurrentTblType & ", " & _
                           txtDecodeLength.Text & ", " & _
                           txtDecodeDisplacement.Text & ", " & _
@@ -431,10 +431,9 @@ Private Sub cmdAddTbl_Click()
                           txtDataLength.Text & ", " & _
                           txtKeyLength.Text & ", " & _
                           txtCenturyDelimeter.Text & ", " & _
-                          Chr(39) & txtClass.Text & Chr(39) & ", " & _
-                          Chr(39) & txtDescription.Text & Chr(39) & ", " & _
+                          Chr(34) & txtClass.Text & Chr(34) & ", " & _
+                          Chr(34) & txtDescription.Text & Chr(34) & ", " & _
                           "False, False, False);"
-    Debug.Print strsql
     
     'Begin a new transaction.
      wsCTM.BeginTrans

@@ -236,7 +236,7 @@ Public Sub MainTreeViewNodeClick(ByVal Node As Node)
         
     strsql = "select Description, DecodeLen, DecodeDisplacement, " & _
              "DataLen, KeyLen, SystemUse, StaticTableUse, CodesTableUse, CenturyDelim " & _
-             "from tblTables where TableName = " & Chr(39) & Node.Text & Chr(39)
+             "from tblTables where TableName = " & Chr(34) & Node.Text & Chr(34)
         
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
@@ -368,7 +368,7 @@ Public Function CheckUMsgKeyExists(ByVal TableName As String, _
     
     'Put together the sql to perform the check.
     strsql = "SELECT 1 FROM tblUserErrorMsgEntries" _
-                 & " Where TableName = " & Chr(39) & TableName & Chr(39) & " AND Client = " & Client & " AND ErrorNumber = " & Key & " AND SequenceNumber = " & SeqNumber
+                 & " Where TableName = " & Chr(34) & TableName & Chr(34) & " AND Client = " & Client & " AND ErrorNumber = " & Key & " AND SequenceNumber = " & SeqNumber
         
     'Open the recordset.
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -394,7 +394,7 @@ Public Function CheckMsgKeyExists(ByVal TableName As String, _
     
     'Put together the sql to perform the check.
     strsql = " SELECT 1 FROM tblMsgBoxEntries " _
-             & " Where TableName = " & Chr(39) & TableName & Chr(39) _
+             & " Where TableName = " & Chr(34) & TableName & Chr(34) _
              & " AND Client = " & Client _
              & " AND Code = " & Code
         
@@ -421,8 +421,8 @@ Public Function CheckKeyExists(ByVal TableName As String, _
 '***************************************************************************************************************
     
     'Put together the sql to perform the check.
-    strsql = "SELECT 1 FROM tblEntries WHERE TableName = " & Chr(39) & TableName & Chr(39) & " " & _
-             "AND Key = " & Chr(39) & Key & Chr(39) & "AND Client = " & Client
+    strsql = "SELECT 1 FROM tblEntries WHERE TableName = " & Chr(34) & TableName & Chr(34) & " " & _
+             "AND Key = " & Chr(34) & Key & Chr(34) & "AND Client = " & Client
     
     'Open the recordset.
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
@@ -462,7 +462,7 @@ Public Function CheckAuthorityLevel() As Boolean
         Exit Function
     End If
     
-    strsql = "select 1 from tblAdmin where AdminName = " & Chr(39) & CurrentUser & Chr(39)
+    strsql = "select 1 from tblAdmin where AdminName = " & Chr(34) & CurrentUser & Chr(34)
 
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
@@ -479,21 +479,26 @@ End Function
 
 
 
+
+
 '*********************************************************************************************************
-Public Function FormatDecode(Decode As String) As String
+Public Function CheckForSpecialChars(s As String) As String
 '*********************************************************************************************************
     Dim pos As Integer
-    
-    pos = InStr(Decode, "'")
-    
-    If pos > 0 Then
-        FormatDecode = Left(Decode, pos - 1) & "'" & Mid(Decode, pos, Len(Decode))
-    Else
-        FormatDecode = Decode
-    End If
+    Dim res As String
+
+    res = s
+    s = ""
+    'Check for pipe character
+    Do While InStr(res, Chr(124))
+        pos = InStr(res, Chr(124))
+        s = s & Chr(39) & Left(res, pos - 1) & Chr(39) & " & Chr(124) & "
+        res = Mid(res, pos + 1)
+    Loop
+
+    CheckForSpecialChars = s & Chr(39) & res & Chr(39)
 
 End Function
-
 
 '*********************************************************************************************************
 Public Sub RefreshCodeDecodeLB()
@@ -510,7 +515,7 @@ Public Sub RefreshCodeDecodeLB()
     If (CurTableType = CODES_TABLE) Then
         strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblEntries.SystemUse, tblEntries.StaticTableUse, tblEntries.CodesTableUse, tblEntries.Comments, tblEntries.Description" _
                  & " FROM (((tblEntries INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code" _
-                 & " WHERE (((tblEntries.TableName) = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "))" _
+                 & " WHERE (((tblEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
                  & " ORDER BY tblEntries.Key;"
                  
         frmMain.lvListView.ColumnHeaders.Clear
@@ -536,7 +541,7 @@ Public Sub RefreshCodeDecodeLB()
     ElseIf (CurTableType = MSG_BOX) Then
         strsql = "SELECT DISTINCTROW tblMsgBoxEntries.Code, tblMsgBoxEntries.MsgBoxText, tblClients.Client, tblApplications.Application, tblPlatforms.Platform, tblReleases.Release, tblMsgBoxIcons.Icon, tblMsgBoxDefaultButtons.[Defualt Button], tblMsgBoxButtons.Buttons, tblMsgBoxEntries.Comments, tblMsgBoxEntries.TableName" _
                  & " FROM ((((((tblMsgBoxEntries INNER JOIN tblMsgBoxButtons ON tblMsgBoxEntries.Buttons = tblMsgBoxButtons.[Button ID]) INNER JOIN tblMsgBoxDefaultButtons ON tblMsgBoxEntries.DefaultButton = tblMsgBoxDefaultButtons.[Default Button ID]) INNER JOIN tblMsgBoxIcons ON tblMsgBoxEntries.Icon = tblMsgBoxIcons.[Icon ID]) INNER JOIN tblReleases ON tblMsgBoxEntries.CSSRelease = tblReleases.Code) INNER JOIN tblClients ON tblMsgBoxEntries.Client = tblClients.Code) INNER JOIN tblPlatforms ON tblMsgBoxEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblMsgBoxEntries.Application = tblApplications.Code" _
-                 & " Where (((tblMsgBoxEntries.TableName) = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "))" _
+                 & " Where (((tblMsgBoxEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
                  & " ORDER BY tblMsgBoxEntries.Code;"
                  
         frmMain.lvListView.ColumnHeaders.Clear
@@ -561,7 +566,7 @@ Public Sub RefreshCodeDecodeLB()
     Else
         strsql = "SELECT DISTINCTROW tblUserErrorMsgEntries.ErrorNumber, tblUserErrorMsgEntries.ErrorCode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblUserErrorMsgEntries.SequenceNumber, tblUserErrorMsgEntries.Language, tblUserErrorMsgEntries.Coments" _
                  & " FROM (((tblUserErrorMsgEntries INNER JOIN tblClients ON tblUserErrorMsgEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblUserErrorMsgEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblUserErrorMsgEntries.Platform = tblPlatforms.Code) INNER JOIN tblApplications ON tblUserErrorMsgEntries.Application = tblApplications.Code" _
-                 & " Where (((tblUserErrorMsgEntries.TableName) = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "))" _
+                 & " Where (((tblUserErrorMsgEntries.TableName) = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "))" _
                  & " ORDER BY tblUserErrorMsgEntries.ErrorNumber;"
 
         frmMain.lvListView.ColumnHeaders.Clear
@@ -650,9 +655,6 @@ ODBCError:
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
-    
-    Debug.Print Err.Number
-    Debug.Print Err.Description
     
     RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
     Err.Clear

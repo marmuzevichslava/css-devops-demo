@@ -522,7 +522,7 @@ Private Sub Form_Load()
     DataElement.Text = ""
     
     strsql = "SELECT TableName, DataElement, DataType, Signed, Comp FROM tblCUVHeaderData"
-    strsql = strsql & " WHERE tblCUVHeaderData.TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39)
+    strsql = strsql & " WHERE tblCUVHeaderData.TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34)
     
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
@@ -564,7 +564,7 @@ Private Sub Form_Load()
         
     Else
     
-        strsql = "INSERT INTO tblCUVHeaderData (TableName) VALUES (" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & ")"
+        strsql = "INSERT INTO tblCUVHeaderData (TableName) VALUES (" & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & ")"
         wsCTM.BeginTrans
         dbCTM.Execute strsql
         If (dbCTM.RecordsAffected = 1) Then
@@ -667,8 +667,8 @@ Public Sub PopulateListView()
     
     'Get all the keys decodes.
     strsql = "SELECT Key, CName, CobolName, Decode, ArrayName from tblEntries " & _
-             "WHERE TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & _
-             Chr(39) & "ORDER By Key"
+             "WHERE TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & _
+             Chr(34) & "ORDER By Key"
              
     Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
 
@@ -728,11 +728,11 @@ Private Sub pbGenerate_Click()
         CompType = "0"
     End If
     
-    strsql = "UPDATE DISTINCTROW tblCUVHeaderData SET tblCUVHeaderData.DataType = " & Chr(39) & DataType & Chr(39)
-    strsql = strsql & ", tblCUVHeaderData.DataElement = " & Chr(39) & Me.DataElement & Chr(39)
-    strsql = strsql & ", tblCUVHeaderData.Comp = " & Chr(39) & CompType & Chr(39)
+    strsql = "UPDATE DISTINCTROW tblCUVHeaderData SET tblCUVHeaderData.DataType = " & Chr(34) & DataType & Chr(34)
+    strsql = strsql & ", tblCUVHeaderData.DataElement = " & Chr(34) & Me.DataElement & Chr(34)
+    strsql = strsql & ", tblCUVHeaderData.Comp = " & Chr(34) & CompType & Chr(34)
     strsql = strsql & ", tblCUVHeaderData.Signed = " & bSignedFlag
-    strsql = strsql & " WHERE (((tblCUVHeaderData.TableName)=" & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & "));"
+    strsql = strsql & " WHERE (((tblCUVHeaderData.TableName)=" & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & "));"
 
     wsCTM.BeginTrans
     dbCTM.Execute strsql
@@ -741,7 +741,6 @@ Private Sub pbGenerate_Click()
         wsCTM.CommitTrans
     Else
         wsCTM.Rollback
-        Debug.Print strsql
         msg = "An error has occured while trying to modify the Data Element header fields. Copybook was not generated." & vbCrLf
         RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
         Exit Sub
@@ -864,9 +863,9 @@ Public Sub GenerateCNames()
             
             For x = 1 To lvSrcGenerate.ListItems.Count
                 
-                strsql = "UPDATE tblEntries SET CName = ' ' WHERE TableName = " & Chr(39) & _
-                         frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                         " AND Key = " & Chr(39) & lvSrcGenerate.ListItems(x).Text & Chr(39)
+                strsql = "UPDATE tblEntries SET CName = ' ' WHERE TableName = " & Chr(34) & _
+                         frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                         " AND Key = " & Chr(34) & lvSrcGenerate.ListItems(x).Text & Chr(34)
                 wsCTM.BeginTrans
                 dbCTM.Execute strsql
                 wsCTM.CommitTrans
@@ -972,11 +971,11 @@ Public Sub GenerateCNames()
                 Else
                     wsCTM.BeginTrans
                     
-                    strsql = "UPDATE tblEntries SET CName = " & Chr(39) & _
-                             TempString & Chr(39) & ", ArrayName = " & Chr(39) & _
-                             TempString & Chr(39) & " WHERE TableName = " & Chr(39) & _
-                             frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                             " AND Key = " & Chr(39) & "E" & KeyVal & Chr(39)
+                    strsql = "UPDATE tblEntries SET CName = " & Chr(34) & _
+                             TempString & Chr(34) & ", ArrayName = " & Chr(34) & _
+                             TempString & Chr(34) & " WHERE TableName = " & Chr(34) & _
+                             frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                             " AND Key = " & Chr(34) & "E" & KeyVal & Chr(34)
                     
                     dbCTM.Execute strsql
                     wsCTM.CommitTrans
@@ -1047,9 +1046,9 @@ Public Sub GenerateCobolNames()
             
             For x = 1 To lvSrcGenerate.ListItems.Count
                 
-                strsql = "UPDATE tblEntries SET CobolName = ' ' WHERE TableName = " & Chr(39) & _
-                         frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                         " AND Key = " & Chr(39) & lvSrcGenerate.ListItems(x).Text & Chr(39)
+                strsql = "UPDATE tblEntries SET CobolName = ' ' WHERE TableName = " & Chr(34) & _
+                         frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                         " AND Key = " & Chr(34) & lvSrcGenerate.ListItems(x).Text & Chr(34)
                 wsCTM.BeginTrans
                 dbCTM.Execute strsql
                 wsCTM.CommitTrans
@@ -1154,10 +1153,10 @@ Public Sub GenerateCobolNames()
                     
                     wsCTM.BeginTrans
                     
-                    strsql = "UPDATE tblEntries SET CobolName = " & Chr(39) & _
-                             TempString & Chr(39) & " WHERE TableName = " & Chr(39) & _
-                             frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                             " AND Key = " & Chr(39) & "E" & KeyVal & Chr(39)
+                    strsql = "UPDATE tblEntries SET CobolName = " & Chr(34) & _
+                             TempString & Chr(34) & " WHERE TableName = " & Chr(34) & _
+                             frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                             " AND Key = " & Chr(34) & "E" & KeyVal & Chr(34)
                     
                     dbCTM.Execute strsql
                     wsCTM.CommitTrans

@@ -506,9 +506,7 @@ Private Sub Form_Load()
                  
         strsql = "SELECT DISTINCTROW tblEntries.Key, tblEntries.Decode, tblClients.Client, tblApplications.Application, tblReleases.Release, tblPlatforms.Platform, tblEntries.Comments, tblEntries.Description, tblEntries.SystemUse, tblEntries.StaticTableUse, tblEntries.CodesTableUse" _
                  & " FROM (((tblEntries INNER JOIN tblApplications ON tblEntries.Application = tblApplications.Code) INNER JOIN tblClients ON tblEntries.Client = tblClients.Code) INNER JOIN tblReleases ON tblEntries.CSSRelease = tblReleases.Code) INNER JOIN tblPlatforms ON tblEntries.Platform = tblPlatforms.Code" _
-                 & " WHERE TableName = " & Chr(39) & CurTable & Chr(39) & "AND Key = " & Chr(39) & CurKey & Chr(39) & " and tblEntries.Client = " & myClient.Displaycode
-                 
-        Debug.Print strsql
+                 & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & "AND Key = " & Chr(34) & CurKey & Chr(34) & " and tblEntries.Client = " & myClient.Displaycode
         
         Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
@@ -754,6 +752,7 @@ Public Function AddNewRecord() As Boolean
     Dim myPlatform As New Platform
     Dim myRelease As New Release
     Dim myComment As New Comment
+    Dim hDecode As String
     
     myClient.Decode = Me.cbxClients.Text
     myApplication.Decode = Me.cbxApplication.Text
@@ -766,15 +765,30 @@ Public Function AddNewRecord() As Boolean
     'Make sure that there is at least a space within each text field.
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     
+    hDecode = CheckForSpecialChars(txtDecode.Text)
+    
+''    strsql = "INSERT INTO tblEntries" _
+''            & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease, SystemUse, StaticTableUse, CodesTableUse) " _
+''            & "VALUES (" _
+''            & Chr(34) & CurTable & Chr(34) & ", " _
+''            & Chr(34) & txtKey.Text & Chr(34) & ", " _
+''            & Chr(34) & txtDecode.Text & Chr(34) & ", " _
+''            & myClient.Displaycode & ", " _
+''            & Chr(34) & txtDesc.Text & Chr(34) & ", " _
+''            & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
+''            & myApplication.Displaycode & ", " _
+''            & myPlatform.Displaycode & ", " _
+''            & myRelease.Displaycode & ", "
+    
     strsql = "INSERT INTO tblEntries" _
             & " (TableName, Key, Decode, Client, Description, Comments, Application, Platform, CSSRelease, SystemUse, StaticTableUse, CodesTableUse) " _
             & "VALUES (" _
-            & Chr(39) & CurTable & Chr(39) & ", " _
-            & Chr(39) & txtKey.Text & Chr(39) & ", " _
-            & Chr(39) & txtDecode.Text & Chr(39) & ", " _
+            & Chr(34) & CurTable & Chr(34) & ", " _
+            & Chr(34) & txtKey.Text & Chr(34) & ", " _
+            & Chr(34) & hDecode & Chr(34) & ", " _
             & myClient.Displaycode & ", " _
-            & Chr(39) & txtDesc.Text & Chr(39) & ", " _
-            & Chr(39) & myComment.DisplayComment & Chr(39) & ", " _
+            & Chr(34) & txtDesc.Text & Chr(34) & ", " _
+            & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
             & myApplication.Displaycode & ", " _
             & myPlatform.Displaycode & ", " _
             & myRelease.Displaycode & ", "
@@ -803,14 +817,12 @@ Public Function AddNewRecord() As Boolean
     'Finish the SQL string
     strsql = strsql & ");"
     
-    Debug.Print strsql
-    
     'Set up the error handling.
     On Error GoTo InsertError
-    
+Debug.Print strsql
     'Begin a new transaction.
      wsCTM.BeginTrans
-
+Debug.Print strsql
     'Execute the update.
     dbCTM.Execute strsql
             
@@ -833,9 +845,6 @@ InsertError:
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
     
-    Debug.Print Err.Number
-    Debug.Print Err.Description
-    
     RC = MsgBox(msg, _
                 vbOKOnly + vbCritical + vbMsgBoxHelpButton, _
                 "Codes Table Explorer", _
@@ -852,6 +861,7 @@ Public Function ModifyRecord() As Boolean
     Dim myPlatform As New Platform
     Dim myRelease As New Release
     Dim myComment As New Comment
+    Dim hDecode As String
     
     myClient.Decode = Me.cbxClients.Text
     myApplication.Decode = Me.cbxApplication.Text
@@ -864,13 +874,16 @@ Public Function ModifyRecord() As Boolean
     'Make sure that there is at least a space within each text field.
     If (txtDesc.Text = "") Then txtDesc.Text = " "
     
+'add logic to format decode text
+    hDecode = CheckForSpecialChars(txtDecode.Text)
+    
     'Put together the base update SQL
     strsql = "UPDATE tblEntries SET " _
-             & "Key = " & Chr(39) & txtKey.Text & Chr(39) & ", " _
-             & "Decode = " & Chr(39) & txtDecode.Text & Chr(39) & ", " _
+             & "Key = " & Chr(34) & txtKey.Text & Chr(34) & ", " _
+             & "Decode = " & Chr(34) & hDecode & Chr(34) & ", " _
              & "Client = " & myClient.Displaycode & ", " _
-             & "Description = " & Chr(39) & txtDesc.Text & Chr(39) & ", " _
-             & "Comments = " & Chr(39) & myComment.DisplayComment & Chr(39) & ", " _
+             & "Description = " & Chr(34) & txtDesc.Text & Chr(34) & ", " _
+             & "Comments = " & Chr(34) & myComment.DisplayComment & Chr(34) & ", " _
              & "Application = " & myApplication.Displaycode & ", " _
              & "Platform = " & myPlatform.Displaycode & ", " _
              & "CSSRelease = " & myRelease.Displaycode & ", " _
@@ -898,15 +911,14 @@ Public Function ModifyRecord() As Boolean
     
     'Finish the SQL string
     myClient.Decode = frmMain.lvListView.SelectedItem.SubItems(2)
-    strsql = strsql & " WHERE TableName = " & Chr(39) & CurTable & Chr(39) & _
-                      " AND Key = " & Chr(39) & txtKey.Text & Chr(39) & _
+    strsql = strsql & " WHERE TableName = " & Chr(34) & CurTable & Chr(34) & _
+                      " AND Key = " & Chr(34) & txtKey.Text & Chr(34) & _
                       " AND Client = " & myClient.Displaycode
-    
-    Debug.Print strsql
     
     'Set up the error handling.
     On Error GoTo UpdateError
     
+Debug.Print strsql
     'Begin a new transaction.
      wsCTM.BeginTrans
 
@@ -932,9 +944,6 @@ UpdateError:
           "Error number = " & Err.Number & vbCrLf & _
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
-    Debug.Print strsql
-    Debug.Print Err.Number
-    Debug.Print Err.Description
     
     RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
     Resume Next

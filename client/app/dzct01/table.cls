@@ -17,7 +17,7 @@ Property Let Name(N)
     
     sqlstr = "SELECT DISTINCTROW tblTables.TableType" _
              & " FROM tblTables" _
-             & " WHERE (((tblTables.TableName)= " & Chr(39) & sTableName & Chr(39) & "));"
+             & " WHERE (((tblTables.TableName)= " & Chr(34) & sTableName & Chr(34) & "));"
     
         Set DaoRS = dbCTM.OpenRecordset(sqlstr, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
             

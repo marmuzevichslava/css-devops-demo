@@ -146,8 +146,11 @@ End Sub
 '***************************************************************************************************************
 Private Sub txtFindTable_Change()
 '***************************************************************************************************************
+   
     If (Len(txtFindTable.Text) > 0) Then
         txtFindTable.BackColor = &H80000005
+        txtFindTable.Text = UCase(txtFindTable.Text)
+        txtFindTable.SelStart = Len(txtFindTable.Text) + 1
         cmdFind.Enabled = True
         cmdFind.Default = True
     Else

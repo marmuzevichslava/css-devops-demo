@@ -134,25 +134,25 @@ Public Sub CreateVariableNames()
             'Update the field on the entries table (tblEntries).
             If iFileType = 1 Then
                 
-                strsql = "UPDATE tblEntries SET CName = " & Chr(39) & szAbbrDecode & Chr(39) & _
-                         " WHERE TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                         " AND Key = " & Chr(39) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(39)
+                strsql = "UPDATE tblEntries SET CName = " & Chr(34) & szAbbrDecode & Chr(34) & _
+                         " WHERE TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                         " AND Key = " & Chr(34) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(34)
                 
                 dbCTM.Execute strsql
                 
                 'If the array name is null, then update that value as well.
                 If IsNull(frmSourceFileGenerator.lvSrcGenerate.ListItems(x).SubItems(4)) Then
-                    strsql = "UPDATE tblEntries SET ArrayName = " & Chr(39) & szAbbrDecode & Chr(39) & _
-                             " WHERE TableName = " & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                             " AND Key = " & Chr(39) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(39)
+                    strsql = "UPDATE tblEntries SET ArrayName = " & Chr(34) & szAbbrDecode & Chr(34) & _
+                             " WHERE TableName = " & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                             " AND Key = " & Chr(34) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(34)
                 
                     dbCTM.Execute strsql
                 End If
                 
             Else
-                strsql = "UPDATE tblEntries SET CobolName = " & Chr(39) & szAbbrDecode & Chr(39) & _
-                         " WHERE TableName = " & Chr(39) & frmMain.tvTreeView.SelectedItem.Text & Chr(39) & _
-                         " AND Key = " & Chr(39) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(39)
+                strsql = "UPDATE tblEntries SET CobolName = " & Chr(34) & szAbbrDecode & Chr(34) & _
+                         " WHERE TableName = " & Chr(34) & frmMain.tvTreeView.SelectedItem.Text & Chr(34) & _
+                         " AND Key = " & Chr(34) & frmSourceFileGenerator.lvSrcGenerate.ListItems(x).Text & Chr(34)
                 
                 dbCTM.Execute strsql
             

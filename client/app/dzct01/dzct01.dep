@@ -1,5 +1,5 @@
 [Version]
-Version=1.8.0.2
+Version=1.8.0.5
 
 [MSVBVM50.DLL <0009>]
 Register=$(DLLSelfRegister)
@@ -273,9 +273,9 @@ Uses1=
 [DZCT01.EXE <0009>]
 Register=
 Dest=$(AppPath)
-Date=7/21/1997
-Time=15:22:36
-Version=1.8.0.2
+Date=7/25/1997
+Time=14:58:38
+Version=1.8.0.5
 CABFilename= ; If you are going to compress this file into a Cabinet (.cab) file, you should add the name of that file here.
 CABDefaultURL= ; If you specified a CABFileName, then you can put URL location here, where Internet users can locate your Cabinet file for download.
 CABINFFile= ; If you specified a CABFileName that processes an INF file, you should put the name of the inf file contained in that Cabinet file, here.  This is ignored if a Run= key is also present

@@ -256,7 +256,7 @@ Begin VB.Form frmMain
          NumPanels       =   1
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   20320
+            Object.Width           =   20241
             Text            =   "Status"
             TextSave        =   "Status"
             Key             =   ""
@@ -509,9 +509,6 @@ ODBCError:
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
     
-    Debug.Print Err.Number
-    Debug.Print Err.Description
-    
     RC = MsgBox(msg, _
                 vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, _
                 "Codes Table Explorer", _
@@ -701,7 +698,7 @@ Private Sub mnuDeleteKey_Click()
     Dim myClient As New Client
     
     'Check to see if this what they really want to do.
-    RC = MsgBox("Are you sure you wish to the selected line(s)?", _
+    RC = MsgBox("Are you sure you wish to delete the selected line(s)?", _
                 vbYesNo + vbQuestion + vbApplicationModal, "Codes Table Explorer")
     
     If (RC = vbYes) Then
@@ -709,7 +706,7 @@ Private Sub mnuDeleteKey_Click()
         Screen.MousePointer = vbHourglass
                 
         'Begin a new transaction.
-        'wsCTM.BeginTrans
+        wsCTM.BeginTrans
     
         For x = 1 To lvListView.ListItems.Count
             If lvListView.ListItems.Item(x).Selected = True Then
@@ -719,22 +716,20 @@ Private Sub mnuDeleteKey_Click()
                 
                 'Figure out which database table to delete from.
                 If (CurTableType = CODES_TABLE) Then
-                    strsql = "DELETE FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
-                             " AND Key = " & Chr(39) & lvListView.ListItems.Item(x).Text & Chr(39) & _
+                    strsql = "DELETE FROM tblEntries WHERE TableName = " & Chr(34) & tvTreeView.SelectedItem.Text & Chr(34) & _
+                             " AND Key = " & Chr(34) & lvListView.ListItems.Item(x).Text & Chr(34) & _
                              " AND Client = " & myClient.Displaycode
         
                 'ElseIf (UCase(tvTreeView.SelectedItem.Text) = "C1CMBMSG") Then
                 ElseIf (CurTableType = MSG_BOX) Then
-                    strsql = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
+                    strsql = "DELETE FROM tblMsgBoxEntries WHERE TableName = " & Chr(34) & tvTreeView.SelectedItem.Text & Chr(34) & _
                              " AND Code = " & Val(lvListView.ListItems.Item(x).Text) & _
                              " AND Client = " & myClient.Displaycode
                 ElseIf (CurTableType = WES_CODE) Then
-                    strsql = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39) & _
+                    strsql = "DELETE FROM tblUserErrorMsgEntries WHERE TableName = " & Chr(34) & tvTreeView.SelectedItem.Text & Chr(34) & _
                              " AND ErrorNumber = " & Val(lvListView.ListItems.Item(x).Text) & _
                              " AND Client = " & myClient.Displaycode
                 End If
-        
-                Debug.Print strsql
     
                 wsCTM.BeginTrans
                 
@@ -760,29 +755,56 @@ End Sub
 Private Sub mnuDeleteTable_Click()
 '***************************************************************************************************************
     Dim RC As Integer, i As Integer
+    Dim sTableName As String
     
     If (CurTableType = CODES_TABLE) Then
-        RC = MsgBox("Are you sure you wish to delete the current table and " & _
-                    vbCrLf & "all the Keys that it contains?", _
-                    vbYesNo + vbQuestion, "Codes Table Explorer")
+        sTableName = tvTreeView.SelectedItem.Text
+        
+        'Check and see if current table contains any detail records
+        strsql = "SELECT * FROM tblEntries WHERE TableName = " & Chr(34) & sTableName & Chr(34)
     
-        If (RC = vbYes) Then
+        Set DaoRS = dbCTM.OpenRecordset(strsql)
             
+        If (DaoRS.EOF) Then
+        
+            RC = MsgBox("Are you sure you wish to delete " & sTableName & "?", _
+                        vbYesNo + vbQuestion, "Codes Table Explorer")
+
+        Else
+
+            RC = MsgBox("Are you sure you wish to delete " & sTableName & " and " & _
+                        vbCrLf & "all the Keys that it contains?", _
+                        vbYesNo + vbQuestion, "Codes Table Explorer")
+
+        End If
+        
+        DaoRS.Close
+                
+        If (RC = vbYes) Then
+        
             Screen.MousePointer = vbHourglass
             
-            strsql = "DELETE * FROM tblTables WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39)
-
+            strsql = "DELETE * FROM tblTables WHERE TableName = " & Chr(34) & sTableName & Chr(34)
+                
             'Begin a new transaction.
             wsCTM.BeginTrans
 
-            'Execute the insert.
+            'Execute the delete
             dbCTM.Execute strsql
-    
+
             'Check the results.
-            If (dbCTM.RecordsAffected = 1) Then
-                strsql = "DELETE * FROM tblEntries WHERE TableName = " & Chr(39) & tvTreeView.SelectedItem.Text & Chr(39)
+            If (Err.Number = 0) Then
+
+                strsql = "DELETE * FROM tblEntries WHERE TableName = " & Chr(34) & sTableName & Chr(34)
+                
                 dbCTM.Execute strsql
-                If (dbCTM.RecordsAffected > 0) Then
+                
+                If (Err.Number = 0) Then
+                    
+                    wsCTM.CommitTrans
+                    
+                    RC = MsgBox(sTableName & " successfully deleted.", _
+                                vbOKOnly + vbInformation, "Codes Table Explorer")
                                         
                     'Clear the control.
                     tvTreeView.Nodes.Clear
@@ -794,19 +816,17 @@ Private Sub mnuDeleteTable_Click()
                     Call tvTreeView_NodeClick(tvTreeView.SelectedItem)
                     
                     Screen.MousePointer = vbNormal
-                    
-                    RC = MsgBox(frmMain.tvTreeView.SelectedItem.Text & " successfully deleted.", _
-                                vbOKOnly + vbInformation, "Codes Table Explorer")
-                    wsCTM.CommitTrans
+                
                 Else
-                    RC = MsgBox("Unable to delete " & frmMain.tvTreeView.SelectedItem.Text & "." & _
+                    RC = MsgBox("Unable to delete " & sTableName & "." & _
                                 vbCrLf & "Contact Development Tools for assistance.", _
                                 vbOKOnly + vbCritical, "Codes Table Explorer")
                     wsCTM.Rollback
+                    Screen.MousePointer = vbNormal
                 End If
             Else
                 Screen.MousePointer = vbNormal
-                RC = MsgBox("Unable to delete " & frmMain.tvTreeView.SelectedItem.Text & "." & _
+                RC = MsgBox("Unable to delete " & sTableName & "." & _
                             vbCrLf & "Contact Development Tools for assistance.", _
                             vbOKOnly + vbCritical, "Codes Table Explorer")
                 wsCTM.Rollback
@@ -814,7 +834,7 @@ Private Sub mnuDeleteTable_Click()
         End If
     Else
         Screen.MousePointer = vbNormal
-        RC = MsgBox("Unable to delete the current table using Codes " & vbCrLf & _
+        RC = MsgBox("Unable to delete " & sTableName & " using Codes " & vbCrLf & _
                     "Table Explorer. Please use Microsoft Access or contact" & vbCrLf & _
                     "Development tools for assistance.", vbOKOnly + vbExclamation, "Codes Table Explorer")
     End If

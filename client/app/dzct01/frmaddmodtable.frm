@@ -316,6 +316,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub cmdAddTbl_Click()
 
     If (txtCenturyDelimeter.Text = "") Then txtCenturyDelimeter.Text = " "
@@ -333,15 +334,15 @@ Private Sub cmdAddTbl_Click()
         
     'Put together the base update SQL
     strsql = "UPDATE tblTables SET " & _
-             "TableType = " & Chr(39) & CurrentTblType & Chr(39) & ", " & _
-             "DecodeLen = " & Chr(39) & txtDecodeLength.Text & Chr(39) & ", " & _
+             "TableType = " & Chr(34) & CurrentTblType & Chr(34) & ", " & _
+             "DecodeLen = " & Chr(34) & txtDecodeLength.Text & Chr(34) & ", " & _
              "DecodeDisplacement = " & txtDecodeDisplacement.Text & ", " & _
-             "Description = " & Chr(39) & txtDescription.Text & Chr(39) & ", " & _
-             "EffDate = " & Chr(39) & chkEffDate.Value & Chr(39) & ", " & _
-             "Residency = " & Chr(39) & chkResidency.Value & Chr(39) & ", " & _
-             "DataLen = " & Chr(39) & txtDataLength.Text & Chr(39) & ", " & _
-             "KeyLen = " & Chr(39) & txtKeyLength.Text & Chr(39) & ", " & _
-             "CenturyDelim = " & Chr(39) & txtCenturyDelimeter.Text & Chr(39) & ", "
+             "Description = " & Chr(34) & txtDescription.Text & Chr(34) & ", " & _
+             "EffDate = " & Chr(34) & chkEffDate.Value & Chr(34) & ", " & _
+             "Residency = " & Chr(34) & chkResidency.Value & Chr(34) & ", " & _
+             "DataLen = " & Chr(34) & txtDataLength.Text & Chr(34) & ", " & _
+             "KeyLen = " & Chr(34) & txtKeyLength.Text & Chr(34) & ", " & _
+             "CenturyDelim = " & Chr(34) & txtCenturyDelimeter.Text & Chr(34) & ", "
     
     'Add the System Usage Flags.
     If (chkSysUsage.Value = 1) Then
@@ -365,9 +366,7 @@ Private Sub cmdAddTbl_Click()
     End If
     
     'Finish the SQL string
-    strsql = strsql & " WHERE TableName = " & Chr(39) & CurTable & Chr(39)
-
-    Debug.Print strsql
+    strsql = strsql & " WHERE TableName = " & Chr(34) & CurTable & Chr(34)
     
     'Set up the error handling.
     On Error GoTo UpdateError
@@ -409,9 +408,6 @@ UpdateError:
           "Error Description = " & Err.Description & vbCrLf & vbCrLf & _
           "Contact " & AUTHOR & " for assistance."
     
-    Debug.Print Err.Number
-    Debug.Print Err.Description
-    
     RC = MsgBox(msg, vbOKOnly + vbCritical + vbMsgBoxHelpButton + vbApplicationModal, "Codes Table Explorer", Err.HelpFile, Err.HelpContext)
     Resume Next
 End If
@@ -432,9 +428,7 @@ Private Sub Form_Load()
 
     strsql = "select TableType, DecodeLen, DecodeDisplacement, EffDate,  " & _
              "Residency, DataLen, KeyLen, CenturyDelim, SystemUse, StaticTableUse, CodesTableUse, Description " & _
-             "from tblTables where TableName = " & Chr(39) & CurTable & Chr(39)
-        
-    Debug.Print strsql
+             "from tblTables where TableName = " & Chr(34) & CurTable & Chr(34)
         
          Set DaoRS = dbCTM.OpenRecordset(strsql, dbOpenForwardOnly, dbReadOnly, dbReadOnly)
     
