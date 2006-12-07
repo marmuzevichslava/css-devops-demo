@@ -1,0 +1,23 @@
+  #!/bin/ksh
+  #
+  #  This script will compile multiple files
+  #  
+  #  Written by : John Drosos
+  #  Date: 1/17/96
+  #
+	 
+  rm  SW* 
+  echo " " > Datlog 
+  until [ $# -eq 0 ]
+  do
+  sed "9,100s/      01 /       02 /"  < $1 >  modf
+  echo "\n\n\n*********   NEW  FILE    **********" > temp92
+  echo "DATA FOR:  $1 \n  " >> temp92 
+  bitesize.ksh modf >> temp92  2>> temp92
+   shift
+   sed "7,33d" < temp92  >> Datlog 
+   rm temp92
+   rm modf
+   rm SW*
+  done 
+  echo "View output in Datlog."

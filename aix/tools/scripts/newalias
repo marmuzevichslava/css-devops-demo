@@ -1,0 +1,17 @@
+#SCCS: %M%  %I%  %G%  %U%
+#******************************************************************************
+#
+#	<ng> argument: group
+#
+#	Changes the user to a new group. The user must be a menber of this group.
+#	Re-establishes the alias's.
+#
+#	Andersen Consulting - SolutionWorks
+# 
+#	Coder:          Date		Action
+#	Marc Danneels   6/22/95     Original code.
+#       Cynthia Ledesma 09/14/95    Modified directory structure
+#
+#******************************************************************************
+  $BASE_TOOL/common/host/scripts/basealias.ksh 
+  $BASE_TOOL/common/host/scripts/prodalias.ksh

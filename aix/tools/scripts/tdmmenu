@@ -1,0 +1,1058 @@
+#!/bin/ksh  -x
+# SCCS: ztdm  1.5  02/13/95  09:03:32
+#**************************************************************************
+#
+#	tdm 
+#
+#	Andersen Consulting - SolutionWorks
+# 
+#**************************************************************************
+
+#-------------------------
+# Constants
+#-------------------------
+HEADER_AREA=1
+SETUP_AREA=3
+MENU_AREA=12
+
+LK_FROM='$SW_SHARED'
+LK_TO='$SW_USER'
+CP_FROM='$SW_SHARED'
+CP_TO='$SW_USER'
+DL_FROM='$SW_USER'
+export BK_FROM=$SW_USER
+BK_TO='$SW_USER'
+CL_FROM='$SW_USER'
+
+#--------------------------------------------------------------------------
+# termdefs defines terminal control code variables for terminals that
+# can handle them. Terminals not listed before the default action are
+# not supported fully for screen clearing and line clearing. The 
+# baseTerm variable is a flag indicating an unsupported terminal.
+#
+# The terminal control strings are typeset as constants (read-only).
+#--------------------------------------------------------------------------
+termdefs ()
+{
+	case $TERM in
+		vt100) ;;
+		vt220) ;;
+		*) print -u2 "TERM $TERM not supported."; baseTerm=1; return ;;
+	esac
+
+	CLS="\033[2J"		# Clear screen
+	CLL="\033[2K"		# Clear entire line
+	WRP="\033[?7h"		# Line wrap on 
+	NOW="\033[?7l"		# Line wrap off
+}
+
+#--------------------------------------------------------------------------
+# ClearLines blanks user input area lines on supported terminals.
+#
+#	Arguments	:	$1 - Number of lines to clear
+#--------------------------------------------------------------------------
+ClearLines ()
+{
+	if [[ -n $baseTerm ]]; then
+		return
+	fi
+
+	numLines=$1
+	loopCount=0
+
+	while [[ loopCount -lt numLines ]]; do
+		print $CLL
+		let loopCount=loopCount+1
+	done
+}
+
+#--------------------------------------------------------------------------
+#	PrintString
+#
+# 	Arguments	:	$1 - Row
+# 				$2 - Column
+#				$3 - String
+#--------------------------------------------------------------------------
+PrintString ()
+{
+	if [[ -n $baseTerm ]]; then
+		print
+		return
+	fi
+
+	 print -u2 "\033[$1;$2H$3"
+
+}
+
+#--------------------------------------------------------------------------
+# 	GetOption  
+#--------------------------------------------------------------------------
+function GetOption {
+
+	print
+	print "Select option: \c"
+	read option
+	return $option
+}
+
+#--------------------------------------------------------------------------
+# 	PrintDBAreasSetting 
+#--------------------------------------------------------------------------
+PrintDBAreasSetting ()
+{
+	PrintString $SETUP_AREA 1 '+--------------------------------------------------------+'
+	print '| Current setup for database areas                       |'
+	print '|                                                        |'
+	print '| SW_PRISTINE Area:                                      |'
+	print '| SW_SHARED Area:                                        |' 
+	print '| SW_DELTA Area:                                         |'
+	print '| SW_USER Area:                                          |'
+	print '+--------------------------------------------------------+'
+	let ROW=$SETUP_AREA+3; PrintString $ROW 22 $SW_PRISTINE
+	let ROW=$SETUP_AREA+4; PrintString $ROW 22 $SW_SHARED
+	let ROW=$SETUP_AREA+5; PrintString $ROW 22 $SW_DELTA
+	let ROW=$SETUP_AREA+6; PrintString $ROW 22 $SW_USER
+}
+
+#--------------------------------------------------------------------------
+# 	PrintEditSetting 
+#--------------------------------------------------------------------------
+PrintEditSetting ()
+{
+	PrintString $SETUP_AREA 1 '+--------------------------------------------------------+'
+	print '| Current setup for editing user areas                   |'
+	print '|                                                        |'
+	print '|                                                        |'
+	print '|                                                        |' 
+	print '|                                                        |'
+	print '|                                                        |'
+	print '+--------------------------------------------------------+'
+
+	let ROW=$SETUP_AREA+3; 
+	STR1="link $LK_FROM to $LK_TO"
+	PrintString $ROW 3 "$STR1"    
+
+	let ROW=$SETUP_AREA+4; 
+	STR1="copy $CP_FROM to $CP_TO"
+	PrintString $ROW 3 "$STR1"    
+
+	let ROW=$SETUP_AREA+5; 
+	STR1="delete from $DL_FROM"
+	PrintString $ROW 3 "$STR1"    
+
+	let ROW=$SETUP_AREA+6; 
+	STR1="create table from $CP_FROM"
+	PrintString $ROW 3 "$STR1"    
+}
+#--------------------------------------------------------------------------
+# 	PrintBackupSetting 
+#--------------------------------------------------------------------------
+PrintBackupSetting ()
+{
+	PrintString $SETUP_AREA 1 '+--------------------------------------------------------+'
+	print '| Current setup for backing up area                      |'
+	print '|                                                        |'
+	print '|                                                        |'
+	print '|                                                        |' 
+	print '|                                                        |'
+	print '|                                                        |'
+	print '+--------------------------------------------------------+'
+
+	let ROW=$SETUP_AREA+3; 
+	STR1="back up from $BK_FROM"
+	PrintString $ROW 3 "$STR1"    
+
+	let ROW=$SETUP_AREA+4; 
+	STR1="restore to $BK_TO"
+	PrintString $ROW 3 "$STR1"    
+
+	let ROW=$SETUP_AREA+5; 
+	STR1="clear $CL_FROM"
+	PrintString $ROW 3 "$STR1"    
+
+	let ROW=$SETUP_AREA+6; 
+	STR1="LOADSAVE: $LOADSAVE"
+	PrintString $ROW 3 "$STR1"    
+}
+
+#--------------------------------------------------------------------------
+# 	PrintMenu1 
+#--------------------------------------------------------------------------
+PrintMenu1 ()
+{
+	PrintString $MENU_AREA 1 'Main Options'
+	echo '------------'
+	print '1. Setup database areas'
+	print '2. Edit user area'
+	print '3. Backup user area'
+	print '4. Admin'
+	print '9. Exit'
+}
+
+
+#--------------------------------------------------------------------------
+# 	SelectArea    
+#--------------------------------------------------------------------------
+SelectArea ()
+{
+	PrintString $MENU_AREA 1 $CLL
+	ClearLines 11
+	PrintString $MENU_AREA 1 'Database Areas'
+	echo '--------------'
+	cat /css/devtools/common/host/scripts/tdmareas.dat
+
+	echo "\nEnter a database area ? [$SELECTED_AREA]: \c"
+	read NEW_VALUE
+	case "$NEW_VALUE" in
+		"")	SELECTED_AREA="$SELECTED_AREA" ;;
+		*)	SELECTED_AREA="$NEW_VALUE" ;;
+	esac
+	export SELECTED_AREA
+	echo $SELECTED_AREA
+}
+
+#--------------------------------------------------------------------------
+# 	SelectAreaVariable    
+#--------------------------------------------------------------------------
+SelectAreaVariable ()
+{
+	PrintString $MENU_AREA 1 $CLL
+	ClearLines 11
+	PrintString $MENU_AREA 1 'Database Areas'
+	echo '--------------'
+	print '1. SW_PRISTINE'
+	print '2. SW_SHARED'
+	print '3. SW_DELTA'
+	print '4. SW_USER'
+
+	echo "\nEnter a database area number ? [$SELECTED_AREA]: \c"
+	read NEW_VALUE
+	case "$NEW_VALUE" in
+		1)	SELECTED_AREA='$SW_PRISTINE' ;;
+		2)	SELECTED_AREA='$SW_SHARED' ;;
+		3)	SELECTED_AREA='$SW_DELTA' ;;
+		4)	SELECTED_AREA='$SW_USER' ;;
+		*)	SELECTED_AREA="$SELECTED_AREA" ;;
+	esac
+	export SELECTED_AREA
+}
+
+#--------------------------------------------------------------------------
+# 	SetupAreas    
+#--------------------------------------------------------------------------
+SetupAreas ()
+{
+	M2OPTION=1
+	until [[ $M2OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Database areas'
+		echo '---------------'
+		print '1. Change SW_PRISTINE'
+		print '2. Change SW_SHARED'
+		print '3. Change SW_DELTA'
+		print '4. Change SW_USER'
+		print '9. Return'
+		GetOption
+		M2OPTION=$?
+		case $M2OPTION in
+			1)
+			   export SELECTED_AREA=$SW_PRISTINE
+			   SelectArea
+			   export SW_PRISTINE=$SELECTED_AREA;;
+			2) 
+			   export SELECTED_AREA=$SW_SHARED
+			   SelectArea
+			   export SW_SHARED=$SELECTED_AREA;;
+			3) 
+			   export SELECTED_AREA=$SW_DELTA
+			   SelectArea
+			   export SW_DELTA=$SELECTED_AREA;;
+			4) 
+			   export SELECTED_AREA=$SW_USER
+			   SelectArea
+			   export SW_USER=$SELECTED_AREA;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+		if [[ $M2OPTION -ne 9 ]]; then
+			PrintDBAreasSetting
+		fi
+	done
+}
+
+#--------------------------------------------------------------------------
+# 	SetupEdit    
+#--------------------------------------------------------------------------
+SetupEdit ()
+{
+	M4OPTION=1
+	until [[ $M4OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'From/To Options'
+		echo '---------------'
+		print '1. link from'
+		print '2. link to'
+		print '3. copy from'
+		print '4. copy to'
+		print '5. delete from'
+		print '9. Return'
+		GetOption
+		M4OPTION=$?
+		case $M4OPTION in
+			1)
+			   export SELECTED_AREA=$LK_FROM
+			   SelectAreaVariable
+			   export LK_FROM=$SELECTED_AREA;;
+			2) 
+			   export SELECTED_AREA=$LK_TO
+			   SelectAreaVariable
+			   export LK_TO=$SELECTED_AREA;;
+			3) 
+			   export SELECTED_AREA=$CP_FROM
+			   SelectAreaVariable
+			   export CP_FROM=$SELECTED_AREA;;
+			4) 
+			   export SELECTED_AREA=$CP_TO
+			   SelectAreaVariable
+			   export CP_TO=$SELECTED_AREA;;
+			5) 
+			   export SELECTED_AREA=$DL_FROM
+			   SelectAreaVariable
+			   export DL_FROM=$SELECTED_AREA;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+		if [[ $M4OPTION -ne 9 ]]; then
+			PrintEditSetting
+		fi
+	done
+}
+
+#--------------------------------------------------------------------------
+# 	SetupBackup    
+#--------------------------------------------------------------------------
+SetupBackup ()
+{
+	M7OPTION=1
+	until [[ $M7OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'From/To Options'
+		echo '---------------'
+		print '1. backup from'
+		print '2. retore to'
+		print '3. clear'
+		print '4. LOADSAVE'
+		print '9. Return'
+		GetOption
+		M7OPTION=$?
+		case $M7OPTION in
+			1)
+			   export SELECTED_AREA=$BK_FROM
+			   SelectAreaVariable
+			   export BK_FROM=$SELECTED_AREA;;
+			2) 
+			   export SELECTED_AREA=$BK_TO
+			   SelectAreaVariable
+			   export BK_TO=$SELECTED_AREA;;
+			3) 
+			   export SELECTED_AREA=$CL_FROM
+			   SelectAreaVariable
+			   export CL_FROM=$SELECTED_AREA;;
+			4) 
+			   echo "\nEnter LOADSAVE path ? [$LOADSAVE]:"
+			   read NEW_VALUE
+			   case "$NEW_VALUE" in
+				"") LOADSAVE='$LOADSAVE' ;;
+				 *) LOADSAVE="$NEW_VALUE" ;;
+			   esac
+			   export LOADSAVE;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+		if [[ $M7OPTION -ne 9 ]]; then
+			PrintBackupSetting
+		fi
+	done
+}
+
+
+#--------------------------------------------------------------------------
+#	LinkTable
+#--------------------------------------------------------------------------
+LinkTable ()
+{
+	M5OPTION=1
+	until [[ $M5OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Link options'
+		echo '------------'
+		print '1. Link all tables overwriting exisiting objects'
+		print '2. Link all tables without overwriting existing objects'
+		print '3. Enter table name'
+		print '4. Check Links'
+# added a new function by Suresh Pellakur on 13/08/2000
+
+		print '5. Leave Local tables and overwrite other existing objects'
+		print '9. Return'
+		GetOption
+		M5OPTION=$?
+		case $M5OPTION in
+			1) 
+			   eval synontb all $LK_FROM $LK_TO;;
+                        2)
+			   eval synontbnd all $LK_FROM $LK_TO;;
+			3) 
+			   print
+			   print 'Enter table name:'
+			   read TABLE
+			   eval synontb $TABLE $LK_FROM $LK_TO;;
+		        4)
+			  eval chkarea ;;
+	                5)
+			   eval synontb2 all $LK_FROM $LK_TO;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+		if [[ $M5OPTION -ne 9 ]]; then
+			echo "\n--- Enter any key to continue ---"
+			read dummy
+			PrintHeader
+			PrintEditSetting
+		fi
+	done
+}
+
+
+#--------------------------------------------------------------------------
+#	CheckLinks
+#--------------------------------------------------------------------------
+#ShowOwner ()
+#{
+#    sqlplus -S $SW_USER/$SW_USER << END
+#       --set head off
+#       --set space 0
+#       --set termout off
+#       --set verify off
+#       select '   Area              Tables/Synonyms' from dual;
+#       select '$SW_USER', count(table_name) from user_tables;
+#       select substr(table_owner, 1, 14 ), count(table_name)
+#       from user_synonyms
+#       group by table_owner;
+#    END
+#}
+
+
+#--------------------------------------------------------------------------
+#	CopyTable
+#--------------------------------------------------------------------------
+CopyTable ()
+{
+	print
+	print 'Enter table name:'
+	read TABLE
+	eval copytb $TABLE $CP_FROM $CP_TO
+
+	echo "\n--- Enter any key to continue ---"
+	read dummy
+	PrintHeader
+}
+
+
+#--------------------------------------------------------------------------
+#	CreateTable
+#--------------------------------------------------------------------------
+CreateTable ()
+{
+	print
+	print 'Enter table name:'
+	read TABLE
+	eval creattb $TABLE $CP_FROM $CP_TO
+
+	echo "\n--- Enter any key to continue ---"
+	read dummy
+	PrintHeader
+}
+
+#--------------------------------------------------------------------------
+#	DeleteTable
+#--------------------------------------------------------------------------
+DeleteTable ()
+{
+	print
+	print 'Enter table name:'
+	read TABLE
+	eval deletetb $TABLE $DL_FROM
+
+	echo "\n--- Enter any key to continue ---"
+	read dummy
+	PrintHeader
+}
+
+
+
+#--------------------------------------------------------------------------
+#	BackupScript
+#		$1	pathname
+#--------------------------------------------------------------------------
+BackupScript ()
+{
+	if [[ ! $1 = "" ]]; then
+	     print
+	     print 'Enter a filename:'
+	     read FILE
+	     FILE="$1/$FILE"
+        fi
+	if [[ $1 = "" ]]; then
+	     GetBackupPath 
+	     GetBkupTblList
+	fi
+	eval backupdb $FILE $BK_FROM $TblList
+
+	echo "\n--- Enter any key to continue ---"
+	read dummy
+	PrintHeader
+}
+
+
+#--------------------------------------------------------------------------
+#	GetBkupTblList
+#		
+#--------------------------------------------------------------------------
+GetBkupTblList ()
+{
+        PrintString $MENU_AREA 1 $CLL
+        ClearLines 11
+        PrintString $MENU_AREA 1 'Backup options'
+	echo '------------'
+	print 'What type of backup would you like perform:' 
+	print '    1. A Full User Area Backup.' 
+	print '    2. One (or several) table(s) only.' 
+	GetOption
+	BkupType=$?
+	case $BkupType in
+		1) TblList="";;
+		2) print
+                   Quit=" "
+                   comma=" " 
+		   TblList=""
+		   BkTbl=""
+                   print '[Tip: Always check table spelling]'
+                   until [[ $Quit = "" ]];
+                   do
+                     print 'Enter a backup table name (or * to quit):'
+                     read BkTbl
+                     if [[ $BkTbl = "*" ]]; then
+                            break 
+                     else
+                        TblList=`echo $TblList$comma$BK_FROM.$BkTbl `
+                        echo "\n----------------------------"
+                     fi
+                     comma=","  
+                   done
+		   ;;
+		*) echo "\n***Error: Invalid option"
+		   echo "--- Enter any key to continue ---"
+		   read dummy;;
+	esac
+
+}
+
+
+
+#--------------------------------------------------------------------------
+#	GetBackupPath
+#		
+#--------------------------------------------------------------------------
+GetBackupPath ()
+{
+	M12OPTION=0
+	UserPath=""
+	OPT_PATH=""
+	until [[ $M12OPTION -eq 1 || $M12OPTION -eq 2 || $M12OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Backup path options'
+		echo '------------'
+                print 'Since you did not choose the LOADSAVE option, ' 
+		print 'pick one of the following as a backup destination:' 
+		print '    1. Your home root directory.' 
+		print '    2. Other file system directory.' 
+		print '    9. Return.' 
+		GetOption
+		M12OPTION=$?
+		case $M12OPTION in
+			1) UserPath=' ~' ;;
+			2) 
+	            print
+		    print '[WARNING: Backups fail if path invalid/inaccessable]'
+	            print 'Enter a directory path for which you have access:'
+			   read OPT_PATH ;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+	done
+        print 'Now, enter a file name w/o extension.'
+        print 'The extension default will be [.dmp]:'
+	read DFILE
+        FILE=""
+        if [[ -n $UserPath  ]]; then
+              FILE="$UserPath/$DFILE"
+        elif [[ -n $OPT_PATH  ]]; then
+              FILE="$OPT_PATH/$DFILE"
+        fi
+
+} 
+
+
+ 
+#--------------------------------------------------------------------------
+#	RestoreScript
+#		$1	pathname
+#--------------------------------------------------------------------------
+RestoreScript ()
+{
+        RS_FROM=""
+	if [[ ! $1 = "" ]]; then
+	   print
+	   print 'Enter file name:'
+	   read FILE
+		FILE="$1/$FILE"
+	fi
+	if [[ $1 = "" ]]; then
+	     GetRestorePath 
+	fi
+	eval restoredb $FILE $BK_FROM $RS_FROM
+	echo "\n--- Enter any key to continue ---"
+	read dummy
+	PrintHeader
+}
+
+
+#--------------------------------------------------------------------------
+#	GetRestorePath
+#		
+#--------------------------------------------------------------------------
+GetRestorePath ()
+{
+	M13OPTION=0
+	until [[ $M13OPTION -eq 1 || $M13OPTION -eq 2 || $M13OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Restore path options'
+		echo '------------'
+                print 'Since you did not choose the LOADSAVE option, ' 
+		print 'pick one of the following as the retore location:' 
+		print '    1. Your home root directory.' 
+		print '    2. Other file system directory.' 
+		print '    9. Return.' 
+		GetOption
+		M13OPTION=$?
+		case $M13OPTION in
+			1) UserPath=' ~' ;;
+			2) print
+			   print '[WARNING: Restores fail if path invalid/inaccessable]'
+			   print 'Enter a directory path for which you have access:'
+			   read OPT_PATH ;;
+			9) return ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+	done
+	print
+        print 'Now, enter a file name w/o extension.'
+        print 'The extension default will be [.dmp]:'
+	read DFILE
+        FILE=""
+        if [[ -n $UserPath ]]; then
+              FILE="$UserPath/$DFILE"
+        elif [[ -n $OPT_PATH  ]]; then
+              FILE="$OPT_PATH/$DFILE"
+        fi
+	print
+        print 'Now, enter the Oracle userid of the person who had '
+        print 'created the *.dmp file from which you are restoring:'
+	read RS_FROM
+
+} 
+
+
+#--------------------------------------------------------------------------
+#	ClearScript
+#		$1	pathname
+#--------------------------------------------------------------------------
+ClearScript ()
+{
+	eval cleardb $BK_FROM
+
+	echo "\n--- Enter any key to continue ---"
+	read dummy
+	PrintHeader
+}
+
+#--------------------------------------------------------------------------
+# 	EditArea      
+#--------------------------------------------------------------------------
+EditArea ()
+{
+	PrintEditSetting
+	M3OPTION=1
+	until [[ $M3OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Edit user area options'
+		echo '----------------------'
+		print '1. Setup editing user area'
+		print '2. Link Table (synontb)'
+		print '3. Copy Table (copytb)'
+		print '4. Delete Table (deletetb)'
+		print '9. Return'
+		GetOption
+		M3OPTION=$?
+		case $M3OPTION in
+			1) SetupEdit;;
+			2) LinkTable;;
+			3) CopyTable;;
+			4) DeleteTable;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+		if [[ $M3OPTION -ne 9 ]]; then
+			PrintEditSetting
+		fi
+	done
+}
+
+#--------------------------------------------------------------------------
+# 	BackupArea      
+#--------------------------------------------------------------------------
+BackupArea ()
+{
+	PrintBackupSetting
+	M6OPTION=1
+	until [[ $M6OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Backup options'
+		echo '--------------'
+		print '1. Setup backup area'
+		print '2. backup to LOADSAVE'
+		print '3. backup to filepath'
+		print '4. restore from LOADSAVE'
+		print '5. restore from filepath'
+		print '6. clear area'
+		print '9. Return'
+		GetOption
+                M6OPTION=$?
+		case $M6OPTION in
+			1) SetupBackup;;
+			2) BackupScript $LOADSAVE;;
+			3) BackupScript "";;
+			4) RestoreScript $LOADSAVE;;
+			5) RestoreScript "";;
+			6) ClearScript;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+		if [[ $M6OPTION -ne 9 ]]; then
+			PrintBackupSetting
+		fi
+	done
+}
+
+#--------------------------------------------------------------------------
+# 	PrintHeader 
+#--------------------------------------------------------------------------
+PrintHeader ()
+{
+	print $CLS
+	PrintString $HEADER_AREA 1 'TDM V.2 System'
+}
+
+#--------------------------------------------------------------------------
+# 	PrintDisplay1 
+#--------------------------------------------------------------------------
+PrintDisplay1 ()
+{
+	PrintHeader
+	PrintDBAreasSetting
+	PrintMenu1
+}
+
+
+#--------------------------------------------------------------------------
+# Admin Task Options    
+#--------------------------------------------------------------------------
+AdminOptions ()
+{      
+        OWNER="fcp"
+        USERID=`id -un`
+
+        if [[ ! "$USERID" = "$OWNER" && ! "$USERID" = "oracle" ]]; then
+             echo "You are not authorized."
+	     exit
+	fi
+		
+	M10OPTION=1
+	until [[ $M10OPTION -eq 9 ]]
+	do
+		PrintString $MENU_AREA 1 $CLL
+		ClearLines 11
+		PrintString $MENU_AREA 1 'Admin Options'
+		echo '---------------'
+		print '1. Backup Tablespace'
+		print '2. Recover Tablespace'
+		print '3. Recover User'
+		print '9. Return'
+		GetOption
+		M10OPTION=$?
+		case $M10OPTION in
+			1)
+                           MakeTblspExport ;;
+			2) 
+                           MakeTblsImport ;;
+			3) 
+                           MakeUserImport ;;
+			9) ;;
+			*) echo "\n***Error: Invalid option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+
+        done
+}
+
+
+
+#**************************************************************************
+#
+# MAIN SHELL BODY
+#
+#**************************************************************************
+Main ()
+{
+	termdefs
+
+	M1OPTION=1
+	until [[ $M1OPTION -eq 9 ]]
+	do
+		PrintDisplay1
+		GetOption
+		M1OPTION=$?
+		case $M1OPTION in
+			1) SetupAreas;;
+			2) EditArea;;
+			3) BackupArea;;
+			4) AdminOptions;;
+			9) ;;
+			*) echo "\n***Error: Invalid or not available option"
+			   echo "--- Enter any key to continue ---"
+			   read dummy;;
+		esac
+	done
+}
+
+Main
+
+
+
+#------------------------------------
+#	display default options 
+#------------------------------------
+DisplayDefaultOptions ()
+{
+tput clear
+
+
+#-------------
+# SW_PASSWORD
+#-------------
+echo "SW_PASSWORD ? [$SW_PASSWORD]: \c"
+read NEW_VALUE
+case "$NEW_VALUE" in
+	"")	SW_PASSWORD="$SW_PASSWORD" ;;
+	*)	SW_PASSWORD="$NEW_VALUE" ;;
+esac
+export SW_PASSWORD
+
+#-------------
+# SW_PRISTINE
+#-------------
+echo "SW_PRISTINE ? [$SW_PRISTINE]: \c"
+read NEW_VALUE
+case "$NEW_VALUE" in
+	"")	SW_PRISTINE="$SW_PRISTINE" ;;
+	*)	SW_PRISTINE="$NEW_VALUE" ;;
+esac
+export SW_PRISTINE
+
+#-------------
+# SW_SHARED
+#-------------
+echo "SW_SHARED ? [$SW_SHARED]: \c"
+read NEW_VALUE
+case "$NEW_VALUE" in
+	"")	SW_SHARED="$SW_SHARED" ;;
+	*)	SW_SHARED="$NEW_VALUE" ;;
+esac
+export SW_SHARED
+
+#-------------
+# SW_DELTA
+#-------------
+echo "SW_DELTA ? [$SW_DELTA]: \c"
+read NEW_VALUE
+case "$NEW_VALUE" in
+	"")	SW_DELTA="$SW_DELTA" ;;
+	*)	SW_DELTA="$NEW_VALUE" ;;
+esac
+export SW_DELTA
+}
+
+#------------------------------------
+#	display source areas    
+#------------------------------------
+DisplaySourceAreas ()
+{
+tput clear
+echo "Source Areas"
+echo "------------"
+echo "c1_base_unit"
+echo "c1_base_unit_shr1"
+echo "c1_base_unt_d0_s1200_prstn"
+echo "c1_base_unt_d0_s1200_shr1"
+echo "g1_base_unit"
+echo "w1_base_unit"
+echo "<User Area>"
+echo " "
+echo "Enter source area [$1]: \c"
+read NEW_SA
+case "$NEW_SA" in
+	"")	SOURCE_AREA="$1" ;;
+	*)	SOURCE_AREA="$NEW_SA" ;;
+esac
+
+export SOURCE_AREA
+}
+
+#------------------------------------
+#	delete table function 
+#------------------------------------
+DeleteTableFunction ()
+{
+tput clear
+echo "\nEnter table name:"
+read TABLE
+deletetb $TABLE $SOURCE_AREA
+}
+
+
+#------------------------------------
+#	verify table function 
+#------------------------------------
+VerifyTableFunction ()
+{
+tput clear
+verifydb
+}
+
+#------------------------------------
+#	reformat table function 
+#------------------------------------
+ReformatTableFunction ()
+{
+tput clear
+reformatdb
+}
+
+#------------------------------------
+#	backup function
+#------------------------------------
+BackupFunction ()
+{
+tput clear
+echo "\nEnter output file where the environment is going to be dumped to."
+read FILE 
+exportdb $FILE
+}
+
+#------------------------------------
+#	restore function
+#------------------------------------
+RestoreFunction ()
+{
+tput clear
+echo "\nEnter input file where the environment was dumped to."
+read FILE 
+importdb $FILE
+}
+
+#------------------------------------
+#	clear function
+#------------------------------------
+ClearFunction ()
+{
+tput clear
+cleardb
+}
+
+#------------------------------------
+#	grant function
+#------------------------------------
+GrantFunction ()
+{
+tput clear
+grantdb
+}
+
+#------------------------------------
+#	 Password function
+#------------------------------------
+PasswordFunction ()
+{
+tput clear
+orapasswd
+}
+
+#------------------------------------
+#	 Password function
+#------------------------------------
+PublicSynonymFunction ()
+{
+tput clear
+publicdb
+}
+
+

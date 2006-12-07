@@ -1,0 +1,9 @@
+#!/bin/ksh
+ps -ef | grep /css/software/fcp/INST/BUILD/bin/CUF > tempkillFES
+ps -ef | grep /css/software/fcp/INST/SVT/bin/CUF >> tempkillFES
+cat tempkillFES | cut -c 10-15 | while read line > /dev/null
+do
+     ` kill -15 $line `
+
+done
+rm tempkillFES

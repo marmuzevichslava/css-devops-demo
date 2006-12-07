@@ -1,0 +1,138 @@
+#!/bin/ksh
+###########################################################################################
+# ScriptName :  bae_tabs (BAE Tables)
+# Description:  This script lists BAE tables and access flags.
+#
+# Date       Programmer         Action
+# --------------------------------------------
+# 07/21/98   Chris Rodgers      Original coding
+# 03/04/99   Chris Rodgers      Added options a, e, p, s, c, t, and h.
+#                               Added -d option to more command.
+#
+###########################################################################################
+
+typeset opt_a=false    # -a  report only "A" tables ( Normal - extracted)
+typeset opt_e=false    # -e  report only "E" tables (  Error - not extracted)
+typeset opt_p=false    # -p  report only "P" tables (Problem - not extracted)
+typeset opt_s=false    # -s  report only "S" tables ( Static - not extracted)
+typeset opt_wh=false   # set if any where options are set (above)               (DEFAULT)
+
+typeset where_started=false  # lets us know where we are in building the where string
+typeset opt_started=false    # lets us know where we are in building the where string
+
+typeset opt_all=" "    # where clause build for the options
+typeset TblWhere=" "   # where clause build for table name
+typeset SQLWhere=" "   # total where clause
+typeset SQLOrderBy="cd_access_type, id_table"                                  #(DEFAULT)
+
+typeset -u TxClient
+typeset -u Table
+
+while getopts ":c:C:aAeEpPsStTh" opt; do
+    case $opt in
+      c | C ) Client=$OPTARG;;
+
+      a | A ) opt_a=true; opt_wh=true;;
+      e | E ) opt_e=true; opt_wh=true;;
+      p | P ) opt_p=true; opt_wh=true;;
+      s | S ) opt_s=true; opt_wh=true;;
+
+      t | T ) SQLOrderBy="id_table, cd_access_type";;
+
+      h  ) print "usage: ${0##*/} [-c Client] [-a|-e|-p|-s|-t] [table name]"
+           print " -c  Client (${Client} default) (CE, OR, OH, NM, etc)"
+           print " -a  report A tables ( Normal - extracted)"
+           print " -e  report E tables (  Error - not extracted)"
+           print " -p  report P tables (Problem - not extracted)"
+           print " -s  report S tables ( Static - not extracted)"
+           print " -t  sort by table name (instead of access type then table name)"
+           print "\n***NOTE: for the client of SOCO, execute the command:"
+           print "\tbae_tabs -c \"\""
+           return 1;;
+
+      \? ) print "usage: ${0##*/} [-c Client] [-a|-e|-p|-s|-t] [table name]"
+           return 1
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -n $1 ]]; then
+    Table=$1
+    TblWhere="id_table = '${Table}'"
+    where_started=true
+fi
+
+if [[ ${opt_wh} = true ]]; then
+    opt_all="cd_access_type in ("
+
+    if [[ ${opt_a} = true ]]; then
+        if [[ ${opt_started} = true ]]; then
+            opt_all="${opt_all}, 'A'"
+        else
+            opt_all="${opt_all}'A'"
+            opt_started=true
+        fi
+    fi
+
+    if [[ ${opt_e} = true ]]; then
+        if [[ ${opt_started} = true ]]; then
+            opt_all="${opt_all}, 'E'"
+        else
+            opt_all="${opt_all}'E'"
+            opt_started=true
+        fi
+    fi
+
+    if [[ ${opt_p} = true ]]; then
+        if [[ ${opt_started} = true ]]; then
+            opt_all="${opt_all}, 'P'"
+        else
+            opt_all="${opt_all}'P'"
+            opt_started=true
+        fi
+    fi
+
+    if [[ ${opt_s} = true ]]; then
+        if [[ ${opt_started} = true ]]; then
+            opt_all="${opt_all}, 'S'"
+        else
+            opt_all="${opt_all}'S'"
+            opt_started=true
+        fi
+    fi
+
+    opt_all="${opt_all})"
+fi
+
+if [[ ${where_started} = true ]] && [[ ${opt_wh} = true ]]; then
+    SQLWhere="where ${TblWhere} and ${opt_all}"
+elif [[ ${where_started} = false ]] && [[ ${opt_wh} = true ]]; then
+    SQLWhere="where ${opt_all}"
+elif [[ ${where_started} = true ]] && [[ ${opt_wh} = false ]]; then
+    SQLWhere="where ${TblWhere}"
+fi
+    
+#    client will be used for table name extension in the ACCOUNT_EXTRACT_xx table. 
+#    In SOCO's case, this needs to be blank   
+# Running the command bae_tabs -c "" will look at SOCO's table.
+if [[ -z ${Client} ]]; then
+    TxClient="SOCO"
+else
+    TxClient=${Client}
+    Client="_${Client}"
+fi
+
+{
+print "BAE Table Settings for Client ${TxClient}: \n"
+sqlplus -s acct_xtract/acct_xtract <<eoi1
+SET FEEDBACK OFF
+SET HEADING ON
+SET PAGESIZE 0
+COLUMN CD_ACCESS_TYPE HEADING 'FLAG' FORMAT A6
+COLUMN ID_TABLE HEADING 'TABLE NAME' FORMAT A10
+select cd_access_type, id_table
+  from account_extract${Client} 
+  ${SQLWhere} order by ${SQLOrderBy};
+exit;
+eoi1
+} | more -de

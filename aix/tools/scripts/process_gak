@@ -1,0 +1,57 @@
+# SCCS: %M%  %I%  %G%  %U%
+# GAK Processing script
+#####################################################
+# ScriptName:  process_gak
+# Purpose   :  To update address keys in SAD tables.
+#
+# Date		Programmer		Action/Description
+# -------	-------------	------------------
+#
+#####################################################
+
+Start=0000000000
+End=9999999999
+Segments=10
+SleepWait=20
+MaxJobs=3
+Commits=999999
+#let Step="($End - $Start) / $Segments"
+let StartSfx=000000000
+let StepSfx=999999999
+let Step=1
+let Next=0
+typeset -Z9 StartSfx
+typeset -Z10 End
+typeset -Z9 StepSfx
+typeset -Z1 Next
+typeset -Z6 Commits
+i=1
+while (( 1 )) ; do
+	let NumJobs=$(ps | grep GAK | wc -l)
+	print $NumJobs
+	if (( $NumJobs < $MaxJobs )) ; then
+		mkdir d$i
+		cd d$i
+		if (( $i == $Segments )) ; then
+			print "$Next$StartSfx$End$Commits" > GAK.INPUT
+		else
+			print "$Next$StartSfx$Next$StepSfx$Commits" > GAK.INPUT
+		fi
+		let Next="$Next + $Step"
+ 		../GAK > ../GAK.out$i &
+		cd ..
+		let NumJobs="$NumJobs + 1"
+		let i="$i + 1"
+		if (( $i > $Segments )) ; then
+			return
+		fi
+	else
+		sleep $SleepWait
+	fi
+done
+grep "ERROR:" GAK.out*
+let i=1
+while (( i <= $Segments )) ; do
+	print "File #$i:" $(tail -n 1 GAK.out"$i") >> GAK.analysis
+	let i="$i + 1"
+done

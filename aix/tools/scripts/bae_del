@@ -1,0 +1,82 @@
+#!/bin/ksh 
+###########################################################################################
+# ScriptName :  bae_del (BAE Delete)
+# Description:  This script deletes an account from the BAE buffer (header and detail tables)
+#
+# Date       Programmer         Action
+# --------------------------------------------
+# 07/21/98   Chris Rodgers      Original coding
+# 03/01/99   Chris Rodgers      Added opts for passing TS or KYBA
+#
+###########################################################################################
+
+typeset opt_q=false                  # -q  quiet mode (no headers)
+typeset opt_t=true                   # -t/a/k timestamp/account id (ky_ba) select
+typeset SQLHeadings=OFF              #   used for option q
+typeset SQLPageSize=0                #   used for option q
+typeset SelectData=x                 # timestamp or ky_ba
+typeset SelectField=arch_oth_ts_dt_tm # timestamp or ky_ba
+typeset SelectType="Time Stamp"      # timestamp or ky_ba
+
+while getopts ":AaKkTtLlSsHhQq" opt; do
+    case $opt in
+      a | A ) opt_t=false
+              SelectType="Account"
+              SelectField="dsp_acct_id";;
+      k | K ) opt_t=false
+              SelectType="Account"
+              SelectField="dsp_acct_id";;
+      t | T ) opt_t=true
+              SelectType="Time Stamp"
+              SelectField="arch_oth_ts_dt_tm";;
+
+      q | Q ) opt_q=true;;
+
+      h | H ) print "BAE Delete"
+              print "USAGE: ${0##*/} [-a|-k|-t] [-h] [-q] <time stamp | account>"
+              print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+              print " -t  argument is a time stamp (DEFAULT)"
+              print " -a  argument is an account number"
+              print " -k  argument is an account (ky_ba)"
+              print " -h  display this help text"
+              print " -q  quiet mode (no headers)"
+              return 1;;
+
+      \? )    print "BAE Delete"
+              print "USAGE: ${0##*/} [-l|-s] [-a|-k|-t] [-h] [-q] <time stamp | account>"
+              print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+              return 1
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -z $1 ]]; then
+    print "BAE Delete"
+    print "USAGE:\t${0##*/} [-a|-k|-t] [-h] [-q] <time stamp | account>"
+    print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+    return 1
+else
+    SelectData="$1"
+fi
+
+print -n "Deleting detail records for ${SelectType} ${SelectData}..."
+sqlplus -s acct_xtract/acct_xtract <<eoi1
+SET FEEDBACK ON
+SET HEADING OFF
+SET PAGESIZE 0
+delete 
+  from extract_ld_dtl 
+ where ${SelectField} = '${SelectData}';
+exit;
+eoi1
+
+print -n "Deleting header records for ${SelectType} ${SelectData}..."
+sqlplus -s acct_xtract/acct_xtract <<eoi2
+SET FEEDBACK ON
+SET HEADING OFF
+SET PAGESIZE 0
+delete 
+  from extract_ld_hdr 
+ where ${SelectField} = '${SelectData}';
+exit;
+eoi2

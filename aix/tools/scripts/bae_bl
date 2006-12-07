@@ -1,0 +1,94 @@
+#!/bin/ksh 
+###########################################################################################
+# ScriptName :  bae_bl (BAE Buffer List)
+# Description:  This script lists all BAE buffer kybas and timestamps
+#
+# Date       Programmer         Action
+# --------------------------------------------
+# 07/21/98   Chris Rodgers      Original coding
+# 01/15/99   Chris Rodgers      Added options for sorting; added quiet option
+# 01/28/99   Chris Rodgers      Added option for reporting detail row count
+# 07/29/99   Tanya McEwen       Added source database and description columns
+#                               because several clients share buffer tables
+#                               
+###########################################################################################
+
+typeset opt_r=false                  # -r  display number of detail rows per entry
+typeset opt_q=false                  # -q  quiet mode (no headers)
+typeset SQLHeadings=ON
+typeset SQLPageSize=999
+typeset SQLOrderBy="dsp_acct_id"     # KyBa (account number) as default sort
+
+while getopts ":AaKkTtHhQqRr" opt; do
+    case $opt in
+      a | A ) SQLOrderBy="dsp_acct_id";;
+      k | K ) SQLOrderBy="dsp_acct_id";;
+      t | T ) SQLOrderBy="arch_oth_ts_dt_tm";;
+
+      q | Q ) opt_q=true
+              SQLHeadings=OFF
+              SQLPageSize=0;;
+
+      r | R ) opt_r=true;;
+
+      h | H ) print "usage: ${0##*/} [-a | -k | -t | -r | -q ]"
+              print " -a  sort by account number (KyBa)  (DEFAULT)"
+              print " -k  same as -a"
+              print " -t  sort by time stamp"
+              print " -r  row count (details - take time)"
+              print " -q  quiet mode (no headers)"
+              return 1;;
+
+      \? )    print "usage: ${0##*/} [-a | -k | -t | -r | -q ]"
+              return 1
+    esac
+done
+#shift $(($OPTIND - 1))
+
+FunctHdrRpt() {
+sqlplus -s acct_xtract/acct_xtract <<eoinput
+SET FEEDBACK OFF
+SET HEADING ${SQLHeadings} 
+SET PAGESIZE ${SQLPageSize}
+column dsp_acct_id heading 'ACCOUNT #' format A12
+column arch_oth_ts_dt_tm heading 'TIMESTAMP' format A28
+column txn_owner_id heading 'SRC DATABASE' format A12 truncated
+column ld_desc_tx heading 'DESCRIPTION' format A22 truncated
+select dsp_acct_id,
+       arch_oth_ts_dt_tm, 
+       txn_owner_id, 
+       ld_desc_tx
+  from extract_ld_hdr 
+ order by ${SQLOrderBy};
+exit;
+eoinput
+}
+
+FunctDtlRpt() {
+sqlplus -s acct_xtract/acct_xtract <<eoinput
+SET FEEDBACK OFF
+SET HEADING ${SQLHeadings}
+SET PAGESIZE ${SQLPageSize}
+select dsp_acct_id "KyBa",
+       arch_oth_ts_dt_tm "Time Stamp",
+       count(*) "Detail Row Count"
+  from extract_ld_dtl 
+ group by arch_oth_ts_dt_tm,
+          dsp_acct_id
+ order by ${SQLOrderBy};
+exit;
+eoinput
+}
+
+if [[ $opt_q = false ]]; then
+    print "\nBAE Buffer Listing:"
+    if [[ $opt_r = true ]]; then
+        print "\t(please be patient - detail row count option used)"
+    fi
+fi
+
+if [[ $opt_r = false ]]; then
+    FunctHdrRpt
+else
+    FunctDtlRpt
+fi

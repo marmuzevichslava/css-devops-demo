@@ -1,0 +1,102 @@
+#!/bin/ksh
+/bin/tput clear
+  echo "********************************************************************"
+  echo "********************************************************************"
+  echo "              WELCOME TO THE ORACLE ROLES ASSIGNMENT UTILITY        "
+  echo '\n'
+  echo "                THIS UTILITY ASSIGNS ROLES TO ORACLE USERIDS        "
+  echo "********************************************************************"
+  echo "********************************************************************"
+  echo '\n\n'
+
+MGR_USER=system
+
+#------------------------------------------
+# FUNCTION: GetManagerPassword
+# This function dynamically reads the MGR_PASSWORD
+#------------------------------------------
+
+GetManagerPassword()
+{
+$ORACLE_HOME/bin/sqlplus -s jruttenb/jakenik1 <<END
+set heading off
+set echo off
+set pagesize 0
+set feedback off
+select shared_area
+from system.tdm_options
+where username = 'profile';
+exit;
+END
+}
+
+AssignRoles()
+{
+echo "Enter Oracle Id [JSMITH] : \c"
+read ORAID
+echo $ORAID | tr '[a-z]' '[A-Z]' | cat | read ORAID
+
+echo "Here is the list of Roles assigned to " $ORAID
+sqlplus -s $MGR_USER/$MGR_PASSWORD <<END
+         select granted_role from dba_role_privs where grantee = '$ORAID';
+END
+
+sleep 5 |echo "Please Wait..."
+echo "------------------------------------------------------------"
+echo "Here is the list of Roles available: "
+sqlplus -s $MGR_USER/$MGR_PASSWORD <<END0
+         set heading off
+         set linesize 80
+         set newpage 0
+         set echo off
+         set space 1
+         set pagesize 0
+         set feedback off
+         set define off
+         select role from dba_roles;
+END0
+
+RNAME=SOLUTIONWORKS
+echo "Enter the Role you would like to assign [$RNAME] : \c"
+read ROLENAME
+echo $ROLENAME | tr '[a-z]' '[A-Z]' | cat | read ROLENAME
+case "$ROLENAME" in
+     "") ROLENAME="$RNAME";;
+      *) ROLENAME=$ROLENAME;;
+esac
+
+sqlplus -s $MGR_USER/$MGR_PASSWORD@sw25 <<END1
+  grant $ROLENAME to $ORAID;
+END1
+
+sqlplus -s $MGR_USER/$MGR_PASSWORD@swor <<END2
+  grant $ROLENAME to $ORAID;
+END2
+
+sqlplus -s $MGR_USER/$MGR_PASSWORD@swt4 <<END3
+  grant $ROLENAME to $ORAID;
+END3
+
+sqlplus -s $MGR_USER/$MGR_PASSWORD@sw4 <<END4
+  grant $ROLENAME to $ORAID;
+END4
+
+sqlplus -s $MGR_USER/$MGR_PASSWORD@swt5 <<END5
+  grant $ROLENAME to $ORAID;
+END5
+
+sqlplus -s $MGR_USER/$MGR_PASSWORD@swt5o8 <<END6
+  grant $ROLENAME to $ORAID;
+END6
+
+}
+
+Main()
+{
+GetManagerPassword | read MGR_PASSWORD DUMMY
+AssignRoles
+}
+ 
+Main
+
+

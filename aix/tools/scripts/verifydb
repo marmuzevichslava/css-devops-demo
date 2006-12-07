@@ -1,0 +1,66 @@
+#!/bin/ksh
+#############################################################################
+#
+#	File: verifydb
+#
+#	Description:  This script verifies the user's working area by  
+#                     comparing every use table with the corresponding
+#                     one in base area (c1_base_unit).  If the table 
+#                     fromat has been modified, its name is written to
+#                     the output file "modtbls".
+#
+#############################################################################
+
+#--------------------------------------------
+#    user message	
+#--------------------------------------------
+echo "\n ATTENTION  - this command will verify all tables in $SW_USER"
+echo "Continue? (type \"yes\" OR any other key to exit)"
+read YES
+if [ ! "$YES" = "yes" ]; then
+       echo "\nNo processing..."
+       exit 0
+fi
+
+#--------------------------------------------
+#     set variables	
+#--------------------------------------------
+TBLROWTAG="~~table"
+typeset -u OWNER=$SW_USER
+ 
+#---------------------------------------------
+#     make user table list 
+#---------------------------------------------
+CreateList()
+{
+sqlplus $SW_USER/$SW_PASSWORD <<END
+set head off
+set termout off
+select table_name from user_tables;
+END
+}
+#---------------------------------------------
+#     function to compare tables
+#---------------------------------------------
+CompareTable()
+{
+sqlplus $SW_USER/$SW_PASSWORD <<END
+ SELECT  distinct A.table_name , 'ROWTAG'
+ FROM sys.dba_tab_columns A, sys.dba_tab_columns B
+ WHERE (A.owner = UPPER('$SW_USER') AND B.owner = '$SW_DB'
+ AND A.table_name = B.table_name
+ AND A.column_name = B.column_name ) AND
+    (  A.data_type  != B.data_type  OR
+       A.data_length != B.data_length OR
+       A.data_precision != B.data_precision OR
+       A.data_scale != B.data_scale  OR
+       A.column_id != B.column_id  )
+ ORDER BY A.table_name;
+END
+}
+
+#----------------------------------------------------------
+#     main
+#----------------------------------------------------------
+CompareTable | awk ' /ROWTAG/ { print $1 }' > modtbls
+

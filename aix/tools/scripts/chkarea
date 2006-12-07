@@ -1,0 +1,13 @@
+sqlplus -S $SW_USER/$SW_PASSWORD << END
+set head off
+set space 0
+set termout off
+set verify off
+
+select '   Area              Tables/Synonyms' from dual;
+select '$SW_USER', count(table_name) from user_tables;
+select substr(table_owner, 1, 14 ), count(table_name) from user_synonyms
+group by table_owner;
+
+END
+

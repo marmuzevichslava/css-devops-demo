@@ -1,0 +1,27 @@
+#!/bin/ksh
+###########################################################################
+# SCCS: copyfind  1.6  03/15/95  19:02:35
+# This shell script is a copy-path version of the find command, no options. 
+#
+# $1 : name of file (suffix optional)
+#
+# Date        Programmer         Action/Description
+# --------    ---------------    ---------------------------
+#             ???????????????    Original Code
+# 09/14/95    Cynthia Ledesma    Modified directory structure
+###########################################################################
+
+found=1
+for file in "$@" ; do
+   for dir in $HOST_APPL/source/copy/code $HOST_APPL/source/copy/lib $HOST_APPL/source/copy/nongen \
+		$HOST_APPL/source/copy/table $HOST_ARCH/source/copy/code $HOST_ARCH/source/copy/lib \
+		$HOST_ARCH/source/copy/nongen $FNDROOT/include 
+   do
+      if [ -f $dir/$file* ] 
+      then
+         ls $dir/$file*
+		 found=0
+      fi
+   done
+done
+return $found

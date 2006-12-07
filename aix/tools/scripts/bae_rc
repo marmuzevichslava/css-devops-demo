@@ -1,0 +1,152 @@
+#!/bin/ksh 
+###########################################################################################
+# ScriptName :  bae_rc (BAE Row Count)
+# Description:  This script lists number of records by table that will be inserted for a 
+#               given timestamp (import)
+#
+# Date       Programmer         Action
+# --------------------------------------------
+# 04/03/98   Jeffrey Meissner     Original Code.
+# 07/21/98   Chris Rodgers        Dropped use of local file.
+#                                 Changed usage to use executed file name for example.
+# 01/27/99   Chris Rodgers        Added options a, k, t, l, s, h, q, and all funtionality
+#                                 for those options.
+###########################################################################################
+
+typeset opt_q=false                  # -q  quiet mode (no headers)
+typeset opt_l=true                   # -l/s long/short display (table details)
+typeset opt_t=true                   # -t/a/k timestamp/account id (ky_ba) select
+typeset SQLHeadings=OFF              #   used for option q
+typeset SQLPageSize=0                #   used for option q
+typeset SelectData=x                 # timestamp or ky_ba
+typeset SelectField=arch_oth_ts_dt_tm # timestamp or ky_ba
+typeset SelectType="Time Stamp"      # timestamp or ky_ba
+
+while getopts ":AaKkTtLlSsHhQq" opt; do
+    case $opt in
+      l | L ) opt_l=true;;
+      s | S ) opt_l=false;;
+
+      a | A ) opt_t=false
+              SelectType="Account"
+              SelectField="dsp_acct_id";;
+      k | K ) opt_t=false
+              SelectType="Account"
+              SelectField="dsp_acct_id";;
+      t | T ) opt_t=true
+              SelectType="Time Stamp"
+              SelectField="arch_oth_ts_dt_tm";;
+
+      q | Q ) opt_q=true;;
+
+      h | H ) print "BAE Row Count"
+              print "USAGE: ${0##*/} [-l|-s] [-a|-k|-t] [-h] [-q] <time stamp | account>"
+              print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+              print " -l  long display (breakout by table) (DEFAULT)"
+              print " -s  short display (no breakout by table)"
+              print " -t  argument is a time stamp (DEFAULT)"
+              print " -a  argument is an account number"
+              print " -k  argument is an account (ky_ba)"
+              print " -h  display this help text"
+              print " -q  quiet mode (no headers)"
+              return 1;;
+
+      \? )    print "BAE Row Count"
+              print "USAGE: ${0##*/} [-l|-s] [-a|-k|-t] [-h] [-q] <time stamp | account>"
+              print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+              return 1
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -z $1 ]]; then
+    print "BAE Row Count"
+    print "USAGE:\t${0##*/} [-l|-s] [-a|-k|-t] [-h] [-q] <time stamp | account>"
+    print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+    return 1
+else
+    SelectData="$1"
+fi
+
+####################
+# FUNCTION DEFINITIONS
+####################
+
+HeaderTot() {
+if [[ $opt_q = false ]]; then
+    print -n "Header Records: "
+fi
+sqlplus -s acct_xtract/acct_xtract <<eoi1
+SET FEEDBACK OFF
+SET HEADING ${SQLHeadings}
+SET PAGESIZE ${SQLPageSize}
+select count(*)
+  from extract_ld_hdr 
+ where ${SelectField} = '${SelectData}' ;
+exit;
+eoi1
+}
+
+HeaderTotKyBa() {
+if [[ $opt_q = false ]]; then
+    print -n "Header Records: "
+fi
+sqlplus -s acct_xtract/acct_xtract <<eoi1
+SET FEEDBACK OFF
+SET HEADING ${SQLHeadings}
+SET PAGESIZE ${SQLPageSize}
+select arch_oth_ts_dt_tm, dsp_acct_id
+  from extract_ld_hdr 
+ where ${SelectField} = '${SelectData}' ;
+exit;
+eoi1
+}
+
+DetailTot() {
+if [[ $opt_q = false ]]; then
+    print -n "Detail Records: "
+fi
+sqlplus -s acct_xtract/acct_xtract <<eoi2
+SET FEEDBACK OFF
+SET HEADING ${SQLHeadings}
+SET PAGESIZE ${SQLPageSize}
+select count(*)
+  from extract_ld_dtl
+ where ${SelectField} = '${SelectData}' ;
+exit;
+eoi2
+}
+
+DetailsRpt() {
+if [[ $opt_q = false ]]; then
+    print "Rows Per Table:"
+fi
+sqlplus -s acct_xtract/acct_xtract <<eoi3
+SET FEEDBACK OFF
+SET HEADING ${SQLHeadings}
+SET PAGESIZE ${SQLPageSize}
+select count(*),
+       bat_tbl_id 
+  from extract_ld_dtl
+ where ${SelectField} = '${SelectData}' 
+ group by bat_tbl_id 
+ order by bat_tbl_id;
+exit;
+eoi3
+}
+
+####################
+# MAIN SCRIPT
+####################
+
+if [[ $opt_q = false ]]; then
+    print "\nBAE Buffer Rows for ${SelectType}: ${SelectData}"
+    HeaderTotKyBa
+else
+    HeaderTot
+fi
+
+DetailTot
+if [[ $opt_l = true ]]; then
+    DetailsRpt
+fi

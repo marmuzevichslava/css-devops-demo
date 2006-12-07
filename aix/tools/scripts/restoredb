@@ -1,0 +1,77 @@
+#!/bin/ksh
+
+#############################################################################
+#
+#	File: restoredb
+#
+#	Description: It imports a flat file to a user environment 
+#
+#############################################################################
+
+#--------------------------------------------
+#	check input arguments
+#--------------------------------------------
+if [ ! "$1" ]; then
+	echo "*** error: missing input filename"
+	echo "format: \$ restoredb <input filename> <database area>"
+	exit 0
+fi
+
+if [ ! "$2" ]; then
+	echo "*** error: missing database area"
+	echo "format: \$ restoredb <input filename> <database area>"
+	exit 0
+fi
+
+
+GetManagerPassword()
+{
+        . /css/devtools/common/host/scripts/oracle.ksh >/dev/null 2>&1
+}
+
+GetManagerPassword 
+
+#--------------------------------------------
+#	assign variable values
+#--------------------------------------------
+if [[ -f $1 ]]; then
+	FNAME=$1
+else
+	FNAME=$1.dmp
+fi
+
+if [[ ! -f $FNAME ]]; then
+	echo "\n*** error: can't find $FNAME file"
+	exit
+fi
+
+ToUserArea=$2	# object database area
+
+if [[ $SW_USER != $ToUserArea && $SW_USER != 'fcp' ]]; then
+	echo "Sorry, you are not authorized to restore outside your SW_USER"
+	exit
+fi
+
+if [[ $3 != "" ]]; then
+   FromUser=$3
+else
+   FromUser=`ll $FNAME | awk '{ print $3 }'`
+fi
+
+echo fromuser=$FromUser
+echo touser=$ToUserArea
+echo file=$FNAME
+#---------------------------------------------
+#	export all objects own by SW_USER
+#---------------------------------------------
+PARFILE=~/ze.par
+touch $PARFILE
+chmod 700 $PARFILE
+echo userid=dstuser/$MANAGER_PASSWORD  > $PARFILE
+echo fromuser=$FromUser >>  $PARFILE
+echo touser=$ToUserArea >>  $PARFILE
+echo file=$FNAME commit=y  >>  $PARFILE
+
+$ORACLE_HOME/bin/imp parfile=$PARFILE
+
+rm -f $PARFILE

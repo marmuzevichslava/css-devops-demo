@@ -1,0 +1,51 @@
+#!/bin/ksh
+#----------------------------------------------------------------------
+#
+# Program ID: prntMan
+#
+# Author : Mike Conner
+#          Andersen Consulting
+#          SolutionWorks
+#
+# Description: Prepares a man pages output for regular text file format
+#
+# CALLS: sed & lpr & pr
+#
+# Input: 
+#
+# Output: cleaned file to printer
+#
+# RETURNS: 0 = success; 1 = failure
+#
+# HISTORY:
+# 12/12/95 mconner created
+#
+# Copyright (c) Andersen Consulting 1995 - All rights reserved. 
+#THIS WORK IS PROTECTED BY COPYRIGHT LAW AS AN UNPUBLISHED WORK. 
+#-----------------------------------------------------------------------
+progID=$0
+if [[ $1 = "?" || $# < 1 ]]; then
+	print "${progID}: Usage:${progID} <command>"
+	print "${progID}: This script prints a man pages of the command."
+	exit 1
+fi
+
+#----------------------------------------------------------------------
+#define program variables
+#----------------------------------------------------------------------
+SUCCESS=0
+TARGET=$1
+
+#----------------------------------------------------------------------
+#FUNCTIONS
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# MAIN LOGIC
+#----------------------------------------------------------------------
+man ${TARGET} | sed -e s/.//g | pr -l66 | lpr -onb -ohalf -odouble
+
+#----------------------------------------------------------------------
+# RETURN TO SYSTEM
+#----------------------------------------------------------------------
+return ${SUCCESS}

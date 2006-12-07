@@ -1,0 +1,128 @@
+#!/bin/ksh
+
+#############################################################################
+#
+#	File: synontb
+#
+#	Description: It creates synonyms for all OWNER tables
+#
+#############################################################################
+
+#--------------------------------------------
+#	check input arguments
+#--------------------------------------------
+
+if [ ! "$1" ]; then
+	echo "\n*** error: missing table name"
+	echo "format: \$ synontb <tablename> <source area> <object area>\n"
+	exit 1
+fi
+
+if [ ! "$2" ]; then
+	echo "\n*** error: missing source area"
+	echo "format: \$ synontb <tablename> <source area> <object area>\n"
+	exit 1
+fi
+
+if [ ! "$3" ]; then
+	echo "\n*** error: missing object area"
+	echo "format: \$ synontb <tablename> <source area> <object area>\n"
+	exit 1
+fi
+
+#--------------------------------------------
+#	assign variable values
+#--------------------------------------------
+TableName=$1		# table name is supplied as argument 1
+FromUserId=$2
+ToUserID=$3
+
+#--------------------------------------------
+#	function to create synonym
+#--------------------------------------------
+CreateSynonym ()
+{
+sqlplus -silent $SW_USER/$SW_PASSWORD <<END
+drop table $ToUserID.$TableName;
+drop synonym $ToUserID.$TableName;
+drop sequence $ToUserID.$TableName;
+create synonym $ToUserID.$TableName for $FromUserId.$TableName;
+END
+}
+
+DoCreateSynonym ()
+{
+echo "Object: $TableName"
+CreateSynonym | awk '
+	(/created/ ||
+	/dropped/ ||
+	/ORA-/) && !(/ORA-00942/ || /ORA-02289/ || /ORA-01434/)	{ print $0 }
+	' 
+}
+
+#--------------------------------------------
+#	function to list all views
+#--------------------------------------------
+ListAllObjects ()
+{
+sqlplus -s $SW_USER/$SW_PASSWORD <<END
+set heading off;
+set pause off;
+set pages 0;
+set lines 200;
+set feedback off;
+set verify off;
+select '@CMD@', 'CREATE SYNONYM $ToUserID.'||synonym_name||' for $FromUserId.'||synonym_name||';'
+ 	from sys.dba_synonyms 
+ 	where owner=UPPER('$FromUserId');
+select '@CMD@', 'CREATE SYNONYM $ToUserID.'||table_name||' for $FromUserId.'||table_name||';'
+ 	from sys.dba_tables 
+ 	where owner=UPPER('$FromUserId');
+select '@CMD@', 'CREATE SYNONYM $ToUserID.'||view_name||' for $FromUserId.'||view_name||';'
+ 	from sys.dba_views 
+ 	where owner=UPPER('$FromUserId');
+select '@CMD@', 'CREATE SYNONYM $ToUserID.'||sequence_name||' for $FromUserId.'||sequence_name||';'
+ 	from sys.dba_sequences 
+ 	where sequence_owner=UPPER('$FromUserId');
+exit;
+END
+}
+
+#-----------------------------------------------------------------
+#	if "all", create a synonym for every view
+#-----------------------------------------------------------------
+DoAllSynonyms ()
+{
+TEMPFLE='./z.lis'
+rm $TEMPFLE > /dev/null
+
+echo "--- Please wait ---"
+
+ListAllObjects | while read TAG SQLCOMMAND
+do
+	if [[ "$TAG" = "@CMD@" ]]; then
+		echo $SQLCOMMAND >> $TEMPFLE
+	fi
+done
+echo "exit;" >> $TEMPFLE
+
+sqlplus -s $SW_USER/$SW_PASSWORD @$TEMPFLE | awk '
+	(/created/ ||
+	/dropped/ ||
+	/ORA-/) && !(/ORA-00942/ || /ORA-02289/ || /ORA-01434/)	{ print $0 }
+	' 
+}
+
+#-----------------------------------------------------------------
+# 	main
+#-----------------------------------------------------------------
+Main ()
+{
+if [ ! "$TableName" = "all" ]; then
+	DoCreateSynonym 
+else
+	DoAllSynonyms
+fi
+}
+
+Main

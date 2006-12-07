@@ -1,0 +1,90 @@
+#!/bin/ksh
+###########################################################################################
+# ScriptName :  bae_del_tab (BAE Delete Table)
+# Description:  This script deletes all records for a given table of a given time stamp
+#
+# Date       Programmer         Action
+# --------------------------------------------
+# 07/21/98   Chris Rodgers      Original coding
+# 03/01/99   Chris Rodgers      Added options c and H; added usage text
+# 07/29/99   Tanya McEwen       Added update of header row to indicate rows were deleted
+#                              
+###########################################################################################
+
+typeset opt_c=false                  # -c count table rows to be deleted (NO DELETE)
+typeset TimeStamp
+typeset TableName
+
+while getopts ":CcHh" opt; do
+    case $opt in
+      c | C ) opt_c=true;;
+
+      h | H ) print "BAE Delete Table"
+              print "USAGE: ${0##*/} [-c] [-h] <time stamp> <table id>"
+              print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+              print "\t  and <table id> is CU99TB99"
+              print " -c  count records to be deleted (NO DELETION)"
+              print " -h  display this help text"
+              return 1;;
+
+      \? )    print "BAE Delete Table"
+              print "USAGE: ${0##*/} [-c] [-h] <time stamp> <table id>"
+              print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+              print "\t  and <table id> is CU99TB99"
+              return 1
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [[ -z $2 ]]; then
+    print "BAE Delete Table"
+    print "USAGE:\t${0##*/} [-c] [-h] <time stamp> <table id>"
+    print "\twhere <time stamp> is YYYY-MM-DD-hh.mm.ss.ssssss"
+    print "\t  and <table id> is CU99TB99"
+    return 1
+else
+    TimeStamp="$1"
+    TableName="$2"
+fi
+
+DelTabData() {
+print -n "Deleting table ${TableName} detail records for time stamp ${TimeStamp}..."
+sqlplus -s acct_xtract/acct_xtract <<eoi1
+SET FEEDBACK ON
+SET HEADING OFF
+SET PAGESIZE 0
+delete 
+  from extract_ld_dtl 
+ where arch_oth_ts_dt_tm = '${TimeStamp}'
+   and bat_tbl_id = '${TableName}';
+exit;
+eoi1
+print -n "Updating header table for time stamp ${TimeStamp}..."
+sqlplus -s acct_xtract/acct_xtract <<eoi2
+SET FEEDBACK ON
+SET HEADING OFF
+SET PAGESIZE 0
+update extract_ld_hdr set ld_desc_tx = '*Rows deleted `date +%x`' where arch_oth_ts_dt_tm = '${TimeStamp}';
+exit;
+eoi2
+}
+
+SelectTabData() {
+print "Number of table ${TableName} detail records for time stamp ${TimeStamp}..."
+sqlplus -s acct_xtract/acct_xtract <<eoi2
+SET FEEDBACK OFF
+SET HEADING OFF
+SET PAGESIZE 0
+select count(*)
+  from extract_ld_dtl 
+ where arch_oth_ts_dt_tm = '${TimeStamp}'
+   and bat_tbl_id = '${TableName}';
+exit;
+eoi2
+}
+
+if [[ $opt_c = true ]]; then
+    SelectTabData
+else
+    DelTabData
+fi

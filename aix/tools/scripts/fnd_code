@@ -1,0 +1,35 @@
+#!/bin/ksh
+# set -x
+#**************************************************************************
+# (c) COPYRIGHT 1996 ANDERSEN CONSULTING - ALL RIGHTS RESERVED.           
+# THIS WORK IS PROTECTED BY COPYRIGHT LAW AS AN UNPUBLISHED WORK.        
+#
+#   <fnd_code>
+#
+#   Arguments   :   A host code string
+#
+#   Description :   Calls fnd_hst_cod.awk
+#
+#**************************** Revision History ****************************
+# Date      Programmer        Action/Description
+# --------  ----------------- -----------------------------------
+# 07/10/96  Marc Danneels     Original code
+# 07/11/96  Marc Danneels     Aded grep to create output because of awk line length error.
+# 10/02/96  Cynthia  Ledesma  Changed BUILD to FNDINST. 
+#**************************************************************************
+USAGE="\nUsage: `basename $0` <Code_String>\n\nOutputs the report.\n"
+AWK_DIR=$BASE_TOOL/common/host/awk
+HOST_DIR=/sw/software/foundation/fcpNTsrv/fcp/INST/$FNDINST/data
+
+if [[ $# < 1 ]]
+then
+  echo "\nInvalid number of arguments."
+  echo $USAGE
+  exit 1
+fi
+
+grep $1 $HOST_DIR/WCODF010.dat > $$ 2> /dev/null
+
+awk -v STRING=$1 -f $AWK_DIR/fnd_code.awk $$ 2> /dev/null
+
+rm -f $$

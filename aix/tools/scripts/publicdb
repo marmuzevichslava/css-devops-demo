@@ -1,0 +1,61 @@
+#!/bin/ksh
+########################################################################### 
+#
+#	File: publicdb
+#
+#	Description: creates public synonyms to all tables
+#		     within an Application_Owner
+#
+########################################################################### 
+
+#----------------------------------------
+#	get data from user
+#----------------------------------------
+echo "\nEnter OWNER's id: (i.e. c1_base_unit, c1_base_system, etc...)"
+read OWNER
+
+# echo "Enter OWNER's password:"
+# read OWNER_PASSWORD
+
+OWNER_PASSWORD=$OWNER
+
+#----------------------------------------
+#	set variables     
+#----------------------------------------
+TBLROWTAG="~~table"
+
+#----------------------------------------
+#	function to create table list
+#----------------------------------------
+CreateTableList ()
+{
+sqlplus $OWNER/$OWNER_PASSWORD <<END
+select '$TBLROWTAG', table_name from user_tables;
+select '$TBLROWTAG', view_name from user_views;
+END
+}
+
+#----------------------------------------
+#	function to create public synonym
+#----------------------------------------
+PublicSynonym ()
+{
+echo "object: $TNAME"
+sqlplus system/manager <<END
+create public synonym $TNAME for $OWNER.$TNAME;
+END
+}
+
+#----------------------------------------
+#	main
+#----------------------------------------
+CreateTableList | while read TAG TNAME
+do
+if [ "$TAG" = "$TBLROWTAG" ]; then	# if this line is a table
+	PublicSynonym | awk '
+		/ORA-/ ||
+		/created/ ||
+		/object:/	{ print $0 }
+		'
+fi
+done

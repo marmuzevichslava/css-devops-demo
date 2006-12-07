@@ -1,0 +1,46 @@
+# SCCS: chkfind  1.6  06/06/95  15:59:58
+#******************************************************************************
+#
+#	<chkfind>
+#
+#	Searches distinct directories for the file argument.  
+#   chkfind : searches a path list for a file, prints the full path(s).
+#	It is a specialized version of the find command.
+#	Returns 0 if found, 1 if not.
+#
+#   Argument: Name of file (suffix optional)
+#
+#	Andersen Consulting - SolutionWorks
+# 
+#	Coder:          Date		Action
+#	Chris Taylor    12/20/94    Original code.
+#	Marc Danneels   06/06/95    Added dyl directory
+#	Cynthia Ledesma 09/14/95    Modified directory structure
+#	Cynthia Ledesma 11/06/96    Added copy cuv
+#	Marc Danneels   12/08/96    Added copy io directory
+#       Ed Deutscher    03/17/98    Added client include directory
+#       Scott Shepherd  03/19/98    Added find command for architecture source.
+#******************************************************************************
+
+found=1
+for file in "$@" ; do
+   for dir in $HOST_APPL/source/copy/code $HOST_APPL/source/copy/lib $HOST_APPL/source/copy/nongen $HOST_APPL/source/copy/cuv $HOST_APPL/source/copy/io \
+		$HOST_APPL/source/copy/table $HOST_APPL/source/code/batch $HOST_APPL/source/code/common \
+		$HOST_APPL/source/code/report $HOST_APPL/source/code/service $HOST_APPL/source/code/intrface \
+		$HOST_APPL/runtime/obj $HOST_APPL/source/mak $HOST_APPL/runtime/bin $HOST_APPL/runtime/lib \
+		$HOST_APPL/runtime/hpux/scripts $HOST_APPL/source/xltmap $HOST_APPL/source/code/table \
+		$HOST_APPL/source/code/io \
+		$FNDROOT/include \
+		$CLNT_APPL/source/include
+   do
+      if [ -f $dir/$file* ] 
+      then
+         ls $dir/$file*
+		 found=0
+      fi
+   done
+
+   find $HOST_ARCH/source -name "$file*"
+   
+done
+return $found

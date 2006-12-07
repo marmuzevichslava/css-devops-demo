@@ -1,0 +1,367 @@
+#!/bin/ksh
+#
+# Script to insert a userid into a particular database and if desired
+# the userid can be added to the PWQ tables on that particular database. 
+# 
+# Jake Ruttenberg 11/1/96 Original code
+#
+/bin/tput clear
+  echo "********************************************************************"
+  echo "********************************************************************"
+  echo "              WELCOME TO THE HELP DESK ORACLE USERID                "
+  echo "                       MAINTAINENCE UTILITY                         "
+  echo '\n'                          
+  echo "        THIS UTILITY ADDS A USERID TO A DESIGNATED DATABASE         "
+  echo "********************************************************************"
+  echo "********************************************************************"
+  echo '\n\n\n'
+
+
+
+AddUserId()
+{
+echo "ENTER PASSWORD: \c"
+stty -echo
+read V_password
+MGR_PASSWORD=$V_password
+stty echo
+echo
+FIRSTNAME=jane
+echo "Enter the user's first name [$FIRSTNAME]: \c"
+read NEW_FIRSTNAME
+case "$NEW_FIRSTNAME" in
+        "")     FIRSTNAME="$FIRSTNAME" ;;
+        *)      FIRSTNAME="$NEW_FIRSTNAME" ;;
+esac
+
+
+export FIRSTNAME
+MIDDLEINITIAL=" "
+echo "Enter the user's middle initial if known [$MIDDLEINITIAL]: \c"
+read NEW_MIDDLEINITIAL
+case "$NEW_MIDDLEINITIAL" in
+	"")	MIDDLEINITIAL="$MIDDLEINITIAL" ;;
+	*)	MIDDLEINITIAL="$NEW_MIDDLEINITIAL" ;;
+esac
+export MIDDLEINITIAL
+LASTNAME=smith
+echo "Enter the user's last name [$LASTNAME]: \c"
+read NEW_LASTNAME
+case "$NEW_LASTNAME" in
+	"")	LASTNAME="$LASTNAME" ;;
+	*)	LASTNAME="$NEW_LASTNAME" ;;
+esac
+export LASTNAME
+INITIAL=$(print $FIRSTNAME |cut -c 1)
+export INITIAL
+LAST7=$(print $LASTNAME |cut -c 1-7)
+export LAST7
+UNIXID=$(print $INITIAL)$(print $LAST7)
+export UNIXID
+DATABASE=c1_bbil3
+echo "Enter Database desired [$DATABASE]: \c"
+read NEW_DATABASE
+case "$NEW_DATABASE" in
+        "")     DATABASE="$DATABASE" ;;
+        *)      DATABASE="$NEW_DATABASE" ;;
+esac
+export DATABASE
+/bin/tput clear
+$ORACLE_HOME/bin/sqlplus -s base_db/$MGR_PASSWORD@sw25 <<END1
+insert into USERS values (upper('$UNIXID'),upper('$FIRSTNAME $LASTNAME'),upper('$LASTNAME'),upper('$FIRSTNAME'),upper('$MIDDLEINITIAL'),'0014', '01', 'NONE', '0001', '0001', '0001', ' ', ' ', ' ', ' ', 0, 1, '02','1993-09-24' );
+exit
+END1
+
+$ORACLE_HOME/bin/sqlplus -s $DATABASE/$MGR_PASSWORD <<END
+insert into USERS values (upper('$UNIXID'),upper('$FIRSTNAME $LASTNAME'),upper('$LASTNAME'),upper('$FIRSTNAME'),upper('$MIDDLEINITIAL'),'0014', '01', 'NONE', '0001', '0001', '0001', ' ', ' ', ' ', ' ', 0, 1, '02','1993-09-24' );
+exit
+END
+sleep 1
+  echo "If you just received UNIQUE CONSTRAINT VIOLATION then the userid"
+  echo "       alreay exists in that particular database!         "
+sleep 5
+  /bin/tput clear
+  echo "*********************************************************************"
+  echo "Your attempt has been made to add the userid to the correct database."  
+  echo "        Only add the userid to the PWQ tables if necessary.        "
+  echo "*********************************************************************"
+  echo '\n'
+YESNO=N
+echo "Do you wish to add the userid to the PWQ tables? [$YESNO]: \c"
+read NEW_YESNO
+case "$NEW_YESNO" in
+        "")     YESNO="$YESNO" ;;
+        *)      YESNO="$NEW_YESNO" ;;
+esac
+export YESNO
+if [[ $YESNO = "Y" || $YESNO = "y" ]]; then
+
+        $ORACLE_HOME/bin/sqlplus -s base_db/$MGR_PASSWORD@sw25 <<END21
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0001','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0002','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0003','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0004','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0005','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0006','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0007','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0008','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0009','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0010','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0011','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0012','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0013','30','02','1993-09-24');
+        insert INTO PWQ_USER_GROUP
+        VALUES (upper('$UNIXID'),'0014','30','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0001','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0002','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0003','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0004','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0005','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0006','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0007','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0008','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0009','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0010','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0011','02','1993-09-24');
+        insert into PWQ_USER_LOC
+        values (upper('$UNIXID'),'0012','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0013','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0014','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0015','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0016','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0017','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0018','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0019','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0020','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0021','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0022','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0023','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0024','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0025','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0026','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0027','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0028','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0029','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0030','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0031','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0032','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0033','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0034','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0035','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0036','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0037','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0038','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0039','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0040','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0041','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0042','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0043','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0044','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0045','02','1993-09-24');
+        insert INTO PWQ_USER_LOC
+        values (upper('$UNIXID'),'0046','02','1993-09-24');
+        exit
+END21
+
+	$ORACLE_HOME/bin/sqlplus -s $DATABASE/$MGR_PASSWORD <<END2
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0001','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0002','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0003','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0004','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0005','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0006','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0007','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0008','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0009','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0010','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0011','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0012','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0013','30','02','1993-09-24');
+	insert INTO PWQ_USER_GROUP
+	VALUES (upper('$UNIXID'),'0014','30','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0001','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0002','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0003','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0004','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0005','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0006','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0007','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0008','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0009','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0010','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0011','02','1993-09-24');
+	insert into PWQ_USER_LOC
+	values (upper('$UNIXID'),'0012','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0013','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0014','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0015','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0016','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0017','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0018','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0019','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0020','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0021','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0022','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0023','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0024','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0025','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0026','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0027','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0028','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0029','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0030','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0031','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0032','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0033','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0034','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0035','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0036','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0037','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0038','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0039','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0040','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0041','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0042','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0043','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0044','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0045','02','1993-09-24');
+	insert INTO PWQ_USER_LOC
+	values (upper('$UNIXID'),'0046','02','1993-09-24');
+	exit
+END2
+	/bin/tput clear
+	echo "*******************************************************"
+	echo "THANK YOU FOR USING THE HELP DESK ORACLE USERID        "
+	echo "            MAINTAINENCE FACILITY                      "
+	echo "*******************************************************"
+	echo '\n\n\n'
+else
+	/bin/tput clear
+	echo "*******************************************************"
+	echo "THANK YOU FOR USING THE HELP DESK ORACLE USERID        "
+	echo "            MAINTAINENCE FACILITY                      "
+	echo "*******************************************************"
+	echo '\n\n\n'
+fi
+}
+Main()
+{
+AddUserId
+}
+
+Main
+

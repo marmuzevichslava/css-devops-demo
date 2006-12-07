@@ -1,0 +1,80 @@
+#!/bin/ksh
+
+#############################################################################
+#
+#	File: cleardb
+#
+#############################################################################
+
+#--------------------------------------------
+#	check input arguments
+#--------------------------------------------
+if [ ! "$1" ]; then
+	echo "\n*** error: missing database area"
+	echo "format: \$ cleardb <database area>\n"
+	exit 0
+fi
+
+OWNER=$1		
+
+#USERID=`id -un`
+USERID=$SW_USER
+
+if [[ ! "$USERID" = "$OWNER" && ! "$USERID" = "oracle" ]]; then
+	echo "You are not authorized."
+	exit
+fi
+
+echo "\nWARNING - This command erase all objects in $OWNER"
+echo 'Type "yes" if you like to continue, anything else to exit'
+read YN
+
+if [ "$YN" != 'yes' ]; then
+	exit
+fi
+
+#----------------------------------------
+#	function to create table list
+#----------------------------------------
+ListAllObjects ()
+{
+sqlplus -s $SW_USER/$SW_PASSWORD <<END
+set heading off;
+set pause off;
+set pages 0;
+set lines 200;
+set feedback off;
+set verify off;
+select '@CMD@', 'DROP SYNONYM '||synonym_name||';'
+        from user_synonyms;
+select '@CMD@', 'DROP TABLE '||table_name||';'
+        from user_tables;
+select '@CMD@', 'DROP VIEW '||view_name||';'
+        from user_views;
+select '@CMD@', 'DROP SEQUENCE '||sequence_name||';'
+        from user_sequences;
+exit;
+END
+}
+
+#----------------------------------------
+#	main
+#----------------------------------------
+TEMPFLE='./z.lis'
+rm $TEMPFLE > /dev/null
+
+echo "--- Please wait ---"
+
+ListAllObjects | while read TAG SQLCOMMAND
+do
+        if [[ "$TAG" = "@CMD@" ]]; then
+                echo $SQLCOMMAND >> $TEMPFLE
+        fi
+done
+echo "exit;" >> $TEMPFLE
+
+sqlplus -s $SW_USER/$SW_PASSWORD @$TEMPFLE | awk '
+         (/created/ ||
+         /dropped/ ||
+         /ORA-/) && !(/ORA-00942/ || /ORA-02289/ || /ORA-01434/) { print $0 }
+         '
