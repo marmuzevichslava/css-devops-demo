@@ -139,6 +139,11 @@
 # 09/26/01  Suresh Pellakur     Work Item# :  81890 - Tools change to support Recompiles Issue
 #                               Chg CreateTar procedure to allow Recompiles source go to recompile directory in
 #                               Transfer G: Drive.
+#
+# 09/14/06 Suresh Pellakur	PROJECT ONE Changes
+#				1) Records SVT and TransferDrive migrations in PROMOTEMODS table
+#                               2) Use a new transfer path for PROJECT ONE migrations
+#
 #################################################################################################################
 
 
@@ -224,6 +229,83 @@ function MigrateToTarget {
         return $SUCCESS
     fi
 }
+
+
+#--------------------------------#
+# Records objects info into PROMOTEMODS
+# - Suresh Pellakur 2006/09/14
+#--------------------------------#
+function RecordPromoteMods
+{
+   
+ if [ $ListName >  " " ] 
+ then
+    if [[ $FTP_Only_flag = $SET ]]; then
+        if  [ -a $CURR_DIR/unsuccessful.promote ]; then
+            cat $CURR_DIR/$ListName |  while read line
+            do
+             cnt=` grep $line $CURR_DIR/unsuccessful.promote | wc -l `
+             if [ $cnt = 0 ]; then
+                 CSSDEV TransferDrive $line $SIR_NUMBERS 
+              fi
+            done
+        else
+            cat $CURR_DIR/$ListName |  while read line
+             do
+               CSSDEV TransferDrive $line $SIR_NUMBERS  
+             done
+         fi     
+   else
+        if  [ -a $CURR_DIR/unsuccessful.promote ]; then
+            cat $CURR_DIR/$ListName |  while read line
+            do
+             cnt=`grep $line $CURR_DIR/unsuccessful.promote | wc -l `
+             if [ $cnt = 0 ]; then
+                 CSSDEV SVT $line $SIR_NUMBERS  
+              fi
+            done
+        else
+            cat $CURR_DIR/$ListName |  while read line
+             do
+                CSSDEV SVT $line $SIR_NUMBERS 
+             done
+         fi
+   fi
+ 
+ else
+   
+  if [[ $FTP_Only_flag = $SET ]]; then 
+        CSSDEV TransferDrive $module $SIR_NUMBERS 
+  else
+        CSSDEV  SVT $module $SIR_NUMBERS   
+  fi  
+fi
+
+
+}
+
+#---------------------------------------------------------------#
+# Check the ITT engagement is valid for Transfer Drive Migrations
+# - Suresh Pellakur 2006/09/14
+#---------------------------------------------------------------#
+function checkITTEngagement
+{
+IttEnagement=""
+ 
+if [[ $FTP_Only_flag = $SET ]]; then # check needed only for client site migrations
+IttEngagement=`CSSDEV GetITTEngagement  $SIR_NUMBERS `
+
+   if [ $T_PROJECT = "t5p1" ]
+   then
+     if  [ ! [ $IttEngagement = "Project 1" ] ] 
+   then
+      print "\nERROR: ITT Work Item Does NOT match with the PROJECT. PLEASE VERIFY THE ISSUE NUMBER and PROJECT.\n"
+     exit $ERROR  
+   fi    
+ fi
+fi
+}
+
 
 #--------------------------------#
 # check_production_flag function #
@@ -554,7 +636,6 @@ function RunMVSPort
             if [[ $OracleModeFlag = $SET ]]; then
 	        print "ERROR: $portname did not pass oracle porting."
             else
-                print "Suresh Test1...\n"
                 print $MFDEST_AREA/$code_loc/$filename
 
                 print "ERROR: $portname did not pass mvsport."
@@ -5018,12 +5099,17 @@ if [[ $Issue_No_Flag = $SET ]]; then
     fi
 fi 
 
+
 checksirnumber=$first_sir
 echo $checksirnumber |grep -i [A-Z] > /dev/null
 if [[ $? = 0 ]]; then
     print "\nERROR: Invalid SIR number -> $checksirnumber\n"
     exit $ERROR
 fi
+
+#SURESH PELLAKUR 2006/09/16 PROJECT ONE CHANGES
+checkITTEngagement
+
 
 if [[ $AREA_DEST = itest ]]; then
     VCS_LEVEL=ITest
@@ -5062,6 +5148,7 @@ if [[ $STP_flag = $SET && $TAR_STP_File_Flag = $SET ]]; then
     print "\nERROR: The -s option should not be used for $T_PROJECT promotions.\n"
     exit $ERROR
 fi
+
 
 if [[ $Migrate = $SET ]]; then
     print "\n"
@@ -6372,6 +6459,11 @@ else
     fi
 fi
 
+
+# Added by Suresh Pellakur on 2006/09/14 for Project One and LOM migrations
+    RecordPromoteMods > /dev/null
+
+
 grep "$module" $CURR_DIR/unsuccessful.promote 2> /dev/null
 if [[ $? = 0 ]]; then
     print "\n** AN ERROR OCCURRED WHILE PROCESSING SIR# $first_sir. **\n"
@@ -6392,11 +6484,16 @@ else
             rm -f $CURR_DIR/staticdata.lst
         fi
     fi
+
+
     Remove_temp_files
     if [[ $CLNT_flag != $SET ]]; then
         Remove_temp_binary_files
     fi
+    
     print "\n** SIR# $first_sir IS COMPLETE **\n"
+    
 fi
+
 
 return $SUCCESS
