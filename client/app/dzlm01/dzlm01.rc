@@ -24,7 +24,7 @@
 /***************************************************************************
  * Window Resource Files                                                   * 
  ***************************************************************************/
-rcinclude n:\archinc\c1cptrs.rch
+rcinclude c1cptrs.rch
 
 rcinclude dzlm001.dlg
 

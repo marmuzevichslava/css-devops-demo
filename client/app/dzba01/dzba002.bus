@@ -154,7 +154,7 @@ WCBPROC( DZBA002BusWindowPredisp )
                       &FndGenErrorBlock);
 
 	   FndFieldSetMsg(CBI_hwnd,
-			          "KyBldgNo",,
+			          "KyBldgNo",
 					  MF_NO_MSG,
 					  &FndGenErrorBlock);
 

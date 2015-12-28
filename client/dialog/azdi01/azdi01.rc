@@ -32,8 +32,10 @@
  * Window Resource Files                                                   * 
  ***************************************************************************/
  /* CWOODS 09/13/95: Hand Modified s:\archinc to n:\archinc due to
-  directory structure.  Driver files will be modified. */
-rcinclude n:\archinc\c1cptrs.rch
+  directory structure.  Driver files will be modified. 
+  Vikas Jha: 05/06/15 Changed it from n:\archinc to include path pickup*/
+/*rcinclude n:\archinc\c1cptrs.rch */
 
+rcinclude c1cptrs.rch
 rcinclude azdi001.dlg
 

@@ -22,11 +22,14 @@
 
 
 /***************************************************************************
- * Window Resource Files                                                   * 
+ * Window Resource Files
+ * Vikas Jha: 13 May 2015: update rcinclude from  rcinclude n:\archinc\c1cptrs.rch to rcinclude c1cptrs.rch * 
  ***************************************************************************/
-rcinclude n:\archinc\c1cptrs.rch
+
+rcinclude c1cptrs.rch
 
 rcinclude dzio001.dlg
+
 rcinclude dzio002.dlg
 rcinclude dzio005.dlg
 rcinclude dzio007.dlg
@@ -35,4 +38,4 @@ rcinclude dzio009.dlg
 rcinclude dzio012.dlg
 rcinclude dzio013.dlg
 rcinclude dzio014.dlg
-
+*/

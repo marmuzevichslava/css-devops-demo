@@ -63,8 +63,8 @@ ALL : $(EXE_FILE)
 #        (NT & OS/2) and DEF file (OS/2) dependencies.
 #
 #--------------------------------------------------------------------------
-AZSS01 = $(R_OBJ)\AZSS01.obj
-DEF_FILE = $(R_SRC)\$(PROJ).def
+AZSS01 = $(OBJDIR)\AZSS01.obj
+DEF_FILE = $(SRCDIR)\$(PROJ).def
 
 #--------------------------------------------------------------------------
 #

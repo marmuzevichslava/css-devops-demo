@@ -23,8 +23,9 @@
 
 /***************************************************************************
  * Window Resource Files                                                   * 
+ * Vikas Jha 05/13/15: changed n:\archinc\c1ptrs.rch to c1ptrs.rch *
  ***************************************************************************/
-rcinclude n:\archinc\c1cptrs.rch
+rcinclude c1cptrs.rch
 
 rcinclude azrp001.dlg
 rcinclude azrp002.dlg

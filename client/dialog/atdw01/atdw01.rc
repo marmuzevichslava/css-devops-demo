@@ -23,8 +23,10 @@
 
 /***************************************************************************
  * Window Resource Files                                                   * 
+ * Updating the location of rcinclude so that will be automatically picked *
  ***************************************************************************/
-rcinclude n:\archinc\c1cptrs.rch
+/*rcinclude n:\archinc\c1cptrs.rch */
+rcinclude c1cptrs.rch
 
 rcinclude atdw001.dlg
 rcinclude atdw002.dlg

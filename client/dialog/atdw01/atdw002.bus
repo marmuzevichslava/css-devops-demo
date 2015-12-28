@@ -30,7 +30,7 @@
 **
 ***************************************************************************/
 #include <tcppipe.h> /* MEVANS 02/21/97 */
-
+#include <time.h> /* Vikas Jha 05/06/15 */
 
 /***************************************************************************
 **
@@ -163,11 +163,13 @@ WCBPROC( ATDW002BusRefreshClick )
 **    05/06/94  C. Crampton           Changed for new CmnOs version  
 **    02/20/97  MEVANS       15881    Replaced Named pipes API with
 **                                    portable TcpPipe API
+**  05/06/15 Vikas Jha In VS2010 header can not be included in fuction hence including the header on top.
 ***************************************************************************/
 
 WCBPROC( ATDW002BusUpdateWES)
  {
-    #include <time.h>
+    
+/*#include <time.h> */
 
   /*  _FND_ERROR_BLOCK FndGenErrorBlock; */
   /*  USHORT FndGenRC = 0; */

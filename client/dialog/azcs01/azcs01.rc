@@ -23,8 +23,9 @@
 
 /***************************************************************************
  * Window Resource Files                                                   * 
+* 05/06/15 Vikas Jha: Updated the path n:\archinc\c1cptrs.rch to take from include paths *
  ***************************************************************************/
-rcinclude n:\archinc\c1cptrs.rch
+rcinclude c1cptrs.rch
 
 rcinclude azcs001.dlg
 rcinclude azcs002.dlg

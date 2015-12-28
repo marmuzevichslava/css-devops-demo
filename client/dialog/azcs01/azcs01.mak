@@ -10,12 +10,26 @@
 #                          Generated on: Wed Jul 31 16:48:14 1996          *
 #                                    by: CWOODS                            *
 #                     Short Description:                                   *
+# 05/06/15 Vikas Jha: Handlded the local and remote compilations           *
 #                                                                          *
 #***************************************************************************
+!ifndef LOC
+LOC = REMOTE
+!endif
+
+!if "$(LOC)" == "REMOTE"
 PROJDIR = n:\azcs01nt
 OBJDIR = r:\obj
 EXEDIR = r:\exe
 ARCHINC = n:\archinc
+!endif
+
+!if "$(LOC)" == "LOCAL"
+PROJDIR = C:\Data\archunit\src\azcs01\nt
+OBJDIR = C:\Data\archunit\nt\bin\obj
+EXEDIR = C:\Data\archunit\nt\bin\exe
+ARCHINC = C:\Data\archunit\src\archinc
+!endif
 
 PROJ = AZCS01
 
@@ -28,8 +42,8 @@ RC = rc
 LINK = link
 
 
-CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "CSRMPGN" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
-CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MT 
+CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "_USE_32BIT_TIME_T" /D "CSRMPGN" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
+CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT" /D "_USE_32BIT_TIME_T" /D "WIN32" /D "FND_WIN32" /D "CSRMPGN" /MT 
 LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows /MAP 
 LFLAGS_R = /SUBSYSTEM:windows  
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
@@ -410,6 +424,7 @@ $(EXEDIR)\$(PROJ).EXE :  $(OBJDIR)\AZCS01.obj $(OBJDIR)\AZCS01.res 	\
 	    $(OBJDIR)\VERSION.obj
     link $(LFLAGS) @<<
 /OUT:$(EXEDIR)\$(PROJ).EXE
+/NODEFAULTLIB:libcmt.lib
 $(OBJDIR)\AZCS01.obj
       $(OBJDIR)\AZCS001.obj
       $(OBJDIR)\AZCS002.obj

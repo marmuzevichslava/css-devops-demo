@@ -45,7 +45,9 @@
 
 /***************************************************************************
  * System Headers                                                          *
+ * 05/06/15 Vikas Jha: Included winsock2.h                                 *
  ***************************************************************************/
+#include <winsock2.h>
 #include <windows.h>
 #include <stdlib.h>
 #include <string.h>

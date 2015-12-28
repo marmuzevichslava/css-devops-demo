@@ -8,7 +8,7 @@
 ****************************************************************************
 *                                                                          *
 *                     Header file for: DZSF002C                            *
-*                        Generated on: Thu Feb 26 12:58:01 1998            *
+*                        Generated on: Tue Feb 03 10:15:18 1998            *
 *                                  by: MCONNER                             *
 *                   Short Description:                                     *
 *                                                                          *

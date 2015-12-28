@@ -60,9 +60,6 @@
 #ifndef DZSF002_ELEM_KEY_WORD
 #define DZSF002_ELEM_KEY_WORD       "Element"
 #endif
-#ifndef DZSF002_COMMENT_CHAR
-#define DZSF002_COMMENT_CHAR         '#'
-#endif
 
  
 #ifndef DZSF002_ELEM_CFG_STR_NUM
@@ -216,7 +213,6 @@ WCBFWD( DZSF002BusWindowClose );
 SHORT DZSF002GetElemCfg( CHAR ElemCfgStr[DZSF002_ELEM_CFG_STR_NUM][DZSF002_ELEM_CFG_STR_LEN], 
 						CHAR * TramMapID,
 						CHAR * DialogID,
-						CHAR *FuncCode,
 						USHORT *NumElements,
 						FILE *fp );
 

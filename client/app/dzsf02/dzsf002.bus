@@ -100,13 +100,6 @@ WCBPROC( DZSF002BusPredis )
 		CBI_hwnd,
 		&FndGenErrorBlock);
 
-	/*
-	** mdc 4/2/98 set the default PB
-	*/
-	FndCommandSetDefaultButton( CBI_hwnd,
-		                        "GeneratePB",
-								&FndGenErrorBlock );
-
 
 return ( CMN_SUCCESS );
 
@@ -155,15 +148,15 @@ WCBPROC( DZSF002BusGeneratePBClk )
     CHAR                OutputFilePathAndName[_PATH_LEN] = "";
     CHAR                GeneratedFilePathAndName[_PATH_LEN] = "";
 	CHAR                CSRDumpFilePathAndName[_PATH_LEN] = "";
-    ULONG               LocalPerfFiles = 0;
-    ULONG				TotalGen = 0,
+    USHORT              LocalPerfFiles = 0,
+    					TotalGen = 0,
 						StopNum = 0,
 						StartNum = 0;
 
-    ULONG               FilesWritten = 0;
+    USHORT              FilesWritten = 0;
 
     CHAR                Value[DZSF002_VALUE_LEN] = "";
-    ULONG               StartNumber;
+    USHORT              StartNumber;
 	USHORT              FinishNumber;
 	CHAR				lfunctioncode[DZSF002_FUNCTION_CODE_LEN];
     CHAR                CdCoStr[DZSF002_NAME_LEN] = "";
@@ -193,7 +186,6 @@ WCBPROC( DZSF002BusGeneratePBClk )
 	CHAR                ElemName[DZSF002_ELEM_NAME_LEN];
 	CHAR                DialogID[DZSF002_DIALOG_ID_LEN + 1];
 	CHAR                ErrMsg[DZSF002_ERR_MSG_LEN];
-	SHORT               AsciiFieldSize = 0;
 
 
 
@@ -375,11 +367,6 @@ WCBPROC( DZSF002BusGeneratePBClk )
 					memcpy(DialogID, pTMID, DZSF002_DIALOG_ID_LEN);
 
 					/*
-					** get function code from message
-					*/
-		            memcpy (lfunctioncode, pMessage, DZSF002_FUNCTION_CODE_LEN);
-
-					/*
 					** get number of Elements
 					*/
 					if ((fpElemData = fopen(DZSF002_ELEM_DATA_FILE, "r")) != NULL )
@@ -387,7 +374,6 @@ WCBPROC( DZSF002BusGeneratePBClk )
 						rc = DZSF002GetElemCfg(ElementCfgStr, 
 												TranMapID,
 												DialogID,
-												lfunctioncode,
 												&NumElements,
 												fpElemData);
 
@@ -428,6 +414,10 @@ WCBPROC( DZSF002BusGeneratePBClk )
 						return CMN_FAIL;
 					}
 
+					/*
+					** set function code in message
+					*/
+		            memcpy (lfunctioncode, pMessage, DZSF002_FUNCTION_CODE_LEN);
 
 		            while ( TRUE )
      	            {
@@ -445,8 +435,7 @@ WCBPROC( DZSF002BusGeneratePBClk )
 */	
 							pValue = Value;
 							i = 0;
-							while ((strcmp( ElementCfgStr[i], DZSF002_NT_CARRIAGE_RTRN) != 0) 
-								&& (ElementCfgStr[i][0] != DZSF002_COMMENT_CHAR))
+							while (strcmp( ElementCfgStr[i], DZSF002_NT_CARRIAGE_RTRN) != 0)
 							{
 								/*
 								** Extract the config data for the element
@@ -465,41 +454,16 @@ WCBPROC( DZSF002BusGeneratePBClk )
 								}
 
 								/*
-								** determine ascii length of field.
-								** mdc 4/2/98 added ispunct to include '-' in dates
-								*/
-								AsciiFieldSize = 0;
-                                /* 
-                                ** mdc 5/18/98 using isspace instead
-								** Start by incrementing past any leading spaces
-								**while (*pValue != '\t' && *pValue != '\n')
-                                */
-								while (isspace(*pValue))
-								{
-									++pValue;
-								}
-								/*
-								** count the ascii field characters
-								*/
-                                while (!isspace(*pValue))
-								{
-									++pValue;
-									++AsciiFieldSize;
-								}
-								/*
 								** put the first datum in the string field
 								*/
 								memset(ElementValue, 0, DZSF002_ELEM_VALUE_LEN);
-								memcpy(ElementValue, pValue - AsciiFieldSize, AsciiFieldSize);
+								memcpy(ElementValue, pValue, FieldSize);
 
 
 								/*
 								** increment the pointer to the next value
 								*/
-                                while(isspace(*pValue) && (*pValue != '\n'))
-                                {
-								   ++pValue;
-                                }
+								pValue += FieldSize;
 
 								/*
 								** loop for each offset of an element
@@ -1117,28 +1081,19 @@ SHORT CsrGetPBAndMessage( _MSG_PARM_BLOCK *pMsgPB,
 SHORT DZSF002GetElemCfg( CHAR ElemCfgStr[DZSF002_ELEM_CFG_STR_NUM][DZSF002_ELEM_CFG_STR_LEN], 
 						CHAR * TranMapID,
 						CHAR * DialogID,
-						CHAR *FuncCode,
 						USHORT *NumElements,
 						FILE *fp )
 {
 	CHAR               Line[DZSF002_ELEM_CFG_STR_LEN];
-	CHAR               IDLine[DZSF002_ELEM_CFG_STR_LEN];
 	SHORT              i = 0;
 
 	memset(Line, 0, DZSF002_ELEM_CFG_STR_LEN);
-	memset(IDLine, 0, DZSF002_ELEM_CFG_STR_LEN);
-
-
-	/*
-	** create the line to search for using the parm data
-	*/
-	sprintf(IDLine, "[%s][%s][%s]", TranMapID, DialogID, FuncCode);
 
 
 	/*
 	** Locate file pointer at correct paragraph
 	*/
-	while ((strstr(Line, IDLine) == NULL) || (Line[0] == DZSF002_COMMENT_CHAR))
+	while (( strstr(Line, TranMapID) == NULL ) || (strstr(Line, DialogID) == NULL))
 	{
 		memset(Line, 0, DZSF002_ELEM_CFG_STR_LEN);
 		if (fgets(Line, DZSF002_ELEM_CFG_STR_LEN, fp) == NULL)
@@ -1156,8 +1111,7 @@ SHORT DZSF002GetElemCfg( CHAR ElemCfgStr[DZSF002_ELEM_CFG_STR_NUM][DZSF002_ELEM_
 			return CMN_FAIL;
 	}
 
-	while ((strcmp( ElemCfgStr[i], DZSF002_NT_CARRIAGE_RTRN) != 0) && 
-		(ElemCfgStr[i][0] != DZSF002_COMMENT_CHAR))
+	while (strcmp( ElemCfgStr[i], DZSF002_NT_CARRIAGE_RTRN) != 0)
 	{
 
 		if (strncmp( ElemCfgStr[i], DZSF002_ELEM_KEY_WORD, 

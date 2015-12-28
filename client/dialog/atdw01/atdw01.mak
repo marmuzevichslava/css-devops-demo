@@ -24,8 +24,8 @@ RC = rc
 LINK = link
 
 
-CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D  "WIN32" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
-CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "FND_WIN32" /MD 
+CFLAGS_D = /c /W3 /Zp1 /Zip /Od /D "_DEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D  "WIN32" /D "_USE_32BIT_TIME_T" /D "FND_WIN32" /MD /Fd"$(PROJ).PDB" 
+CFLAGS_R = /c /W3 /Zp1 /O2 /D "NDEBUG" /D "_X86_" /D "STRICT" /D "WIN32" /D "_USE_32BIT_TIME_T" /D "FND_WIN32" /MD 
 LFLAGS_D = /DEBUG /DEBUGTYPE:cv /SUBSYSTEM:windows,3.10   /MAP 
 LFLAGS_R = /SUBSYSTEM:windows,3.10  
 RCDEFINES_D = -d_DEBUG -dFND_WIN32
