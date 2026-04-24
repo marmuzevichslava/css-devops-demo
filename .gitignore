@@ -311,7 +311,8 @@ node_modules/
 *.vbw
 
 # Visual Studio 6 auto-generated project file (contains which files were open etc.)
-*.vbp
+# ajc-removed 4/24/2026
+#*.vbp
 
 # Visual Studio 6 workspace and project file (working project files containing files to include in project)
 *.dsw
