@@ -1,3 +1,6 @@
 # Force LF line endings for all files destined for AIX (ksh scripts).
 # This prevents Git from injecting Windows CRLF on checkout.
 **/aix/*.*  text eol=lf
+
+# host files
+**/host/*.*  text eol=lf
