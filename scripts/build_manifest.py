@@ -155,7 +155,7 @@ def build_compiled_modules(
 
     # Remove None subtype values to keep the JSON clean
     for e in entries:
-        if e.get('subtype') is None:
+        if e.get('subtype') is None and 'subtype' in e:
             del e['subtype']
 
     return entries
