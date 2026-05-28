@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Pipeline — All Flows</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --surface: #f8fafc;
+    --border: #e2e8f0;
+    --compile: #0369a1;
+    --deploy: #b45309;
+    --aix: #047857;
+    --ags: #7c3aed;
+    --github: #475569;
+    --mainframe: #dc2626;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #0369a1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #ffffff;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    padding: 32px 28px;
+    max-width: 860px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 0.73rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 36px;
+  }
+
+  .section { margin-bottom: 44px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .section-badge {
+    font-size: 0.62rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1.5px solid;
+  }
+
+  .badge-cpp    { color: var(--compile); border-color: var(--compile); background: #eff6ff; }
+  .badge-cobol  { color: var(--aix);     border-color: var(--aix);     background: #f0fdf4; }
+  .badge-ags    { color: var(--ags);     border-color: var(--ags);     background: #faf5ff; }
+  .badge-dat    { color: var(--deploy);  border-color: var(--deploy);  background: #fffbeb; }
+  .badge-xlt    { color: var(--mainframe); border-color: var(--mainframe); background: #fef2f2; }
+
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .section-sub {
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .steps { display: flex; flex-direction: column; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+  }
+
+  .step-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 26px;
+  }
+
+  .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid;
+    background: #ffffff;
+    flex-shrink: 0;
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-connector {
+    width: 1.5px;
+    flex: 1;
+    min-height: 10px;
+    margin-top: 2px;
+    opacity: 0.2;
+  }
+
+  .step:last-child .step-connector { display: none; }
+
+  .step-body {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: 6px;
+  }
+
+  .step-server {
+    font-size: 0.57rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .step-action {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .step-detail {
+    font-size: 0.69rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.65;
+  }
+
+  .tags { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 5px; }
+
+  .tag {
+    font-size: 0.56rem;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border: 1px solid;
+  }
+
+  /* Server colors - light */
+  .s-github .step-server  { color: var(--github); }
+  .s-github .step-dot     { border-color: var(--github); }
+  .s-github .step-connector { background: var(--github); }
+
+  .s-compile .step-server { color: var(--compile); }
+  .s-compile .step-dot    { border-color: var(--compile); }
+  .s-compile .step-connector { background: var(--compile); }
+
+  .s-deploy .step-server  { color: var(--deploy); }
+  .s-deploy .step-dot     { border-color: var(--deploy); }
+  .s-deploy .step-connector { background: var(--deploy); }
+
+  .s-aix .step-server     { color: var(--aix); }
+  .s-aix .step-dot        { border-color: var(--aix); }
+  .s-aix .step-connector  { background: var(--aix); }
+
+  .s-ags .step-server     { color: var(--ags); }
+  .s-ags .step-dot        { border-color: var(--ags); }
+  .s-ags .step-connector  { background: var(--ags); }
+
+  /* Tags light */
+  .t-compile  { color: var(--compile);    border-color: #bae6fd; background: #eff6ff; }
+  .t-deploy   { color: var(--deploy);     border-color: #fcd34d; background: #fffbeb; }
+  .t-aix      { color: var(--aix);        border-color: #6ee7b7; background: #f0fdf4; }
+  .t-ags      { color: var(--ags);        border-color: #d8b4fe; background: #faf5ff; }
+  .t-github   { color: var(--github);     border-color: #cbd5e1; background: #f8fafc; }
+  .t-block    { color: var(--mainframe);  border-color: #fca5a5; background: #fef2f2; }
+  .t-skip     { color: var(--ags);        border-color: #d8b4fe; background: #faf5ff; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.62rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<h1>CSS Pipeline — All Flows</h1>
+<p class="subtitle">National Grid FCP Remediation — GitHub Actions Orchestration</p>
+
+<!-- 1. C++ CLIENT -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-cpp">1 — C++ Client</span>
+    <div>
+      <div class="section-title">dialog (.exe) + comwin (.dll)</div>
+      <div class="section-sub">client/dialog/* + client/comwin/* — Windows UI modules</div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step s-github">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">GitHub</div>
+        <div class="step-action">PR opened / push</div>
+        <div class="step-detail">Developer changes .c / .h / .vcxproj / .gnd file<br>Pipeline triggered automatically</div>
+        <div class="tags"><span class="tag t-github">trigger</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">Diff Analysis + Module Classification</div>
+        <div class="step-detail">diff_analysis.py — changed files → module IDs<br>classify_modules.py — path → type: C_PROJECT<br>resolve_build_sequence.py — topological sort → waves</div>
+        <div class="tags"><span class="tag t-compile">runner: self-hosted, windows, compile</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">MSBuild × 2</div>
+        <div class="step-detail">Build 1: BUILD env source → BUILD binary (.exe/.dll)<br>Build 2: SVT env source → SVT binary (.exe/.dll)<br>VS 2019 Build Tools + FCP tooling (.gnd headers/libs)</div>
+        <div class="tags"><span class="tag t-compile">artifacts: BUILD.zip + SVT.zip</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Approval Gate</div>
+        <div class="step-detail">GitHub Environment protection — pipeline waits<br>Required Reviewer must approve in GitHub UI</div>
+        <div class="tags"><span class="tag t-deploy">runner: self-hosted, windows, deploy</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Copy to Network Share</div>
+        <div class="step-detail">BUILD binary → \\cssapp\BUILD\client\<br>SVT binary → \\cssapp\SVT\client\<br>Simple file copy — no restart needed</div>
+        <div class="tags"><span class="tag t-deploy">SMB / local copy</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Update Environment Manifest</div>
+        <div class="step-detail">Write deployed modules to environment-manifest.json<br>Push audit log to css-environments repo</div>
+        <div class="tags"><span class="tag t-github">git commit → css-environments</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 2. COBOL -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-cobol">2 — COBOL</span>
+    <div>
+      <div class="section-title">host/batch, host/service, host/io, host/report</div>
+      <div class="section-sub">Backend business logic — compiles and runs on AIX</div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step s-github">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">GitHub</div>
+        <div class="step-action">PR opened</div>
+        <div class="step-detail">Developer changes .cbl / .cob / .pco file<br>ITT:[number] required in every commit message</div>
+        <div class="tags"><span class="tag t-github">trigger: PR validation</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">ITT Check + Diff Analysis + Classification</div>
+        <div class="step-detail">Check ITT:[number] in each commit — block if missing<br>classify_modules.py → type: COBOL<br>resolve_build_sequence.py → compilation order</div>
+        <div class="tags"><span class="tag t-compile">runner: self-hosted, windows, compile</span></div>
+      </div>
+    </div>
+    <div class="step s-aix">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">AIX Server — USNY7-CSSADV01 (via SSH)</div>
+        <div class="step-action">PR Validation Compile</div>
+        <div class="step-detail">SCP: copy COBOL source → isolated area on AIX<br>AIX COBOL compiler — validation only<br>Parse output — success or failure<br>Cleanup isolated area after</div>
+        <div class="tags">
+          <span class="tag t-block">block PR if compile fails</span>
+          <span class="tag t-aix">artifact discarded — validation only</span>
+        </div>
+      </div>
+    </div>
+    <div class="step s-github">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">GitHub</div>
+        <div class="step-action">PR merged → push to main</div>
+        <div class="step-detail">Deploy pipeline triggered automatically after merge</div>
+        <div class="tags"><span class="tag t-github">trigger: push</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Impact Report + Glob Report + Approval Gate</div>
+        <div class="step-detail">generate_impact_report.py — NEW vs REPLACING delta<br>generate_glob_report.py — ITT collision check<br>Pipeline waits for Required Reviewer approval</div>
+        <div class="tags"><span class="tag t-deploy">runner: self-hosted, windows, deploy</span></div>
+      </div>
+    </div>
+    <div class="step s-aix">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">AIX Server — USNY7-CSSADV01 (via SSH)</div>
+        <div class="step-action">Production Deploy — COBOL compile + activate</div>
+        <div class="step-detail">SCP: copy COBOL source → BUILD area on AIX<br>AIX COBOL compiler — production compile<br>Compiled modules stay on AIX runtime<br>Repeat for SVT area</div>
+        <div class="tags"><span class="tag t-aix">stays on AIX — no file transfer back</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Update Environment Manifest</div>
+        <div class="step-detail">environment-manifest.json updated<br>Push audit log to css-environments repo</div>
+        <div class="tags"><span class="tag t-github">git commit → css-environments</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 3. AGS -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-ags">3 — AGS</span>
+    <div>
+      <div class="section-title">client/ags/cug* modules</div>
+      <div class="section-sub">Middleware DLL — integration layer between external systems and CSS</div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step s-github">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">GitHub</div>
+        <div class="step-action">PR opened / push</div>
+        <div class="step-detail">Developer changes cug* module (.vcxproj / .c files)<br>No .gnd file — distinguishes AGS from dialog modules</div>
+        <div class="tags"><span class="tag t-github">trigger</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">Diff Analysis + Classification → AGS_MODULE</div>
+        <div class="step-detail">classify_modules.py → type: AGS_MODULE<br>Path: client/ags/cug* + .vcxproj without .gnd<br>resolve_build_sequence.py → build order</div>
+        <div class="tags"><span class="tag t-compile">runner: self-hosted, windows, compile</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">MSBuild × 2</div>
+        <div class="step-detail">Build 1: BUILD binary (.dll)<br>Build 2: SVT binary (.dll)<br>VS 2019 Build Tools — same as C++ client</div>
+        <div class="tags"><span class="tag t-compile">artifacts: AGS-BUILD.dll + AGS-SVT.dll</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Impact Report + Approval Gate</div>
+        <div class="step-detail">Impact Report + Glob Report generated<br>Required Reviewer must approve</div>
+        <div class="tags"><span class="tag t-deploy">runner: self-hosted, windows, deploy</span></div>
+      </div>
+    </div>
+    <div class="step s-ags">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">AGS Servers — ngusappndc165 / ngusappndc166 (via SSH)</div>
+        <div class="step-action">Deploy DLL — most complex deploy in project</div>
+        <div class="step-detail">1. Stop IIS<br>2. Stop AGS host process (needs Windows session — scheduled task)<br>3. Copy .dll → AGS install directory<br>4. Restart AGS host process<br>5. Restart IIS<br>6. Health check — verify service is up</div>
+        <div class="tags"><span class="tag t-skip">SVT: SKIP — no AGS servers in SVT</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Update Environment Manifest</div>
+        <div class="step-detail">environment-manifest.json updated<br>Push audit log to css-environments repo</div>
+        <div class="tags"><span class="tag t-github">git commit → css-environments</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 4. CODES TABLE -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-dat">4 — Codes Table</span>
+    <div>
+      <div class="section-title">db/codestable/*.dat</div>
+      <div class="section-sub">Reference data — tariff codes, region codes, transaction codes</div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step s-github">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">GitHub</div>
+        <div class="step-action">PR opened / push</div>
+        <div class="step-detail">Developer changes SOMTBL.dat file<br>No compilation needed — pure data</div>
+        <div class="tags"><span class="tag t-github">trigger</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">Classification → CODES_TABLE</div>
+        <div class="step-detail">classify_modules.py → type: CODES_TABLE<br>Each .dat file = separate module<br>No MSBuild — package as artifact only</div>
+        <div class="tags"><span class="tag t-compile">artifact: SOMTBL.dat</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Approval Gate + FCP Utility → KCOD</div>
+        <div class="step-detail">After approval:<br>FCP Utility reads .dat file<br>Loads into KCOD (.mdb MS Access database)<br>Exports to AIX-readable transfer format</div>
+        <div class="tags"><span class="tag t-deploy">runner: self-hosted, windows, deploy</span></div>
+      </div>
+    </div>
+    <div class="step s-aix">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">AIX Server — USNY7-CSSADV01 (via SCP/SSH)</div>
+        <div class="step-action">Load into WCOD</div>
+        <div class="step-detail">SCP transfers export file from Deployment Server to AIX<br>AIX loads data into WCOD runtime database<br>CSS application reads updated codes from WCOD</div>
+        <div class="tags"><span class="tag t-aix">no compile — data transfer only</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Update Environment Manifest</div>
+        <div class="step-detail">environment-manifest.json updated<br>Push audit log to css-environments repo</div>
+        <div class="tags"><span class="tag t-github">git commit → css-environments</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 5. TRANSLATION MAP -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-xlt">5 — Translation Map</span>
+    <div>
+      <div class="section-title">client/xltmap/*.xlt</div>
+      <div class="section-sub">Mapping between CSS internal codes and external system codes</div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step s-github">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">GitHub</div>
+        <div class="step-action">PR opened / push</div>
+        <div class="step-detail">Developer changes SOMXLT.xlt file<br>Maps CSS internal code → external system code (billing, CRM etc.)</div>
+        <div class="tags"><span class="tag t-github">trigger</span></div>
+      </div>
+    </div>
+    <div class="step s-compile">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Compile Server — azuse-cssdapp01</div>
+        <div class="step-action">Classification → XLT_MAP</div>
+        <div class="step-detail">classify_modules.py → type: XLT_MAP<br>Each .xlt file = separate module<br>No MSBuild — package as artifact only</div>
+        <div class="tags"><span class="tag t-compile">artifact: SOMXLT.xlt</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Approval Gate + FCP Utility → KCOD</div>
+        <div class="step-detail">After approval:<br>FCP Utility reads .xlt file<br>Loads into KCOD (.mdb) — same as .dat mechanism<br>Exports to AIX transfer format</div>
+        <div class="tags"><span class="tag t-deploy">runner: self-hosted, windows, deploy</span></div>
+      </div>
+    </div>
+    <div class="step s-aix">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">AIX Server — USNY7-CSSADV01 (via SCP/SSH)</div>
+        <div class="step-action">Load into WCOD</div>
+        <div class="step-detail">SCP transfers export to AIX<br>AIX loads translation maps into WCOD<br>External integrations use updated mapping</div>
+        <div class="tags"><span class="tag t-aix">identical flow to .dat — different data type</span></div>
+      </div>
+    </div>
+    <div class="step s-deploy">
+      <div class="step-line"><div class="step-dot"></div><div class="step-connector"></div></div>
+      <div class="step-body">
+        <div class="step-server">Deployment Server — azuse-cssdapp02</div>
+        <div class="step-action">Update Environment Manifest</div>
+        <div class="step-detail">environment-manifest.json updated<br>Push audit log to css-environments repo</div>
+        <div class="tags"><span class="tag t-github">git commit → css-environments</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--github)"></div>GitHub</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--compile)"></div>Compile Server (azuse-cssdapp01)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--deploy)"></div>Deployment Server (azuse-cssdapp02)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--aix)"></div>AIX Server (USNY7-CSSADV01)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--ags)"></div>AGS Servers</div>
+</div>
+
+</body>
+</html>
