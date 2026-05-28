@@ -45,15 +45,25 @@ Get-Service -Name 'actions.runner.*' | Start-Service
 
 ---
 
-## ШАГ 2 — Создать токен (GitHub PAT)
+## ШАГ 2 — Получить токен для National Grid
 
-Нужен один токен от сервисного аккаунта или твоего личного (для теста).
+**Личный токен НЕ использовать** — нужен токен от сервисного аккаунта org.
 
-1. GitHub → аватар → Settings → Developer settings → Tokens (classic)
-2. Generate new token (classic)
-3. Note: `css-pipeline-token`
-4. Scope: поставить только **repo**
-5. Generate → скопировать токен (показывается один раз)
+### Спросить Alan или Pete Cordone (GitHub SME):
+> "We need a GitHub PAT with repo scope for cross-repo repository_dispatch
+> between css-demo and css-devops-demo.
+> Do we have a machine user / service account in nationalgrid-customer org for this?"
+
+### Что они должны сделать:
+1. Создать machine user типа `css-devops-bot` в nationalgrid-customer org
+   (или использовать существующий сервисный аккаунт)
+2. Дать этому аккаунту доступ к css-demo и css-devops-demo
+3. Сгенерировать PAT: Settings → Tokens (classic) → repo scope
+4. Передать тебе токен для добавления в секреты
+
+### Временно для первого теста:
+Можно использовать свой личный GitHub токен если у тебя есть доступ к обоим репо.
+Потом заменить на сервисный аккаунт.
 
 ---
 
