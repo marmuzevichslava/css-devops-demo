@@ -1,0 +1,50 @@
+# notify-pipeline.yml
+# Этот файл живёт в css-demo (source repo).
+# Задача: когда developer открывает PR в css-demo,
+# этот workflow посылает сигнал в css-devops-demo,
+# чтобы там запустился pr-validation pipeline.
+#
+# Ничего секретного не передаётся — только номер PR, SHA коммита и название ветки.
+# Запускается на ubuntu-latest (НЕ надо менять на self-hosted — это просто HTTP запрос).
+
+name: Notify Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  notify:
+    name: Notify css-devops-demo
+    runs-on: ubuntu-latest   # OK — HTTP POST, don't need self-hosted runner
+
+    steps:
+      - name: Send repository_dispatch to pipeline repo
+        uses: actions/github-script@v7
+        with:
+          # PIPELINE_REPO_TOKEN — секрет в css-demo репо.
+          # PAT токен с repo scope от сервисного аккаунта nationalgrid-customer.
+          github-token: ${{ secrets.PIPELINE_REPO_TOKEN }}
+          script: |
+            const prNumber   = context.payload.pull_request.number;
+            const headSha    = context.payload.pull_request.head.sha;
+            const baseSha    = context.payload.pull_request.base.sha;
+            const sourceRepo = context.repo.owner + '/' + context.repo.repo;
+            const ref        = context.payload.pull_request.head.ref;
+
+            console.log(`Notifying css-devops-demo: PR #${prNumber} opened in ${sourceRepo}`);
+            console.log(`  head: ${headSha}`);
+            console.log(`  base: ${baseSha}`);
+
+            await github.rest.repos.createDispatchEvent({
+              owner: context.repo.owner,
+              repo:  'css-devops-demo',
+              event_type: 'css-pr-opened',
+              client_payload: {
+                pr_number:   prNumber,
+                source_repo: sourceRepo,
+                sha:         headSha,
+                base_sha:    baseSha,
+                ref:         ref,
+              }
+            });

@@ -1,0 +1,238 @@
+name: Build Pipeline
+
+# Triggered after a PR is merged into main, or manually for testing
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      changed_files:
+        description: 'Space-separated list of changed files (for manual test runs)'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    name: Analyse + Compile + Manifest
+    runs-on: [self-hosted, windows, compile]
+
+    permissions:
+      contents: read
+
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Checkout source
+      # -----------------------------------------------------------------------
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history needed for git diff
+
+      # -----------------------------------------------------------------------
+      # 2. Determine changed files
+      #    - on push: diff between previous commit and HEAD
+      #    - on workflow_dispatch: use the manually provided list
+      # -----------------------------------------------------------------------
+      - name: Get changed files
+        id: changed
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ inputs.changed_files }}" -ne "") {
+            $files = "${{ inputs.changed_files }}" -split ' '
+          } else {
+            # Three-dot diff: all files changed in this push relative to previous commit
+            $files = git diff --name-only "${{ github.event.before }}...${{ github.sha }}" | Where-Object { $_ -ne "" }
+          }
+
+          # Write to a file so the next step can read it as a Python list
+          $files | ConvertTo-Json -Compress | Out-File -FilePath changed_files.json -Encoding utf8
+          Write-Host "Changed files: $($files -join ', ')"
+
+      # -----------------------------------------------------------------------
+      # 3. Extract ITT tickets from commit messages in this push
+      # -----------------------------------------------------------------------
+      - name: Extract ITT tickets
+        id: itt
+        shell: pwsh
+        run: |
+          # Collect all commit messages in this push range
+          $messages = git log --format="%B" "${{ github.event.before }}..${{ github.sha }}" 2>$null
+          if (-not $messages) { $messages = git log -1 --format="%B" }
+
+          # Find all ITT:[...] references (case-insensitive)
+          $tickets = [System.Collections.Generic.HashSet[int]]::new()
+          $matches = [regex]::Matches($messages, '(?i)ITT:\[(\d+(?:,\s*\d+)*)\]')
+          foreach ($m in $matches) {
+            foreach ($n in $m.Groups[1].Value -split ',') {
+              $tickets.Add([int]$n.Trim()) | Out-Null
+            }
+          }
+
+          $ticketList = ($tickets | Sort-Object) -join ' '
+          Write-Host "ITT tickets found: $ticketList"
+          echo "tickets=$ticketList" >> $env:GITHUB_OUTPUT
+
+      # -----------------------------------------------------------------------
+      # 4. Diff analysis — changed files → module IDs
+      # -----------------------------------------------------------------------
+      - name: Diff analysis
+        id: diff
+        shell: pwsh
+        run: |
+          $files = (Get-Content changed_files.json | ConvertFrom-Json) -join ' '
+          if (-not $files) { '[]' | Out-File classified_raw.json; exit 0 }
+          python scripts/diff_analysis.py --files $files.Split(' ') | Out-File classified_raw.json
+          Get-Content classified_raw.json
+
+      # -----------------------------------------------------------------------
+      # 5. Classify modules — module IDs → types (C_PROJECT / COBOL / etc.)
+      # -----------------------------------------------------------------------
+      - name: Classify modules
+        shell: cmd
+        run: |
+          python scripts\classify_modules.py --stdin --repo-root . ^
+            < classified_raw.json ^
+            > classified.json
+
+          type classified.json
+
+      # -----------------------------------------------------------------------
+      # 6. Resolve build sequence — topological sort → compilation waves
+      # -----------------------------------------------------------------------
+      - name: Resolve build sequence
+        shell: cmd
+        run: |
+          python scripts\resolve_build_sequence.py ^
+            --modules-json classified.json ^
+            --rules build-sequence-rules.json ^
+            > waves.json
+
+          type waves.json
+
+      # -----------------------------------------------------------------------
+      # 7a. Compile C projects — BUILD environment binary
+      #     Each wave is compiled in order; modules within a wave run sequentially
+      #     on a single runner (parallel execution requires a matrix job — future work).
+      #
+      #     TODO: confirm with Alan:
+      #       - exact MSBuild flags for BUILD vs SVT env-specific source
+      #       - FCP tooling path on azuse-cssdapp01
+      #       - output directory convention for artifacts
+      # -----------------------------------------------------------------------
+      - name: Compile C projects (BUILD binary)
+        shell: pwsh
+        run: |
+          $waves = (Get-Content waves.json | ConvertFrom-Json).waves
+          $classified = Get-Content classified.json | ConvertFrom-Json
+
+          foreach ($wave in $waves) {
+            Write-Host "--- Wave $($wave.wave) (BUILD) ---"
+            foreach ($moduleId in $wave.modules) {
+              $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
+              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE')) { continue }
+
+              Write-Host "Compiling $moduleId for BUILD..."
+
+              # TODO: replace with real MSBuild invocation once Alan confirms flags
+              # Example (placeholder — FCP_ROOT and solution path TBD):
+              #
+              # $vcxproj = Get-ChildItem -Path $moduleId -Filter "*.vcxproj" | Select-Object -First 1
+              # msbuild $vcxproj.FullName `
+              #   /p:Configuration=Release `
+              #   /p:Platform=Win32 `
+              #   /p:FCP_ROOT="C:\fcp" `
+              #   /p:ENV_TARGET=BUILD `
+              #   /p:OutDir="artifacts\BUILD\" `
+              #   /m
+
+              Write-Host "  [PLACEHOLDER] MSBuild BUILD: $moduleId"
+            }
+          }
+
+      # -----------------------------------------------------------------------
+      # 7b. Compile C projects — SVT environment binary
+      #     Same modules, different env-specific source/flags
+      # -----------------------------------------------------------------------
+      - name: Compile C projects (SVT binary)
+        shell: pwsh
+        run: |
+          $waves = (Get-Content waves.json | ConvertFrom-Json).waves
+          $classified = Get-Content classified.json | ConvertFrom-Json
+
+          foreach ($wave in $waves) {
+            Write-Host "--- Wave $($wave.wave) (SVT) ---"
+            foreach ($moduleId in $wave.modules) {
+              $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
+              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE')) { continue }
+
+              Write-Host "Compiling $moduleId for SVT..."
+
+              # TODO: replace with real MSBuild invocation once Alan confirms flags
+              # Example (placeholder — FCP_ROOT and solution path TBD):
+              #
+              # $vcxproj = Get-ChildItem -Path $moduleId -Filter "*.vcxproj" | Select-Object -First 1
+              # msbuild $vcxproj.FullName `
+              #   /p:Configuration=Release `
+              #   /p:Platform=Win32 `
+              #   /p:FCP_ROOT="C:\fcp" `
+              #   /p:ENV_TARGET=SVT `
+              #   /p:OutDir="artifacts\SVT\" `
+              #   /m
+
+              Write-Host "  [PLACEHOLDER] MSBuild SVT: $moduleId"
+            }
+          }
+
+      # -----------------------------------------------------------------------
+      # 8. Stage COBOL source for deploy-time compilation
+      #    (no AIX SSH here — that is handled by the deploy workflow)
+      # -----------------------------------------------------------------------
+      - name: Stage COBOL source
+        shell: pwsh
+        run: |
+          $classified = Get-Content classified.json | ConvertFrom-Json
+          $cobolModules = $classified | Where-Object { $_.type -eq 'COBOL' }
+
+          if ($cobolModules.Count -eq 0) {
+            Write-Host "No COBOL modules in this build — skipping."
+            exit 0
+          }
+
+          foreach ($mod in $cobolModules) {
+            $dest = "artifacts\COBOL\$($mod.module_id | Split-Path -Leaf)"
+            New-Item -ItemType Directory -Force -Path $dest | Out-Null
+            Copy-Item -Path "$($mod.module_id)\*" -Destination $dest -Recurse -Force
+            Write-Host "Staged COBOL source: $($mod.module_id) → $dest"
+          }
+
+      # -----------------------------------------------------------------------
+      # 9. Generate build manifest
+      # -----------------------------------------------------------------------
+      - name: Generate build manifest
+        shell: cmd
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python scripts\build_manifest.py ^
+            --classified-json classified.json ^
+            --changed-files $(python -c "import json; print(' '.join(json.load(open('changed_files.json'))))") ^
+            --itt-tickets ${{ steps.itt.outputs.tickets }} ^
+            --output build_manifest.json
+
+          type build_manifest.json
+
+      # -----------------------------------------------------------------------
+      # 10. Upload build manifest and compiled artifacts
+      #     These are picked up by the deploy workflow in the next step
+      # -----------------------------------------------------------------------
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.run_id }}
+          path: |
+            build_manifest.json
+            artifacts/
+          retention-days: 30

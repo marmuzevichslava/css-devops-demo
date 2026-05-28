@@ -1,0 +1,404 @@
+name: Deploy Pipeline
+
+# Always triggered manually — operator selects the target environment and build run.
+# An approval gate (GitHub Environment protection) pauses the pipeline before deploy.
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: 'Build run ID to deploy (e.g. GHA-12345678)'
+        required: true
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options: [BUILD, SVT, CTST, CSTG, PTST, STAG, PROD]
+      artifact_run_id:
+        description: 'GitHub Actions run_id that produced the build artifact'
+        required: true
+
+jobs:
+  # -------------------------------------------------------------------------
+  # JOB 1: Generate Impact Report + Glob Report
+  # Runs BEFORE the approval gate so the approver can review them.
+  # -------------------------------------------------------------------------
+  reports:
+    name: Generate Pre-Deployment Reports
+    runs-on: [self-hosted, windows, deploy]
+
+    outputs:
+      # Pass manifest data to the deploy job
+      manifest_path: ${{ steps.download.outputs.manifest_path }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Download the build manifest + compiled artifacts from the build run
+      - name: Download build artifacts
+        id: download
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ inputs.artifact_run_id }}
+          path: build_artifacts
+
+      - name: Show manifest
+        shell: cmd
+        run: type build_artifacts\build_manifest.json
+
+      # -----------------------------------------------------------------------
+      # Impact Report: what will change in this environment if we deploy
+      # -----------------------------------------------------------------------
+      - name: Generate Impact Report
+        shell: pwsh
+        run: |
+          $manifest   = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
+          $envManifestPath = "environment_manifests\${{ inputs.environment }}.json"
+
+          # Load the current environment manifest (empty if first deploy)
+          if (Test-Path $envManifestPath) {
+            $envManifest = Get-Content $envManifestPath | ConvertFrom-Json
+            $deployed = @{}
+            foreach ($m in $envManifest.deployed_modules) {
+              $deployed[$m.module_id] = $m
+            }
+          } else {
+            $deployed = @{}
+          }
+
+          $report = @{
+            report_type   = "IMPACT"
+            generated_at  = (Get-Date -Format "o")
+            deployment    = @{
+              build_run_id       = $manifest.build_run_id
+              target_environment = "${{ inputs.environment }}"
+              source_branch      = $manifest.source_branch
+              source_commit_sha  = $manifest.source_commit_sha
+            }
+            itt_tickets   = $manifest.itt_tickets
+            module_results = @()
+          }
+
+          # For each module being deployed: NEW or REPLACING
+          $seen = @{}
+          foreach ($mod in $manifest.compiled_modules) {
+            $id = $mod.module_id
+            if ($seen[$id]) { continue }   # skip duplicate BUILD/SVT entries for same module
+            $seen[$id] = $true
+
+            if ($deployed.ContainsKey($id)) {
+              $current = $deployed[$id]
+              $status  = "REPLACING"
+            } else {
+              $current = $null
+              $status  = "NEW"
+            }
+
+            $report.module_results += @{
+              module_id          = $id
+              type               = $mod.type
+              status             = $status
+              incoming_build_run = $manifest.build_run_id
+              incoming_itt       = $manifest.itt_tickets
+              current_build_run  = if ($current) { $current.build_run_id } else { $null }
+              current_itt        = if ($current) { $current.itt_tickets  } else { @() }
+            }
+          }
+
+          $report | ConvertTo-Json -Depth 10 | Out-File -FilePath impact_report.json -Encoding utf8
+          Write-Host "=== IMPACT REPORT ==="
+          Get-Content impact_report.json
+
+      # -----------------------------------------------------------------------
+      # Glob Report: detect ITT ticket collisions in the target environment
+      # -----------------------------------------------------------------------
+      - name: Generate Glob Report
+        shell: pwsh
+        run: |
+          $manifest        = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
+          $envManifestPath = "environment_manifests\${{ inputs.environment }}.json"
+          $environments    = @('BUILD','SVT','CTST','CSTG','PTST','STAG','PROD')
+          $targetIdx       = $environments.IndexOf("${{ inputs.environment }}")
+          $nextEnv         = if ($targetIdx -lt $environments.Count - 1) { $environments[$targetIdx + 1] } else { $null }
+
+          if (Test-Path $envManifestPath) {
+            $envManifest = Get-Content $envManifestPath | ConvertFrom-Json
+            $deployed = @{}
+            foreach ($m in $envManifest.deployed_modules) { $deployed[$m.module_id] = $m }
+          } else {
+            $deployed = @{}
+          }
+
+          $report = @{
+            report_type    = "GLOB"
+            generated_at   = (Get-Date -Format "o")
+            deployment     = @{
+              build_run_id       = $manifest.build_run_id
+              target_environment = "${{ inputs.environment }}"
+              next_environment   = $nextEnv
+            }
+            module_results = @()
+            summary        = @{ total = 0; glob_count = 0; clear_count = 0; glob_modules = @() }
+          }
+
+          $seen = @{}
+          foreach ($mod in $manifest.compiled_modules) {
+            $id = $mod.module_id
+            if ($seen[$id]) { continue }
+            $seen[$id] = $true
+            $report.summary.total++
+
+            $incomingITT = $manifest.itt_tickets
+
+            if (-not $deployed.ContainsKey($id)) {
+              # Module not yet in this environment — no collision possible
+              $status = "CLEAR"
+              $report.summary.clear_count++
+            } else {
+              $existing    = $deployed[$id]
+              $existingITT = $existing.itt_tickets
+
+              # Check if incoming and existing share any ITT ticket
+              $overlap = $incomingITT | Where-Object { $existingITT -contains $_ }
+
+              if ($overlap) {
+                $status = "CLEAR"   # same ITT ticket — not a glob
+                $report.summary.clear_count++
+              } else {
+                # Different ITT ticket — check if existing was already promoted to next env
+                $promotedToNext = $false
+                if ($nextEnv) {
+                  $nextManifestPath = "environment_manifests\$nextEnv.json"
+                  if (Test-Path $nextManifestPath) {
+                    $nextManifest = Get-Content $nextManifestPath | ConvertFrom-Json
+                    $nextDeployed = $nextManifest.deployed_modules | Where-Object { $_.module_id -eq $id }
+                    if ($nextDeployed -and $nextDeployed.build_run_id -eq $existing.build_run_id) {
+                      $promotedToNext = $true
+                    }
+                  }
+                }
+
+                if ($promotedToNext) {
+                  $status = "CLEAR"   # prior version already in next env — safe to overwrite
+                  $report.summary.clear_count++
+                } else {
+                  $status = "GLOB"    # ⚠ prior ITT not yet promoted — deploying will absorb it
+                  $report.summary.glob_count++
+                  $report.summary.glob_modules += $id
+                }
+              }
+            }
+
+            $report.module_results += @{
+              module_id        = $id
+              status           = $status
+              incoming_itt     = $incomingITT
+              existing_itt     = if ($deployed[$id]) { $deployed[$id].itt_tickets } else { @() }
+              existing_run     = if ($deployed[$id]) { $deployed[$id].build_run_id } else { $null }
+            }
+          }
+
+          $report | ConvertTo-Json -Depth 10 | Out-File -FilePath glob_report.json -Encoding utf8
+          Write-Host "=== GLOB REPORT ==="
+          Get-Content glob_report.json
+
+          if ($report.summary.glob_count -gt 0) {
+            Write-Host "⚠ WARNING: $($report.summary.glob_count) GLOB(s) detected. Approver must review before proceeding."
+          }
+
+      # Upload reports so the approver can download and review them
+      - name: Upload reports for approver review
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ inputs.build_run_id }}-${{ inputs.environment }}
+          path: |
+            impact_report.json
+            glob_report.json
+
+  # -------------------------------------------------------------------------
+  # JOB 2: Approval gate
+  # Pipeline pauses here. Approver downloads reports from job 1 and
+  # approves or rejects in GitHub Environments UI.
+  # -------------------------------------------------------------------------
+  approval:
+    name: Approval Gate — ${{ inputs.environment }}
+    needs: reports
+    runs-on: [self-hosted, windows, deploy]
+    environment: ${{ inputs.environment }}   # ← GitHub Environment protection rule pauses here
+
+    steps:
+      - name: Approved
+        shell: cmd
+        run: echo Deployment to ${{ inputs.environment }} approved. Proceeding.
+
+  # -------------------------------------------------------------------------
+  # JOB 3: Deploy artifacts
+  # Runs only after explicit approval in the GitHub Environments UI.
+  # -------------------------------------------------------------------------
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    needs: approval
+    runs-on: [self-hosted, windows, deploy]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ inputs.artifact_run_id }}
+          path: build_artifacts
+
+      # -----------------------------------------------------------------------
+      # Deploy C project binaries to the Windows network share
+      # Share structure: \\azuse-cssdapp02\cssapp\<ENV>\client\
+      # -----------------------------------------------------------------------
+      - name: Deploy C project binaries
+        shell: pwsh
+        run: |
+          $manifest = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
+          $env_name = "${{ inputs.environment }}"
+
+          # BUILD env gets its own binary; SVT+ all get the SVT binary
+          $binaryEnv = if ($env_name -eq "BUILD") { "BUILD" } else { "SVT" }
+
+          $shareBase = "\\azuse-cssdapp02\cssapp\$env_name\client"
+
+          $cModules = $manifest.compiled_modules | Where-Object {
+            $_.type -in @("C_PROJECT", "AGS_MODULE") -and $_.env_target -eq $binaryEnv
+          }
+
+          foreach ($mod in $cModules) {
+            $artifactPath = "build_artifacts\$($mod.artifact)"
+            $destPath     = "$shareBase\$($mod.module_id | Split-Path -Leaf)"
+
+            if (-not (Test-Path $artifactPath)) {
+              # TODO: replace placeholder check with real file once MSBuild is wired up
+              Write-Host "  [PLACEHOLDER] Would copy: $artifactPath → $destPath"
+              continue
+            }
+
+            New-Item -ItemType Directory -Force -Path $destPath | Out-Null
+            Copy-Item -Path $artifactPath -Destination $destPath -Force
+            Write-Host "  Deployed: $($mod.module_id) ($binaryEnv binary) → $destPath"
+          }
+
+      # -----------------------------------------------------------------------
+      # Deploy COBOL — compile on AIX via SSH (BUILD and SVT only)
+      # CTST–STAG: mainframe compile — placeholder, handled separately
+      # -----------------------------------------------------------------------
+      - name: Deploy COBOL (AIX compile via SSH)
+        shell: pwsh
+        run: |
+          $manifest = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
+          $env_name = "${{ inputs.environment }}"
+
+          $cobolModules = $manifest.compiled_modules | Where-Object { $_.type -eq "COBOL" }
+          if ($cobolModules.Count -eq 0) {
+            Write-Host "No COBOL modules — skipping."
+            exit 0
+          }
+
+          if ($env_name -in @("BUILD", "SVT")) {
+            foreach ($mod in $cobolModules) {
+              $src = "build_artifacts\$($mod.artifact)"
+              Write-Host "COBOL SSH deploy: $($mod.module_id) → AIX ($env_name area)"
+
+              # TODO: wire up real SSH commands once AIX area paths are confirmed with Alan
+              # Example:
+              # scp $src fcp@10.187.68.22:/css/environments/$env_name/$($mod.module_id)/
+              # ssh fcp@10.187.68.22 "cd /css/environments/$env_name && cob $($mod.module_id)"
+              Write-Host "  [PLACEHOLDER] SSH + AIX COBOL compile: $($mod.module_id)"
+            }
+          } else {
+            Write-Host "[PLACEHOLDER] Mainframe IBM COBOL compile for $env_name — not yet implemented"
+          }
+
+      # -----------------------------------------------------------------------
+      # Update environment manifest JSON
+      # Records which build run and ITT tickets are now deployed per module
+      # -----------------------------------------------------------------------
+      - name: Update environment manifest
+        shell: pwsh
+        run: |
+          $manifest    = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
+          $env_name    = "${{ inputs.environment }}"
+          $manifestDir = "environment_manifests"
+          $envPath     = "$manifestDir\$env_name.json"
+
+          New-Item -ItemType Directory -Force -Path $manifestDir | Out-Null
+
+          if (Test-Path $envPath) {
+            $envManifest = Get-Content $envPath | ConvertFrom-Json
+          } else {
+            $envManifest = @{
+              environment        = $env_name
+              last_updated       = ""
+              deployed_modules   = @()
+              deployment_history = @()
+            }
+          }
+
+          # Update or add each deployed module
+          $now = Get-Date -Format "o"
+          $seen = @{}
+          foreach ($mod in $manifest.compiled_modules) {
+            $id = $mod.module_id
+            if ($seen[$id]) { continue }
+            $seen[$id] = $true
+
+            $existing = $envManifest.deployed_modules | Where-Object { $_.module_id -eq $id }
+            $newEntry = @{
+              module_id     = $id
+              type          = $mod.type
+              build_run_id  = $manifest.build_run_id
+              deployed_at   = $now
+              artifact      = $mod.artifact
+              source_files  = $mod.source_files
+              itt_tickets   = $manifest.itt_tickets
+            }
+
+            if ($existing) {
+              # Replace existing entry
+              $envManifest.deployed_modules = @(
+                $envManifest.deployed_modules | Where-Object { $_.module_id -ne $id }
+              ) + $newEntry
+            } else {
+              $envManifest.deployed_modules += $newEntry
+            }
+          }
+
+          # Append deployment event to audit history
+          $envManifest.deployment_history += @{
+            event        = "deploy"
+            build_run_id = $manifest.build_run_id
+            modules      = @($seen.Keys)
+            itt_tickets  = $manifest.itt_tickets
+            timestamp    = $now
+            approved_by  = "${{ github.actor }}"
+          }
+
+          $envManifest.last_updated = $now
+          $envManifest | ConvertTo-Json -Depth 10 | Out-File -FilePath $envPath -Encoding utf8
+          Write-Host "Environment manifest updated: $envPath"
+
+      # -----------------------------------------------------------------------
+      # Commit environment manifest update back to the repo
+      # -----------------------------------------------------------------------
+      - name: Commit environment manifest
+        shell: pwsh
+        run: |
+          $env_name = "${{ inputs.environment }}"
+          git config user.name  "github-actions"
+          git config user.email "github-actions@github.com"
+          git add "environment_manifests\$env_name.json"
+          git diff --cached --quiet && exit 0   # nothing changed
+          git commit -m "deploy: ${{ inputs.build_run_id }} → $env_name | approved by ${{ github.actor }}"
+          git push
+
+      - name: Deployment complete
+        shell: cmd
+        run: |
+          echo ✓ Deployed ${{ inputs.build_run_id }} to ${{ inputs.environment }}
+          echo   Approved by: ${{ github.actor }}
