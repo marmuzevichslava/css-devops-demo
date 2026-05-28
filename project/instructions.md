@@ -609,12 +609,63 @@ ls /css/c1/
 
 ---
 
-## 22. IMMEDIATE NEXT STEPS (приоритет)
+## 22. ЧТО СДЕЛАНО (май 2026)
 
-1. **Merge `feature/add-workflows` → main** в css-devops-demo ← уже запушено, создать PR
-2. **Запустить OpenSSH на cssdapp01** — служба Stopped, Alan сказал "feel free to start": `Start-Service sshd`
-3. **SSH ключ для runner** — `ssh-keygen -t ed25519 -C "github-actions-css-pipeline"` → отдать Suryasish для `authorized_keys` на AIX
-4. **Объяснить Suryasish** как помочь: AIX side KSH скрипты (COBOL compile validation, WCOD sync)
-5. **Suryasish + Jamil** — открыть firewall cssdapp02 → AIX port 22
-6. **Переписать `loadkcod.bat`** в PowerShell (файл уже есть в репо как `loadkcod.bat.txt`, пути: `E:\Apps\FND32\bin`)
-7. **Полный тест PR validation** — создать PR с `ITT:[9999]` в commit message → должен PASS
+### Личный GitHub (`marmuzevichslava`)
+- ✅ Создано два приватных репо: `css-demo` и `css-devops-demo`
+- ✅ `css-demo` — source структура (client, host, db, aix) + `notify-pipeline.yml`
+- ✅ `css-devops-demo` — все workflows + Python scripts + `build-sequence-rules.json`
+- ✅ Секреты добавлены: `PIPELINE_REPO_TOKEN` в css-demo, `CSS_REPO_TOKEN` в css-devops-demo
+- ✅ PR validation pipeline протестирован — **ITT check PASS + Diff analysis PASS**
+- ✅ Артефакты сохраняются (classified.json, waves.json, build_manifest.json)
+- ✅ Папка `national-grid-ready/` — готовые файлы для копирования на National Grid
+
+### Скрипты (все написаны и протестированы)
+- ✅ `scripts/itt_check.py` — проверяет ITT:[число] в последнем squash commit
+- ✅ `scripts/diff_analysis.py` — changed files → module IDs
+- ✅ `scripts/classify_modules.py` — module ID → тип (C_PROJECT, COBOL, AGS, etc.)
+- ✅ `scripts/resolve_build_sequence.py` — топологическая сортировка → waves
+- ✅ `scripts/build_manifest.py` — генерирует build_manifest.json
+- ✅ `build-sequence-rules.json` — правила порядка компиляции с комментариями
+
+### Workflows (все написаны)
+- ✅ `pr-validation.yml` — ITT check + diff analysis (для NG: self-hosted runners)
+- ✅ `build.yml` — compile pipeline + manifest
+- ✅ `deploy.yml` — approval gate + deploy
+- ✅ `test-pr-validation.yml` — копия для личного GitHub (ubuntu-latest)
+- ✅ `notify-pipeline.yml` — cross-repo trigger (в css-demo, ubuntu-latest везде)
+
+---
+
+## 23. IMMEDIATE NEXT STEPS — ДЕПЛОЙ НА NATIONAL GRID
+
+Папка `national-grid-ready/` содержит всё готовое. Инструкция: `national-grid-ready/README-INSTRUCTIONS.md`
+
+**Кратко:**
+
+**1. Создать PAT токен** (у тебя admin права)
+- github.com → Settings → Tokens (classic) → repo scope
+
+**2. css-demo репо** (`nationalgrid-customer/css-demo`)
+- Добавить файл: `.github/workflows/notify-pipeline.yml`
+- Добавить секрет: `PIPELINE_REPO_TOKEN` = токен
+
+**3. css-devops-demo репо** (`nationalgrid-customer/css-devops-demo`)
+- Добавить папку `.github/workflows/` (3 файла: pr-validation, build, deploy)
+- Добавить папку `scripts/` (5 Python файлов)
+- Добавить `build-sequence-rules.json`
+- Добавить секрет: `CSS_REPO_TOKEN` = тот же токен
+
+**4. Проверить runners онлайн**
+```bash
+gh api repos/nationalgrid-customer/css-devops-demo/actions/runners \
+  --jq '.runners[] | {name, status}'
+```
+
+**5. Тест** — открыть PR в css-demo с `ITT:[число]` в commit → смотреть Actions в css-devops-demo
+
+**После деплоя на NG — следующие задачи:**
+- SSH ключ для runner → Suryasish добавляет на AIX
+- Firewall cssdapp02 → AIX port 22 (Suryasish + Jamil)
+- OpenSSH на cssdapp01: `Start-Service sshd`
+- Переписать `loadkcod.bat` в PowerShell (`E:\Apps\FND32\bin`)
