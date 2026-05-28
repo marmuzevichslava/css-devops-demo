@@ -148,3 +148,56 @@ css-devops-demo репо
 - Если потерял токен — удали старый, создай новый, обнови секрет в репо
 - Не храни токены в коде, .env файлах или документах — только в GitHub Secrets
 - `CSS_REPO_TOKEN` лучше ставить с expiration и обновлять раз в 90 дней
+
+
+для чего  надо сервис акантб ьенеджед айдетнити и виндоус юзер                                                                                                                                                   
+  и еще сколько надо токенов для кросс работы т к у нас бедт  же и компаил сервер и деплой                                                                                                                         
+  
+⏺ Зачем нужны разные типы аккаунтов
+
+  Тип                    Для чего
+  ─────────────────────────────────────────────────────
+  GitHub PAT             Cross-repo triggers, читать/писать GitHub repos
+  AD Service Account     Запускает runner agent на Windows сервере (azuse-cssdapp01/02)
+  SSH key                Подключение runner → AIX сервер
+  Managed Identity       Runner → Azure Key Vault, Azure Files (без пароля)
+
+  Каждый решает свою задачу — они не заменяют друг друга.
+
+  ---
+  Сколько токенов нужно для полного pipeline
+
+  Secret name          Где лежит          Для чего
+  ─────────────────────────────────────────────────────────────────
+  PIPELINE_REPO_TOKEN  css-demo           notify → css-devops-demo dispatch
+  CSS_REPO_TOKEN       css-devops-demo    pr-validation читает коммиты из css-demo
+  GITHUB_TOKEN         автоматический     push в css-environments repo (audit log)
+  AIX_SSH_KEY          css-devops-demo    compile server → AIX (COBOL validation при PR)
+  AIX_KNOWN_HOSTS      css-devops-demo    fingerprint AIX сервера
+  DEPLOY_AIX_SSH_KEY   css-devops-demo    deploy server → AIX (деплой COBOL)
+  AGS_SSH_KEY          css-devops-demo    deploy server → AGS серверы
+
+  Итого: 6 секретов (GITHUB_TOKEN бесплатный, его не создаёшь).
+
+  ---
+  Что уже есть / что ещё нужно
+
+  Секрет               Статус
+  ─────────────────────────────────────────────────
+  PIPELINE_REPO_TOKEN  ✅ есть (твой ghp_ токен)
+  CSS_REPO_TOKEN       ✅ есть (тот же ghp_ токен)
+  GITHUB_TOKEN         ✅ автоматически от GitHub
+  AIX_SSH_KEY          ❌ нужно создать (ждём Suryasish)
+  AIX_KNOWN_HOSTS      ❌ нужно (после SSH ключа)
+  DEPLOY_AIX_SSH_KEY   ❌ нужно (может быть тот же ключ что AIX_SSH_KEY)
+  AGS_SSH_KEY          ❌ нужно (после решения fcpadmin проблемы)
+
+  Сейчас для тестирования (без AIX) — хватает того что есть.
+  Для полного pipeline на National Grid — нужны 3 SSH ключа от Suryasish.
+
+  ---
+  Managed Identity — когда понадобится
+  
+  Сейчас не нужна. Понадобится когда будешь деплоить на Azure Files (Network Share) без пароля — это Alan упоминал что в октябре 2026 меняют подход к секретам. Spencer Osheyack отвечает за это со стороны Azure.
+
+✻ Worked for 25s

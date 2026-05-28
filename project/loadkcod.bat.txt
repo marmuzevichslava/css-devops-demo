@@ -1,0 +1,296 @@
+@ECHO OFF
+REM Script to load translation maps and codes tables into an FCP kcod file during a release pipeline.  
+REM By default, RELEASE_ENVIRONMENTNAME is used to determine which environment's kcod file is to be updated.
+REM Param 1: Optional command to change default behavior.
+REM     LOCAL - Command to simply load whichever kcod file is in the FCP Client data path.
+REM     FCP-Build - command to load the kcod in the FCP Build instance path.
+REM ...
+REM Execution relies on these env variables from the pipeline:
+REM  RELEASE_ENVIRONMENTNAME, RELEASE_PRIMARYARTIFACTSOURCEALIAS, SYSTEM_ARTIFACTSDIRECTORY, BUILD_BUILDNUMBER, RELEASE_DEPLOYMENT_STARTTIME
+
+setlocal 
+set _SCRIPT_RC=0
+
+:: If FNDROOT ends in \ then truncate it
+if "%FNDROOT:~-1%" equ "\" set FNDROOT=%FNDROOT:~0,-1%
+
+if not defined _LOAD_PGM   set _LOAD_PGM=%FNDROOT%\bin\mapload.exe
+if not defined _DAT_IMPORT_PGM   set _DAT_IMPORT_PGM=%FNDROOT%\bin\ktcdtupd.exe
+if not defined _ZIP_PGM     set _ZIP_PGM=C:\Program Files\7-Zip\7z.exe
+if not exist "%_ZIP_PGM%"   set _ZIP_PGM=D:\Software\7-Zip\7z.exe
+if not exist "%_ZIP_PGM%"   set _ZIP_PGM=\\MEC\Network\Groups\ITCustSys-dm\C1_Proj\TOOLS\7-Zip\7z.exe
+
+REM variables typically set by the agent. These defaults assist with testing.
+if not defined SYSTEM_ARTIFACTSDIRECTORY set SYSTEM_ARTIFACTSDIRECTORY=C:\data\work\a
+if not defined RELEASE_PRIMARYARTIFACTSOURCEALIAS set RELEASE_PRIMARYARTIFACTSOURCEALIAS=CSS
+if not defined RELEASE_ENVIRONMENTNAME  set RELEASE_ENVIRONMENTNAME=build
+if not defined CSS_ENV_BASEPATH         set CSS_ENV_BASEPATH=\\MEC\Network\Groups\ITCustSys-dm\C1_Proj\CSSEnv_tst
+if not defined CSS_SWITCHER_BASEPATH	set CSS_SWITCHER_BASEPATH=\\medes-tfscss1p\cssenv_tst
+if not defined BUILD_BUILDNUMBER        set BUILD_BUILDNUMBER=99991231.1.9999
+if not defined RELEASE_DEPLOYMENT_STARTTIME  set RELEASE_DEPLOYMENT_STARTTIME=9999-12-31 00:00:00Z
+
+REM variables for work
+set _CSS_DROP_DIR=%SYSTEM_ARTIFACTSDIRECTORY%\%RELEASE_PRIMARYARTIFACTSOURCEALIAS%\drop
+set _CSS_MAPLOAD_LIST=%_CSS_DROP_DIR%\xltfiles.txt
+set _CSS_MAPLOAD_CFG=%_CSS_DROP_DIR%\mapload.cfg
+set _CSS_MAPLOAD_RC=%_CSS_DROP_DIR%\maploadrc.txt
+
+set _CSS_DAT_LIST=%_CSS_DROP_DIR%\datfiles.txt
+set _CSS_DAT_RC=%FNDROOT%\data\CDTUPDAT.LOG
+
+set _CSS_BACKUP_FILENAME=KCODF010_%BUILD_BUILDNUMBER%.MDB.zip
+
+set _CSS_LOCAL_KCOD=%FNDROOT%\data\KCODF010.MDB
+set _CSS_LOCAL_BACKUP_KCOD=%FNDROOT%\data\backup\%_CSS_BACKUP_FILENAME%
+
+set _CSS_REMOTE_DIR=%CSS_ENV_BASEPATH%\%RELEASE_ENVIRONMENTNAME%\client\runtime\codestbl
+set _CSS_REMOTE_KCOD=%_CSS_REMOTE_DIR%\KCODF010.MDB
+set _CSS_REMOTE_BACKUP_KCOD=%_CSS_REMOTE_DIR%\backup\%_CSS_BACKUP_FILENAME%
+
+set _CSS_KCOD_LOCKFILE=%FNDROOT%\data\kcodlocked.txt
+set _CREATED_LOCK=N
+
+set _LOCAL_ONLY=N
+set _FCP_BUILD=N
+set _UPDATE_SWITCHER=Y
+set _MAKE_TEMP_FOR_BACKUP=N
+if /i "%1" equ "local" (
+    set _LOCAL_ONLY=Y
+    set _UPDATE_SWITCHER=N
+    )
+if /i "%1" equ "fcp-build"  (
+    set _FCP_BUILD=Y
+    set _UPDATE_SWITCHER=N
+    set _MAKE_TEMP_FOR_BACKUP=Y
+    )
+
+call :DoWork
+
+:cleanup
+    call :dropLock
+
+    echo [%date% %time%] %0 result: %_SCRIPT_RC%
+    exit /b %_SCRIPT_RC%
+goto :eof
+
+:nowork
+    echo %0: There is nothing to do.
+goto :cleanup
+
+:getLock
+    if "%_CREATED_LOCK%" equ "Y" goto :eof
+
+    echo Attempt [%1] to acquire kcod lock...
+    if exist "%_CSS_KCOD_LOCKFILE%" timeout /t 5
+    if exist "%_CSS_KCOD_LOCKFILE%" set _SCRIPT_RC=8&goto :eof
+
+    echo lock > "%_CSS_KCOD_LOCKFILE%"
+    set _CREATED_LOCK=Y
+    set _SCRIPT_RC=0
+goto :eof
+
+:dropLock
+    if "%_CREATED_LOCK%" neq "Y" goto :eof
+
+    echo Deleting kcod lock...
+    if exist "%_CSS_KCOD_LOCKFILE%" del /f "%_CSS_KCOD_LOCKFILE%"
+goto :eof
+
+:DoWork
+    echo [%date% %time%] Kcod processing for %RELEASE_ENVIRONMENTNAME% environment...
+
+    echo cd "%_CSS_DROP_DIR%"
+    cd "%_CSS_DROP_DIR%"
+
+    REM If destination env is PROD, perform custom steps
+    if /i "%RELEASE_ENVIRONMENTNAME%" equ "prod" goto :doProd
+
+    REM Only one kcod load can run at a time so acquire lock
+    FOR /L %%i IN (1,1,15) DO call :getLock %%i
+    if "%_SCRIPT_RC%" neq "0" goto :HandleError
+
+    if "%_FCP_BUILD%" equ "Y" call :configFcpBuild
+
+    call :downloadKcod
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    dir "%_CSS_LOCAL_KCOD%"
+
+    REM Load any xlt map files
+    if exist "%_CSS_MAPLOAD_LIST%"  call :loadXlt
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    REM Load any dat files
+    if exist "%_CSS_DAT_LIST%"  for /f %%i in (%_CSS_DAT_LIST%) do call :loadDat "%_CSS_DROP_DIR%\source\%%i"
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    call :uploadKcod
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    if /i "%_LOCAL_ONLY%" equ "Y"  call :createBackup "%_CSS_LOCAL_BACKUP_KCOD%"
+    if /i "%_LOCAL_ONLY%" equ "N"  call :createBackup "%_CSS_REMOTE_BACKUP_KCOD%"
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    call :updateSwitcherPackage
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+goto :eof
+
+:updateSwitcherPackage
+    if /i "%_UPDATE_SWITCHER%" neq "Y"   goto :eof
+
+    REM Update switcher packaged version
+    set _KCOD_PKG_FILENAME=KCODF010_pkg.MDB.zip
+	set _PKG_CLIENT_PATH=%CSS_SWITCHER_BASEPATH%\%RELEASE_ENVIRONMENTNAME%\client\runtime\codestbl
+
+    if not exist "%_PKG_CLIENT_PATH%" md "%_PKG_CLIENT_PATH%"
+
+    echo Copy kcod backup for switcher package [%_PKG_CLIENT_PATH%\%_KCOD_PKG_FILENAME%]...
+    copy /Y "%_CSS_REMOTE_BACKUP_KCOD%" "%_PKG_CLIENT_PATH%\%_KCOD_PKG_FILENAME%"
+    set _CMD_RC=%errorlevel%
+    if "%_CMD_RC%" neq "0" set _SCRIPT_RC=10&goto :HandleError
+goto :eof
+
+:doProd
+    set _LOCAL_ONLY=N
+
+    REM copy kcod file from stage to prod
+    set _CSS_LOCAL_KCOD=%CSS_ENV_BASEPATH%\stag\client\runtime\codestbl\KCODF010.MDB
+    call :uploadKcod
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    REM Sample: RELEASE_DEPLOYMENT_STARTTIME=2021-12-09 21:02:24Z
+    set _CSS_REMOTE_BACKUP_KCOD=%_CSS_REMOTE_DIR%\backup\KCODF010_%RELEASE_DEPLOYMENT_STARTTIME:~0,10%.MDB.zip
+
+    REM Backup new kcod file in Prod
+    call :createBackup "%_CSS_REMOTE_BACKUP_KCOD%"
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+    call :updateSwitcherPackage
+    if "%_SCRIPT_RC%" neq "0" goto :eof
+
+goto :eof
+
+:configFcpBuild
+    set _CSS_REMOTE_DIR=\\medes-cssgtw2d\BUILD\data
+    set _CSS_REMOTE_KCOD=%_CSS_REMOTE_DIR%\KCODF010.MDB
+    set _CSS_REMOTE_BACKUP_KCOD=%_CSS_REMOTE_DIR%\backup\%_CSS_BACKUP_FILENAME%
+goto :eof
+
+:downloadKcod
+    REM Nothing to download for local only which just updates whatever local kcod is already in the client data directory.
+    if "%_LOCAL_ONLY%" equ "Y"  goto :eof
+
+    echo Downloading kcod from %_CSS_REMOTE_KCOD%...
+    copy /Y "%_CSS_REMOTE_KCOD%" "%_CSS_LOCAL_KCOD%"
+    set _CMD_RC=%errorlevel%
+    if "%_CMD_RC%" neq "0" set _SCRIPT_RC=3&goto :HandleError
+goto :eof
+
+:uploadKcod
+    REM Nothing to do for local only since it updates whatever local kcod is already in the client data directory.
+    if "%_LOCAL_ONLY%" equ "Y"  goto :eof
+
+    echo Uploading new kcod to %_CSS_REMOTE_KCOD%
+    copy /Y "%_CSS_LOCAL_KCOD%" "%_CSS_REMOTE_KCOD%"
+    set _CMD_RC=%errorlevel%
+    if "%_CMD_RC%" neq "0" set _SCRIPT_RC=7&goto :HandleError
+
+    dir "%_CSS_REMOTE_KCOD%"
+goto :eof
+
+:createBackup
+    set _CSS_BACKUP_FILE=%~1
+    set _CSS_BACKUP_DIR=%~dp1
+    set _CSS_TEMP_KCOD=%_CSS_REMOTE_KCOD%
+
+    echo.
+    echo creating backup [%_CSS_BACKUP_FILE%]...
+    if not exist "%_CSS_BACKUP_DIR%"  md "%_CSS_BACKUP_DIR%"
+
+    if /i "%_MAKE_TEMP_FOR_BACKUP%" equ "N" goto :zipKcod
+    :: make a copy to avoid in-use issues
+    set _CSS_TEMP_KCOD=%~dp1\KCODF010.MDB
+    copy /Y "%_CSS_REMOTE_KCOD%" "%_CSS_TEMP_KCOD%"
+    set _CMD_RC=%errorlevel%
+    if "%_CMD_RC%" neq "0" set _SCRIPT_RC=6&goto :HandleError
+
+:zipKcod
+    "%_ZIP_PGM%" a -y "%_CSS_BACKUP_FILE%" "%_CSS_TEMP_KCOD%"
+    set _CMD_RC=%errorlevel%
+    if "%_CMD_RC%" neq "0" set _SCRIPT_RC=6&goto :HandleError
+goto :eof
+
+:loadXlt
+    echo Creating mapload config file...
+    call :createConfig
+    if not exist %_CSS_MAPLOAD_CFG% set _SCRIPT_RC=4&goto :HandleError
+
+    echo running mapload...
+    if exist "%_CSS_MAPLOAD_RC%" del /f "%_CSS_MAPLOAD_RC%"
+    echo %_LOAD_PGM% ### %_CSS_MAPLOAD_CFG%
+    %_LOAD_PGM% ### %_CSS_MAPLOAD_CFG%
+    set _CMD_RC=%errorlevel%
+    type "%_CSS_MAPLOAD_RC%"
+    if "%_CMD_RC%" neq "0" set _SCRIPT_RC=5&goto :HandleError
+
+    findstr /i "/c:(0 errors)" "%_CSS_MAPLOAD_RC%"
+    if "%errorlevel%" neq "0" set _SCRIPT_RC=5&goto :HandleError
+goto :eof
+
+:createConfig
+    echo Translation maps to load...
+    type "%_CSS_MAPLOAD_LIST%"
+    echo.
+
+    echo # Temporary mapload configuration file > %_CSS_MAPLOAD_CFG%
+    echo [Options]>> %_CSS_MAPLOAD_CFG%
+    echo Enabled=Yes>> %_CSS_MAPLOAD_CFG%
+    echo CoreLoad=No>> %_CSS_MAPLOAD_CFG%
+    echo ErrorMessageBox=No>> %_CSS_MAPLOAD_CFG%
+    echo LogFile=%_CSS_MAPLOAD_RC%>> %_CSS_MAPLOAD_CFG%
+    echo [Files]>> %_CSS_MAPLOAD_CFG%
+
+    for /f %%i in (%_CSS_MAPLOAD_LIST%) do echo %_CSS_DROP_DIR%\source\%%i>> %_CSS_MAPLOAD_CFG%
+goto :eof
+
+:loadDat
+    set _CSS_DAT_FILE=%1
+    set _CSS_DAT_FILENAME=%~nx1
+    set _CSS_DAT_DIR=%~dp1
+
+    echo Loading dat file: %_CSS_DAT_FILE%...
+    if not exist "%_CSS_DAT_FILE%" set _SCRIPT_RC=2&goto :HandleError
+
+    if exist %_CSS_DAT_RC% del /f %_CSS_DAT_RC%
+
+    echo "%_DAT_IMPORT_PGM%" ### /F%_CSS_DAT_FILENAME% /P%_CSS_DAT_DIR%
+    "%_DAT_IMPORT_PGM%" ### /F%_CSS_DAT_FILENAME% /P%_CSS_DAT_DIR%
+    set _CMD_RC=%errorlevel%
+    type "%_CSS_DAT_RC%"
+
+    findstr /i "/c:Codes Table import completed successfully" "%_CSS_DAT_RC%"
+    if "%errorlevel%" neq "0" set _SCRIPT_RC=9&goto :HandleError
+goto :eof
+
+
+:ParmError
+    set _SCRIPT_RC=99
+
+    echo Error: Parameter Missing or Incorrect
+    echo .
+    echo Syntax: %0 
+    echo Example: %0 
+goto :cleanup
+
+:HandleError
+    if "%_SCRIPT_RC%" equ "2" echo Error: File not found!
+    if "%_SCRIPT_RC%" equ "3" echo Error: Unable to download kcod file! [%_CMD_RC%]
+    if "%_SCRIPT_RC%" equ "4" echo Error: Unable to create mapload config file!
+    if "%_SCRIPT_RC%" equ "5" echo Error: Mapload error!
+    if "%_SCRIPT_RC%" equ "6" echo Error: Unable to create backup kcod file! [%_CMD_RC%]
+    if "%_SCRIPT_RC%" equ "7" echo Error: Unable to upload kcod file! [%_CMD_RC%]
+    if "%_SCRIPT_RC%" equ "8" echo Error: Unable to get lock on kcod file!
+    if "%_SCRIPT_RC%" equ "9" echo Error: Codestable load error!
+    if "%_SCRIPT_RC%" equ "10" echo Error: Unable make copy for switcher! [%_CMD_RC%]
+goto :eof
+
