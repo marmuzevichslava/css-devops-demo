@@ -1,0 +1,19 @@
+name: PR Validation
+
+# NATIONAL GRID VERSION (nationalgrid-customer)
+# Minimal caller — all logic lives in css-devops-demo (reusable workflow).
+# This file never changes → css-demo git history stays clean.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  call-pipeline:
+    uses: nationalgrid-customer/css-devops-demo/.github/workflows/pr-validation-reusable.yml@main
+    with:
+      pr_number:   ${{ github.event.pull_request.number }}
+      source_repo: ${{ github.repository }}
+      head_sha:    ${{ github.event.pull_request.head.sha }}
+      base_sha:    ${{ github.event.pull_request.base.sha }}
+    secrets:
+      CSS_REPO_TOKEN: ${{ secrets.CSS_REPO_TOKEN }}

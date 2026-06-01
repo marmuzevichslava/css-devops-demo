@@ -1,0 +1,99 @@
+name: PR Validation (Reusable)
+
+# NATIONAL GRID VERSION — self-hosted Windows runners
+# Called by css-demo via pr-validation-caller.yml
+# All pipeline logic lives here — css-demo history stays clean.
+on:
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+      source_repo:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+      base_sha:
+        required: true
+        type: string
+    secrets:
+      CSS_REPO_TOKEN:
+        required: true
+
+jobs:
+  itt-check:
+    name: ITT Reference Check
+    runs-on: [self-hosted, windows, compile]   # NG: azuse-cssdapp01
+
+    steps:
+      - name: Checkout pipeline repo (scripts)
+        uses: actions/checkout@v4
+
+      - name: Validate ITT reference in last PR commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.CSS_REPO_TOKEN }}
+          GITHUB_REPOSITORY: ${{ inputs.source_repo }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: python scripts\itt_check.py
+
+  diff-analysis:
+    name: Diff Analysis + Classify + Build Sequence
+    needs: itt-check
+    runs-on: [self-hosted, windows, compile]   # NG: azuse-cssdapp01
+
+    steps:
+      - name: Checkout pipeline repo
+        uses: actions/checkout@v4
+        with:
+          path: pipeline
+
+      - name: Checkout CSS source repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.source_repo }}
+          ref: ${{ inputs.head_sha }}
+          token: ${{ secrets.CSS_REPO_TOKEN }}
+          path: css-source
+          fetch-depth: 0
+
+      - name: Get changed files
+        shell: bash
+        run: |
+          cd css-source
+          git diff --name-only "${{ inputs.base_sha }}...${{ inputs.head_sha }}" | tee ../changed_files.txt
+          echo "--- $(wc -l < ../changed_files.txt | tr -d ' ') files changed ---"
+
+      - name: Diff analysis
+        shell: bash
+        run: |
+          FILES=$(cat changed_files.txt | tr '\n' ' ')
+          if [ -z "$FILES" ]; then
+            echo "[]" > modules.json
+          else
+            cd css-source
+            python ../pipeline/scripts/diff_analysis.py --files $FILES > ../modules.json
+          fi
+          cat modules.json
+
+      - name: Classify modules
+        shell: bash
+        run: |
+          python pipeline/scripts/classify_modules.py --stdin < modules.json | tee classified.json
+
+      - name: Resolve build sequence
+        shell: bash
+        run: |
+          python pipeline/scripts/resolve_build_sequence.py \
+            --modules-json classified.json \
+            --rules pipeline/build-sequence-rules.json | tee waves.json
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-analysis-${{ github.run_id }}
+          path: |
+            modules.json
+            classified.json
+            waves.json

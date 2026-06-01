@@ -669,3 +669,71 @@ gh api repos/nationalgrid-customer/css-devops-demo/actions/runners \
 - Firewall cssdapp02 → AIX port 22 (Suryasish + Jamil)
 - OpenSSH на cssdapp01: `Start-Service sshd`
 - Переписать `loadkcod.bat` в PowerShell (`E:\Apps\FND32\bin`)
+
+---
+
+## 24. ОБНОВЛЕНИЕ — 1-2 июня 2026
+
+### Python на compile server
+- PR Validation работает на NG серверах ✅
+- Blocker: Python не установлен на azuse-cssdapp01
+- Alan ответил: открыть SNOW тикет к Wintel team
+- Alan рекомендует: **Python 3.14** (поддержка до 2030-10)
+- Наши скрипты совместимы с 3.14 ✅ (используем только stdlib)
+- SNOW тикет открыт на azuse-cssdapp01 (cssdapp02 не нужен — там только PowerShell)
+
+### Статус задач
+| Задача | Статус |
+|---|---|
+| PR Validation на NG | ✅ работает (blocker: Python) |
+| Python на cssdapp01 | 🔄 SNOW тикет открыт к Wintel |
+| SSH ключ → AIX | ❌ ждём Suryasish |
+| Firewall cssdapp02 → AIX | ❌ ждём Suryasish + Jamil |
+| css-demo на NG — только `notify-pipeline.yml` | ⬜ не начато |
+| css-devops-demo на NG — workflows + scripts | ⬜ не начато |
+
+### Новое из митинга 01.06.2026
+
+**Python:**
+- Alan скачал Python 3.14 MSI installer на сервер → `E:\devops\software\`
+- Ramesh поднял риск: Software Center имеет 3.12 — если IT заставит использовать его, будет конфликт
+- Ramesh взял на себя: спросить James/Wintel какая версия разрешена
+- Пока ждём ответа — не устанавливать
+
+**Ветки (ВАЖНО — Alan удаляет analyze-sync):**
+- `analyze-sync` ветка будет удалена Alan'ом — она была только для PVCS анализа
+- `pvcs-sync` — ветка куда Alan постоянно синхронизирует из PVCS (не трогать)
+- **`build`** — главная рабочая ветка (аналог main для разработчиков)
+- Alan создаст `build` ветку в css-demo и css-devops-demo
+
+**Developer workflow в новом мире:**
+```
+Создать ITT тикет
+    ↓
+git checkout -b ITT-12345 (от build ветки)
+    ↓
+Разработка на workstation
+    ↓
+PR: ITT-12345 → build
+    ↓
+Pipeline срабатывает автоматически
+```
+
+**Структура css-devops-demo (Alan объяснил):**
+- `client/` в devops repo = developer tools/utilities для Windows (не CSS application code)
+- `fcp/` = конфиги FCP Design tool
+- `aix/` = AIX developer scripts
+- Это intentional — всё для DevOps инструментов
+
+**Вопрос Alan про workflow в css-demo:**
+Хочет чтобы workflow YAML не был виден в git history css-demo.
+Решение — Reusable Workflow (Вариант A):
+- В css-devops-demo: `pr-validation-reusable.yml` с триггером `workflow_call`
+- В css-demo: один маленький caller файл (5 строк)
+- Логика pipeline меняется только в devops repo → history css-demo чистый
+
+**Завтра (02.06.2026) — Alan хочет увидеть:**
+Демо: как выглядит PR flow для разработчика:
+1. Разработчик создаёт PR в css-demo
+2. Как workflow появляется под PR (checks tab)
+3. Что видит разработчик — pass/fail, детали
