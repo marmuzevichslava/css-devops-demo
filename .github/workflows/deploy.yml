@@ -242,6 +242,9 @@ jobs:
     needs: approval
     runs-on: windows-latest   # TODO NG: [self-hosted, windows, deploy]
 
+    permissions:
+      contents: write   # needed to push environment manifest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
