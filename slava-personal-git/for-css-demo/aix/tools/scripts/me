@@ -1,7 +1,0 @@
-###################################################################
-# ScriptName:  me
-# Purpose   :  returns all the processes owned by the current user
-###################################################################
-
-ps -ef|grep `who am i|cut -f 1 -d " "`
-

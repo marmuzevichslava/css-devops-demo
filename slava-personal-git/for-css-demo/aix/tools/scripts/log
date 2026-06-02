@@ -1,6 +1,0 @@
-for lines in "$@" ; do
-	dir=$FNDBASE/$FNDINST/log
-	print "       $FNDINST Session Transcript - Last $lines Lines"
-        sleep 2 
-        tail -n$lines $dir/STLOG.TXT|pg 
-done

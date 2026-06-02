@@ -1,8 +1,0 @@
-C:\data\archunit\os2\bin\OBJ\AZRP02.obj   +
-C:\data\archunit\os2\bin\OBJ\AZRP002X.obj +
-C:\data\archunit\os2\bin\OBJ\AZRP003X.obj +
-C:\data\archunit\os2\bin\OBJ\AZRP001X.obj
-C:\data\archunit\os2\bin\EXE\AZRP02.EXE
-NUL
-/NOD LLIBCRT+CRTEXE+os2+KZFPSAPI+KZFNTEND+KZFNDCOD+KZFNDAPI+KZMSGAPI+KZDDEAPI+C1CFUNC+ARCHDISP
-C:\data\archunit\os2\src\azrp02\AZRP02.DEF

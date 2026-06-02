@@ -1,6 +1,0 @@
-% JHERSTEI 07/01/96 : New Directory structure  %
-% Removed FND_USER_RESOURCE_PATH\ before ~windowIconFile %
-% ~windowIconID. ~imageType. FND_USER_RESOURCE_PATH\~windowIconFile. %
-
-~windowIconID. ~imageType. ~windowIconFile.
-

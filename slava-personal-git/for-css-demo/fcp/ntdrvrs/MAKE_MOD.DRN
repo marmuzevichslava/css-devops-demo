@@ -1,8 +1,0 @@
-%-----------------------------------------------------------------------%
-%  MAKE_MOD - Initialization/termination program makefile statements    %
-%-----------------------------------------------------------------------%
-% JSH: 07/01/96 REMOVED /I~UserIncludePath %
-
-# Make C function ~ModuleName
-~UserObjPath.~ModuleName..obj : ~InitTermDependencies
-    $(CC) $(CFLAGS) /I~UserSourcePath /Fo~UserObjPath.~ModuleName..obj ~ModuleFilename.

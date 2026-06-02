@@ -4,6 +4,12 @@ name: PR Validation (Reusable)
 # All pipeline logic lives here in css-devops-demo.
 # css-demo only has a minimal 5-line caller — so its git history stays clean.
 on:
+  workflow_dispatch:   # adds "Run workflow" button in css-devops-demo Actions
+    inputs:
+      test_files:
+        description: 'Test files (e.g. client/dialog/azcd01/foo.c)'
+        required: false
+        default: 'client/dialog/azcd01/foo.c'
   workflow_call:
     inputs:
       pr_number:
