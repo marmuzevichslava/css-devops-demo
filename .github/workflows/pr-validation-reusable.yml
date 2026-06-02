@@ -34,6 +34,9 @@ jobs:
     steps:
       - name: Checkout pipeline repo (scripts)
         uses: actions/checkout@v4
+        with:
+          repository: marmuzevichslava/css-devops-demo
+          token: ${{ secrets.CSS_REPO_TOKEN }}
 
       - name: Validate ITT reference in last PR commit
         env:
