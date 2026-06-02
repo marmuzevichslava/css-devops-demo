@@ -1,6 +1,6 @@
 name: PR Validation (Reusable)
 
-# NATIONAL GRID VERSION — self-hosted Windows runners
+# NATIONAL GRID VERSION — self-hosted Windows runners (azuse-cssdapp01)
 # Called by css-demo via pr-validation-caller.yml
 # All pipeline logic lives here — css-demo history stays clean.
 on:
@@ -25,11 +25,14 @@ on:
 jobs:
   itt-check:
     name: ITT Reference Check
-    runs-on: [self-hosted, windows, compile]   # NG: azuse-cssdapp01
+    runs-on: [self-hosted, windows, compile]   # azuse-cssdapp01
 
     steps:
       - name: Checkout pipeline repo (scripts)
         uses: actions/checkout@v4
+        with:
+          repository: nationalgrid-customer/css-devops-demo
+          token: ${{ secrets.CSS_REPO_TOKEN }}
 
       - name: Validate ITT reference in last PR commit
         env:
@@ -41,12 +44,14 @@ jobs:
   diff-analysis:
     name: Diff Analysis + Classify + Build Sequence
     needs: itt-check
-    runs-on: [self-hosted, windows, compile]   # NG: azuse-cssdapp01
+    runs-on: [self-hosted, windows, compile]   # azuse-cssdapp01
 
     steps:
       - name: Checkout pipeline repo
         uses: actions/checkout@v4
         with:
+          repository: nationalgrid-customer/css-devops-demo
+          token: ${{ secrets.CSS_REPO_TOKEN }}
           path: pipeline
 
       - name: Checkout CSS source repo
@@ -64,6 +69,7 @@ jobs:
           cd css-source
           git diff --name-only "${{ inputs.base_sha }}...${{ inputs.head_sha }}" | tee ../changed_files.txt
           echo "--- $(wc -l < ../changed_files.txt | tr -d ' ') files changed ---"
+          cat ../changed_files.txt || echo "(none)"
 
       - name: Diff analysis
         shell: bash
@@ -73,21 +79,23 @@ jobs:
             echo "[]" > modules.json
           else
             cd css-source
-            python ../pipeline/scripts/diff_analysis.py --files $FILES > ../modules.json
+            python "$GITHUB_WORKSPACE/pipeline/scripts/diff_analysis.py" --files $FILES > "$GITHUB_WORKSPACE/modules.json"
           fi
-          cat modules.json
+          cat "$GITHUB_WORKSPACE/modules.json"
 
       - name: Classify modules
         shell: bash
         run: |
-          python pipeline/scripts/classify_modules.py --stdin < modules.json | tee classified.json
+          python "$GITHUB_WORKSPACE/pipeline/scripts/classify_modules.py" --stdin \
+            < "$GITHUB_WORKSPACE/modules.json" | tee "$GITHUB_WORKSPACE/classified.json"
 
       - name: Resolve build sequence
         shell: bash
         run: |
-          python pipeline/scripts/resolve_build_sequence.py \
-            --modules-json classified.json \
-            --rules pipeline/build-sequence-rules.json | tee waves.json
+          python "$GITHUB_WORKSPACE/pipeline/scripts/resolve_build_sequence.py" \
+            --modules-json "$GITHUB_WORKSPACE/classified.json" \
+            --rules "$GITHUB_WORKSPACE/pipeline/build-sequence-rules.json" \
+            | tee "$GITHUB_WORKSPACE/waves.json"
 
       - name: Upload results
         uses: actions/upload-artifact@v4

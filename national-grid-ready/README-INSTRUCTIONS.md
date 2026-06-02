@@ -1,113 +1,129 @@
-# National Grid — Инструкция по деплою pipeline
-## Удали эту папку после выполнения всех шагов
+# National Grid — Pipeline Deployment Instructions
+## DELETE THIS FOLDER after completing all steps
 
 ---
 
-## Структура папки
+## What you're deploying
+
+Two files go into TWO repos. That's it.
 
 ```
-national-grid-ready/
-├── README-INSTRUCTIONS.md       ← эта инструкция (удалить после)
-├── for-css-demo/                ← файлы для репо css-demo
-│   └── .github/workflows/
-│       └── notify-pipeline.yml  ← добавить в css-demo
-└── for-css-devops-demo/         ← файлы для репо css-devops-demo
-    ├── .github/workflows/
-    │   ├── pr-validation.yml
-    │   ├── build.yml
-    │   └── deploy.yml
-    ├── scripts/
-    │   ├── itt_check.py
-    │   ├── diff_analysis.py
-    │   ├── classify_modules.py
-    │   ├── resolve_build_sequence.py
-    │   └── build_manifest.py
-    └── build-sequence-rules.json
+css-demo repo         ← one tiny caller file (5 lines of logic)
+css-devops-demo repo  ← all pipeline logic (scripts + workflows)
 ```
+
+When a developer opens a PR in css-demo:
+- caller triggers → reusable workflow in css-devops-demo runs
+- ITT check + diff analysis results appear in the PR Checks tab
+- Developer sees ✅ or ❌ directly in their PR
 
 ---
 
-## ШАГ 1 — Проверить что runners зарегистрированы
+## STEP 1 — Verify runners are online
 
-Зайди в GitHub:
 ```
 github.com/nationalgrid-customer/css-devops-demo
   → Settings → Actions → Runners
 ```
-Должны быть два runner'а со статусом **Idle**:
-- `azuse-cssdapp01` с labels: `self-hosted, windows, compile`
-- `azuse-cssdapp02` с labels: `self-hosted, windows, deploy`
 
-Если Offline — зайди на сервер через CyberArk и запусти:
+Must see TWO runners with status **Idle**:
+- `azuse-cssdapp01` — labels: `self-hosted, windows, compile`
+- `azuse-cssdapp02` — labels: `self-hosted, windows, deploy`
+
+If **Offline** → RDP into server via CyberArk → run:
 ```powershell
 Get-Service -Name 'actions.runner.*' | Start-Service
 ```
 
 ---
 
-## ШАГ 2 — Создать токен (у тебя есть admin права)
+## STEP 2 — Verify Python is installed on azuse-cssdapp01
 
-У тебя admin права в nationalgrid-customer org — генеришь токен от своего аккаунта.
+RDP into azuse-cssdapp01 via CyberArk → PowerShell:
+```powershell
+python --version
+```
+Must show Python 3.14 (or 3.12 minimum).
 
-1. Зайди на github.com под своим NG аккаунтом
-2. Аватар → **Settings** → **Developer settings** → **Personal access tokens** → **Tokens (classic)**
-3. **Generate new token (classic)**
-4. Note: `css-pipeline-token`
-5. Expiration: 90 days
-6. Scope: поставить только **`repo`** (верхний чекбокс)
-7. **Generate token** → скопировать (показывается один раз)
-
-> Потом когда pipeline будет стабилен — можно создать machine user
-> `css-devops-bot` и переключить токен на него. Но для старта твой токен ок.
+If not installed → Python installer is at `E:\devops\software\` (Alan downloaded it).
+Install with:
+```powershell
+E:\devops\software\python-3.14-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
+```
+Then restart runner:
+```powershell
+Restart-Service -Name 'actions.runner.*'
+```
 
 ---
 
-## ШАГ 3 — Добавить секреты в оба репо
+## STEP 3 — Create GitHub PAT token
 
-**В css-demo:**
+You have admin rights → generate from your own NG GitHub account.
+
+1. github.com → your avatar → **Settings**
+2. **Developer settings** → **Personal access tokens** → **Tokens (classic)**
+3. **Generate new token (classic)**
+4. Note: `css-pipeline-token`
+5. Expiration: 90 days
+6. Scope: tick only **`repo`**
+7. **Generate token** → COPY IMMEDIATELY (shown once only)
+
+---
+
+## STEP 4 — Add secrets to BOTH repos
+
+**In css-demo:**
 ```
 github.com/nationalgrid-customer/css-demo
   → Settings → Secrets and variables → Actions → New repository secret
 
-Name:  PIPELINE_REPO_TOKEN
-Value: <токен из шага 2>
+Name:  CSS_REPO_TOKEN
+Value: <token from step 3>
 ```
 
-**В css-devops-demo:**
+**In css-devops-demo:**
 ```
 github.com/nationalgrid-customer/css-devops-demo
   → Settings → Secrets and variables → Actions → New repository secret
 
 Name:  CSS_REPO_TOKEN
-Value: <тот же токен из шага 2>
+Value: <same token>
 ```
+
+Both repos → same token → same name `CSS_REPO_TOKEN`.
 
 ---
 
-## ШАГ 4 — Добавить файлы в css-demo
+## STEP 5 — Add files to css-demo
 
-Скопировать файл:
+Add ONE file to `nationalgrid-customer/css-demo`:
+
 ```
-from: national-grid-ready/for-css-demo/.github/workflows/notify-pipeline.yml
-to:   css-demo репо → .github/workflows/notify-pipeline.yml
+.github/workflows/pr-validation-caller.yml
 ```
 
-Сделать это через GitHub UI:
-1. Открыть `github.com/nationalgrid-customer/css-demo`
-2. Создать файл `.github/workflows/notify-pipeline.yml`
-3. Вставить содержимое из `for-css-demo/.github/workflows/notify-pipeline.yml`
-4. Commit в main
+File is in: `national-grid-ready/for-css-demo/.github/workflows/pr-validation-caller.yml`
+
+Do via GitHub UI:
+1. Open `github.com/nationalgrid-customer/css-demo`
+2. Click **Add file** → **Create new file**
+3. Name: `.github/workflows/pr-validation-caller.yml`
+4. Paste content from the file above
+5. Commit to main
 
 ---
 
-## ШАГ 5 — Добавить файлы в css-devops-demo
+## STEP 6 — Add files to css-devops-demo
 
-Создать ветку `feature/add-pipeline` в css-devops-demo и добавить:
+Create branch `feature/add-pipeline` in css-devops-demo and add:
 
 ```
-.github/workflows/pr-validation.yml   ← из for-css-devops-demo/
-.github/workflows/build.yml
-.github/workflows/deploy.yml
+from national-grid-ready/for-css-devops-demo/
+
+.github/workflows/pr-validation-reusable.yml   ← REQUIRED (reusable workflow)
+.github/workflows/build.yml                    ← build pipeline
+.github/workflows/deploy.yml                   ← deploy pipeline
 scripts/itt_check.py
 scripts/diff_analysis.py
 scripts/classify_modules.py
@@ -116,49 +132,64 @@ scripts/build_manifest.py
 build-sequence-rules.json
 ```
 
-Создать PR `feature/add-pipeline` → `main` с commit message: `feat: add pipeline ITT:[<твой ITT номер>]`
+Commit message: `feat: add pipeline workflows and scripts ITT:[your-ITT-number]`
+
+Create PR → merge to main.
 
 ---
 
-## ШАГ 6 — Первый тест
+## STEP 7 — Test it
 
-1. Открыть `github.com/nationalgrid-customer/css-demo`
-2. Создать новую ветку `test/pipeline-check`
-3. Изменить любой файл (например в `host/batch/`)
-4. Commit message: `test pipeline ITT:[<ITT номер>]`
-5. Открыть PR `test/pipeline-check` → `main`
+1. Open `github.com/nationalgrid-customer/css-demo`
+2. Create new branch `ITT-[number]` from `build` branch
+3. Change any file in `client/dialog/` or `host/batch/`
+4. Commit message MUST contain `ITT:[number]` — example: `fix: update dialog ITT:[12345]`
+5. Open PR: `ITT-[number]` → `build`
 
-Проверить результат:
+Check result:
 ```
-github.com/nationalgrid-customer/css-devops-demo → Actions
+github.com/nationalgrid-customer/css-demo → PR → Checks tab
 ```
-Должен появиться `PR Validation` run.
+Must see:
+```
+✅ PR Validation / call-pipeline / ITT Reference Check
+✅ PR Validation / call-pipeline / Diff Analysis + Classify + Build Sequence
+```
 
 ---
 
-## ШАГ 7 — Если не работает
+## STEP 8 — If something fails
 
-**PR Validation не запускается:**
-- Проверить что `PIPELINE_REPO_TOKEN` добавлен в css-demo
-- Проверить что `notify-pipeline.yml` есть в css-demo `.github/workflows/`
-- Проверить Actions tab в css-demo — был ли запущен notify job
+**"pwsh: command not found"**
+→ build.yml uses `shell: powershell` (already fixed) — not an issue
 
-**ITT check падает:**
-- Убедиться что в commit message есть `ITT:[число]` (например `ITT:[12345]`)
-- Это должно быть в последнем коммите (squash commit)
+**"python: can't open file"**
+→ Python not installed or not in PATH
+→ Check `python --version` on azuse-cssdapp01
 
-**Runner offline:**
-- Зайти на azuse-cssdapp01 через CyberArk
-- Запустить: `Get-Service -Name 'actions.runner.*' | Start-Service`
+**ITT check fails**
+→ Commit message missing `ITT:[number]`
+→ Must be in the LAST commit of the PR
 
-**SSH к AIX не работает (для COBOL validation):**
-- Это блокер только для COBOL файлов
-- C++ файлы (client/) будут работать без AIX
-- Ждать SSH ключ от Suryasish
+**Workflow doesn't trigger**
+→ Check css-demo has `pr-validation-caller.yml` in `.github/workflows/`
+→ Check `CSS_REPO_TOKEN` secret exists in css-demo
+
+**Runner offline**
+→ `Get-Service -Name 'actions.runner.*' | Start-Service` on azuse-cssdapp01
 
 ---
 
-## ПОСЛЕ ВЫПОЛНЕНИЯ
+## What to tell Alan tomorrow
 
-Удалить папку `national-grid-ready/` — она больше не нужна.
-Все файлы уже в репозиториях.
+> "PR Validation is working end-to-end on personal GitHub using reusable workflow pattern.
+> css-demo has a 5-line caller — no pipeline logic in css-demo history.
+> All pipeline code lives in css-devops-demo.
+> Ready to deploy to National Grid. Need:
+> 1. Python installed on azuse-cssdapp01 (SNOW ticket submitted)
+> 2. CSS_REPO_TOKEN secret added to both repos
+> Then I can demo the full PR flow: developer opens PR → checks appear automatically."
+
+---
+
+## DELETE THIS FOLDER when done
