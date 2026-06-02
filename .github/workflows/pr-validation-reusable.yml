@@ -81,21 +81,23 @@ jobs:
             echo "[]" > modules.json
           else
             cd css-source
-            python ../pipeline/scripts/diff_analysis.py --files $FILES > ../modules.json
+            python $GITHUB_WORKSPACE/pipeline/scripts/diff_analysis.py --files $FILES > $GITHUB_WORKSPACE/modules.json
           fi
-          cat modules.json
+          cat $GITHUB_WORKSPACE/modules.json
 
       - name: Classify modules
         shell: bash
         run: |
-          python pipeline/scripts/classify_modules.py --stdin < modules.json | tee classified.json
+          python $GITHUB_WORKSPACE/pipeline/scripts/classify_modules.py --stdin \
+            < $GITHUB_WORKSPACE/modules.json | tee $GITHUB_WORKSPACE/classified.json
 
       - name: Resolve build sequence
         shell: bash
         run: |
-          python pipeline/scripts/resolve_build_sequence.py \
-            --modules-json classified.json \
-            --rules pipeline/build-sequence-rules.json | tee waves.json
+          python $GITHUB_WORKSPACE/pipeline/scripts/resolve_build_sequence.py \
+            --modules-json $GITHUB_WORKSPACE/classified.json \
+            --rules $GITHUB_WORKSPACE/pipeline/build-sequence-rules.json \
+            | tee $GITHUB_WORKSPACE/waves.json
 
       - name: Upload results
         uses: actions/upload-artifact@v4
