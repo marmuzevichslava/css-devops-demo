@@ -44,11 +44,28 @@ jobs:
           repository: marmuzevichslava/css-devops-demo
           token: ${{ secrets.CSS_REPO_TOKEN }}
 
+      - name: Resolve PR number (manual run = latest open PR)
+        id: resolve_pr
+        if: github.event_name == 'workflow_dispatch'
+        shell: pwsh
+        run: |
+          $prs = Invoke-RestMethod `
+            -Uri "https://api.github.com/repos/marmuzevichslava/css-demo/pulls?state=open&sort=updated&direction=desc&per_page=1" `
+            -Headers @{ Authorization = "Bearer ${{ secrets.CSS_REPO_TOKEN }}"; Accept = "application/vnd.github+json" }
+          if ($prs.Count -eq 0) {
+            Write-Host "No open PRs — skipping ITT check"
+            echo "pr_number=" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "Latest open PR: #$($prs[0].number)"
+            echo "pr_number=$($prs[0].number)" >> $env:GITHUB_OUTPUT
+          }
+
       - name: Validate ITT reference in last PR commit
+        if: inputs.pr_number != '' || steps.resolve_pr.outputs.pr_number != ''
         env:
           GITHUB_TOKEN: ${{ secrets.CSS_REPO_TOKEN }}
-          GITHUB_REPOSITORY: ${{ inputs.source_repo }}
-          PR_NUMBER: ${{ inputs.pr_number }}
+          GITHUB_REPOSITORY: ${{ inputs.source_repo || 'marmuzevichslava/css-demo' }}
+          PR_NUMBER: ${{ inputs.pr_number || steps.resolve_pr.outputs.pr_number }}
         run: python scripts/itt_check.py
 
   diff-analysis:
