@@ -64,7 +64,7 @@ jobs:
         if: inputs.pr_number != '' || steps.resolve_pr.outputs.pr_number != ''
         env:
           GITHUB_TOKEN: ${{ secrets.CSS_REPO_TOKEN }}
-          GITHUB_REPOSITORY: ${{ inputs.source_repo || 'marmuzevichslava/css-demo' }}
+          SOURCE_REPO: ${{ inputs.source_repo || 'marmuzevichslava/css-demo' }}
           PR_NUMBER: ${{ inputs.pr_number || steps.resolve_pr.outputs.pr_number }}
         run: python scripts/itt_check.py
 

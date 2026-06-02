@@ -72,10 +72,10 @@ def extract_itt_numbers(message: str) -> list[int]:
 def main():
     # Read env vars injected by GitHub Actions
     token = os.environ.get('GITHUB_TOKEN')
-    repo = os.environ.get('GITHUB_REPOSITORY')
+    repo = os.environ.get('SOURCE_REPO') or os.environ.get('GITHUB_REPOSITORY')
     pr_number = os.environ.get('PR_NUMBER')
 
-    missing = [v for v, k in [('GITHUB_TOKEN', token), ('GITHUB_REPOSITORY', repo), ('PR_NUMBER', pr_number)] if not k]
+    missing = [v for v, k in [('GITHUB_TOKEN', token), ('SOURCE_REPO', repo), ('PR_NUMBER', pr_number)] if not k]
     if missing:
         print(f'ERROR: missing environment variables: {", ".join(missing)}', file=sys.stderr)
         sys.exit(1)
