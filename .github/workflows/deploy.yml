@@ -24,9 +24,7 @@ jobs:
   # -------------------------------------------------------------------------
   reports:
     name: Generate Pre-Deployment Reports
-    # PERSONAL GITHUB: ubuntu-latest
-    # TODO NG: # TODO NG: runs-on: [self-hosted, windows, deploy]\n    runs-on: ubuntu-latest
-    runs-on: ubuntu-latest
+    runs-on: windows-latest   # TODO NG: [self-hosted, windows, deploy]
 
     outputs:
       # Pass manifest data to the deploy job
@@ -225,7 +223,7 @@ jobs:
   approval:
     name: Approval Gate — ${{ inputs.environment }}
     needs: reports
-    # TODO NG: runs-on: [self-hosted, windows, deploy]\n    runs-on: ubuntu-latest
+    runs-on: windows-latest   # TODO NG: [self-hosted, windows, deploy]
     environment: ${{ inputs.environment }}   # ← GitHub Environment protection rule pauses here
 
     steps:
@@ -240,7 +238,7 @@ jobs:
   deploy:
     name: Deploy to ${{ inputs.environment }}
     needs: approval
-    # TODO NG: runs-on: [self-hosted, windows, deploy]\n    runs-on: ubuntu-latest
+    runs-on: windows-latest   # TODO NG: [self-hosted, windows, deploy]
 
     steps:
       - name: Checkout
