@@ -55,6 +55,8 @@ jobs:
       - name: Checkout pipeline repo
         uses: actions/checkout@v4
         with:
+          repository: marmuzevichslava/css-devops-demo
+          token: ${{ secrets.CSS_REPO_TOKEN }}
           path: pipeline
 
       - name: Checkout CSS source repo
