@@ -75,37 +75,42 @@ jobs:
           fetch-depth: 0
 
       - name: Get changed files
-        shell: bash
+        shell: pwsh
         run: |
-          cd css-source
-          git diff --name-only "${{ inputs.base_sha }}...${{ inputs.head_sha }}" | tee ../changed_files.txt
-          echo "--- $(wc -l < ../changed_files.txt | tr -d ' ') files changed ---"
+          $files = git -C css-source diff --name-only "${{ inputs.base_sha }}...${{ inputs.head_sha }}"
+          $files | Out-File -FilePath changed_files.txt -Encoding utf8
+          Write-Host "--- $($files.Count) files changed ---"
+          Get-Content changed_files.txt
 
       - name: Diff analysis
-        shell: bash
+        shell: pwsh
         run: |
-          FILES=$(cat changed_files.txt | tr '\n' ' ')
-          if [ -z "$FILES" ]; then
-            echo "[]" > modules.json
-          else
-            cd css-source
-            python $GITHUB_WORKSPACE/pipeline/scripts/diff_analysis.py --files $FILES > $GITHUB_WORKSPACE/modules.json
-          fi
-          cat $GITHUB_WORKSPACE/modules.json
+          $files = (Get-Content changed_files.txt | Where-Object { $_ -ne "" }) -join ' '
+          if (-not $files) {
+            '[]' | Out-File "$env:GITHUB_WORKSPACE/modules.json"
+          } else {
+            Push-Location css-source
+            python "$env:GITHUB_WORKSPACE/pipeline/scripts/diff_analysis.py" --files $files.Split(' ') | Out-File "$env:GITHUB_WORKSPACE/modules.json"
+            Pop-Location
+          }
+          Get-Content "$env:GITHUB_WORKSPACE/modules.json"
 
       - name: Classify modules
-        shell: bash
+        shell: pwsh
         run: |
-          python $GITHUB_WORKSPACE/pipeline/scripts/classify_modules.py --stdin \
-            < $GITHUB_WORKSPACE/modules.json | tee $GITHUB_WORKSPACE/classified.json
+          Get-Content "$env:GITHUB_WORKSPACE/modules.json" | `
+            python "$env:GITHUB_WORKSPACE/pipeline/scripts/classify_modules.py" --stdin | `
+            Out-File "$env:GITHUB_WORKSPACE/classified.json"
+          Get-Content "$env:GITHUB_WORKSPACE/classified.json"
 
       - name: Resolve build sequence
-        shell: bash
+        shell: pwsh
         run: |
-          python $GITHUB_WORKSPACE/pipeline/scripts/resolve_build_sequence.py \
-            --modules-json $GITHUB_WORKSPACE/classified.json \
-            --rules $GITHUB_WORKSPACE/pipeline/build-sequence-rules.json \
-            | tee $GITHUB_WORKSPACE/waves.json
+          python "$env:GITHUB_WORKSPACE/pipeline/scripts/resolve_build_sequence.py" `
+            --modules-json "$env:GITHUB_WORKSPACE/classified.json" `
+            --rules "$env:GITHUB_WORKSPACE/pipeline/build-sequence-rules.json" `
+            | Out-File "$env:GITHUB_WORKSPACE/waves.json"
+          Get-Content "$env:GITHUB_WORKSPACE/waves.json"
 
       - name: Upload results
         uses: actions/upload-artifact@v4
