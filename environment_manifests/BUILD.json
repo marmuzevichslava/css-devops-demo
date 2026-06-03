@@ -1,69 +1,88 @@
-{
-  "last_updated": "2026-06-02T22:19:41.9534647+00:00",
-  "environment": "BUILD",
-  "deployment_history": [
-    {
-      "event": "deploy",
-      "itt_tickets": [
-        9999
-      ],
-      "modules": [
-        "client\\dialog\\azcd01",
-        "host\\batch\\SOMCOB01",
-        "db\\codestable\\STATBL"
-      ],
-      "timestamp": "2026-06-02T02:57:12.7063448+00:00",
-      "approved_by": "marmuzevichslava",
-      "build_run_id": "GHA-26795358476"
-    },
-    {
-      "approved_by": "marmuzevichslava",
-      "event": "deploy",
-      "modules": [
-        "host\\batch\\SOMCOB01",
-        "db\\codestable\\STATBL",
-        "client\\dialog\\azcd01"
-      ],
-      "build_run_id": "GHA-26851329342",
-      "itt_tickets": [
-        9999
-      ],
-      "timestamp": "2026-06-02T22:19:41.9534647+00:00"
-    }
-  ],
-  "deployed_modules": [
-    {
-      "build_run_id": "GHA-26851329342",
-      "deployed_at": "2026-06-02T22:19:41.9534647+00:00",
-      "artifact": "artifacts/BUILD/azcd01.dll",
-      "module_id": "client\\dialog\\azcd01",
-      "source_files": [],
-      "type": "C_PROJECT",
-      "itt_tickets": [
-        9999
-      ]
-    },
-    {
-      "build_run_id": "GHA-26851329342",
-      "deployed_at": "2026-06-02T22:19:41.9534647+00:00",
-      "artifact": "artifacts/COBOL/SOMCOB01.cbl",
-      "module_id": "host\\batch\\SOMCOB01",
-      "source_files": [],
-      "type": "COBOL",
-      "itt_tickets": [
-        9999
-      ]
-    },
-    {
-      "build_run_id": "GHA-26851329342",
-      "deployed_at": "2026-06-02T22:19:41.9534647+00:00",
-      "artifact": "artifacts/codestable/STATBL.dat",
-      "module_id": "db\\codestable\\STATBL",
-      "source_files": [],
-      "type": "CODES_TABLE",
-      "itt_tickets": [
-        9999
-      ]
-    }
-  ]
+﻿{
+    "last_updated":  "2026-06-03T00:33:01.8670107+00:00",
+    "environment":  "BUILD",
+    "deployment_history":  [
+                               {
+                                   "event":  "deploy",
+                                   "itt_tickets":  [
+                                                       9999
+                                                   ],
+                                   "modules":  [
+                                                   "client\\dialog\\azcd01",
+                                                   "host\\batch\\SOMCOB01",
+                                                   "db\\codestable\\STATBL"
+                                               ],
+                                   "timestamp":  "2026-06-02T02:57:12.7063448+00:00",
+                                   "approved_by":  "marmuzevichslava",
+                                   "build_run_id":  "GHA-26795358476"
+                               },
+                               {
+                                   "approved_by":  "marmuzevichslava",
+                                   "event":  "deploy",
+                                   "modules":  [
+                                                   "host\\batch\\SOMCOB01",
+                                                   "db\\codestable\\STATBL",
+                                                   "client\\dialog\\azcd01"
+                                               ],
+                                   "build_run_id":  "GHA-26851329342",
+                                   "itt_tickets":  [
+                                                       9999
+                                                   ],
+                                   "timestamp":  "2026-06-02T22:19:41.9534647+00:00"
+                               },
+                               {
+                                   "event":  "deploy",
+                                   "timestamp":  "2026-06-03T00:33:01.8670107+00:00",
+                                   "itt_tickets":  [
+                                                       9999
+                                                   ],
+                                   "approved_by":  "marmuzevichslava",
+                                   "modules":  [
+                                                   "host\\batch\\SOMCOB01",
+                                                   "client\\dialog\\azcd01"
+                                               ],
+                                   "build_run_id":  "GHA-26856195186"
+                               }
+                           ],
+    "deployed_modules":  [
+                             {
+                                 "build_run_id":  "GHA-26851329342",
+                                 "deployed_at":  "2026-06-02T22:19:41.9534647+00:00",
+                                 "artifact":  "artifacts/codestable/STATBL.dat",
+                                 "module_id":  "db\\codestable\\STATBL",
+                                 "source_files":  [
+
+                                                  ],
+                                 "type":  "CODES_TABLE",
+                                 "itt_tickets":  [
+                                                     9999
+                                                 ]
+                             },
+                             {
+                                 "deployed_at":  "2026-06-03T00:33:01.8670107+00:00",
+                                 "source_files":  [
+
+                                                  ],
+                                 "itt_tickets":  [
+                                                     9999
+                                                 ],
+                                 "type":  "C_PROJECT",
+                                 "module_id":  "client\\dialog\\azcd01",
+                                 "artifact":  "artifacts/BUILD/azcd01.dll",
+                                 "build_run_id":  "GHA-26856195186"
+                             },
+                             {
+                                 "deployed_at":  "2026-06-03T00:33:01.8670107+00:00",
+                                 "source_files":  [
+
+                                                  ],
+                                 "itt_tickets":  [
+                                                     9999
+                                                 ],
+                                 "type":  "COBOL",
+                                 "module_id":  "host\\batch\\SOMCOB01",
+                                 "artifact":  "artifacts/COBOL/SOMCOB01.cbl",
+                                 "build_run_id":  "GHA-26856195186"
+                             }
+                         ]
 }
