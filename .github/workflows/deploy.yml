@@ -400,7 +400,8 @@ jobs:
           git config user.name  "github-actions"
           git config user.email "github-actions@github.com"
           git add "environment_manifests\$env_name.json"
-          git diff --cached --quiet && exit 0   # nothing changed
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) { Write-Host "Nothing changed"; exit 0 }
           git commit -m "deploy: ${{ inputs.build_run_id }} -> $env_name | approved by ${{ github.actor }}"
           git push
 
