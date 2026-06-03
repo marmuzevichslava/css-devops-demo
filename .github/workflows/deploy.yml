@@ -1,6 +1,6 @@
 name: Deploy Pipeline
 
-# Always triggered manually — operator selects the target environment and build run.
+# Always triggered manually - operator selects the target environment and build run.
 # An approval gate (GitHub Environment protection) pauses the pipeline before deploy.
 on:
   workflow_dispatch:
@@ -153,7 +153,7 @@ jobs:
             $incomingITT = $manifest.itt_tickets
 
             if (-not $deployed.ContainsKey($id)) {
-              # Module not yet in this environment — no collision possible
+              # Module not yet in this environment - no collision possible
               $status = "CLEAR"
               $report.summary.clear_count++
             } else {
@@ -164,10 +164,10 @@ jobs:
               $overlap = $incomingITT | Where-Object { $existingITT -contains $_ }
 
               if ($overlap) {
-                $status = "CLEAR"   # same ITT ticket — not a glob
+                $status = "CLEAR"   # same ITT ticket - not a glob
                 $report.summary.clear_count++
               } else {
-                # Different ITT ticket — check if existing was already promoted to next env
+                # Different ITT ticket - check if existing was already promoted to next env
                 $promotedToNext = $false
                 if ($nextEnv) {
                   $nextManifestPath = "environment_manifests\$nextEnv.json"
@@ -181,10 +181,10 @@ jobs:
                 }
 
                 if ($promotedToNext) {
-                  $status = "CLEAR"   # prior version already in next env — safe to overwrite
+                  $status = "CLEAR"   # prior version already in next env - safe to overwrite
                   $report.summary.clear_count++
                 } else {
-                  $status = "GLOB"    # ⚠ prior ITT not yet promoted — deploying will absorb it
+                  $status = "GLOB"    # prior ITT not yet promoted - deploying will absorb it
                   $report.summary.glob_count++
                   $report.summary.glob_modules += $id
                 }
@@ -205,7 +205,7 @@ jobs:
           Get-Content glob_report.json
 
           if ($report.summary.glob_count -gt 0) {
-            Write-Host "⚠ WARNING: $($report.summary.glob_count) GLOB(s) detected. Approver must review before proceeding."
+            Write-Host "WARNING: $($report.summary.glob_count) GLOB(s) detected. Approver must review before proceeding."
           }
 
       # Upload reports so the approver can download and review them
@@ -223,10 +223,10 @@ jobs:
   # approves or rejects in GitHub Environments UI.
   # -------------------------------------------------------------------------
   approval:
-    name: Approval Gate — ${{ inputs.environment }}
+    name: Approval Gate - ${{ inputs.environment }}
     needs: reports
     runs-on: windows-latest   # TODO NG: [self-hosted, windows, deploy]
-    environment: ${{ inputs.environment }}   # ← GitHub Environment protection rule pauses here
+    environment: ${{ inputs.environment }}   # <- GitHub Environment protection rule pauses here
 
     steps:
       - name: Approved
@@ -282,18 +282,18 @@ jobs:
 
             if (-not (Test-Path $artifactPath)) {
               # TODO: replace placeholder check with real file once MSBuild is wired up
-              Write-Host "  [PLACEHOLDER] Would copy: $artifactPath → $destPath"
+              Write-Host "  [PLACEHOLDER] Would copy: $artifactPath -> $destPath"
               continue
             }
 
             New-Item -ItemType Directory -Force -Path $destPath | Out-Null
             Copy-Item -Path $artifactPath -Destination $destPath -Force
-            Write-Host "  Deployed: $($mod.module_id) ($binaryEnv binary) → $destPath"
+            Write-Host "  Deployed: $($mod.module_id) ($binaryEnv binary) -> $destPath"
           }
 
       # -----------------------------------------------------------------------
-      # Deploy COBOL — compile on AIX via SSH (BUILD and SVT only)
-      # CTST–STAG: mainframe compile — placeholder, handled separately
+      # Deploy COBOL - compile on AIX via SSH (BUILD and SVT only)
+      # CTST-STAG: mainframe compile - placeholder, handled separately
       # -----------------------------------------------------------------------
       - name: Deploy COBOL (AIX compile via SSH)
         shell: powershell
@@ -310,7 +310,7 @@ jobs:
           if ($env_name -in @("BUILD", "SVT")) {
             foreach ($mod in $cobolModules) {
               $src = "build_artifacts\$($mod.artifact)"
-              Write-Host "COBOL SSH deploy: $($mod.module_id) → AIX ($env_name area)"
+              Write-Host "COBOL SSH deploy: $($mod.module_id) -> AIX ($env_name area)"
 
               # TODO: wire up real SSH commands once AIX area paths are confirmed with Alan
               # Example:
@@ -401,11 +401,11 @@ jobs:
           git config user.email "github-actions@github.com"
           git add "environment_manifests\$env_name.json"
           git diff --cached --quiet && exit 0   # nothing changed
-          git commit -m "deploy: ${{ inputs.build_run_id }} → $env_name | approved by ${{ github.actor }}"
+          git commit -m "deploy: ${{ inputs.build_run_id }} -> $env_name | approved by ${{ github.actor }}"
           git push
 
       - name: Deployment complete
         shell: cmd
         run: |
-          echo ✓ Deployed ${{ inputs.build_run_id }} to ${{ inputs.environment }}
+          echo OK Deployed ${{ inputs.build_run_id }} to ${{ inputs.environment }}
           echo   Approved by: ${{ github.actor }}

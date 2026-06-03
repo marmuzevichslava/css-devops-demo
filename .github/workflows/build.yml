@@ -59,7 +59,7 @@ jobs:
           Write-Host "ITT tickets found: $ticketList"
           echo "tickets=$ticketList" >> $env:GITHUB_OUTPUT
 
-      # 4. Diff analysis — changed files → module IDs
+      # 4. Diff analysis - changed files -> module IDs
       - name: Diff analysis
         shell: pwsh
         run: |
@@ -68,14 +68,14 @@ jobs:
           python scripts/diff_analysis.py --files $files.Split(' ') | Out-File classified_raw.json
           Get-Content classified_raw.json
 
-      # 5. Classify modules → types (C_PROJECT / COBOL / CODES_TABLE / etc.)
+      # 5. Classify modules -> types (C_PROJECT / COBOL / CODES_TABLE / etc.)
       - name: Classify modules
         shell: pwsh
         run: |
           Get-Content classified_raw.json | python scripts/classify_modules.py --stdin | Out-File classified.json
           Get-Content classified.json
 
-      # 6. Resolve build sequence → compilation waves
+      # 6. Resolve build sequence -> compilation waves
       - name: Resolve build sequence
         shell: pwsh
         run: |
@@ -85,7 +85,7 @@ jobs:
             | Out-File waves.json
           Get-Content waves.json
 
-      # 7a. Compile C projects — BUILD binary [PLACEHOLDER — MSBuild TBD]
+      # 7a. Compile C projects - BUILD binary [PLACEHOLDER - MSBuild TBD]
       - name: Compile C projects (BUILD binary)
         shell: pwsh
         run: |
@@ -101,7 +101,7 @@ jobs:
             }
           }
 
-      # 7b. Compile C projects — SVT binary [PLACEHOLDER]
+      # 7b. Compile C projects - SVT binary [PLACEHOLDER]
       - name: Compile C projects (SVT binary)
         shell: pwsh
         run: |
