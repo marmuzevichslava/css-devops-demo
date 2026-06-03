@@ -52,7 +52,7 @@ jobs:
       # Impact Report: what will change in this environment if we deploy
       # -----------------------------------------------------------------------
       - name: Generate Impact Report
-        shell: pwsh
+        shell: powershell
         run: |
           $manifest   = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $envManifestPath = "environment_manifests\${{ inputs.environment }}.json"
@@ -115,7 +115,7 @@ jobs:
       # Glob Report: detect ITT ticket collisions in the target environment
       # -----------------------------------------------------------------------
       - name: Generate Glob Report
-        shell: pwsh
+        shell: powershell
         run: |
           $manifest        = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $envManifestPath = "environment_manifests\${{ inputs.environment }}.json"
@@ -262,7 +262,7 @@ jobs:
       # Share structure: \\azuse-cssdapp02\cssapp\<ENV>\client\
       # -----------------------------------------------------------------------
       - name: Deploy C project binaries
-        shell: pwsh
+        shell: powershell
         run: |
           $manifest = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $env_name = "${{ inputs.environment }}"
@@ -296,14 +296,14 @@ jobs:
       # CTST–STAG: mainframe compile — placeholder, handled separately
       # -----------------------------------------------------------------------
       - name: Deploy COBOL (AIX compile via SSH)
-        shell: pwsh
+        shell: powershell
         run: |
           $manifest = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $env_name = "${{ inputs.environment }}"
 
           $cobolModules = $manifest.compiled_modules | Where-Object { $_.type -eq "COBOL" }
           if ($cobolModules.Count -eq 0) {
-            Write-Host "No COBOL modules — skipping."
+            Write-Host "No COBOL modules - skipping."
             exit 0
           }
 
@@ -319,7 +319,7 @@ jobs:
               Write-Host "  [PLACEHOLDER] SSH + AIX COBOL compile: $($mod.module_id)"
             }
           } else {
-            Write-Host "[PLACEHOLDER] Mainframe IBM COBOL compile for $env_name — not yet implemented"
+            Write-Host "[PLACEHOLDER] Mainframe IBM COBOL compile for $env_name - not yet implemented"
           }
 
       # -----------------------------------------------------------------------
@@ -327,7 +327,7 @@ jobs:
       # Records which build run and ITT tickets are now deployed per module
       # -----------------------------------------------------------------------
       - name: Update environment manifest
-        shell: pwsh
+        shell: powershell
         run: |
           $manifest    = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $env_name    = "${{ inputs.environment }}"
@@ -394,7 +394,7 @@ jobs:
       # Commit environment manifest update back to the repo
       # -----------------------------------------------------------------------
       - name: Commit environment manifest
-        shell: pwsh
+        shell: powershell
         run: |
           $env_name = "${{ inputs.environment }}"
           git config user.name  "github-actions"

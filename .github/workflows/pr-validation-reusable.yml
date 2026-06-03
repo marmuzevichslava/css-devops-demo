@@ -52,7 +52,7 @@ jobs:
             -Uri "https://api.github.com/repos/marmuzevichslava/css-demo/pulls?state=open&sort=updated&direction=desc&per_page=1" `
             -Headers @{ Authorization = "Bearer ${{ secrets.CSS_REPO_TOKEN }}"; Accept = "application/vnd.github+json" }
           if ($prs.Count -eq 0) {
-            Write-Host "No open PRs — skipping ITT check"
+            Write-Host "No open PRs - skipping ITT check"
             echo "pr_number=" >> $env:GITHUB_OUTPUT
           } else {
             Write-Host "Latest open PR: #$($prs[0].number)"
@@ -99,7 +99,7 @@ jobs:
             $files = git -C css-source diff --name-only "$base...$head"
           } else {
             $files = @()
-            Write-Host "No SHA provided (workflow_dispatch) — empty diff"
+            Write-Host "No SHA provided (workflow_dispatch) - empty diff"
           }
           $files | Out-File -FilePath changed_files.txt -Encoding utf8
           Write-Host "--- $($files.Count) files changed ---"

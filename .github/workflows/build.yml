@@ -124,7 +124,7 @@ jobs:
           $classified = Get-Content classified.json | ConvertFrom-Json
           $cobolModules = $classified | Where-Object { $_.type -eq 'COBOL' }
           if ($cobolModules.Count -eq 0) {
-            Write-Host "No COBOL modules — skipping."
+            Write-Host "No COBOL modules - skipping."
             exit 0
           }
           foreach ($mod in $cobolModules) {
