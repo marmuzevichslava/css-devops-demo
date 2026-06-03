@@ -4,7 +4,7 @@ name: PR Validation (Reusable)
 # All pipeline logic lives here in css-devops-demo.
 # css-demo only has a minimal 5-line caller — so its git history stays clean.
 on:
-  workflow_dispatch:   # adds "Run workflow" button in css-devops-demo Actions
+  workflow_dispatch:
     inputs:
       test_files:
         description: 'Test files (e.g. client/dialog/azcd01/foo.c)'
@@ -31,8 +31,7 @@ on:
 jobs:
   itt-check:
     name: ITT Reference Check
-    # TODO NG: runs-on: [self-hosted, windows, compile]
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     permissions:
       contents: read
@@ -47,7 +46,7 @@ jobs:
       - name: Resolve PR number (manual run = latest open PR)
         id: resolve_pr
         if: github.event_name == 'workflow_dispatch'
-        shell: pwsh
+        shell: powershell
         run: |
           $prs = Invoke-RestMethod `
             -Uri "https://api.github.com/repos/marmuzevichslava/css-demo/pulls?state=open&sort=updated&direction=desc&per_page=1" `
@@ -62,17 +61,17 @@ jobs:
 
       - name: Validate ITT reference in last PR commit
         if: inputs.pr_number != '' || steps.resolve_pr.outputs.pr_number != ''
+        shell: powershell
         env:
           GITHUB_TOKEN: ${{ secrets.CSS_REPO_TOKEN }}
           SOURCE_REPO: ${{ inputs.source_repo || 'marmuzevichslava/css-demo' }}
           PR_NUMBER: ${{ inputs.pr_number || steps.resolve_pr.outputs.pr_number }}
-        run: python scripts/itt_check.py
+        run: python scripts\itt_check.py
 
   diff-analysis:
     name: Diff Analysis + Classify + Build Sequence
     needs: itt-check
-    # TODO NG: runs-on: [self-hosted, windows, compile]
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout pipeline repo
@@ -92,7 +91,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get changed files
-        shell: pwsh
+        shell: powershell
         run: |
           $files = git -C css-source diff --name-only "${{ inputs.base_sha }}...${{ inputs.head_sha }}"
           $files | Out-File -FilePath changed_files.txt -Encoding utf8
@@ -100,34 +99,34 @@ jobs:
           Get-Content changed_files.txt
 
       - name: Diff analysis
-        shell: pwsh
+        shell: powershell
         run: |
           $files = (Get-Content changed_files.txt | Where-Object { $_ -ne "" }) -join ' '
           if (-not $files) {
-            '[]' | Out-File "$env:GITHUB_WORKSPACE/modules.json"
+            '[]' | Out-File "$env:GITHUB_WORKSPACE\modules.json" -Encoding utf8
           } else {
             Push-Location css-source
-            python "$env:GITHUB_WORKSPACE/pipeline/scripts/diff_analysis.py" --files $files.Split(' ') | Out-File "$env:GITHUB_WORKSPACE/modules.json"
+            python "$env:GITHUB_WORKSPACE\pipeline\scripts\diff_analysis.py" --files $files.Split(' ') | Out-File "$env:GITHUB_WORKSPACE\modules.json" -Encoding utf8
             Pop-Location
           }
-          Get-Content "$env:GITHUB_WORKSPACE/modules.json"
+          Get-Content "$env:GITHUB_WORKSPACE\modules.json"
 
       - name: Classify modules
-        shell: pwsh
+        shell: powershell
         run: |
-          Get-Content "$env:GITHUB_WORKSPACE/modules.json" | `
-            python "$env:GITHUB_WORKSPACE/pipeline/scripts/classify_modules.py" --stdin | `
-            Out-File "$env:GITHUB_WORKSPACE/classified.json"
-          Get-Content "$env:GITHUB_WORKSPACE/classified.json"
+          $modulesJson = Get-Content "$env:GITHUB_WORKSPACE\modules.json" -Raw
+          $result = $modulesJson | python "$env:GITHUB_WORKSPACE\pipeline\scripts\classify_modules.py" --stdin
+          $result | Out-File "$env:GITHUB_WORKSPACE\classified.json" -Encoding utf8
+          Get-Content "$env:GITHUB_WORKSPACE\classified.json"
 
       - name: Resolve build sequence
-        shell: pwsh
+        shell: powershell
         run: |
-          python "$env:GITHUB_WORKSPACE/pipeline/scripts/resolve_build_sequence.py" `
-            --modules-json "$env:GITHUB_WORKSPACE/classified.json" `
-            --rules "$env:GITHUB_WORKSPACE/pipeline/build-sequence-rules.json" `
-            | Out-File "$env:GITHUB_WORKSPACE/waves.json"
-          Get-Content "$env:GITHUB_WORKSPACE/waves.json"
+          $result = python "$env:GITHUB_WORKSPACE\pipeline\scripts\resolve_build_sequence.py" `
+            --modules-json "$env:GITHUB_WORKSPACE\classified.json" `
+            --rules "$env:GITHUB_WORKSPACE\pipeline\build-sequence-rules.json"
+          $result | Out-File "$env:GITHUB_WORKSPACE\waves.json" -Encoding utf8
+          Get-Content "$env:GITHUB_WORKSPACE\waves.json"
 
       - name: Upload results
         uses: actions/upload-artifact@v4
