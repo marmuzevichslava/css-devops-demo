@@ -119,21 +119,21 @@ jobs:
           Get-Content "$env:GITHUB_WORKSPACE\modules.json"
 
       - name: Classify modules
-        shell: powershell
+        shell: cmd
         run: |
-          $modulesJson = Get-Content "$env:GITHUB_WORKSPACE\modules.json" -Raw
-          $result = $modulesJson | python "$env:GITHUB_WORKSPACE\pipeline\scripts\classify_modules.py" --stdin
-          $result | Out-File "$env:GITHUB_WORKSPACE\classified.json" -Encoding utf8
-          Get-Content "$env:GITHUB_WORKSPACE\classified.json"
+          python "%GITHUB_WORKSPACE%\pipeline\scripts\classify_modules.py" --stdin ^
+            < "%GITHUB_WORKSPACE%\modules.json" ^
+            > "%GITHUB_WORKSPACE%\classified.json"
+          type "%GITHUB_WORKSPACE%\classified.json"
 
       - name: Resolve build sequence
-        shell: powershell
+        shell: cmd
         run: |
-          $result = python "$env:GITHUB_WORKSPACE\pipeline\scripts\resolve_build_sequence.py" `
-            --modules-json "$env:GITHUB_WORKSPACE\classified.json" `
-            --rules "$env:GITHUB_WORKSPACE\pipeline\build-sequence-rules.json"
-          $result | Out-File "$env:GITHUB_WORKSPACE\waves.json" -Encoding utf8
-          Get-Content "$env:GITHUB_WORKSPACE\waves.json"
+          python "%GITHUB_WORKSPACE%\pipeline\scripts\resolve_build_sequence.py" ^
+            --modules-json "%GITHUB_WORKSPACE%\classified.json" ^
+            --rules "%GITHUB_WORKSPACE%\pipeline\build-sequence-rules.json" ^
+            > "%GITHUB_WORKSPACE%\waves.json"
+          type "%GITHUB_WORKSPACE%\waves.json"
 
       - name: Upload results
         uses: actions/upload-artifact@v4
