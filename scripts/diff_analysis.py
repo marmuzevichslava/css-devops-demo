@@ -179,7 +179,10 @@ def main():
     skipped: list[str] = []          # files that were ignored
 
     # --- BLOCK 6C: Analyze each changed file ---
-    for f in changed:
+    for f in changed: 
+        if f.startswith(".github"):
+                continue
+
         parts = Path(f).parts
 
         # Branch 1: _recompiled/*.lst — override file
@@ -220,6 +223,12 @@ def main():
     # --- BLOCK 6F: Output JSON ---
     # Passed to classify_modules.py as stdin or file.
     # Example: ["client/dialog/azcd01", "host/batch/PROGA"]
+    
+    if not all_modules:
+        print('[diff_analysis] No modules detected — returning empty list', file=sys.stderr)
+        print('[]')
+        return []
+
     print(json.dumps(all_modules, indent=2))
     return all_modules
 
