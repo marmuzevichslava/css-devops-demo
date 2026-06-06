@@ -103,18 +103,18 @@ jobs:
       - name: Compile C projects (BUILD binary)
         shell: powershell
         run: |
-          # PERSONAL GITHUB (windows-latest = VS2022): tries VS2022 first, falls back to VS2019.
+          # PERSONAL GITHUB: uses vswhere to find any installed VS (2019/2022/2026).
           # ON NATIONAL GRID (azuse-cssdapp01 has VS2019 Build Tools only), use fixed paths:
           #   $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
           #   $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
           #   $toolset  = "v142"
-          $vsDevCmd = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat"
-          $msbuild  = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-          $toolset  = "v143"
-          if (!(Test-Path $vsDevCmd)) {
-            $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
-            $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-            $toolset  = "v142"
+          $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsInstallPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
+          if ($vsInstallPath) {
+            $vsDevCmd = Join-Path $vsInstallPath "Common7\Tools\VsDevCmd.bat"
+            $msbuild  = Join-Path $vsInstallPath "MSBuild\Current\Bin\MSBuild.exe"
+            $vsVersion = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationVersion 2>$null
+            $toolset = if ($vsVersion -like "17.*") { "v143" } elseif ($vsVersion -like "16.*") { "v142" } else { "v143" }
           }
           Write-Host "Using VsDevCmd: $vsDevCmd (toolset: $toolset)"
 
@@ -146,18 +146,18 @@ jobs:
       - name: Compile C projects (SVT binary)
         shell: powershell
         run: |
-          # PERSONAL GITHUB (windows-latest = VS2022): tries VS2022 first, falls back to VS2019.
+          # PERSONAL GITHUB: uses vswhere to find any installed VS (2019/2022/2026).
           # ON NATIONAL GRID (azuse-cssdapp01 has VS2019 Build Tools only), use fixed paths:
           #   $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
           #   $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
           #   $toolset  = "v142"
-          $vsDevCmd = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat"
-          $msbuild  = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-          $toolset  = "v143"
-          if (!(Test-Path $vsDevCmd)) {
-            $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
-            $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-            $toolset  = "v142"
+          $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsInstallPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
+          if ($vsInstallPath) {
+            $vsDevCmd = Join-Path $vsInstallPath "Common7\Tools\VsDevCmd.bat"
+            $msbuild  = Join-Path $vsInstallPath "MSBuild\Current\Bin\MSBuild.exe"
+            $vsVersion = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationVersion 2>$null
+            $toolset = if ($vsVersion -like "17.*") { "v143" } elseif ($vsVersion -like "16.*") { "v142" } else { "v143" }
           }
           Write-Host "Using VsDevCmd: $vsDevCmd (toolset: $toolset)"
 
