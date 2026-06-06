@@ -71,6 +71,12 @@ def classify(module_id: str, repo_root: str = '.') -> dict:
     if len(parts) >= 2 and parts[0] == 'client' and parts[1] == 'xltmap':
         return _result(module_id, 'XLT_MAP', None)
 
+    # host/copy/msg/<name> → XLT_MAP (translation maps in the FCP copy area)
+    # compileConfig: ^host\copy\msg\([^\\]+\.xlt) → addXlt.bat
+    # diff_analysis strips the .xlt extension, leaving host/copy/msg/<name>
+    if len(parts) >= 3 and parts[0] == 'host' and parts[1] == 'copy' and parts[2] == 'msg':
+        return _result(module_id, 'XLT_MAP', None)
+
     # --- BLOCK 5: Windows C modules (C_PROJECT) ---
     # All compiled on Compile Server via MSBuild (VS 2019 Build Tools).
     # Produce EXE or DLL. Deployed to Network Share (cssapp\[env]\client).
@@ -78,12 +84,20 @@ def classify(module_id: str, repo_root: str = '.') -> dict:
     # client/dialog/<module> — Windows EXE dialogs (FCP .gnd + C source)
     # This is the main CSS application visible to call center users.
     if len(parts) >= 2 and parts[0] == 'client' and parts[1] == 'dialog':
-        return _result(module_id, 'C_PROJECT', 'dialog')
+        result = _result(module_id, 'C_PROJECT', 'dialog')
+        # compileConfig: ^client\dialog\<proj>\*.map → addCsrmap.bat at deploy time
+        if module_path.exists() and any(module_path.glob('*.map')):
+            result['has_csrmap'] = True
+        return result
 
     # client/comwin/<module>cw — Windows DLL common-window modules
     # Shared DLL libraries used by dialog modules.
     if len(parts) >= 2 and parts[0] == 'client' and parts[1] == 'comwin':
-        return _result(module_id, 'C_PROJECT', 'comwin')
+        result = _result(module_id, 'C_PROJECT', 'comwin')
+        # compileConfig: ^client\comwin\<proj>\*.map → addCsrmap.bat at deploy time
+        if module_path.exists() and any(module_path.glob('*.map')):
+            result['has_csrmap'] = True
+        return result
 
     # client/common/<module> — shared Windows DLL libraries (no .gnd)
     # Lowest-level dependencies — compiled first (Wave 1).
@@ -127,6 +141,30 @@ def classify(module_id: str, repo_root: str = '.') -> dict:
     # aix/host/<module> — AIX DevOps tools (in css-devops-demo repo)
     if len(parts) >= 2 and parts[0] == 'aix' and parts[1] == 'host':
         return _result(module_id, 'HOST_C', 'aix_devops')
+
+    # --- BLOCK 8b: host-win Windows C projects (HOST_WIN_C) ---
+    # compileConfig: ^host-win\common\<proj>\* → buildHostVcxProj.bat
+    #                ^host-win\service\<proj>\* → buildHostVcxProj.bat
+    # Windows C projects on the host side. Different from client-side C_PROJECT.
+    # Note: flat .pco files in host-win/ (module_id depth = host-win/common/SOMFILE)
+    # fall through to _classify_by_files() which detects COBOL via .pco extension.
+    if len(parts) >= 2 and parts[0] == 'host-win' and parts[1] == 'common':
+        return _result(module_id, 'HOST_WIN_C', 'common_win')
+
+    if len(parts) >= 2 and parts[0] == 'host-win' and parts[1] == 'service':
+        return _result(module_id, 'HOST_WIN_C', 'service_win')
+
+    # --- BLOCK 8c: DDE modules ---
+    # compileConfig: ^client\dde\* → addDde.bat
+    # DDE (Dynamic Data Exchange) modules. Deployed via addDde.bat at deploy time.
+    if len(parts) >= 2 and parts[0] == 'client' and parts[1] == 'dde':
+        return _result(module_id, 'DDE_MODULE', None)
+
+    # --- BLOCK 8d: FSD projects ---
+    # compileConfig: fsd\<proj>\* → buildFsdProj.bat
+    # FSD (Full Screen Display) projects. Compiled via buildFsdProj.bat.
+    if len(parts) >= 1 and parts[0] == 'fsd':
+        return _result(module_id, 'FSD_MODULE', None)
 
     # --- BLOCK 9: Fallback — determine type by files inside the folder ---
     # If path did not match any rule above — inspect file extensions.
@@ -203,6 +241,21 @@ def main():
     # Call classify() for each module_id and print the result.
     # Passed to resolve_build_sequence.py.
     results = [classify(m, args.repo_root) for m in modules]
+
+    # --- BLOCK 13: Fail on UNKNOWN modules ---
+    # Silently dropping unknown modules is dangerous — they would not be compiled or deployed.
+    # Alan Chin (meeting 05 June 2026): "Unknown is bad if you just silently drop it."
+    # Every module must have an explicit classification. If a new path appears in the repo,
+    # a developer must either add a rule here or add the module to _recompiled/*.lst.
+    unknowns = [r for r in results if r['type'] == 'UNKNOWN']
+    if unknowns:
+        for u in unknowns:
+            note = u.get('note', 'no matching rule found')
+            print(f"[CLASSIFY ERROR] '{u['module_id']}' — {note}", file=sys.stderr)
+            print(f"  Fix: add a classification rule in classify_modules.py, "
+                  f"or list the module explicitly in _recompiled/*.lst.", file=sys.stderr)
+        sys.exit(1)
+
     print(json.dumps(results, indent=2))
 
 

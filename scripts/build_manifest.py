@@ -198,7 +198,9 @@ def main():
     branch     = os.environ.get('GITHUB_REF_NAME', 'unknown')
     pr_number  = os.environ.get('PR_NUMBER', '')
 
-    build_run_id = f'GHA-{run_id}'
+    # BUILD_RUN_ID is set by build.yml as yyyyMMdd.run_number.run_attempt.PRxx
+    # Falls back to GHA-{numeric_run_id} if env var not present (local runs).
+    build_run_id = os.environ.get('BUILD_RUN_ID') or f'GHA-{run_id}'
     trigger = f'PR #{pr_number}' if pr_number else f'commit {commit_sha[:8]}'
 
     # Assemble the manifest

@@ -28,7 +28,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Determine changed files
+      # 2a. Generate build run ID: yyyyMMdd.run_number.run_attempt.PRxx (or .manual)
+      # Format agreed with Alan Chin (meeting 05 June 2026).
+      - name: Generate build run ID
+        id: run_id
+        shell: pwsh
+        run: |
+          $date = Get-Date -Format "yyyyMMdd"
+          $num  = "${{ github.run_number }}"
+          $att  = "${{ github.run_attempt }}"
+          $pr   = if ("${{ github.event_name }}" -eq "workflow_dispatch") { "manual" } else { "push" }
+          $id   = "$date.$num.$att.$pr"
+          Write-Host "Build Run ID: $id"
+          echo "value=$id" >> $env:GITHUB_OUTPUT
+
+      # 2b. Determine changed files
       - name: Get changed files
         id: changed
         shell: pwsh
@@ -85,36 +99,80 @@ jobs:
             | Out-File waves.json
           Get-Content waves.json
 
-      # 7a. Compile C projects - BUILD binary [PLACEHOLDER - MSBuild TBD]
+      # 7a. Compile C projects - BUILD binary
       - name: Compile C projects (BUILD binary)
-        shell: pwsh
+        shell: powershell
         run: |
-          $waves = (Get-Content waves.json | ConvertFrom-Json).waves
-          $classified = Get-Content classified.json | ConvertFrom-Json
+          $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+          $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+
+          if (!(Test-Path $vsDevCmd)) { Write-Host "VsDevCmd not found: $vsDevCmd"; exit 1 }
+          if (!(Test-Path $msbuild))  { Write-Host "MSBuild not found: $msbuild";   exit 1 }
+
+          New-Item -ItemType Directory -Force -Path artifacts\BUILD | Out-Null
+
+          $waves      = (Get-Content waves.json     | ConvertFrom-Json).waves
+          $classified =  Get-Content classified.json | ConvertFrom-Json
+
           foreach ($wave in $waves) {
-            Write-Host "--- Wave $($wave.wave) (BUILD) ---"
+            Write-Host "=== Wave $($wave.wave) (BUILD) ==="
             foreach ($moduleId in $wave.modules) {
               $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
-              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE')) { continue }
-              Write-Host "  [PLACEHOLDER] MSBuild BUILD: $moduleId"
-              # TODO NG: msbuild <vcxproj> /p:Configuration=Release /p:Platform=Win32 /p:ENV_TARGET=BUILD
+              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE', 'HOST_WIN_C')) { continue }
+
+              $vcx = Get-ChildItem "css-source\$moduleId" -Filter "*.vcxproj" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+              if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
+
+              Write-Host "BUILD -> $moduleId"
+              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v142 /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\BUILD\ /m /nologo"
+
+              if ($LASTEXITCODE -ne 0) { Write-Host "BUILD FAILED: $moduleId"; exit 1 }
             }
           }
 
-      # 7b. Compile C projects - SVT binary [PLACEHOLDER]
+      # 7b. Compile C projects - SVT binary
       - name: Compile C projects (SVT binary)
-        shell: pwsh
+        shell: powershell
         run: |
-          $waves = (Get-Content waves.json | ConvertFrom-Json).waves
-          $classified = Get-Content classified.json | ConvertFrom-Json
+          $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+          $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+
+          New-Item -ItemType Directory -Force -Path artifacts\SVT | Out-Null
+
+          $waves      = (Get-Content waves.json     | ConvertFrom-Json).waves
+          $classified =  Get-Content classified.json | ConvertFrom-Json
+
           foreach ($wave in $waves) {
-            Write-Host "--- Wave $($wave.wave) (SVT) ---"
+            Write-Host "=== Wave $($wave.wave) (SVT) ==="
             foreach ($moduleId in $wave.modules) {
               $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
-              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE')) { continue }
-              Write-Host "  [PLACEHOLDER] MSBuild SVT: $moduleId"
-              # TODO NG: msbuild <vcxproj> /p:Configuration=Release /p:Platform=Win32 /p:ENV_TARGET=SVT
+              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE', 'HOST_WIN_C')) { continue }
+
+              $vcx = Get-ChildItem "css-source\$moduleId" -Filter "*.vcxproj" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+              if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
+
+              Write-Host "SVT -> $moduleId"
+              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v142 /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\SVT\ /m /nologo"
+
+              if ($LASTEXITCODE -ne 0) { Write-Host "SVT FAILED: $moduleId"; exit 1 }
             }
+          }
+
+      # 7c. Stage DDE modules
+      # compileConfig: ^client\dde\* → addDde.bat (deploy-time utility, not MSBuild)
+      - name: Stage DDE modules
+        shell: pwsh
+        run: |
+          $classified = Get-Content classified.json | ConvertFrom-Json
+          $ddeModules = $classified | Where-Object { $_.type -eq 'DDE_MODULE' }
+          if ($ddeModules.Count -eq 0) { Write-Host "No DDE modules - skipping."; exit 0 }
+          foreach ($mod in $ddeModules) {
+            $dest = "artifacts\DDE\$($mod.module_id | Split-Path -Leaf)"
+            New-Item -ItemType Directory -Force -Path $dest | Out-Null
+            if (Test-Path "css-source\$($mod.module_id)") {
+              Copy-Item -Path "css-source\$($mod.module_id)\*" -Destination $dest -Recurse -Force
+            }
+            Write-Host "Staged DDE: $($mod.module_id) -> $dest"
           }
 
       # 8. Stage COBOL source for deploy-time compilation
@@ -122,7 +180,7 @@ jobs:
         shell: pwsh
         run: |
           $classified = Get-Content classified.json | ConvertFrom-Json
-          $cobolModules = $classified | Where-Object { $_.type -eq 'COBOL' }
+          $cobolModules = $classified | Where-Object { $_.type -in @('COBOL', 'COBOL_WIN') }
           if ($cobolModules.Count -eq 0) {
             Write-Host "No COBOL modules - skipping."
             exit 0
@@ -143,6 +201,7 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
+          BUILD_RUN_ID: ${{ steps.run_id.outputs.value }}
         run: |
           $changed = (Get-Content changed_files.json | ConvertFrom-Json) -join ' '
           $tickets = "${{ steps.itt.outputs.tickets }}"
@@ -159,7 +218,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ github.run_id }}
+          name: build-${{ steps.run_id.outputs.value }}
           path: |
             build_manifest.json
             classified.json

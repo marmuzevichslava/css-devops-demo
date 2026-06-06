@@ -18,5 +18,60 @@
     "comment": "COBOL service programs compile before batch programs at deploy time",
     "before": { "pattern": "host/service/*" },
     "after":  { "pattern": "host/batch/*" }
+  },
+  {
+    "comment": "client/common intra-wave sequence from compileConfig — Alan Chin (meeting 05 June 2026). These 12 libraries have strict dependency order. ktcomprs must be first.",
+    "before": { "module": "client/common/ktcomprs" },
+    "after":  { "module": "client/common/ktwesatr" }
+  },
+  {
+    "comment": "client/common sequence: ktwesatr → fdgstat",
+    "before": { "module": "client/common/ktwesatr" },
+    "after":  { "module": "client/common/fdgstat" }
+  },
+  {
+    "comment": "client/common sequence: fdgstat → c1crsrc",
+    "before": { "module": "client/common/fdgstat" },
+    "after":  { "module": "client/common/c1crsrc" }
+  },
+  {
+    "comment": "client/common sequence: c1crsrc → azsecext",
+    "before": { "module": "client/common/c1crsrc" },
+    "after":  { "module": "client/common/azsecext" }
+  },
+  {
+    "comment": "client/common sequence: azsecext → tcppipe",
+    "before": { "module": "client/common/azsecext" },
+    "after":  { "module": "client/common/tcppipe" }
+  },
+  {
+    "comment": "client/common sequence: tcppipe → c1cfunc",
+    "before": { "module": "client/common/tcppipe" },
+    "after":  { "module": "client/common/c1cfunc" }
+  },
+  {
+    "comment": "client/common sequence: c1cfunc → archdisp",
+    "before": { "module": "client/common/c1cfunc" },
+    "after":  { "module": "client/common/archdisp" }
+  },
+  {
+    "comment": "client/common sequence: archdisp → archfunc",
+    "before": { "module": "client/common/archdisp" },
+    "after":  { "module": "client/common/archfunc" }
+  },
+  {
+    "comment": "client/common sequence: archfunc → cssfunc",
+    "before": { "module": "client/common/archfunc" },
+    "after":  { "module": "client/common/cssfunc" }
+  },
+  {
+    "comment": "client/common sequence: cssfunc → csrntdll",
+    "before": { "module": "client/common/cssfunc" },
+    "after":  { "module": "client/common/csrntdll" }
+  },
+  {
+    "comment": "client/common sequence: csrntdll → cssclr01 (last in chain)",
+    "before": { "module": "client/common/csrntdll" },
+    "after":  { "module": "client/common/cssclr01" }
   }
 ]

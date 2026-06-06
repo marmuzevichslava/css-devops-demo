@@ -114,6 +114,25 @@ def resolve_module(changed_file: str) -> str | None:
     """
     parts = Path(changed_file).parts  # e.g. ('client', 'dialog', 'azcd01', 'azcd001x.c')
 
+    # --- BLOCK 4A-pre: Special cases that must be checked before NON_MODULE_PATHS ---
+
+    # host/copy/msg/*.xlt → XLT_MAP flat artifact (stem = module ID)
+    # compileConfig: ^host\copy\msg\([^\\]+\.xlt) → addXlt.bat
+    # host/copy/msg is in NON_MODULE_PATHS to ignore copybooks there,
+    # but .xlt files in that folder ARE modules — they need an explicit early check.
+    if (len(parts) == 4 and parts[0] == 'host' and parts[1] == 'copy'
+            and parts[2] == 'msg' and parts[3].endswith('.xlt')):
+        return str(Path('host/copy/msg') / Path(parts[3]).stem)
+
+    # host-win/common/*.pco → flat COBOL file (Windows-side COBOL)
+    # host-win/service/*.pco → flat COBOL file
+    # compileConfig: ^host-win\common\([^\\]+\.pco) → buildCobolFile.bat
+    # These are flat .pco files directly in the folder (not in a sub-project).
+    # Sub-projects (host-win/common/<proj>/*.c) are handled by the catch-all below.
+    if (len(parts) == 3 and parts[0] == 'host-win'
+            and parts[1] in ('common', 'service') and parts[2].endswith('.pco')):
+        return str(Path(parts[0]) / parts[1] / Path(parts[2]).stem)
+
     # --- BLOCK 4A: Flat artifact folders — each file is its own module ---
     # db/codestable/SOMTBL.dat  →  module id = db/codestable/SOMTBL
     for flat in FLAT_ARTIFACT_PATHS:
