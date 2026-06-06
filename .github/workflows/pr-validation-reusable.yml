@@ -1,0 +1,254 @@
+name: PR Validation (Reusable)
+
+# NATIONAL GRID VERSION - self-hosted Windows runners (azuse-cssdapp01)
+# Called by css-demo via pr-validation-caller.yml
+# All pipeline logic lives here - css-demo history stays clean.
+on:
+  workflow_dispatch:
+    inputs:
+      test_files:
+        description: 'Test files (e.g. client/dialog/azcd01/foo.c)'
+        required: false
+        default: 'client/dialog/azcd01/foo.c'
+  workflow_call:
+    inputs:
+      pr_number:
+        required: true
+        type: string
+      source_repo:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+      base_sha:
+        required: true
+        type: string
+    secrets:
+      CSS_REPO_TOKEN:
+        required: true
+
+jobs:
+  itt-check:
+    name: ITT Reference Check
+    runs-on: windows-latest   # azuse-cssdapp01
+
+    steps:
+      - name: Checkout pipeline repo (scripts)
+        uses: actions/checkout@v4
+        with:
+          repository: marmuzevichslava/css-devops-demo
+          token: ${{ secrets.CSS_REPO_TOKEN }}
+
+      - name: Resolve PR number (manual run = latest open PR)
+        id: resolve_pr
+        if: github.event_name == 'workflow_dispatch'
+        shell: powershell
+        run: |
+          $prs = Invoke-RestMethod `
+            -Uri "https://api.github.com/repos/marmuzevichslava/css-demo/pulls?state=open&sort=updated&direction=desc&per_page=1" `
+            -Headers @{ Authorization = "Bearer ${{ secrets.CSS_REPO_TOKEN }}"; Accept = "application/vnd.github+json" }
+          if ($prs.Count -eq 0) {
+            Write-Host "No open PRs found - skipping ITT check"
+            echo "pr_number=" >> $env:GITHUB_OUTPUT
+          } else {
+            Write-Host "Latest open PR: #$($prs[0].number)"
+            echo "pr_number=$($prs[0].number)" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Validate ITT reference in last PR commit
+        if: inputs.pr_number != '' || steps.resolve_pr.outputs.pr_number != ''
+        shell: powershell
+        env:
+          GITHUB_TOKEN: ${{ secrets.CSS_REPO_TOKEN }}
+          SOURCE_REPO: ${{ inputs.source_repo || 'marmuzevichslava/css-demo' }}
+          PR_NUMBER: ${{ inputs.pr_number || steps.resolve_pr.outputs.pr_number }}
+        run: python scripts\itt_check.py
+
+  diff-analysis:
+    name: Diff Analysis + Classify + Build Sequence
+    needs: itt-check
+    runs-on: windows-latest   # azuse-cssdapp01
+
+    steps:
+      - name: Checkout pipeline repo
+        uses: actions/checkout@v4
+        with:
+          repository: marmuzevichslava/css-devops-demo
+          token: ${{ secrets.CSS_REPO_TOKEN }}
+          path: pipeline
+
+      - name: Checkout CSS source repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.source_repo }}
+          ref: ${{ inputs.head_sha }}
+          token: ${{ secrets.CSS_REPO_TOKEN }}
+          path: css-source
+          fetch-depth: 0
+
+      
+      - name: Get changed files
+        shell: powershell
+        run: |
+          $base = "${{ inputs.base_sha }}"
+          $head = "${{ inputs.head_sha }}"
+
+          if (-not $base -or -not $head) {
+            Write-Host "No PR context - using HEAD~1...HEAD"
+            $files = git -C css-source diff --name-only HEAD~1...HEAD
+          } else {
+            Write-Host "Using PR diff: $base...$head"
+            $files = git -C css-source diff --name-only "$base...$head"
+          }
+
+          $files | Out-File -FilePath changed_files.txt -Encoding utf8
+
+          Write-Host "--- $($files.Count) files changed ---"
+          Get-Content changed_files.txt
+                
+
+      
+      - name: Diff analysis
+        shell: powershell
+        run: |     
+          $files = (Get-Content changed_files.txt | Where-Object { $_ -ne "" }) -join ' '
+
+          if (-not $files) {
+            '[]' | Set-Content "$env:GITHUB_WORKSPACE\modules.json"
+          } else {
+            Push-Location css-source
+
+            python "$env:GITHUB_WORKSPACE\pipeline\scripts\diff_analysis.py" --files $files.Split(' ') > temp.txt
+
+            if (!(Test-Path temp.txt)) {
+              Write-Host "no output file"
+              '[]' | Set-Content "$env:GITHUB_WORKSPACE\modules.json"
+            }
+            else {
+              $raw = Get-Content temp.txt -Raw
+
+              Write-Host "=== RAW PYTHON OUTPUT ==="
+              Write-Host $raw
+
+              if (-not $raw.Trim()) {
+                '[]' | Set-Content "$env:GITHUB_WORKSPACE\modules.json"
+              }
+              elseif ($raw.Trim().StartsWith("[")) {
+                $raw | Set-Content "$env:GITHUB_WORKSPACE\modules.json"
+              }
+              else {
+                Write-Host "Output is NOT JSON → fallback to []"
+                '[]' | Set-Content "$env:GITHUB_WORKSPACE\modules.json"
+              }
+            }
+
+            Pop-Location
+          }
+
+      
+      - name: Classify modules
+        shell: powershell
+        run: |
+          
+            
+            $content = Get-Content "$env:GITHUB_WORKSPACE\modules.json" -Raw
+
+            if (-not $content -or -not $content.Trim()) {
+              Write-Host "modules.json empty → skip classify"
+              '[]' | Set-Content "$env:GITHUB_WORKSPACE\classified.json"
+              return
+            }
+
+            try {
+              $modules = $content | ConvertFrom-Json
+            } catch {
+              Write-Host "modules.json invalid → skip classify"
+              '[]' | Set-Content "$env:GITHUB_WORKSPACE\classified.json"
+              return
+            }
+
+
+            python "$env:GITHUB_WORKSPACE\pipeline\scripts\classify_modules.py" `
+              --from-json "$env:GITHUB_WORKSPACE\modules.json" > temp_classified.txt
+
+            if ($LASTEXITCODE -ne 0) {
+              Write-Host "##[error]Module classification failed — unrecognised module type detected."
+              Write-Host "##[error]Fix: add a rule in classify_modules.py or list the module in _recompiled/*.lst."
+              exit 1
+            }
+
+            $raw = Get-Content temp_classified.txt -Raw
+
+            Write-Host "=== RAW CLASSIFY OUTPUT ==="
+            Write-Host $raw
+
+            if (-not $raw.Trim()) {
+              '[]' | Set-Content "$env:GITHUB_WORKSPACE\classified.json"
+            }
+            elseif ($raw.Trim().StartsWith("[") -or $raw.Trim().StartsWith("{")) {
+              $raw | Set-Content "$env:GITHUB_WORKSPACE\classified.json"
+            }
+            else {
+              '[]' | Set-Content "$env:GITHUB_WORKSPACE\classified.json"
+            }
+
+            Write-Host "=== Classified ==="
+            Get-Content "$env:GITHUB_WORKSPACE\classified.json"
+
+
+      - name: Resolve build sequence
+        shell: powershell
+        run: |
+          $content = Get-Content "$env:GITHUB_WORKSPACE\classified.json" -Raw
+
+          if (-not $content -or -not $content.Trim()) {
+            Write-Host "classified.json empty → fallback"
+            '{ "waves": [] }' | Set-Content "$env:GITHUB_WORKSPACE\waves.json"
+            return
+          }
+
+          try {
+            $classified = $content | ConvertFrom-Json
+          } catch {
+            Write-Host "classified.json invalid → fallback"
+            '{ "waves": [] }' | Set-Content "$env:GITHUB_WORKSPACE\waves.json"
+            return
+          }
+
+          if ($classified.Count -eq 0) {
+            Write-Host "No modules - skipping build sequence"
+            '{ "waves": [] }' | Set-Content "$env:GITHUB_WORKSPACE\waves.json"
+            return
+          }
+
+          python "$env:GITHUB_WORKSPACE\pipeline\scripts\resolve_build_sequence.py" `
+            --modules-json "$env:GITHUB_WORKSPACE\classified.json" `
+            --rules "$env:GITHUB_WORKSPACE\pipeline\build-sequence-rules.json" > temp_waves.txt
+
+          $raw = Get-Content temp_waves.txt -Raw
+
+          Write-Host "=== RAW WAVES OUTPUT ==="
+          Write-Host $raw
+
+          if (-not $raw.Trim()) {
+            Write-Host "Empty output → fallback"
+            '{ "waves": [] }' | Set-Content "$env:GITHUB_WORKSPACE\waves.json"
+          }
+          elseif ($raw.Trim().StartsWith("{")) {
+            $raw | Set-Content "$env:GITHUB_WORKSPACE\waves.json"
+          }
+          else {
+            Write-Host "Invalid JSON → fallback"
+            '{ "waves": [] }' | Set-Content "$env:GITHUB_WORKSPACE\waves.json"
+          }
+
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-analysis-${{ github.run_id }}
+          path: |
+            modules.json
+            classified.json
+            waves.json

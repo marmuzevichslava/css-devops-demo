@@ -1,0 +1,227 @@
+name: Build Pipeline
+
+# Triggered after merge to main, or manually for testing.
+# PERSONAL GITHUB: windows-latest (free GitHub-hosted Windows runner)
+# NG: change runs-on to [self-hosted, windows, compile]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      changed_files:
+        description: 'Space-separated changed files (e.g. client/dialog/azcd01/foo.c host/batch/X.cbl)'
+        required: false
+        default: 'client/dialog/azcd01/azcd01.c host/batch/SOMCOB01/SOMCOB01.cbl db/codestable/STATBL.dat'
+
+jobs:
+  build:
+    name: Analyse + Compile + Manifest
+    runs-on: windows-latest   # TODO NG: [self-hosted, windows, compile]
+
+    permissions:
+      contents: read
+
+    steps:
+      # 1. Checkout css-devops-demo (scripts + rules)
+      - name: Checkout pipeline repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2a. Generate build run ID: yyyyMMdd.run_number.run_attempt.PRxx (or .manual)
+      # Format agreed with Alan Chin (meeting 05 June 2026).
+      - name: Generate build run ID
+        id: run_id
+        shell: pwsh
+        run: |
+          $date = Get-Date -Format "yyyyMMdd"
+          $num  = "${{ github.run_number }}"
+          $att  = "${{ github.run_attempt }}"
+          $pr   = if ("${{ github.event_name }}" -eq "workflow_dispatch") { "manual" } else { "push" }
+          $id   = "$date.$num.$att.$pr"
+          Write-Host "Build Run ID: $id"
+          echo "value=$id" >> $env:GITHUB_OUTPUT
+
+      # 2b. Determine changed files
+      - name: Get changed files
+        id: changed
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ inputs.changed_files }}" -ne "") {
+            $files = "${{ inputs.changed_files }}" -split ' '
+          } else {
+            $files = git diff --name-only "${{ github.event.before }}...${{ github.sha }}" | Where-Object { $_ -ne "" }
+          }
+          $files | ConvertTo-Json -Compress | Out-File -FilePath changed_files.json -Encoding utf8
+          Write-Host "Changed files: $($files -join ', ')"
+
+      # 3. Extract ITT tickets from commit messages
+      - name: Extract ITT tickets
+        id: itt
+        shell: pwsh
+        run: |
+          $messages = git log --format="%B" "${{ github.event.before }}..${{ github.sha }}" 2>$null
+          if (-not $messages) { $messages = git log -1 --format="%B" }
+          $tickets = [System.Collections.Generic.HashSet[int]]::new()
+          $matches = [regex]::Matches($messages, '(?i)ITT:\[(\d+(?:,\s*\d+)*)\]')
+          foreach ($m in $matches) {
+            foreach ($n in $m.Groups[1].Value -split ',') {
+              $tickets.Add([int]$n.Trim()) | Out-Null
+            }
+          }
+          $ticketList = ($tickets | Sort-Object) -join ' '
+          Write-Host "ITT tickets found: $ticketList"
+          echo "tickets=$ticketList" >> $env:GITHUB_OUTPUT
+
+      # 4. Diff analysis - changed files -> module IDs
+      - name: Diff analysis
+        shell: pwsh
+        run: |
+          $files = (Get-Content changed_files.json | ConvertFrom-Json) -join ' '
+          if (-not $files) { '[]' | Out-File classified_raw.json; exit 0 }
+          python scripts/diff_analysis.py --files $files.Split(' ') | Out-File classified_raw.json
+          Get-Content classified_raw.json
+
+      # 5. Classify modules -> types (C_PROJECT / COBOL / CODES_TABLE / etc.)
+      - name: Classify modules
+        shell: pwsh
+        run: |
+          Get-Content classified_raw.json | python scripts/classify_modules.py --stdin | Out-File classified.json
+          Get-Content classified.json
+
+      # 6. Resolve build sequence -> compilation waves
+      - name: Resolve build sequence
+        shell: pwsh
+        run: |
+          python scripts/resolve_build_sequence.py `
+            --modules-json classified.json `
+            --rules build-sequence-rules.json `
+            | Out-File waves.json
+          Get-Content waves.json
+
+      # 7a. Compile C projects - BUILD binary
+      - name: Compile C projects (BUILD binary)
+        shell: powershell
+        run: |
+          $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+          $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+
+          if (!(Test-Path $vsDevCmd)) { Write-Host "VsDevCmd not found: $vsDevCmd"; exit 1 }
+          if (!(Test-Path $msbuild))  { Write-Host "MSBuild not found: $msbuild";   exit 1 }
+
+          New-Item -ItemType Directory -Force -Path artifacts\BUILD | Out-Null
+
+          $waves      = (Get-Content waves.json     | ConvertFrom-Json).waves
+          $classified =  Get-Content classified.json | ConvertFrom-Json
+
+          foreach ($wave in $waves) {
+            Write-Host "=== Wave $($wave.wave) (BUILD) ==="
+            foreach ($moduleId in $wave.modules) {
+              $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
+              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE', 'HOST_WIN_C')) { continue }
+
+              $vcx = Get-ChildItem "css-source\$moduleId" -Filter "*.vcxproj" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+              if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
+
+              Write-Host "BUILD -> $moduleId"
+              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v142 /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\BUILD\ /m /nologo"
+
+              if ($LASTEXITCODE -ne 0) { Write-Host "BUILD FAILED: $moduleId"; exit 1 }
+            }
+          }
+
+      # 7b. Compile C projects - SVT binary
+      - name: Compile C projects (SVT binary)
+        shell: powershell
+        run: |
+          $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+          $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+
+          New-Item -ItemType Directory -Force -Path artifacts\SVT | Out-Null
+
+          $waves      = (Get-Content waves.json     | ConvertFrom-Json).waves
+          $classified =  Get-Content classified.json | ConvertFrom-Json
+
+          foreach ($wave in $waves) {
+            Write-Host "=== Wave $($wave.wave) (SVT) ==="
+            foreach ($moduleId in $wave.modules) {
+              $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
+              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE', 'HOST_WIN_C')) { continue }
+
+              $vcx = Get-ChildItem "css-source\$moduleId" -Filter "*.vcxproj" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+              if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
+
+              Write-Host "SVT -> $moduleId"
+              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v142 /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\SVT\ /m /nologo"
+
+              if ($LASTEXITCODE -ne 0) { Write-Host "SVT FAILED: $moduleId"; exit 1 }
+            }
+          }
+
+      # 7c. Stage DDE modules
+      # compileConfig: ^client\dde\* → addDde.bat (deploy-time utility, not MSBuild)
+      - name: Stage DDE modules
+        shell: pwsh
+        run: |
+          $classified = Get-Content classified.json | ConvertFrom-Json
+          $ddeModules = $classified | Where-Object { $_.type -eq 'DDE_MODULE' }
+          if ($ddeModules.Count -eq 0) { Write-Host "No DDE modules - skipping."; exit 0 }
+          foreach ($mod in $ddeModules) {
+            $dest = "artifacts\DDE\$($mod.module_id | Split-Path -Leaf)"
+            New-Item -ItemType Directory -Force -Path $dest | Out-Null
+            if (Test-Path "css-source\$($mod.module_id)") {
+              Copy-Item -Path "css-source\$($mod.module_id)\*" -Destination $dest -Recurse -Force
+            }
+            Write-Host "Staged DDE: $($mod.module_id) -> $dest"
+          }
+
+      # 8. Stage COBOL source for deploy-time compilation
+      - name: Stage COBOL source
+        shell: pwsh
+        run: |
+          $classified = Get-Content classified.json | ConvertFrom-Json
+          $cobolModules = $classified | Where-Object { $_.type -in @('COBOL', 'COBOL_WIN') }
+          if ($cobolModules.Count -eq 0) {
+            Write-Host "No COBOL modules - skipping."
+            exit 0
+          }
+          foreach ($mod in $cobolModules) {
+            $dest = "artifacts\COBOL\$($mod.module_id | Split-Path -Leaf)"
+            New-Item -ItemType Directory -Force -Path $dest | Out-Null
+            if (Test-Path $mod.module_id) {
+              Copy-Item -Path "$($mod.module_id)\*" -Destination $dest -Recurse -Force
+            }
+            Write-Host "Staged COBOL: $($mod.module_id) -> $dest"
+          }
+
+      # 9. Generate build manifest
+      - name: Generate build manifest
+        shell: pwsh
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          BUILD_RUN_ID: ${{ steps.run_id.outputs.value }}
+        run: |
+          $changed = (Get-Content changed_files.json | ConvertFrom-Json) -join ' '
+          $tickets = "${{ steps.itt.outputs.tickets }}"
+          if (-not $tickets) { $tickets = "0" }
+          python scripts/build_manifest.py `
+            --classified-json classified.json `
+            --changed-files $changed `
+            --itt-tickets $tickets `
+            --output build_manifest.json
+          Write-Host "=== Build Manifest ==="
+          Get-Content build_manifest.json
+
+      # 10. Upload artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ steps.run_id.outputs.value }}
+          path: |
+            build_manifest.json
+            classified.json
+            waves.json
+            artifacts/
+          retention-days: 30
