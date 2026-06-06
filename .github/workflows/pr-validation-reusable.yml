@@ -177,7 +177,7 @@ jobs:
               --from-json "$env:GITHUB_WORKSPACE\modules.json" > temp_classified.txt
 
             if ($LASTEXITCODE -ne 0) {
-              Write-Host "##[error]Module classification failed — unrecognised module type detected."
+              Write-Host "##[error]Module classification failed - unrecognised module type detected."
               Write-Host "##[error]Fix: add a rule in classify_modules.py or list the module in _recompiled/*.lst."
               exit 1
             }
