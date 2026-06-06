@@ -6,6 +6,10 @@ name: PR Validation (Reusable)
 on:
   workflow_dispatch:
     inputs:
+      source_repo:
+        description: 'Source repo to test against (css-demo repo)'
+        required: false
+        default: 'marmuzevichslava/css-demo'
       test_files:
         description: 'Test files (e.g. client/dialog/azcd01/foo.c)'
         required: false
