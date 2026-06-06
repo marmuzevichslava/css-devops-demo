@@ -103,8 +103,20 @@ jobs:
       - name: Compile C projects (BUILD binary)
         shell: powershell
         run: |
-          $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
-          $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          # PERSONAL GITHUB (windows-latest = VS2022): tries VS2022 first, falls back to VS2019.
+          # ON NATIONAL GRID (azuse-cssdapp01 has VS2019 Build Tools only), use fixed paths:
+          #   $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+          #   $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          #   $toolset  = "v142"
+          $vsDevCmd = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat"
+          $msbuild  = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          $toolset  = "v143"
+          if (!(Test-Path $vsDevCmd)) {
+            $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+            $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+            $toolset  = "v142"
+          }
+          Write-Host "Using VsDevCmd: $vsDevCmd (toolset: $toolset)"
 
           if (!(Test-Path $vsDevCmd)) { Write-Host "VsDevCmd not found: $vsDevCmd"; exit 1 }
           if (!(Test-Path $msbuild))  { Write-Host "MSBuild not found: $msbuild";   exit 1 }
@@ -124,7 +136,7 @@ jobs:
               if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
 
               Write-Host "BUILD -> $moduleId"
-              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v142 /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\BUILD\ /m /nologo"
+              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=$toolset /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\BUILD\ /m /nologo"
 
               if ($LASTEXITCODE -ne 0) { Write-Host "BUILD FAILED: $moduleId"; exit 1 }
             }
@@ -134,8 +146,20 @@ jobs:
       - name: Compile C projects (SVT binary)
         shell: powershell
         run: |
-          $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
-          $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          # PERSONAL GITHUB (windows-latest = VS2022): tries VS2022 first, falls back to VS2019.
+          # ON NATIONAL GRID (azuse-cssdapp01 has VS2019 Build Tools only), use fixed paths:
+          #   $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+          #   $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          #   $toolset  = "v142"
+          $vsDevCmd = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat"
+          $msbuild  = "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+          $toolset  = "v143"
+          if (!(Test-Path $vsDevCmd)) {
+            $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
+            $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+            $toolset  = "v142"
+          }
+          Write-Host "Using VsDevCmd: $vsDevCmd (toolset: $toolset)"
 
           New-Item -ItemType Directory -Force -Path artifacts\SVT | Out-Null
 
@@ -152,7 +176,7 @@ jobs:
               if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
 
               Write-Host "SVT -> $moduleId"
-              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v142 /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\SVT\ /m /nologo"
+              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=$toolset /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\SVT\ /m /nologo"
 
               if ($LASTEXITCODE -ne 0) { Write-Host "SVT FAILED: $moduleId"; exit 1 }
             }
