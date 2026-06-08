@@ -1,9 +1,14 @@
 name: Build Pipeline
 
-# Triggered after merge to main, or manually for testing.
+# Triggered by:
+#   - repository_dispatch from css-demo after PR Validation passes (main flow)
+#   - workflow_dispatch for manual testing
+#   - push to main (fallback / hotfix)
 # PERSONAL GITHUB: windows-latest (free GitHub-hosted Windows runner)
 # NG: change runs-on to [self-hosted, windows, compile]
 on:
+  repository_dispatch:
+    types: [build]
   push:
     branches: [main]
   workflow_dispatch:
@@ -28,6 +33,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      # 1b. Checkout CSS source into css-source/ (only when triggered from PR Validation)
+      - name: Checkout CSS source
+        if: github.event_name == 'repository_dispatch'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.client_payload.source_repo }}
+          ref:        ${{ github.event.client_payload.head_sha }}
+          token:      ${{ secrets.CSS_REPO_TOKEN }}
+          path:       css-source
+          fetch-depth: 0
+
       # 2a. Generate build run ID: yyyyMMdd.run_number.run_attempt.PRxx (or .manual)
       # Format agreed with Alan Chin (meeting 05 June 2026).
       - name: Generate build run ID
@@ -37,7 +53,9 @@ jobs:
           $date = Get-Date -Format "yyyyMMdd"
           $num  = "${{ github.run_number }}"
           $att  = "${{ github.run_attempt }}"
-          $pr   = if ("${{ github.event_name }}" -eq "workflow_dispatch") { "manual" } else { "push" }
+          $pr   = if ("${{ github.event_name }}" -eq "repository_dispatch") { "PR${{ github.event.client_payload.pr_number }}" } `
+                  elseif ("${{ github.event_name }}" -eq "workflow_dispatch") { "manual" } `
+                  else { "push" }
           $id   = "$date.$num.$att.$pr"
           Write-Host "Build Run ID: $id"
           echo "value=$id" >> $env:GITHUB_OUTPUT
@@ -47,7 +65,9 @@ jobs:
         id: changed
         shell: pwsh
         run: |
-          if ("${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ inputs.changed_files }}" -ne "") {
+          if ("${{ github.event_name }}" -eq "repository_dispatch") {
+            $files = "${{ github.event.client_payload.changed_files }}" -split ' ' | Where-Object { $_ -ne "" }
+          } elseif ("${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ inputs.changed_files }}" -ne "") {
             $files = "${{ inputs.changed_files }}" -split ' '
           } else {
             $files = git diff --name-only "${{ github.event.before }}...${{ github.sha }}" | Where-Object { $_ -ne "" }
