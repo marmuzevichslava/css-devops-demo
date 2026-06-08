@@ -99,8 +99,9 @@ jobs:
             | Out-File waves.json
           Get-Content waves.json
 
-      # 7a. Compile C projects - BUILD binary
-      - name: Compile C projects (BUILD binary)
+      # 7. Compile C projects
+      # One build, one artifact. Same binary promoted from BUILD through all environments.
+      - name: Compile C projects
         shell: powershell
         run: |
           # PERSONAL GITHUB: uses vswhere to find any installed VS (2019/2022/2026).
@@ -127,7 +128,7 @@ jobs:
           $classified =  Get-Content classified.json | ConvertFrom-Json
 
           foreach ($wave in $waves) {
-            Write-Host "=== Wave $($wave.wave) (BUILD) ==="
+            Write-Host "=== Wave $($wave.wave) ==="
             foreach ($moduleId in $wave.modules) {
               $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
               if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE', 'HOST_WIN_C')) { continue }
@@ -135,50 +136,10 @@ jobs:
               $vcx = Get-ChildItem "css-source\$moduleId" -Filter "*.vcxproj" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
               if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
 
-              Write-Host "BUILD -> $moduleId"
+              Write-Host "Compiling -> $moduleId"
               cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=$toolset /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\BUILD\ /m /nologo"
 
-              if ($LASTEXITCODE -ne 0) { Write-Host "BUILD FAILED: $moduleId"; exit 1 }
-            }
-          }
-
-      # 7b. Compile C projects - SVT binary
-      - name: Compile C projects (SVT binary)
-        shell: powershell
-        run: |
-          # PERSONAL GITHUB: uses vswhere to find any installed VS (2019/2022/2026).
-          # ON NATIONAL GRID (azuse-cssdapp01 has VS2019 Build Tools only), use fixed paths:
-          #   $vsDevCmd = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\VsDevCmd.bat"
-          #   $msbuild  = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-          #   $toolset  = "v142"
-          $vswhere = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-          $vsInstallPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath 2>$null
-          if ($vsInstallPath) {
-            $vsDevCmd = Join-Path $vsInstallPath "Common7\Tools\VsDevCmd.bat"
-            $msbuild  = Join-Path $vsInstallPath "MSBuild\Current\Bin\MSBuild.exe"
-            $vsVersion = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationVersion 2>$null
-            $toolset = if ($vsVersion -like "17.*") { "v143" } elseif ($vsVersion -like "16.*") { "v142" } else { "v143" }
-          }
-          Write-Host "Using VsDevCmd: $vsDevCmd (toolset: $toolset)"
-
-          New-Item -ItemType Directory -Force -Path artifacts\SVT | Out-Null
-
-          $waves      = (Get-Content waves.json     | ConvertFrom-Json).waves
-          $classified =  Get-Content classified.json | ConvertFrom-Json
-
-          foreach ($wave in $waves) {
-            Write-Host "=== Wave $($wave.wave) (SVT) ==="
-            foreach ($moduleId in $wave.modules) {
-              $mod = $classified | Where-Object { $_.module_id -eq $moduleId }
-              if ($mod.type -notin @('C_PROJECT', 'AGS_MODULE', 'HOST_WIN_C')) { continue }
-
-              $vcx = Get-ChildItem "css-source\$moduleId" -Filter "*.vcxproj" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
-              if (!$vcx) { Write-Host "No vcxproj: $moduleId"; continue }
-
-              Write-Host "SVT -> $moduleId"
-              cmd /c "call `"$vsDevCmd`" -arch=x86 -host_arch=x86 && `"$msbuild`" `"$($vcx.FullName)`" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=$toolset /p:OutDir=$env:GITHUB_WORKSPACE\artifacts\SVT\ /m /nologo"
-
-              if ($LASTEXITCODE -ne 0) { Write-Host "SVT FAILED: $moduleId"; exit 1 }
+              if ($LASTEXITCODE -ne 0) { Write-Host "FAILED: $moduleId"; exit 1 }
             }
           }
 
