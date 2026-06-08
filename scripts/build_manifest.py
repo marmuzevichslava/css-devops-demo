@@ -2,9 +2,10 @@
 This script produces build_manifest.json — the central artifact of the build pipeline that
 records everything compiled in a given build run. It combines classified module metadata,
 build results, changed source file paths, and ITT ticket references into a single structured
-document. C projects get two entries each (BUILD binary and SVT binary compiled separately);
-COBOL and HOST_C modules get one entry marked STAGED, since they are compiled at deploy time
-on AIX or mainframe.
+document. C projects get ONE entry each (compiled once to artifacts/BUILD/); COBOL and
+HOST_C modules get one entry marked STAGED, since they are compiled at deploy time on AIX
+or mainframe. The same BUILD artifact is promoted unchanged through all environments (SVT,
+CTST, STAG, PROD).
 
 Business logic: the manifest is the handoff document between the build and deploy pipelines.
 The deploy workflow reads it to know what to copy to which network share, what to compile on
@@ -35,12 +36,12 @@ GitHub Actions env vars read automatically:
 
 Build results JSON schema (--build-results):
     {
-      "client/dialog/azcd01": {"BUILD": "SUCCESS", "SVT": "SUCCESS"},
-      "host/batch/PROG01":    {"ALL": "STAGED"}
+      "client/dialog/azcd01": {"status": "SUCCESS"},
+      "host/batch/PROG01":    {"status": "STAGED"}
     }
 
 Output manifest follows CI-CD-Strategy build_manifest schema.
-C_PROJECT modules get TWO entries (BUILD env + SVT env binaries compiled separately).
+C_PROJECT modules get ONE entry (compiled once to artifacts/BUILD/).
 COBOL modules get ONE entry with status STAGED (compiled at deploy time).
 """
 
@@ -55,21 +56,22 @@ from pathlib import Path
 # Artifact output paths on the compile server
 ARTIFACT_ROOT = 'artifacts'
 
-# Module types that compile on Windows — produced as BUILD and SVT binaries
+# Module types that compile on Windows — produced as a single BUILD artifact
 WINDOWS_COMPILED_TYPES = {'C_PROJECT', 'AGS_MODULE'}
 
 # Module types compiled at deploy time — only source is staged here
 DEPLOY_TIME_TYPES = {'COBOL', 'HOST_C'}
 
 
-def artifact_path(module_id: str, env_target: str, module_type: str) -> str:
+def artifact_path(module_id: str, module_type: str) -> str:
     """Return the expected artifact path for a compiled module."""
     name = Path(module_id).name
 
     if module_type in WINDOWS_COMPILED_TYPES:
         # C projects produce a DLL or EXE — extension depends on subtype but we
-        # use .dll as placeholder (MSBuild sets the real extension via .vcxproj)
-        return f'{ARTIFACT_ROOT}/{env_target}/{name}.dll'
+        # use .dll as placeholder (MSBuild sets the real extension via .vcxproj).
+        # One artifact in BUILD/; promoted unchanged to all environments.
+        return f'{ARTIFACT_ROOT}/BUILD/{name}.dll'
 
     if module_type == 'COBOL':
         return f'{ARTIFACT_ROOT}/COBOL/{name}.cbl'
@@ -97,33 +99,31 @@ def build_compiled_modules(
     """
     Produce the compiled_modules list for the manifest.
 
-    C_PROJECT and AGS_MODULE → two entries each (BUILD target + SVT target).
+    C_PROJECT and AGS_MODULE → one entry each (compiled once to artifacts/BUILD/).
     COBOL / HOST_C           → one entry with status STAGED.
     CODES_TABLE / XLT_MAP    → one entry with status STAGED.
     """
     entries = []
 
     for mod in classified:
-        module_id  = mod['module_id']
-        mod_type   = mod['type']
-        src_files  = source_files_for_module(module_id, changed_files)
+        module_id   = mod['module_id']
+        mod_type    = mod['type']
+        src_files   = source_files_for_module(module_id, changed_files)
         mod_results = build_results.get(module_id, {})
 
         if mod_type in WINDOWS_COMPILED_TYPES:
-            # Compiled twice: once with BUILD env source, once with SVT env source
-            for env_target in ('BUILD', 'SVT'):
-                status = mod_results.get(env_target, 'UNKNOWN')
-                entries.append({
-                    'module_id':    module_id,
-                    'type':         mod_type,
-                    'subtype':      mod.get('subtype'),
-                    'env_target':   env_target,
-                    'trigger':      'source_change',
-                    'artifact':     artifact_path(module_id, env_target, mod_type),
-                    'source_files': src_files,
-                    'itt_tickets':  itt_tickets,
-                    'status':       status,
-                })
+            # Compiled once to artifacts/BUILD/; same binary promoted to all environments.
+            status = mod_results.get('status', 'UNKNOWN')
+            entries.append({
+                'module_id':    module_id,
+                'type':         mod_type,
+                'subtype':      mod.get('subtype'),
+                'trigger':      'source_change',
+                'artifact':     artifact_path(module_id, mod_type),
+                'source_files': src_files,
+                'itt_tickets':  itt_tickets,
+                'status':       status,
+            })
 
         elif mod_type in DEPLOY_TIME_TYPES:
             # Source staged here; actual compilation happens at deploy time on AIX/mainframe
@@ -131,12 +131,11 @@ def build_compiled_modules(
                 'module_id':    module_id,
                 'type':         mod_type,
                 'subtype':      mod.get('subtype'),
-                'env_target':   'ALL',
                 'trigger':      'source_change',
-                'artifact':     artifact_path(module_id, 'ALL', mod_type),
+                'artifact':     artifact_path(module_id, mod_type),
                 'source_files': src_files,
                 'itt_tickets':  itt_tickets,
-                'status':       mod_results.get('ALL', 'STAGED'),
+                'status':       mod_results.get('status', 'STAGED'),
                 'note':         'Compiled at deploy time. AIX for BUILD/SVT; IBM COBOL mainframe for CTST-STAG.',
             })
 
@@ -144,12 +143,11 @@ def build_compiled_modules(
             entries.append({
                 'module_id':    module_id,
                 'type':         mod_type,
-                'env_target':   'ALL',
                 'trigger':      'source_change',
-                'artifact':     artifact_path(module_id, 'ALL', mod_type),
+                'artifact':     artifact_path(module_id, mod_type),
                 'source_files': src_files,
                 'itt_tickets':  itt_tickets,
-                'status':       mod_results.get('ALL', 'STAGED'),
+                'status':       mod_results.get('status', 'STAGED'),
                 'note':         'Uploaded to KCOD at deploy time using FCP utility.',
             })
 
@@ -188,9 +186,9 @@ def main():
         build_results = {}
         for mod in classified:
             if mod['type'] in WINDOWS_COMPILED_TYPES:
-                build_results[mod['module_id']] = {'BUILD': 'SUCCESS', 'SVT': 'SUCCESS'}
+                build_results[mod['module_id']] = {'status': 'SUCCESS'}
             else:
-                build_results[mod['module_id']] = {'ALL': 'STAGED'}
+                build_results[mod['module_id']] = {'status': 'STAGED'}
 
     # Read GitHub Actions context from environment
     run_id     = os.environ.get('GITHUB_RUN_ID', 'local')
@@ -227,7 +225,7 @@ def main():
     print(f'Manifest written to {args.output}')
     print(f'  build_run_id:     {build_run_id}')
     print(f'  modules compiled: {len(classified)}')
-    print(f'  entries total:    {len(manifest["compiled_modules"])}  (C projects count twice: BUILD + SVT)')
+    print(f'  entries total:    {len(manifest["compiled_modules"])}')
 
 
 if __name__ == '__main__':

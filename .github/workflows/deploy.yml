@@ -85,7 +85,7 @@ jobs:
           $seen = @{}
           foreach ($mod in $manifest.compiled_modules) {
             $id = $mod.module_id
-            if ($seen[$id]) { continue }   # skip duplicate BUILD/SVT entries for same module
+            if ($seen[$id]) { continue }   # skip duplicate entries for same module
             $seen[$id] = $true
 
             if ($deployed.ContainsKey($id)) {
@@ -267,13 +267,11 @@ jobs:
           $manifest = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $env_name = "${{ inputs.environment }}"
 
-          # BUILD env gets its own binary; SVT+ all get the SVT binary
-          $binaryEnv = if ($env_name -eq "BUILD") { "BUILD" } else { "SVT" }
-
+          # One artifact (artifacts\BUILD\) promoted to all environments unchanged.
           $shareBase = "\\azuse-cssdapp02\cssapp\$env_name\client"
 
           $cModules = $manifest.compiled_modules | Where-Object {
-            $_.type -in @("C_PROJECT", "AGS_MODULE") -and $_.env_target -eq $binaryEnv
+            $_.type -in @("C_PROJECT", "AGS_MODULE")
           }
 
           foreach ($mod in $cModules) {
@@ -288,7 +286,7 @@ jobs:
 
             New-Item -ItemType Directory -Force -Path $destPath | Out-Null
             Copy-Item -Path $artifactPath -Destination $destPath -Force
-            Write-Host "  Deployed: $($mod.module_id) ($binaryEnv binary) -> $destPath"
+            Write-Host "  Deployed: $($mod.module_id) -> $destPath"
           }
 
       # -----------------------------------------------------------------------
