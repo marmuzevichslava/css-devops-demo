@@ -232,7 +232,7 @@ def main():
     if args.modules:
         modules = args.modules
     elif args.from_json:
-        with open(args.from_json) as f:
+        with open(args.from_json, encoding='utf-8-sig') as f:
             modules = json.load(f)
     else:
         modules = json.load(sys.stdin)

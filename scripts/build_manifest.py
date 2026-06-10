@@ -174,7 +174,7 @@ def main():
     args = parser.parse_args()
 
     # Load classified modules
-    with open(args.classified_json) as f:
+    with open(args.classified_json, encoding='utf-8-sig') as f:
         classified = json.load(f)
 
     # Load build results (default: all SUCCESS for C projects, STAGED for COBOL)

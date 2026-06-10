@@ -12,7 +12,7 @@ on:
         description: 'Target environment'
         required: true
         type: choice
-        options: [BUILD, SVT, CTST, CSTG, PTST, STAG, PROD]
+        options: [BUILD, SVT, PMVT, CTST, CSTG, PTST, STAG, PROD]
       artifact_run_id:
         description: 'GitHub Actions run_id that produced the build artifact'
         required: true
@@ -119,7 +119,7 @@ jobs:
         run: |
           $manifest        = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
           $envManifestPath = "environment_manifests\${{ inputs.environment }}.json"
-          $environments    = @('BUILD','SVT','CTST','CSTG','PTST','STAG','PROD')
+          $environments    = @('BUILD','SVT','PMVT','CTST','CSTG','PTST','STAG','PROD')
           $targetIdx       = $environments.IndexOf("${{ inputs.environment }}")
           $nextEnv         = if ($targetIdx -lt $environments.Count - 1) { $environments[$targetIdx + 1] } else { $null }
 
@@ -402,6 +402,55 @@ jobs:
           if ($LASTEXITCODE -eq 0) { Write-Host "Nothing changed"; exit 0 }
           git commit -m "deploy: ${{ inputs.build_run_id }} -> $env_name | approved by ${{ github.actor }}"
           git push
+
+      # -----------------------------------------------------------------------
+      # Update SVT / PROD tracking branch with deployed source files.
+      # Alan Chin (meeting 09-Jun-2026): svt and prod branches must always
+      # reflect exactly what is deployed — no merge from build (build has
+      # other ITT changes that are not ready).  We apply only the source
+      # files from this package's artifact/source/ snapshot.
+      # -----------------------------------------------------------------------
+      - name: Update environment tracking branch
+        if: inputs.environment == 'SVT' || inputs.environment == 'PROD'
+        shell: powershell
+        run: |
+          $branch   = "${{ inputs.environment }}".ToLower()
+          $manifest = Get-Content build_artifacts\build_manifest.json | ConvertFrom-Json
+
+          # Fetch the tracking branch; create it if it doesn't exist yet
+          git fetch origin $branch 2>&1 | Out-Null
+          $exists = git ls-remote --heads origin $branch
+          if ($exists) {
+            git checkout $branch
+          } else {
+            Write-Host "Branch '$branch' does not exist - creating from current HEAD"
+            git checkout -b $branch
+          }
+
+          # Apply source files from the package snapshot
+          $sourceDir = "build_artifacts\artifacts\source"
+          if (Test-Path $sourceDir) {
+            $items = Get-ChildItem -Path $sourceDir -Recurse -File
+            foreach ($item in $items) {
+              $rel  = $item.FullName.Substring((Resolve-Path $sourceDir).Path.Length + 1)
+              $dest = $rel
+              New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+              Copy-Item -Path $item.FullName -Destination $dest -Force
+              Write-Host "Applied: $rel"
+            }
+          } else {
+            Write-Host "No staged source files found in artifact - skipping file apply."
+          }
+
+          git add -A
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "No source changes to commit to '$branch' branch."
+            exit 0
+          }
+          git commit -m "deploy: ${{ inputs.build_run_id }} -> ${{ inputs.environment }} | ITT: $($manifest.itt_tickets -join ', ') | approved by ${{ github.actor }}"
+          git push origin $branch
+          Write-Host "Tracking branch '$branch' updated."
 
       - name: Deployment complete
         shell: cmd

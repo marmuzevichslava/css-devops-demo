@@ -199,6 +199,28 @@ jobs:
             Write-Host "Staged COBOL: $($mod.module_id) -> $dest"
           }
 
+      # 8b. Stage all changed source files for environment tracking branches (svt/prod)
+      # These are applied to the svt/prod branch after a successful deploy.
+      # Alan Chin (meeting 09-Jun-2026): SVT branch must always reflect the exact
+      # source that was deployed — not a merge from build.
+      - name: Stage changed source files
+        shell: pwsh
+        run: |
+          $files = Get-Content changed_files.json | ConvertFrom-Json
+          New-Item -ItemType Directory -Force -Path artifacts\source | Out-Null
+          foreach ($f in $files) {
+            # repository_dispatch: css-source\ prefix; push/workflow_dispatch: repo root
+            $src = @("css-source\$f", $f) | Where-Object { Test-Path $_ } | Select-Object -First 1
+            if ($src) {
+              $dest = "artifacts\source\$f"
+              New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+              Copy-Item -Path $src -Destination $dest -Force
+              Write-Host "Staged source: $f"
+            } else {
+              Write-Host "Source not found (placeholder run): $f"
+            }
+          }
+
       # 9. Generate build manifest
       - name: Generate build manifest
         shell: pwsh

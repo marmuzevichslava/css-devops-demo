@@ -228,11 +228,11 @@ def main():
     args = parser.parse_args()
 
     # Load classified modules from classify_modules.py
-    with open(args.modules_json) as f:
+    with open(args.modules_json, encoding='utf-8-sig') as f:
         modules = json.load(f)
 
     # Load dependency rules from build-sequence-rules.json
-    with open(args.rules) as f:
+    with open(args.rules, encoding='utf-8-sig') as f:
         rules = json.load(f)
 
     all_ids = [m['module_id'] for m in modules]
